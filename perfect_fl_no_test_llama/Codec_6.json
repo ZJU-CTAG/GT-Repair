@@ -1,0 +1,19 @@
+{
+  "patch": "\npublic int read(byte[] b, int offset, int len) throws IOException {\n    if (b == null) {\n        throw new NullPointerException();\n    } else if (offset < 0 || len < 0) {\n        throw new IndexOutOfBoundsException();\n    } else if (offset > b.length || offset + len > b.length) {\n        throw new IndexOutOfBoundsException();\n    } else if (len == 0) {\n        return 0;\n    } else {\n        int readLen = 0;\n        while (readLen == 0) {\n            if (!base64.hasData()) {\n                byte[] buf = new byte[doEncode ? 4096 : 8192];\n                int c = in.read(buf);\n                // A little optimization to avoid System.arraycopy()\n                // when possible.\n                if (c > 0 && b.length == len) {\n                    base64.setInitialBuffer(b, offset, len);\n                }\n                if (doEncode) {\n                    base64.encode(buf, 0, c);\n                } else {\n                    base64.decode(buf, 0, c);\n                }\n            }\n            readLen = base64.readResults(b, offset, len);\n        }\n        return readLen;\n    }\n}\n",
+  "index": 62,
+  "validation": "plausible",
+  "validation_wo": "wrong",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.codec.binary.Base64InputStreamTest::testCodec101"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -4.369764514267445,
+  "mean_entropy": -0.013486927513171125,
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

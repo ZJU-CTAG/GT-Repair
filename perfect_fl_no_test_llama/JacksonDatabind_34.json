@@ -1,0 +1,19 @@
+{
+  "patch": "\n@Override\npublic void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) throws JsonMappingException {\n    if (_isInt) {\n        visitIntFormat(visitor, typeHint, JsonParser.NumberType.BIG_INTEGER);\n    } else {\n        Class<?> h = handledType();\n        if (h == BigDecimal.class) {\n            visitFloatFormat(visitor, typeHint, JsonParser.NumberType.BIG_DECIMAL);\n        } else {\n            // otherwise bit unclear what to call... but let's try:\n            /*JsonNumberFormatVisitor v2 =*/ visitor.expectNumberFormat(typeHint);\n        }\n    }\n}\n",
+  "index": 1,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 292,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.fasterxml.jackson.databind.jsonschema.NewSchemaTest::testSimpleNumbers"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -2.754249319434166,
+  "mean_entropy": -0.016591863370085336,
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

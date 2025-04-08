@@ -1,0 +1,25 @@
+{
+  "patch": "\n    /**\n     * Convert to multidimensional counter.\n     *\n     * @param index Index in unidimensional counter.\n     * @return the multidimensional counts.\n     * @throws OutOfRangeException if {@code index} is not between\n     * {@code 0} and the value returned by {@link #getSize()} (excluded).\n     */\n    public int[] getCounts(int index) {\n        if (index < 0 ||\n            index >= totalSize) {\n            throw new OutOfRangeException(index, 0, totalSize);\n        }\n\n        final int[] indices = new int[dimension];\n\n        int count = 0;\n        for (int i = 0; i < last; i++) {\n            int idx = 0;\n            final int offset = uniCounterOffset[i];\n            while (count <= index) {\n                count += offset;\n                ++idx;\n            }\n            --idx;\n            count -= offset;\n            indices[i] = idx;\n        }\n\n        // Calculate the last dimension\n        indices[last] = index - count;\n\n        return indices;\n    }\n",
+  "index": 67,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.util.MultidimensionalCounterTest::testIterationConsistency"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -6.5965847335755825,
+  "mean_entropy": -0.02407512676487439,
+  "pass_FIB_num": 5,
+  "pass_FIB": [
+    "Math_56_n48.txt",
+    "Math_56_n44.txt",
+    "Math_56_n25.txt",
+    "Math_56_n23.txt",
+    "Math_56_n20.txt"
+  ]
+}
