@@ -1,0 +1,19 @@
+{
+  "patch": "\n    /**\n     * Initializes the name to index mapping if the format defines a header.\n     *\n     * @return null if the format has no header.\n     */\n    private Map<String, Integer> initializeHeader() throws IOException {\n        Map<String, Integer> hdrMap = null;\n        final String[] formatHeader = this.format.getHeader();\n        if (formatHeader != null) {\n            hdrMap = new LinkedHashMap<String, Integer>();\n\n            String[] header = null;\n            if (formatHeader.length == 0) {\n                // read the header from the first line of the file\n                final CSVRecord nextRecord = this.nextRecord();\n                if (nextRecord != null) {\n                    header = nextRecord.values();\n                }\n            } else {\n                if (this.format.getSkipHeaderRecord()) {\n                    this.nextRecord();\n                }\n                header = formatHeader;\n            }\n\n            // build the name to index mappings\n            if (header != null) {\n                for (int i = 0; i < header.length; i++) {\n                    String columnName = header[i];\n                    if (hdrMap.containsKey(columnName)) {\n                        throw new IllegalStateException(\"Duplicate column name found: \" + columnName);\n                    } else {\n                        hdrMap.put(columnName, Integer.valueOf(i));\n                    }\n                }\n            }\n        }\n        return hdrMap;\n    }\n",
+  "index": 1,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 5,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.csv.CSVParserTest::testDuplicateHeaderEntries"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -7.913815000398667,
+  "mean_entropy": -0.028988333334793653,
+  "test_for_prompt": "Csv_7_n11.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

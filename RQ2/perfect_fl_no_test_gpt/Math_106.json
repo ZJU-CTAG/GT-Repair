@@ -1,0 +1,16 @@
+{
+  "patch": "\n    public Fraction parse(String source, ParsePosition pos) {\n        Fraction ret = super.parse(source, pos);\n        if (ret != null) {\n            return ret;\n        }\n        \n        int initialIndex = pos.getIndex();\n        \n        parseAndIgnoreWhitespace(source, pos);\n        \n        Number whole = getWholeFormat().parse(source, pos);\n        if (whole == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        parseAndIgnoreWhitespace(source, pos);\n        \n        Number num = getNumeratorFormat().parse(source, pos);\n        if (num == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        switch (c) {\n            case 0 :\n                return new Fraction(num.intValue(), 1);\n            case '/' :\n                break;\n            default :\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n        \n        parseAndIgnoreWhitespace(source, pos);\n        \n        Number den = getDenominatorFormat().parse(source, pos);\n        if (den == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        if (num.intValue() < 0 || den.intValue() < 0) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        int w = whole.intValue();\n        int n = num.intValue();\n        int d = den.intValue();\n        return new Fraction(((Math.abs(w) * d) + n) * MathUtils.sign(w), d);\n    }\n",
+  "index": 1,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.fraction.FractionFormatTest::testParseProperInvalidMinus"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -11.190179727943585,
+  "mean_entropy": -0.0337053606263361
+}

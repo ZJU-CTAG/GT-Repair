@@ -1,0 +1,17 @@
+{
+  "patch": "\n@SuppressWarnings(\"resource\")\nprotected Object _deserializeTypedUsingDefaultImpl(JsonParser p, DeserializationContext ctxt,\n        TokenBuffer tb) throws IOException\n{\n    if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {\n        if (p.getCurrentToken() == JsonToken.VALUE_STRING) {\n            String text = p.getText();\n            if (text == null || text.length() == 0) {\n                return null;\n            }\n        }\n    }\n\n    JsonDeserializer<Object> deser = _findDefaultImplDeserializer(ctxt);\n    if (deser != null) {\n        if (tb != null) {\n            tb.writeEndObject();\n            p = tb.asParser(p);\n            p.nextToken();\n        }\n        return deser.deserialize(p, ctxt);\n    }\n\n    Object result = TypeDeserializer.deserializeIfNatural(p, ctxt, _baseType);\n    if (result != null) {\n        return result;\n    }\n\n    if (p.getCurrentToken() == JsonToken.START_ARRAY) {\n        return super.deserializeTypedFromAny(p, ctxt);\n    }\n\n    ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,\n            \"missing property '\"+_typePropertyName+\"' that is to contain type id  (for class \"+baseTypeName()+\")\");\n    return null;\n}\n",
+  "index": 17,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 77,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.fasterxml.jackson.databind.jsontype.TestPolymorphicWithDefaultImpl::testWithEmptyStringAsNullObject1533"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -9.536471446976066,
+  "mean_entropy": -0.02516219379149358
+}

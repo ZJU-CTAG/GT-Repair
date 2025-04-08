@@ -1,0 +1,19 @@
+{
+  "patch": "\nprivate void traverse(Node node) {\n    if (!shouldVisit(node)) {\n        return;\n    }\n\n    int visits = 0;\n    do {\n        Node c = node.getFirstChild();\n        while (c != null) {\n            Node next = c.getNext();\n            traverse(c);\n            c = next;\n        }\n\n        visit(node);\n        visits++;\n\n        Preconditions.checkState(visits < 10000, \"too many iterations\");\n    } while (shouldRetraverse(node));\n\n    exitNode(node);\n}\n",
+  "index": 67,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 18,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.IntegrationTest::testIssue787"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.639289627304281,
+  "mean_entropy": -0.0349931694933104,
+  "test_for_prompt": "Closure_13_n14.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

@@ -1,0 +1,18 @@
+{
+  "patch": "\n  @Override\n  JSType resolveInternal(ErrorReporter t, StaticScope<JSType> scope) {\n    setResolvedTypeInternal(this);\n\n    call = safeResolve(call, t, scope) instanceof ArrowType ? (ArrowType) safeResolve(call, t, scope) : call;\n    prototype = safeResolve(prototype, t, scope) instanceof FunctionPrototypeType ? (FunctionPrototypeType) safeResolve(prototype, t, scope) : prototype;\n\n    // Warning about typeOfThis if it doesn't resolve to an ObjectType\n    // is handled further upstream.\n    // TODO(nicksantos): Handle this correctly if we have a UnionType.\n    typeOfThis = safeResolve(typeOfThis, t, scope) instanceof ObjectType ? (ObjectType) safeResolve(typeOfThis, t, scope) : typeOfThis;\n\n    boolean changed = false;\n    ImmutableList.Builder<ObjectType> resolvedInterfaces =\n        ImmutableList.builder();\n    for (ObjectType iface : implementedInterfaces) {\n      ObjectType resolvedIface = iface.resolve(t, scope) instanceof ObjectType ? (ObjectType) iface.resolve(t, scope) : iface;\n      resolvedInterfaces.add(resolvedIface);\n      changed |= (resolvedIface != iface);\n    }\n    if (changed) {\n      implementedInterfaces = resolvedInterfaces.build();\n    }\n\n    if (subTypes != null) {\n      for (int i = 0; i < subTypes.size(); i++) {\n        subTypes.set(i, safeResolve(subTypes.get(i), t, scope) instanceof FunctionType ? (FunctionType) safeResolve(subTypes.get(i), t, scope) : subTypes.get(i));\n      }\n    }\n\n    return super.resolveInternal(t, scope);\n  }\n",
+  "index": 3,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 3,
+  "passing_trigger": 3,
+  "total_relevant": 161,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.TypeCheckTest::testBackwardsTypedefUse1",
+    "com.google.javascript.jscomp.TypeCheckTest::testBackwardsTypedefUse2",
+    "com.google.javascript.jscomp.TypeCheckTest::testBackwardsTypedefUse3"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -6.095438685989008,
+  "mean_entropy": -0.017465440361000024
+}

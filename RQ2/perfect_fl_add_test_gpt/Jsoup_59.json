@@ -1,0 +1,23 @@
+{
+  "patch": "\n    final void newAttribute() {\n        if (attributes == null)\n            attributes = new Attributes();\n\n        if (pendingAttributeName != null) {\n            // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here\n            pendingAttributeName = pendingAttributeName.trim();\n            if (!pendingAttributeName.isEmpty()) {\n                Attribute attribute;\n                if (hasPendingAttributeValue)\n                    attribute = new Attribute(pendingAttributeName,\n                        pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);\n                else if (hasEmptyAttributeValue)\n                    attribute = new Attribute(pendingAttributeName, \"\");\n                else\n                    attribute = new BooleanAttribute(pendingAttributeName);\n                attributes.put(attribute);\n            }\n        }\n        pendingAttributeName = null;\n        hasEmptyAttributeValue = false;\n        hasPendingAttributeValue = false;\n        reset(pendingAttributeValue);\n        pendingAttributeValueS = null;\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 2,
+  "passing_trigger": 2,
+  "total_relevant": 19,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jsoup.parser.HtmlParserTest::handlesControlCodeInAttributeName",
+    "org.jsoup.safety.CleanerTest::handlesControlCharactersAfterTagName"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.9555119988516907,
+  "mean_entropy": -0.021381145939738867,
+  "test_for_prompt": "Jsoup_59_n39.txt",
+  "pass_FIB_num": 2,
+  "pass_FIB": [
+    "Jsoup_59_n42.txt",
+    "Jsoup_59_n34.txt"
+  ]
+}

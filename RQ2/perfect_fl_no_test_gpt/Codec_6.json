@@ -1,0 +1,16 @@
+{
+  "patch": "\n    public int read(byte b[], int offset, int len) throws IOException {\n        if (b == null) {\n            throw new NullPointerException();\n        } else if (offset < 0 || len < 0 || offset > b.length || offset + len > b.length) {\n            throw new IndexOutOfBoundsException();\n        } else if (len == 0) {\n            return 0;\n        } else {\n            int totalBytesRead = 0;\n            while (totalBytesRead == 0) {\n                if (!base64.hasData()) {\n                    byte[] buf = new byte[doEncode ? 4096 : 8192];\n                    int bytesRead = in.read(buf);\n                    if (bytesRead > 0 && b.length == len) {\n                        base64.setInitialBuffer(b, offset, len);\n                    }\n                    if (doEncode) {\n                        base64.encode(buf, 0, bytesRead);\n                    } else {\n                        base64.decode(buf, 0, bytesRead);\n                    }\n                }\n                totalBytesRead = base64.readResults(b, offset, len);\n            }\n            return totalBytesRead;\n        }\n    }\n",
+  "index": 2,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.codec.binary.Base64InputStreamTest::testCodec101"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.360020030861214,
+  "mean_entropy": -0.035879914295541694
+}

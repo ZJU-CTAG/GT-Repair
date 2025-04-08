@@ -1,0 +1,16 @@
+{
+  "patch": "\nprivate boolean canBeRedeclared(Node n, Scope s) {\n  if (!NodeUtil.isExprAssign(n)) {\n    return false;\n  }\n  Node assign = n.getFirstChild();\n  Node lhs = assign.getFirstChild();\n\n  if (!lhs.isName()) {\n    return false;\n  }\n\n  Var var = s.getVar(lhs.getString());\n  return var != null\n      && var.getScope() == s\n      && !blacklistedVars.contains(var)\n      && !var.getNode().getParent().isParamList(); // Check if the variable is a function argument\n}\n",
+  "index": 96,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 5,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.CollapseVariableDeclarationsTest::testIssue820"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -11.661097350363596,
+  "mean_entropy": -0.09799241470893778
+}

@@ -1,0 +1,17 @@
+{
+  "patch": "\n@Override \npublic void skipValue() throws IOException {\n    if (peek() == JsonToken.NAME) {\n      nextName();\n      pathNames[stackSize - 2] = \"null\";\n    } else {\n      popStack();\n      if (stackSize > 0) {\n        pathNames[stackSize - 1] = \"null\";\n        pathIndices[stackSize - 1]++;\n      }\n    }\n}\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 2,
+  "passing_trigger": 2,
+  "total_relevant": 74,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_filledJsonObject",
+    "com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_emptyJsonObject"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -6.155215451655104,
+  "mean_entropy": -0.0707496028925874
+}

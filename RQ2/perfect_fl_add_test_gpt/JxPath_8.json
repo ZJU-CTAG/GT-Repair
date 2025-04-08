@@ -1,0 +1,19 @@
+{
+  "patch": "\n    private boolean compute(Object left, Object right) {\n        left = reduce(left);\n        right = reduce(right);\n\n        if (left instanceof InitialContext) {\n            ((InitialContext) left).reset();\n        }\n        if (right instanceof InitialContext) {\n            ((InitialContext) right).reset();\n        }\n        if (left instanceof Iterator && right instanceof Iterator) {\n            return findMatch((Iterator) left, (Iterator) right);\n        }\n        if (left instanceof Iterator) {\n            return containsMatch((Iterator) left, right);\n        }\n        if (right instanceof Iterator) {\n            return containsMatch((Iterator) right, left);\n        }\n\n        // Check if either left or right is NaN\n        if (Double.isNaN(InfoSetUtil.doubleValue(left)) || Double.isNaN(InfoSetUtil.doubleValue(right))) {\n            return false;\n        }\n\n        double ld = InfoSetUtil.doubleValue(left);\n        double rd = InfoSetUtil.doubleValue(right);\n        return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 5,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.jxpath.ri.compiler.CoreOperationTest::testNan"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.143770747081197,
+  "mean_entropy": -0.036519151332202675,
+  "test_for_prompt": "JxPath_8_n0.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

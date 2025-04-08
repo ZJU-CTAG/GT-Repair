@@ -1,0 +1,18 @@
+{
+  "patch": "\n/**\n * <p>Checks if String contains a search String irrespective of case,\n * handling <code>null</code>. Case-insensitivity is defined as by\n * {@link String#equalsIgnoreCase(String)}.\n *\n * <p>A <code>null</code> String will return <code>false</code>.</p>\n *\n * <pre>\n * StringUtils.contains(null, *) = false\n * StringUtils.contains(*, null) = false\n * StringUtils.contains(\"\", \"\") = true\n * StringUtils.contains(\"abc\", \"\") = true\n * StringUtils.contains(\"abc\", \"a\") = true\n * StringUtils.contains(\"abc\", \"z\") = false\n * StringUtils.contains(\"abc\", \"A\") = true\n * StringUtils.contains(\"abc\", \"Z\") = false\n * </pre>\n *\n * @param str  the String to check, may be null\n * @param searchStr  the String to find, may be null\n * @return true if the String contains the search String irrespective of\n * case or false if not or <code>null</code> string input\n */\npublic static boolean containsIgnoreCase(String str, String searchStr) {\n    if (str == null || searchStr == null) {\n        return false;\n    }\n    int len = searchStr.length();\n    int strLen = str.length();\n    if (len > strLen) {\n        return false;\n    }\n    if (len == 0) {\n        return true;\n    }\n    for (int i = 0; i < strLen; i++) {\n        if (i + len > strLen) {\n            return false;\n        }\n        if (str.regionMatches(true, i, searchStr, 0, len)) {\n            return true;\n        }\n    }\n    return false;\n}\n",
+  "index": 95,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 19,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.lang.StringUtilsEqualsIndexOfTest::testContainsIgnoreCase_LocaleIndependence"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -7.785362545400858,
+  "mean_entropy": -0.01753460032747941,
+  "test_for_prompt": "Lang_40_n18.txt"
+}

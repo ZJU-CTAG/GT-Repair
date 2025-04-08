@@ -1,0 +1,16 @@
+{
+  "patch": "\n    /**\n     * Convert to multidimensional counter.\n     *\n     * @param index Index in unidimensional counter.\n     * @return the multidimensional counts.\n     * @throws OutOfRangeException if {@code index} is not between\n     * {@code 0} and the value returned by {@link #getSize()} (excluded).\n     */\n    public int[] getCounts(int index) {\n        if (index < 0 || index >= totalSize) {\n            throw new OutOfRangeException(index, 0, totalSize);\n        }\n\n        final int[] indices = new int[dimension];\n\n        int count = 0;\n        for (int i = 0; i < last; i++) {\n            int idx = 0;\n            final int offset = uniCounterOffset[i];\n            while (count + offset <= index) {\n                count += offset;\n                ++idx;\n            }\n            indices[i] = idx;\n        }\n\n        indices[last] = index - count;\n\n        return indices;\n    }\n",
+  "index": 12,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.util.MultidimensionalCounterTest::testIterationConsistency"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -4.009726465150199,
+  "mean_entropy": -0.01900344296279715
+}

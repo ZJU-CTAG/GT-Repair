@@ -1,0 +1,16 @@
+{
+  "patch": "\n    /**\n     * Attempt to cast this comment to an XML Declaration note.\n     * @return an XML declaration if it could be parsed as one, null otherwise.\n     */\n    public XmlDeclaration asXmlDeclaration() {\n        String data = getData();\n        Document doc = Jsoup.parse(\"<\" + data.substring(1, data.length() - 1) + \">\", baseUri(), Parser.xmlParser());\n        XmlDeclaration decl = null;\n        if (doc.children().size() > 0) {\n            Element el = doc.child(0);\n            decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith(\"!\"));\n            decl.attributes().addAll(el.attributes());\n        }\n        return decl;\n    }\n",
+  "index": 3,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 25,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jsoup.parser.XmlTreeBuilderTest::handlesLTinScript"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.5875603883247895,
+  "mean_entropy": -0.023917069255498597
+}

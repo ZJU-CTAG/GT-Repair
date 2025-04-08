@@ -1,0 +1,22 @@
+{
+  "patch": "\n    public static double[] bracket(UnivariateRealFunction function,\n            double initial, double lowerBound, double upperBound, \n            int maximumIterations) throws ConvergenceException, \n            FunctionEvaluationException {\n        \n        if (function == null) {\n            throw new IllegalArgumentException(\"function is null\");\n        }\n        if (maximumIterations <= 0)  {\n            throw new IllegalArgumentException(\"bad value for maximum iterations number: \" + maximumIterations);\n        }\n        if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {\n            throw new IllegalArgumentException(\"invalid bracketing parameters:  lower bound=\" + lowerBound + \",  initial=\" + initial + \", upper bound=\" + upperBound);\n        }\n        double a = initial - 1.0;\n        double b = initial + 1.0;\n        double fa;\n        double fb;\n        int numIterations = 0 ;\n    \n        do {\n            fa = function.value(a);\n            fb = function.value(b);\n            numIterations++ ;\n            \n            if (fa * fb <= 0.0) {\n                break;\n            }\n            \n            if (a <= lowerBound && b >= upperBound) {\n                throw new ConvergenceException(\"ConvergenceException\");\n            }\n            \n            if (numIterations >= maximumIterations) {\n                throw new ConvergenceException(\"ConvergenceException\");\n            }\n            \n            if (a > lowerBound) {\n                a = Math.max(a - 1.0, lowerBound);\n            }\n            \n            if (b < upperBound) {\n                b = Math.min(b + 1.0, upperBound);\n            }\n        } while (true);\n   \n        return new double[]{a, b};\n    }\n",
+  "index": 21,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 11,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.distribution.NormalDistributionTest::testMath280"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -15.974293825664605,
+  "mean_entropy": -0.04551080862012708,
+  "test_for_prompt": "Math_85_n41.txt",
+  "pass_FIB_num": 2,
+  "pass_FIB": [
+    "Math_85_n41.txt",
+    "Math_85_n0.txt"
+  ]
+}

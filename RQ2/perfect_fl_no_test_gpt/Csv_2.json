@@ -1,0 +1,16 @@
+{
+  "patch": "\n    /**\n     * Returns a value by name.\n     *\n     * @param name\n     *            the name of the column to be retrieved.\n     * @return the column value, or {@code null} if the column name is not found\n     * @throws IllegalStateException\n     *             if no header mapping was provided\n     * @throws IllegalArgumentException\n     *             if the record is inconsistent\n     * @see #isConsistent()\n     */\n    public String get(final String name) {\n        if (mapping == null) {\n            throw new IllegalStateException(\n                    \"No header mapping was specified, the record values can't be accessed by name\");\n        }\n        final Integer index = mapping.get(name);\n        if (index != null) {\n            if (index.intValue() < values.length) {\n                return values[index.intValue()];\n            } else {\n                throw new IllegalArgumentException(\"Index out of bounds for column name: \" + name);\n            }\n        } else {\n            return null;\n        }\n    }\n",
+  "index": 1,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 4,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.csv.CSVRecordTest::testGetStringInconsistentRecord"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.429973825155223,
+  "mean_entropy": -0.04112182353734255
+}

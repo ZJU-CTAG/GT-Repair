@@ -1,0 +1,16 @@
+{
+  "patch": "\n    /**\n     * Returns the <code>Object</code> of type <code>clazz</code>\n     * with the value of <code>str</code>.\n     *\n     * @param str the command line value\n     * @param clazz the type of argument\n     * @return The instance of <code>clazz</code> initialised with\n     * the value of <code>str</code>.\n     * @throws ParseException if the value creation for the given class failed\n     */\n    @SuppressWarnings(\"unchecked\") // returned value will have type T because it is fixed by clazz\n    public static <T> T createValue(final String str, final Class<T> clazz) throws ParseException {\n        if (PatternOptionBuilder.STRING_VALUE == clazz) {\n            return (T) str;\n        } else if (PatternOptionBuilder.OBJECT_VALUE == clazz) {\n            return (T) createObject(str);\n        } else if (PatternOptionBuilder.NUMBER_VALUE == clazz) {\n            return (T) createNumber(str);\n        } else if (PatternOptionBuilder.DATE_VALUE == clazz) {\n            return (T) createDate(str);\n        } else if (PatternOptionBuilder.CLASS_VALUE == clazz) {\n            return (T) createClass(str);\n        } else if (PatternOptionBuilder.FILE_VALUE == clazz) {\n            return (T) createFile(str);\n        } else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz) {\n            return (T) openFile(str);\n        } else if (PatternOptionBuilder.FILES_VALUE == clazz) {\n            return (T) createFiles(str);\n        } else if (PatternOptionBuilder.URL_VALUE == clazz) {\n            return (T) createURL(str);\n        } else {\n            throw new ParseException(\"Unsupported class type for value creation\");\n        }\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 3,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.cli.TypeHandlerTest::testCreateValueInteger_failure"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.086190655269919,
+  "mean_entropy": -0.02167879532243946
+}

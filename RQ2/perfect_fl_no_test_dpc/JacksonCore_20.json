@@ -1,0 +1,18 @@
+{
+  "patch": "\n    /**\n     * Method that can be called on backends that support passing opaque datatypes of\n     * non-JSON formats\n     *\n     * @since 2.8\n     */\n    public void writeEmbeddedObject(Object object) throws IOException {\n        // 01-Sep-2016, tatu: As per [core#318], handle small number of cases\n        if (object == null) {\n            this.writeNull();\n            return;\n        }\n\n        if (object instanceof byte[]) {\n            byte[] bytes = (byte[]) object;\n            this.writeBinary(bytes, 0, bytes.length);\n            return;\n        }\n\n        throw new JsonGenerationException(\"No native support for writing embedded objects\",\n                this);\n    }\n",
+  "index": 5,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 2,
+  "passing_trigger": 2,
+  "total_relevant": 79,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.fasterxml.jackson.core.base64.Base64GenerationTest::testBinaryAsEmbeddedObject",
+    "com.fasterxml.jackson.core.main.TestGeneratorMisc::testAsEmbedded"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.118455477058887,
+  "mean_entropy": -0.04295479088390946
+}

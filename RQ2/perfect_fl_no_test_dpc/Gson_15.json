@@ -1,0 +1,17 @@
+{
+  "patch": "\n  /**\n   * Encodes {@code value}.\n   *\n   * @param value a finite value. May not be {@link Double#isNaN() NaNs} or\n   *     {@link Double#isInfinite() infinities}.\n   * @return this writer.\n   */\n  public JsonWriter value(double value) throws IOException {\n    writeDeferredName();\n    if (!lenient && (Double.isNaN(value) || Double.isInfinite(value))) {\n      throw new IllegalArgumentException(\"Numeric values must be finite, but was \" + value);\n    }\n    beforeValue();\n    out.append(Double.toString(value));\n    return this;\n  }\n",
+  "index": 0,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 76,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.gson.stream.JsonWriterTest::testNonFiniteDoublesWhenLenient"
+  ],
+  "failing_tests": [],
+  "sum_entropy": 0.0,
+  "mean_entropy": 0.0
+}

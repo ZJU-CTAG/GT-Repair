@@ -1,0 +1,19 @@
+{
+  "patch": "\n  /**\n   * Declares a refined type in {@code scope} for the name represented by\n   * {@code node}. It must be possible to refine the type of the given node in\n   * the given scope, as determined by {@link #getTypeIfRefinable}.\n   */\n  protected void declareNameInScope(FlowScope scope, Node node, JSType type) {\n    switch (node.getType()) {\n      case Token.NAME:\n        scope.inferSlotType(node.getString(), type);\n        break;\n\n      case Token.GETPROP:\n        String qualifiedName = node.getQualifiedName();\n        Preconditions.checkNotNull(qualifiedName);\n\n        JSType origType = node.getJSType();\n        origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;\n        scope.inferQualifiedSlot(node, qualifiedName, origType, type);\n        break;\n\n        // \"this\" references aren't currently modeled in the CFG.\n      case Token.THIS:\n        // Handle 'this' case separately\n        break;\n\n      default:\n        throw new IllegalArgumentException(\"Node cannot be refined. \\n\" +\n            node.toStringTree());\n    }\n  }\n",
+  "index": 3,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 170,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.TypeInferenceTest::testNoThisInference"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -10.832457935215157,
+  "mean_entropy": -0.04513524139672982,
+  "test_for_prompt": "Closure_19_n31.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

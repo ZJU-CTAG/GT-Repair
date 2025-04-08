@@ -1,0 +1,22 @@
+{
+  "patch": "\npublic String absUrl(String attributeKey) {\n    Validate.notEmpty(attributeKey);\n\n    String relUrl = attr(attributeKey);\n    if (!hasAttr(attributeKey)) {\n        return \"\"; // nothing to make absolute with\n    } else {\n        URL base;\n        try {\n            try {\n                base = new URL(baseUri);\n            } catch (MalformedURLException e) {\n                // the base is unsuitable, but the attribute may be abs on its own, so try that\n                URL abs = new URL(relUrl);\n                return abs.toExternalForm();\n            }\n            if (relUrl.startsWith(\"?\")) {\n                relUrl = base.getPath() + relUrl;\n            }\n            // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired\n            URL abs = new URL(base, relUrl);\n            return abs.toExternalForm();\n        } catch (MalformedURLException e) {\n            return \"\";\n        }\n    }\n}\n",
+  "index": 17,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 13,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jsoup.nodes.NodeTest::absHandlesRelativeQuery"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -8.274126806703029,
+  "mean_entropy": -0.04096102379555955,
+  "test_for_prompt": "Jsoup_10_n24.txt",
+  "pass_FIB_num": 2,
+  "pass_FIB": [
+    "Jsoup_10_n13.txt",
+    "Jsoup_10_n41.txt"
+  ]
+}

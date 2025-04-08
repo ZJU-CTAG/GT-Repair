@@ -1,0 +1,16 @@
+{
+  "patch": "\nstatic boolean preserveWhitespace(Node node) {\n    // looks only at this element and five levels up, to prevent recursion & needless stack searches\n    if (node != null && node instanceof Element) {\n        Element el = (Element) node;\n        if (el.tag.preserveWhitespace())\n            return true;\n        else {\n            boolean parentPreservesWhitespace = el.parent() != null && el.parent().tag.preserveWhitespace();\n            if (parentPreservesWhitespace) {\n                return true;\n            } else {\n                Element parent = el.parent();\n                for (int i = 0; i < 5 && parent != null; i++) {\n                    if (parent.tag.preserveWhitespace()) {\n                        return true;\n                    }\n                    parent = parent.parent();\n                }\n            }\n        }\n    }\n    return false;\n}\n",
+  "index": 2,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 25,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jsoup.nodes.ElementTest::testKeepsPreTextAtDepth"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -14.047612481824402,
+  "mean_entropy": -0.08411744001092455
+}

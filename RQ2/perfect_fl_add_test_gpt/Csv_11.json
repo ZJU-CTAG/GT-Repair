@@ -1,0 +1,19 @@
+{
+  "patch": "\n    /**\n     * Initializes the name to index mapping if the format defines a header.\n     *\n     * @return null if the format has no header.\n     * @throws IOException if there is a problem reading the header or skipping the first record\n     */\n    private Map<String, Integer> initializeHeader() throws IOException {\n        Map<String, Integer> hdrMap = null;\n        final String[] formatHeader = this.format.getHeader();\n        if (formatHeader != null) {\n            hdrMap = new LinkedHashMap<String, Integer>();\n\n            String[] headerRecord = null;\n            if (formatHeader.length == 0) {\n                // read the header from the first line of the file\n                final CSVRecord nextRecord = this.nextRecord();\n                if (nextRecord != null) {\n                    headerRecord = nextRecord.values();\n                }\n            } else {\n                if (this.format.getSkipHeaderRecord()) {\n                    this.nextRecord();\n                }\n                headerRecord = formatHeader;\n            }\n\n            // build the name to index mappings\n            if (headerRecord != null) {\n                for (int i = 0; i < headerRecord.length; i++) {\n                    final String header = headerRecord[i];\n                    final boolean containsHeader = hdrMap.containsKey(header);\n                    final boolean emptyHeader = header == null || header.trim().isEmpty();\n                    if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {\n                        throw new IllegalArgumentException(\"The header contains a duplicate name: \\\"\" + header +\n                                \"\\\" in \" + Arrays.toString(headerRecord));\n                    }\n                    hdrMap.put(header, Integer.valueOf(i));\n                }\n            }\n        }\n        return hdrMap;\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 5,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.csv.CSVParserTest::testHeaderMissingWithNull"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.1418690339357718,
+  "mean_entropy": -0.009106866765031222,
+  "test_for_prompt": "Csv_11_n40.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

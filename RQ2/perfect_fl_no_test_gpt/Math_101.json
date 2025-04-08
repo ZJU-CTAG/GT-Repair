@@ -1,0 +1,17 @@
+{
+  "patch": "\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (endIndex > source.length() || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+  "index": 12,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 2,
+  "passing_trigger": 2,
+  "total_relevant": 2,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+    "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -5.892511920360638,
+  "mean_entropy": -0.01824307096086885
+}

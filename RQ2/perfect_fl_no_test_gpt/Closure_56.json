@@ -1,0 +1,18 @@
+{
+  "patch": "\npublic String getLine(int lineNumber) {\n    String js = \"\";\n    try {\n        js = getCode();\n    } catch (IOException e) {\n        return null;\n    }\n\n    int pos = 0;\n    int startLine = 1;\n\n    if (lineNumber >= lastLine) {\n        pos = lastOffset;\n        startLine = lastLine;\n    }\n\n    for (int n = startLine; n < lineNumber; n++) {\n        int nextpos = js.indexOf('\\n', pos);\n        if (nextpos == -1) {\n            return null;\n        }\n        pos = nextpos + 1;\n    }\n\n    lastOffset = pos;\n    lastLine = lineNumber;\n\n    int nextNewLinePos = js.indexOf('\\n', pos);\n    if (nextNewLinePos == -1) {\n        return pos >= js.length() ? null : js.substring(pos);\n    } else {\n        return js.substring(pos, nextNewLinePos);\n    }\n}\n",
+  "index": 15,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 3,
+  "passing_trigger": 3,
+  "total_relevant": 167,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest::testExceptNoNewLine",
+    "com.google.javascript.jscomp.JsMessageExtractorTest::testSyntaxError1",
+    "com.google.javascript.jscomp.JsMessageExtractorTest::testSyntaxError2"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -6.19694899528664,
+  "mean_entropy": -0.03083059201635144
+}

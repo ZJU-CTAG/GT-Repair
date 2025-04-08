@@ -1,0 +1,16 @@
+{
+  "patch": "\n    /**\n     * Tests two polygons for equality.  If both are <code>null</code> this\n     * method returns <code>true</code>.\n     *\n     * @param p1  path 1 (<code>null</code> permitted).\n     * @param p2  path 2 (<code>null</code> permitted).\n     *\n     * @return A boolean.\n     */\n    public static boolean equal(GeneralPath p1, GeneralPath p2) {\n        if (p1 == null) {\n            return (p2 == null);\n        }\n        if (p2 == null) {\n            return false;\n        }\n        if (p1.getWindingRule() != p2.getWindingRule()) {\n            return false;\n        }\n        PathIterator iterator1 = p1.getPathIterator(null);\n        PathIterator iterator2 = p2.getPathIterator(null); // Fixed: Use p2 instead of p1\n        double[] d1 = new double[6];\n        double[] d2 = new double[6];\n        boolean done = iterator1.isDone() && iterator2.isDone();\n        while (!done) {\n            if (iterator1.isDone() != iterator2.isDone()) {\n                return false;\n            }\n            int seg1 = iterator1.currentSegment(d1);\n            int seg2 = iterator2.currentSegment(d2);\n            if (seg1 != seg2) {\n                return false;\n            }\n            if (!Arrays.equals(d1, d2)) {\n                return false;\n            }\n            iterator1.next();\n            iterator2.next();\n            done = iterator1.isDone() && iterator2.isDone();\n        }\n        return true;\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 105,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jfree.chart.util.junit.ShapeUtilitiesTests::testEqualGeneralPaths"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.7089329578350716,
+  "mean_entropy": -0.010688567601830177
+}

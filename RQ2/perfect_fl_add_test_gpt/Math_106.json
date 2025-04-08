@@ -1,0 +1,31 @@
+{
+  "patch": "\n    public Fraction parse(String source, ParsePosition pos) {\n        // try to parse improper fraction\n        Fraction ret = super.parse(source, pos);\n        if (ret != null) {\n            return ret;\n        }\n        \n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse whole\n        Number whole = getWholeFormat().parse(source, pos);\n        if (whole == null) {\n            // invalid integer number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n        \n        // parse numerator\n        Number num = getNumeratorFormat().parse(source, pos);\n        if (num == null) {\n            // invalid integer number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        // minus signs should be leading, invalid expression\n        if (num.intValue() < 0) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse '/'\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        switch (c) {\n            case 0:\n                // no '/'\n                // return num as a fraction\n                return new Fraction(num.intValue(), 1);\n            case '/':\n                // found '/', continue parsing denominator\n                break;\n            default:\n                // invalid '/'\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse denominator\n        Number den = getDenominatorFormat().parse(source, pos);\n        if (den == null) {\n            // invalid integer number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n        \n        // minus signs must be leading, invalid\n        if (den.intValue() < 0) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int w = whole.intValue();\n        int n = num.intValue();\n        int d = den.intValue();\n        return new Fraction(((Math.abs(w) * d) + n) * MathUtils.sign(w), d);\n    }\n",
+  "index": 7,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 1,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.apache.commons.math.fraction.FractionFormatTest::testParseProperInvalidMinus"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -7.665576010153009,
+  "mean_entropy": -0.014518136382865547,
+  "test_for_prompt": "Math_106_n17.txt",
+  "pass_FIB_num": 11,
+  "pass_FIB": [
+    "Math_106_n17.txt",
+    "Math_106_n8.txt",
+    "Math_106_n24.txt",
+    "Math_106_n38.txt",
+    "Math_106_n7.txt",
+    "Math_106_n43.txt",
+    "Math_106_n30.txt",
+    "Math_106_n18.txt",
+    "Math_106_n34.txt",
+    "Math_106_n2.txt",
+    "Math_106_n33.txt"
+  ]
+}

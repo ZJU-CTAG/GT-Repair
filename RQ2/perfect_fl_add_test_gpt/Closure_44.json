@@ -1,0 +1,19 @@
+{
+  "patch": "\nvoid add(String newcode) {\n    maybeEndStatement();\n\n    if (newcode.length() == 0) {\n      return;\n    }\n\n    char c = newcode.charAt(0);\n    if ((isWordChar(c) || c == '\\\\') &&\n        isWordChar(getLastChar())) {\n      // need space to separate. This is not pretty printing.\n      // For example: \"return foo;\"\n      append(\" \");\n      // Do not allow a forward slash to appear after a DIV.\n      // For example,\n      // REGEXP DIV REGEXP\n      // is valid and should print like\n      // / // / /\n    } else if (c == '/' && getLastChar() == '/') {\n      append(\" \");\n    }\n\n    append(newcode);\n}\n",
+  "index": 0,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 133,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.CodePrinterTest::testIssue620"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -3.2996007099113984,
+  "mean_entropy": -0.020883548796907583,
+  "test_for_prompt": "Closure_44_n22.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}

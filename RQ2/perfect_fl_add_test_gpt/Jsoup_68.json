@@ -1,0 +1,19 @@
+{
+  "patch": "\nprivate boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {\n    int bottom = stack.size() - 1;\n    int top = Math.max(0, bottom - MaxScopeSearchDepth);\n    \n    for (int pos = bottom; pos >= top; pos--) {\n        final String elName = stack.get(pos).nodeName();\n        if (inSorted(elName, targetNames))\n            return true;\n        if (inSorted(elName, baseTypes))\n            return false;\n        if (extraTypes != null && inSorted(elName, extraTypes))\n            return false;\n    }\n    return false;\n}\n",
+  "index": 10,
+  "validation": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 22,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "org.jsoup.parser.HtmlParserTest::testHandlesDeepSpans"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -7.151829238405173,
+  "mean_entropy": -0.053371859988098305,
+  "test_for_prompt": "Jsoup_68_n8.txt",
+  "pass_FIB_num": 0,
+  "pass_FIB": []
+}
