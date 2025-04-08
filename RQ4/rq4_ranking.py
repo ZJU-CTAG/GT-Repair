@@ -47,7 +47,7 @@ if __name__ == '__main__':
     elif args.eval == 'lowerbound':
         directory = 'RQ4_lowerbound_rank'
         rank_method = ['mean_entropy']
-        with open('RQ4_irfl_previous_validation.json', 'r') as f:
+        with open('RQ4_lowerbound_previous_validation.json', 'r') as f:
             previous_data = json.load(f)
     
 
