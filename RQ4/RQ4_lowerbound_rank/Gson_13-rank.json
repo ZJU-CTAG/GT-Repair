@@ -1,0 +1,566 @@
+{
+  "Gson_13_gson/src/main/java/com/google/gson/stream/JsonReader.java_641_742": {
+    "patches": [
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 82,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.0068992491418203,
+        "mean_entropy": -0.003830444903365376,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 38,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.061204325958201,
+        "mean_entropy": -0.003899623345169683,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 45,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.061204325958201,
+        "mean_entropy": -0.003899623345169683,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 79,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.0784404371897285,
+        "mean_entropy": -0.003926582190293021,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 73,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.131697475762146,
+        "mean_entropy": -0.003989423536002734,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 3,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.192309869767754,
+        "mean_entropy": -0.004066636776774209,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2169245558437565,
+        "mean_entropy": -0.004097993064769117,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 60,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2169245558437565,
+        "mean_entropy": -0.004097993064769117,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 1,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2433991026896827,
+        "mean_entropy": -0.0041369886513899015,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 10,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2433991026896827,
+        "mean_entropy": -0.0041369886513899015,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 26,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2531592546100874,
+        "mean_entropy": -0.004144151916700748,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 30,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.2531592546100874,
+        "mean_entropy": -0.004144151916700748,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 62,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.3487589330324323,
+        "mean_entropy": -0.004271376190092388,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n        if (p + i == l) {\n            if (i == buffer.length) {\n                // Though this looks like a well-formed number, it's too long to continue reading. Give up\n                // and let the application handle this as an unquoted literal.\n                return PEEKED_NONE;\n            }\n            if (!fillBuffer(i + 1)) {\n                break;\n            }\n            p = pos;\n            l = limit;\n        }\n\n        char c = buffer[p + i];\n        switch (c) {\n            case '-':\n                if (last == NUMBER_CHAR_NONE) {\n                    negative = true;\n                    last = NUMBER_CHAR_SIGN;\n                    continue;\n                } else if (last == NUMBER_CHAR_EXP_E) {\n                    last = NUMBER_CHAR_EXP_SIGN;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case '+':\n                if (last == NUMBER_CHAR_EXP_E) {\n                    last = NUMBER_CHAR_EXP_SIGN;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case 'e':\n            case 'E':\n                if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n                    last = NUMBER_CHAR_EXP_E;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case '.':\n                if (last == NUMBER_CHAR_DIGIT) {\n                    last = NUMBER_CHAR_DECIMAL;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            default:\n                if (c < '0' || c > '9') {\n                    if (!isLiteral(c)) {\n                        break charactersOfNumber;\n                    }\n                    return PEEKED_NONE;\n                }\n                if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n                    value = -(c - '0');\n                    last = NUMBER_CHAR_DIGIT;\n                } else if (last == NUMBER_CHAR_DIGIT) {\n                    if (value == 0) {\n                        return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n                    }\n                    long newValue = value * 10 - (c - '0');\n                    fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n                            || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n                    value = newValue;\n                } else if (last == NUMBER_CHAR_DECIMAL) {\n                    last = NUMBER_CHAR_FRACTION_DIGIT;\n                } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n                    last = NUMBER_CHAR_EXP_DIGIT;\n                }\n        }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n        peekedLong = negative ? value : -value;\n        pos += i;\n        return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n            || last == NUMBER_CHAR_EXP_DIGIT) {\n        peekedNumberLength = i;\n        return peeked = PEEKED_NUMBER;\n    } else {\n        return PEEKED_NONE;\n    }\n}\n",
+        "index": 64,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.6713455413359783,
+        "mean_entropy": -0.004694815270250612,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n        if (p + i == l) {\n            if (i == buffer.length) {\n                // Though this looks like a well-formed number, it's too long to continue reading. Give up\n                // and let the application handle this as an unquoted literal.\n                return PEEKED_NONE;\n            }\n            if (!fillBuffer(i + 1)) {\n                break;\n            }\n            p = pos;\n            l = limit;\n        }\n\n        char c = buffer[p + i];\n        switch (c) {\n            case '-':\n                if (last == NUMBER_CHAR_NONE) {\n                    negative = true;\n                    last = NUMBER_CHAR_SIGN;\n                    continue;\n                } else if (last == NUMBER_CHAR_EXP_E) {\n                    last = NUMBER_CHAR_EXP_SIGN;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case '+':\n                if (last == NUMBER_CHAR_EXP_E) {\n                    last = NUMBER_CHAR_EXP_SIGN;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case 'e':\n            case 'E':\n                if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n                    last = NUMBER_CHAR_EXP_E;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            case '.':\n                if (last == NUMBER_CHAR_DIGIT) {\n                    last = NUMBER_CHAR_DECIMAL;\n                    continue;\n                }\n                return PEEKED_NONE;\n\n            default:\n                if (c < '0' || c > '9') {\n                    if (!isLiteral(c)) {\n                        break charactersOfNumber;\n                    }\n                    return PEEKED_NONE;\n                }\n                if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n                    value = -(c - '0');\n                    last = NUMBER_CHAR_DIGIT;\n                } else if (last == NUMBER_CHAR_DIGIT) {\n                    if (value == 0) {\n                        return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n                    }\n                    long newValue = value * 10 - (c - '0');\n                    fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n                            || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n                    value = newValue;\n                } else if (last == NUMBER_CHAR_DECIMAL) {\n                    last = NUMBER_CHAR_FRACTION_DIGIT;\n                } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n                    last = NUMBER_CHAR_EXP_DIGIT;\n                }\n        }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n        peekedLong = negative ? value : -value;\n        pos += i;\n        return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n            || last == NUMBER_CHAR_EXP_DIGIT) {\n        peekedNumberLength = i;\n        return peeked = PEEKED_NUMBER;\n    } else {\n        return PEEKED_NONE;\n    }\n}\n",
+        "index": 68,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.6713455413359783,
+        "mean_entropy": -0.004694815270250612,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0;\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n        case '-':\n          if (last == NUMBER_CHAR_NONE) {\n            negative = true;\n            last = NUMBER_CHAR_SIGN;\n            continue;\n          } else if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '+':\n          if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case 'e':\n        case 'E':\n          if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n            last = NUMBER_CHAR_EXP_E;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '.':\n          if (last == NUMBER_CHAR_DIGIT) {\n            last = NUMBER_CHAR_DECIMAL;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        default:\n          if (c < '0' || c > '9') {\n            if (!isLiteral(c)) {\n              break charactersOfNumber;\n            }\n            return PEEKED_NONE;\n          }\n          if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n            value = -(c - '0');\n            last = NUMBER_CHAR_DIGIT;\n          } else if (last == NUMBER_CHAR_DIGIT) {\n            if (value == 0) {\n              return PEEKED_NONE;\n            }\n            long newValue = value * 10 - (c - '0');\n            fitsInLong &= value > MIN_INCOMPLETE_INTEGER || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n            value = newValue;\n          } else if (last == NUMBER_CHAR_DECIMAL) {\n            last = NUMBER_CHAR_FRACTION_DIGIT;\n          } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n            last = NUMBER_CHAR_EXP_DIGIT;\n          }\n      }\n    }\n\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n}\n",
+        "index": 69,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.282454666562268,
+        "mean_entropy": -0.012417473263211796,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; \n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n        case '-':\n          if (last == NUMBER_CHAR_NONE) {\n            negative = true;\n            last = NUMBER_CHAR_SIGN;\n            continue;\n          } else if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '+':\n          if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case 'e':\n        case 'E':\n          if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n            last = NUMBER_CHAR_EXP_E;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '.':\n          if (last == NUMBER_CHAR_DIGIT) {\n            last = NUMBER_CHAR_DECIMAL;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        default:\n          if (c < '0' || c > '9') {\n            if (!isLiteral(c)) {\n              break charactersOfNumber;\n            }\n            return PEEKED_NONE;\n          }\n          if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n            value = -(c - '0');\n            last = NUMBER_CHAR_DIGIT;\n          } else if (last == NUMBER_CHAR_DIGIT) {\n            if (value == 0) {\n              return PEEKED_NONE;\n            }\n            long newValue = value * 10 - (c - '0');\n            fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n                || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n            value = newValue;\n          } else if (last == NUMBER_CHAR_DECIMAL) {\n            last = NUMBER_CHAR_FRACTION_DIGIT;\n          } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n            last = NUMBER_CHAR_EXP_DIGIT;\n          }\n      }\n    }\n\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n}\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.585445137997215,
+        "mean_entropy": -0.012833251327350097,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0;\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n        case '-':\n          if (last == NUMBER_CHAR_NONE) {\n            negative = true;\n            last = NUMBER_CHAR_SIGN;\n            continue;\n          } else if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '+':\n          if (last == NUMBER_CHAR_EXP_E) {\n            last = NUMBER_CHAR_EXP_SIGN;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case 'e':\n        case 'E':\n          if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n            last = NUMBER_CHAR_EXP_E;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        case '.':\n          if (last == NUMBER_CHAR_DIGIT) {\n            last = NUMBER_CHAR_DECIMAL;\n            continue;\n          }\n          return PEEKED_NONE;\n\n        default:\n          if (c < '0' || c > '9') {\n            if (!isLiteral(c)) {\n              break charactersOfNumber;\n            }\n            return PEEKED_NONE;\n          }\n          if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n            value = -(c - '0');\n            last = NUMBER_CHAR_DIGIT;\n          } else if (last == NUMBER_CHAR_DIGIT) {\n            if (value == 0 && !negative) {\n              return PEEKED_NONE;\n            }\n            long newValue = value * 10 - (c - '0');\n            fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n                || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n            value = newValue;\n          } else if (last == NUMBER_CHAR_DECIMAL) {\n            last = NUMBER_CHAR_FRACTION_DIGIT;\n          } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n            last = NUMBER_CHAR_EXP_DIGIT;\n          }\n      }\n    }\n\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || !negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n}\n",
+        "index": 93,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.924633062188542,
+        "mean_entropy": -0.013260970374722946,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n//The fixed function with the proposed change:\n  private int peekNumber() throws IOException {\n    // Like nextNonWhitespace, this uses locals 'p' and 'l' to save inner-loop field access.\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          // Though this looks like a well-formed number, it's too long to continue reading. Give up\n          // and let the application handle this as an unquoted literal.\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0) {\n            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != 0 || false == negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n  }\n",
+        "index": 65,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.369989740566561,
+        "mean_entropy": -0.014319886323131688,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\nprivate int peekNumber() throws IOException {\n    char[] buffer = this.buffer;\n    int p = pos;\n    int l = limit;\n\n    long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.\n    boolean negative = false;\n    boolean fitsInLong = true;\n    int last = NUMBER_CHAR_NONE;\n\n    int i = 0;\n\n    charactersOfNumber:\n    for (; true; i++) {\n      if (p + i == l) {\n        if (i == buffer.length) {\n          return PEEKED_NONE;\n        }\n        if (!fillBuffer(i + 1)) {\n          break;\n        }\n        p = pos;\n        l = limit;\n      }\n\n      char c = buffer[p + i];\n      switch (c) {\n      case '-':\n        if (last == NUMBER_CHAR_NONE) {\n          negative = true;\n          last = NUMBER_CHAR_SIGN;\n          continue;\n        } else if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '+':\n        if (last == NUMBER_CHAR_EXP_E) {\n          last = NUMBER_CHAR_EXP_SIGN;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case 'e':\n      case 'E':\n        if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {\n          last = NUMBER_CHAR_EXP_E;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      case '.':\n        if (last == NUMBER_CHAR_DIGIT) {\n          last = NUMBER_CHAR_DECIMAL;\n          continue;\n        }\n        return PEEKED_NONE;\n\n      default:\n        if (c < '0' || c > '9') {\n          if (!isLiteral(c)) {\n            break charactersOfNumber;\n          }\n          return PEEKED_NONE;\n        }\n        if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {\n          value = -(c - '0');\n          last = NUMBER_CHAR_DIGIT;\n        } else if (last == NUMBER_CHAR_DIGIT) {\n          if (value == 0 && !negative) {\n            return PEEKED_NONE;\n          }\n          long newValue = value * 10 - (c - '0');\n          fitsInLong &= value > MIN_INCOMPLETE_INTEGER\n              || (value == MIN_INCOMPLETE_INTEGER && newValue < value);\n          value = newValue;\n        } else if (last == NUMBER_CHAR_DECIMAL) {\n          last = NUMBER_CHAR_FRACTION_DIGIT;\n        } else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {\n          last = NUMBER_CHAR_EXP_DIGIT;\n        }\n      }\n    }\n\n    if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value!=0 || false==negative) && (value != Long.MIN_VALUE || negative)) {\n      peekedLong = negative ? value : -value;\n      pos += i;\n      return peeked = PEEKED_LONG;\n    } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT\n        || last == NUMBER_CHAR_EXP_DIGIT) {\n      peekedNumberLength = i;\n      return peeked = PEEKED_NUMBER;\n    } else {\n      return PEEKED_NONE;\n    }\n}\n",
+        "index": 20,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 75,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.gson.stream.JsonReaderTest::testNegativeZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.608128658721387,
+        "mean_entropy": -0.016995795986414916,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Gson_13_n30.txt",
+          "Gson_13_n28.txt",
+          "Gson_13_n1.txt",
+          "Gson_13_n8.txt",
+          "Gson_13_n37.txt",
+          "Gson_13_n31.txt",
+          "Gson_13_n2.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

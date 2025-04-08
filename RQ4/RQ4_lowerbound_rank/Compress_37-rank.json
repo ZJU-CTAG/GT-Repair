@@ -1,0 +1,406 @@
+{
+  "Compress_37_src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java_452_502": {
+    "patches": [
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen > 0) {\n                                    rest = new byte[restLen];\n                                    final int got = IOUtils.readFully(i, rest);\n                                    if (got != restLen) {\n                                        throw new IOException(\"Failed to read \"\n                                                              + \"Paxheader. Expected \"\n                                                              + restLen\n                                                              + \" bytes, read \"\n                                                              + got);\n                                    }\n                                    // Drop trailing NL\n                                    final String value = new String(rest, 0,\n                                                              restLen - 1, CharsetNames.UTF_8);\n                                    headers.put(keyword, value);\n                                }\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') {\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 34,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.56605445114938,
+        "mean_entropy": -0.01896254248408366,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else if (restLen > 1) { // Check if restLen is positive\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // Check if ch is less than '0'\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 76,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.342287530494064,
+        "mean_entropy": -0.0252250915377904,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen > 0) {\n                                    rest = new byte[restLen];\n                                    final int got = IOUtils.readFully(i, rest);\n                                    if (got != restLen) {\n                                        throw new IOException(\"Failed to read \"\n                                                              + \"Paxheader. Expected \"\n                                                              + restLen\n                                                              + \" bytes, read \"\n                                                              + got);\n                                    }\n                                    // Drop trailing NL\n                                    final String value = new String(rest, 0,\n                                                              restLen - 1, CharsetNames.UTF_8);\n                                    headers.put(keyword, value);\n                                }\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // Check for newline\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 42,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.241680659907441,
+        "mean_entropy": -0.02535069470274119,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen <= 0) {\n                                    rest = new byte[0];\n                                } else {\n                                    rest = new byte[restLen];\n                                    final int got = IOUtils.readFully(i, rest);\n                                    if (got != restLen) {\n                                        throw new IOException(\"Failed to read \"\n                                                              + \"Paxheader. Expected \"\n                                                              + restLen\n                                                              + \" bytes, read \"\n                                                              + got);\n                                    }\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          rest.length > 0 ? restLen - 1 : 0, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') {\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 9,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.837918657896747,
+        "mean_entropy": -0.028185520614039873,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nMap<String, String> parsePaxHeaders(final InputStream i) throws IOException {\n    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n    // Format is \"length keyword=value\\n\";\n    while (true) { // get length\n        int ch;\n        int len = 0;\n        int read = 0;\n        while ((ch = i.read()) != -1) {\n            read++;\n            if (ch == ' ') {\n                // Get keyword\n                final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                while ((ch = i.read()) != -1) {\n                    read++;\n                    if (ch == '=') { // end of keyword\n                        final String keyword = coll.toString(CharsetNames.UTF_8);\n                        // Get rest of entry\n                        final int restLen = len - read;\n                        if (restLen == 1) { // only NL\n                            headers.remove(keyword);\n                        } else {\n                            if (restLen <= 0) {\n                                break;\n                            }\n                            final byte[] rest = new byte[restLen];\n                            final int got = IOUtils.readFully(i, rest);\n                            if (got != restLen) {\n                                throw new IOException(\"Failed to read \" + \"Paxheader. Expected \" + restLen + \" bytes, read \" + got);\n                            }\n                            // Drop trailing NL\n                            final String value = new String(rest, 0, restLen - 1, CharsetNames.UTF_8);\n                            headers.put(keyword, value);\n                        }\n                        break;\n                    }\n                    coll.write((byte) ch);\n                }\n                break; // Processed single header\n            }\n            len *= 10;\n            if (ch < '0') {\n                break;\n            }\n            len += ch - '0';\n        }\n        if (ch == -1) { // EOF\n            break;\n        }\n    }\n    return headers;\n}\n",
+        "index": 43,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.126324457570538,
+        "mean_entropy": -0.02823940217657497,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen <= 0) {\n                                    break;\n                                } else {\n                                    rest = new byte[restLen];\n                                    final int got = IOUtils.readFully(i, rest);\n                                    if (got != restLen) {\n                                        throw new IOException(\"Failed to read \"\n                                                              + \"Paxheader. Expected \"\n                                                              + restLen\n                                                              + \" bytes, read \"\n                                                              + got);\n                                    }\n                                    // Drop trailing NL\n                                    final String value = new String(rest, 0,\n                                                              restLen - 1, CharsetNames.UTF_8);\n                                    headers.put(keyword, value);\n                                }\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                len *= 10;\n                if (ch < '0') {\n                    break;\n                }\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 49,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.719550484125845,
+        "mean_entropy": -0.02886588789193558,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest = new byte[restLen >= 0 ? restLen : 0]; // Fix for NegativeArraySizeException\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                len *= 10;\n                len += ch - '0';\n                if (ch < '0') { // Fix for empty line at the end of headers\n                    break;\n                }\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 18,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -13.396508693100586,
+        "mean_entropy": -0.03251579779878783,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while (true) { // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while ((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' ') {\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while ((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '=') { // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen <= 0) {\n                                    break;\n                                } else {\n                                    rest = new byte[restLen];\n                                }\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') {\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1) { // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 45,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -13.338450574014262,
+        "mean_entropy": -0.03253280627808357,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen <= 1) { // only NL or negative length\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // Break the loop if ch is less than '0'\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 14,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -13.691490654851808,
+        "mean_entropy": -0.03431451291942809,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nMap<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n    // Format is \"length keyword=value\\n\";\n    while(true){ // get length\n        int ch;\n        int len = 0;\n        int read = 0;\n        while((ch = i.read()) != -1) {\n            read++;\n            if (ch == ' '){\n                // Get keyword\n                final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                while((ch = i.read()) != -1) {\n                    read++;\n                    if (ch == '='){ // end of keyword\n                        final String keyword = coll.toString(CharsetNames.UTF_8);\n                        // Get rest of entry\n                        final int restLen = len - read;\n                        if (restLen == 1) { // only NL\n                            headers.remove(keyword);\n                        } else if (restLen > 1) { // Check if restLen is positive\n                            final byte[] rest = new byte[restLen];\n                            final int got = IOUtils.readFully(i, rest);\n                            if (got != restLen) {\n                                throw new IOException(\"Failed to read \"\n                                                      + \"Paxheader. Expected \"\n                                                      + restLen\n                                                      + \" bytes, read \"\n                                                      + got);\n                            }\n                            // Drop trailing NL\n                            final String value = new String(rest, 0,\n                                                      restLen - 1, CharsetNames.UTF_8);\n                            headers.put(keyword, value);\n                        }\n                        break;\n                    }\n                    coll.write((byte) ch);\n                }\n                break; // Processed single header\n            }\n            len *= 10;\n            if (ch < '0') { // Check if ch is less than '0'\n                break;\n            }\n            len += ch - '0';\n        }\n        if (ch == -1){ // EOF\n            break;\n        }\n    }\n    return headers;\n}\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.043753787853449,
+        "mean_entropy": -0.03442096516630747,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest = new byte[Math.max(0, restLen)]; // Fix for negative length\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // Check for invalid character\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 35,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.555321340349217,
+        "mean_entropy": -0.03638830335087304,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen <= 1) { // only NL or empty line\n                                if (restLen == 1) {\n                                    headers.remove(keyword);\n                                }\n                                break;\n                            } else {\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // End of headers\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 87,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -15.349772002701462,
+        "mean_entropy": -0.037714427525065014,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while (true) { // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while ((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' ') {\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while ((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '=') { // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                if (restLen <= 0) { // Check if restLen is non-negative\n                                    break; // Exit loop if restLen is non-negative\n                                }\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                            + \"Paxheader. Expected \"\n                                            + restLen\n                                            + \" bytes, read \"\n                                            + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                        restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                len *= 10;\n                if (ch < '0') { // Check if ch is less than '0'\n                    break; // Exit loop if ch is less than '0'\n                }\n                len += ch - '0';\n            }\n            if (ch == -1) { // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 92,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -17.30816334614434,
+        "mean_entropy": -0.039070346153824695,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen <= 1) { // only NL or less\n                                if (restLen == 1) {\n                                    i.read(); // Consume the newline character\n                                }\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') { // Handle negative length\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 79,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -16.362325731002134,
+        "mean_entropy": -0.03952252592029501,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen <= 1) { // only NL or negative length\n                                if (restLen == 1) {\n                                    headers.remove(keyword);\n                                }\n                                break;\n                            } else {\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                len *= 10;\n                if (ch < '0') { // Check for newline or invalid character\n                    break;\n                }\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 23,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -16.317229645272146,
+        "mean_entropy": -0.03979812108602963,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen <= 1) { // check for empty line or only NL\n                                if (restLen == 1) {\n                                    i.read(); // consume the newline character\n                                }\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                len *= 10;\n                if (ch < '0') {\n                    break; // Stop if character is not a digit\n                }\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 89,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -19.15748499757509,
+        "mean_entropy": -0.045613059518035924,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else {\n                                final byte[] rest;\n                                if (restLen > 0) {\n                                    rest = new byte[restLen];\n                                    final int got = IOUtils.readFully(i, rest);\n                                    if (got != restLen) {\n                                        throw new IOException(\"Failed to read \"\n                                                              + \"Paxheader. Expected \"\n                                                              + restLen\n                                                              + \" bytes, read \"\n                                                              + got);\n                                    }\n                                    // Drop trailing NL\n                                    final String value = new String(rest, 0,\n                                                              restLen - 1, CharsetNames.UTF_8);\n                                    headers.put(keyword, value);\n                                } else {\n                                    i.read(); // Read the newline character and discard it\n                                }\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0') {\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 19,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -19.086618724677308,
+        "mean_entropy": -0.04588129501124353,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    Map<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n        final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n        // Format is \"length keyword=value\\n\";\n        while(true){ // get length\n            int ch;\n            int len = 0;\n            int read = 0;\n            while((ch = i.read()) != -1) {\n                read++;\n                if (ch == ' '){\n                    // Get keyword\n                    final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                    while((ch = i.read()) != -1) {\n                        read++;\n                        if (ch == '='){ // end of keyword\n                            final String keyword = coll.toString(CharsetNames.UTF_8);\n                            // Get rest of entry\n                            final int restLen = len - read;\n                            if (restLen == 1) { // only NL\n                                headers.remove(keyword);\n                            } else if (restLen > 0) { // Add a check for restLen > 0\n                                final byte[] rest = new byte[restLen];\n                                final int got = IOUtils.readFully(i, rest);\n                                if (got != restLen) {\n                                    throw new IOException(\"Failed to read \"\n                                                          + \"Paxheader. Expected \"\n                                                          + restLen\n                                                          + \" bytes, read \"\n                                                          + got);\n                                }\n                                // Drop trailing NL\n                                final String value = new String(rest, 0,\n                                                          restLen - 1, CharsetNames.UTF_8);\n                                headers.put(keyword, value);\n                            }\n                            break;\n                        }\n                        coll.write((byte) ch);\n                    }\n                    break; // Processed single header\n                }\n                if (ch < '0'){ // Add a check to handle negative length\n                    break;\n                }\n                len *= 10;\n                len += ch - '0';\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n        }\n        return headers;\n    }\n",
+        "index": 85,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -19.347551796096994,
+        "mean_entropy": -0.047074335270308985,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nMap<String, String> parsePaxHeaders(final InputStream i) throws IOException {\n    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n    // Format is \"length keyword=value\\n\";\n    while(true){ // get length\n        int ch;\n        int len = 0;\n        int read = 0;\n        while((ch = i.read()) != -1) {\n            read++;\n            if (ch == ' '){\n                // Get keyword\n                final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                while((ch = i.read()) != -1) {\n                    read++;\n                    if (ch == '='){ // end of keyword\n                        final String keyword = coll.toString(CharsetNames.UTF_8);\n                        // Get rest of entry\n                        final int restLen = len - read;\n                        if (restLen == 1) { // only NL\n                            headers.remove(keyword);\n                        } else {\n                            if (restLen <= 0) { // Check if restLen is non-positive\n                                throw new IOException(\"Invalid length for rest of entry\");\n                            }\n                            final byte[] rest = new byte[restLen];\n                            final int got = IOUtils.readFully(i, rest);\n                            if (got != restLen) {\n                                throw new IOException(\"Failed to read \"\n                                                      + \"Paxheader. Expected \"\n                                                      + restLen\n                                                      + \" bytes, read \"\n                                                      + got);\n                            }\n                            // Drop trailing NL\n                            final String value = new String(rest, 0, restLen - 1, CharsetNames.UTF_8);\n                            headers.put(keyword, value);\n                        }\n                        break;\n                    }\n                    coll.write((byte) ch);\n                }\n                break; // Processed single header\n            }\n            if (ch < '0') { // Break loop if ch is less than '0'\n                break;\n            }\n            len *= 10;\n            len += ch - '0';\n        }\n        if (ch == -1){ // EOF\n            break;\n        }\n    }\n    return headers;\n}\n",
+        "index": 12,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -26.03923716866741,
+        "mean_entropy": -0.06141329520912125,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nMap<String, String> parsePaxHeaders(final InputStream i)\n        throws IOException {\n    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);\n    // Format is \"length keyword=value\\n\";\n    while(true){ // get length\n        int ch;\n        int len = 0;\n        int read = 0;\n        while((ch = i.read()) != -1) {\n            read++;\n            if (ch == ' '){\n                // Get keyword\n                final ByteArrayOutputStream coll = new ByteArrayOutputStream();\n                while((ch = i.read()) != -1) {\n                    read++;\n                    if (ch == '='){ // end of keyword\n                        final String keyword = coll.toString(CharsetNames.UTF_8);\n                        // Get rest of entry\n                        final int restLen = len - read;\n                        if (restLen <= 1) { // only NL or negative length\n                            if (restLen == 1) {\n                                headers.remove(keyword);\n                            }\n                            break;\n                        } else {\n                            final byte[] rest = new byte[restLen];\n                            final int got = IOUtils.readFully(i, rest);\n                            if (got != restLen) {\n                                throw new IOException(\"Failed to read \"\n                                                      + \"Paxheader. Expected \"\n                                                      + restLen\n                                                      + \" bytes, read \"\n                                                      + got);\n                            }\n                            // Drop trailing NL\n                            final String value = new String(rest, 0,\n                                                      restLen - 1, CharsetNames.UTF_8);\n                            headers.put(keyword, value);\n                        }\n                        break;\n                    }\n                    coll.write((byte) ch);\n                }\n                break; // Processed single header\n            }\n            if (ch == -1){ // EOF\n                break;\n            }\n            if (ch < '0') { // Handle special cases like newline or negative values\n                break;\n            }\n            len *= 10;\n            len += ch - '0';\n        }\n        if (ch == -1){ // EOF\n            break;\n        }\n    }\n    return headers;\n}\n",
+        "index": 88,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 42,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::survivesBlankLinesInPaxHeader"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -29.657194042674696,
+        "mean_entropy": -0.06961782639125516,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

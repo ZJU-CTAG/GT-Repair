@@ -1,0 +1,406 @@
+{
+  "Closure_77_src/com/google/javascript/jscomp/CodeGenerator.java_955_1025": {
+    "patches": [
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Escape null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 7,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.648387616644607,
+        "mean_entropy": -0.007473291988174609,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.687236925246422,
+        "mean_entropy": -0.0075968183553426615,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Escape null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 70,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.754329105672453,
+        "mean_entropy": -0.007643615925518414,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 2,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.796735112977613,
+        "mean_entropy": -0.007774287055069065,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 77,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.844017787235439,
+        "mean_entropy": -0.007850920238631182,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.96568818378076,
+        "mean_entropy": -0.008048116991540939,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Handle null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 86,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.265239232802743,
+        "mean_entropy": -0.008465014843734313,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Handle null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 94,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.265239232802743,
+        "mean_entropy": -0.008465014843734313,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Handle null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 56,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.3196319961708785,
+        "mean_entropy": -0.008552463016351895,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Fix for translating null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 92,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.740545258019605,
+        "mean_entropy": -0.009199591759646802,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': // Handle null character\n          sb.append(\"\\\\0\");\n          break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 28,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.264768533592465,
+        "mean_entropy": -0.010039693162808437,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Fix for null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 80,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.3308869737306,
+        "mean_entropy": -0.010161937357513001,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': // Escape null character\n          sb.append(\"\\\\0\");\n          break;\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 32,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.518133595527258,
+        "mean_entropy": -0.010445726915909068,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Fix to escape null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 53,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.662511676173128,
+        "mean_entropy": -0.010677102045149243,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Escaping null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          //  character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 10,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.653896426004687,
+        "mean_entropy": -0.010680411598723414,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       \n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          final String END_SCRIPT = \"/script\";\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0':\n          sb.append(\"\\\\0\");\n          break;\n        default:\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 12,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.493377166402855,
+        "mean_entropy": -0.02223173128475181,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape javascript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       \n          // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0,\n                              END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,\n                                     START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Added case for null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          // character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest.  Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some js parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 96,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.858871035837472,
+        "mean_entropy": -0.023812293326662615,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n/** Helper to escape javascript string as well as regular expression */\nstatic String strEscape(String s, char quote,\n                        String doublequoteEscape,\n                        String singlequoteEscape,\n                        String backslashEscape,\n                        CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n        char c = s.charAt(i);\n        switch (c) {\n            case '\\n': sb.append(\"\\\\n\"); break;\n            case '\\r': sb.append(\"\\\\r\"); break;\n            case '\\t': sb.append(\"\\\\t\"); break;\n            case '\\\\': sb.append(backslashEscape); break;\n            case '\\\"': sb.append(doublequoteEscape); break;\n            case '\\'': sb.append(singlequoteEscape); break;\n            case '>':\n                // Break --> into --\\> or ]]> into ]]\\>\n                if (i >= 2 &&\n                        ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n                                (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n                    sb.append(\"\\\\>\");\n                } else {\n                    sb.append(c);\n                }\n                break;\n            case '<':\n                // Break </script into <\\/script\n                final String END_SCRIPT = \"/script\";\n\n                // Break <!-- into <\\!--\n                final String START_COMMENT = \"!--\";\n\n                if (s.regionMatches(true, i + 1, END_SCRIPT, 0, END_SCRIPT.length())) {\n                    sb.append(\"<\\\\\");\n                } else if (s.regionMatches(false, i + 1, START_COMMENT, 0, START_COMMENT.length())) {\n                    sb.append(\"<\\\\\");\n                } else {\n                    sb.append(c);\n                }\n                break;\n            case '\\0':\n                sb.append(\"\\\\0\"); // Escape null character\n                break;\n            default:\n                // If we're given an outputCharsetEncoder, then check if the\n                //  character can be represented in this character set.\n                if (outputCharsetEncoder != null) {\n                    if (outputCharsetEncoder.canEncode(c)) {\n                        sb.append(c);\n                    } else {\n                        // Unicode-escape the character.\n                        appendHexJavaScriptRepresentation(sb, c);\n                    }\n                } else {\n                    // No charsetEncoder provided - pass straight latin characters\n                    // through, and escape the rest.  Doing the explicit character\n                    // check is measurably faster than using the CharsetEncoder.\n                    if (c > 0x1f && c <= 0x7f) {\n                        sb.append(c);\n                    } else {\n                        // Other characters can be misinterpreted by some js parsers,\n                        // or perhaps mangled by proxies along the way,\n                        // so we play it safe and unicode escape them.\n                        appendHexJavaScriptRepresentation(sb, c);\n                    }\n                }\n        }\n    }\n    sb.append(quote);\n    return sb.toString();\n}\n",
+        "index": 26,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -15.226983790585047,
+        "mean_entropy": -0.024599327609992,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n  /** Helper to escape JavaScript string as well as regular expression */\n  static String strEscape(String s, char quote,\n                          String doublequoteEscape,\n                          String singlequoteEscape,\n                          String backslashEscape,\n                          CharsetEncoder outputCharsetEncoder) {\n    StringBuilder sb = new StringBuilder(s.length() + 2);\n    sb.append(quote);\n    for (int i = 0; i < s.length(); i++) {\n      char c = s.charAt(i);\n      switch (c) {\n        case '\\n': sb.append(\"\\\\n\"); break;\n        case '\\r': sb.append(\"\\\\r\"); break;\n        case '\\t': sb.append(\"\\\\t\"); break;\n        case '\\\\': sb.append(backslashEscape); break;\n        case '\\\"': sb.append(doublequoteEscape); break;\n        case '\\'': sb.append(singlequoteEscape); break;\n        case '>':                       // Break --> into --\\> or ]]> into ]]\\>\n          if (i >= 2 &&\n              ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n               (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n            sb.append(\"\\\\>\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '<':\n          // Break </script into <\\/script\n          final String END_SCRIPT = \"/script\";\n\n          // Break <!-- into <\\!--\n          final String START_COMMENT = \"!--\";\n\n          if (s.regionMatches(true, i + 1, END_SCRIPT, 0, END_SCRIPT.length())) {\n            sb.append(\"<\\\\\");\n          } else if (s.regionMatches(false, i + 1, START_COMMENT, 0, START_COMMENT.length())) {\n            sb.append(\"<\\\\\");\n          } else {\n            sb.append(c);\n          }\n          break;\n        case '\\0': sb.append(\"\\\\0\"); break; // Correctly handle null character\n        default:\n          // If we're given an outputCharsetEncoder, then check if the\n          // character can be represented in this character set.\n          if (outputCharsetEncoder != null) {\n            if (outputCharsetEncoder.canEncode(c)) {\n              sb.append(c);\n            } else {\n              // Unicode-escape the character.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          } else {\n            // No charsetEncoder provided - pass straight latin characters\n            // through, and escape the rest. Doing the explicit character\n            // check is measurably faster than using the CharsetEncoder.\n            if (c > 0x1f && c <= 0x7f) {\n              sb.append(c);\n            } else {\n              // Other characters can be misinterpreted by some JS parsers,\n              // or perhaps mangled by proxies along the way,\n              // so we play it safe and Unicode escape them.\n              appendHexJavaScriptRepresentation(sb, c);\n            }\n          }\n      }\n    }\n    sb.append(quote);\n    return sb.toString();\n  }\n",
+        "index": 71,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -18.654495251946663,
+        "mean_entropy": -0.03008789556765591,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n/** Helper to escape JavaScript string as well as regular expression */\nstatic String strEscape(String s, char quote,\n                        String doublequoteEscape,\n                        String singlequoteEscape,\n                        String backslashEscape,\n                        CharsetEncoder outputCharsetEncoder) {\n  StringBuilder sb = new StringBuilder(s.length() + 2);\n  sb.append(quote);\n  for (int i = 0; i < s.length(); i++) {\n    char c = s.charAt(i);\n    switch (c) {\n      case '\\n':\n        sb.append(\"\\\\n\");\n        break;\n      case '\\r':\n        sb.append(\"\\\\r\");\n        break;\n      case '\\t':\n        sb.append(\"\\\\t\");\n        break;\n      case '\\\\':\n        sb.append(backslashEscape);\n        break;\n      case '\\\"':\n        sb.append(doublequoteEscape);\n        break;\n      case '\\'':\n        sb.append(singlequoteEscape);\n        break;\n      case '>':\n        if (i >= 2 &&\n            ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||\n             (s.charAt(i - 1) == ']' && s.charAt(i - 2) == ']'))) {\n          sb.append(\"\\\\>\");\n        } else {\n          sb.append(c);\n        }\n        break;\n      case '<':\n        final String END_SCRIPT = \"/script\";\n        final String START_COMMENT = \"!--\";\n\n        if (s.regionMatches(true, i + 1, END_SCRIPT, 0, END_SCRIPT.length())) {\n          sb.append(\"<\\\\\");\n        } else if (s.regionMatches(false, i + 1, START_COMMENT, 0, START_COMMENT.length())) {\n          sb.append(\"<\\\\\");\n        } else {\n          sb.append(c);\n        }\n        break;\n      case '\\0':\n        sb.append(\"\\\\0\");\n        break;\n      default:\n        if (outputCharsetEncoder != null) {\n          if (outputCharsetEncoder.canEncode(c)) {\n            sb.append(c);\n          } else {\n            appendHexJavaScriptRepresentation(sb, c);\n          }\n        } else {\n          if (c > 0x1f && c <= 0x7f) {\n            sb.append(c);\n          } else {\n            appendHexJavaScriptRepresentation(sb, c);\n          }\n        }\n    }\n  }\n  sb.append(quote);\n  return sb.toString();\n}\n",
+        "index": 79,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 122,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.google.javascript.jscomp.CodePrinterTest::testZero"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.442608376038638,
+        "mean_entropy": -0.030214661874557822,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      }
+    ]
+  }
+}

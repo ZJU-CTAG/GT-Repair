@@ -1,0 +1,500 @@
+{
+  "Lang_45_src/java/org/apache/commons/lang/WordUtils.java_585_642": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 98,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.546457545629621,
+        "mean_entropy": -0.0045070045055391516,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 99,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.546457545629621,
+        "mean_entropy": -0.0045070045055391516,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 2,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.785594089365329,
+        "mean_entropy": -0.004930255025425361,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 13,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.785594089365329,
+        "mean_entropy": -0.004930255025425361,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 74,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.899074344972399,
+        "mean_entropy": -0.005131105035349378,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 75,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.899074344972399,
+        "mean_entropy": -0.005131105035349378,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 88,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.0188716278826098,
+        "mean_entropy": -0.005343135624570991,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 94,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.0188716278826098,
+        "mean_entropy": -0.005343135624570991,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 20,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.075031307343708,
+        "mean_entropy": -0.005442533287333996,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 26,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.075031307343708,
+        "mean_entropy": -0.005442533287333996,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 47,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.1066026887155798,
+        "mean_entropy": -0.005498411838434654,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 16,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.5581443327946634,
+        "mean_entropy": -0.006297600589017103,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 41,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.884856371549408,
+        "mean_entropy": -0.0068758519850432,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 28,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.9511919436188303,
+        "mean_entropy": -0.0069932600772014695,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Abbreviates a string nicely.\n     * \n     * This method searches for the first space after the lower limit and abbreviates\n     * the String there. It will also append any String passed as a parameter\n     * to the end of the String. The upper limit can be specified to forcibly\n     * abbreviate a String.\n     * \n     * @param str         the string to be abbreviated. If null is passed, null is returned.\n     *                    If the empty String is passed, the empty string is returned.\n     * @param lower       the lower limit.\n     * @param upper       the upper limit; specify -1 if no limit is desired.\n     *                    If the upper limit is lower than the lower limit, it will be\n     *                    adjusted to be the same as the lower limit.\n     * @param appendToEnd String to be appended to the end of the abbreviated string.\n     *                    This is appended ONLY if the string was indeed abbreviated.\n     *                    The append does not count towards the lower or upper limits.\n     * @return the abbreviated String.\n     * @since 2.4\n     */\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        // initial parameter checks\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        // if the lower value is greater than the length of the string,\n        // set to the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        // if the upper value is -1 (i.e. no limit) or is greater\n        // than the length of the string, set to the length of the string\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        // if upper is less than lower, raise it to lower\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            // only if abbreviation has occurred do we append the appendToEnd value\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 86,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.028387053796871,
+        "mean_entropy": -0.007129888590790923,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return \"\";\n        }\n\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        \n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 69,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.946347289278261,
+        "mean_entropy": -0.03485240039157132,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return \"\";\n        }\n\n        // Adjust lower if it is greater than the length of the string\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        int index = StringUtils.indexOf(str, \" \", lower);\n        if (index == -1) {\n            result.append(str.substring(0, upper));\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else if (index > upper) {\n            result.append(str.substring(0, upper));\n            result.append(StringUtils.defaultString(appendToEnd));\n        } else {\n            result.append(str.substring(0, index));\n            result.append(StringUtils.defaultString(appendToEnd));\n        }\n        return result.toString();\n    }\n",
+        "index": 95,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.581762231836711,
+        "mean_entropy": -0.039594058809242605,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        \n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        if (lower < str.length()) {\n            int index = StringUtils.indexOf(str, \" \", lower);\n            if (index == -1 || index > upper) {\n                result.append(str.substring(0, upper));\n                if (upper != str.length()) {\n                    result.append(StringUtils.defaultString(appendToEnd));\n                }\n            } else {\n                result.append(str.substring(0, index));\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        } else {\n            result.append(str.substring(0, upper));\n            if (upper != str.length()) {\n                result.append(StringUtils.defaultString(appendToEnd));\n            }\n        }\n        return result.toString();\n    }\n",
+        "index": 64,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.550944330739204,
+        "mean_entropy": -0.046203777322956815,
+        "pass_FIB_num": 4,
+        "pass_FIB": [
+          "Lang_45_n31.txt",
+          "Lang_45_n26.txt",
+          "Lang_45_n47.txt",
+          "Lang_45_n25.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        if (lower >= upper) {\n            result.append(str.substring(0, upper));\n        } else {\n            int index = StringUtils.indexOf(str, \" \", lower);\n            if (index == -1 || index > upper) {\n                result.append(str.substring(0, upper));\n            } else {\n                result.append(str.substring(0, index));\n            }\n        }\n        result.append(StringUtils.defaultString(appendToEnd));\n        return result.toString();\n    }\n",
+        "index": 66,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.028762549998367,
+        "mean_entropy": -0.04868331334950664,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Lang_45_n26.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String abbreviate(String str, int lower, int upper, String appendToEnd) {\n        if (str == null) {\n            return null;\n        }\n        if (str.length() == 0) {\n            return StringUtils.EMPTY;\n        }\n\n        if (lower > str.length()) {\n            lower = str.length();\n        }\n        if (upper == -1 || upper > str.length()) {\n            upper = str.length();\n        }\n        if (upper < lower) {\n            upper = lower;\n        }\n\n        StringBuffer result = new StringBuffer();\n        if (lower < str.length()) {\n            int index = StringUtils.indexOf(str, \" \", lower);\n            if (index == -1 || index > upper) {\n                result.append(str.substring(0, upper));\n            } else {\n                result.append(str.substring(0, index));\n            }\n        } else {\n            result.append(str);\n        }\n        \n        result.append(StringUtils.defaultString(appendToEnd));\n        \n        return result.toString();\n    }\n",
+        "index": 87,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.WordUtilsTest::testAbbreviate"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -15.670737405416972,
+        "mean_entropy": -0.07681734022263222,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Lang_45_n26.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

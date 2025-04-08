@@ -1,0 +1,566 @@
+{
+  "Math_3_src/main/java/org/apache/commons/math3/util/MathArrays.java_797_872": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 61,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.309202139326497,
+        "mean_entropy": -0.006922036687518249,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0]; // Fallback to simple multiplication\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.782995307674813,
+        "mean_entropy": -0.007471570164954539,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0]; // Fall back to simple multiplication\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 57,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.1689888340702215,
+        "mean_entropy": -0.007970269811460234,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0]; // Fall back to simple multiplication\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHigh[0] + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHigh[0] - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 25,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.221855709283192,
+        "mean_entropy": -0.009415718004280564,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 38,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.828201104981481,
+        "mean_entropy": -0.009430080283166956,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 46,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.828201104981481,
+        "mean_entropy": -0.009430080283166956,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 48,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.931656452091812,
+        "mean_entropy": -0.00963214150799182,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 21,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.109966680406975,
+        "mean_entropy": -0.009980403672669873,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            // Fall back to simple multiplication\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 16,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.783372227625144,
+        "mean_entropy": -0.010043060938871152,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            // Fall back to simple multiplication if length is 1\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 6,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.648324345647156,
+        "mean_entropy": -0.01108759531493225,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n\n        final double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 3,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.336080897840695,
+        "mean_entropy": -0.011668657270424853,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] - aHigh * bHigh) - aLow * bHigh) - aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 53,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.94769786228946,
+        "mean_entropy": -0.011708066658050117,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        final double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 58,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.165948363824125,
+        "mean_entropy": -0.012019392522074318,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * Compute a linear combination accurately.\n     * This method computes the sum of the products\n     * <code>a<sub>i</sub> b<sub>i</sub></code> to high accuracy.\n     * It does so by using specific multiplication and addition algorithms to\n     * preserve accuracy and reduce cancellation effects.\n     * <br/>\n     * It is based on the 2005 paper\n     * <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.2.1547\">\n     * Accurate Sum and Dot Product</a> by Takeshi Ogita, Siegfried M. Rump,\n     * and Shin'ichi Oishi published in SIAM J. Sci. Comput.\n     *\n     * @param a Factors.\n     * @param b Factors.\n     * @return <code>&Sigma;<sub>i</sub> a<sub>i</sub> b<sub>i</sub></code>.\n     * @throws DimensionMismatchException if arrays dimensions don't match\n     */\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double SPLIT_FACTOR = 134217729.0; // 2^27 + 1\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] - aHigh * bHigh) - aLow * bHigh) - aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.565025990659981,
+        "mean_entropy": -0.012169244262926185,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n            throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                    aHigh * bHigh) -\n                    aLow * bHigh) -\n                    aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        final double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 49,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.634491081596229,
+        "mean_entropy": -0.012218215619882558,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            // If arrays have only one element, revert to scalar multiplication\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighNext = prodHigh[1];\n        double prodHighCur = prodHigh[0];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 8,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -18.618590202515172,
+        "mean_entropy": -0.033486673026106424,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            // Fall back to scalar multiplication\n            return a[0] * b[0];\n        }\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext;\n        double sHighPrev;\n        double sPrime;\n        double sLowSum;\n        if (len >= 2) {\n            prodHighNext = prodHigh[1];\n            sHighPrev = prodHighCur + prodHighNext;\n            sPrime = sHighPrev - prodHighNext;\n            sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n        } else {\n            prodHighNext = 0;\n            sHighPrev = prodHighCur;\n            sPrime = 0;\n            sLowSum = 0;\n        }\n\n        for (int i = 1; i < len - 1; i++) {\n            prodHighNext = prodHigh[i + 1];\n            double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            // either we have split infinite numbers or some coefficients were NaNs,\n            // just rely on the naive implementation and let IEEE754 handle this\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 56,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -21.169183268326666,
+        "mean_entropy": -0.03504831666941501,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0]; // Fallback to simple multiplication\n        }\n\n        final double SPLIT_FACTOR = 134217729.0; // 2^27 + 1 to split doubles in half\n\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                                                    aHigh * bHigh) -\n                                                   aLow * bHigh) -\n                                                  aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext = prodHigh[1];\n        double sHighPrev = prodHighCur + prodHighNext;\n        double sPrime = sHighPrev - prodHighNext;\n        double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n        final int lenMinusOne = len - 1;\n        for (int i = 1; i < lenMinusOne; i++) {\n            prodHighNext = prodHigh[i + 1];\n            final double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 27,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -20.058278900230384,
+        "mean_entropy": -0.03666961407720363,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n            throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0];\n        }\n\n        final double SPLIT_FACTOR = 134217729.0;\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] -\n                    aHigh * bHigh) -\n                    aLow * bHigh) -\n                    aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext;\n        double sHighPrev;\n        double sPrime;\n        double sLowSum;\n\n        if (len > 1) {\n            prodHighNext = prodHigh[1];\n            sHighPrev = prodHighCur + prodHighNext;\n            sPrime = sHighPrev - prodHighNext;\n            sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);\n\n            for (int i = 1; i < len - 1; i++) {\n                prodHighCur = prodHighNext;\n                prodHighNext = prodHigh[i + 1];\n                double sHighCur = sHighPrev + prodHighNext;\n                sPrime = sHighCur - prodHighNext;\n                sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n                sHighPrev = sHighCur;\n            }\n            double result = sHighPrev + (prodLowSum + sLowSum);\n\n            if (Double.isNaN(result)) {\n                result = 0;\n                for (int i = 0; i < len; ++i) {\n                    result += a[i] * b[i];\n                }\n            }\n\n            return result;\n        }\n\n        return prodHighCur + prodLowSum;\n    }\n",
+        "index": 22,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -22.352889881001765,
+        "mean_entropy": -0.03970317918472782,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public static double linearCombination(final double[] a, final double[] b)\n        throws DimensionMismatchException {\n        final int len = a.length;\n        if (len != b.length) {\n            throw new DimensionMismatchException(len, b.length);\n        }\n\n        if (len == 1) {\n            return a[0] * b[0]; // Fallback to simple multiplication\n        }\n\n        final double SPLIT_FACTOR = 134217729.0; // 1.0 / (1L << 27) + 1.0;\n        final double[] prodHigh = new double[len];\n        double prodLowSum = 0;\n\n        for (int i = 0; i < len; i++) {\n            final double ai = a[i];\n            final double ca = SPLIT_FACTOR * ai;\n            final double aHigh = ca - (ca - ai);\n            final double aLow = ai - aHigh;\n\n            final double bi = b[i];\n            final double cb = SPLIT_FACTOR * bi;\n            final double bHigh = cb - (cb - bi);\n            final double bLow = bi - bHigh;\n            prodHigh[i] = ai * bi;\n            final double prodLow = aLow * bLow - (((prodHigh[i] - aHigh * bHigh) - aLow * bHigh) - aHigh * bLow);\n            prodLowSum += prodLow;\n        }\n\n        double prodHighCur = prodHigh[0];\n        double prodHighNext;\n        double sHighPrev = prodHighCur;\n        double sPrime = 0;\n        double sLowSum = 0;\n\n        for (int i = 1; i < len; i++) {\n            prodHighNext = prodHigh[i];\n            double sHighCur = sHighPrev + prodHighNext;\n            sPrime = sHighCur - prodHighNext;\n            sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);\n            sHighPrev = sHighCur;\n        }\n\n        double result = sHighPrev + (prodLowSum + sLowSum);\n\n        if (Double.isNaN(result)) {\n            result = 0;\n            for (int i = 0; i < len; ++i) {\n                result += a[i] * b[i];\n            }\n        }\n\n        return result;\n    }\n",
+        "index": 14,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 152,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.util.MathArraysTest::testLinearCombinationWithSingleElementArray"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -23.047152863507918,
+        "mean_entropy": -0.04627942342069863,
+        "pass_FIB_num": 7,
+        "pass_FIB": [
+          "Math_3_n35.txt",
+          "Math_3_n39.txt",
+          "Math_3_n47.txt",
+          "Math_3_n42.txt",
+          "Math_3_n25.txt",
+          "Math_3_n11.txt",
+          "Math_3_n0.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      }
+    ]
+  }
+}

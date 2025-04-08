@@ -1,0 +1,406 @@
+{
+  "Compress_32_src/main/java/org/apache/commons/compress/archivers/tar/TarArchiveInputStream.java_481_518": {
+    "patches": [
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 31,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.0332908547109296,
+        "mean_entropy": -0.005893596680321535,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 41,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.0332908547109296,
+        "mean_entropy": -0.005893596680321535,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 42,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.0332908547109296,
+        "mean_entropy": -0.005893596680321535,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 43,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.0332908547109296,
+        "mean_entropy": -0.005893596680321535,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 46,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.0332908547109296,
+        "mean_entropy": -0.005893596680321535,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 47,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.056306185626911,
+        "mean_entropy": -0.005960307784425829,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 51,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.056306185626911,
+        "mean_entropy": -0.005960307784425829,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 56,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.056306185626911,
+        "mean_entropy": -0.005960307784425829,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 58,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.056306185626911,
+        "mean_entropy": -0.005960307784425829,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 61,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.056306185626911,
+        "mean_entropy": -0.005960307784425829,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 96,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.1086801540556688,
+        "mean_entropy": -0.006112116388567156,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 83,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.1988002447140893,
+        "mean_entropy": -0.0063733340426495345,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 84,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.1988002447140893,
+        "mean_entropy": -0.0063733340426495345,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 85,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.1988002447140893,
+        "mean_entropy": -0.0063733340426495345,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val));\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val));\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 86,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.1988002447140893,
+        "mean_entropy": -0.0063733340426495345,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Map.Entry<String, String> ent : headers.entrySet()) {\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)) {\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)) {\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)) {\n                currEntry.setGroupId(Long.parseLong(val)); // Use Long.parseLong for handling large integers\n            } else if (\"gname\".equals(key)) {\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)) {\n                currEntry.setUserId(Long.parseLong(val)); // Use Long.parseLong for handling large integers\n            } else if (\"uname\".equals(key)) {\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)) {\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)) {\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)) {\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)) {\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 48,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.611069192929298,
+        "mean_entropy": -0.02829618451447813,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val)); // Fixed by using Long.parseLong for gid\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val)); // Fixed by using Long.parseLong for uid\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.42713771944409,
+        "mean_entropy": -0.02872489729874405,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid, uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Map.Entry<String, String> ent : headers.entrySet()) {\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)) {\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)) {\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)) {\n                currEntry.setGroupId(Long.parseLong(val)); // Using Long.parseLong to handle large values\n            } else if (\"gname\".equals(key)) {\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)) {\n                currEntry.setUserId(Long.parseLong(val)); // Using Long.parseLong to handle large values\n            } else if (\"uname\".equals(key)) {\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)) {\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)) {\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)) {\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)) {\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 8,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.078615218406526,
+        "mean_entropy": -0.029542973915750736,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        /*\n         * The following headers are defined for Pax.\n         * atime, ctime, charset: cannot use these without changing TarArchiveEntry fields\n         * mtime\n         * comment\n         * gid, gname\n         * linkpath\n         * size\n         * uid,uname\n         * SCHILY.devminor, SCHILY.devmajor: don't have setters/getters for those\n         */\n        for (Entry<String, String> ent : headers.entrySet()) {\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)) {\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)) {\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)) {\n                currEntry.setGroupId(Long.parseLong(val)); // Changed to Long.parseLong() for handling large integers\n            } else if (\"gname\".equals(key)) {\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)) {\n                currEntry.setUserId(Long.parseLong(val)); // Changed to Long.parseLong() for handling large integers\n            } else if (\"uname\".equals(key)) {\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)) {\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)) {\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)) {\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)) {\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 59,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.524953203199008,
+        "mean_entropy": -0.030489294188357163,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    private void applyPaxHeadersToCurrentEntry(Map<String, String> headers) {\n        for (Entry<String, String> ent : headers.entrySet()){\n            String key = ent.getKey();\n            String val = ent.getValue();\n            if (\"path\".equals(key)){\n                currEntry.setName(val);\n            } else if (\"linkpath\".equals(key)){\n                currEntry.setLinkName(val);\n            } else if (\"gid\".equals(key)){\n                currEntry.setGroupId(Long.parseLong(val)); // Use Long.parseLong for large uids and gids\n            } else if (\"gname\".equals(key)){\n                currEntry.setGroupName(val);\n            } else if (\"uid\".equals(key)){\n                currEntry.setUserId(Long.parseLong(val)); // Use Long.parseLong for large uids and gids\n            } else if (\"uname\".equals(key)){\n                currEntry.setUserName(val);\n            } else if (\"size\".equals(key)){\n                currEntry.setSize(Long.parseLong(val));\n            } else if (\"mtime\".equals(key)){\n                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));\n            } else if (\"SCHILY.devminor\".equals(key)){\n                currEntry.setDevMinor(Integer.parseInt(val));\n            } else if (\"SCHILY.devmajor\".equals(key)){\n                currEntry.setDevMajor(Integer.parseInt(val));\n            }\n        }\n    }\n",
+        "index": 45,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 41,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest::shouldReadBigGid"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.133855208106686,
+        "mean_entropy": -0.03619234002895245,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      }
+    ]
+  }
+}

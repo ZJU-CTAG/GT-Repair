@@ -1,0 +1,486 @@
+{
+  "Lang_12_src/main/java/org/apache/commons/lang3/RandomStringUtils.java_190_282": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 42,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.1696643691354196,
+        "mean_entropy": -0.003751082093651384,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 54,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.1696643691354196,
+        "mean_entropy": -0.003751082093651384,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 55,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.1696643691354196,
+        "mean_entropy": -0.003751082093651384,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 65,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.539070767973326,
+        "mean_entropy": -0.004188249429554232,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 67,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.539070767973326,
+        "mean_entropy": -0.004188249429554232,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 69,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.563801699827192,
+        "mean_entropy": -0.004217516804529221,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';                \n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 81,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.618496736157822,
+        "mean_entropy": -0.005465676610837659,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';                \n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 46,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.810143975813956,
+        "mean_entropy": -0.005692478077886338,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';                \n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 33,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.996033895574536,
+        "mean_entropy": -0.0059124661486089185,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';                \n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 3,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.136865794158651,
+        "mean_entropy": -0.006079131117347516,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';\n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if (ch >= 56320 && ch <= 57343) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if (ch >= 55296 && ch <= 56191) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if (ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 63,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.346634294191481,
+        "mean_entropy": -0.0074754231969275395,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Creates a random string based on a variety of options, using\n     * supplied source of randomness.</p>\n     *\n     * <p>If start and end are both {@code 0}, start and end are set\n     * to {@code ' '} and {@code 'z'}, the ASCII printable\n     * characters, will be used, unless letters and numbers are both\n     * {@code false}, in which case, start and end are set to\n     * {@code 0} and {@code Integer.MAX_VALUE}.\n     *\n     * <p>If set is not {@code null}, characters between start and\n     * end are chosen.</p>\n     *\n     * <p>This method accepts a user-supplied {@link Random}\n     * instance to use as a source of randomness. By seeding a single \n     * {@link Random} instance with a fixed seed and using it for each call,\n     * the same random sequence of strings can be generated repeatedly\n     * and predictably.</p>\n     *\n     * @param count  the length of random string to create\n     * @param start  the position in set of chars to start at\n     * @param end  the position in set of chars to end before\n     * @param letters  only allow letters?\n     * @param numbers  only allow numbers?\n     * @param chars  the set of chars to choose randoms from, must not be empty.\n     *  If {@code null}, then it will use the set of all chars.\n     * @param random  a source of randomness.\n     * @return the random string\n     * @throws ArrayIndexOutOfBoundsException if there are not\n     *  {@code (end - start) + 1} characters in the set array.\n     * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty.\n     * @since 2.0\n     */\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                int index = random.nextInt(chars.length);\n                ch = chars[index];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.460383014107509,
+        "mean_entropy": -0.008766607537141608,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 43,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.864171944481339,
+        "mean_entropy": -0.008802213996540636,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 30,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.90566983533293,
+        "mean_entropy": -0.008896742221715102,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n                if (!letters && !numbers) {\n                    end = Integer.MAX_VALUE;\n                } else {\n                    end = 'z' + 1;\n                    start = ' ';                \n                }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                if (chars.length == 0) {\n                    throw new IllegalArgumentException(\"The provided chars array is empty.\");\n                }\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 75,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.485456334096908,
+        "mean_entropy": -0.009687810656796777,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n/**\n * <p>Creates a random string based on a variety of options, using\n * supplied source of randomness.</p>\n *\n * <p>If start and end are both {@code 0}, start and end are set\n * to {@code ' '} and {@code 'z'}, the ASCII printable\n * characters, will be used, unless letters and numbers are both\n * {@code false}, in which case, start and end are set to\n * {@code 0} and {@code Integer.MAX_VALUE}.</p>\n *\n * <p>If set is not {@code null}, characters between start and\n * end are chosen.</p>\n *\n * <p>This method accepts a user-supplied {@link Random}\n * instance to use as a source of randomness. By seeding a single \n * {@link Random} instance with a fixed seed and using it for each call,\n * the same random sequence of strings can be generated repeatedly\n * and predictably.</p>\n *\n * @param count  the length of random string to create\n * @param start  the position in set of chars to start at\n * @param end  the position in set of chars to end before\n * @param letters  only allow letters?\n * @param numbers  only allow numbers?\n * @param chars  the set of chars to choose randoms from, must not be empty.\n *               If {@code null}, then it will use the set of all chars.\n * @param random  a source of randomness\n * @return the random string\n * @throws ArrayIndexOutOfBoundsException if there are not\n *         {@code (end - start) + 1} characters in the set array\n * @throws IllegalArgumentException if {@code count} &lt; 0 or the provided chars array is empty\n * @since 2.0\n */\npublic static String random(int count, int start, int end, boolean letters, boolean numbers,\n                            char[] chars, Random random) {\n    if (count == 0) {\n        return \"\";\n    } else if (count < 0) {\n        throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n    }\n\n    if (start == 0 && end == 0) {\n        if (!letters && !numbers) {\n            end = Integer.MAX_VALUE;\n        } else {\n            end = 'z' + 1;\n            start = ' ';                \n        }\n    }\n\n    char[] buffer = new char[count];\n    int gap = end - start;\n\n    while (count-- != 0) {\n        char ch;\n        if (chars == null) {\n            ch = (char) (random.nextInt(gap) + start);\n        } else {\n            if (chars.length == 0) {\n                throw new IllegalArgumentException(\"The provided chars array is empty\");\n            }\n            ch = chars[random.nextInt(chars.length)];\n        }\n        if (letters && Character.isLetter(ch)\n                || numbers && Character.isDigit(ch)\n                || !letters && !numbers) {\n            if(ch >= 56320 && ch <= 57343) {\n                if(count == 0) {\n                    count++;\n                } else {\n                    // low surrogate, insert high surrogate after putting it in\n                    buffer[count] = ch;\n                    count--;\n                    buffer[count] = (char) (55296 + random.nextInt(128));\n                }\n            } else if(ch >= 55296 && ch <= 56191) {\n                if(count == 0) {\n                    count++;\n                } else {\n                    // high surrogate, insert low surrogate before putting it in\n                    buffer[count] = (char) (56320 + random.nextInt(128));\n                    count--;\n                    buffer[count] = ch;\n                }\n            } else if(ch >= 56192 && ch <= 56319) {\n                // private high surrogate, no effing clue, so skip it\n                count++;\n            } else {\n                buffer[count] = ch;\n            }\n        } else {\n            count++;\n        }\n    }\n    return new String(buffer);\n}\n",
+        "index": 58,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -18.533145425689646,
+        "mean_entropy": -0.022142348178840678,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';\n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                if (chars.length == 0) {\n                    throw new IllegalArgumentException(\"The provided chars array is empty.\");\n                }\n                ch = chars[random.nextInt(chars.length)];\n            }\n\n            if (letters && Character.isLetter(ch)\n                    || numbers && Character.isDigit(ch)\n                    || !letters && !numbers) {\n                if (ch >= 56320 && ch <= 57343) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if (ch >= 55296 && ch <= 56191) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if (ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 27,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.615833975429613,
+        "mean_entropy": -0.022829750484794867,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';                \n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else if (chars.length > 0) {\n                ch = chars[random.nextInt(chars.length)];\n            } else {\n                throw new IllegalArgumentException(\"The provided chars array is empty.\");\n            }\n\n            if ((letters && Character.isLetter(ch)) || (numbers && Character.isDigit(ch)) || (!letters && !numbers)) {\n                if(ch >= 56320 && ch <= 57343) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if(ch >= 55296 && ch <= 56191) {\n                    if(count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if(ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 23,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -12.997656925516488,
+        "mean_entropy": -0.028255775925035843,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';\n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                if (chars.length == 0) {\n                    throw new IllegalArgumentException(\"The provided chars array is empty.\");\n                }\n                ch = chars[random.nextInt(chars.length)];\n            }\n            if ((letters && Character.isLetter(ch)) || (numbers && Character.isDigit(ch)) || (!letters && !numbers)) {\n                if (Character.isHighSurrogate(ch)) {\n                    count++;\n                } else if (Character.isLowSurrogate(ch)) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (Character.MIN_HIGH_SURROGATE + random.nextInt(128));\n                    }\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 0,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -12.465797701989192,
+        "mean_entropy": -0.034918200845908104,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\npublic static String random(int count, int start, int end, boolean letters, boolean numbers,\n                                char[] chars, Random random) {\n        if (count == 0) {\n            return \"\";\n        } else if (count < 0) {\n            throw new IllegalArgumentException(\"Requested random string length \" + count + \" is less than 0.\");\n        }\n\n        if (start == 0 && end == 0) {\n            if (!letters && !numbers) {\n                end = Integer.MAX_VALUE;\n            } else {\n                end = 'z' + 1;\n                start = ' ';\n            }\n        }\n\n        char[] buffer = new char[count];\n        int gap = end - start;\n        \n        // Calculate the actual length of the characters array\n        int charsLength = chars != null ? chars.length : 0;\n\n        while (count-- != 0) {\n            char ch;\n            if (chars == null) {\n                ch = (char) (random.nextInt(gap) + start);\n            } else {\n                // Use the correct formula to prevent ArrayIndexOutOfBoundsException\n                ch = chars[random.nextInt(charsLength) + start];\n            }\n            if ((letters && Character.isLetter(ch)) || (numbers && Character.isDigit(ch))\n                    || (!letters && !numbers)) {\n                if (ch >= 56320 && ch <= 57343) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // low surrogate, insert high surrogate after putting it in\n                        buffer[count] = ch;\n                        count--;\n                        buffer[count] = (char) (55296 + random.nextInt(128));\n                    }\n                } else if (ch >= 55296 && ch <= 56191) {\n                    if (count == 0) {\n                        count++;\n                    } else {\n                        // high surrogate, insert low surrogate before putting it in\n                        buffer[count] = (char) (56320 + random.nextInt(128));\n                        count--;\n                        buffer[count] = ch;\n                    }\n                } else if (ch >= 56192 && ch <= 56319) {\n                    // private high surrogate, no effing clue, so skip it\n                    count++;\n                } else {\n                    buffer[count] = ch;\n                }\n            } else {\n                count++;\n            }\n        }\n        return new String(buffer);\n    }\n",
+        "index": 71,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 1,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang3.RandomStringUtilsTest::testExceptions",
+          "org.apache.commons.lang3.RandomStringUtilsTest::testLANG805"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -43.626478207984775,
+        "mean_entropy": -0.09013735166939003,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_12_n34.txt",
+          "Lang_12_n1.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

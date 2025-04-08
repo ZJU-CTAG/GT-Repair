@@ -1,0 +1,204 @@
+{
+  "Math_10_src/main/java/org/apache/commons/math3/analysis/differentiation/DSCompiler.java_1372_1420": {
+    "patches": [
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -Math.PI : Math.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 17,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.548574547392905,
+        "mean_entropy": -0.009171673035564293,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -Math.PI : Math.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 51,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.729743486681618,
+        "mean_entropy": -0.009425411045772573,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -Math.PI : Math.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n    }\n",
+        "index": 5,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.914543296107466,
+        "mean_entropy": -0.011084794532363397,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -FastMath.PI : FastMath.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // Fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 54,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.959980292816219,
+        "mean_entropy": -0.012513938956447233,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -Math.PI : Math.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // Fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 4,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.107369118361158,
+        "mean_entropy": -0.014155979157368569,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -FastMath.PI : FastMath.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n        \n        if (Double.isNaN(result[resultOffset])) {\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 59,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.164295734236822,
+        "mean_entropy": -0.014860081482802372,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] != 0.0 || y[yOffset] != 0.0) {\n\n            if (x[xOffset] >= 0) {\n\n                // compute atan2(y, x) = 2 atan(y / (r + x))\n                add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n                divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n                atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n                for (int i = 0; i < tmp2.length; ++i) {\n                    result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n                }\n\n            } else {\n\n                // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n                subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n                divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n                atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n                result[resultOffset] =\n                        ((tmp2[0] <= 0) ? -FastMath.PI : FastMath.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n                for (int i = 1; i < tmp2.length; ++i) {\n                    result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n                }\n\n            }\n\n        } else {\n            // Handle special cases\n            result[resultOffset] = Math.atan2(y[yOffset], x[xOffset]);\n        }\n\n    }\n",
+        "index": 89,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.100262233174584,
+        "mean_entropy": -0.015722751038490912,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (x[xOffset] >= 0) {\n\n            // compute atan2(y, x) = 2 atan(y / (r + x))\n            add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n            for (int i = 0; i < tmp2.length; ++i) {\n                result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n            }\n\n        } else {\n\n            // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n            subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n            divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n            atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n            result[resultOffset] =\n                    ((tmp2[0] <= 0) ? -FastMath.PI : FastMath.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n            for (int i = 1; i < tmp2.length; ++i) {\n                result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n            }\n\n        }\n\n        // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly\n        for (int i = 0; i < result.length; i++) {\n            if (Double.isNaN(result[i])) {\n                result[i] = Math.atan2(y[yOffset], x[xOffset]); // Fallback to Math.atan2 for special cases\n            }\n        }\n    }\n",
+        "index": 75,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.26871997536845,
+        "mean_entropy": -0.01917838706366727,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /** Compute two arguments arc tangent of a derivative structure.\n     * @param y array holding the first operand\n     * @param yOffset offset of the first operand in its array\n     * @param x array holding the second operand\n     * @param xOffset offset of the second operand in its array\n     * @param result array where result must be stored (for\n     * two arguments arc tangent the result array <em>cannot</em>\n     * be the input array)\n     * @param resultOffset offset of the result in its array\n     */\n    public void atan2(final double[] y, final int yOffset,\n                      final double[] x, final int xOffset,\n                      final double[] result, final int resultOffset) {\n\n        // compute r = sqrt(x^2+y^2)\n        double[] tmp1 = new double[getSize()];\n        multiply(x, xOffset, x, xOffset, tmp1, 0);      // x^2\n        double[] tmp2 = new double[getSize()];\n        multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2\n        add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2\n        rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)\n\n        if (Math.abs(x[xOffset]) >= Math.ulp(1.0) && Math.abs(y[yOffset]) >= Math.ulp(1.0)) {\n\n            if (x[xOffset] >= 0) {\n\n                // compute atan2(y, x) = 2 atan(y / (r + x))\n                add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x\n                divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)\n                atan(tmp1, 0, tmp2, 0);                     // atan(y / (r + x))\n                for (int i = 0; i < tmp2.length; ++i) {\n                    result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))\n                }\n\n            } else {\n\n                // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))\n                subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x\n                divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)\n                atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))\n                result[resultOffset] =\n                        ((tmp2[0] <= 0) ? -Math.PI : Math.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))\n                for (int i = 1; i < tmp2.length; ++i) {\n                    result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))\n                }\n\n            }\n\n        } else {\n            // Handle special cases where x and y are very close to zero\n            for (int i = 0; i < result.length; i++) {\n                result[resultOffset + i] = Math.atan2(y[yOffset], x[xOffset]);\n            }\n        }\n    }\n",
+        "index": 67,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 31,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math3.analysis.differentiation.DerivativeStructureTest::testAtan2SpecialCases"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -19.401503447362877,
+        "mean_entropy": -0.026042286506527353,
+        "pass_FIB_num": 1,
+        "pass_FIB": [
+          "Math_10_n43.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "Time_5_src/main/java/org/joda/time/Period.java_1585_1638": {
+    "patches": [
+      {
+        "patch": "\n    public Period normalizedStandard(PeriodType type) {\n        type = DateTimeUtils.getPeriodType(type);\n        long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs\n        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));\n        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));\n        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));\n        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));\n        millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));\n        Period result = new Period(millis, type, ISOChronology.getInstanceUTC());\n        int years = getYears();\n        int months = getMonths();\n        if (years != 0 || months != 0) {\n            if (type.isSupported(DurationFieldType.years())) {\n                years = FieldUtils.safeAdd(years, months / 12);\n                months = months % 12;\n                if (years != 0) {\n                    result = result.withYears(years);\n                }\n                if (months != 0) {\n                    result = result.withMonths(months);\n                }\n            } else {\n                if (months != 0) {\n                    int totalMonths = years * 12 + months;\n                    result = result.withMonths(totalMonths);\n                }\n            }\n        }\n        return result;\n    }\n",
+        "index": 53,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 3,
+        "passing_trigger": 3,
+        "total_relevant": 46,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.joda.time.TestPeriod_Basics::testNormalizedStandard_periodType_months1",
+          "org.joda.time.TestPeriod_Basics::testNormalizedStandard_periodType_months2",
+          "org.joda.time.TestPeriod_Basics::testNormalizedStandard_periodType_monthsWeeks"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -13.151314587032022,
+        "mean_entropy": -0.041618084136177284,
+        "pass_FIB_num": 3,
+        "pass_FIB": [
+          "Time_5_n10.txt",
+          "Time_5_n39.txt",
+          "Time_5_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

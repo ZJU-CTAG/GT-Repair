@@ -1,0 +1,46 @@
+{
+  "JacksonDatabind_100_src/main/java/com/fasterxml/jackson/databind/node/TreeTraversingParser.java_354_376": {
+    "patches": [
+      {
+        "patch": "\n    @Override\n    public byte[] getBinaryValue(Base64Variant b64variant)\n        throws IOException, JsonParseException\n    {\n        // Multiple possibilities...\n        JsonNode n = currentNode();\n        if (n != null) {\n            // [databind#2096]: although `binaryValue()` works for real binary node\n            // and embedded \"POJO\" node, coercion from TextNode may require variant, so:\n            if (n instanceof TextNode) {\n                return ((TextNode) n).getBinaryValue(b64variant);\n            } else {\n                byte[] data = n.binaryValue();\n                if (data != null) {\n                    return data;\n                }\n                if (n.isPojo()) {\n                    Object ob = ((POJONode) n).getPojo();\n                    if (ob instanceof byte[]) {\n                        return (byte[]) ob;\n                    }\n                }\n            }\n        }\n        // otherwise return null to mark we have no binary content\n        return null;\n    }\n",
+        "index": 90,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 411,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.node.TestConversions::testBase64Text"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.077841731177814,
+        "mean_entropy": -0.01979534820960104,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    @Override\n    public byte[] getBinaryValue(Base64Variant b64variant)\n        throws IOException, JsonParseException\n    {\n        // Multiple possibilities...\n        JsonNode n = currentNode();\n        if (n != null) {\n            // [databind#2096]: although `binaryValue()` works for real binary node\n            // and embedded \"POJO\" node, coercion from TextNode may require variant, so:\n            if (n instanceof TextNode) {\n                return ((TextNode) n).getBinaryValue(b64variant);\n            } else {\n                byte[] data = n.binaryValue();\n                if (data != null) {\n                    return data;\n                }\n                if (n.isPojo()) {\n                    Object ob = ((POJONode) n).getPojo();\n                    if (ob instanceof byte[]) {\n                        return (byte[]) ob;\n                    }\n                }\n            }\n        }\n        // otherwise return null to mark we have no binary content\n        return null;\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 411,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.node.TestConversions::testBase64Text"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.231922232755846,
+        "mean_entropy": -0.020543311809494397,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      }
+    ]
+  }
+}

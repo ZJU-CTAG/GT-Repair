@@ -1,0 +1,166 @@
+{
+  "JacksonDatabind_58_src/main/java/com/fasterxml/jackson/databind/deser/BeanDeserializerFactory.java_696_752": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.canOverrideAccessModifiers()) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n            if (mutator.getDeclaringClass() != Throwable.class || !mutator.getName().equals(\"cause\")) {\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n            }\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 49,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.015164768724129,
+        "mean_entropy": -0.01007565287893489,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS)) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 76,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.316616672519154,
+        "mean_entropy": -0.010928402547610993,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS)) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (!type.equals(propType0)) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 40,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.1086022403833695,
+        "mean_entropy": -0.012298619793050813,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.canOverrideAccessModifiers()) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n            if (!Throwable.class.isAssignableFrom(mutator.getRawType()) || !mutator.getName().equals(\"cause\")) {\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n            }\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 56,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.976607296822428,
+        "mean_entropy": -0.013383569289970518,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.canOverrideAccessModifiers()) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n            if (!mutator.getDeclaringClass().equals(Throwable.class) || !mutator.getName().equals(\"cause\")) {\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n            }\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 35,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.039657583428975,
+        "mean_entropy": -0.01511648425322571,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Method that will construct a regular bean property setter using\n     * the given setter method.\n     *\n     * @return Property constructed, if any; or null to indicate that\n     *   there should be no property based on given definitions.\n     */\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        // need to ensure method is callable (for non-public)\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.canOverrideAccessModifiers()) {\n            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;\n            // never needed and attempts may cause problems on some platforms.\n            // !!! NOTE: should be handled better for 2.8 and later\n            if (!Throwable.class.equals(mutator.getDeclaringClass()) || !\"cause\".equals(mutator.getName())) {\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n            }\n        }\n        // note: this works since we know there's exactly one argument for methods\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        // did type change?\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        // First: does the Method specify the deserializer to use? If so, let's use it.\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        // need to retain name of managed forward references:\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if(objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.175410395740569,
+        "mean_entropy": -0.015394983885470753,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\nprotected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.canOverrideAccessModifiers()) {\n            if (!Throwable.class.isAssignableFrom(beanDesc.getBeanClass())) {\n                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n            }\n        }\n\n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if (objectIdInfo != null) {\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        return prop;\n    }\n",
+        "index": 31,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -13.269384639958785,
+        "mean_entropy": -0.032285607396493395,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    protected SettableBeanProperty constructSettableProperty(DeserializationContext ctxt,\n            BeanDescription beanDesc, BeanPropertyDefinition propDef,\n            JavaType propType0)\n        throws JsonMappingException\n    {\n        AnnotatedMember mutator = propDef.getNonConstructorMutator();\n\n        if (ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS)) {\n            mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));\n        }\n        \n        BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),\n                propType0, propDef.getWrapperName(),\n                beanDesc.getClassAnnotations(), mutator, propDef.getMetadata());\n        \n        JavaType type = resolveType(ctxt, beanDesc, propType0, mutator);\n        \n        if (type != propType0) {\n            property = property.withType(type);\n        }\n\n        JsonDeserializer<Object> propDeser = findDeserializerFromAnnotation(ctxt, mutator);\n        type = modifyTypeByAnnotation(ctxt, mutator, type);\n        TypeDeserializer typeDeser = type.getTypeHandler();\n        \n        SettableBeanProperty prop;\n        if (mutator instanceof AnnotatedMethod) {\n            prop = new MethodProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedMethod) mutator);\n        } else {\n            prop = new FieldProperty(propDef, type, typeDeser,\n                    beanDesc.getClassAnnotations(), (AnnotatedField) mutator);\n        }\n        \n        if (propDeser != null) {\n            prop = prop.withValueDeserializer(propDeser);\n        }\n\n        AnnotationIntrospector.ReferenceProperty ref = propDef.findReferenceType();\n        if (ref != null && ref.isManagedReference()) {\n            prop.setManagedReferenceName(ref.getName());\n        }\n        \n        ObjectIdInfo objectIdInfo = propDef.findObjectIdInfo();\n        if (objectIdInfo != null){\n            prop.setObjectIdInfo(objectIdInfo);\n        }\n        \n        return prop;\n    }\n",
+        "index": 5,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 305,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "com.fasterxml.jackson.databind.misc.AccessFixTest::testCauseOfThrowableIgnoral"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -17.786715965111473,
+        "mean_entropy": -0.04338223406124749,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

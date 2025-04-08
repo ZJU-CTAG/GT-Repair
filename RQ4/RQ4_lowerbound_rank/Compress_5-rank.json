@@ -1,0 +1,406 @@
+{
+  "Compress_5_src/main/java/org/apache/commons/compress/archivers/zip/ZipArchiveInputStream.java_191_246": {
+    "patches": [
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 79,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 81,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 88,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 89,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 90,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 91,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 94,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9245797957544502,
+        "mean_entropy": -0.0020187331785031662,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 1,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 2,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 3,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 5,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 6,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 7,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 8,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 9,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -0.9456858836043877,
+        "mean_entropy": -0.0020648163397475714,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\npublic int read(byte[] buffer, int start, int length) throws IOException {\n    if (closed) {\n        throw new IOException(\"The stream is closed\");\n    }\n    if (inf.finished() || current == null) {\n        return -1;\n    }\n\n    // avoid int overflow, check null buffer\n    if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n        if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n            int csize = (int) current.getSize();\n            if (readBytesOfEntry >= csize) {\n                return -1;\n            }\n            if (offsetInBuffer >= lengthOfLastRead) {\n                offsetInBuffer = 0;\n                if ((lengthOfLastRead = in.read(buf)) == -1) {\n                    return -1;\n                }\n                count(lengthOfLastRead);\n                bytesReadFromStream += lengthOfLastRead;\n            }\n            int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n            if ((csize - readBytesOfEntry) < toRead) {\n                toRead = csize - readBytesOfEntry;\n            }\n            System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n            offsetInBuffer += toRead;\n            readBytesOfEntry += toRead;\n            crc.update(buffer, start, toRead);\n            return toRead;\n        }\n        if (inf.needsInput()) {\n            fill();\n            if (lengthOfLastRead > 0) {\n                bytesReadFromStream += lengthOfLastRead;\n            }\n        }\n        int read = 0;\n        try {\n            read = inf.inflate(buffer, start, length);\n        } catch (DataFormatException e) {\n            throw new ZipException(e.getMessage());\n        }\n        if (read == 0 && inf.finished()) {\n            return -1;\n        } else if (read == 0 && lengthOfLastRead == -1) {\n            throw new IOException(\"Truncated ZIP file\");\n        }\n        crc.update(buffer, start, read);\n        return read;\n    }\n    throw new ArrayIndexOutOfBoundsException();\n}\n",
+        "index": 80,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.054775480263961,
+        "mean_entropy": -0.008892051491806933,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            }\n            crc.update(buffer, start, read);\n            if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 67,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.288200905256769,
+        "mean_entropy": -0.01154629018615015,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n                && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        if (lengthOfLastRead == -1) {\n                            throw new IOException(\"Truncated ZIP file\");\n                        }\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                        ? lengthOfLastRead - offsetInBuffer\n                        : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 93,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.76977504661257,
+        "mean_entropy": -0.011970487648573797,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n                && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        if (lengthOfLastRead == -1) {\n                            throw new IOException(\"Truncated ZIP file\");\n                        }\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                        ? lengthOfLastRead - offsetInBuffer\n                        : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 74,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.899646544079151,
+        "mean_entropy": -0.012239930589375832,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public int read(byte[] buffer, int start, int length) throws IOException {\n        if (closed) {\n            throw new IOException(\"The stream is closed\");\n        }\n        if (inf.finished() || current == null) {\n            return -1;\n        }\n\n        // avoid int overflow, check null buffer\n        if (start <= buffer.length && length >= 0 && start >= 0\n            && buffer.length - start >= length) {\n            if (current.getMethod() == ZipArchiveOutputStream.STORED) {\n                int csize = (int) current.getSize();\n                if (readBytesOfEntry >= csize) {\n                    return -1;\n                }\n                if (offsetInBuffer >= lengthOfLastRead) {\n                    offsetInBuffer = 0;\n                    if ((lengthOfLastRead = in.read(buf)) == -1) {\n                        lengthOfLastRead = -1; // Update lengthOfLastRead for truncated ZIP file\n                        return -1;\n                    }\n                    count(lengthOfLastRead);\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n                int toRead = length > lengthOfLastRead\n                    ? lengthOfLastRead - offsetInBuffer\n                    : length;\n                if ((csize - readBytesOfEntry) < toRead) {\n                    toRead = csize - readBytesOfEntry;\n                }\n                System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);\n                offsetInBuffer += toRead;\n                readBytesOfEntry += toRead;\n                crc.update(buffer, start, toRead);\n                return toRead;\n            }\n            if (inf.needsInput()) {\n                fill();\n                if (lengthOfLastRead > 0) {\n                    bytesReadFromStream += lengthOfLastRead;\n                }\n            }\n            int read = 0;\n            try {\n                read = inf.inflate(buffer, start, length);\n            } catch (DataFormatException e) {\n                throw new ZipException(e.getMessage());\n            }\n            if (read == 0 && inf.finished()) {\n                return -1;\n            } else if (read == 0 && lengthOfLastRead == -1) {\n                throw new IOException(\"Truncated ZIP file\");\n            }\n            crc.update(buffer, start, read);\n            return read;\n        }\n        throw new ArrayIndexOutOfBoundsException();\n    }\n",
+        "index": 98,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 15,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.archivers.zip.Maven221MultiVolumeTest::testRead7ZipMultiVolumeArchiveForStream"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.110214960427285,
+        "mean_entropy": -0.019059027113864615,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

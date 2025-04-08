@@ -1,0 +1,466 @@
+{
+  "Lang_52_src/java/org/apache/commons/lang/StringEscapeUtils.java_163_242": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 10,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.1450142069317035,
+        "mean_entropy": -0.00804857127559554,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 31,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.196434979804539,
+        "mean_entropy": -0.008148417436513667,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 33,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.204177710805347,
+        "mean_entropy": -0.00816345186564145,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.204177710805347,
+        "mean_entropy": -0.00816345186564145,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 48,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.685559998301679,
+        "mean_entropy": -0.008551183290723154,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 54,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.685559998301679,
+        "mean_entropy": -0.008551183290723154,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32) {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 83,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.6005043842005096,
+        "mean_entropy": -0.00898536012539162,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 1,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.917170692917817,
+        "mean_entropy": -0.009088563092616745,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 5,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.917170692917817,
+        "mean_entropy": -0.009088563092616745,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 85,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.93980136585818,
+        "mean_entropy": -0.009141070454427332,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 90,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -3.93980136585818,
+        "mean_entropy": -0.009141070454427332,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 7,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.838315267037991,
+        "mean_entropy": -0.009394786926287362,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receieve the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32) {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 79,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.894004280129916,
+        "mean_entropy": -0.009539969356978395,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receieve the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32) {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.0767094882456805,
+        "mean_entropy": -0.009896119860128031,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 73,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.198056508158947,
+        "mean_entropy": -0.010152454117497944,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     *\n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/': // Handle '/' case\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 62,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.407688484951677,
+        "mean_entropy": -0.02776047877640015,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') {  // added condition for escaping '/'\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/':  // added case for escaping '/'\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 57,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.727299179016681,
+        "mean_entropy": -0.02783988502649656,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n/**\n * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n * \n * @param out write to receive the escaped string\n * @param str String to escape values in, may be null\n * @param escapeSingleQuote escapes single quotes if <code>true</code>\n * @throws IOException if an IOException occurs\n */\nprivate static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n    if (out == null) {\n        throw new IllegalArgumentException(\"The Writer must not be null\");\n    }\n    if (str == null) {\n        return;\n    }\n    int sz = str.length();\n    for (int i = 0; i < sz; i++) {\n        char ch = str.charAt(i);\n\n        // handle unicode\n        if (ch > 0xfff) {\n            out.write(\"\\\\u\" + hex(ch));\n        } else if (ch > 0xff) {\n            out.write(\"\\\\u0\" + hex(ch));\n        } else if (ch > 0x7f) {\n            out.write(\"\\\\u00\" + hex(ch));\n        } else if (ch < 32 || ch == '/') { // Added check for '/' as it needs to be escaped\n            switch (ch) {\n                case '\\b':\n                    out.write('\\\\');\n                    out.write('b');\n                    break;\n                case '\\n':\n                    out.write('\\\\');\n                    out.write('n');\n                    break;\n                case '\\t':\n                    out.write('\\\\');\n                    out.write('t');\n                    break;\n                case '\\f':\n                    out.write('\\\\');\n                    out.write('f');\n                    break;\n                case '\\r':\n                    out.write('\\\\');\n                    out.write('r');\n                    break;\n                case '/': // Added case for '/'\n                    out.write('\\\\');\n                    out.write('/');\n                    break;\n                default:\n                    if (ch > 0xf) {\n                        out.write(\"\\\\u00\" + hex(ch));\n                    } else {\n                        out.write(\"\\\\u000\" + hex(ch));\n                    }\n                    break;\n            }\n        } else {\n            switch (ch) {\n                case '\\'':\n                    if (escapeSingleQuote) {\n                        out.write('\\\\');\n                    }\n                    out.write('\\'');\n                    break;\n                case '\"':\n                    out.write('\\\\');\n                    out.write('\"');\n                    break;\n                case '\\\\':\n                    out.write('\\\\');\n                    out.write('\\\\');\n                    break;\n                default:\n                    out.write(ch);\n                    break;\n            }\n        }\n    }\n}\n",
+        "index": 71,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.792024601459321,
+        "mean_entropy": -0.028501010792792526,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32 || ch == '/') { // Added condition to handle '/'\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    case '/': // Escaping '/' as '\\/'\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default:\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                            out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    default:\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 88,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.710893811661414,
+        "mean_entropy": -0.033058188340812165,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n    /**\n     * <p>Worker method for the {@link #escapeJavaScript(String)} method.</p>\n     * \n     * @param out write to receive the escaped string\n     * @param str String to escape values in, may be null\n     * @param escapeSingleQuote escapes single quotes if <code>true</code>\n     * @throws IOException if an IOException occurs\n     */\n    private static void escapeJavaStyleString(Writer out, String str, boolean escapeSingleQuote) throws IOException {\n        if (out == null) {\n            throw new IllegalArgumentException(\"The Writer must not be null\");\n        }\n        if (str == null) {\n            return;\n        }\n        int sz;\n        sz = str.length();\n        for (int i = 0; i < sz; i++) {\n            char ch = str.charAt(i);\n\n            // handle unicode\n            if (ch > 0xfff) {\n                out.write(\"\\\\u\" + hex(ch));\n            } else if (ch > 0xff) {\n                out.write(\"\\\\u0\" + hex(ch));\n            } else if (ch > 0x7f) {\n                out.write(\"\\\\u00\" + hex(ch));\n            } else if (ch < 32) {\n                switch (ch) {\n                    case '\\b':\n                        out.write('\\\\');\n                        out.write('b');\n                        break;\n                    case '\\n':\n                        out.write('\\\\');\n                        out.write('n');\n                        break;\n                    case '\\t':\n                        out.write('\\\\');\n                        out.write('t');\n                        break;\n                    case '\\f':\n                        out.write('\\\\');\n                        out.write('f');\n                        break;\n                    case '\\r':\n                        out.write('\\\\');\n                        out.write('r');\n                        break;\n                    default :\n                        if (ch > 0xf) {\n                            out.write(\"\\\\u00\" + hex(ch));\n                        } else {\n                            out.write(\"\\\\u000\" + hex(ch));\n                        }\n                        break;\n                }\n            } else {\n                switch (ch) {\n                    case '\\'':\n                        if (escapeSingleQuote) {\n                          out.write('\\\\');\n                        }\n                        out.write('\\'');\n                        break;\n                    case '\"':\n                        out.write('\\\\');\n                        out.write('\"');\n                        break;\n                    case '\\\\':\n                        out.write('\\\\');\n                        out.write('\\\\');\n                        break;\n                    case '/': // escape forward slash as it can cause issues in certain contexts\n                        out.write('\\\\');\n                        out.write('/');\n                        break;\n                    default :\n                        out.write(ch);\n                        break;\n                }\n            }\n        }\n    }\n",
+        "index": 80,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.lang.StringEscapeUtilsTest::testEscapeJavaScript"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -19.141381974442815,
+        "mean_entropy": -0.036459775189414886,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Lang_52_n39.txt",
+          "Lang_52_n21.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      }
+    ]
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "Math_101_src/java/org/apache/commons/math/complex/ComplexFormat.java_313_389": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.77145448960459,
+        "mean_entropy": -0.009264960173989496,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.length() < endIndex || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 57,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.6473674844795525,
+        "mean_entropy": -0.010902253831041608,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.length() < endIndex || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 73,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.818711565023155,
+        "mean_entropy": -0.01316353583981304,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n        case 0:\n            // no sign\n            // return real only complex number\n            return new Complex(re.doubleValue(), 0.0);\n        case '-':\n            sign = -1;\n            break;\n        case '+':\n            sign = 1;\n            break;\n        default:\n            // invalid sign\n            // set index back to initial, error index should be the last\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 38,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.620048579131582,
+        "mean_entropy": -0.01479621083326521,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n        case 0 :\n            // no sign\n            // return real only complex number\n            return new Complex(re.doubleValue(), 0.0);\n        case '-' :\n            sign = -1;\n            break;\n        case '+' :\n            sign = 1;\n            break;\n        default :\n            // invalid sign\n            // set index back to initial, error index should be the last\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // check if source contains the imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 22,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -8.501398977208291,
+        "mean_entropy": -0.016380344850112315,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (endIndex > source.length() || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 12,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.892511920360638,
+        "mean_entropy": -0.01824307096086885,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "correct"
+      },
+      {
+        "patch": "\n/**\n * Parses a string to produce a {@link Complex} object.\n *\n * @param source the string to parse\n * @param pos input/ouput parsing parameter.\n * @return the parsed {@link Complex} object.\n */\npublic Complex parse(String source, ParsePosition pos) {\n    int initialIndex = pos.getIndex();\n\n    // parse whitespace\n    parseAndIgnoreWhitespace(source, pos);\n\n    // parse real\n    Number re = parseNumber(source, getRealFormat(), pos);\n    if (re == null) {\n        // invalid real number\n        // set index back to initial, error index should already be set\n        // character examined.\n        pos.setIndex(initialIndex);\n        return null;\n    }\n\n    // parse sign\n    int startIndex = pos.getIndex();\n    char c = parseNextCharacter(source, pos);\n    int sign = 0;\n    switch (c) {\n        case 0:\n            // no sign\n            // return real only complex number\n            return new Complex(re.doubleValue(), 0.0);\n        case '-':\n            sign = -1;\n            break;\n        case '+':\n            sign = 1;\n            break;\n        default:\n            // invalid sign\n            // set index back to initial, error index should be the last\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n    }\n\n    // parse whitespace\n    parseAndIgnoreWhitespace(source, pos);\n\n    // check if source contains imaginary character\n    int n = 0;\n    if (source.contains(getImaginaryCharacter())) {\n        n = getImaginaryCharacter().length();\n    }\n\n    // parse imaginary\n    Number im = parseNumber(source, getRealFormat(), pos);\n    if (im == null) {\n        // invalid imaginary number\n        // set index back to initial, error index should already be set\n        // character examined.\n        pos.setIndex(initialIndex);\n        return null;\n    }\n\n    // parse imaginary character\n    startIndex = pos.getIndex();\n    int endIndex = startIndex + n;\n    if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n        // set index back to initial, error index should be the start index\n        // character examined.\n        pos.setIndex(initialIndex);\n        pos.setErrorIndex(startIndex);\n        return null;\n    }\n    pos.setIndex(endIndex);\n\n    return new Complex(re.doubleValue(), im.doubleValue() * sign);\n}\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.611680285275861,
+        "mean_entropy": -0.018663456864613324,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.length() < endIndex ||\n            source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 85,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.980503439224362,
+        "mean_entropy": -0.019119738389318703,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (endIndex <= source.length() && source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 26,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.254804601333838,
+        "mean_entropy": -0.019186517182005636,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter()))\n            n = getImaginaryCharacter().length();\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (startIndex + n > source.length() || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 41,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.792862503317957,
+        "mean_entropy": -0.020875942946456397,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0:\n                return new Complex(re.doubleValue(), 0.0);\n            case '-':\n                sign = -1;\n                break;\n            case '+':\n                sign = 1;\n                break;\n            default:\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 56,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.684034221746261,
+        "mean_entropy": -0.020953085334627777,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n        case 0 :\n            // no sign\n            // return real only complex number\n            return new Complex(re.doubleValue(), 0.0);\n        case '-' :\n            sign = -1;\n            break;\n        case '+' :\n            sign = 1;\n            break;\n        default :\n            // invalid sign\n            // set index back to initial, error index should be the last\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // check if source contains the imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (startIndex + n > source.length() || !source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 43,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -11.213066013603086,
+        "mean_entropy": -0.021398980941990622,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/output parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n            case 0 :\n                // no sign\n                // return real only complex number\n                return new Complex(re.doubleValue(), 0.0);\n            case '-' :\n                sign = -1;\n                break;\n            case '+' :\n                sign = 1;\n                break;\n            default :\n                // invalid sign\n                // set index back to initial, error index should be the last\n                // character examined.\n                pos.setIndex(initialIndex);\n                pos.setErrorIndex(startIndex);\n                return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // check if source contains imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(\n                getImaginaryCharacter()) != 0) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 84,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -12.911698449172235,
+        "mean_entropy": -0.02464064589536686,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n        case 0:\n            return new Complex(re.doubleValue(), 0.0);\n        case '-':\n            sign = -1;\n            break;\n        case '+':\n            sign = 1;\n            break;\n        default:\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n\n        parseAndIgnoreWhitespace(source, pos);\n\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 30,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.519186458427795,
+        "mean_entropy": -0.02984070990102757,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Parses a string to produce a {@link Complex} object.\n     *\n     * @param source the string to parse\n     * @param pos input/ouput parsing parameter.\n     * @return the parsed {@link Complex} object.\n     */\n    public Complex parse(String source, ParsePosition pos) {\n        int initialIndex = pos.getIndex();\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse real\n        Number re = parseNumber(source, getRealFormat(), pos);\n        if (re == null) {\n            // invalid real number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse sign\n        int startIndex = pos.getIndex();\n        char c = parseNextCharacter(source, pos);\n        int sign = 0;\n        switch (c) {\n        case 0 :\n            // no sign\n            // return real only complex number\n            return new Complex(re.doubleValue(), 0.0);\n        case '-' :\n            sign = -1;\n            break;\n        case '+' :\n            sign = 1;\n            break;\n        default :\n            // invalid sign\n            // set index back to initial, error index should be the last\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n\n        // parse whitespace\n        parseAndIgnoreWhitespace(source, pos);\n\n        // parse imaginary\n        Number im = parseNumber(source, getRealFormat(), pos);\n        if (im == null) {\n            // invalid imaginary number\n            // set index back to initial, error index should already be set\n            // character examined.\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        // parse imaginary character\n        int n = 0;\n        if (source.contains(getImaginaryCharacter())) {\n            n = getImaginaryCharacter().length();\n        }\n\n        startIndex = pos.getIndex();\n        int endIndex = startIndex + n;\n        \n        if (source.length() < endIndex) {\n            pos.setIndex(initialIndex);\n            return null;\n        }\n\n        if (!source.substring(startIndex, endIndex).equals(getImaginaryCharacter())) {\n            // set index back to initial, error index should be the start index\n            // character examined.\n            pos.setIndex(initialIndex);\n            pos.setErrorIndex(startIndex);\n            return null;\n        }\n        pos.setIndex(endIndex);\n\n        return new Complex(re.doubleValue(), im.doubleValue() * sign);\n    }\n",
+        "index": 50,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 2,
+        "passing_trigger": 2,
+        "total_relevant": 2,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.complex.ComplexFormatTest::testForgottenImaginaryCharacter",
+          "org.apache.commons.math.complex.FrenchComplexFormatTest::testForgottenImaginaryCharacter"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -18.5087870646846,
+        "mean_entropy": -0.034595863672307665,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

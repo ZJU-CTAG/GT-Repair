@@ -1,0 +1,466 @@
+{
+  "Chart_5_source/org/jfree/data/xy/XYSeries.java_530_576": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            } catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        } else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            } else {\n                this.data.add(item);\n            }\n        } else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            } else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 57,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.54845789186725,
+        "mean_entropy": -0.006200627474129561,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            } catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        } else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            } else {\n                this.data.add(item);\n            }\n        } else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            } else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 63,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.54845789186725,
+        "mean_entropy": -0.006200627474129561,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 72,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.9639474260370307,
+        "mean_entropy": -0.007124873620281324,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 76,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.9639474260370307,
+        "mean_entropy": -0.007124873620281324,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 83,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.9639474260370307,
+        "mean_entropy": -0.007124873620281324,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 87,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.9639474260370307,
+        "mean_entropy": -0.007124873620281324,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 94,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -2.9639474260370307,
+        "mean_entropy": -0.007124873620281324,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 30,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.229731649762038,
+        "mean_entropy": -0.00847641613178765,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 49,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.229731649762038,
+        "mean_entropy": -0.00847641613178765,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 73,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.229731649762038,
+        "mean_entropy": -0.00847641613178765,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 89,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -4.229731649762038,
+        "mean_entropy": -0.00847641613178765,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size\n                    && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 15,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.359169816879903,
+        "mean_entropy": -0.010696945742275255,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size\n                    && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 40,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.359169816879903,
+        "mean_entropy": -0.010696945742275255,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            // need to make sure we are adding *after* any duplicates\n            int size = this.data.size();\n            while (index < size\n                    && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            }\n            else {\n                this.data.add(item);\n            }\n        }\n        else {\n            // if the series is sorted, the negative index is a result from\n            // Collections.binarySearch() and tells us where to insert the\n            // new item...otherwise it will be just -1 and we should just\n            // append the value to the list...\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            // check if this addition will exceed the maximum item count...\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 48,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.359169816879903,
+        "mean_entropy": -0.010696945742275255,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n/**\n * Adds or updates an item in the series and sends a\n * {@link SeriesChangeEvent} to all registered listeners.\n *\n * @param x  the x-value (<code>null</code> not permitted).\n * @param y  the y-value (<code>null</code> permitted).\n *\n * @return A copy of the overwritten data item, or <code>null</code> if no\n *         item was overwritten.\n */\npublic XYDataItem addOrUpdate(Number x, Number y) {\n    if (x == null) {\n        throw new IllegalArgumentException(\"Null 'x' argument.\");\n    }\n\n    // if we get to here, we know that duplicate X values are not permitted\n    XYDataItem overwritten = null;\n    int index = indexOf(x);\n    if (index >= 0 && !this.allowDuplicateXValues) {\n        XYDataItem existing = (XYDataItem) this.data.get(index);\n        try {\n            overwritten = (XYDataItem) existing.clone();\n        }\n        catch (CloneNotSupportedException e) {\n            throw new SeriesException(\"Couldn't clone XYDataItem!\");\n        }\n        existing.setY(y);\n    }\n    else if (index >= 0) {\n        XYDataItem item = new XYDataItem(x, y);\n        int size = this.data.size();\n        while (index < size && item.compareTo(this.data.get(index)) == 0) {\n            index++;\n        }\n        if (index < this.data.size()) {\n            this.data.add(index, item);\n        }\n        else {\n            this.data.add(item);\n        }\n    }\n    else {\n        if (this.autoSort) {\n            this.data.add(-index - 1, new XYDataItem(x, y));\n        }\n        else {\n            this.data.add(new XYDataItem(x, y));\n        }\n        if (getItemCount() > this.maximumItemCount) {\n            this.data.remove(0);\n        }\n    }\n    fireSeriesChanged();\n    return overwritten;\n}\n",
+        "index": 85,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -5.605889691713133,
+        "mean_entropy": -0.01387596458344835,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x  the x-value (<code>null</code> not permitted).\n     * @param y  the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     *         item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        // if we get to here, we know that duplicate X values are not permitted\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else if (index >= 0){\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            } else {\n                this.data.add(item);\n            }\n        }\n        else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            }\n            else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 13,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.160497809635824,
+        "mean_entropy": -0.01488042949187397,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Adds or updates an item in the series and sends a\n     * {@link SeriesChangeEvent} to all registered listeners.\n     *\n     * @param x the x-value (<code>null</code> not permitted).\n     * @param y the y-value (<code>null</code> permitted).\n     *\n     * @return A copy of the overwritten data item, or <code>null</code> if no\n     * item was overwritten.\n     */\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            } catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        } else if (index >= 0) {\n            XYDataItem item = new XYDataItem(x, y);\n            int size = this.data.size();\n            while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                index++;\n            }\n            if (index < this.data.size()) {\n                this.data.add(index, item);\n            } else {\n                this.data.add(item);\n            }\n        } else {\n            if (this.autoSort) {\n                this.data.add(-index - 1, new XYDataItem(x, y));\n            } else {\n                this.data.add(new XYDataItem(x, y));\n            }\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 55,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.1271329463217725,
+        "mean_entropy": -0.015710597298260954,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n/**\n * Adds or updates an item in the series and sends a\n * {@link SeriesChangeEvent} to all registered listeners.\n *\n * @param x  the x-value (<code>null</code> not permitted).\n * @param y  the y-value (<code>null</code> permitted).\n *\n * @return A copy of the overwritten data item, or <code>null</code> if no\n *         item was overwritten.\n */\npublic XYDataItem addOrUpdate(Number x, Number y) {\n    if (x == null) {\n        throw new IllegalArgumentException(\"Null 'x' argument.\");\n    }\n\n    // if we get to here, we know that duplicate X values are not permitted\n    XYDataItem overwritten = null;\n    int index = indexOf(x);\n    if (index >= 0 && !this.allowDuplicateXValues) {\n        XYDataItem existing = (XYDataItem) this.data.get(index);\n        try {\n            overwritten = (XYDataItem) existing.clone();\n        }\n        catch (CloneNotSupportedException e) {\n            throw new SeriesException(\"Couldn't clone XYDataItem!\");\n        }\n        existing.setY(y);\n    }\n    else if (index >= 0){\n        XYDataItem item = new XYDataItem(x, y);\n        // need to make sure we are adding *after* any duplicates\n        int size = this.data.size();\n        while (index < size\n        && item.compareTo(this.data.get(index)) == 0) {\n            index++;\n        }\n        if (index < this.data.size()) {\n            this.data.add(index, item);\n        }\n        else {\n            this.data.add(item);\n        }\n        // check if this addition will exceed the maximum item count...\n        if (getItemCount() > this.maximumItemCount) {\n            this.data.remove(0);\n        }\n    }\n    else {\n        // if the series is sorted, the negative index is a result from\n        // Collections.binarySearch() and tells us where to insert the\n        // new item...otherwise it will be just -1 and we should just\n        // append the value to the list...\n        if (this.autoSort) {\n            this.data.add(-index - 1, new XYDataItem(x, y));\n        }\n        else {\n            this.data.add(new XYDataItem(x, y));\n        }\n        // check if this addition will exceed the maximum item count...\n        if (getItemCount() > this.maximumItemCount) {\n            this.data.remove(0);\n        }\n    }\n    fireSeriesChanged();\n    return overwritten;\n}\n",
+        "index": 82,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -10.299209391401057,
+        "mean_entropy": -0.01969256097782229,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n/**\n * Adds or updates an item in the series and sends a\n * {@link SeriesChangeEvent} to all registered listeners.\n *\n * @param x  the x-value (<code>null</code> not permitted).\n * @param y  the y-value (<code>null</code> permitted).\n *\n * @return A copy of the overwritten data item, or <code>null</code> if no\n *         item was overwritten.\n */\npublic XYDataItem addOrUpdate(Number x, Number y) {\n    if (x == null) {\n        throw new IllegalArgumentException(\"Null 'x' argument.\");\n    }\n\n    // if we get to here, we know that duplicate X values are not permitted\n    XYDataItem overwritten = null;\n    int index = indexOf(x);\n    if (index >= 0 && !this.allowDuplicateXValues) {\n        XYDataItem existing = (XYDataItem) this.data.get(index);\n        try {\n            overwritten = (XYDataItem) existing.clone();\n        }\n        catch (CloneNotSupportedException e) {\n            throw new SeriesException(\"Couldn't clone XYDataItem!\");\n        }\n        existing.setY(y);\n    }\n    else if (index >= 0){\n        XYDataItem item = new XYDataItem(x, y);\n        int size = this.data.size();\n        while (index < size && item.compareTo(this.data.get(index)) == 0) {\n            index++;\n        }\n        if (index < this.data.size()) {\n            this.data.add(index, item);\n        }\n        else {\n            this.data.add(item);\n        }\n    }\n    else {\n        if (this.autoSort) {\n            this.data.add(-index - 1, new XYDataItem(x, y));\n        }\n        else {\n            this.data.add(new XYDataItem(x, y));\n        }\n    }\n    if (getItemCount() > this.maximumItemCount) {\n        this.data.remove(0);\n    }\n    fireSeriesChanged();\n    return overwritten;\n}\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.855719562863417,
+        "mean_entropy": -0.024455879808594087,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public XYDataItem addOrUpdate(Number x, Number y) {\n        if (x == null) {\n            throw new IllegalArgumentException(\"Null 'x' argument.\");\n        }\n\n        XYDataItem overwritten = null;\n        int index = indexOf(x);\n        if (index >= 0 && !this.allowDuplicateXValues) {\n            XYDataItem existing = (XYDataItem) this.data.get(index);\n            try {\n                overwritten = (XYDataItem) existing.clone();\n            }\n            catch (CloneNotSupportedException e) {\n                throw new SeriesException(\"Couldn't clone XYDataItem!\");\n            }\n            existing.setY(y);\n        }\n        else {\n            if (index >= 0) {\n                XYDataItem item = new XYDataItem(x, y);\n                int size = this.data.size();\n                while (index < size && item.compareTo(this.data.get(index)) == 0) {\n                    index++;\n                }\n                if (index < this.data.size()) {\n                    this.data.add(index, item);\n                }\n                else {\n                    this.data.add(item);\n                }\n            }\n            else {\n                if (this.autoSort) {\n                    this.data.add(-index - 1, new XYDataItem(x, y));\n                }\n                else {\n                    this.data.add(new XYDataItem(x, y));\n                }\n            }\n\n            if (getItemCount() > this.maximumItemCount) {\n                this.data.remove(0);\n            }\n        }\n        fireSeriesChanged();\n        return overwritten;\n    }\n",
+        "index": 58,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.jfree.data.xy.junit.XYSeriesTests::testBug1955483"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.48072120877059,
+        "mean_entropy": -0.031186582923587464,
+        "pass_FIB_num": 2,
+        "pass_FIB": [
+          "Chart_5_n42.txt",
+          "Chart_5_n35.txt"
+        ],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

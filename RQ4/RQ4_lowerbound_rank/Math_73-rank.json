@@ -1,0 +1,66 @@
+{
+  "Math_73_src/main/java/org/apache/commons/math/analysis/solvers/BrentSolver.java_78_140": {
+    "patches": [
+      {
+        "patch": "\n    /**\n     * Find a zero in the given interval with an initial guess.\n     * <p>Throws <code>IllegalArgumentException</code> if the values of the\n     * function at the three points have the same sign (note that it is\n     * allowed to have endpoints with the same sign if the initial point has\n     * opposite sign function-wise).</p>\n     *\n     * @param f function to solve.\n     * @param min the lower bound for the interval.\n     * @param max the upper bound for the interval.\n     * @param initial the start value to use (must be set to min if no\n     * initial point is known).\n     * @return the value where the function is zero\n     * @throws MaxIterationsExceededException the maximum iteration count\n     * is exceeded\n     * @throws FunctionEvaluationException if an error occurs evaluating\n     *  the function\n     * @throws IllegalArgumentException if initial is not between min and max\n     * (even if it <em>is</em> a root)\n     */\n    public double solve(final UnivariateRealFunction f,\n                        final double min, final double max, final double initial)\n        throws MaxIterationsExceededException, FunctionEvaluationException {\n\n        clearResult();\n        verifySequence(min, initial, max);\n\n        // return the initial guess if it is good enough\n        double yInitial = f.value(initial);\n        if (Math.abs(yInitial) <= functionValueAccuracy) {\n            setResult(initial, 0);\n            return result;\n        }\n\n        // return the first endpoint if it is good enough\n        double yMin = f.value(min);\n        if (Math.abs(yMin) <= functionValueAccuracy) {\n            setResult(yMin, 0);\n            return result;\n        }\n\n        // throw IllegalArgumentException if initial has the same sign as min and max\n        if (yInitial * yMin > 0 && yInitial * f.value(max) > 0) {\n            throw new IllegalArgumentException(\"Initial guess has the wrong sign.\");\n        }\n\n        // reduce interval if min and initial bracket the root\n        if (yInitial * yMin < 0) {\n            return solve(f, min, yMin, initial, yInitial, min, yMin);\n        }\n\n        // return the second endpoint if it is good enough\n        double yMax = f.value(max);\n        if (Math.abs(yMax) <= functionValueAccuracy) {\n            setResult(yMax, 0);\n            return result;\n        }\n\n        // reduce interval if initial and max bracket the root\n        if (yInitial * yMax < 0) {\n            return solve(f, initial, yInitial, max, yMax, initial, yInitial);\n        }\n\n\n        // full Brent algorithm starting with provided initial guess\n        return solve(f, min, yMin, max, yMax, initial, yInitial);\n\n    }\n",
+        "index": 33,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.analysis.solvers.BrentSolverTest::testBadEndpoints"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -14.877684160828277,
+        "mean_entropy": -0.024962557316825968,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    /**\n     * Find a zero in the given interval with an initial guess.\n     * <p>Throws <code>IllegalArgumentException</code> if the values of the\n     * function at the three points have the same sign (note that it is\n     * allowed to have endpoints with the same sign if the initial point has\n     * opposite sign function-wise).</p>\n     *\n     * @param f function to solve.\n     * @param min the lower bound for the interval.\n     * @param max the upper bound for the interval.\n     * @param initial the start value to use (must be set to min if no\n     * initial point is known).\n     * @return the value where the function is zero\n     * @throws MaxIterationsExceededException the maximum iteration count\n     * is exceeded\n     * @throws FunctionEvaluationException if an error occurs evaluating\n     *  the function\n     * @throws IllegalArgumentException if initial is not between min and max\n     * (even if it <em>is</em> a root)\n     */\n    public double solve(final UnivariateRealFunction f,\n                        final double min, final double max, final double initial)\n        throws MaxIterationsExceededException, FunctionEvaluationException {\n\n        clearResult();\n        verifySequence(min, initial, max);\n\n        // return the initial guess if it is good enough\n        double yInitial = f.value(initial);\n        if (Math.abs(yInitial) <= functionValueAccuracy) {\n            setResult(initial, 0);\n            return result;\n        }\n\n        // return the first endpoint if it is good enough\n        double yMin = f.value(min);\n        if (Math.abs(yMin) <= functionValueAccuracy) {\n            setResult(yMin, 0);\n            return result;\n        }\n\n        // check if the sign of initial and endpoints is the same\n        if (Math.signum(yMin) == Math.signum(yInitial) && Math.signum(yMin) == Math.signum(f.value(max))) {\n            throw new IllegalArgumentException(\"Initial point and endpoints have the same sign.\");\n        }\n\n        // reduce interval if min and initial bracket the root\n        if (yInitial * yMin < 0) {\n            return solve(f, min, yMin, initial, yInitial, min, yMin);\n        }\n\n        // return the second endpoint if it is good enough\n        double yMax = f.value(max);\n        if (Math.abs(yMax) <= functionValueAccuracy) {\n            setResult(yMax, 0);\n            return result;\n        }\n\n        // reduce interval if initial and max bracket the root\n        if (yInitial * yMax < 0) {\n            return solve(f, initial, yInitial, max, yMax, initial, yInitial);\n        }\n\n\n        // full Brent algorithm starting with provided initial guess\n        return solve(f, min, yMin, max, yMax, initial, yInitial);\n\n    }\n",
+        "index": 44,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.analysis.solvers.BrentSolverTest::testBadEndpoints"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -25.348723638063113,
+        "mean_entropy": -0.04189871675712911,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public double solve(final UnivariateRealFunction f,\n                        final double min, final double max, final double initial)\n        throws MaxIterationsExceededException, FunctionEvaluationException {\n\n        clearResult();\n        verifySequence(min, initial, max);\n\n        // return the initial guess if it is good enough\n        double yInitial = f.value(initial);\n        if (Math.abs(yInitial) <= functionValueAccuracy) {\n            setResult(initial, 0);\n            return result;\n        }\n\n        // return the first endpoint if it is good enough\n        double yMin = f.value(min);\n        if (Math.abs(yMin) <= functionValueAccuracy) {\n            setResult(yMin, 0);\n            return result;\n        }\n\n        // throw IllegalArgumentException if all function values have the same sign\n        double yMax = f.value(max);\n        if ((yInitial >= 0 && yMin >= 0 && yMax >= 0) || (yInitial <= 0 && yMin <= 0 && yMax <= 0)) {\n            throw new IllegalArgumentException(\"Initial, min, and max have the same sign.\");\n        }\n\n        // reduce interval if min and initial bracket the root\n        if (yInitial * yMin < 0) {\n            return solve(f, min, yMin, initial, yInitial, min, yMin);\n        }\n\n        // return the second endpoint if it is good enough\n        if (Math.abs(yMax) <= functionValueAccuracy) {\n            setResult(yMax, 0);\n            return result;\n        }\n\n        // reduce interval if initial and max bracket the root\n        if (yInitial * yMax < 0) {\n            return solve(f, initial, yInitial, max, yMax, initial, yInitial);\n        }\n\n        // full Brent algorithm starting with provided initial guess\n        return solve(f, min, yMin, max, yMax, initial, yInitial);\n    }\n",
+        "index": 52,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 36,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.math.analysis.solvers.BrentSolverTest::testBadEndpoints"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -20.165030589961198,
+        "mean_entropy": -0.05092179441909393,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}

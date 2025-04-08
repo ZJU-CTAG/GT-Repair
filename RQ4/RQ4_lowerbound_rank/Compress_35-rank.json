@@ -1,0 +1,126 @@
+{
+  "Compress_35_src/main/java/org/apache/commons/compress/archivers/tar/TarUtils.java_568_613": {
+    "patches": [
+      {
+        "patch": "\n/**\n * Wikipedia <a href=\"http://en.wikipedia.org/wiki/Tar_(file_format)#File_header\">says</a>:\n * <blockquote>\n * The checksum is calculated by taking the sum of the unsigned byte values\n * of the header block with the eight checksum bytes taken to be ascii\n * spaces (decimal value 32). It is stored as a six digit octal number with\n * leading zeroes followed by a NUL and then a space. Various\n * implementations do not adhere to this format. For better compatibility,\n * ignore leading and trailing whitespace, and get the first six digits. In\n * addition, some historic tar implementations treated bytes as signed.\n * Implementations typically calculate the checksum both ways, and treat it\n * as good if either the signed or unsigned sum matches the included\n * checksum.\n * </blockquote>\n * <p>\n * The return value of this method should be treated as a best-effort\n * heuristic rather than an absolute and final truth. The checksum\n * verification logic may well evolve over time as more special cases\n * are encountered.\n *\n * @param header tar header\n * @return whether the checksum is reasonably good\n * @see <a href=\"https://issues.apache.org/jira/browse/COMPRESS-191\">COMPRESS-191</a>\n * @since 1.5\n */\npublic static boolean verifyCheckSum(byte[] header) {\n    long storedSum = 0;\n    long unsignedSum = 0;\n    long signedSum = 0;\n\n    int digits = 0;\n    for (int i = 0; i < header.length; i++) {\n        byte b = header[i];\n        if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n            if ('0' <= b && b <= '7') {\n                storedSum = storedSum * 8 + b - '0';\n                digits++;\n            } else if (digits > 0) {\n                digits = 6;\n            }\n            b = ' ';\n        }\n        unsignedSum += 0xff & b;\n        signedSum += b;\n    }\n    return storedSum == unsignedSum || storedSum == signedSum;\n}\n",
+        "index": 20,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -7.272923740263264,
+        "mean_entropy": -0.015949394167244,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static boolean verifyCheckSum(byte[] header) {\n        long storedSum = 0;\n        long unsignedSum = 0;\n        long signedSum = 0;\n\n        int digits = 0;\n        for (int i = 0; i < header.length; i++) {\n            byte b = header[i];\n            if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n                if ('0' <= b && b <= '7') {\n                    storedSum = storedSum * 8 + b - '0';\n                    digits++;\n                } else if (digits > 0) {\n                    digits = 6;\n                }\n                b = ' ';\n            }\n            unsignedSum += 0xff & b;\n            signedSum += b;\n        }\n        return storedSum == unsignedSum || storedSum == signedSum;\n    }\n",
+        "index": 62,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -6.771496013139046,
+        "mean_entropy": -0.037411580183088655,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static boolean verifyCheckSum(byte[] header) {\n        long storedSum = 0;\n        long unsignedSum = 0;\n        long signedSum = 0;\n\n        int digits = 0;\n        for (int i = 0; i < header.length; i++) {\n            byte b = header[i];\n            if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n                if ('0' <= b && b <= '7') {\n                    storedSum = storedSum * 8 + b - '0';\n                    digits++;\n                } else {\n                    digits = 6;\n                }\n                b = ' ';\n            }\n            unsignedSum += 0xff & b;\n            signedSum += b;\n        }\n        return storedSum == unsignedSum || storedSum == signedSum;\n    }\n",
+        "index": 23,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -9.346312386237205,
+        "mean_entropy": -0.053714439001363246,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\npublic static boolean verifyCheckSum(byte[] header) {\n    long storedSum = 0;\n    long unsignedSum = 0;\n    long signedSum = 0;\n\n    int digits = 0;\n    boolean foundNonZero = false;\n    for (int i = 0; i < header.length; i++) {\n        byte b = header[i];\n        if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n            if ('0' <= b && b <= '7') {\n                if (b != '0' || foundNonZero || digits < 6) {\n                    storedSum = storedSum * 8 + b - '0';\n                    digits++;\n                    if (b != '0') {\n                        foundNonZero = true;\n                    }\n                }\n            }\n            b = ' ';\n        }\n        unsignedSum += 0xff & b;\n        signedSum += b;\n    }\n    return storedSum == unsignedSum || storedSum == signedSum;\n}\n",
+        "index": 39,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -12.769672201624703,
+        "mean_entropy": -0.061098910055620584,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static boolean verifyCheckSum(byte[] header) {\n        long storedSum = 0;\n        long unsignedSum = 0;\n        long signedSum = 0;\n\n        int digits = 0;\n        boolean foundNull = false;\n        for (int i = 0; i < header.length; i++) {\n            byte b = header[i];\n            if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n                if ('0' <= b && b <= '7') {\n                    if (!foundNull || b != '0') {\n                        storedSum = storedSum * 8 + b - '0';\n                        digits++;\n                    }\n                    if (b == '0' && digits == 6) {\n                        foundNull = true;\n                    }\n                }\n                b = ' ';\n            }\n            unsignedSum += 0xff & b;\n            signedSum += b;\n        }\n        return storedSum == unsignedSum || storedSum == signedSum;\n    }\n",
+        "index": 8,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -15.360599732197457,
+        "mean_entropy": -0.07384903717402623,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      },
+      {
+        "patch": "\n    public static boolean verifyCheckSum(byte[] header) {\n        long storedSum = 0;\n        long unsignedSum = 0;\n        long signedSum = 0;\n\n        int digits = 0;\n        boolean foundNonZero = false;\n        for (int i = 0; i < header.length; i++) {\n            byte b = header[i];\n            if (CHKSUM_OFFSET <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {\n                if ('0' <= b && b <= '7') {\n                    storedSum = storedSum * 8 + b - '0';\n                    digits++;\n                    if (b != '0') {\n                        foundNonZero = true;\n                    }\n                } else if (digits > 0) {\n                    if (foundNonZero) {\n                        digits = 6;\n                    }\n                }\n                b = ' ';\n            }\n            unsignedSum += 0xff & b;\n            signedSum += b;\n        }\n        return storedSum == unsignedSum || storedSum == signedSum;\n    }\n",
+        "index": 41,
+        "validation": "plausible",
+        "errors": [],
+        "total_trigger": 1,
+        "passing_trigger": 1,
+        "total_relevant": 14,
+        "failing_relevant": 0,
+        "passing_tests": [
+          "org.apache.commons.compress.DetectArchiverTestCase::testCOMPRESS335"
+        ],
+        "failing_tests": [],
+        "sum_entropy": -17.469969175563488,
+        "mean_entropy": -0.08087948692390504,
+        "pass_FIB_num": 0,
+        "pass_FIB": [],
+        "validation_wo": "plausible",
+        "correctness": "wrong"
+      }
+    ]
+  }
+}
