@@ -1,0 +1,18 @@
+{
+  "patch": "\nprivate void annotateCalls(Node n) {\n    Preconditions.checkState(n.isCall());\n\n    Node first = n.getFirstChild();\n\n    // Check if the first child is a cast\n    if (first.isCast()) {\n        first = first.getFirstChild();\n    }\n\n    // ignore cast nodes.\n    if (!NodeUtil.isGet(first)) {\n        n.putBooleanProp(Node.FREE_CALL, true);\n    }\n\n    // Keep track of the context in which eval is called. It is important\n    // to distinguish between \"(0, eval)()\" and \"eval()\".\n    if (first.isName() &&\n        \"eval\".equals(first.getString())) {\n        first.putBooleanProp(Node.DIRECT_EVAL, true);\n    }\n}\n",
+  "index": 5,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 163,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.IntegrationTest::testIssue937"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -10.616728277876973,
+  "mean_entropy": -0.05389202171511154,
+  "test_for_prompt": "Closure_129_n41.txt"
+}
