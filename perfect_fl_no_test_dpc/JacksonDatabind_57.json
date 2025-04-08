@@ -1,0 +1,17 @@
+{
+  "patch": "\n    /**\n     * Overloaded version of {@link #readValue(InputStream)}.\n     */\n    public <T> MappingIterator<T> readValues(byte[] src, int offset, int length)\n        throws IOException, JsonProcessingException\n    {\n        if (_dataFormatReaders != null) {\n            return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);\n        }\n        // Create a new input stream that ignores the first offset bytes\n        InputStream subStream = new ByteArrayInputStream(src, offset, length);\n        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(subStream), \n                true));\n    }\n",
+  "index": 0,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 302,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.fasterxml.jackson.databind.seq.ReadValuesTest::testRootBeans"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -16.39258535206318,
+  "mean_entropy": -0.09995478873209256
+}

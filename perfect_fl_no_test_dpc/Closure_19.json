@@ -1,0 +1,17 @@
+{
+  "patch": "\nprotected void declareNameInScope(FlowScope scope, Node node, JSType type) {\n    switch (node.getType()) {\n        case Token.NAME:\n            scope.inferSlotType(node.getString(), type);\n            break;\n        case Token.GETPROP:\n            String qualifiedName = node.getQualifiedName();\n            Preconditions.checkNotNull(qualifiedName);\n\n            JSType origType = node.getJSType();\n            origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;\n            scope.inferQualifiedSlot(node, qualifiedName, origType, type);\n            break;\n        case Token.THIS:\n            // Handle 'this' keyword here. You may want to infer its type based on the surrounding context.\n            break;\n        default:\n            throw new IllegalArgumentException(\"Node cannot be refined. \\n\" +\n                    node.toStringTree());\n    }\n}\n",
+  "index": 12,
+  "validation": "plausible",
+  "validation_wo": "plausible",
+  "errors": [],
+  "total_trigger": 1,
+  "passing_trigger": 1,
+  "total_relevant": 170,
+  "failing_relevant": 0,
+  "passing_tests": [
+    "com.google.javascript.jscomp.TypeInferenceTest::testNoThisInference"
+  ],
+  "failing_tests": [],
+  "sum_entropy": -13.32597354799509,
+  "mean_entropy": -0.05793901542606561
+}
