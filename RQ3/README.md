@@ -5,4 +5,4 @@ File Structure:
 
 
 # evaluate performance of ranking strategies 
-python 
+python ./RQ3_ranking.py 
