@@ -1,6 +1,6 @@
 File Structure:
-- perfect_fl_add_test_gpt    \\ patches that used for evaluate ranking strategies
-- RQ3_ranking.py    \\  ranking strategy implementation
+- perfect_fl_add_test_gpt    // patches that used for evaluate ranking strategies
+- RQ3_ranking.py    //  ranking strategy implementation
 
 
 
