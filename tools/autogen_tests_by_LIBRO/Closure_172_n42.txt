@@ -1,0 +1,15 @@
+public void testIssue166() {
+    String source = "/** @param {Object} a */\n" +
+                    "function f(a) {\n" +
+                    "  a.prototype = '__proto';\n" +
+                    "}\n" +
+                    "/** @param {Object} a */\n" +
+                    "function g(a) {\n" +
+                    "  a.prototype = function(){};\n" +
+                    "}\n";
+    try {
+        compiler.compile(SourceFile.fromCode("test.js", source), new JsChecker());
+    } catch (ParseException e) {
+        assertTrue(e.getMessage(), e.getMessage().startsWith("WARNING"));
+    }
+}

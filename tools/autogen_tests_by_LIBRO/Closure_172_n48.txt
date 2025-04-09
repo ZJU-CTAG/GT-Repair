@@ -1,0 +1,8 @@
+public void testIssue108() {
+    String source = "function f(a) { a.prototype = '__proto'; } function g(a) { a.prototype = function(){}; }";
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("input", source));
+    Result result = compiler.compile(EMPTY_EXTERNS, inputs, new CompilerOptions());
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

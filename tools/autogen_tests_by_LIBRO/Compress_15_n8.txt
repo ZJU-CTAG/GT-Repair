@@ -1,0 +1,18 @@
+public void testZipArchiveEntryEquals() throws IOException {
+    File zipFile = new File("testZipArchiveEntryEquals.zip");
+    try {
+        ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(zipFile);
+        zaos.putArchiveEntry(new ZipArchiveEntry("test"));
+        zaos.closeArchiveEntry();
+        zaos.close();
+        ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(zipFile));
+        ZipArchiveEntry zipArchiveEntry = zais.getNextZipEntry();
+        zais.close();
+        ZipFile zip = new ZipFile(zipFile);
+        // fails because ZipArchiveEntry#equals fail
+        assertEquals(zip.getEntry("test"), zipArchiveEntry);
+        zip.close();
+    } finally {
+        zipFile.delete();
+    }
+}

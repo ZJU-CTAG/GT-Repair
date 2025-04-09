@@ -1,0 +1,26 @@
+public void testObjectIds() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    ObjectIdGenerator<?> gen = new ObjectIdGenerators.PropertyGenerator() {
+        @Override
+        public ObjectIdGenerator<?> forScope(Object scope) {
+            return null;
+        }
+        @Override
+        public ObjectIdGenerator<?> newForSerialization(Object context) {
+            return null;
+        }
+        @Override
+        public IdKey key(Object key) {
+            return null;
+        }
+        @Override
+        public Object generateId(Object forPojo) {
+            return "1";
+        }
+    };
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(Object.class, Object.class)
+            .enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+            .setDefaultKeySerializer(KeySerializers.StringKeySerializer.instance)
+            .setDefaultKeyDeserializer(KeyDeserializers.StringKeyDeserializer.instance)
+            .addSerializer(Object.

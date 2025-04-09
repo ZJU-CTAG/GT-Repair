@@ -1,0 +1,19 @@
+public void testOptimize() {
+    // Create and populate the model
+    SimplexModel model = new SimplexModel(true, false);
+
+    model.addVariable("x1");
+    model.addVariable("x2");
+    model.setVariableLowerBound("x1", 0);
+    model.setVariableLowerBound("x2", 0);
+
+    model.setObjectiveFunction(new LinearObjectiveFunction(new double[] { 2.0, 2.0 }, 0.0));
+
+    model.addConstraint(new LinearConstraint(new double[] { 1.0, 0.0 }, Relationship.GEQ, 1.0));
+    model.addConstraint(new LinearConstraint(new double[] { 0.0, 1.0 }, Relationship.GEQ, 2.0));
+    model.addConstraint(new LinearConstraint(new double[] { 1.0, 1.0 }, Relationship.EQ, 2.0));
+
+    // Create and configure the solver
+    SimplexSolver solver = new SimplexSolver();
+    solver.setMaxIterations(100);
+    solver

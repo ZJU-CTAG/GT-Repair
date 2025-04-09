@@ -1,0 +1,22 @@
+public void testDelete() throws Exception {
+    final File archive = new File("target/test-classes/bla.ar");
+    final String entryToDelete = "test2.xml";
+    final String entryToAdd = "test.txt";
+
+    ArArchiveEntry ae = null;
+    ArFile af = null;
+    try {
+        af = new ArFile(archive);
+        ae = af.getEntry(entryToDelete);
+        assertNotNull("Could not find entry", ae);
+        af.deleteEntry(ae);
+
+        ae = af.getEntry(entryToDelete);
+        assertNull("Deleted entry is still there", ae);
+        ae = af.getEntry(entryToAdd);
+        assertNull("Added entry is already there", ae);
+        ArArchiveOutputStream ao = new ArArchiveOutputStream(new FileOutputStream(archive, true));
+        ArArchiveEntry ae2 = new ArArchiveEntry(entryToAdd);
+        ae2.setSize(0);
+        ao.putArchiveEntry(ae2);
+        ao.close

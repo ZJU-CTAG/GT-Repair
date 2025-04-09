@@ -1,0 +1,19 @@
+public void testSerialization() throws Exception {
+    final GammaDistribution distribution = new GammaDistribution(5, 1);
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    final ObjectOutputStream oos = new ObjectOutputStream(bos);
+    oos.writeObject(distribution);
+    oos.close();
+    final ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+    final ObjectInputStream ois = new ObjectInputStream(bis);
+    final GammaDistribution serializedDistribution = (GammaDistribution) ois.readObject();
+    ois.close();
+    final double[] samples = new double[100];
+    for (int i = 0; i < samples.length; i++) {
+        samples[i] = distribution.sample();
+    }
+    final double[] serializedSamples = new double[samples.length];
+    for (int i = 0; i < serializedSamples.length; i++) {
+        serializedSamples[i] = serializedDistribution.sample();
+    }
+    for (int i = 0; i < samples.

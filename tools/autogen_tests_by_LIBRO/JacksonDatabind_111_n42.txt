@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    ObjectReader objectReader = objectMapper.readerFor(MyBean.class);
+
+    final MyBean intRef = objectReader.readValue(" {\"refRef\": 2 } ");
+    assertNotNull(intRef.refRef); // succeeds
+    assertNotNull(intRef.refRef.get()); // succeeds
+    assertEquals(intRef.refRef.get().get(), new Integer(2)); // succeeds
+
+    final MyBean nullRef = objectReader.readValue(" {\"refRef\": null } ");
+    assertNotNull(nullRef.refRef); // succeeds
+    assertNotNull(nullRef.refRef.get()); // fails
+    assertNull(nullRef.refRef.get().get()); // fails
+}
+
+public class MyBean {
+    private AtomicReference<AtomicReference<Integer>> refRef;
+    public AtomicReference<AtomicReference<Integer>> getRefRef() {
+        return refRef;
+    }
+    public void setRefRef(AtomicReference<AtomicReference<

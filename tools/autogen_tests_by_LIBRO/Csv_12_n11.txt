@@ -1,0 +1,11 @@
+public void testEmptyColumns() throws IOException {
+    String csv = "A,B,C,\na,b,c,d";
+    try (Reader in = new StringReader(csv);
+         CSVParser parser = new CSVParser(in, CSVFormat.EXCEL)) {
+        parser.getRecords();
+        fail("Shouldn't be able to parse columns with empty names");
+    } catch (IllegalArgumentException ex) {
+        String message = ex.getMessage();
+        assertTrue("Message should contain \\'\\': " + message, message.contains("''"));
+    }
+}

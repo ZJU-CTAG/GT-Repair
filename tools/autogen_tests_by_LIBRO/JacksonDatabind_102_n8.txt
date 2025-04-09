@@ -1,0 +1,18 @@
+public void testDateSerialization() {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    // doesn't seem to do anything
+    //mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    // this works, but seems hacky
+    mapper.registerModule(new SimpleModule() {
+        {
+            addSerializer(
+                    java.sql.Date.class,
+                    new SqlDateSerializer().withFormat(false, new SimpleDateFormat("yyyy-MM-dd"))
+            );
+        }
+    });
+
+    assertEquals("\"2017-01-01\"", mapper.writeValueAsString(new java.sql.Date(1483228800000L)));
+}

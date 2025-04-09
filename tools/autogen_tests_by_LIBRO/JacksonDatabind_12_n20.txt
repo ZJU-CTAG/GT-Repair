@@ -1,0 +1,18 @@
+public void testIssue() {
+    Map<String, Integer> map = new HashMap<>();
+    map.put("a", 1);
+    map.put("b", 2);
+    map.put("c", 3);
+
+    String json = mapperWithModule(null).writeValueAsString(map);
+    assertEquals("{\"a\":1,\"b\":2,\"c\":3}", json);
+
+    String json2 = mapperWithModule(new SimpleModule().addDeserializer(Integer.class, new CustomIntegerDeserializer())).writeValueAsString(map);
+    assertEquals("{\"a\":1,\"b\":2,\"c\":3}", json2);
+
+    Map<String, Integer> result = mapperWithModule(null).readValue(json, new TypeReference<Map<String, Integer>>() {
+    });
+    assertEquals(3, result.size());
+    assertEquals(Integer.valueOf(1), result.get("a"));
+    assertEquals(Integer.valueOf(2), result.get("b"));
+    assertEquals(Integer.

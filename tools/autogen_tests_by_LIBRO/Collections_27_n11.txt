@@ -1,0 +1,21 @@
+public void testInvokerTransformer() throws IOException, ClassNotFoundException {
+    InvokerTransformer it = new InvokerTransformer("getRuntime", new Class[0], new Object[0]);
+    TransformedMap map = new TransformedMap(it, new HashMap());
+    map.put(1, "one");
+    map.put(2, "two");
+    map.put(3, "three");
+    map.put(4, "four");
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(map);
+    oos.flush();
+    out.flush();
+
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+    Object obj = ois.readObject();
+    assertTrue(obj instanceof Map);
+    Map m = (Map) obj;
+    assertEquals(m.size(), 4);
+    assertEquals(m.get(1), "one");
+    assertEquals(m.get(2), "two");

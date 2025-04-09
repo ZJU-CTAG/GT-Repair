@@ -1,0 +1,17 @@
+public void testNamespaces() throws Exception {
+  JXPathContext context = JXPathContext.newContext(new TestBean(null));
+  context.getVariables().declareVariable("prefix", "http://prefix.org");
+  context.getVariables().declareVariable("uri", "http://uri.org");
+  context.getNamespaceResolver().registerNamespace("p", "${prefix}");
+  context.getNamespaceResolver().registerNamespace("u", "${uri}");
+  context.setFactory(new DOMDocumentPointerFactory());
+  context.setLenient(true);
+  context.setLenient(true);
+
+  String xml = "<root xmlns:p=\"${prefix}\" xmlns:u=\"${uri}\">" +
+    "<p:element attribute=\"value\" u:attribute=\"value\"/>" +
+    "</root>";
+  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+  DocumentBuilder builder = factory.newDocumentBuilder();
+  Document document = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+  context.setValue("/

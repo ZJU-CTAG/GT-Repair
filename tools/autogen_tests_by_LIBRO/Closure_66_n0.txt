@@ -1,0 +1,22 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setCheckTypes(true);
+    options.setRemoveUnusedVariables(CompilerOptions.Reach.ALL);
+    options.setAggressiveVarCheck(CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setPrettyPrint(false);
+    options.setEmitUseStrict(false);
+    Compiler compiler = new Compiler();
+
+    compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", 
+                            "/**\n" +
+                            " * @type {Object}\n" +
+                            " */\n" +
+                            "var NS = {};\n" +
+                            "\n" +
+                            "/**\n" +
+                            " * @enum {number

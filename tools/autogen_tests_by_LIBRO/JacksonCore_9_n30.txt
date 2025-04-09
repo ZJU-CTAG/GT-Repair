@@ -1,0 +1,13 @@
+public void testIssue() throws Exception
+{
+    JsonParser jp = MAPPER.createParser("{\"a\":true}");
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals("a", jp.getValueAsString());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("a", jp.getValueAsString());
+    assertToken(JsonToken.VALUE_TRUE, jp.nextToken());
+    assertEquals("true", jp.getValueAsString());
+    assertToken(JsonToken.END_OBJECT, jp.nextToken());
+    assertNull(jp.getValueAsString());
+    jp.close();
+}

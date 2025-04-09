@@ -1,0 +1,14 @@
+public void testPrivateWarning() {
+    Compiler compiler = createCompiler();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(compiler.getOptions());
+
+    Result result = compiler.compile(
+        files(
+            sourceString("Foo", "function Foo() { this.x_ = 3; }"),
+            sourceString("SubFoo", "/** @constructor \n@extends {Foo} */ function SubFoo() { this.x_ = 3; }")),
+        new DiagnosticCollector<>(),
+        getOptions());
+
+    assertEquals(1, result.warnings.length);
+    assertTrue(result.warnings[0].toString().contains("SubFoo.x_("));
+}

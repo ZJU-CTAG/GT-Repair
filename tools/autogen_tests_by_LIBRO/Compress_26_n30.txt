@@ -1,0 +1,33 @@
+public void testIOUtils() {
+    byte[] buffer = new byte[2];
+    byte[] sample = new byte[4];
+    byte[] expected = new byte[8];
+
+    for (int i = 0; i < 4; i++) {
+        sample[i] = (byte) i;
+    }
+
+    for (int i = 0; i < 8; i++) {
+        expected[i] = (byte) (i / 2);
+    }
+
+    PipedInputStream pi = new PipedInputStream();
+    PipedOutputStream po = new PipedOutputStream();
+    try {
+        po.connect(pi);
+    } catch (IOException e) {
+        fail("IOException caught: " + e);
+    }
+
+    try {
+        po.write(sample);
+        po.flush();
+        po.close();
+    } catch (IOException e) {
+        fail("IOException caught: " + e);
+    }
+
+    long skip = 2;
+    try {
+        assertEquals(skip, IOUtils.skip(pi, skip));
+    } catch (IOException

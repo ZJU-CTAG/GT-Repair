@@ -1,0 +1,24 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    ArrayList<String> list = new ArrayList<String>();
+    list.add("a");
+    list.add("b");
+    list.add("c");
+
+    try {
+        mapper.readValue(new ByteArrayInputStream("{\"list\" : [1, 2, 3]}".getBytes()), new TypeReference<HashMap<String,ArrayList<String>>>(){});
+        fail("Expected an exception");
+    } catch (JsonMappingException e) {
+        assertEquals(0, e.getLocation().getIndex());
+    }
+
+    try {
+        mapper.readValue(new ByteArrayInputStream("{\"list\" : [1, 2, 3]}".getBytes()), new TypeReference<HashMap<String,String[]>>(){});
+        fail("Expected an exception");
+    } catch (JsonMappingException e) {
+        assertEquals(0, e.getLocation().getIndex());
+    }
+
+    try {
+        mapper.readValue(new

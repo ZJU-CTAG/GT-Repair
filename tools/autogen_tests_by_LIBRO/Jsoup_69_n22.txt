@@ -1,0 +1,23 @@
+public void testIssue107() {
+    Connection.Response response = Jsoup.connect("http://www.google.com").execute();
+
+    Document doc = response.parse();
+
+    // prints HTML including "input[name=alpha]"
+    System.out.println(doc.toString());
+
+    doc.select("input[name=alpha]").first().remove();
+
+    // prints HTML excluding "input[name=alpha]"
+    System.out.println(doc.toString());
+
+    FormElement form = (FormElement)doc.select("form").first();
+
+    // prints HTML excluding "input[name=alpha]"
+    System.out.println(form.toString());
+
+    List<Connection.KeyVal> data = form.formData();
+
+    // prints a list including "alpha"
+    System.out.println(data.toString());
+}

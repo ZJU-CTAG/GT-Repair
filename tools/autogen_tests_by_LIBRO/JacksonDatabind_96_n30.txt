@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
+    final JavaTimeModule module = new JavaTimeModule();
+    mapper.registerModule(module);
+
+    final String json = "{\"publish_at\":\"2017-02-12T00:00:00.000Z\"}";
+
+    final BlogPost post = mapper.readValue(json, BlogPost.class);
+    assertEquals(Instant.parse("2017-02-12T00:00:00.000Z"), post.getPublishAt());
+}

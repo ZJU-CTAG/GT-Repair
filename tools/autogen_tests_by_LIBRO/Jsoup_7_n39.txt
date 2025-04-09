@@ -1,0 +1,9 @@
+public void testPage() throws IOException {
+    File in = new File("jsoup-tc/dummy-tc-page.html");
+    Document doc = Jsoup.parse(in, "UTF-8");
+    Element html = doc.select("html").first();
+    assertNotNull("Did not find html element", html);
+    Elements body = doc.select("body");
+    assertEquals("Did not find exactly one body element", 1, body.size());
+    assertEquals("body is not a direct child of html", body.first(), html.child(0));
+}

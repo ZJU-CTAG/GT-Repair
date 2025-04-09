@@ -1,0 +1,22 @@
+public void testIssue112() {
+  String input = "var customData = { key: 'value' };\n" +
+                 "\n" +
+                 "function testRemoveKey( key ) {\n" +
+                 " var dataSlot = customData,\n" +
+                 " retval = dataSlot && dataSlot[ key ],\n" +
+                 " hadKey = dataSlot && ( key in dataSlot );\n" +
+                 "\n" +
+                 " if ( dataSlot )\n" +
+                 " delete dataSlot[ key ];\n" +
+                 "\n" +
+                 " return hadKey ? retval : null;\n" +
+                 "};\n" +
+                 "\n" +
+                 "console.log( testRemoveKey( 'key' ) ); // 'value'\n" +
+                 "console.log( 'key' in customData ); // false";
+
+  CompilerOptions options = new CompilerOptions();
+  options.formatting = FormattingOption.PRETTY_PRINT;
+
+  Compiler compiler = new Compiler();
+  compiler.compile(new JSSource

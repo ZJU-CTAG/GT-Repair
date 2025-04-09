@@ -1,0 +1,18 @@
+public void testOptimizer() {
+  LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+  VectorialPointValuePair vpair = optimizer.doOptimize();
+  double[] point = vpair.getPoint();
+  double[] residuals = vpair.getResiduals();
+  double cost = vpair.getValue();
+
+  double[] newPoint = new double[point.length];
+  double newCost = 0;
+  for(int i=0; i < point.length; i++) {
+    newPoint[i] = point[i] + 1.0;
+    newCost += newPoint[i]*residuals[i];
+  }
+
+  if(newCost != cost) {
+    throw new RuntimeException();
+  }
+}

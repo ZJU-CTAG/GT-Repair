@@ -1,0 +1,26 @@
+public void testIssue1173() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new DeserializerModifierModule());
+
+    String json = "{\"foo\":\"BAR\"}";
+
+    Map<Foo, String> results = mapper.readValue(json, new TypeReference<Map<Foo, String>>() {});
+    assertEquals("BAR", results.get(Foo.BAR));
+}
+
+private enum Foo {
+    BAR,
+    BAZ
+}
+
+private static class DeserializerModifierModule extends SimpleModule {
+    public DeserializerModifierModule() {
+        super("DeserializerModifierModule");
+        setDeserializerModifier(new BeanDeserializerModifier() {
+            @Override
+            public JsonDeserializer<Enum> modifyEnumDeserializer(
+                    DeserializationConfig config,
+                    final JavaType type,
+                    BeanDescription beanDesc,
+                    final JsonDeserializer<?> deserializer) {
+                return new JsonDeserializer<Enum>() {

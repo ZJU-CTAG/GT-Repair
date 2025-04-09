@@ -1,0 +1,24 @@
+public void testCustomSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new TestSerializer());
+    mapper.registerModule(module);
+    String json = mapper.writeValueAsString(new TestObject());
+    assertEquals("{\"foo\":\"bar\"}", json);
+}
+
+public static class TestSerializer extends JsonSerializer<TestObject> {
+    @Override
+    public void serialize(TestObject value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeStartObject();
+        gen.writeStringField("foo", "bar");
+        gen.writeEndObject();
+    }
+}
+
+public static class TestObject {
+    @JsonValue
+    public String getValue() {
+        return "abc";
+    }
+}

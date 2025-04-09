@@ -1,0 +1,19 @@
+public void testGammaDistribution() throws Exception {
+    GammaDistribution gd = new GammaDistribution(5, 2);
+    FileOutputStream fos = new FileOutputStream("gamma.ser");
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+    oos.writeObject(gd);
+    oos.close();
+
+    FileInputStream fis = new FileInputStream("gamma.ser");
+    ObjectInputStream ois = new ObjectInputStream(fis);
+    Object obj = ois.readObject();
+    GammaDistribution gd2 = (GammaDistribution) obj;
+    assertEquals(gd.getNumericalMean(), gd2.getNumericalMean(), 0.001);
+    assertEquals(gd.getNumericalVariance(), gd2.getNumericalVariance(), 0.001);
+
+    // test both distributions produce similar results
+    double[] samples = new double[1000];
+    double[] samples2 = new double[1000];
+    for(int i = 0; i < samples.length; i++) {
+        samples[i] =

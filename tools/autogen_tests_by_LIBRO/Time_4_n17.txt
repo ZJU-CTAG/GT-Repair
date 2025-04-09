@@ -1,0 +1,10 @@
+public void testPartialConstructor() {
+    // this works
+    new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    new Partial(year(), 1).with(hourOfDay(), 1);
+    // these throw
+    new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1}); // throws Types array must not contain duplicate
+    new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1); // #<Partial [clockhourOfDay=1, hourOfDay=1]>
+    // this throws
+    new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1).isEqual(new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1)) // throws objects must have matching field types
+}

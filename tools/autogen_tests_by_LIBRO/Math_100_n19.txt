@@ -1,0 +1,33 @@
+public void testBounds() throws EstimationException {
+    final double[] params = { 10, 20 };
+    final double[] sigmas = { 1, 2 };
+    final double[] bounds = { 11, 15 };
+    AbstractEstimator estimator = new AbstractEstimator() {
+        @Override
+        public double[] guessParametersErrors() {
+            return sigmas;
+        }
+
+        @Override
+        public double[] getParameters() {
+            return params;
+        }
+
+        @Override
+        public double[] getBounds() {
+            return bounds;
+        }
+
+        @Override
+        public void estimate(EstimationProblem problem) {
+            // nothing to do
+        }
+    };
+
+    try {
+        RealMatrix covariance = estimator.getCovariances(0.0);
+        fail("an exception should have been thrown");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        // expected behavior
+    }
+}

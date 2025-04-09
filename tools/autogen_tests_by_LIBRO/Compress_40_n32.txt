@@ -1,0 +1,19 @@
+public void testOverflowInBitInputStream() throws IOException {
+    final long[] expectedBits = {
+        14L, // 87 = 0b01010111
+        -14L, // 45 = 0b00101101
+        -54L, // 66 = 0b01000010
+        -16L, // 15 = 0b00001111
+         26L, // 90 = 0b01011010
+         -2L, // 29 = 0b00011101
+        -56L, // 88 = 0b01011000
+        -95L, // 61 = 0b00111101
+        -63L, // 33 = 0b00100001
+        116L  // 74 = 0b01001010
+    };
+    final int[] bitLengths = {5, 63, 12};
+    ByteArrayInputStream in = new ByteArrayInputStream(new byte[]
+        {87, 45, 66, 15, 90, 29, 88, 61, 33, 74}
+    );
+    BitInputStream bin = new BitInputStream(in, ByteOrder.LITTLE_ENDIAN);
+    for (int i = 0; i

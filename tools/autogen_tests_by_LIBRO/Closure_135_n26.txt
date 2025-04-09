@@ -1,0 +1,14 @@
+public void testNoInheritanceDetected() throws Exception {
+    Compiler c = new Compiler();
+    c.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    c.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    c.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+
+    CompilerOptions o = new CompilerOptions();
+    o.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    o.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+
+    Result r = c.compile(
+            SourceFile.fromCode("input.js", "function inherit(Child, Parent) { Child.prototype = new Parent(); } inherit(SubClass, SuperClass);"),
+            SourceFile.fromCode("superclass.js", "/** @constructor */ function SuperClass () { } SuperClass.prototype.CustomMethod = function() { };"),
+            SourceFile.fromCode("subclass.js", "/** @constructor @extends {Super

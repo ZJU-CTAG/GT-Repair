@@ -1,0 +1,22 @@
+public void testSequence() throws IOException {
+    String json = "{\"a\":1,\"b\":2}";
+    JsonFactory f = new JsonFactory();
+    // create 2 parsers
+    JsonParser p1 = f.createJsonParser(json);
+    JsonParser p2 = f.createJsonParser(json);
+
+    // flatten them
+    JsonParserSequence ps = JsonParserSequence.createFlattened(p1, p2);
+    // parse the first object
+    ps.nextToken();
+    ps.nextToken();
+    assertEquals("a", ps.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, ps.nextToken());
+    assertEquals(1, ps.getIntValue());
+    assertEquals(JsonToken.END_OBJECT, ps.nextToken());
+
+    // switch to parser 2
+    ps.nextToken();
+    assertEquals("a", ps.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, ps.nextToken());
+    assertEquals

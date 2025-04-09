@@ -1,0 +1,18 @@
+public void testIssue106() throws IOException {
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(os);
+    zos.putNextEntry(new ZipEntry("test.txt"));
+    zos.write("test".getBytes());
+    zos.closeEntry();
+    zos.close();
+    byte[] zipData = os.toByteArray();
+    
+    ByteArrayInputStream is = new ByteArrayInputStream(zipData);
+    ZipInputStream zis = new ZipInputStream(is);
+    zis.getNextEntry();
+    byte[] b = new byte[1000];
+    zis.read(b);
+    zis.read(b);
+    zis.getNextEntry();
+    zis.close();
+}

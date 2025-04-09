@@ -1,0 +1,17 @@
+public void testWrapPosition() {
+    Option o1 = new Option("f", "file", true, "file to process");
+    o1.setArgName("FILE");
+    Option o2 = new Option("n", "name", true, "name to print");
+    o2.setArgName("NAME");
+    Options options = new Options();
+    options.addOption(o1);
+    options.addOption(o2);
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printHelp(pw, 80, "ant", null, options, 4, 8, "footer", true);
+    String s = sw.toString();
+    assertEquals(0, s.indexOf("-f FILE   file to process"));
+    assertEquals(0, s.indexOf("-n NAME   name to print"));
+    assertEquals(0, s.indexOf("footer"));
+}

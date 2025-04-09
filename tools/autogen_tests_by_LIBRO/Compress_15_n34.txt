@@ -1,0 +1,19 @@
+public void testZipEntryEquals() throws Exception {
+    byte[] zipData = IOUtils.toByteArray(getClass().getResourceAsStream("/commons-compress-1.8.1.zip"));
+    ByteArrayInputStream bais = new ByteArrayInputStream(zipData);
+    ZipArchiveInputStream za = new ZipArchiveInputStream(bais);
+    ZipArchiveEntry entry = null;
+    ZipArchiveEntry entry2 = null;
+    while ((entry = za.getNextZipEntry()) != null) {
+        if (entry.getName().equals("META-INF/LICENSE.txt")) {
+            break;
+        }
+    }
+    za.close();
+    bais = new ByteArrayInputStream(zipData);
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(bais);
+    zaos.close();
+    bais.close();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    zaos = new ZipArchiveOutputStream(baos);
+    zaos.putArchiveEntry(

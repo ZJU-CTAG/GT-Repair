@@ -1,0 +1,13 @@
+public void testIssue108() {
+    // JS does not support variable declarations with a dash in their name
+    // so have to work around with a quoted string
+    // it is also annoying that you cannot do -0.0 with the identifier
+    // n has to be a string - but JS doesn't support quotes in identifiers
+    // so have to add an extra level of indirection
+    final String n = "0.0";
+    final String var = "-n";
+    final Map<String, Object> map = new HashMap<String, Object>();
+    map.put("g", -1.0);
+    Js.eval(map, "g" + var);
+    assertEquals(-1.0, map.get("g"));
+}

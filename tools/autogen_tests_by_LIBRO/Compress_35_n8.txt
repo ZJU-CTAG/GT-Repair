@@ -1,0 +1,17 @@
+public void testIssue108() throws IOException {
+    TarArchiveInputStream tais = null;
+    try {
+        tais = new TarArchiveInputStream(new FileInputStream("src/test/resources/issue108.tar"));
+        TarArchiveEntry tae;
+        while ((tae = tais.getNextTarEntry()) != null) {
+            if (tae.getFile() != null && tae.getFile().getName().equals("issue108.txt")) {
+                InputStream is = tais;
+                assertEquals("Hello, World!", IOUtils.toString(is));
+                return;
+            }
+        }
+    } finally {
+        IOUtils.closeQuietly(tais);
+    }
+    fail("issue108.txt not found");
+}

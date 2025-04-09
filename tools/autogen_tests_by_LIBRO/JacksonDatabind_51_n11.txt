@@ -1,0 +1,17 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new Jaxrs2TypesModule());
+
+    String json = "{\"name\":\"some\",\"value\":1}";
+
+    SomeObj<Float> obj = mapper.readValue(json, new TypeReference<SomeObj<Float>>() {
+    });
+
+    assertEquals("some", obj.name);
+    // fails here, as obj.value is an Integer
+    assertEquals(Float.valueOf(1.0f), obj.value);
+
+    SomeObj<Float> obj2 = mapper.readValue("{\"name\":\"some\"}", SomeObj.class);
+    assertNull(obj2.value);
+}

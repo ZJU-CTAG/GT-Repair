@@ -1,0 +1,10 @@
+public void testIssue108() {
+    final LogarithmicLikelihoodFunction logLikelihoodFunction = new LogarithmicLikelihoodFunction();
+    final double lowerBound = -Math.PI;
+    final double upperBound = Math.PI;
+    final double[] initialGuess = new double[] { 0 };
+    final double[] expected = new double[] { Math.PI/2 };
+    
+    double[] result = new CMAESOptimizer(1000, 1e-9, true, 0, 0, new MersenneTwister(), false, -1, -1, new SimpleValueChecker(1e-9, 1e-30)).optimize(500, logLikelihoodFunction, GoalType.MAXIMIZE, initialGuess);
+    assertTrue(Math.abs(result[0] - expected[0]) < 1e-3);
+}

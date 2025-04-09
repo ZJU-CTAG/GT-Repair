@@ -1,0 +1,14 @@
+public void testIssue107() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+
+    Person p = new Person();
+    p.businessAddress = new Address();
+    p.businessAddress.town = "foo";
+
+    StringWriter sw = new StringWriter();
+    mapper.writeValue(sw, p);
+
+    Person p2 = mapper.readValue(sw.toString(), Person.class);
+    assertEquals(p.businessAddress.town, p2.businessAddress.town);
+}

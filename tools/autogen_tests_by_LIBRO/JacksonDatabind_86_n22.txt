@@ -1,0 +1,18 @@
+public void testRecursiveType() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.enable(SerializationFeature.INDENT_OUTPUT);
+    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+
+    TypeFactory typeFactory = om.getTypeFactory();
+
+    Base base = new Base();
+    Type baseType = typeFactory.constructType(Base.class);
+    base = om.readValue(om.writeValueAsString(base), baseType);
+
+    Sub sub = new Sub();
+    Type subType = typeFactory.constructType(Sub.class);
+    sub = om.readValue(om.writeValueAsString(sub), subType);
+
+    String serialized = om.writeValueAsString(sub);
+    System.out.println("Serialized: " + serialized);
+}

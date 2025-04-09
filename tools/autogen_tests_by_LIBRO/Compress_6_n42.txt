@@ -1,0 +1,21 @@
+public void testZipOutputStream() throws IOException {
+
+    //create a zip output stream with a filename
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(baos);
+    zos.setEncoding("UTF-8");
+
+    //write a file named "a" to the zip
+    ZipArchiveEntry e1 = new ZipArchiveEntry("a/b.txt");
+    zos.putNextEntry(e1);
+    zos.write(new byte[]{1, 2, 3});
+    zos.closeEntry();
+
+    //write a file named "b" to the zip (note the different name, same hashcode)
+    ZipArchiveEntry e2 = new ZipArchiveEntry("c/d.txt");
+    zos.putNextEntry(e2);
+    zos.write(new byte[]{1, 2, 3});
+    zos.closeEntry();
+
+    //now try to write the same file again. The offset map in the zip output stream will
+    //treat the two entries as equal, overwrite the previous entry and break the zip

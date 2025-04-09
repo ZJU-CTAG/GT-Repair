@@ -1,0 +1,15 @@
+public void testAtan2SpecialCases() {
+    DerivativeStructure ds = new DerivativeStructure(1,1,0, 1.0);
+    double[] y = {0,0,0,0};
+    double[] x = {0,0,0,0};
+    DerivativeStructure[] ds2 = new DerivativeStructure[4];
+    for (int i=0; i<4; i++) {
+        y[i] = (i & 1) == 0 ? 0 : -0.0;
+        x[i] = (i & 2) == 0 ? 0 : -0.0;
+        ds2[i] = ds.newInstance(y[i]);
+    }
+    DerivativeStructure[] ds3 = ds.atan2(ds2);
+    for (int i=0; i<4; i++) {
+        assertEquals(Math.atan2(y[i],x[i]), ds3[i].getValue(), 1.0e-10);
+    }
+}

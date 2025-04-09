@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"d\":\"xyz\"}";
+
+    final TypeReference<Map<String,String>> typeRef
+        = new TypeReference<Map<String,String>>() { };
+    
+    Map<String,String> map = mapper.readValue(json, typeRef);
+    assertEquals("xyz", map.get("d"));
+
+    TypeFactory tf = TypeFactory.defaultInstance();
+    JavaType type = tf.constructType(typeRef);
+    TypeIdResolver resolver = mapper.getDeserializationConfig().getTypeIdResolver();
+    if (resolver == null) {
+        resolver = tf.findTypeIdResolver(mapper.getDeserializationConfig(), type);
+        assertNotNull(resolver);
+    }
+    String id = resolver.idFromValue(map);
+    assertNull(id);
+    String id2 = resolver.idFromValueAndType(map, type);
+    assertNotNull(id2);
+    assertEqu

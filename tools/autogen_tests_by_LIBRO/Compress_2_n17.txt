@@ -1,0 +1,17 @@
+public void testDeletingArchiveEntries() throws Exception {
+    File archive = new File(getTestDirectory(), "bla.ar");
+    ArArchiveOutputStream aros = new ArArchiveOutputStream(new FileOutputStream(archive));
+    ArchiveEntry entry = aros.createArchiveEntry(new File("test1.xml"), "test1.xml");
+    aros.putArchiveEntry(entry);
+    aros.closeArchiveEntry();
+    entry = aros.createArchiveEntry(new File("test2.xml"), "test2.xml");
+    aros.putArchiveEntry(entry);
+    aros.closeArchiveEntry();
+    aros.close();
+    ArArchiveInputStream ais = new ArArchiveInputStream(new FileInputStream(archive));
+    entry = ais.getNextEntry();
+    assertEquals("test1.xml", entry.getName());
+    ais.closeEntry();
+    entry = ais.getNextEntry();
+    assertEquals("test2.xml", entry.getName());
+    assertEquals(0, ais.

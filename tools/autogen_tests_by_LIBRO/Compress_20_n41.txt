@@ -1,0 +1,21 @@
+public void testTrailer() throws IOException {
+    final InputStream archive = getClass().getResourceAsStream("/test-archive-with-nonzero-mode.cpio");
+    assertNotNull(archive);
+    try {
+        final Iterable<ArchiveEntry> entries = new ArchiveStreamFactory().createArchiveInputStream(archive).getNextEntry();
+        for (final ArchiveEntry entry : entries) {
+            if (entry == null) {
+                break;
+            }
+            if (entry.getName().equals("/test-file1.txt")) {
+                assertEquals("test file 1", IOUtils.toString(entries));
+            } else if (entry.getName().equals("/test-file2.txt")) {
+                assertEquals("test file 2", IOUtils.toString(entries));
+            } else {
+                fail("Unexpected entry: " + entry.getName());
+            }
+        }
+    } finally {
+        IOUtils.closeQuietly(archive);
+    }
+}

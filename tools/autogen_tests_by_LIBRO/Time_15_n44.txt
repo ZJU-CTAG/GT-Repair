@@ -1,0 +1,12 @@
+public void testIssue147() {
+    DateTime start = new DateTime(Long.MIN_VALUE);
+    DateTime end = new DateTime(Long.MAX_VALUE);
+    Integer i = new Integer(-1);
+    assertEquals(start.getMillis(), end.getMillis());
+    assertEquals(start.getMillis() * i.intValue(), end.getMillis() * i.intValue());
+    
+    try {
+        FieldUtils.safeMultiply(Long.MIN_VALUE, i.intValue());
+        fail("Expected ArithmeticException");
+    } catch (ArithmeticException ex) {}
+}

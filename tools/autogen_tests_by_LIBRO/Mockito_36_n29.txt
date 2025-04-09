@@ -1,0 +1,21 @@
+public void testIssue126() throws Exception {
+    MyClass myClass = new MyClass();
+
+    assertThat(myClass.mock.sayHello()).isEqualTo("Hello");
+}
+
+@Rule
+public MockitoRule mockitoRule = new MockitoRule(this);
+
+public class MyClass {
+    @Mock
+    private MyInterface mock;
+
+    public MyClass() {
+        MockitoAnnotations.initMocks(this);
+    }
+}
+
+public interface MyInterface {
+    String sayHello();
+}

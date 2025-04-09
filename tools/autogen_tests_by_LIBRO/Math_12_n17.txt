@@ -1,0 +1,18 @@
+public void testGammaDistribution() throws Exception {
+    GammaDistribution dist = new GammaDistribution(3.3,1.8);
+    for (int i = 0; i < 1000; i++) {
+        dist.sample();
+    }
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(dist);
+    oos.close();
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    GammaDistribution dist2 = (GammaDistribution) ois.readObject();
+
+    for (int i = 0; i < 1000; i++) {
+        assertEquals(dist.sample(), dist2.sample(), 0.0000001);
+    }
+}

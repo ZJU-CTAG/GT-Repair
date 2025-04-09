@@ -1,0 +1,10 @@
+public void testBlock() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"@type\":\"[java.awt.Dimension;\", \"val\":{ \"w\":10, \"h\":20 } }",
+               Object.class);
+        fail("should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "illegal type");
+    }
+}

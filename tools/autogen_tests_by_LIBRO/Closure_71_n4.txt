@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("Foo.js", "/** @constructor */ function Foo() { "
+                + "/** @private */ this.x_ = 3; }")},
+        options);
+    assertTrue(result.success);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

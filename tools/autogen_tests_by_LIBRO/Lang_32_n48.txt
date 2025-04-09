@@ -1,0 +1,14 @@
+public void testToStringStyleMemoryLeak() throws Exception
+{
+    System.out.println("ToStringStyle.DEFAULT_STYLE: " + ToStringStyle.DEFAULT_STYLE);
+    Method method = ToStringStyle.class.getDeclaredMethod("getDefaultStyleInstance");
+    method.setAccessible(true);
+    Object obj = method.invoke(null);
+    System.out.println("ToStringStyle.getDefaultStyleInstance(): " + obj);
+    WeakReference<Object> ref = new WeakReference<Object>(obj);
+    obj = null;
+    method = null;
+    Thread.sleep(1000);
+    System.out.println("ref.get(): " + ref.get());
+    assertTrue("Should have been garbage collected", ref.get() == null);
+}

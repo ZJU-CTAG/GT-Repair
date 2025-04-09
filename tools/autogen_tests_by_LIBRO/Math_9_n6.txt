@@ -1,0 +1,10 @@
+public void testLine() {
+    Line line = new Line(new Vector3D(0, 0, 0), new Vector3D(1, 0, 0), 1e-3);
+    Line reverted = line.revert();
+    assertEquals(new Vector3D(0, 0, 0), reverted.getOrigin());
+    assertEquals(new Vector3D(-1, 0, 0), reverted.getDirection());
+    assertEquals(1e-3, reverted.getTolerance());
+
+    Vector3D testPoint = new Vector3D(1e300, 0, 0);
+    assertEquals(line.getOffset(testPoint), reverted.getOffset(testPoint), 1e-8);
+}

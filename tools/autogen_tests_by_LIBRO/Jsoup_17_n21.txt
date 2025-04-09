@@ -1,0 +1,9 @@
+public void testCleanZero() throws IOException {
+    Document dirty = Jsoup.parse("<b>0</b>");
+    Document clean = Jsoup.parse("<b>0</b>");
+    clean.outputSettings().prettyPrint(false);
+    clean.outputSettings().charset("ascii");
+    clean.outputSettings().escapeMode(EscapeMode.xhtml);
+    clean.select("b").get(0).html("0");
+    assertEquals(clean.html(), dirty.html());
+}

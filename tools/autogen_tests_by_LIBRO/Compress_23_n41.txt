@@ -1,0 +1,11 @@
+public void testSevenZipError() throws IOException {
+    File f = File.createTempFile("test", ".7z");
+    FileOutputStream fos = new FileOutputStream(f);
+    ZipOutputStream zos = new ZipOutputStream(fos);
+    zos.putNextEntry(new ZipEntry("test"));
+    zos.write(new byte[1000000]);
+    zos.close();
+    fos.close();
+    SevenZFile input = new SevenZFile(f);
+    input.close();
+}

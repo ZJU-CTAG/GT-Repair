@@ -1,0 +1,17 @@
+public void testIssue() {
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("js");
+    engine.put("verbose", Boolean.TRUE);
+    engine.put("strict", Boolean.TRUE);
+    engine.put("warning", Boolean.TRUE);
+    engine.put("missingProperties", Boolean.TRUE);
+    try {
+        engine.eval("var s = new String(\"hello\");\n" +
+                "alert(s.toLowerCase.indexOf(\"l\"));");
+        fail("No exception was thrown");
+    } catch (ScriptException e) {
+        Throwable cause = e.getCause();
+        assertNotNull(cause);
+        assertTrue(cause instanceof ReferenceError);
+    }
+}

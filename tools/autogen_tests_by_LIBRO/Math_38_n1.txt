@@ -1,0 +1,19 @@
+public void testBOBYQAOptimizer() throws MathException {
+    final int n = 3;
+    DifferentiableMultivariateRealFunction f = new DifferentiableMultivariateRealFunction() {
+      public double value(double[] x) {
+        double sum = 0;
+        for (int i = 0; i < n - 1; i++) {
+          sum += 100 * (x[i+1] - x[i] * x[i]) * (x[i+1] - x[i] * x[i]) + (1 - x[i]) * (1 - x[i]);
+        }
+        return sum;
+      }
+
+      public MultivariateRealFunction partialDerivative(final int k) {
+        return new MultivariateRealFunction() {
+          public double value(double[] x) {
+            if (k == 0) {
+              double result = -400 * (x[1] - x[0] * x[0]) * x[0] - 2 * (1 - x[0]);
+              return result;
+            } else if (k == n - 1) {
+              double result = 200 * (x

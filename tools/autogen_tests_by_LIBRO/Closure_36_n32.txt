@@ -1,0 +1,19 @@
+public void test() {
+    assertEquals("", compile(""));
+
+    assertEquals("(function($ctor$$){$ctor$$.$getInstance$=function $$ctor$$$$getInstance$$(){return $ctor$$.$instance\_$||($ctor$$.$instance\_$=new $ctor$$)}})(function(){});",
+            compile("goog.provide('foo');"
+                    + "var foo = function() { this.values = []; };"
+                    + "goog.addSingletonGetter(foo);"
+                    + "foo.prototype.add = function(value) {this.values.push(value)};"));
+}
+
+private String compile(String js) {
+    Compiler compiler = new Compiler();
+    List<SourceFile> input = Collections.singletonList(
+            SourceFile.fromCode("in.js", js));
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.printInputDelimiter = true;
+    options.setDebugOptionsForCompilationLevel(
+            CompilationLevel.ADVANCED_OPTIMIZATIONS);

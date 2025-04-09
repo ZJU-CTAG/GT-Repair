@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", "function A() {}\n" +
+            "A.prototype.f = function() {};\n" +
+            "function B() {};\n" +
+            "B.prototype = new A();\n" +
+            "B.prototype.f = function() {};\n" +
+            "window['B'] = new B();"));
+    assertTrue(result.success);
+    assertFalse(result.errors.length > 0);
+}

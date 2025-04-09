@@ -1,0 +1,6 @@
+public void testTypeArgumentsInheritance() throws Exception {
+    final TypeLiteral<Other<String>> other = new TypeLiteral<Other<String>>() { };
+    final TypeLiteral<This<String, String>> expected = new TypeLiteral<This<String, String>>() { };
+    Assert.assertEquals(expected.getType(), TypeUtils.getTypeArguments(Other.class, This.class).get(This.class.getTypeParameters()[1]));
+    Assert.assertEquals(expected.getType(), TypeUtils.getTypeArguments(other.getType(), This.class).get(This.class.getTypeParameters()[1]));
+}

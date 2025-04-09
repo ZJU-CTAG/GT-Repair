@@ -1,0 +1,9 @@
+public void testOptimize() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 1 }, 0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 1, 0 }, Relationship.EQ, 1));
+    PointValuePair solution = new SimplexSolver().optimize(f, constraints, GoalType.MINIMIZE, true);
+    assertEquals(0, solution.getValue(), 0);
+    assertEquals(1, solution.getPoint()[0], 0);
+    assertEquals(0, solution.getPoint()[1], 0);
+}

@@ -1,0 +1,20 @@
+public void testIssue144() {
+    Node nodeTry = IR.block(
+            IR.var(
+                    IR.name("testing"),
+                    IR.number(11)
+                    )
+            );
+    Node nodeCatch = IR.catchNode(
+            IR.name("blabla"),
+            IR.block(
+                    IR.var(
+                            IR.name("testing"),
+                            IR.number(22)
+                            )
+                    )
+            );
+    nodeTry.addChildToBack(nodeCatch);
+    assertEquals(3, nodeTry.getChildCount());
+    assertEquals(Token.CATCH, nodeTry.getLastChild().getType());
+}

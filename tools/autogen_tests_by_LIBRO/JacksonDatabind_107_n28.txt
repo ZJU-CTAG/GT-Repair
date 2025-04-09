@@ -1,0 +1,14 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId,
+                TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.unknownType();
+        }
+    });
+
+    final String json = "{\"@class\":\"java.lang.Void\",\"val\":\"\"}";
+    mapper.readValue(json, Object.class);
+}

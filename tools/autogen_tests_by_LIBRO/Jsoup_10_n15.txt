@@ -1,0 +1,11 @@
+public void testAbsUrl() {
+    String html
+            = "<a href='/foo'>outer</a>"
+            + "<div><a href='/bar'>inner</a></div>";
+    Document doc = Jsoup.parse(html);
+    assertEquals("<a href=\"/foo\">outer</a>\n<a href=\"/bar\">inner</a>", doc.select("a").outerHtml());
+    assertEquals("/bar", doc.select("a").get(1).attr("href"));
+    assertEquals("/foo", doc.select("a").get(0).attr("abs:href"));
+    assertEquals("http://example.com/bar", doc.select("a").get(1).absUrl("href"));
+    assertEquals("http://example.com/foo", doc.select("a").get(0).absUrl("href"));
+}

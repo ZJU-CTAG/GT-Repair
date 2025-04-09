@@ -1,0 +1,11 @@
+public void testParseByteData() throws IOException {
+    InputStream bomUtf16Be = new ByteArrayInputStream(new byte[] { (byte) 0xFE,(byte) 0xFF,(byte) 0x00,(byte) 0x01 });
+    Charset charset = DataUtil.getCharsetFromStream(bomUtf16Be);
+    assertEquals("UTF-16BE", charset.toString());
+    
+    InputStream bomUtf16Le = new ByteArrayInputStream(new byte[] { (byte) 0xFF,(byte) 0xFE,(byte) 0x01,(byte) 0x00 });
+    charset = DataUtil.getCharsetFromStream(bomUtf16Le);
+    assertEquals("UTF-16LE", charset.toString());
+    
+    InputStream bomUtf8 = new ByteArrayInputStream(new byte[] { (byte) 0xEF,(byte) 0xBB,(byte) 0xBF,(byte) 0x01 });
+    charset = DataUtil.getCharsetFromStream(

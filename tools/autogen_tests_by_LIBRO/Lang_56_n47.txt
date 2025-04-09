@@ -1,0 +1,12 @@
+public void testSerialization() {
+    FastDateFormat fdf = FastDateFormat.getInstance("yyyyMMdd");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(fdf);
+    oos.close();
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    FastDateFormat fdf2 = (FastDateFormat) ois.readObject();
+    ois.close();
+    assertEquals(fdf, fdf2);
+}

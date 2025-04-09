@@ -1,0 +1,13 @@
+public void testFinallyBreak() {
+    Global global = Context.getGlobal();
+    Script script = new Script("function a() {\n" +
+            "  b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b };\n" +
+            "  console.log(\"ok then...\");\n" +
+            "}\n" +
+            "\n" +
+            "console.log(\"start\");\n" +
+            "try { a() } catch(e) { console.log(e) }\n" +
+            "console.log(\"done\")\n", "", global);
+    script.exec(global);
+    Global.console.log("end");
+}

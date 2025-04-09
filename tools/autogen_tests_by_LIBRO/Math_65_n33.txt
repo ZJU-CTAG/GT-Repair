@@ -1,0 +1,22 @@
+public void testWeight() throws Exception {
+    final double[] weights = {1, 2, 3};
+    final double[][] factors = new double[3][2];
+    final double[] rhs = {0, 0.5, 1};
+    final double[] solution = {0, 1};
+    final double[] residuals = {0, 0.5, 1};
+    final double[] residualsCopy = residuals.clone();
+
+    AbstractLeastSquares ls = new AbstractLeastSquares(factors, null, rhs, new DummyProblem(), null) {
+        @Override
+        public double[] getResiduals() {
+            return residuals;
+        }
+        @Override
+        public double[] getResidualsCopy() {
+            return residualsCopy;
+        }
+    };
+    ls.setResidualsWeights(weights);
+    assertEquals(1.5, ls.getRMS(), 1e-15);
+    assertEquals(2.5, ls.getChiSquare(), 1e-15);
+}

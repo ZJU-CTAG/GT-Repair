@@ -1,0 +1,15 @@
+public void testIssue109() {
+    String pattern = "yyyy/MM/dd H:mm:ss";
+    String date1 = "2008/05/01 12:01:01";
+    String date2 = "2008/05/01 12:01:01 ";
+    String date3 = "2008/05/01 12:01:01  ";
+    String date4 = "2008/05/01 12:01:01\t";
+    String date5 = "2008/05/01 12:01:01\t\t";
+    String date6 = "2008/05/01 12:01:01\n";
+    String date7 = "2008/05/01 12:01:01\n\n";
+    
+    FastDateParser fdp = new FastDateParser(pattern, Locale.UK);
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    
+    assertEquals(sdf.parse(date1).getTime(), fdp.parse(date1).getTime());
+    assertEquals(sdf.parse(date2).getTime(), fdp.parse(date2).

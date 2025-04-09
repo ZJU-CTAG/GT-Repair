@@ -1,0 +1,13 @@
+public void testIssue50() {
+ NodeSet ns = new BasicNodeSet();
+ ns.add(new NodePointer(new NodeBean("a", "b")));
+ ns.add(new NodePointer(new NodeBean("c", "d")));
+ JXPathContext context = JXPathContext.newContext(null);
+ context.registerNamespace("test", ns);
+ Iterator iter = context.iterate("test:a");
+ assertTrue(iter.hasNext());
+ assertEquals("b", iter.next());
+ assertTrue(iter.hasNext());
+ assertEquals("d", iter.next());
+ assertTrue(!iter.hasNext());
+}

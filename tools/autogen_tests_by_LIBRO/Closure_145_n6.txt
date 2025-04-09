@@ -1,0 +1,12 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("bug.js", "var i = 0; lab1: do{ lab2: do{ i++; if (1) { break lab2; } else { break lab1; } } while(false); } while(false); console.log(i);"),
+            options);
+    assertTrue(result.success);
+    assertEquals("var a=0;do b:do{a++;break b}while(0);while(0);console.log(a);", compiler.toSource());
+}

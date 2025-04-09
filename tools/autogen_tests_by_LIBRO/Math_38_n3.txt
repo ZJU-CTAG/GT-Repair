@@ -1,0 +1,12 @@
+public void testBug() {
+    int dim = 2;
+    MultivariateRealFunction function = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            double a = 1 - x[0];
+            double b = 10 * (x[1] - x[0] * x[0]);
+            return a * a + b * b;
+        }
+    };
+    BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 2);
+    optim.optimize(100000, function, GoalType.MINIMIZE, new double[] { -1.2, 1.0 });
+}

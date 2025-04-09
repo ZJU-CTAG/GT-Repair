@@ -1,0 +1,23 @@
+public void testIssue108() {
+    Something something = new Something();
+    something.setEntity(new Ruleform());
+    Something something2 = clone(something);
+    assertEquals(something.getEntity(), something2.getEntity());
+}
+
+public <T> T clone(T t) throws IOException {
+    if (t == null) {
+        return null;
+    }
+    // write
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(t);
+    oos.close();
+    // read
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    T result = (T) ois.readObject();
+    ois.close();
+    return result;
+}

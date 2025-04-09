@@ -1,0 +1,9 @@
+public void testCid() {
+    String html = "<p><img src=\"cid:1.png\" /></p>";
+    Document doc = Jsoup.parse(html);
+    Whitelist wl = Whitelist.simpleText();
+    wl.addAttributes("img", "src");
+    Cleaner cleaner = new Cleaner(wl);
+    doc = cleaner.clean(doc);
+    assertEquals(html, doc.body().html());
+}

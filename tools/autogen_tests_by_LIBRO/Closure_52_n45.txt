@@ -1,0 +1,18 @@
+public void testIssue() {
+    String js = "var lit = {\"0102\":\"Zero One Zero Two\"};\nalert(lit[\"0102\"]);";
+    String expected = "var lit={\"0102\":\"Zero One Zero Two\"};alert(lit[\"0102\"]);";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setOptimizationLevel(0);
+    env.setWarnTrailingComma(false);
+    env.setReservedKeywordAsIdentifier(true);
+    env.setAllowSharpComments(true);
+    env.setStrictMode(false);
+    env.setGenerateDebugInfo(false);
+    env.setRecordingComments(false);
+    env.setRecordingLocalJsDocComments(false);
+
+    Parser p = new Parser(env, new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            System.out.println("[WARNING] " + message);

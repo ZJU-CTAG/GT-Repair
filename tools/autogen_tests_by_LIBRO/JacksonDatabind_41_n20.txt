@@ -1,0 +1,13 @@
+public void testDeprecatedMethod() throws IOException
+{
+    final TypeFactory tf = TypeFactory.defaultInstance();
+    // ok, works with empty context
+    Type t = tf.constructType(String.class, null);
+    assertEquals(String.class, t);
+
+    // and works with context, too
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getTypeFactory();
+    t = tf.constructType(String.class, mapper.getDeserializationContext());
+    assertEquals(String.class, t);
+}

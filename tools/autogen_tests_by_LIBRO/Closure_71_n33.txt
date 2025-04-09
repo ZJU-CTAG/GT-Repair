@@ -1,0 +1,11 @@
+public void testIssue() {
+    String code = "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }";
+    String code2 = "/** @constructor \n" +
+            " * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("foo.js", code) },
+            new JSSourceFile[] { JSSourceFile.fromCode("bar.js", code2) }, options);
+    assertThat(compiler.getErrors()).isEmpty();
+}

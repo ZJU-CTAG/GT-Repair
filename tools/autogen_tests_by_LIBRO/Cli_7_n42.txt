@@ -1,0 +1,14 @@
+public void testRequiredOptions() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withDescription("Display help").withLongOpt("help").create('h'));
+    options.addOption(OptionBuilder.withDescription("Config file").withArgName("file").hasArg().create('c'));
+    Group group = new GroupBuilder().add(options).create();
+
+    try {
+        CommandLineParser parser = new PosixParser();
+        CommandLine commands = parser.parse(options, new String[]{"-c", "test"});
+        assertEquals("-c <arg>", commands.toString());
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

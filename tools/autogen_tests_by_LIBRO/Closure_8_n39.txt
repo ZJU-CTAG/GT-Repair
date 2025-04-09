@@ -1,0 +1,19 @@
+public void testClosure() {
+  Compiler compiler = new Compiler();
+  compiler.initOptions(new CompilerOptions());
+  compiler.compile(
+      ImmutableList.of(SourceFile.fromCode("test.js", 
+          "function(a){ var b=5 };")),
+      ImmutableList.<SourceFile>of(),
+      new ErrorManager() {
+        public void println(CheckLevel level, JSError error) { }
+        public void printSummary() { }
+        public void generateReport() { }
+        public int getErrorCount() { return 0; }
+        public int getWarningCount() { return 0; }
+        public JSError[] getErrors() { return null; }
+        public JSError[] getWarnings() { return null; }
+        public void setTypedPercent(double typedPercent) { }
+        public void setProgress(ProgressType type, int index, int maximum) { }
+      });
+}

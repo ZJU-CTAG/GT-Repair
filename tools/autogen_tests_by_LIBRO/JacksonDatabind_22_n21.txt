@@ -1,0 +1,16 @@
+public void testCustomSerializer() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+        @Override
+        public void serialize(final Object value, final JsonGenerator gen, final SerializerProvider serializers) throws IOException, JsonProcessingException {
+            gen.writeString(value != null ? value.toString() : "null");
+        }
+    });
+
+    final String json = mapper.writeValueAsString(new ValueBean());
+    assertEquals("\"ValueBean\"", json);
+}
+
+@JsonValue
+public static class ValueBean {}

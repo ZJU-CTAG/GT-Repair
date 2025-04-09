@@ -1,0 +1,14 @@
+public void testIssueOfBrentOptimizer() {
+    BrentOptimizer brentOptimizer = new BrentOptimizer(1e-10, 1e-30);
+    UnivariatePointValuePair result = brentOptimizer.optimize(
+            new UnivariateObjectiveFunction(new UnivariateFunction() {
+                @Override
+                public double value(double x) {
+                    return (x - 2.0) * (x - 2.0);
+                }
+            }),
+            GoalType.MINIMIZE,
+            new MaxEval(1000),
+            new SearchInterval(-3, 3));
+    Assert.assertEquals(2.0, result.getPoint(), 1e-10);
+}

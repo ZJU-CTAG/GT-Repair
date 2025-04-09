@@ -1,0 +1,26 @@
+public void testPreserve() {
+    String js = "/**\n" +
+        " * @preserve\n" +
+        "\n" +
+        "This\n" +
+        " was\n" +
+        " ASCII\n" +
+        " Art\n" +
+        "\n" +
+        "*/\n" +
+        "\n";
+    StringWriter sw = new StringWriter();
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                            int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName,
+                          int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("

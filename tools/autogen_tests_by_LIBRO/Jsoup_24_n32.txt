@@ -1,0 +1,24 @@
+public void testHtmlCleaner() throws IOException {
+    String html = "<HTML>" +
+            "<body>" +
+            " <div>" +
+            "  <script language=\"JavaScript1.1\"> " +
+            "    document.write('</scr' + 'ipt>');" +
+            "  </script>" +
+            " </div>" +
+            "</body>" +
+            "</HTML>";
+
+
+    CleanerProperties props = new CleanerProperties();
+    props.setOmitXmlDeclaration(true);
+    props.setAdvancedXmlEscape(true);
+    props.setOmitDoctypeDeclaration(true);
+    props.setTranslateSpecialEntities(true);
+    props.setTransResCharsToNCR(true);
+    props.setPruneTags("script");
+    props.setNamespacesAware(false);
+
+    TagNode node = new HtmlCleaner(props).clean(new StringReader(html));
+    String s = new PrettyXmlSerializer(props).getAsString(node);
+    assertTrue(s.cont

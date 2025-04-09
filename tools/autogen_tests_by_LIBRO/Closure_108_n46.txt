@@ -1,0 +1,16 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new GoogleCodingConvention());
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(
+        SourceFile.fromCode("in",
+            "var goog = {}; goog.scope; " +
+            "var ns = {}; ns.sub = {}; " +
+            "/** @constructor */ ns.sub.C = function() {}; " +
+            "goog.scope(function() { " +
+            "var sub = ns.sub; " +
+            "/** @type {sub.C} */ var x = null; " +
+            "});"),
+        options);
+}

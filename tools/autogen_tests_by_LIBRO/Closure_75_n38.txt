@@ -1,0 +1,13 @@
+public void testClosureCompiled() {
+    String code = "function Z(a){" +
+                  "return/[\"<>.;]/.exec(a)!=null&&typeof encodeURIComponent!=j?encodeURIComponent(a):a" +
+                  "}";
+    String optimized = CodeUtils.optimize(code);
+    assertTrue(optimized.contains("return /[\"<>.;]/.exec(a) != null && typeof encodeURIComponent != j ? encodeURIComponent(a) : a;"));
+
+    code = "function Z(a){" +
+           "ie = !+\"\\v1\"" +
+           "}";
+    optimized = CodeUtils.optimize(code);
+    assertTrue(optimized.contains("ie = !1;"));
+}

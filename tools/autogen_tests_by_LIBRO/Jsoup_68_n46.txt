@@ -1,0 +1,20 @@
+public void testUrl() throws IOException {
+    WebClient webClient = new WebClient(BrowserVersion.CHROME);
+    webClient.getOptions().setJavaScriptEnabled(true);
+    webClient.getOptions().setCssEnabled(false);
+    webClient.getOptions().setTimeout(20000);
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+    webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+    webClient.getOptions().setUseInsecureSSL(true);
+    webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+    webClient.getOptions().setRedirectEnabled(true);
+    webClient.waitForBackgroundJavaScript(3000);//设置js后台等待执行时间,
+    webClient.setJavaScriptTimeout(3000);
+    webClient.setJavaScriptErrorListener(new JavaScriptErrorListener() {
+        @Override
+        public void scriptException(HtmlPage htmlPage, ScriptException e) {
+
+        }
+
+        @Override
+       

@@ -1,0 +1,13 @@
+public void testIssue144() throws Exception {
+    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document doc = builder.parse(new InputSource(new StringReader(
+            "<ElementA A:myAttr='Mytype'>" +
+            "<B:ElementB>MY VALUE</B:ElementB>" +
+            "</ElementA>"
+    )));
+    DOMXPath xp = new DOMXPath("/ElementA/@A:myAttr");
+    xp.registerNamespace("A", "MyURI");
+    xp.registerNamespace("B", "MyURI");
+    String value = (String) xp.selectSingleNode(doc);
+    assertEquals("Mytype", value);
+}

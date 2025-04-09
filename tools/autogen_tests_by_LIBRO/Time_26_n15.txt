@@ -1,0 +1,13 @@
+public void testIssue60() {
+    DateTimeZone utc = DateTimeZone.UTC;
+    DateTimeZone usCentral = DateTimeZone.forID("US/Central");
+    DateTimeZone australiaNSW = DateTimeZone.forID("Australia/NSW");
+    // Verify Joda converts the hour of day the same for regions north and south of the equator on the DST daylight to standard time transition.
+    @Test
+    public void jodaTest ()
+    {
+        Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
+        DateTime usCentralStandardInUTC = new DateTime(2008, 11, 2, 7, 0, 0, 0, chronUTC);
+        DateTime usCentralDaylightInUTC = new DateTime(2008, 11, 2, 6, 0, 0, 0, chronUTC);
+        Chronology chronUSCentral = GregorianChronology.getInstance(DateTimeZone.forID("US/Central"));
+        Assert.assertTrue("Should be standard time", chronUSCentral.getZone().isStandardOffset(usCentralStandardInUTC.getMillis()

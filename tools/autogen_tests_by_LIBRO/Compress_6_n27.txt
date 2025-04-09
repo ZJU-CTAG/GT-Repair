@@ -1,0 +1,24 @@
+public void testZipOutputStream() throws Exception {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(bos);
+    String name = "abcdefghijklmnopqrstuvwxyz1234567890.txt";
+    try {
+        for (int i = 0;i < 10;i++) {
+            ZipArchiveEntry entry = new ZipArchiveEntry(name + i);
+            zos.putNextEntry(entry);
+            zos.write(new byte[100]);
+            zos.closeEntry();
+        }
+    } finally {
+        zos.close();
+    }
+    byte[] zipped = bos.toByteArray();
+    ZipFile zf = new ZipFile(new ByteArrayInputStream(zipped));
+    try {
+        for (int i = 0;i < 10;i++) {
+            zf.getEntry(name + i);
+        }
+    } finally {
+        zf.close();
+    }
+}

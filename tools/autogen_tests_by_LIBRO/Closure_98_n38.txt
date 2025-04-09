@@ -1,0 +1,5 @@
+public void testClosure() throws Exception {
+    String code = "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } } foo();";
+    String result = compiler.compile(code, flags);
+    assertEquals("function foo(){var a=[[1,2,3,4,5]],b;for(var c=0,d=a[0].length;c<d;c++){var e=a[0][c];(function(){var f=e;setTimeout(function(){console.log(f)},0)})();}b=e=void 0}foo()", result);
+}

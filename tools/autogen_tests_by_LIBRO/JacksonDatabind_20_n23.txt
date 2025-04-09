@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+
+    PropertyNamingStrategy namer = new PropertyNamingStrategy.PropertyNamingStrategyBase() {
+        @Override
+        public String translate(String propertyName) {
+            return propertyName;
+        }
+    };
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(namer);
+    ClassWithObjectNodeField deserialized = mapper.readValue("{ \"id\": \"1\", \"json\": { \"foo\": \"bar\", \"baz\": \"bing\" } }", ClassWithObjectNodeField.class);
+    assertEquals("1", deserialized.id);
+    assertEquals("bar", deserialized.json.get("foo").asText());
+}

@@ -1,0 +1,15 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonFactory jsonFactory = new JsonFactory(objectMapper);
+    JsonParser jsonParser = jsonFactory.createParser("{\"a\":{\"b\":{\"c\":{\"d\":\"e\"}}}}");
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonParser, new JacksonJsonFilterDelegate("a"));
+    JsonToken jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.START_OBJECT, jsonToken);
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, jsonToken);
+    assertEquals("b", filteringParserDelegate.getCurrentName());
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.START_OBJECT, jsonToken);
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, jsonToken);
+   

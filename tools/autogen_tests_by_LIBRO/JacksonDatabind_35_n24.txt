@@ -1,0 +1,17 @@
+public void testWrapperObjectIds() throws Exception
+{
+    ObjectMapper om = jaxbMapper();
+    om.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    om.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    om.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    om.enable(MapperFeature.USE_STD_BEAN_NAMING);
+    om = om.copy(); // important, to get final type resolver
+
+    // First: serialize, then deserialize
+    PojoWithObjectId pojo = new PojoWithObjectId();
+    pojo.setId(new Id("123"));
+    String json = om.writerWithView(Views.Default.class)
+            .writeValueAsString(pojo);
+    assertEquals("{\"id\":{\"value\":\"123\"},\"_class\":\"com.fasterxml.jackson.jaxrs.json.testutil.POJO\"}", json);
+
+    PojoWithObjectId pojo2

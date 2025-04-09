@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String js = "alert(1;\n";
+    String expected = "test.js:1: ERROR - Parse error. missing ) after argument list\nalert(1;\n ^\n";
+    //String expected = "test.js:1: ERROR - Parse error. missing ) after argument list\n1 error(s), 0 warning(s)\n";
+    final List<String> errors = new ArrayList<String>();
+    Compiler compiler = new Compiler() {
+        @Override
+        protected ErrorManager createErrorManager() {
+            return new ErrorManager() {
+                @Override
+                public void println(CheckLevel level, JSError error) {
+                    errors.add(error.toString());
+                }
+            };
+        }
+    };
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js", js),
+        new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals(expected, Joiner.on('\n').join(errors) + "\n");
+}

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper()
+            .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    
+    try {
+        mapper.readValue("\"\"", int.class);
+    } catch (Exception e) {
+        Throwable root = e.getCause();
+        assertNotNull("Should have a root cause", root);
+        assertTrue("Should be a MismatchedInputException", 
+                root instanceof MismatchedInputException);
+        assertTrue("Should be a NullPointerException", 
+                root.getCause() instanceof NullPointerException);
+        return;
+    }
+    fail("Should have thrown an exception");
+}

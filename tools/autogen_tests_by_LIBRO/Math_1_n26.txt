@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    // Test each of the four combinations of max denominator and rounding
+    for (int rounding : new int[]{BigDecimal.ROUND_DOWN, BigDecimal.ROUND_UP}) {
+        for (int maxDenominator : new int[]{0, 1000000}) {
+            // Test the value that is just less than the overflow threshold.
+            double value = (double)(Integer.MAX_VALUE - 1) / (maxDenominator + 2);
+            Fraction f = new Fraction(value, maxDenominator, rounding);
+            assertEquals(maxDenominator != 0, f.getDenominator() > maxDenominator);
+            assertEquals(Integer.MAX_VALUE - 1, f.getNumerator());
+            
+            // Test the value just above the overflow threshold.
+            value = (double)(Integer.MAX_VALUE) / (maxDenominator + 2);
+            f = new Fraction(value, maxDenominator, rounding);
+            assertEquals(maxDenominator != 0, f.getDenominator() > maxDenominator

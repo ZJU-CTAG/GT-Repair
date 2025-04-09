@@ -1,0 +1,20 @@
+public void testOptionBuilder() throws ParseException {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.withLongOpt("target").withDescription("target").hasArg().create());
+    opts.addOption(OptionBuilder.withLongOpt("previous").withDescription("previous").hasArg().create());
+    opts.addOption(OptionBuilder.withLongOpt("foo").withDescription("foo").create());
+
+    try {
+        new GnuParser().parse(opts, new String[] {"-target", "-foo"});
+    }
+    catch (org.apache.commons.cli.ParseException e) {
+        // ignore it
+    }
+
+    opts = new Options();
+    opts.addOption(OptionBuilder.withLongOpt("target").withDescription("target").hasArg().create());
+    opts.addOption(OptionBuilder.withLongOpt("previous").withDescription("previous").hasArg().create());
+    opts.addOption(OptionBuilder.withLongOpt("foo").withDescription("foo").create());
+
+    try {
+        new GnuParser().parse(

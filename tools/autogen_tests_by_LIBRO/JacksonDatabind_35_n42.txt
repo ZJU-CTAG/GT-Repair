@@ -1,0 +1,22 @@
+public void testIssue269() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    mapper.registerModule(new JaxbAnnotationModule());
+    String json = mapper.writeValueAsString(new MyClass("abc"));
+    MyClass result = mapper.readValue(json, MyClass.class);
+    assertEquals("abc", result.value);
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="value")
+@JsonTypeIdResolver(MyClassIdResolver.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
+static class MyClass {
+    public MyClass(String value) {
+        this.value = value;
+    }
+    public String value;
+}
+
+static class MyClassIdResolver extends

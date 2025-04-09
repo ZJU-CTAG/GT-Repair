@@ -1,0 +1,15 @@
+public void test_issue_148() {
+    String expected = "someMethod(1, (Integer) 2); someOther(1, \"(String) 2\");";
+    String actual = join(getAllUnverifiedInvocations(), "; ");
+    assertEquals(expected, actual);
+}
+private List<String> getAllUnverifiedInvocations() {
+    List<String> unverifiedInvocations = new LinkedList<String>();
+    unverifiedInvocations.add(new InvocationFormatter().format(new InvocationBuilder().toInvocationMatcher(new Object() {
+        public void someMethod(int i, Integer j) {}
+        public void someOther(int i, String j) {}
+    }.getClass().getMethods()[0], new Object[]{1, 2})));
+    unverifiedInvocations.add(new InvocationFormatter().format(new InvocationBuilder().toInvocationMatcher(new Object() {
+        public void someMethod(int i, Integer j) {}
+        public void someOther(int i, String j) {}
+    }.getClass().getMethods

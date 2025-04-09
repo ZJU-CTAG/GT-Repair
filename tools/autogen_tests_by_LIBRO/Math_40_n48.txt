@@ -1,0 +1,15 @@
+public void testFailingAging() throws Exception {
+    BracketingNthOrderBrentSolver solver = new BracketingNthOrderBrentSolver();
+    for (double guess : new double[]{1e-150, 1e-1000}) {
+        try {
+            solver.solve(100, new UnivariateFunction() {
+
+                public double value(double x) {
+                    return Math.tan(x) - x;
+                }
+            }, guess, guess + 1e-5);
+        } catch (TooManyEvaluationsException e) {
+            // expected
+        }
+    }
+}

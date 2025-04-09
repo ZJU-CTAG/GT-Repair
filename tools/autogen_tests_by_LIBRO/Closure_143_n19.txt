@@ -1,0 +1,11 @@
+public void testIssue128() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("f1.js", ""),
+            SourceFile.fromCode("f2.js", ""),
+            SourceFile.fromCode("f3.js", "/** @define {string} */ test.VERSION = \"\";"));
+    assertTrue(result.success);
+}

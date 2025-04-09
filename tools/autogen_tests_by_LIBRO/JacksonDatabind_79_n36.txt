@@ -1,0 +1,28 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectIdGenerator<Integer> generator = new SimpleObjectIdGenerator<Integer>() {
+        private int id = 0;
+        @Override
+        public ObjectIdGenerator<Integer> forScope(Class<?> scope) {
+            return this;
+        }
+        @Override
+        public ObjectIdGenerator<Integer> newForSerialization(Object context) {
+            return this;
+        }
+        @Override
+        public IdKey key(Object key) {
+            return new IdKey(getClass(), null, key);
+        }
+        @Override
+        public Object generateId(Object forPojo) {
+            return ++id;
+        }
+    };
+    final ObjectIdResolver resolver = new SimpleObjectIdResolver() {
+        private final Map<Integer, Object> data = new HashMap<Integer, Object>();
+        @Override public Object resolveId(ObjectIdGenerator.IdKey id) {
+            return data.get(id.key);
+        }
+        @Override public ObjectIdRes

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String expected = "var a;function b(){a=Math.random();0.5>a&&b();if(a!==a)throw\"reset() was called\";}" +
+                      "b();";
+
+    String actual = new ClosureJavaScriptCompressor(new StringReader(JS), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+            }

@@ -1,0 +1,14 @@
+public void testIssue1000() {
+    final int N = 41200;
+    final double[] x = new double[N];
+    final double[] y = new double[N];
+    for (int i = 0; i < N; i++) {
+        x[i] = i;
+        y[i] = i;
+    }
+    final PolynomialCurveFitter pcf = PolynomialCurveFitter.create(1);
+    pcf.withStartPoint(new double[]{0});
+    pcf.withMaxIterations(10);
+    pcf.withConvergenceChecker(new SimpleVectorValueChecker(1e-16, 1e-16));
+    pcf.fit(x, y);
+}

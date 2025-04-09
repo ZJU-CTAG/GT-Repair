@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String msg = "var MSG_foo='bar'";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    options.setCheckSuspiciousCode(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("in", msg),
+            options);
+    System.out.println(result.toString());
+    assertTrue(result.success);
+}

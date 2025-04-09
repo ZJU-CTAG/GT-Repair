@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String input = "a,b,c\n" +
+        "1,2,3\n" +
+        "4,5,6\n" +
+        "7,8,9\n" +
+        "10,11,12";
+    CSVParser parser = CSVParser.parse(input, CSVFormat.DEFAULT.withHeader());
+    Map<String, String> map = parser.iterator().next().toMap();
+    assertEquals("1", map.get("a"));
+    assertEquals("2", map.get("b"));
+    assertEquals("3", map.get("c"));
+    parser = CSVParser.parse(input, CSVFormat.DEFAULT);
+    map = parser.iterator().next().toMap();
+    assertNull(map);
+}

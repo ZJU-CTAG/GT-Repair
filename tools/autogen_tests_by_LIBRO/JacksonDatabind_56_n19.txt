@@ -1,0 +1,9 @@
+public void testDeserialization() throws Exception {
+    String json = "{\"locale\":\"en-GB\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    TestClass testClass = mapper.readValue(json, TestClass.class);
+    assertEquals(Locale.UK, testClass.getLocale());
+}
+

@@ -1,0 +1,22 @@
+public void testIssue_115() {
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h)
+        .addOption(s)
+        .addOption(b)
+        .addOption(t);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    formatter.printHelp(new PrintWriter(out, true), 80, "cmd", "", options, 0, 0, null, true);
+    assertEquals("usage: cmd [options] <command> [command options]\n" +
+                    "\n" +
+                    "Commands:\n" +
+                    "\n" +
+                    "Options:\n

@@ -1,0 +1,17 @@
+public void testArgumentCaptorForVarargs() {
+    // Given
+    Foo foo = mock(Foo.class);
+    doNothing().when(foo).myVarargMethod(anyString(), anyString());
+
+    // When
+    foo.myVarargMethod("1", "2");
+
+    // Then
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(foo, times(2)).myVarargMethod(captor.capture(), captor.capture());
+}
+
+class Foo {
+    void myVarargMethod(String... strings) {
+    }
+}

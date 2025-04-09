@@ -1,0 +1,11 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter",
+            SimpleBeanPropertyFilter.serializeAllExcept("a"));
+    String json = mapper.writer(filters).writeValueAsString(new Bean());
+
+    final FilteringParserDelegate delegate = new FilteringParserDelegate(mapper.getFactory().createParser(json),
+            filters, mapper.getDeserializationConfig());
+    final JsonNode node = mapper.readTree(delegate);
+    assertEquals(node.toString(), "{\"b\":\"b\",\"c\":\"c\"}");
+}

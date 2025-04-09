@@ -1,0 +1,10 @@
+public void testExternalIdDeser() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper()
+        .enable( DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY );
+
+    String json = "{\"id\":\"[0,0]\"}";
+    Entity entity = mapper.readValue( json, Entity.class );
+
+    assertEquals( new ExternalId( 0, 0 ), entity.getId() );
+}

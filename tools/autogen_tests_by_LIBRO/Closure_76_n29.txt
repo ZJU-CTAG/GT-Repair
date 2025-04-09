@@ -1,0 +1,26 @@
+public void testAssignmentInCondition() {
+    final String code = "function reduction() {\n" +
+" var a, b;\n" +
+" if (echo(b = true) || echo(b = false))\n" +
+" a = b;\n" +
+" else\n" +
+" a = null;\n" +
+" return a;\n" +
+"}";
+
+    // remove type info
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compiler.disableAssertions();
+    compiler.disableAggressiveOptimizations();
+    compiler.disableNormalize();
+    compiler.disableOptimizationCallback();
+    compiler.disableClosurePass();
+
+    //compiler.setLoggingLevel(Level.INFO);
+    Result result = compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("input.js", code)),
+            ImmutableList.of(),
+            compiler.getDefaultExtern

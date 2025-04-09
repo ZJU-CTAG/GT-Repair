@@ -1,0 +1,14 @@
+public void testGetProperty() {
+    TypeOracle oracle = TypeOracleTestingUtils.buildStandardTypeOracle();
+
+    JClassType interfaceType = oracle.getType("test.I");
+    assertNotNull(interfaceType);
+
+    JClassType implementationType = oracle.getType("test.C");
+    assertNotNull(implementationType);
+
+    JField field = implementationType.getField("foobar");
+    assertNotNull(field);
+
+    assertTrue(interfaceType.isAssignableTo(field.getEnclosingType()));
+}

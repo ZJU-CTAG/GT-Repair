@@ -1,0 +1,17 @@
+public void testHeaderMapWithDuplicateColumnNames() throws Exception {
+    HeaderColumnNameMappingStrategy<Bean> strat = new HeaderColumnNameMappingStrategy<Bean>();
+    strat.setType(Bean.class);
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+            .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    Reader in = new StringReader("Col1,Col2,Col2,Col3,Col4\n1,2,3,4,5\n4,5,6,7,8");
+    try {
+        Iterable<CSVRecord> records = myFormat.parse(in);
+        for (CSVRecord record : records) {
+            System.out.println(record.toMap());
+            Map<String, Integer> headerMap = record.toMap();
+            assertEquals(5, headerMap.size());
+        }
+    }
+    finally {
+        in.close();
+    }

@@ -1,0 +1,24 @@
+public void testIssue108() {
+    final double[] lB = {.1, .2};
+    final double[] uB = {.9, .8};
+    final double[] i = {.5, .5};
+
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    double[] result = optimizer.optimize(
+            100000,
+            new ObjectiveFunction(new CMAESOptimizer.SeedGenerator() {
+                @Override
+                public double[] generate() {
+                    return i;
+                }
+            }, new MultivariateFunction() {
+                @Override
+                public double value(double[] x) {
+                    return (x[0] - .1) * (x[0] - .1) + (x[1] - .2) * (x[1] - .2);
+                }
+            }),
+            GoalType.MINIMIZE,
+            new InitialGuess(i),
+            new CMAESOptimizer.PopulationSize(10),
+            new CMAESOptimizer.Sigma(1.0),
+            new SimpleBounds(l

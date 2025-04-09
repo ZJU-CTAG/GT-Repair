@@ -1,0 +1,20 @@
+public void testIssue() {
+    String source = "/**\n" +
+            " * @name MyClass\n" +
+            " * @class\n" +
+            " * @extends superClass1\n" +
+            " * @extends superClass2\n" +
+            " */\n" +
+            "dojo.declare(\"MyClass\", [superClass1, superClass2], /** @lends \n" +
+            "MyClass.prototype */ {\n" +
+            "     foo: function(){ ... }\n" +
+            "     bar: function(){ ... }\n" +
+            "});";
+    // CompilerOptions options = new CompilerOptions();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("input.js", source), options);
+    assertTrue(result.success);
+}

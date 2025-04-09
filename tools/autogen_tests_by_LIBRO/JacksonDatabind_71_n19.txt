@@ -1,0 +1,17 @@
+public void testCharSequenceMapKeys() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    om.enableDefaultTyping(DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    om.registerModule(new JodaModule());
+    om.getSerializationConfig().addMixInAnnotations(DateTime.class, JodaSerializationMixIn.class);
+    om.getDeserializationConfig().addMixInAnnotations(DateTime.class, JodaSerializationMixIn.class);
+
+    Map<CharSequence, DateTime> map = new HashMap<CharSequence, DateTime>();
+    map.put("test", DateTime.now());
+    String json = om.writeValueAsString(map);
+
+    Map<CharSequence, DateTime> map2 = om.readValue(json, new TypeReference<Map<CharSequence, DateTime>>() {
+    });
+
+    assertEquals(1, map2.size());
+}

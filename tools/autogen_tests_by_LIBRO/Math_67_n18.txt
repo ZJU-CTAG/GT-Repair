@@ -1,0 +1,14 @@
+public void testIssue113() {
+    final MultiStartUnivariateRealOptimizer minimizer = new MultiStartUnivariateRealOptimizer((UnivariateRealOptimizer) optimizer, 100, 1.0e-6);
+
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+            public double value(double x) {
+                return -x * x;
+            }
+        };
+
+    minimizer.optimize(f, GoalType.MAXIMIZE, 0.0);
+
+    assertEquals(0.0, minimizer.getResult(), 1.0e-10);
+    assertEquals(0.0, minimizer.getFunctionValue(), 1.0e-10);
+}

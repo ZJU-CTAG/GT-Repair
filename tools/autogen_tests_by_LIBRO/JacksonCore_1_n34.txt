@@ -1,0 +1,15 @@
+public void testNullPointerExceptionNaN() throws Exception {
+    String json = "1.0e+1";
+    ObjectMapper om = new ObjectMapper();
+    om.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    JsonParser jp = om.getJsonFactory().createJsonParser(json);
+
+    jp.nextToken();
+    try {
+        jp.getDecimalValue();
+        fail("Should have thrown exception");
+    } catch (NullPointerException e) {
+        // expected
+    }
+    jp.close();
+}

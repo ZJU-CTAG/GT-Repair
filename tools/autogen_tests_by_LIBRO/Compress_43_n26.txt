@@ -1,0 +1,19 @@
+public void testIssue() {
+    final File outputFile = new File("target/test.zip");
+    final FileOutputStream fos = new FileOutputStream(outputFile);
+    try {
+        final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+        zos.setUseZip64(Zip64Mode.AsNeeded);
+        final ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+        ze.setMethod(ZipArchiveEntry.DEFLATED);
+        zos.putArchiveEntry(ze);
+        zos.write("test".getBytes());
+        zos.closeArchiveEntry();
+        zos.close();
+    } finally {
+        IOUtils.closeQuietly(fos);
+    }
+    final byte[] bytes = FileUtils.readFileToByteArray(outputFile);
+    assertEquals(0x0a, bytes[6]);
+    assertEquals(0x0a, bytes[bytes.length - 38]);
+}

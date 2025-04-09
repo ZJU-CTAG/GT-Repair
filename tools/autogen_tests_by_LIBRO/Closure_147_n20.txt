@@ -1,0 +1,20 @@
+public void testIssue114() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    test(options,
+        "var NS = {\n" +
+        "  read: function() {\n" +
+        "    return this.foo; // does not warn in 0514 release\n" +
+        "  },\n" +
+        "  write: function() {\n" +
+        "    this.foo = 123; // warns in 0514 release\n" +
+        "  }\n" +
+        "};\n" +
+        "NS.write2 = function() {\n" +
+        "  this.foo = 123;\n" +
+        "};\n" +
+        "NS.write();\n" +
+        "NS.write2();\n",
+        "var NS={read:function(){return this.foo},write:function(){this.foo=123}};" +
+        "NS.write2=function(){this.foo=123};" +
+        "NS

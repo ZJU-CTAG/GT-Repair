@@ -1,0 +1,21 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(DefaultImpl.class);
+    SomeBase obj = mapper.readValue("{\"x\":3}", SomeBase.class);
+    assertEquals(3, obj.getX());
+}
+
+public static class SomeBase {
+    protected int x;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+}
+
+public static class DefaultImpl extends SomeBase {
+}

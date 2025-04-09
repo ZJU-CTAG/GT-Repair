@@ -1,0 +1,9 @@
+public void testIssue106() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setClosurePass(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String input = "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    String output = Compiler.compile(SourceFile.fromCode("x.js", input), options).toSource();
+    assertEquals(input, output);
+}

@@ -1,0 +1,9 @@
+public void test7ZipError() throws Exception {
+    File archive = File.createTempFile("test", ".7z");
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("7z", new FileOutputStream(archive));
+    aos.putArchiveEntry(new ZipArchiveEntry("A/B/C/D/E/F/data.txt"));
+    aos.write("".getBytes());
+    aos.closeArchiveEntry();
+    aos.close();
+    SevenZFile sevenZFile = new SevenZFile(archive);
+}

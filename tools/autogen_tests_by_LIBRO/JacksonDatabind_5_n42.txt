@@ -1,0 +1,25 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+          .disable(MapperFeature.AUTO_DETECT_FIELDS)
+          .disable(MapperFeature.AUTO_DETECT_GETTERS)
+          .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+          .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+    
+    PersonImpl impl = new PersonImpl();
+    String json = mapper.writeValueAsString(impl);
+    assertTrue(json.contains("city"));
+}
+
+public interface Contact {
+    String getCity();
+}
+
+public class ContactImpl implements Contact {
+    public String getCity() { return "Sydney"; }
+}
+
+public class ContactMix

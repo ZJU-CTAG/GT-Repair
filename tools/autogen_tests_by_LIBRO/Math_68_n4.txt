@@ -1,0 +1,14 @@
+public void testLevenbergMarquardtOptimizer() {
+    double[] init = {1, 1};
+    double[] expected = {2, 3};
+    int maxEvals = 50;
+    VectorialPointValuePair res = new LevenbergMarquardtOptimizer(
+            false, new VectorialConvergenceChecker(1e-10, 1e-10))
+            .optimize(new MaxEval(maxEvals),
+                    new InitialGuess(init),
+                    new Target(expected),
+                    new VectorialPointValuePairCost(new QuadraticCost()),
+                    GoalType.MINIMIZE);
+    assertEquals(expected[0], res.getPoint()[0], 1e-6);
+    assertEquals(expected[1], res.getPoint()[1], 1e-6);
+}

@@ -1,0 +1,9 @@
+public void testUnadornedText() {
+    String h = "<html>\n<body>\n<script type=\"text/javascript\">\nvar inside = true;\n</script>\nthis should be outside.\n</body>\n</html>";
+    Document doc = Jsoup.parse(h, "", Parser.htmlParser());
+    assertEquals(doc.select("head").size(), 0);
+    assertEquals(doc.select("body").size(), 1);
+    assertEquals(doc.select("body script").size(), 1);
+    assertEquals(doc.select("body script").first().data().trim(), "var inside = true;");
+    assertEquals(doc.select("body").first().ownText().trim(), "this should be outside.");
+}

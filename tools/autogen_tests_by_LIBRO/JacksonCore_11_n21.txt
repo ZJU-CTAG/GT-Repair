@@ -1,0 +1,16 @@
+public void testByteQuadsCanonicalizer() {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, ServerIndexPair> metadata = Maps.newConcurrentMap();
+        String[] uuids = new String[ 1000 ];
+        byte[] indexPairBytes = new byte[ 2080 ];
+        new Random().nextBytes( indexPairBytes );
+        ServerIndexPair sip = new ServerIndexPair( indexPairBytes );
+        for ( int i = 0; i < uuids.length; ++i ) {
+            uuids[ i ] = UUID.randomUUID().toString();
+        }
+        for ( int i = 0; i < uuids.length; ++i ) {
+            byte[] s = mapper.writeValueAsBytes( ImmutableMap.of( uuids[ i ], sip ) );
+            metadata = mapper.readValue( s,
+                    new TypeReference<Map<String, ServerIndexPair>>() {} );
+            for ( Entry<String, ServerIndexPair> metadataEntry : metadata.entrySet() ) {
+                ServerIndexPair index

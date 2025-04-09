@@ -1,0 +1,30 @@
+public void testWithCustomDeserializer() throws IOException {
+    String json = "{\"text\":\"x\"}";
+    ObjectMapper mapper = new ObjectMapper().registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addDeserializer(String.class, new CustomDeserializer());
+        }
+    });
+    try {
+        mapper.readValue(json, Model.class);
+    } catch (InvalidFormatException e) {
+        String message = e.getOriginalMessage();
+        String location = e.getLocation().toString();
+        String expected = String.format("Cannot parse \"x\" into String", location);
+        assertEquals(expected, message);
+    }
+}
+
+@JsonDeserialize(using = CustomDeserializer.class)
+public class Model {
+    public String text;
+    public Model() {
+    }
+    public Model(final String text) {
+        this.text = text;
+    }
+}
+
+public class CustomDeserializer extends StdDeserializer<String> {
+   

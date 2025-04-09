@@ -1,0 +1,24 @@
+public void testOriginalLineNumberIsZeroBased() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enable(SerializationFeature.WRAP_EXCEPTIONS);
+
+    SourceMapTextOutputHandler sourceMapOutputHandler = new SourceMapTextOutputHandler(System.out);
+    mapper.getFactory().setOutputHandler(sourceMapOutputHandler);
+
+    System.out.println(mapper.writeValueAsString(new Foo()));
+}
+
+@JsonPropertyOrder({ "bar", "baz" })
+public class Foo {
+    @JsonProperty("bar")
+    public String bar() {
+        return "bar";
+    }
+
+    @JsonProperty("baz")
+    public String baz() {
+        return "baz";
+    }
+}

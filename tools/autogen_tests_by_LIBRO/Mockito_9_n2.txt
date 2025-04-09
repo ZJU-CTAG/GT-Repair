@@ -1,0 +1,16 @@
+public void testAbstractSpy() {
+    // Create a spy of an abstract class
+    AbstractClass spy = Mockito.spy(new AbstractClass() {
+        @Override
+        public void abstractMethod() {
+            ConcreteClass concrete = new ConcreteClass();
+            concrete.concreteMethod(); // This is the problem!
+        }
+    });
+
+    // Mock the abstract method to return the spy
+    Mockito.stub(spy.abstractMethod()).toReturn(spy);
+
+    // The abstract method is called, but the concrete method is not mocked
+    spy.abstractMethod(); 
+}

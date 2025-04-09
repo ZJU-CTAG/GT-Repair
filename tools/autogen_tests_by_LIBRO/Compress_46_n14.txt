@@ -1,0 +1,12 @@
+public void testExtendedTimestamp() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gzos = new GZIPOutputStream(baos);
+    long time = System.currentTimeMillis();
+    Date date = new Date(time);
+    String name = "x";
+    gzos.putNextEntry(new ZipEntry(name));
+    ZipEntry ze = new ZipEntry(name);
+    ExtendedTimestamp et = new ExtendedTimestamp(ze);
+    assertEquals(name, et.getName());
+    assertEquals(time, et.getTime());
+}

@@ -1,0 +1,31 @@
+public void testReadTree() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping()
+            .enable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.USE_GETTERS_AS_SETTERS)
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    Foo foo = new Foo("bar");
+    String serialized = mapper.writeValueAsString(foo);
+    JsonNode jsonNode = mapper.readTree(serialized);
+    assertNotNull(jsonNode);
+}
+
+public static class Foo {
+    private String bar;
+
+    public Foo() {
+    }
+
+    public Foo(String bar) {
+        this.bar = bar;
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public void setBar(String bar) {
+        this.bar

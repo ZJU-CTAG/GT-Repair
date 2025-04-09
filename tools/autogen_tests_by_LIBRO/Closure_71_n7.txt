@@ -1,0 +1,12 @@
+public void testIssue108() {
+    JSCompilerOptions options = new JSCompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Compiler compiler = new Compiler(System.err);
+    compiler.initOptions(options);
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("foo.js", "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"));
+    inputs.add(SourceFile.fromCode("subfoo.js", "/** @constructor @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }"));
+    Result result = compiler.compile(extern, inputs, options);
+    assertTrue(result.success);
+}

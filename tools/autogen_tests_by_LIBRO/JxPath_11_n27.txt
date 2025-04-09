@@ -1,0 +1,17 @@
+public void testNamespace() {
+    Document doc = nodeFactory.document(null, null, null, null);
+    Element root = doc.createElementNS("http://www.example.com", "ElementA");
+    doc.appendChild(root);
+    root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:myAttr", "Mytype");
+    Element el = doc.createElementNS("http://www.example.com/B",
+            "ElementB");
+    root.appendChild(el);
+    el.appendChild(doc.createTextNode("MY VALUE"));
+    DOMNodePointer ptr = new DOMNodePointer(doc);
+    assertEquals("DOM", ptr.getLocale().getLanguage());
+    assertEquals(doc, ptr.getValue());
+    assertEquals(doc, ptr.getNode());
+    assertEquals(root, ptr.getNode("ElementA"));
+    assertEquals(el, ptr.getNode("ElementA/ElementB"));
+    assertEquals("MY VALUE", ptr

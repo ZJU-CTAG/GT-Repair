@@ -1,0 +1,13 @@
+public void testNamespacedAttributes() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element xml = doc.createElementNS("foo", "xml");
+    xml.setAttributeNS("foo", "pop", "a");
+    doc.appendChild(xml);
+    XPath xpath = new DOMXPath("(//@* | //namespace::*)[name()='pop']");
+    List<Node> list = xpath.selectNodes(doc);
+    Assert.assertNotNull(list);
+    Assert.assertEquals(1, list.size());
+}

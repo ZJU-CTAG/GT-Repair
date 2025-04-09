@@ -1,0 +1,16 @@
+public void testDatasetUtilities() {
+    // 1. error in range calculation (compare with chart from forum)
+    final XYSeries series = new XYSeries("S1");
+    series.add(0, 0);
+    series.add(1, 1);
+    final XYSeriesCollection collection = new XYSeriesCollection();
+    collection.addSeries(series);
+    assertEquals(0.0, DatasetUtilities.iterateRangeBounds(collection)[0], 0.001);
+    assertEquals(1.0, DatasetUtilities.iterateRangeBounds(collection)[1], 0.001);
+    assertEquals(0.0, DatasetUtilities.iterateDomainBounds(collection)[0], 0.001);
+    assertEquals(1.0, DatasetUtilities.iterateDomainBounds(collection)[1], 0.001);
+
+    // 2. empty dataset should return null intervals
+    final XYSeriesCollection emptyCollection = new XYSeriesCollection();
+    assertNull(DatasetUtilities.iterateRangeBounds(emptyCollection));
+    assertNull(DatasetUtilities

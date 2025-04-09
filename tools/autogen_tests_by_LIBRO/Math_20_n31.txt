@@ -1,0 +1,19 @@
+public void testCMAESOptimizer() {
+    CMAESOptimizer optimizer = new CMAESOptimizer(100, 0, false, 0, 0, new MersenneTwister(), false, 1e-14, 1e-14, 1e-14, null);
+    double[] startPoint = { 0.0 };
+    double[] lowerBound = {-1.0};
+    double[] upperBound = {1.0};
+    double[] fit = new double[1];
+    for (int i = 0; i < 100; i++) {
+        fit[0] = optimizer.optimize(new MaxEval(100),
+                                    new ObjectiveFunction(new MultivariateFunction() {
+                                        @Override
+                                        public double value(double[] point) {
+                                            return -point[0];
+                                        }
+                                    }),
+                                    GoalType.MINIMIZE,
+                                    new InitialGuess(startPoint),
+                                    new NelderMeadSimplex(new double[] { 0.1 }),
+                                    new CMAESOptimizer.PopulationSize(10),
+                

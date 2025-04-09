@@ -1,0 +1,15 @@
+public void testIssue(@TempDir File tempDir) throws Exception {
+    File getNumFile = new File(tempDir, "get_num.js");
+    File alertFile = new File(tempDir, "alert.js");
+    FileUtils.writeStringToFile(getNumFile, "var getNum = function() { return 5; };");
+    FileUtils.writeStringToFile(alertFile, "alert(getNum());");
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            JSSourceFile.fromCode("get_num.js", FileUtils.readFileToString(getNumFile)),
+            JSSourceFile.fromCode("alert.js", FileUtils.read

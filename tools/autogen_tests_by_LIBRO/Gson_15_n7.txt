@@ -1,0 +1,14 @@
+public void testIssueLenient() {
+    Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+    JsonWriter writer = new JsonWriter(new OutputStreamWriter(new ByteArrayOutputStream()));
+    gson.toJson(Double.NaN, Double.class, writer);
+    gson.toJson(Double.POSITIVE_INFINITY, Double.class, writer);
+    gson.toJson(Double.NEGATIVE_INFINITY, Double.class, writer);
+}
+
+public void testIssueNotLenient() {
+    JsonWriter writer = new JsonWriter(new OutputStreamWriter(new ByteArrayOutputStream()));
+    writer.value(Double.NaN);
+    writer.value(Double.POSITIVE_INFINITY);
+    writer.value(Double.NEGATIVE_INFINITY);
+}

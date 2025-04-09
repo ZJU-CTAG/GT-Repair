@@ -1,0 +1,20 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    WarningLevel warnings = WarningLevel.VERBOSE;
+    options.setWarningLevel(warnings);
+
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    SourceFile extern = SourceFile.fromCode("externs.js",
+            "function alert(x) {}");
+    SourceFile input1 = SourceFile.fromCode("src1.js",
+            "var getNum = function() { return 5; };");
+    SourceFile input2 = SourceFile.fromCode("src2.js",
+            "alert(getNum());");
+    compiler.compile(extern, input1, input2);
+    assertEquals("alert(5)", compiler.toSource());
+}

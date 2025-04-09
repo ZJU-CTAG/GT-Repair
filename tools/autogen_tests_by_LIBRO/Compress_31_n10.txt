@@ -1,0 +1,16 @@
+public void testIssue107_1() throws Exception {
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(
+                                    getClass().getResource("commons-compress-1.7.tgz").getFile()))));
+
+    TarArchiveEntry entry = tarIn.getNextTarEntry();
+
+    while (entry != null) {
+        System.out.println(entry.getName());
+        System.out.println(entry.getSize());
+        entry = tarIn.getNextTarEntry();
+    }
+    tarIn.close();
+}

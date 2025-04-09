@@ -1,0 +1,14 @@
+public void test() {
+    DataObject obj = DataObject.create("Test", "test=t");
+    obj.set("t", null);
+
+    obj.set("test", new Facet<>("test", (Facet.Function<Object>) (Object o) -> {
+        if (obj.get("t") != null) {
+            obj.set("t", null);
+        }
+
+        obj.set("t", 1);
+    }));
+
+    obj.get("test").f().apply(obj);
+}

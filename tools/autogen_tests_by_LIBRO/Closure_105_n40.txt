@@ -1,0 +1,12 @@
+public void testIssue73() {
+    final String js = "$.fn.hasClass = function(selector) { return ( this.length > 0 ? "
+            + "!( ( ['', this[0].className, ''].join(' ') ).indexOf( ['', selector, "
+            + "''].join(' ') ) == -1 )"
+            + ": false ); };";
+    final String expected = "$.fn.hasClass = function(selector) { return ( this.length > 0 ? "
+            + "!( ( [\"\", this[0].className, \"\"].join(' ') ).indexOf( [\"\", selector, "
+            + "\"\"].join(' ') ) == -1 )"
+            + ": false ); };";
+    final String munged = new JavaScript().compress(js).trim();
+    assertEquals(expected, munged);
+}

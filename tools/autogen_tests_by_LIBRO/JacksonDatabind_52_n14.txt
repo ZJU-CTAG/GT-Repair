@@ -1,0 +1,16 @@
+public void testExternalId() throws IOException {
+    ExternalId externalId = new ExternalId();
+    externalId.setExternalId("external-id");
+    externalId.setExternalIdType("external-id-type");
+    externalId.setId("id");
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    final String s = objectMapper.writeValueAsString(externalId);
+
+    ExternalId parsed = objectMapper.readValue(s, ExternalId.class);
+    assertEquals("external-id", externalId.getExternalId());
+    assertEquals("external-id-type", externalId.getExternalIdType());
+
+    final String s1 = objectMapper.writeValueAsString(parsed);
+    assertEquals(s, s1);
+}

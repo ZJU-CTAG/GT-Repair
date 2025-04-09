@@ -1,0 +1,16 @@
+public void testIssue43() throws Exception {
+    ErrorReporter er = new ErrorReporter();
+    er.setIsReportingWarnings(true);
+    String[] args = new String[]{"-strict", "-warn", "-missingProperties"};
+    Context cx = Context.enter();
+    try {
+        cx.setErrorReporter(er);
+        cx.setLanguageVersion(Context.VERSION_1_6);
+        Script script = cx.compileString("var s = new String('hello'); alert(s.toLowerCase.indexOf('l'));", "testIssue43.js", 0, null);
+        script.exec(cx, cx.initStandardObjects());
+        assertTrue("Should have some errors", er.hasReportedErrors());
+        assertTrue("Should have some warnings", er.hasReportedWarnings());
+    } finally {
+        Context.exit();
+    }
+}

@@ -1,0 +1,14 @@
+public void testJacksonDeserializerVulnerability() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+
+    String json = "{\"@type\":\"org.joda.time.DateTime\",\"zone\":{\"fixed\":false,\"uncachedZone\":{\"cachable\":false,\"fixed\":false,\"id\":\"UTC\"},\"id\":\"UTC\"},\"chronology\":{\"zone\":{\"fixed\":false,\"uncachedZone\":{\"cachable\":false,\"fixed\":false,\"id\":\"UTC\"},\"id\":\"UTC\"}},\"millis\":0}";
+
+    try {
+        DateTime dateTime = mapper.readValue(json, DateTime.class);
+        dateTime.toString();
+        fail("Expected Exception");
+    } catch (Exception e) {
+        assertEquals("java.lang.SecurityException", e.getClass().getName());
+    }
+}

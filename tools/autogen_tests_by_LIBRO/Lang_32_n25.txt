@@ -1,0 +1,13 @@
+public void testToStringStyleThreadLocalMemoryLeak() {
+    ToStringStyle style = ToStringStyle.SHORT_PREFIX_STYLE;
+
+    // Store the ToStringStyle in a ThreadLocal
+    final ThreadLocal<ToStringStyle> localStyle = new ThreadLocal<ToStringStyle>();
+    localStyle.set(style);
+
+    // Clear the ThreadLocal
+    localStyle.remove();
+
+    // The ThreadLocal should now contain no references
+    assertNull(localStyle.get());
+}

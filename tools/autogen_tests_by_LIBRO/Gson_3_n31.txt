@@ -1,0 +1,13 @@
+public void testReproduction() {
+    String json = "{\"map\":{\"a\":\"b\"}}";
+    A a = new Gson().fromJson(json, A.class);
+    assertEquals(1, a.map.size());
+
+    json = "{\"map\":{\"a\":\"b\",\"c\":\"d\"}}";
+    a = new Gson().fromJson(json, A.class);
+    assertEquals(2, a.map.size());
+}
+
+public static class A {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+}

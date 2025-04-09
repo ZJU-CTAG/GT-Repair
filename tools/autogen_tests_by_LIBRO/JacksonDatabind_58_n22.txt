@@ -1,0 +1,13 @@
+public void testIssue() throws JsonParseException, JsonMappingException, IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    MyException exc = mapper.readValue("{\"message\":\"test\"}", MyException.class);
+    assertEquals("test", exc.getMessage());
+}
+
+@JsonIgnoreProperties("cause")
+@SuppressWarnings("serial")
+public class MyException extends RuntimeException {
+    public MyException(String message) {
+        super(message);
+    }
+}

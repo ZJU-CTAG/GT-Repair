@@ -1,0 +1,13 @@
+public void testIssue156() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            options,
+            Lists.newArrayList(SourceFile.fromCode("testcode",
+                    "goog.provide('main'); goog.scope(function (){ var a = foo, b, c = 1; });")),
+            Lists.<SourceFile>newArrayList());
+    assertTrue(!result.success);
+    assertTrue(!compiler.hasErrors());
+}

@@ -1,0 +1,9 @@
+public void testAcceptCaseInsensitiveProperties() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    Person person = mapper.readValue("{\"BusinessAddress.Street\":\"Kai str.\",\"BUSINESSADDRESS.ZIP\":\"1234\",\"businessAddress.COUNTRY\":\"Sweden\"}", Person.class);
+    assertEquals("Kai str.", person.businessAddress.street);
+    assertEquals("1234", person.businessAddress.zip);
+    assertEquals("Sweden", person.businessAddress.country);
+}

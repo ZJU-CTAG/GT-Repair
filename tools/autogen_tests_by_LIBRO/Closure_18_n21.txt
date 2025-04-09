@@ -1,0 +1,17 @@
+public void testDependencySorting() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setDependencyOptions(new DependencyOptions().setDependencySorting(true));
+    options.closurePass = false;
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    String input = String.format("<script src='%s/fileA.js'></script>\n"
+                               + "<script src='%s/fileB.js'></script>\n"
+                               + "<script src='%s/fileC.js'></script>\n"
+                               + "<script src='%s/fileD.js'></script>\n"
+                               + "</body>",
+                               getTestInputDir(), getTestInputDir(), getTestInputDir(), getTestInputDir());
+
+    String expectedOutput = "goog.require('fileC');\n"
+                          + "goog.require('fileD');\n"
+                          + "goog.require('fileA');\n"

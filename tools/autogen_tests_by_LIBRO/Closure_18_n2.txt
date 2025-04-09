@@ -1,0 +1,14 @@
+public void testClosurePassWithDependencySorting() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setDependencyOptions(DependencyOptions.sortOnly());
+    compiler.setOptions(compilerOptions);
+    Result result = compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("input1.js", "goog.require('foo');foo();")),
+        ImmutableList.of(SourceFile.fromCode("foo.js", "goog.provide('foo');foo=function(){};")),
+        compilerOptions);
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    assertEquals("goog.require(\"foo\");foo();goog.provide(\"foo\");foo=function(){};", output);
+}

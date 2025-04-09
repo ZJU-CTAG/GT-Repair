@@ -1,0 +1,33 @@
+public void testBufferReuse() throws Exception
+{
+    final String JSON = "[ \"abc\" ]";
+
+    final AtomicBoolean reused = new AtomicBoolean();
+    final AtomicBoolean failed = new AtomicBoolean();
+    final Object readSync = new Object();
+
+    byte[] data = JSON.getBytes("UTF-8");
+    byte[] reusable = new byte[data.length];
+
+    final JsonFactory jsonFactory = new JsonFactory();
+    final JsonParser parser = jsonFactory.createJsonParser(new ByteArrayInputStream(data));
+
+    final int minReadSize = jsonFactory.getBufferRecycler().getReadIOBuffer(false).length;
+
+    parser.nextToken();
+    parser.nextToken();
+
+    parser.setInput(new InputStream() {
+        int index = 0;
+
+        @Override
+        public int read() throws IOException {
+            if (index < data.length) {
+                return data[index++];
+            } else {
+                if (!reused.get()) {
+                    parser.setInput(new InputStream() {
+                        int index = 0;
+
+                        @Override
+                        public

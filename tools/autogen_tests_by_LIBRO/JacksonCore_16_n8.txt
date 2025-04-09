@@ -1,0 +1,22 @@
+public void testSequence() throws IOException {
+    String json1 = "{\"a\" : 1}";
+    String json2 = "{\"b\" : 2}";
+
+    ObjectMapper om = new ObjectMapper();
+
+    JsonParser p1 = om.getFactory().createParser(json1);
+    JsonParser p2 = om.getFactory().createParser(json2);
+
+    JsonParserSequence parserSequence = JsonParserSequence.createFlattened(false, p1, p2);
+
+    p1.nextToken();
+    assertEquals(FIELD_NAME, parserSequence.nextToken());
+    assertEquals("a", parserSequence.getText());
+    assertEquals(VALUE_NUMBER_INT, parserSequence.nextToken());
+    assertEquals(1, parserSequence.getIntValue());
+
+    try {
+        assertEquals(START_OBJECT, parserSequence.nextToken());
+        fail("Expected an exception because we skipped a token");
+    } catch (JsonParseException e) {
+        assertTrue("Expected an exception because we skipped a token

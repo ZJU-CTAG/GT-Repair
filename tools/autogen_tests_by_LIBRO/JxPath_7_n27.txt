@@ -1,0 +1,16 @@
+public void testBinaryOperators() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    Document doc = null;
+    try {
+        doc = dbf.newDocumentBuilder().parse(new InputSource(new StringReader(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<doc/>")));
+    } catch (SAXException e) {
+        e.printStackTrace();
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    JXPathContext pathContext = JXPathContext.newContext(doc);
+    assertEquals(Boolean.FALSE, pathContext.getValue("2.0 > child1", Boolean.class));
+}

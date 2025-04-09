@@ -1,0 +1,13 @@
+public void testRecursiveType() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule());
+    mapper.addMixIn(Base.class, BaseMixIn.class);
+    mapper.addMixIn(Sub.class, SubMixIn.class);
+
+    Sub sub = new Sub();
+    Base base = new Base();
+    base.setSub(sub);
+    sub.setBase(base);
+    String json = mapper.writeValueAsString(sub);
+    System.out.println(json);
+}

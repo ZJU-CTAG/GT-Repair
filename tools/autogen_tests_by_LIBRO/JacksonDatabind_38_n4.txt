@@ -1,0 +1,15 @@
+public void testHandleDeprecatedSimpleTypeConstruct()
+    throws Exception
+{
+    String INPUT = aposToQuotes("{'message':'foobar'}");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(MyPojo.class);
+    MyPojo pojo = mapper.readValue(INPUT, MyPojo.class);
+    assertEquals("foobar", pojo.message);
+}
+
+@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class")
+@JsonSubTypes({ @JsonSubTypes.Type(MyPojo.class) })
+static class MyPojo {
+    public String message;
+}

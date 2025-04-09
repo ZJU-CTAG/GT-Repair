@@ -1,0 +1,29 @@
+public void testIssue108()
+{
+    String[] args = new String[] { "-target" };
+    Options options = new Options();
+    options.addOption(new Option("t", "target", true, "Generate files for the specified target machine"));
+    try
+    {
+        CommandLineParser parser = new PosixParser();
+        CommandLine line = parser.parse(options, args);
+        assertFalse(line.hasOption("t"));
+    }
+    catch (ParseException e)
+    {
+        e.printStackTrace();
+        fail(e.getMessage());
+    }
+    args = new String[] { "-target", "foobar.com" };
+    try
+    {
+        CommandLineParser parser = new PosixParser();
+        CommandLine line = parser.parse(options, args);
+        assertTrue(line.hasOption("t"));
+    }
+    catch (ParseException e)
+    {
+        e.printStackTrace();
+        fail(e.getMessage());
+    }
+}

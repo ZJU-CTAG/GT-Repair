@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String source = "function preload_check_all(input, count) { /*...*/ } preload_check_all(input, count);";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("source.js", source) },
+        new JSSourceFile[] { JSSourceFile.fromCode("externs.js", "") },
+        options);
+}

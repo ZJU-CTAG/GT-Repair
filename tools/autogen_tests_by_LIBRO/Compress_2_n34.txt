@@ -1,0 +1,23 @@
+public void testIssue() throws IOException {
+    File file = File.createTempFile("ar", ".tmp");
+    file.deleteOnExit();
+
+    ArArchiveOutputStream aos = new ArArchiveOutputStream(file);
+    aos.putArchiveEntry(new ArArchiveEntry("a.txt", 10));
+    aos.closeArchiveEntry();
+    aos.putArchiveEntry(new ArArchiveEntry("b.txt", 10));
+    aos.closeArchiveEntry();
+    aos.close();
+
+    ArArchiveInputStream ais = new ArArchiveInputStream(file);
+    ArArchiveEntry entry = ais.getNextArArchiveEntry();
+    ais.closeArchiveEntry();
+    ais.deleteArArchiveEntry(entry);
+    ais.close();
+
+    aos = new ArArchiveOutputStream(file);
+    aos.putArchiveEntry(new ArArchiveEntry("c.txt", 10));
+    aos.closeArchiveEntry();
+    aos.close();
+
+    ais = new ArArchiveInputStream(file);

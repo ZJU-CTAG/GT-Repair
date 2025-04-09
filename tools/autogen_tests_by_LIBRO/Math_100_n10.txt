@@ -1,0 +1,26 @@
+public void testBugWithBoundParameters() {
+
+    final WeightedMeasurement[] measurements = new WeightedMeasurement[1];
+    measurements[0] = new WeightedMeasurement(1.0, new Measurement(1.0, 1.0));
+
+    final LevenbergMarquardtEstimator estimator = new LevenbergMarquardtEstimator();
+
+    final DynamicModel model = new DynamicModel() {
+
+        public int getMeasurementDimension() {
+            return 1;
+        }
+
+        public int getParametersDimension() {
+            return 2;
+        }
+
+        public void computeJacobian(double t, double[] y, double[] yDot,
+                double[][] dFdY, double[][] dFdP) {
+            dFdY[0][0] = 1;
+            dFdY[1][0] = 1;
+            dFdP[0][0] = 1;
+            dFdP[0][1] = 1;
+        }
+
+        public double[] computeDerivatives(double t, double[] y, double[] yDot) {

@@ -1,0 +1,13 @@
+public void testTarChecksum() throws Exception {
+    File file = getFile("/compress/test.tar.gz");
+    ArchiveInputStream in = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(file)));
+    try {
+        TarArchiveEntry entry = in.getNextTarEntry();
+        while (entry != null) {
+            in.closeEntry();
+            entry = in.getNextTarEntry();
+        }
+    } finally {
+        in.close();
+    }
+}

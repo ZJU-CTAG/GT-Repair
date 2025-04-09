@@ -1,0 +1,17 @@
+public void testFinalFields() {
+    // Given
+    List<String> finalList = new ArrayList<String>();
+    class ClassWithFinalFields {
+        @InjectMocks
+        public final List<String> list = finalList;
+    }
+    ClassWithFinalFields instance = new ClassWithFinalFields();
+
+    // When
+    when(finalList.add("test")).thenReturn(true);
+    boolean result = instance.list.add("test");
+
+    // Then
+    assertTrue(result);
+    verify(finalList).add("test");
+}

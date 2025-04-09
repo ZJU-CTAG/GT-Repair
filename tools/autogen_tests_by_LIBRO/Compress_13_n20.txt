@@ -1,0 +1,24 @@
+public void testIssue() throws Exception {
+    File zipFile = File.createTempFile("issue", ".zip");
+    zipFile.deleteOnExit();
+
+    String dirname = "ä";
+    String dir = dirname + "/";
+    String filename = "test.txt";
+    String string = "this is a test";
+
+    ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile));
+    zipOutputStream.setEncoding("CP850");
+    zipOutputStream.putNextEntry(new ZipEntry(dir));
+    zipOutputStream.putNextEntry(new ZipEntry(dir + filename));
+    zipOutputStream.write(string.getBytes());
+    zipOutputStream.close();
+
+    ArchiveInputStream archiveInputStream = new ArchiveStreamFactory().createArchiveInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
+
+    ArchiveEntry archiveEntry = null;
+    boolean directoryFound = false;
+    boolean fileFound = false;
+    while ((archiveEntry = archiveInputStream.getNextEntry()) != null) {
+        if (archiveEntry.isDirectory()) {
+            assertEqu

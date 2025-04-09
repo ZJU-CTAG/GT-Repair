@@ -1,0 +1,16 @@
+public void testDelete() {
+    String code;
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.INFO);
+    compiler.disableThreads();
+    code = "function x() { return delete a; }";
+    compiler.compile(
+        JSSourceFile.fromCode("stdin", code),
+        new JSSourceFile[] { JSSourceFile.fromCode(
+                "externs",
+                "var a;")},
+        new CompilerOptions());
+
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+}

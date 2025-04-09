@@ -1,0 +1,16 @@
+public void testRequiredOptions() throws Exception {
+    final String[] args = new String[] { "-c" };
+    final ArgumentList argumentList = new ArgumentList();
+    final Argument c = new ArgumentBuilder().withName("c").create();
+    final Group group = new GroupBuilder().withArgument(c).create();
+    final Option help = new OptionBuilder().withShortName("h").withDescription("Help message").withChildren(group).create();
+    argumentList.add(c);
+    argumentList.add(help);
+    final CommandLine commandLine = new CommandLine(argumentList);
+    commandLine.parse(args);
+    assertThat(commandLine.getArguments(), hasItem(c));
+    assertThat(commandLine.getOptions(), hasItem(help));
+    assertThat(commandLine.getOptions(), is(not(empty())));
+    assertThat(commandLine.getArguments(), is(not(empty())));
+    assertThat(commandLine.getArguments(), hasItem(c));
+}

@@ -1,0 +1,35 @@
+public void testIssue108() {
+    SwitchingFunction switchFunction = new SwitchingFunction() {
+        
+        public double g(double t) {
+            if (t < 100) {
+                return t - 90;
+            } else {
+                return -t + 135;
+            }
+        }
+        
+        public double getLo() {
+            return -1e-14;
+        }
+        
+        public double getHi() {
+            return 1e-14;
+        }
+    };
+    
+    FirstOrderConverter converter = new FirstOrderConverter(new FirstOrderDifferentialEquations() {
+        
+        public int getDimension() {
+            return 1;
+        }
+        
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = 1.0;
+        }
+    }, 0.0, new double[] { 89.99998 });
+    
+    double maxStep = 0.9;
+    double minStep = 1e-14;
+    double absTol = 1e-14;
+    double relTol

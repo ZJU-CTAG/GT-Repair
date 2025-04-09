@@ -1,0 +1,16 @@
+public void testProblematicPropertyReplacement() {
+    Compiler compiler = new Compiler();
+
+    Result result = compiler.compile(new File("./src/test/resources/issue/PropertyReplacement.js"));
+    boolean success = result.success;
+    assertFalse(success);
+
+    List<JSError> warnings = result.warnings;
+    assertEquals(1, warnings.size());
+    JSError warning = warnings.get(0);
+    assertEquals(
+        "actual parameter 1 of myclass.prototype.fn does not match formal parameter\n" +
+        "found   : undefined\n" +
+        "required: boolean", warning.description);
+    assertEquals(4, warning.lineNumber);
+}

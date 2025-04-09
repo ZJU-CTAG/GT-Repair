@@ -1,0 +1,15 @@
+public void testGenericTypeIdResolver() throws Exception {
+    String json = "[ { \"@id\": \"1\" }, { \"@id\": \"2\", \"@type\": \"Thing\" } ]";
+
+    ObjectMapper objectMapper = new ObjectMapper().enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    PolymorphicTypeIdResolver resolver = new PolymorphicTypeIdResolver(new SimpleAbstractTypeResolver() {
+        @Override
+        public JavaType resolveAbstractType(DeserializationConfig config, BeanDescription beanDesc) {
+            return TypeFactory.defaultInstance().constructSimpleType(AbstractThing.class, TypeFactory.unknownType());
+        }
+    });
+    objectMapper.setDefaultTyping(resolver);
+
+    objectMapper.readValue(json, new TypeReference<List<AbstractThing>>(){});
+}

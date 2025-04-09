@@ -1,0 +1,19 @@
+public void testIssue260() throws Exception
+{
+    // first, try single-token case, to ensure it works
+    JsonParser p = MAPPER.createParser("[ 123 ]");
+    assertToken(JsonToken.START_ARRAY, p.nextToken());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(123, p.getIntValue());
+    assertToken(JsonToken.END_ARRAY, p.nextToken());
+    assertNull(p.nextToken());
+    p.close();
+
+    // and then with extra stuff that should cause an exception
+    p = MAPPER.createParser("   123 true ");
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(123, p.getIntValue());
+    assertToken(JsonToken.VALUE_TRUE, p.nextToken());
+    assertToken(JsonToken.VALUE_TRUE, p.nextToken());
+    p.close();
+}

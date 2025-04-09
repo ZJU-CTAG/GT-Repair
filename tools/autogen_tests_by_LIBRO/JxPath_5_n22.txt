@@ -1,0 +1,11 @@
+public void testUnionOfVariableAndNode() {
+    NodePointer rootPointer = (NodePointer) getContext().getPointer(root);
+    NodePointer mainPointer = (NodePointer) rootPointer.getValuePointer().getNodePointer();
+    NodePointer varPointer = new VariablePointer(rootPointer, "var", mainPointer);
+
+    NodePointer ptr = (NodePointer) getContext().getPointer("$var | /MAIN/A");
+    assertTrue(ptr instanceof UnionPointer);
+    assertEquals(2, ((UnionPointer) ptr).getPointers().length);
+    assertEquals(varPointer, ((UnionPointer) ptr).getPointers()[0]);
+    assertEquals(rootPointer.getValuePointer().getNodePointer().getValuePointer().getNodePointer().getValuePointer().getNodePointer(), ((UnionPointer) ptr).getPointers()[1]);
+}

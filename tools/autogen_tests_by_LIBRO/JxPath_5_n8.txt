@@ -1,0 +1,10 @@
+public void testUnionOfVariableAndNode() {
+    JXPathContext context = JXPathContext.newContext(new Integer(1));
+    context.setLenient(false);
+
+    context.getVariables().declareVariable("var", "/MAIN/B");
+    List list = context.selectNodes("$var | /MAIN/A");
+    assertEquals(2, list.size());
+    assertEquals("/MAIN/A", ((Pointer) list.get(0)).asPath());
+    assertEquals("/MAIN/B", ((Pointer) list.get(1)).asPath());
+}

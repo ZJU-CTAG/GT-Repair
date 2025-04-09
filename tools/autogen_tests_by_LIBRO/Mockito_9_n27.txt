@@ -1,0 +1,22 @@
+public void testIssue121() throws Exception {
+    Foo foo = spy(new FooImpl());
+    when(foo.bar()).thenReturn(1);
+    when(foo.baz()).thenReturn(2);
+    assertEquals(1, foo.bar());
+    assertEquals(2, foo.baz());
+    assertEquals(2, foo.bar());
+}
+
+abstract class Foo {
+    abstract int bar();
+    int baz() {
+        return bar();
+    }
+}
+
+class FooImpl extends Foo {
+    @Override
+    int bar() {
+        return 0;
+    }
+}

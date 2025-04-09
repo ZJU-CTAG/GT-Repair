@@ -1,0 +1,16 @@
+public void testXmlSerializerProvider() throws IOException {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED, true);
+    mapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, true);
+
+    mapper.withRootName(null, "rootNull");
+    mapper.withRootName(Object.class, "rootObject");
+
+    String xml = mapper.writeValueAsString(null);
+    assertTrue(xml.startsWith("<rootNull"));
+
+    xml = mapper.writeValueAsString(new Object());
+    assertTrue(xml.startsWith("<rootObject"));
+}

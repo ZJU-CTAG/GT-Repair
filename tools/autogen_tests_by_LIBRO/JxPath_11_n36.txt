@@ -1,0 +1,13 @@
+public void testIncompleteHandlingOfUndefinedNamespaces() throws JaxenException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream(
+            "<ElementA A:myAttr='Mytype'><B:ElementB>MY VALUE</B:ElementB></ElementA>".getBytes()));
+
+    XPath xpath = new DOMXPath("//ElementB");
+    xpath.addNamespace("A", "/http...");
+    xpath.addNamespace("B", "/http...");
+    List result = xpath.selectNodes(doc);
+    assertEquals(1, result.size());
+}

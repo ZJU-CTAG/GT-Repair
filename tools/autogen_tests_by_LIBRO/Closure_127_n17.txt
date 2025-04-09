@@ -1,0 +1,8 @@
+public void testIssue() {
+    Script script = new Script("try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');");
+    StringWriter sw = new StringWriter();
+    ScriptContext context = new SimpleScriptContext();
+    context.setWriter(sw);
+    script.exec(context);
+    assertEquals("ok then...", sw.toString());
+}

@@ -1,0 +1,21 @@
+public void testFrequency() {
+    final Object OBJ = new Object();
+    final Comparable COMP = new Integer(7);
+    final Comparable COMP2 = new Integer(8);
+    final Frequency f = new Frequency();
+    try {
+      f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+      System.out.println(f.getCount(OBJ)); // 0
+      System.out.println(f.getPct(OBJ)); // 0.0
+    } catch (ClassCastException cce) {
+        System.out.println("Expected Exception");
+    }
+    try {
+        f.addValue(COMP);
+        f.addValue(COMP2);
+        System.out.println(f.getCount(COMP)); // 1
+        System.out.println(f.getPct(COMP)); // 0.5
+    } catch (ClassCastException cce) {
+        fail("Unexpected Exception");
+    }
+}

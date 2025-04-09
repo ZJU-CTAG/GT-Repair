@@ -1,0 +1,14 @@
+public void testBufferSize() throws IOException {
+    IOContext ctx = new IOContext(new BufferRecycler(), null, false);
+    ByteArrayOutputStream out = new ByteArrayOutputStream(100);
+    OutputStreamWriter writer = new OutputStreamWriter(out);
+    writer.write("foo bar");
+    writer.close();
+    InputStream in = new ByteArrayInputStream(out.toByteArray());
+    InputStreamReader reader = new InputStreamReader(in);
+    char[] buf = ctx.allocTokenBuffer(10);
+    reader.read(buf, 0, 10);
+    ctx.releaseTokenBuffer(buf);
+    char[] buf2 = ctx.allocTokenBuffer(10);
+    assertSame(buf, buf2);
+}

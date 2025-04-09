@@ -1,0 +1,26 @@
+public void testIssue121() {
+    MyAbstractClass spy = Mockito.spy(new MyAbstractClass() {
+        @Override
+        protected void doSomething() {
+            System.out.println("doSomething");
+        }
+    });
+
+    Mockito.doAnswer(new Answer<Void>() {
+        @Override
+        public Void answer(InvocationOnMock invocation) throws Throwable {
+            System.out.println("mock");
+            return null;
+        }
+    }).when(spy).doSomething();
+
+    spy.execute();
+}
+
+abstract class MyAbstractClass {
+    public void execute() {
+        doSomething();
+    }
+
+    protected abstract void doSomething();
+}

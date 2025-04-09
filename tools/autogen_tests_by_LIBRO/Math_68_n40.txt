@@ -1,0 +1,28 @@
+public void test() {
+    final double[] start = new double[] { -1.0, 1.0 };
+    final double[] target = new double[] { 0.1, 0.1 };
+
+    DifferentiableMultivariateVectorFunction f = new DifferentiableMultivariateVectorFunction() {
+
+        @Override
+        public double[] value(double[] point) throws IllegalArgumentException {
+            double[] value = new double[2];
+
+            value[0] = Math.abs(point[0] - target[0]);
+            value[1] = Math.abs(point[1] - target[1]);
+
+            return value;
+        }
+
+        @Override
+        public MultivariateMatrixFunction jacobian() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+    };
+
+    VectorialPointValuePair optimum = new LevenbergMarquardtOptimizer().optimize(new VectorialConvergenceChecker(1e-6, 1e-6, 1e-6, 1e-6),
+            f,
+            GoalType.MINIMIZE,
+            start);
+    System.

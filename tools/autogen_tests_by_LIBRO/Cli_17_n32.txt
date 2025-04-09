@@ -1,0 +1,13 @@
+public void testStopAtNonOption() {
+    Option a = OptionBuilder.withLongOpt("a").create('a');
+    Option b = OptionBuilder.withLongOpt("b").create('b');
+    Options opts = new Options();
+    opts.addOption(a);
+    opts.addOption(b);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(opts, new String[] { "-azb" }, true);
+    assertTrue(cmd.hasOption('a'));
+    assertTrue(cmd.hasOption('b'));
+    assertEquals("zb", cmd.getOptionValue('a'));
+}

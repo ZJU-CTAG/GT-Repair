@@ -1,0 +1,14 @@
+public void testMethodGetResult() {
+    UnivariateRealFunction f = new SinFunction();
+    UnivariateRealOptimizer optimizer = new BrentOptimizer();
+    MultiStartUnivariateRealOptimizer msu = new MultiStartUnivariateRealOptimizer(optimizer, 2, new RandomGenerator() {
+        @Override
+        public double nextDouble() {
+            return 0.0;
+        }
+    });
+    double min = msu.optimize(f, GoalType.MINIMIZE, 0.0, 10.0);
+    double result = msu.getResult();
+    assertEquals(0.0, min, 1.0e-12);
+    assertEquals(0.0, result, 1.0e-12);
+}

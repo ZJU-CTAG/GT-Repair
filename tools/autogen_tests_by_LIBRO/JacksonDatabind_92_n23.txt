@@ -1,0 +1,12 @@
+public void testIssue1599() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    byte[] data = mapper.writeValueAsBytes(new Bean());
+    try {
+        ObjectReader r = mapper.readerFor(Object.class);
+        r.readValue(data);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        // expected
+    }
+}

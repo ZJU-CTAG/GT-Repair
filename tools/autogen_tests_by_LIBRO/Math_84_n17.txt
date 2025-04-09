@@ -1,0 +1,22 @@
+public void testMultiDirectionalCorrectStart() {
+		// create the optimisation problem
+		OptimizationRequest or = new OptimizationRequest();
+
+		// set the algorithm
+		or.setAlgorithm(JOptimizer.MULTI_DIRECTIONAL);
+
+		// create the objective function (minimize)
+		LinearMultivariateRealFunction objectiveFunction = new LinearMultivariateRealFunction(
+				new double[] { -1, -1 }, 0);
+
+		// set the objective function
+		or.setF0(objectiveFunction);
+
+		// create the inequalities constraints
+		ConvexMultivariateRealFunction[] inequalities = new ConvexMultivariateRealFunction[2];
+		inequalities[0] = new LinearMultivariateRealFunction(new double[] { 1, 0 }, 0);
+		inequalities[1] = new LinearMultivariateRealFunction(new double[] { 0, 1 }, 0);
+		or.setFi(inequalities);
+
+		// create the equalities constraints
+		ConvexMultivariateRealFunction[] equalities = new Convex

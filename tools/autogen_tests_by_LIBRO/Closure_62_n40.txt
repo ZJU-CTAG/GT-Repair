@@ -1,0 +1,14 @@
+public void testIssue_107() throws Exception {
+
+    String source = "alert(1;";
+
+    Compiler compiler = new Compiler(new StringReader(source));
+    CompilerOptions options = new CompilerOptions();
+    options.setPrintTree(true);
+    Result result = compiler.compile(JSSOURCE_NAME, options);
+
+    assertTrue(result.success);
+    assertTrue(!result.errors.isEmpty());
+    assertTrue(result.errors.get(0).line != null);
+    assertTrue(result.errors.get(0).line.contains("^"));
+}

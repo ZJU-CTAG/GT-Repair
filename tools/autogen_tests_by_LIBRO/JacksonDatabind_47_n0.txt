@@ -1,0 +1,32 @@
+public void testModelObjects() throws JsonProcessingException {
+    Foo foo = new Foo();
+    foo.setReference(new AccessionIdentifierImpl());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValueAsString(foo);
+}
+
+public static interface AccessionIdentifier {
+    String getAccession();
+}
+
+public static class BaseAccessionIdentifier implements AccessionIdentifier {
+    public String getAccession() { return "test"; }
+}
+
+public static class AccessionIdentifierImpl extends BaseAccessionIdentifier {
+    public String getAccession() { return "test"; }
+}
+
+public static class Foo {
+    @JsonSerialize(as = BaseAccessionIdentifier.class)
+    @JsonDeserialize(as = BaseAccessionIdentifier.class)
+    public AccessionIdentifier getReference() {
+        return reference;
+    }
+
+    public void setReference(AccessionIdentifier reference) {
+        this.reference = reference;
+    }
+
+    private AccessionIdentifier reference;
+}

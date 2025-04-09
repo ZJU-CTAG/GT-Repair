@@ -1,0 +1,26 @@
+public void testCVE20171() throws Exception {
+    // [databind#1818]
+    Map<String,Object> map = new HashMap<String,Object>();
+    map.put("x", "1");
+    map.put("y", "abc");
+    map.entrySet().iterator();
+
+    ObjectMapper m = new ObjectMapper();
+    try {
+        m.readValue("{\"x\":1,\"y\":[1]}", Map.class);
+        fail("Should not pass");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "no suitable creator method found");
+    }
+}
+
+public void testCVE20172() throws Exception {
+    // [databind#1818]
+    Map<String,Object> map = new HashMap<String,Object>();
+    map.put("x", "1");
+    map.put("y", "abc");
+    map.entrySet().iterator();
+
+    ObjectMapper m = new ObjectMapper();
+    try {
+        m.readValue("{\"x\":1,\"y\":{\"

@@ -1,0 +1,18 @@
+public void testOptionParser() throws Exception {
+    Options options = new Options();
+    Option target = new Option("t", "target", true, "Generate files for the specified target machine");
+    options.addOption(target);
+    CommandLineParser parser = new PosixParser();
+
+    CommandLine line = parser.parse(options, "-t foobar.com".split(" "));
+    assertEquals("foobar.com", line.getOptionValue("target"));
+
+    line = parser.parse(options, "-t".split(" "));
+    assertEquals(null, line.getOptionValue("target"));
+
+    line = parser.parse(options, "-target".split(" "));
+    assertEquals(null, line.getOptionValue("target"));
+
+    line = parser.parse(options, "-target foobar.com".split(" "));
+    assertEquals("foobar.com", line.getOptionValue("target"));
+}

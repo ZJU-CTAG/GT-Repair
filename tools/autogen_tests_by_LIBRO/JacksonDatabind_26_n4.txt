@@ -1,0 +1,16 @@
+public void testSerializable() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    writer.writeValue(baos, writer);
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectReader reader = mapper.reader();
+
+    try {
+        reader.readValue(bais);
+        fail("Should have failed");
+    } catch (InvalidClassException expected) {
+        // good
+    }
+}

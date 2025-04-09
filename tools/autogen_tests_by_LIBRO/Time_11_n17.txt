@@ -1,0 +1,20 @@
+public void testIssue109() throws Exception {
+    final DateTimeZoneBuilder zoneBuilder = getTestDateTimeZoneBuilder();
+    zoneBuilder.toDateTimeZone("TestDTZ1", true);
+    Thread thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            zoneBuilder.toDateTimeZone("TestDTZ2", true);
+        }
+    });
+    thread.start();
+    thread.join();
+}
+
+private DateTimeZoneBuilder getTestDateTimeZoneBuilder() {
+    DateTimeZoneBuilder zoneBuilder = new DateTimeZoneBuilder();
+    zoneBuilder.addCutover(1601, 'w', 1, 1, 1, false, 7200000L);
+    zoneBuilder.setStandardOffset(3600000);
+    zoneBuilder.addRecurringSavings("", 3600000, 1601, Integer.MAX_VALUE, 'w', 3, -1, 1, false, 7200000L);
+    zoneBuilder.addRecurringSavings("", 0, 1601, Integer.MAX_VALUE, 'w', 10, -1, 1, false, 10800000L);
+    return zone

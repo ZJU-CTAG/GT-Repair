@@ -1,0 +1,12 @@
+public void testIssue112() {
+    Document document = XmlUtils.parseFileToDocument("src/test/resources/test/jxpath/issue112.xml");
+    XPath xpath = new JXPathContext();
+    xpath.setNamespaceContextPointer(new DOMNamespaceContextPointer(document.getFirstChild()));
+    xpath.setLenient(true);
+    xpath.setFactory(new DOMFactory());
+    xpath.setFunctions(new StandardFunctions());
+    xpath.setVariables(new StandardVariables());
+    DOMNodePointer test = (DOMNodePointer) xpath.getPointer("//test");
+    assertNotNull(test);
+    assertEquals("/root/b:foo[1]/test[1]", test.asPath());
+}

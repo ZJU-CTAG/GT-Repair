@@ -1,0 +1,23 @@
+public void testLongDirectoryName() throws Exception {
+    final int longPathLength = 200;
+    final String longPath = StringUtils.repeat('a', longPathLength);
+    final String shortPath = "shortPath";
+
+    final File file = new File(longPath + "/" + shortPath);
+    file.mkdirs();
+    file.createNewFile();
+
+    final File tempFile = File.createTempFile("long_directory_name", ".tar");
+    tempFile.delete();
+
+    try {
+        final FileOutputStream fout = new FileOutputStream(tempFile);
+        final TarArchiveOutputStream tarout = new TarArchiveOutputStream(fout);
+        tarout.putArchiveEntry(new TarArchiveEntry(file));
+        tarout.closeArchiveEntry();
+        tarout.close();
+    } finally {
+        FileUtils.deleteDirectory(new File(longPath));
+        tempFile.delete();
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    JsonUnwrappedShouldMakePrivateFieldsSerializable.Inner inner = new JsonUnwrappedShouldMakePrivateFieldsSerializable.Inner();
+    inner.animal = "Zebra";
+
+    JsonUnwrappedShouldMakePrivateFieldsSerializable.Outer outer = new JsonUnwrappedShouldMakePrivateFieldsSerializable.Outer();
+    outer.inner = inner;
+
+    ObjectMapper sut = new ObjectMapper();
+
+    // ACT
+    String actual = sut.writeValueAsString(outer);
+
+    // ASSERT
+    assertThat(actual).contains("animal");
+    assertThat(actual).contains("Zebra");
+    assertThat(actual).doesNotContain("inner");
+}

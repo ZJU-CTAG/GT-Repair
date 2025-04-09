@@ -1,0 +1,21 @@
+public void testIssue() {
+    String code = "function Foo(bar) {\n"
+            + "    this.bar_ = bar;\n"
+            + "}\n"
+            + "\n"
+            + "Foo.prototype.doIt = function() {\n"
+            + "    var subbar = this.bar_.subbar;\n"
+            + "    for (var i = 0; i < subbar.noprop; i++) {\n"
+            + "        console.log(i);\n"
+            + "    }\n"
+            + "};\n"
+            + "\n"
+            + "var bar = {subbar: {prop: 3}};\n"
+            + "var f = new Foo(bar);\n"
+            + "f.doIt();";
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            EXTERNS,
+            code,
+            compiler.createCompilerOptions());
+}

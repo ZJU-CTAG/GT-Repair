@@ -1,0 +1,11 @@
+public void testFormatter() {
+    Options options = new Options();
+    Option longDescriptionOption = new Option("a", "long-description", false, "this is a long description that should wrap to at least 2 lines.  It might even wrap to 3 lines.  But we can't be sure.");
+    options.addOption(longDescriptionOption);
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(new PrintWriter(writer), 80, "", "", options, 0, 2, "", true);
+    String helpText = writer.toString();
+    assertTrue(helpText.contains("\n"));
+    assertTrue(helpText.contains("--long-description"));
+}

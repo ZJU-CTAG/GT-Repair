@@ -1,0 +1,9 @@
+public void testWriteAndConvert()
+        throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    FilterProvider filters = new SimpleFilterProvider()
+            .addFilter("antPathFilter", new AntPathFilter("ant[?(@.ant1)].*"));
+
+    mapper.writer(filters).writeValue(System.out, new AntTest());
+    mapper.writer(filters).writeValue(System.out, mapper.convertValue(new AntTest(), JsonNode.class));
+}

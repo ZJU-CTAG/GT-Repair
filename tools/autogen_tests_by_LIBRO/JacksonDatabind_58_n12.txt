@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    MyException ex = new MyException();
+    String s = mapper.writeValueAsString(ex);
+    assertNotNull(s);
+    MyException ex2 = mapper.readValue(s, MyException.class);
+}
+
+@JsonIgnoreProperties("cause")
+class MyException extends RuntimeException {
+    private String text;
+
+    public MyException() {
+        text = "FOO";
+    }
+
+    @Override
+    public String getMessage() {
+        return text;
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue105() {
+    // create an ODE problem
+    double[] y = new double[] { 1.0, 0, 0, 0 };
+    ODEProblem problem = new ODEProblem(new ExponentialDecay(2.0), new ContinuousOutputModel(), new double[] { 0.0 }, y, new double[] { 10.0 });
+    // create an ODE solver
+    ODESolver solver = new DormandPrince54Integrator(1.0e-8, 100.0, 1.0e-8, 1.0e-8);
+    // add event handlers
+    solver.addEventHandler(new StopOnDecreasing(), 0.001, 1.0e-6, 1000);
+    solver.addEventHandler(new StopOnIncreasing(), 0.001, 1.0e-6, 1000);
+    // integrate the problem
+    solver.integrate(problem);
+}

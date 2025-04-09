@@ -1,0 +1,20 @@
+public void testIssue() {
+  String source = 
+                      "function a() {\n" +
+                      " var x = '1';\n" +
+                      " try {\n" +
+                      " x += somefunction();\n" +
+                      " } catch(e) {\n" +
+                      " }\n" +
+                      " x += \"2\";\n" +
+                      " try {\n" +
+                      " x += somefunction();\n" +
+                      " } catch(e) {\n" +
+                      " }\n" +
+                      " document.write(x);\n" +
+                      "}\n" +
+                      "\n" +
+                      "a();\n" +
+                      "a();";
+  String result = new String(ClosureCommandLineRunner.compile(source, null, false, null, null, null, null, null, null, null, null, null, null, null, null, null));
+  assertEquals(result, "function b(){var c;try{c=\"1\"+somefunction()}catch(d){}try{c=c+\"2\"+

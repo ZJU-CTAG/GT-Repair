@@ -1,0 +1,11 @@
+public void testBreakInFinallyBlock() {
+    Global global = new Global();
+    Context cx = Context.enter();
+    try {
+        ScriptableObject scope = cx.initStandardObjects(global);
+        Object result = cx.evaluateString(scope, "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')", "test", 1, null);
+        assertEquals("ok then...", result);
+    } finally {
+        Context.exit();
+    }
+}

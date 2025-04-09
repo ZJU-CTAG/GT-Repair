@@ -1,0 +1,17 @@
+public void testReadTruncatedArchive() throws Exception {
+    File file = new File("src/test/resources/issue107.zip");
+    FileInputStream input = new FileInputStream(file);
+    try {
+        ZipArchiveInputStream zip = new ZipArchiveInputStream(input);
+        byte[] buffer = new byte[4096];
+        int count = 1;
+        while (zip.read(buffer) != -1) {
+            count++;
+        }
+        fail("Expected an exception");
+    } catch (IOException e) {
+        assertEquals("Truncated ZIP file", e.getMessage());
+    } finally {
+        input.close();
+    }
+}

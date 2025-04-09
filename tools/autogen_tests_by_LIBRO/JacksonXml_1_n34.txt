@@ -1,0 +1,25 @@
+public void testIssue108() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    Issue108.Definition definition = new Issue108.Definition();
+    definition.records = new ArrayList<>();
+
+    Issue108.Record record = new Issue108.Record();
+    definition.records.add(record);
+
+    record.fields = new ArrayList<>();
+
+    String json = mapper.writeValueAsString(definition);
+    System.out.println(json);
+    Issue108.Definition definition2 = mapper.readValue(json, Issue108.Definition.class);
+
+    assertEquals(1, definition2.records.size());
+    assertEquals(0, definition2.records.get(0).fields.size());
+
+    definition.records.add(new Issue108.Record());
+    json = mapper.writeValueAsString(definition);
+    System.out.println(json);
+    Issue108.Definition definition3 = mapper.readValue(json, Issue108.Definition.class);
+
+    assertEquals(2, definition3.records.size());
+    assertEqu

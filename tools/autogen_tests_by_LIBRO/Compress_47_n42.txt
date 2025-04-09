@@ -1,0 +1,11 @@
+public void testZipArchiveInputStreamEntry() throws Exception {
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream("src/test/resources/bla.zip"));
+    ZipArchiveEntry entry = null;
+    while((entry = zis.getNextZipEntry()) != null) {
+        ZipMethod method = ZipMethod.getMethodByCode(entry.getMethod());
+        assertNotNull("method should not be null", method);
+        if (method.equals(ZipMethod.BZIP2)) {
+            assertTrue("compressed size should be known for " + method, entry.getCompressedSize() != ArchiveEntry.SIZE_UNKNOWN);
+        }
+    }
+}

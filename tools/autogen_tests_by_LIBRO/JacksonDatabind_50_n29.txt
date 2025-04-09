@@ -1,0 +1,15 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+    String json = "{\"@class\":\"com.fasterxml.jackson.databind.jsontest.Test\",\"name\":\"Test\",\"list\":[{\"@class\":\"com.fasterxml.jackson.databind.jsontest.Test\",\"name\":\"Test\",\"uid\":1,\"list\":[]}],\"uid\":1}";
+
+System.out.println("Original JSON:");
+System.out.println(json);
+System.out.println();
+
+System.out.println("Deserialized:");
+SerializableClass s = mapper.readValue(json, SerializableClass.class);
+System.out.println(s);

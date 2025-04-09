@@ -1,0 +1,19 @@
+public void testIssueExternExport() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setClosurePass(true);
+    options.setExportLocalPropertyDefinitions(true);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test1", "goog.require('foo.bar')"),
+        JSSourceFile.fromCode("test2", "goog.provide('foo.bar');"
+            + "/**\n"
+            + " * @param {(string|undefined)} p Optional param.\n"
+            + " * @return {void}\n"
+            + " */"
+            + "foo.bar = function(p) {}") },
+        options);
+    assertEquals(0, result.errors.length);
+    System.err.println(result.externExport);
+}

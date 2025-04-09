@@ -1,0 +1,24 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Node root = compiler.parse("function a(b) {\n" +
+            " switch (b.v) {\n" +
+            " case 'SWITCH':\n" +
+            " if (b.i >= 0) {\n" +
+            " return b.o;\n" +
+            " } else {\n" +
+            " return undefined;\n" +
+            " }\n" +
+            " break;\n" +
+            " }\n" +
+            "}");
+
+    compiler.compile(root, new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("WARNING : " + message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("ERROR : " + message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource,

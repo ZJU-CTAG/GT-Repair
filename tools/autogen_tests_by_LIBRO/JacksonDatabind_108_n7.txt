@@ -1,0 +1,21 @@
+public void testReadTreeEmptyReader() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    _testReadTreeEmpty(mapper, mapper.reader());
+}
+
+public void testReadTreeEmptyInput() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    _testReadTreeEmpty(mapper, mapper);
+}
+
+private void _testReadTreeEmpty(ObjectReader reader, ObjectMapper mapper) throws Exception
+{
+    String input = "";
+    JsonNode n = reader.readTree(input);
+    assertFalse(n.isContainerNode());
+    assertFalse(n.isValueNode());
+    assertEquals(n.asText(), "");
+    assertTrue(n.isMissingNode());
+}

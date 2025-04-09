@@ -1,0 +1,18 @@
+public void testInvokerTransformer() throws Exception {
+    List<Object> payload = new ArrayList<Object>();
+    payload.add("ping");
+    payload.add(Runtime.class);
+    payload.add("exec");
+    payload.add(new String[]{"ping", "localhost"});
+    Transformer[] transformers = new Transformer[] { new ConstantTransformer(1) };
+    Transformer transformerChain = new ChainedTransformer(transformers);
+    Map<String, Object> innerMap = new HashMap<String, Object>();
+    Map<String, Object> outerMap = new HashMap<String, Object>();
+    innerMap.put("value", "value");
+    innerMap.put("parent", outerMap);
+    innerMap.put("transformer", transformerChain);
+    outerMap.put("zyx", innerMap);
+    List<Object> finalPayload = new ArrayList<Object>();
+    finalPayload.add(outerMap);
+    finalPayload.add(payload);
+    String command = (String) TransformedMap.decorate(new HashMap(), new InvokerTransformer

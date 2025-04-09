@@ -1,0 +1,13 @@
+public void testClean() {
+    String input = "<a href='google.com' onclick='stealCookies()'>Google</a>";
+    Document doc = Jsoup.parse(input);
+    Whitelist whitelist = Whitelist.none();
+    whitelist.addTags("a");
+    whitelist.addAttributes("a", "href");
+    whitelist.addAttributes("a", "onclick");
+    whitelist.addProtocols("a", "href", "http", "https");
+    whitelist.addEnforcedAttribute("a", "rel", "nofollow");
+    Cleaner cleaner = new Cleaner(whitelist);
+    doc = cleaner.clean(doc);
+    logger.info(doc);
+}

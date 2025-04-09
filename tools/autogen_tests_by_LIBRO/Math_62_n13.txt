@@ -1,0 +1,17 @@
+public void testConvergenceChecker() {
+    final double[] startPoint = new double[] { -1.2, 1.0 };
+    final double[] target = new double[] { 0, 0 };
+    final double[] weights = new double[] { 1, 1 };
+    ConvergenceChecker<PointValuePair> checker = new SimpleValueChecker(1e-6, 1e-6);
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(checker);
+    optimizer.optimize(new MaxEval(100), new ObjectiveFunction(new MultivariateVectorFunction() {
+        @Override
+        public double[] value(double[] point) {
+            double[] residuals = new double[target.length];
+            for (int i = 0; i < residuals.length; i++) {
+                residuals[i] = (point[i] - target[i]) * weights[i];
+            }
+            return residuals;
+        }
+    }), GoalType.MINIMIZE, new InitialGuess(startPoint));
+}

@@ -1,0 +1,13 @@
+public void testJiraIssue() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] values = {"1", "2", "3"};
+    foo(values);
+    verify(bar, times(1)).add(captor.capture());
+    assertEquals(values, captor.getValue());
+}
+
+private void foo(String... args) {
+    for(String arg : args) {
+        bar.add(arg);
+    }
+}

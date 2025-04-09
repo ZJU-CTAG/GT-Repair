@@ -1,0 +1,19 @@
+public void testThreadLocalMemoryLeak() {
+    ToStringStyle style = ToStringStyle.MULTI_LINE_STYLE;
+
+    assertNotNull(style.getValue());
+    assertNotNull(style.hashCode());
+    assertNotNull(style.toString());
+
+    ThreadLocal<Map<Object, String>> threadLocal = ToStringStyle.getRegistry();
+    assertNotNull(threadLocal);
+
+    Map<Object, String> registry = threadLocal.get();
+    assertNotNull(registry);
+
+    System.gc();
+    System.gc();
+    System.gc();
+
+    assertFalse(registry.isEmpty());
+}

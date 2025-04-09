@@ -1,0 +1,17 @@
+public void testBrokenExample() throws ParseException {
+    String[] firstArgs = { "-v" };
+    String[] secondArgs = {};
+
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+
+    GnuParser parser = new GnuParser();
+    CommandLine firstCL = parser.parse(opts, firstArgs);
+    assertTrue(firstCL.hasOption('v'));
+    try {
+        CommandLine secondCL = parser.parse(opts, secondArgs);
+        fail("Should have thrown an exception");
+    } catch (MissingOptionException e) {
+        // this is what we want
+    }
+}

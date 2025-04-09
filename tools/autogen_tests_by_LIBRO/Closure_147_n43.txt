@@ -1,0 +1,18 @@
+public void testIssue144() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+    compiler.setErrorReporter(testErrorReporter);
+    Node root = compiler.parseTestCode("var NS = { " +
+        "read: function() {" +
+        "return this.foo;" +
+        "}, " +
+        "write: function() {" +
+        "this.foo = 123;" +
+        "}" +
+        "};" +
+        "NS.write2 = function() {" +
+        "this.foo = 123;" +
+        "}");
+    assertEquals(0, testErrorReporter.getErrorCount());
+}

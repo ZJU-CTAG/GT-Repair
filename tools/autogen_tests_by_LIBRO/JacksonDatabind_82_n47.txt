@@ -1,0 +1,19 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    JsonTest json = new JsonTest("user", "password");
+    try {
+        System.out.println(mapper.writeValueAsString(json));
+    } catch (JsonProcessingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    String jsonString = "{ \"username\":\"username\",\"password\":\"password\" }";
+    try {
+        json = mapper.readValue(jsonString, JsonTest.class);
+        System.out.println(json.getPassword());
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}

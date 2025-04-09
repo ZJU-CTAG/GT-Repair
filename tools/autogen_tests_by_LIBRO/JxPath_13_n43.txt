@@ -1,0 +1,8 @@
+public void testIssue99() {
+    Document doc = DocumentHelper.createDocument();
+    Element root = doc.addElement("root");
+    root.addElement("child1").addAttribute("A:myAttr", "MyType");
+    XPath xpath = new DOMXPath("//@A:myAttr");
+    xpath.getNamespaceURIs().put("A", "http://my.example.com/");
+    assertEquals("MyType", xpath.selectSingleNode(doc).toString());
+}

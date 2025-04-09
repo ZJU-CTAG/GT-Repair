@@ -1,0 +1,27 @@
+public void testIssue172() {
+    AttributeContext context = new AttributeContext(
+        new Compiler(),
+        new QName(null, "*", "*"),
+        new XPath(
+            new XPathParts(
+                new String[] { Compiler.NODE_TEST_NODE, "test" },
+                new String[] { "test", null }
+            )
+        )
+    );
+    XPathParts parts = new XPathParts(null, null);
+    parts.setElement(
+        -1,
+        Compiler.NODE_TEST_NODE,
+        "test",
+        null
+    );
+    try {
+        context.check(null, parts);
+        fail("Should have failed");
+    } catch (RuntimeException e) {
+        if (!(e.getCause() instanceof IllegalArgumentException)) {
+            throw e;
+        }
+    }
+}

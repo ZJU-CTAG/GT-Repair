@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    X<String> x = new X<String>();
+    x.s = "foo";
+    x.items = new ArrayList<String>();
+    x.items.add("bar");
+    x.items.add("baz");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    SimpleModule module = new SimpleModule("ListAttributeSerializer", new Version(1, 0, 0, null, null, null));
+    module.addSerializer(ListAttribute.class, new ListAttributeSerializer());
+    mapper.registerModule(module);
+    JsonNode treeNode = mapper.valueToTree(x);
+    assertNotNull(treeNode);
+    assertTrue(treeNode.isObject());
+    JsonNode itemsNode = treeNode.get("items");
+    assertNotNull(itemsNode);
+    assertTrue(itemsNode.isArray());
+    JsonNode itemNode = itemsNode.get(0);
+    assertNot

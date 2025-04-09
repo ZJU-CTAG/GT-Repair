@@ -1,0 +1,13 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = JsonMapper.builder().addModule(new GuavaModule()).build();
+    String str = mapper.writeValueAsString(ImmutableMap.of("foo", "bar"));
+
+    // works:
+    ImmutableMap<String, String> map = mapper.readValue(str, ImmutableMap.class);
+    assertEquals("bar", map.get("foo"));
+
+    // fails:
+    Map<String, String> map2 = mapper.readValue(str, Map.class);
+    assertEquals("bar", map2.get("foo"));
+}

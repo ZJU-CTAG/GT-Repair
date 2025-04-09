@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    InputStream is = getClass().getResourceAsStream("/test-files/issue-108.cpio");
+    try {
+        ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        ArchiveInputStream in = factory.createArchiveInputStream(ArchiveStreamFactory.CPIO, is);
+        try {
+            in.getNextEntry();
+        } finally {
+            in.close();
+        }
+    } finally {
+        is.close();
+    }
+}

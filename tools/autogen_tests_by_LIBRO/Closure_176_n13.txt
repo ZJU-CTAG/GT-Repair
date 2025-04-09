@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String message = "";
+    String sourcecode = "";
+    String sourcecode2 = "";
+    String sourcecode3 = "";
+    try {
+        StaticSourceFile file = SourceFile.fromCode("test.js", sourcecode);
+        StaticSourceFile file2 = SourceFile.fromCode("test2.js", sourcecode2);
+        StaticSourceFile extern = SourceFile.fromCode("extern.js", sourcecode3);
+        Compiler compiler = new Compiler();
+        compiler.init(
+            ImmutableList.of(extern),
+            ImmutableList.of(file, file2),
+            new CompilerOptions()
+        );
+        compiler.parse();
+        compiler.check();
+    } catch (JSError e) {
+        message = e.description;
+    }
+    assertEquals("", message);
+}

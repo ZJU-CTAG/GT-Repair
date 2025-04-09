@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    String input = "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+
+    // Successful de-serialization.
+    WindSpeed o = new ObjectMapper().reader()
+            .withRootName("windSpeed")
+            .withType(WindSpeed.class)
+            .readValue(input);
+    assertEquals("kt", o.getUnits());
+    assertEquals(0, o.getSource().length());
+    assertEquals(27, o.getValue());
+    assertEquals(1, o.getRadius().size());
+    assertEquals(0, o.getRadius().get(0).getSector().length());
+    assertEquals("20", o.getRadius().get(0).getUnits());
+    assertEquals(20, o.getRadius().get(0).getValue());
+
+    // Successful serialization.
+    String result = new ObjectMapper().writer()
+            .withRootName("windSpeed")
+            .writeValueAsString(o);
+    assertEquals(input

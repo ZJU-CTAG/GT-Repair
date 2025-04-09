@@ -1,0 +1,17 @@
+public void testFormatLongOctalOrBinaryBytes() throws IOException {
+    String filename = String.format("test-%s.tar.gz", this.getClass().getSimpleName());
+    File file = new File(filename);
+    try {
+        GZIPOutputStream gzos = new GZIPOutputStream(new FileOutputStream(file));
+        TarArchiveOutputStream tos = new TarArchiveOutputStream(gzos);
+        tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+        tos.putArchiveEntry(new TarArchiveEntry("test/test.xml"));
+        String test = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+                "<test/>\n";
+        byte[] bytes = test.getBytes("UTF-8");
+        tos.write(bytes);
+        tos.closeArchiveEntry();
+        tos.close();
+        gzos.close();
+        
+        TarArchiveInputStream tais = new TarArchiveInputStream(new GZIPInputStream

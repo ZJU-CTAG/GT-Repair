@@ -1,0 +1,19 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = ImmutableList.of(SourceFile.fromCode("externs.js", ""));
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("inputs.js",
+            "\n" +
+            "var global = {};\n" +
+            "global.temp1 = function(opt_data) {\n" +
+            " return opt_data.text;\n" +
+            "};\n" +
+            "\n" +
+            "global.temp2 = function(opt_data) {\n" +
+            " function __inner() {\n" +
+            " return global.temp1(opt_data.activity);\n" +
+            " }\n" +
+            " return __inner();\n" +
+            "};\n" +
+            "\n" +
+            "global.temp3 = function(opt_data) {\n" +
+            " return 'n: ' + opt_data.n + ', t: ' + opt_data.text

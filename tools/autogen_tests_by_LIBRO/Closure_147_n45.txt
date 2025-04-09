@@ -1,0 +1,17 @@
+public void testIssue107() {
+    JsChecker jsChecker = new JsChecker();
+    jsChecker.addWarningLevel(CheckLevel.WARNING, CheckLevel.WARNING);
+    jsChecker.addWarningLevel(CheckModule.USED_GLOBAL_THIS, CheckLevel.WARNING);
+    jsChecker.addWarningLevel(CheckModule.USED_THIS, CheckLevel.WARNING);
+    jsChecker.addWarningLevel(CheckModule.REFERENCE_ERROR, CheckLevel.WARNING);
+    jsChecker.addWarningLevel(CheckModule.UNDEFINED_VARIABLE, CheckLevel.WARNING);
+    jsChecker.addWarningLevel(CheckModule.UNDEFINED_PROPERTY, CheckLevel.WARNING);
+
+    jsChecker.check("var NS = { \n" +
+            "read: function()\n" +
+            "{\n" +
+            "return this.foo; // does not warn in 0514 release\n" +
+            "},\n" +
+            "\n" +
+            "write: function()\n" +
+            "{\n" +

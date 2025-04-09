@@ -1,0 +1,25 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    test(options,
+        "/**\n" +
+        " * @constructor\n" +
+        " */\n" +
+        "function C2() {}\n" +
+        "\n" +
+        "/**\n" +
+        " * @constructor\n" +
+        " */\n" +
+        "function C3(c2) {\n" +
+        "  /**\n" +
+        "  * @type {C2}\n" +
+        "  * @private\n" +
+        "  */\n" +
+        "  this.c2_;\n" +
+        "\n" +
+        "  use(this.c2_.prop);\n" +
+        "}\n",
+        "testcode",
+        null,
+        MISSING_PROPER

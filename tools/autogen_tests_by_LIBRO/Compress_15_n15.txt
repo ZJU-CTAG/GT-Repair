@@ -1,0 +1,15 @@
+public void testZipArchiveEntryEquals() throws IOException {
+    File file = File.createTempFile("testZipArchiveEntryEquals", ".zip");
+    file.deleteOnExit();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new FileOutputStream(file));
+    ZipArchiveEntry entry = new ZipArchiveEntry("entry");
+    entry.setTime(System.currentTimeMillis());
+    zos.putArchiveEntry(entry);
+    zos.closeArchiveEntry();
+    zos.close();
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(file));
+    entry = zis.getNextZipEntry();
+    zis.close();
+    ZipFile zipFile = new ZipFile(file);
+    assertTrue("ZipArchiveEntry and ZipFile ZipArchiveEntry are not equals", entry.equals(zipFile.getEntry(entry.getName())));
+}

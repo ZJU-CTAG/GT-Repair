@@ -1,0 +1,11 @@
+public void testDecimal() {
+    String json = new String(Files.readAllBytes(Paths.get("src/test/resources/json/decimal.json")), StandardCharsets.UTF_8);
+    DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
+    format.setParseBigDecimal(true);
+    JsonReader reader = new JsonReader(new StringReader(json));
+    reader.setLenient(true);
+    reader.setDecimalFormat(format);
+    JsonElement element = new JsonParser().parse(reader);
+    assertNotNull(element);
+    assertEquals(JsonParser.State.END_DOCUMENT, reader.peek());
+}

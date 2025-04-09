@@ -1,0 +1,8 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    assertEquals("\"2018-02-01\"", mapper.writeValueAsString(new java.sql.Date(df.parse("2018-02-01").getTime())));
+}

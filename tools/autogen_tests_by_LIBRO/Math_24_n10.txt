@@ -1,0 +1,14 @@
+public void testBrentOptimizer() {
+    double lb = -1;
+    double ub = 1;
+    double[] x = new double[]{0.5, 0.5};
+    double expected = 0;
+    double actual = new BrentOptimizer(1e-9, 1e-9).optimize(new MaxEval(100), new ObjectiveFunction(new UnivariateObjectiveFunction(f)), GoalType.MAXIMIZE, new SearchInterval(lb, ub, x)).getPoint();
+    assertEquals(expected, actual, 1e-9);
+}
+
+private static UnivariateFunction f = new UnivariateFunction() {
+    public double value(double x) {
+        return -x * x + 0.5 * x;
+    }
+};

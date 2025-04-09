@@ -1,0 +1,28 @@
+public void testIssue108() {
+    EventManager eventManager = new EventManager();
+    eventManager.addEvent(new Event(1, EventType.START));
+    eventManager.addEvent(new Event(2, EventType.START));
+
+
+    EventFilter filter = new EventFilter();
+    filter.addType(EventType.START);
+    filter.setAccept(new EventAcceptor() {
+        public boolean accept(Event event, EventContext context) {
+            if (event.getId() == 1) {
+                return true;
+            }
+            return false;
+        }
+    });
+    eventManager.addEventListener(filter, new EventListener() {
+        public void eventOccurred(Event event, EventContext context) {
+            context.reset();
+        }
+    });
+
+    eventManager.fireEvent(new Event(1, EventType.START));
+    assertTrue(filter.isInitialized());
+    assertEquals(1, eventManager.getEventList().size());
+
+    eventManager.fireEvent(new Event(2, EventType.START));
+    assertTrue(filter.isInitialized());

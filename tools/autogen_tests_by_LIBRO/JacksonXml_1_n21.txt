@@ -1,0 +1,9 @@
+public void testListDeserializationProblem() throws Exception {
+    String jsonData = "{\"records\":[{\"fields\":[{\"type\":\"string\",\"name\":\"field1\"}]},{\"fields\":[{\"type\":\"string\",\"name\":\"field2\"}]}]}";
+    JsonFactory factory = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(factory);
+    mapper.configure(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE, true);
+    Definition definition = mapper.readValue(jsonData, Definition.class);
+    assertEquals("field1", definition.getRecords().get(0).getFields().get(0).getName());
+    assertEquals("field2", definition.getRecords().get(1).getFields().get(0).getName());
+}

@@ -1,0 +1,21 @@
+public void testPV() {
+        // create DiffEquation object
+        DiffEquation diffEquation = new DiffEquation() {
+            public double[] getRightHandSide(double t, double[] y) {
+                double[] res = new double[2];
+                res[0] = -0.01 * y[0];
+                res[1] = 0.01 * y[0] - 0.01 * y[1];
+                return res;
+            }
+        };
+
+        // create initial state vector
+        double[] y0 = new double[2];
+        y0[0] = 10.0;
+        y0[1] = 10.0;
+
+        // create integrator
+        FirstOrderIntegrator integrator = new DormandPrince853Integrator(1e-10, 1e10, 1e-10, 1e-10);
+        integrator.addStepHandler(new StepHandler() {
+            public void handleStep(StepInterpolator interpolator, boolean isLast) {
+                System.out.println(interpolator.getCurrentTime() + " " + interpolator.getInterpolatedState

@@ -1,0 +1,21 @@
+public void testLangToStringStyleThreadLocalLeak() throws Exception {
+    // This will cause ToStringStyle to be loaded.
+    ToStringBuilder builder = new ToStringBuilder(this);
+    builder.append("foo", "bar");
+
+    WebappClassLoader classLoader = new WebappClassLoader(new URL[]{}, null,
+            new File("target/test-classes"), new File("target/classes"));
+
+    Class<?> loadedToStringStyle = classLoader.loadClass(ToStringStyle.class.getName());
+    assertSame(loadedToStringStyle, ToStringStyle.class);
+
+    // This is a hack to get at the Map that holds the ThreadLocals.
+    Field field = loadedToStringStyle.getDeclaredField("THREAD_LOCALS");
+    field.setAccessible(true);
+    Object threadLocals = field.get(null);
+
+    // Make sure we are using the right type.
+    assertTrue(threadLocals instanceof Map);
+
+    // The key set is a set of WeakReferences.
+    Set<WeakReference<Thread>> keySet = ((Map<WeakReference<Thread>, Object>)

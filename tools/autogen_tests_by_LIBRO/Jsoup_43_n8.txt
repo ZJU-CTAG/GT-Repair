@@ -1,0 +1,19 @@
+public void testIssue() {
+    String html = "<table>" +
+            "<tr><td>000</td><td>001</td></tr>" +
+            "<tr><td>010</td><td>011</td></tr>" +
+            "<tr><td>020</td><td>021</td></tr>" +
+            "<tr><td>030</td><td>031</td></tr>" +
+            "<tr><td>010</td><td>011</td></tr>" +
+            "<tr><td>050</td><td>051</td></tr>" +
+            "</table>";
+    Document doc = Jsoup.parse(html);
+    Elements rows = doc.select("tr");
+    int i = 0;
+    for (Element row : rows) {
+        assertEquals(i, row.elementSiblingIndex());
+        Element td2 = row.child(1);
+        assertEquals(i, td2.elementSiblingIndex());
+        i++;
+    }
+}

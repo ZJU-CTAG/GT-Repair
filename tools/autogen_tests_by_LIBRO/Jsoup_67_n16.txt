@@ -1,0 +1,16 @@
+public void testDeepNestingPerformance() throws IOException {
+    String html = "<!DOCTYPE html>\n<html>\n<head>\n<title>Title</title>\n</head>\n<body>\n<p>\n<div>\n";
+    for (int i = 0; i < 20000; i++) {
+        html = html + "<div><div><div>";
+    }
+    html = html + "<p>Hello World";
+    for (int i = 0; i < 20000; i++) {
+        html = html + "</div></div></div>";
+    }
+    html = html + "\n</body>\n</html>";
+    long startTime = System.currentTimeMillis();
+    Document doc = Jsoup.parse(html);
+    doc.body().text();
+    System.out.println(doc.body().text());
+    System.out.println("Time: " + (System.currentTimeMillis() - startTime));
+}

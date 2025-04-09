@@ -1,0 +1,13 @@
+public void testDeprecatedConstruct() throws IOException
+{
+    SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
+    mod.addDeserializer(StringBuilder.class, new FromStringDeserializer<StringBuilder>() {
+        @Override
+        public StringBuilder deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return new StringBuilder(jp.getText());
+        }
+    });
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(mod);
+    assertEquals(new StringBuilder("abc"), mapper.readValue("\"abc\"", StringBuilder.class));
+}

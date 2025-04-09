@@ -1,0 +1,11 @@
+public void testIssue108() {
+    when(mock.someMethod("someParam")).thenReturn("someValue");
+    when(mock.someOther("someParam")).thenReturn("someValue");
+    try {
+        mock.someMethod("someOtherParam");
+    } catch(WantedButNotInvoked e) {
+        assertEquals("someMethod(\"someParam\");\n" +
+                     "someOther(\"someParam\");\n" +
+                     "someMethod((String) \"someOtherParam\");\n", e.getMessage());
+    }
+}

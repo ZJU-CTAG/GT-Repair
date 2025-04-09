@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    try (FileInputStream fis = new FileInputStream(new File(
+        "/home/pknobel/redis-dist-2.8.3\_1-linux.tar.gz"))) {
+        try (GzipCompressorInputStream gzis = new GzipCompressorInputStream(fis)) {
+            try (TarArchiveInputStream tais = new TarArchiveInputStream(gzis)) {
+                TarArchiveEntry entry = null;
+                while ((entry = tais.getNextTarEntry()) != null) {
+                    System.out.println(entry.getName());
+                    System.out.println(entry.getUserName() + "/" + entry.getGroupName());
+                }
+            }
+        }
+    }
+}

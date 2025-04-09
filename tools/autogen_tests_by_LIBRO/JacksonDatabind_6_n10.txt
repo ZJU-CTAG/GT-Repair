@@ -1,0 +1,11 @@
+public void testISO8601Offsets() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    String test1 = "1997-07-16T19:20+01:00";
+    String test2 = "1997-07-16T19:20:30.45+01:00";
+    Date d1 = mapper.readValue(new StringReader("{ \"date\": \"" + test1 + "\" }"), DateSample.class).getDate();
+    Date d2 = mapper.readValue(new StringReader("{ \"date\": \"" + test2 + "\" }"), DateSample.class).getDate();
+    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    String r1 = fmt.format(d1);
+    String r2 = fmt.format(d2);
+    assertEquals("1997-07-16T19:20:00.000+0100", r1);

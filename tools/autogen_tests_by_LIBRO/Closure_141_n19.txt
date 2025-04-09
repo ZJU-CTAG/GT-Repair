@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String source = "(function(){function a(b){return b-b}a(0)||a(0);})()";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(JS, source, false);
+    assertTrue(result.success);
+    assertEquals("", result.errors.toString());
+    assertEquals("", result.warnings.toString());
+    assertEquals("(function(){function a(a){return 0}0})()", result.code);
+}

@@ -1,0 +1,13 @@
+public void testSuperReplacement() {
+    String js = "var B = function () {}; B.prototype.b = function () {}; B.prototype.a = function () {};" +
+            "var A = function () {B.apply(this, arguments)}; A.prototype = new B();" +
+            "A.prototype.a = function () {$super(B, 'a', arguments);}; A.prototype.a();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.init(new JSSourceFile[]{JSSourceFile.fromCode("js", js)}, new JSSourceFile[]{}, compilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(Lists.<SourceFile>newArrayList(), Lists.<SourceFile>newArrayList(JSSourceFile.fromCode("js", js)), options);
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    assertTrue(output.contains("

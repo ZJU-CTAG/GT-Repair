@@ -1,0 +1,23 @@
+public void testFunctionEvaluation() {
+    final int n = 41200;
+    OptimizationData[] optData = new OptimizationData[n + 1];
+    double[] weights = new double[n];
+    optData[0] = new Target(new double[n]);
+    optData[1] = new Weight(weights);
+    for (int i = 2; i <= n; ++i) {
+        optData[i] = new Parameter(i - 2, 0.0, 1.0);
+    }
+    VectorialPointValuePair optimum =
+        new SimplexOptimizer(1e-30, 1e-30).optimize(
+            new VectorialDifferentiableMultivariateVectorOptimizer.MyMultivariateVectorFunction(n),
+            GoalType.MINIMIZE,
+            optData
+        );
+}
+static class MyMultivariateVectorFunction implements MultivariateDifferentiableVectorFunction {
+    private final int n;
+    public MyMultivariateVectorFunction(int n) {
+        this.n = n;
+    }
+    @Override
+    public double[] value(double[] point) {

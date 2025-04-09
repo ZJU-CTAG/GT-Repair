@@ -1,0 +1,19 @@
+public void testRecover() throws IOException
+{
+    String INPUT = "{\"a\":1, \"b\":\"foo\", \"c\":true, \"d\":1.25, "
+            +"\"e\":{\"f\":3, \"g\":null, \"h\":[true, false, null], "
+            +"\"i\":\"foobar\" }}";
+
+    ObjectReader r = mapper.reader();
+    // will try to recover after "b", with default settings
+    MappingIterator<Map<String,Object>> it = r.readValues(INPUT);
+    // will not attempt recovery of any kind
+    MappingIterator<Map<String,Object>> it2 = r.without(DeserializationFeature.FAIL_ON_TRAILING_TOKENS).readValues(INPUT);
+
+    assertTrue(it.hasNextValue());
+    assertEquals(1, it.nextValue().size());
+    assertFalse(it.hasNextValue());
+    assertFalse(it.hasNext());
+
+    assertTrue(it2.hasNextValue());
+    assertEquals(4, it2.nextValue().

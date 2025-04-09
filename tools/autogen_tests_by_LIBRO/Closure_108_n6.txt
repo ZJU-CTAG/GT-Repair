@@ -1,0 +1,20 @@
+public void testIssue367() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.processClosurePrimitives = true;
+    options.checksOnly = true;
+    compiler.compile(JSSourceFile.fromCode("input.js", "var goog = {};\n" +
+            "goog.scope;\n" +
+            "\n" +
+            "var ns = {};\n" +
+            "ns.sub = {};\n" +
+            "/** @constructor */\n" +
+            "ns.sub.C = function() {};\n" +
+            "\n" +
+            "\n" +
+            "goog.scope(function() {\n" +
+            "  var sub = ns.sub;\n" +
+            "  /** @type {sub.C} */\n" +
+            "  var x = null;\n" +
+            "});\n"), options);
+}

@@ -1,0 +1,9 @@
+public void testFinallyBreak() {
+    String[] source = {
+        "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')"
+    };
+    String s = TestUtils.readFile("./data/es5/issue107.js");
+    Script script = TestUtils.compile(s);
+    TestUtils.execute(script);
+    assertEquals("ok then...", TestUtils.getStdOut());
+}

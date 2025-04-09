@@ -1,0 +1,15 @@
+public void testCodepointU007f() {
+    String code = "alert('\\x7f')";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+            JSSourceFile.fromCode("input.js", code)
+    });
+    assertEquals(0, result.errors.length);
+    assertEquals(1, result.warnings.length);
+    assertEquals(1, result.warnings[0].getCharno());
+    assertEquals(code.length(), result.warnings[0].getCharno());
+    assertEquals(code.length(), result.warnings[0].getLineno());
+    assertEquals(code, result.warnings[0].getSourceName());
+    assertTrue(result.warnings[0].getType().matches("JSC_BAD_CHAR_CODE.*"));
+    assertEquals("Escaping non-ASCII characters is recommended.", result.warnings[0].description);
+    assertEquals("alert(\"\");", result.warnings[0].

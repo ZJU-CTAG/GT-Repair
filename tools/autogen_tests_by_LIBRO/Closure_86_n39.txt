@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", "function Foo() {var self = this;window.setTimeout(function() {window.location = self.location;}, 0);}"
+                    + "Foo.prototype.setLocation = function(loc) {this.location = loc;}"
+                    + "(new Foo()).setLocation('http://www.google.com/');"), options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    String output = compiler.toSource();
+    assertEquals("\"use strict\";function Foo(){var self=this;window.setTimeout(function(){window.location

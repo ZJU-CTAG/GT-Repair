@@ -1,0 +1,15 @@
+public void testFastDateFormatGetDateInstance() {
+    Locale.setDefault(Locale.GERMANY);
+
+    // getDateInstance() uses the default locale to create the DateFormat instance
+    FastDateFormat df = FastDateFormat.getDateInstance(DateFormat.SHORT);
+    String date = df.format(new Date());
+    // but the default locale to create the key used to retrieve the DateFormat
+    assertEquals("02.06.13", date);
+
+    Locale.setDefault(Locale.UK);
+    // the key is wrong - it was created using Locale.GERMANY
+    date = df.format(new Date());
+    // but the default locale to create the DateFormat instance
+    assertEquals("02/06/13", date);
+}

@@ -1,0 +1,10 @@
+public void testIssue108() {
+    try {
+        ZIP_FILE.extractFile("compressed.bz2");
+        ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(ZIP_FILE.getFile()));
+        zis.getNextZipEntry();
+        fail("IOException expected");
+    } catch (IOException e) {
+        assertEquals("unknown compression method: bzip2", e.getMessage());
+    }
+}

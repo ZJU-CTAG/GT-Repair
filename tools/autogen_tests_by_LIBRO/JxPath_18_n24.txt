@@ -1,0 +1,12 @@
+public void testAttribute() throws Exception {
+    Document doc = new DocumentImpl();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    root.setAttribute("attr", "value");
+    Navigator nav = new DOMNavigator();
+    QName attr = new QName("attr");
+    XPath xpath = new XPath("/root/attribute::*[name()='attr']");
+    XPathContext context = new CustomXPathContext(nav, doc);
+    Object[] result = xpath.eval(context).toArray();
+    assertEquals(1, result.length);
+}

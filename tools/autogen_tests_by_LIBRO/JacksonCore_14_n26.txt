@@ -1,0 +1,15 @@
+public void testIssue108() {
+    IOContext ioContext = new IOContext(new BufferRecycler(), null, false);
+    byte[] input = new byte[ioContext.allocReadIOBuffer()];
+    byte[] output = new byte[ioContext.allocReadIOBuffer()];
+    try {
+        int bytesRead = new InputStream().read(input, 0, input.length);
+        Assert.assertEquals(input.length, bytesRead);
+        int bytesWritten = new OutputStream().write(output, 0, output.length);
+        Assert.assertEquals(output.length, bytesWritten);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    ioContext.releaseReadIOBuffer(input);
+    ioContext.releaseReadIOBuffer(output);
+}

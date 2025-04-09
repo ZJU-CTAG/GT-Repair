@@ -1,0 +1,24 @@
+public void testIssue() {
+    // Does not preserve comment
+    String src1 = "/*! @preserve Foo License */ alert('foo');";
+    String dst1 = compile(src1, false);
+    assertEquals(src1, dst1);
+    
+    // Works
+    String src2 = "/* @preserve Foo License */ alert('foo');";
+    String dst2 = compile(src2, false);
+    assertEquals(src2, dst2);
+}
+
+private static String compile(String src, boolean aggressive) {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    if (aggressive) {
+        level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    }
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setCheckGlobalNamesLevel(CheckLevel.OFF);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setLineBreak(true);
+    options.setEmitUseStrict(false

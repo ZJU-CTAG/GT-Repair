@@ -1,0 +1,10 @@
+public void testReadTruncated() throws IOException {
+    String path = "test_bz2.data/test_read_truncated";
+    String resource = path + ".bz2";
+    String data = readResource(resource);
+    data = data.substring(0, data.length() - 1);
+    InputStream in = new BZip2CompressorInputStream(new ByteArrayInputStream(data.getBytes()), true);
+    byte[] buffer = new byte[(int) new File(path).length()];
+    int read = in.read(buffer);
+    assertEquals(770, read);
+}

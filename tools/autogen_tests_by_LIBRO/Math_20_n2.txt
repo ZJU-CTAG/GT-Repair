@@ -1,0 +1,19 @@
+public void testOptimizer() {
+    OptimizationData[] data = new OptimizationData[2];
+    data[0] = new ObjectiveFunction(new TestFunction());
+    data[1] = new MaxEval(1000);
+    CMAESOptimizer cmaesOptimizer = new CMAESOptimizer();
+    RealPointValuePair rpvp = cmaesOptimizer.optimize(data);
+    double[] point = rpvp.getPoint();
+    assertTrue(point[0] >= -1 && point[0] <= 1);
+    assertTrue(point[1] >= -1 && point[1] <= 1);
+}
+
+public class TestFunction implements MultivariateFunction {
+    @Override
+    public double value(double[] point) {
+        double x = point[0] * 10;
+        double y = point[1] * 10;
+        return Math.abs(x + y);
+    }
+}

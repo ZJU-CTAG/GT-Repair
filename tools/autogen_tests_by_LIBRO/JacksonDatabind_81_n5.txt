@@ -1,0 +1,8 @@
+public void testPrimitiveToWrapper() throws JAXBException {
+    JaxbAnnotationIntrospector ai = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
+    JavaType type = TypeFactory.defaultInstance().constructType(int.class);
+    assertNotNull(ai.findTypeResolver(null, type, null));
+    assertNotNull(ai.findTypeResolver(null, type.unwrap(), null));
+    JavaType refined = ai.refineDeserializationType(null, type, type.unwrap());
+    assertEquals(Integer.class, refined.getRawClass());
+}

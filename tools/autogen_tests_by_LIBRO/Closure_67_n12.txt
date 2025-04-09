@@ -1,0 +1,5 @@
+public void testAdvanced() {
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    test("function A() { this._x = 1; } A.prototype['func1'] = // done to save public reference to func1 A.prototype.func1 = function() { this._x = 2; this.func2(); } A.prototype.func2 = function() { this._x = 3; this.func3(); } window['A'] = A;", "function a(){this.a=1}a.prototype.func1=a.prototype.b=function(){this.a=2;this.c()};window.A=a;");
+}

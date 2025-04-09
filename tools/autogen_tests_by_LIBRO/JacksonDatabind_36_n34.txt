@@ -1,0 +1,12 @@
+public void testIssue139() {
+    StdDateFormat sdf = new StdDateFormat();
+    assertTrue(sdf.isLenient());
+    sdf.setLenient(false);
+    assertFalse(sdf.isLenient());
+    try {
+        sdf.parse("2015-01-32");
+        fail();
+    } catch (ParseException ex) {
+        assertEquals("Failed to parse Date value '2015-01-32': Invalid value 32 for monthOfYear field", ex.getMessage());
+    }
+}

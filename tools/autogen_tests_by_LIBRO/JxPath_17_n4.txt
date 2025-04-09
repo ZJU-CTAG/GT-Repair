@@ -1,0 +1,15 @@
+public void testNamespace() {
+    Document doc = DocumentHelper.createDocument();
+    Element root = doc.addElement("foo");
+    root.addAttribute("pop", "val");
+    root.addAttribute(new QName("pop", new Namespace("x", "foo")), "val");
+    XPath xpath = doc.createXPath("//*[@*]");
+    List list = xpath.selectNodes(doc);
+    assertEquals(2, list.size());
+    xpath = doc.createXPath("//*[@x:*]");
+    list = xpath.selectNodes(doc);
+    assertEquals(1, list.size());
+    xpath = doc.createXPath("//*[@*:*]");
+    list = xpath.selectNodes(doc);
+    assertEquals(1, list.size());
+}

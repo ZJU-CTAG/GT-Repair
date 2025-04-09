@@ -1,0 +1,18 @@
+public void testIssue108 () {
+    String js = "/**\n" +
+            " * @type function\n" +
+            " */\n" +
+            "var callback;";
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] {JSSourceFile.fromCode("test.js", js)},
+            options);
+    String[] warnings = result.warnings;
+    assertEquals(1, warnings.length);
+    assertEquals("test.js:3: WARNING - Parse error. Unexpected end of file\n" +
+            " */\n" +
+            " ^", warnings[0]);
+}

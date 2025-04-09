@@ -1,0 +1,31 @@
+public void test() {
+    final TextView txtGateView = new TextView(context);
+    txtGateView.setText("Gate");
+
+    final TextView txtNextView = mock(TextView.class);
+
+    when(txtNextView.getText()).thenReturn("Next");
+
+    final MyClass myClass = new MyClass(context, txtGateView, txtNextView);
+
+    assertEquals(myClass.gateText, "Gate");
+    assertEquals(myClass.nextText, "Next");
+}
+
+class MyClass {
+    public final String gateText;
+    public final String nextText;
+
+    @InjectMocks
+    private TextView txtGateView;
+
+    @InjectMocks
+    private TextView txtGateLabel;
+
+    @InjectMocks
+    private TextView txtNextView;
+
+    public MyClass(final Context context, final TextView txtGateView, final TextView txtNextView) {
+        this.txtGateView = txtGateView;
+        this.txtNextView = txtNextView;
+        MockitoAnnotations.initM

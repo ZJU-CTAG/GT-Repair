@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Gson gson = new Gson();
+    JsonReader reader = new JsonReader(new StringReader("true"));
+    reader.setLenient(false);
+    JsonElement json = gson.toJsonTree(reader);
+    assertEquals(JsonPrimitive.class, json.getClass());
+    assertEquals(true, ((JsonPrimitive) json).getAsBoolean());
+    
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    writer.setLenient(false);
+    gson.toJson(true, writer);
+    assertEquals(writer.toString(), "true");
+}

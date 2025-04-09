@@ -1,0 +1,17 @@
+public void testWriteBinary() throws Exception {
+    byte[] byteArr = new byte[32];
+    new Random().nextBytes(byteArr);
+    try (
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ToXmlGenerator generator = new ToXmlGenerator(out);
+        InputStream in = new ByteArrayInputStream(byteArr)
+    ) {
+        generator.writeStartArray();
+        generator.writeBinary(Base64Variants.MIME_NO_LINEFEEDS, in, byteArr.length);
+        generator.writeEndArray();
+        generator.close();
+        byte[] bytes = out.toByteArray();
+        String xml = new String(bytes, StandardCharsets.UTF_8);
+        System.out.println(xml);
+    }
+}

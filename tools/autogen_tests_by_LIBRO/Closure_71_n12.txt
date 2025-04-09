@@ -1,0 +1,14 @@
+public void testPrivateRedeclared() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    test(options,
+         "/** @constructor */ function Foo() {" +
+         "  /** @private */ this.x_ = 3;" +
+         "}\n" +
+         "/** @constructor \n" +
+         " * @extends {Foo} \*/ function SubFoo() {" +
+         "  /** @private */ this.x_ = 3;" +
+         "}",
+         "",
+         RhinoErrorReporter.PARSE_ERROR);
+  }

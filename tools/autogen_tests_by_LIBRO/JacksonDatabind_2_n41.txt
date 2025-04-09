@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    ListAttribute listAttr = new ListAttribute();
+    listAttr.setItemJsonKey("text");
+    List<String> items = new ArrayList<String>();
+    items.add("hello");
+    listAttr.setItems(items);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().addMixInAnnotations(ListAttribute.class, ListAttributeMixIn.class);
+
+    String json1 = mapper.writeValueAsString(listAttr);
+    JsonNode tree = mapper.valueToTree(listAttr);
+
+    System.out.println("json1: " + json1);
+    System.out.println("tree: " + tree);
+
+    assertEquals(json1, tree.toString());
+}

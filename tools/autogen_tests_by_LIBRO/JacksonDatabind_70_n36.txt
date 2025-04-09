@@ -1,0 +1,10 @@
+public void testACCEPT_CASE_INSENSITIVE_PROPERTIES_with_UNWRAP() {
+   ObjectMapper mapper = new ObjectMapper();
+   mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+   CsvMapper csvMapper = new CsvMapper();
+   csvMapper.setMapper(mapper);
+   CsvSchema schema = csvMapper.schemaFor(Person.class).withHeader();
+   mapper.readerFor(Person.class).with(schema).readValue(
+      "\"businessAddress.Street\",\"businessAddress.Addon\",\"businessAddress.zip\",\"businessAddress.Town\",\"businessAddress.Country\"\n" +
+         "\"TheStreet\",\"TheAddon\",\"TheZip\",\"TheTown\",\"TheCountry\"");
+}

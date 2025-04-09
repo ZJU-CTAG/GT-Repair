@@ -1,0 +1,13 @@
+public void testJsoupClean() throws IOException {
+    FirefoxDriver driver = new FirefoxDriver();
+    driver.get("http://blog.sina.com.cn/s/blog_501a5b1f0102dx6z.html");
+    BufferedWriter bw = new BufferedWriter(new FileWriter("/tmp/html.html"));
+    bw.write(driver.getPageSource());
+    bw.close();
+    driver.close();
+
+    String html = FileUtils.readFileToString(new File("/tmp/html.html"), "utf-8");
+    Document doc = Jsoup.parse(html);
+    String body = doc.body().html();
+    System.out.println(Jsoup.clean(body, Whitelist.relaxed()));
+}

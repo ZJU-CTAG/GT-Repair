@@ -1,0 +1,9 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    String json = "{\"@class\":\"org.springframework.security.core.Authentication\",\"authorities\":[\"java.util.ArrayList\",[]]}";
+
+    Authentication authentication = mapper.readValue(json, Authentication.class);
+}

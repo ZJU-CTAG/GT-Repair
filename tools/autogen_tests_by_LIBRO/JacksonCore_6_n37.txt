@@ -1,0 +1,14 @@
+public void testJsonPointer() throws Exception {
+    JsonNode node = JsonNodeFactory.instance.arrayNode();
+    node.add("foo");
+    node.add("bar");
+    node.add("baz");
+    JsonPointer ptr = new JsonPointer("/0");
+    assertEquals("foo", ptr.getValue(node).textValue());
+    ptr = new JsonPointer("/00");
+    assertNull(ptr.getValue(node));
+    ptr = new JsonPointer("/0/0");
+    assertNull(ptr.getValue(node));
+    ptr = new JsonPointer("/0/00");
+    assertNull(ptr.getValue(node));
+}

@@ -1,0 +1,26 @@
+public void testIssue108() {
+    double yMin = 3.1;
+    double yMax = 5.6;
+    double yMinMinus = 1.3;
+    double yMaxPlus = 7.1;
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            if (x == yMin) {
+                return 0;
+            } else if (x == yMax) {
+                return 0;
+            } else if (x < yMin) {
+                return -yMinMinus;
+            } else if (x > yMax) {
+                return -yMaxPlus;
+            } else {
+                return 1;
+            }
+        }
+    };
+    UnivariateRealSolver solver = new BrentSolver();
+    double ret = solver.solve(f, yMin, yMax, yMin);
+    assertEquals(yMin, ret, 0);
+    ret = solver.solve(f, yMin, yMax, yMax);
+    assertEquals(yMax, ret, 0);
+}

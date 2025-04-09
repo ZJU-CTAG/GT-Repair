@@ -1,0 +1,16 @@
+public void testErrorInBobyqaOptimizer() {
+    int n = 3;
+    double tol = 1E-10;
+    double rhoBeg = 0.1;
+    int maxFunc = 1000;
+    int maxIter = 1000;
+    int[] npt = new int[] { 2 * n + 2 };
+    double[] x = new double[n];
+
+    BOBYQAOptimizerTest.Branin b = new BOBYQAOptimizerTest.Branin();
+
+    BOBYQAOptimizer optim = new BOBYQAOptimizer(npt[0], rhoBeg, tol);
+
+    RealPointValuePair result = optim.optimize(maxFunc, b, GoalType.MINIMIZE, x);
+    assertEquals(result.getValue(), b.value(result.getPointRef()), 1E-8);
+}

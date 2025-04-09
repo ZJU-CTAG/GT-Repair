@@ -1,0 +1,41 @@
+public void testStringConversionOptimization() {
+    Object f = new Object() {
+        @Override
+        public String toString() {
+            return "foo";
+        }
+    };
+    f = new Object() {
+        @Override
+        public Object valueOf() {
+            return null;
+        }
+        @Override
+        public String toString() {
+            return f.toString();
+        }
+    };
+    String s = String.valueOf(f);
+    assertEquals("foo", s);
+}
+
+public void testObjectConversionOptimization() {
+    Object f = new Object() {
+        @Override
+        public String toString() {
+            return "foo";
+        }
+    };
+    f = new Object() {
+        @Override
+        public Object valueOf() {
+            return null;
+        }
+        @Override
+        public String toString() {
+            return f.toString();
+        }
+    };
+    Object o = Object.valueOf(f);
+    assertEquals("foo", o);
+}

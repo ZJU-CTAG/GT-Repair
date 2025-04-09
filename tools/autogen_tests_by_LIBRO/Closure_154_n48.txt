@@ -1,0 +1,23 @@
+public void testIssue135() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = Lists.newArrayList(
+            SourceFile.fromCode("externs", "function alert(x) {}")
+    );
+    List<SourceFile> input = Lists.newArrayList(
+            SourceFile.fromCode("input", "/** @interface \n"
+                    + "*/\n"
+                    + "function I() {}\n"
+                    + "/** @type {string}\n"
+                    + "*/\n"
+                    + "I.prototype.foobar;\n"
+                    + "/** @constructor\n"
+                    + "* @implements {I}\n"
+                    + "*/\n"
+                    + "function C(){\n"
+                    + "//No warning generated here.\n"
+                    + "this.foobar = 2;\n"
+                    + "}\n"
+                    + "/** @type {I} \n"
+                    + "*/\n"
+                    + "var test = new C(); \n"
+                    + "alert(test

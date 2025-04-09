@@ -1,0 +1,12 @@
+public void testIssue126() {
+    Set<String> timeZones = DateTimeZone.getAvailableIDs();
+
+    for (String timeZone : timeZones) {
+        DateTime dateTime = new DateTime().withZone(DateTimeZone.forID(timeZone));
+        assertEquals(timeZone, dateTime.getZone().getID());
+
+        DateTime convertedDateTime = parseStringToDateTime(convertDateTimeToFormattedString(dateTime));
+
+        assertEquals(dateTime, convertedDateTime);
+    }
+}

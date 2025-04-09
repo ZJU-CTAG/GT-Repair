@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("/temp.js", "var x = 1;"),
+            SourceFile.fromCode("/temp2.js", "var x = 1;"),
+            options);
+    assertTrue(result.success);
+}

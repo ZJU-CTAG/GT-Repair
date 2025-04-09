@@ -1,0 +1,25 @@
+public void testDecodeTypeCheck() throws Exception {
+    TypeHierarchyAdapter<Vehicle, JsonNode> adapter = new TypeHierarchyAdapter<Vehicle, JsonNode>() {
+        @Override protected Class<? extends Vehicle> getRuntimeClass(Vehicle vehicle) {
+            return vehicle.getClass();
+        }
+
+        @Override protected Vehicle createRuntimeInstance(Class<? extends Vehicle> runtimeType, JsonNode value) {
+            if (Car.class.equals(runtimeType)) {
+                return new Car();
+            } else if (Truck.class.equals(runtimeType)) {
+                return new Truck();
+            } else {
+                throw new RuntimeException();
+            }
+        }
+
+        @Override protected Class<? extends Vehicle> getDefaultRuntimeType() {
+            return Car.class;
+        }
+    };
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectCodec codec = mapper.getCodec();
+    JsonNode truckNode = codec.readTree(codec.getFactory().createParser(new StringReader("{\"type\":\"Truck\"}")));
+    try {

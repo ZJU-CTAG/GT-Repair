@@ -1,0 +1,11 @@
+public void testVarArgs() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] data = new String[] { "a string" };
+    service.foo(data);
+    verify(service).foo(captor.capture());
+    assertEquals("a string", captor.getValue());
+}
+
+interface SomeService {
+    void foo(String... data);
+}

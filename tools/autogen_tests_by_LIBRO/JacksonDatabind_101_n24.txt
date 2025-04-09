@@ -1,0 +1,10 @@
+public void testIssue109() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.USE_PROPERTIES_WITH_CREATORS);
+    Bean result = mapper.readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}", Bean.class);
+    assertEquals(1, result.x);
+    assertEquals(3, result.y);
+    assertNotNull(result.w);
+    assertEquals(2, result.w.a);
+    assertEquals(4, result.w.b);
+}

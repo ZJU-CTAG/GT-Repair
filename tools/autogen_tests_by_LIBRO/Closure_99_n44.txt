@@ -1,0 +1,23 @@
+public void testPrototypeQuotes() {
+    Compiler compiler = new Compiler(System.err);
+
+    // Set up a synthetic externs file.
+    String source = "/**\n" +
+                    " * @interface\n" +
+                    " */\n" +
+                    "function MyParent() {}\n" +
+                    "\n" +
+                    "/** @param {*} a */\n" +
+                    "MyParent.prototype.MyMethod = function(a) {}\n";
+
+    String source2 = "/**\n" +
+                     " * @constructor\n" +
+                     " * @implements {MyParent}\n" +
+                     " */\n" +
+                     "function MyClass() {}\n" +
+                     "MyClass.prototype['MyMethod'] = function(a) {};\n";
+    SourceFile externs = SourceFile.fromCode("externs.js", source);
+    SourceFile input = SourceFile.fromCode("input.js", source2);
+    compiler.init(externs, input);
+    compiler.parse();
+    compiler.check();

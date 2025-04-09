@@ -1,0 +1,15 @@
+public void testTarHeader() throws Exception {
+    byte[] header = new byte[512];
+    byte[] name = ("name" + '\0').getBytes("UTF-8");
+    System.arraycopy(name, 0, header, 0, name.length);
+    // Set the size to 10, meaning it should have an extra space at the end
+    byte[] size = "000000000 ".getBytes("UTF-8");
+    System.arraycopy(size, 0, header, 124, size.length);
+    for (int i = 0; i < 8; i++) {
+        header[i + 100] = '0';
+    }
+    TarArchiveEntry e = new TarArchiveEntry(header, true);
+    assertEquals("name", e.getName());
+    // The size is 10, not 1000000000
+    assertEquals(10, e.getSize());
+}

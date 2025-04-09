@@ -1,0 +1,12 @@
+public void testClassNotFound () {
+    MockitoAnnotations.initMocks(this);
+    PowerMockito.mockStatic(Class.class);
+    PowerMockito.when(Class.forName("some.class.that.doesnt.exist")).thenThrow(new ClassNotFoundException("bogus"));
+    try {
+        // The following line should throw an exception, but does not
+        final CmssQueue queue = CmssQueue.from(mock(CicsServiceThread.class), "QNAME", mock(CmssMessage.class));
+        assertNull(queue);
+    } catch (Exception e) {
+        fail("Unexpected exception thrown: " + e);
+    }
+}

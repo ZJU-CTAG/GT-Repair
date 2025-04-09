@@ -1,0 +1,19 @@
+public void testMock() {
+    Foo mock = mock(Foo.class);
+    when(mock.foo()).then((Answer<Object>) invocation -> {
+        throw new RuntimeException();
+    });
+
+    try {
+        mock.foo();
+    } catch (RuntimeException e) {
+        //OK
+    }
+
+    verifyZeroInteractions(mock);
+}
+
+public class Foo {
+    public void foo() {
+    }
+}

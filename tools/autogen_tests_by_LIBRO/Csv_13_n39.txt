@@ -1,0 +1,8 @@
+public void testIssue108() {
+    CsvFormat csvFormat = CsvFormat.newFormat(';').withNullString("\\N").withEscape('\\');
+    StringWriter sw = new StringWriter();
+    try (CsvPrinter csvPrinter = new CsvPrinter(sw, csvFormat)) {
+        csvPrinter.printRecord("A", "B", "C", "\\", "\\N");
+    }
+    assertEquals("A;B;C;\\\\;\\N\n", sw.toString());
+}

@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    byte[] byteData = new byte[10];
+    new Random().nextBytes(byteData);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    XMLOutputFactory xof = XMLOutputFactory.newInstance();
+    XMLStreamWriter xsw = xof.createXMLStreamWriter(baos);
+    ToXmlGenerator generator = new ToXmlGenerator(xsw, null);
+    generator.writeStartObject();
+    generator.writeBinaryField("test", byteData);
+    generator.writeEndObject();
+    generator.close();
+
+    XMLInputFactory xif = XMLInputFactory.newInstance();
+    XMLStreamReader xsr = xif.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
+    xsr.nextTag();
+    assertEquals("object", xsr.getLocalName());
+    xsr.nextTag();
+    assertEquals("test", xsr.getLocalName());
+    assertEquals(Base64Variants.getDefaultVariant(), xsr.getAttributeValue(null, "enc

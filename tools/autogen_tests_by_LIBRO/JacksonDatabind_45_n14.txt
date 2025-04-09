@@ -1,0 +1,14 @@
+public void testDefaultFormatting() throws Exception {
+        JSONObject json = new JSONObject();
+
+        Shape shape = new Shape().withType(ShapeType.NUMBER);
+        ProtocolMarshaller protocolMarshaller = new ProtocolMarshaller(new ProtocolFactory());
+
+        JsonGenerator jgen = protocolMarshaller.createGenerator(shape, json);
+
+        jgen.writeFieldName("foo");
+        jgen.writeObject(1.1);
+        jgen.close();
+
+        assertEquals("{\"foo\":1.1}", json.toString());
+}

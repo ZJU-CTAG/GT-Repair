@@ -1,0 +1,23 @@
+public void testDateTimeSerializerBase() throws Exception {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    dateFormat.setTimeZone(TimeZone.getTimeZone("CET"));
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(dateFormat);
+
+    DateTime dateTime = new DateTime(2011, 1, 1, 0, 0, DateTimeZone.UTC);
+
+    TestClass testObject = new TestClass();
+    testObject.setId("1");
+    testObject.setName("Test");
+    testObject.setDate(dateTime);
+
+    String json = mapper.writeValueAsString(testObject);
+    assertEquals("{\"id\":\"1\",\"name\":\"Test\",\"date\":\"01/01/2011\"}", json);
+}
+
+@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+public static class TestClass {
+    private String id;
+    private String name;
+    private DateTime date;

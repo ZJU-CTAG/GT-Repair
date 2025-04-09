@@ -1,0 +1,18 @@
+public void testCMAESOptimizer() {
+    double[] lowerBound = new double[] { -Double.MAX_VALUE };
+    double[] upperBound = new double[] { Double.MAX_VALUE };
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.optimize(
+        1,
+        new CMAESOptimizer.Sigma(lowerBound, upperBound),
+        new CMAESOptimizer.PopulationSize(4),
+        new MaxEval(10),
+        new SimpleBounds(lowerBound, upperBound),
+        GoalType.MINIMIZE,
+        new CMAESOptimizer.FitnessFunction() {
+            @Override
+            public double value(double[] point) {
+                return Double.NaN;
+            }
+        });
+}

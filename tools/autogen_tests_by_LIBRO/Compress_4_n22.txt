@@ -1,0 +1,32 @@
+public void testArchiveFinishIsCalled() throws Exception {
+    final boolean[] called = new boolean[1];
+    ArchiveStreamFactory factory = new ArchiveStreamFactory() {
+        @Override
+        public ArchiveOutputStream createArchiveOutputStream(String archiveType, OutputStream out)
+            throws ArchiveException {
+            return new ArchiveOutputStream() {
+                @Override
+                public void close() throws IOException {
+                    called[0] = true;
+                }
+
+                @Override
+                public void finish() throws IOException {
+                }
+
+                @Override
+                public void putArchiveEntry(ArchiveEntry archiveEntry) throws IOException {
+                }
+
+                @Override
+                public void write(byte[] b, int off, int len) throws IOException {
+                }
+            };
+        }
+    };
+    ArchiveOutputStream aos = factory.createArchiveOutputStream("tar", new ByteArrayOutputStream());
+    aos.finish();
+    assertFalse("Should not have called finish()", called[0]);
+    aos.close();
+    assertTrue("Should have called finish()", called[0]);
+}

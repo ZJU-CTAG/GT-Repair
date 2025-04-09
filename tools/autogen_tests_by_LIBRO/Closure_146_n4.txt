@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.NO\_TRANSPILE);
+    CompilationLevel.ADVANCED\_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    SourceFile input = SourceFile.fromCode("input.js",
+            "function g(x) { return x.length; }" +
+                    "function f(x) { if (x != undefined) { g(x);} }"
+    );
+
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, Collections.singletonList(input), options);
+}

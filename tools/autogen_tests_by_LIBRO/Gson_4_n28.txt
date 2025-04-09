@@ -1,0 +1,30 @@
+public void testRFC7159() {
+    // Top level array
+    String json = "[1, 2, 3]";
+    
+    JsonValue value = JsonReader.read(json);
+    assertTrue(value.isArray());
+    assertEquals(3, value.asArray().size());
+    
+    String output = JsonWriter.write(value);
+    assertEquals(json, output);
+    
+    // Top level object
+    json = "{\"key\": \"value\"}";
+    
+    value = JsonReader.read(json);
+    assertTrue(value.isObject());
+    assertEquals(1, value.asObject().size());
+    assertEquals("value", value.asObject().getString("key"));
+    
+    // Top level string
+    json = "\"value\"";
+    
+    value = JsonReader.read(json);
+    assertTrue(value.isString());
+    assertEquals("value", value.asString());
+    
+    // Top level number
+    json = "123.456";
+    
+    value = JsonReader.read(json);

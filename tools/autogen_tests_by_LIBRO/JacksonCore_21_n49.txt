@@ -1,0 +1,14 @@
+public void testFailing() throws Exception {
+    final String INPUT = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    final String EXPECTED = "{\"ob\":{\"value\":3}}";
+
+    JsonParser p0 = new JsonFactory().createParser(INPUT);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+
+    String json = p.getText();
+    assertEquals(EXPECTED, json);
+}

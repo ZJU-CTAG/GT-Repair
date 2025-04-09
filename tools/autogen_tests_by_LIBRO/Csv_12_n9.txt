@@ -1,0 +1,18 @@
+public void testEmptyColumnName() throws IOException {
+    Reader in = new StringReader("a,b,c,\n" +
+            "a,b,c,d,e\n");
+    CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.withSkipHeaderRecord());
+    boolean first = true;
+    for (CSVRecord record : parser) {
+        if (first) {
+            assertEquals(0, record.get("a"));
+            assertEquals(1, record.get("b"));
+            assertEquals(2, record.get("c"));
+            first = false;
+        } else {
+            assertEquals("a", record.get("a"));
+            assertEquals("b", record.get("b"));
+            assertEquals("c", record.get("c"));
+        }
+    }
+}

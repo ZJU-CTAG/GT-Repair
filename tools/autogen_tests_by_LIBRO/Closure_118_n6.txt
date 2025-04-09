@@ -1,0 +1,16 @@
+public void testIssue108() {
+    try {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
+        engine.eval("var foo = {};" +
+                "foo.bar = {" +
+                "  'bar1': function() { console.log('bar1'); }" +
+                "};" +
+                "function foobar() {}" +
+                "foobar.prototype = foo.bar;" +
+                "foo.foobar = new foobar;" +
+                "console.log(foo.foobar['bar1']);");
+    } catch (ScriptException e) {
+        fail(e.getMessage());
+    }
+}

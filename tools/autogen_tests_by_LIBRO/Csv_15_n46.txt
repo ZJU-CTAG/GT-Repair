@@ -1,0 +1,10 @@
+public void testIssue23() throws Exception {
+    String testValue = "\u3042\u3044\u3046";
+    StringWriter sw = new StringWriter();
+    CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.EXCEL);
+    csvPrinter.printRecord(testValue, "test2", "test3");
+    csvPrinter.flush();
+    csvPrinter.close();
+    String expected = "\"" + testValue + "\",test2,test3\n";
+    assertEquals(expected, sw.toString());
+}

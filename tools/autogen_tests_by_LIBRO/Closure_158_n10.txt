@@ -1,0 +1,16 @@
+public void testJSCompilerOptions() {
+    JSCompilerOptions.Builder builder = new JSCompilerOptions.Builder();
+    builder.setCustomExternsOnly(true)
+        .addJSCompilerOption("--jscomp_warning=checkTypes")
+        .addJSCompilerOption("--jscomp_warning=checkVars")
+        .addJSCompilerOption("--jscomp_error=checkVars")
+        .addJSCompilerOption("--jscomp_off=checkVars")
+        .addJSCompilerOption("--jscomp_off=checkTypes");
+    JSCompilerOptions options = builder.build();
+    List<String> warnings = options.getCompilerWarnings();
+    List<String> errors = options.getCompilerErrors();
+    List<String> offs = options.getCompilerOffs();
+    assertEquals(1, warnings.size());
+    assertEquals("--jscomp_warning=checkTypes", warnings.get(0));
+    assertEquals(1, errors.size());
+    assertEquals("--jscomp

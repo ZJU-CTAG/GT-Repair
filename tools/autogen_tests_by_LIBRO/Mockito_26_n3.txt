@@ -1,0 +1,26 @@
+public void testInjectMocks(){
+    final MyService myService = Mockito.mock(MyService.class);
+    final MyController controller = new MyController(myService);
+
+    controller.controllerMethod();
+
+    Mockito.verify(myService).methodA();
+}
+
+private static class MyController {
+
+    private final MyService myService;
+
+    @InjectMocks
+    public MyController(final MyService myService) {
+        this.myService = myService;
+    }
+
+    public void controllerMethod() {
+        myService.methodA();
+    }
+}
+
+private static class MyService {
+    public void methodA() {};
+}

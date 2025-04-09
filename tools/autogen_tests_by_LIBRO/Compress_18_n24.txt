@@ -1,0 +1,19 @@
+public void testLongDirEntry() throws IOException {
+
+        String filename = getClass().getResource(
+                "test1-appended.tar").getFile();
+        File testFile = new File(filename);
+        String longdirname = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+        TarArchiveInputStream tarIn = new TarArchiveInputStream(new FileInputStream(testFile));
+        TarArchiveEntry entry = tarIn.getNextTarEntry();
+        while(entry != null) {
+            String name = entry.getName();
+            if(name.equals(longdirname)) {
+                assertTrue(entry.isDirectory());
+                return;
+            }
+            entry = tarIn.getNextTarEntry();
+        }
+        tarIn.close();
+        fail("Did not find " + longdirname + " directory entry");
+   

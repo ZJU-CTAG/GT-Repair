@@ -1,0 +1,10 @@
+public void testCurrRowStart() throws IOException {
+    byte[] input = "{}".getBytes("UTF-8");
+    UTF8StreamJsonParser parser = new UTF8StreamJsonParser(new IOContext(null, null, false), 0, null, null, null, input, 0, input.length, false);
+    try {
+        JsonToken token = parser.nextToken();
+    } catch (JsonParseException e) {
+        assertEquals(1, e.getLocation().getLineNr());
+        assertEquals(2, e.getLocation().getColumnNr());
+    }
+}

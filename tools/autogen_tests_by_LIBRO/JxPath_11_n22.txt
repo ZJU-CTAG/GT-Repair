@@ -1,0 +1,15 @@
+public void testIssueJira107() {
+    String xml = "<ElementA A:myAttr=\"Mytype\">\n" +
+            " <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    Document doc = null;
+    try {
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+    } catch (Exception e) {
+        throw new AssertionError(e);
+    }
+    JXPathContext.newContext(doc).registerNamespace("A", "http://example.com/A");
+    JXPathContext.newContext(doc).registerNamespace("B", "http://example.com/B");
+    String val = JXPathContext.newContext(doc).getValue("//*[name()='ElementB']/text()").toString();
+    assertEquals("MY VALUE", val);
+}

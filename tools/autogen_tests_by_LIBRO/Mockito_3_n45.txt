@@ -1,0 +1,28 @@
+public void testIssue108() {
+    //given
+    final List<String> results = new ArrayList<>();
+    final List<String> args = Arrays.asList("one", "two", "three");
+    results.addAll(args);
+    
+    final MockitoTestClass mock = mock(MockitoTestClass.class);
+    doAnswer(new Answer<Void>() {
+        @Override
+        public Void answer(InvocationOnMock invocation) throws Throwable {
+            String[] varargs = (String[]) invocation.getArguments()[0];
+            for (String s : varargs) {
+                assertTrue(results.contains(s));
+                assertTrue(args.contains(s));
+                results.remove(s);
+            }
+            return null;
+        }
+    }).when(mock).varargMethod("one", "two", "three");
+    
+    //when
+    mock.varargMethod("one", "two", "three");
+    
+    //then
+    assertEquals(0, results.size());
+}
+
+public class MockitoTestClass

@@ -1,0 +1,22 @@
+public void testIssue107() {
+    Locale locale = Locale.getDefault();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyy MMMM d H:m:s", locale);
+    FastDateParser fdp = new FastDateParser("yyyyy MMMM d H:m:s", TimeZone.getDefault(), locale);
+    String date = "2011 January 2 0:0:0";
+    assertEquals(sdf.parse(date), fdp.parse(date));
+    date = "2011 January  2 0:0:0";
+    assertEquals(sdf.parse(date), fdp.parse(date));
+    date = "2011    January 2 0:0:0";
+    try {
+        sdf.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException ex) {
+        // expected
+    }
+    try {
+        fdp.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException ex) {
+        // expected
+    }
+}

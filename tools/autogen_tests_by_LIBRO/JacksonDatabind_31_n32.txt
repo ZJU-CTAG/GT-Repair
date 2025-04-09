@@ -1,0 +1,11 @@
+public void testNotWorking() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer();
+
+    JsonAntPathFilter jsonAntPathFilter = new JsonAntPathFilter("$.convert", "**");
+    WriterFilteringContext writerFilteringContext = new WriterFilteringContext(writer, jsonAntPathFilter);
+    mapper.writer(writerFilteringContext);
+
+    String json = mapper.convertValue(new Test(new Test(null)), String.class);
+    System.out.println(json);
+}

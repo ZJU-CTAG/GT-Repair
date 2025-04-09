@@ -1,0 +1,12 @@
+public void testTarArchiveOutputStreamGetBytesWritten() throws Exception {
+    File archive = new File("target/test.tar");
+    FileUtils.deleteQuietly(archive);
+    ArchiveOutputStream taos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, new FileOutputStream(archive));
+    taos.putArchiveEntry(taos.createArchiveEntry(new File("src/test/resources/org/apache/commons/compress/archivers/tar/archive2.tar"), "archive2.tar"));
+    InputStream is = new FileInputStream("src/test/resources/org/apache/commons/compress/archivers/tar/archive2.tar");
+    IOUtils.copy(is, taos);
+    is.close();
+    taos.closeArchiveEntry();
+    taos.close();
+    assertEquals(3072, ((TarArchiveOutputStream)taos).getBytesWritten());
+}

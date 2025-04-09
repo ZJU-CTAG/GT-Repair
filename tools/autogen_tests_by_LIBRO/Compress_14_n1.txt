@@ -1,0 +1,20 @@
+public void testIssue107() {
+    FileOutputStream fos = new FileOutputStream("test.tar");
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(fos);
+    TarArchiveEntry tae = new TarArchiveEntry("symlink");
+    tae.setType(TarArchiveEntry.LF_SYMLINK);
+    tae.setLinkName("linkname");
+    tae.setSize(0);
+    tos.putArchiveEntry(tae);
+    tos.closeArchiveEntry();
+    tos.close();
+
+    TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream("test.tar"));
+    tae = tis.getNextTarEntry();
+    assertNotNull(tae);
+    assertEquals("symlink", tae.getName());
+    assertTrue(tae.isSymbolicLink());
+    assertEquals("linkname", tae.getLinkName());
+    assertEquals(0, tae.getSize());
+    assertNull(tis.getNextTarEntry());
+}

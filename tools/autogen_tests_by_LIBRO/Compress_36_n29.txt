@@ -1,0 +1,13 @@
+public void testEmptyEntry() throws Exception {
+    File emptyEntry = new File("src/test/resources/compress-340-empty-entry.7z");
+    SevenZFile sevenZFile = new SevenZFile(emptyEntry);
+    SevenZArchiveEntry entry;
+    while((entry = sevenZFile.getNextEntry()) != null) {
+        System.out.println(entry.getName() + ": " + entry.getSize());
+        assertTrue(entry.getSize() == 0);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        IOUtils.copy(sevenZFile, baos);
+        assertTrue(baos.size() == 0);
+    }
+    sevenZFile.close();
+}

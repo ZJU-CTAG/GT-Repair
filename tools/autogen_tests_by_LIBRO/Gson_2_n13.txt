@@ -1,0 +1,21 @@
+public void testVehicles() throws Exception {
+    String json = "{\n" +
+                  "\"model\":\"Honda\",\n" +
+                  "\"make\":\"Accord\",\n" +
+                  "\"year\":2009,\n" +
+                  "\"maxSpeed\":130\n" +
+                  "}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    Car car = mapper.readValue(json, Car.class);
+    assertEquals("Honda", car.getMake());
+    assertEquals("Accord", car.getModel());
+    assertTrue(car.getYear() == 2009);
+    assertTrue(car.getMaxSpeed() == 130);
+
+    json = "{\n" +
+           "\"model\":\"Kenworth\",\n" +
+           "\"make\":\"T2000\",\n" +
+           "\"year\":2009,\n" +
+           "\"maxSpeed\":80,\n" +
+           "\"ax

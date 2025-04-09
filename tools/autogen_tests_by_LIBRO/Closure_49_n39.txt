@@ -1,0 +1,7 @@
+public void testIssue() {
+    String code = "var foo = function bar(){ var bar; alert(bar) };";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(SourceFile.fromCode("test", code));
+    assertEquals("var foo = function() {\n  alert(void 0);\n}", compiler.toSource());
+}

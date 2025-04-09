@@ -1,0 +1,16 @@
+public void testSimpleSerialization() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final Base base = new Impl();
+    final String json = mapper.writeValueAsString(base);
+    System.out.println(json);
+    final Base result = mapper.readValue(json, Base.class);
+    assertEquals(base, result);
+}
+
+static abstract class Base {
+}
+
+static class Impl extends Base {
+}

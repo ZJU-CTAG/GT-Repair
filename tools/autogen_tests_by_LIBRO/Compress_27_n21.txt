@@ -1,0 +1,13 @@
+public void testIssue() {
+    try {
+        TarArchiveInputStream tarInputStream =
+            new TarArchiveInputStream( new GzipCompressorInputStream( getTestFile( "COMPRESS-262.tar.gz" ) ) );
+        TarArchiveEntry entry;
+        while ( ( entry = tarInputStream.getNextTarEntry() ) != null ) {
+            System.out.println( entry.getName() );
+            System.out.println(entry.getUserName()+"/"+entry.getGroupName());
+        }
+    } catch ( Exception e ) {
+        e.printStackTrace();
+    }
+}

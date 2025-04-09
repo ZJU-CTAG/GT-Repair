@@ -1,0 +1,22 @@
+public void testOptionGroupLongOption() {
+    OptionGroup group = new OptionGroup();
+    Option helpOption = new Option("h", "help", false, "Help");
+    Option fooOption = new Option("f", "foo", false, "Foo");
+    Option barOption = new Option("b", "bar", false, "Bar");
+    Option bazOption = new Option("z", "baz", false, "Baz");
+    group.addOption(helpOption);
+    group.addOption(fooOption);
+    group.addOption(barOption);
+    group.addOption(bazOption);
+
+    group.setRequired(true);
+    group.setSelected(bazOption);
+
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine commandLine = parser.parse(group, new String[] { "--help", "--baz" });
+
+        assertTrue(commandLine.hasOption("help"));
+        assertFalse(commandLine.hasOption("foo"));
+        assertFalse(commandLine.hasOption("bar"));
+        assertTrue(commandLine.hasOption("b

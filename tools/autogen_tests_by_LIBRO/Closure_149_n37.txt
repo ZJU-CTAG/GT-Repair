@@ -1,0 +1,12 @@
+public void testIssue3() throws Exception {
+    String code = "var myVar = \"this is a string\";";
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setEscapeStrings(false);
+    Result result = compiler.compile(CommandLineRunner.getDefaultExterns(), ImmutableList.of(new JSSourceFile(null, code)), options);
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    assertEquals(code, output);
+}

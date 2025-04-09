@@ -1,0 +1,7 @@
+public void testIssue108() {
+    Document doc = Jsoup.parse("<a/*>");
+    Whitelist wl = Whitelist.relaxed();
+    wl.addEnforcedAttribute("a", "href", "http://example.com/");
+    String clean = Jsoup.clean(doc.html(), wl);
+    assertEquals("<a href=\"http://example.com/\"></a>", clean);
+}

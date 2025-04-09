@@ -1,0 +1,18 @@
+public void testDynamicKeyType() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Map<CharSequence,Object> map = mapper.readValue(com.fasterxml.jackson.dataformat.avro.AvroTestBase.class.getResourceAsStream("CharSequenceKey.avsc.json"),
+            new TypeReference<Map<CharSequence,Object>>(){});
+
+    assertEquals(1, map.size());
+    assertTrue(map.containsKey(new Utf8("baz")));
+    assertEquals(new Utf8("wibble"), map.get(new Utf8("baz")));
+
+    assertTrue(map.containsKey(new StringBuilder("baz")));
+    assertEquals(new Utf8("wibble"), map.get(new StringBuilder("baz")));
+}
+
+public void testDynamicKeyType2() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Map<CharSequence,Object> map = mapper.readValue(com.fasterxml.jackson.dataformat.

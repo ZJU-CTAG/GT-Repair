@@ -1,0 +1,19 @@
+public void testIssue108 () {
+    String src = "function f() {}" +
+                 "alert(f());";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setLanguageVersion(Context.VERSION_1_8);
+    env.setErrorReporter(new ErrorReporter() {
+        public void warning(String message, String sourceName, int line,
+                String lineSource, int lineOffset) {
+            System.out.println("Warning: " + message + " at " + line + "," + lineOffset);
+        }
+        public void error(String message, String sourceName, int line,
+                String lineSource, int lineOffset) {
+            System.out.println("Error: " + message + " at " + line + "," + lineOffset);
+        }
+        public EvaluatorException runtimeError(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);

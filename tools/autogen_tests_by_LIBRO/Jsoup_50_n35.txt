@@ -1,0 +1,11 @@
+public void testUtf16ByteOrderMark() throws UnsupportedEncodingException {
+    byte[] utf16leBOM = new byte[]{(byte) 0xFF, (byte) 0xFE};
+    byte[] utf16beBOM = new byte[]{(byte) 0xFE, (byte) 0xFF};
+    byte[] utf8BOM = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+
+    InputStream utf16le = new ByteArrayInputStream(ArrayUtils.addAll(utf16leBOM, "test".getBytes("UTF-16LE")));
+    InputStream utf16be = new ByteArrayInputStream(ArrayUtils.addAll(utf16beBOM, "test".getBytes("UTF-16BE")));
+    InputStream utf8 = new ByteArrayInputStream(ArrayUtils.addAll(utf8BOM, "test".getBytes("UTF-8")));
+    InputStream normal = new ByteArrayInputStream("test".getBytes("UTF-8"));
+
+    assertEquals("UTF-16

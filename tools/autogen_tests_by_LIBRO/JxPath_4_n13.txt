@@ -1,0 +1,13 @@
+public void testJXPath() throws Exception {
+    String input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><value> 12324 56</value>";
+    InputStream is = new ByteArrayInputStream(input.getBytes("UTF-8"));
+    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document doc = builder.parse(is);
+
+    XPathContext context = new JXPathContext();
+    context.setLenient(true);
+    context.setFactory(new DefaultDocumentFactory());
+
+    Object o = context.getValue("/value");
+    assertEquals(" 12324 56", o);
+}

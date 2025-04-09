@@ -1,0 +1,14 @@
+public void testIssue107() throws Exception {
+    File test = new File("target/testIssue107.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(test);
+    zos.setMethod(ZipEntry.DEFLATED);
+    zos.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zos.write("abc".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+    
+    ZipFile zf = new ZipFile(test);
+    ZipArchiveEntry zae = zf.getEntry("test.txt");
+    assertEquals(20, zae.getVersionNeededToExtract());
+    zf.close();
+}

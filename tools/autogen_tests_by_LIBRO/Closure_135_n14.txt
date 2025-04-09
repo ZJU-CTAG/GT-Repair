@@ -1,0 +1,15 @@
+public void testIssue108() throws IOException {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("test.js",
+            "function inherit(Child, Parent) {"+
+            " Child.prototype = new Parent();"+
+            "}"+
+            "inherit(SubClass, SuperClass);"
+            )),
+        ImmutableList.of(),
+        options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarnings().length);
+}

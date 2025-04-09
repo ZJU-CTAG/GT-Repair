@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String[] inputs = {
+        "var x = { get 'x'() { return 1 } };",
+        "var x = { get 1() { return 1 } };"
+    };
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    for (String input : inputs) {
+        Compiler compiler = new Compiler();
+        Compiler.setLoggingLevel(Level.WARNING);
+        compiler.compile(new PlainMessageFormatter(), null, options,
+                         new String[] { "--js", input });
+        assertEquals("Should compile without error:\n" + input, 0,
+                     compiler.getErrorCount());
+    }
+}

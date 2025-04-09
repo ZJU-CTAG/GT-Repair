@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    mapper.registerModule(new SimpleModule() {{
+        setTypeIdResolver(new CustomTypeIdResolver());
+    }});
+
+    final Message<LocalDate> message = new Message<>();
+    message.value = LocalDate.now();
+
+    final String json = mapper.writeValueAsString(message);
+    System.out.println(json);
+
+    final Message<?> deserialized = mapper.readValue(json, Message.class);
+    System.out.println(deserialized.value);
+    System.out.println(deserialized.value.getClass());
+}

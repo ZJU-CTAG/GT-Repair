@@ -1,0 +1,26 @@
+public void testPolymorphicTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+
+    // First, default handling: no type id, exception
+    try {
+        mapper.readValue("{\"a\":3}", AbstractType.class);
+        fail("Should not pass");
+    } catch (Exception e) {
+        verifyException(e, "No type id found");
+    }
+
+    // then external type id; works but not without id
+    mapper.addMixInAnnotations(AbstractType.class, ExternalTypeIdMixin.class);
+    try {
+        mapper.readValue("{\"a\":3}", AbstractType.class);
+        fail("Should not pass");
+    } catch (Exception e) {
+        verifyException(e, "No type id found");
+    }
+
+    // and then external type id; works but not without id
+    mapper.addMixInAnnotations(AbstractType.class, ExternalTypeIdMixin.class);
+    try {
+        mapper.readValue("{\"a\":3}", AbstractType.class);
+        fail("Should

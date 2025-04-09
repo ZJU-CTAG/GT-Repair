@@ -1,0 +1,17 @@
+public void testIssue107() {
+    Options options = buildCommandLineOptions();
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = null;
+    try {
+        commandLine = parser.parse(options, new String[]{"-t", "-something"});
+        fail("Should have thrown a ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+}
+
+public static Options buildCommandLineOptions() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasArg().create("t"));
+    return options;
+}

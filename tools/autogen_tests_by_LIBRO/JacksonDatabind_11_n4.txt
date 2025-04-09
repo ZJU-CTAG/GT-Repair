@@ -1,0 +1,25 @@
+public void testGenericResolution() throws Exception {
+    String json = "{\"entity\": {\"id\": 123, \"type\": \"foo\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getDeserializationConfig().addMixInAnnotations(Ruleform.class, MixIn.class);
+    Something s = mapper.readValue(json, Something.class);
+    assertEquals(123, s.getEntity().getId());
+    assertEquals("foo", s.getEntity().getType());
+}
+
+interface Ruleform {
+    int getId();
+    String getType();
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+@JsonSubTypes(value={@Type(name="foo", value=Foo.class)})
+public static class Foo implements Ruleform {
+    int id;
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    String type;
+
+    public String get

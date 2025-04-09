@@ -1,0 +1,16 @@
+public void testIssue110() throws Exception {
+    Configuration config = new Configuration();
+    config.addInputSource(JsFile.fromCode("myclass.js", " /** @constructor */ var myclass = function() { } /** @param {boolean} success */ myclass.prototype.fn = function(success) { } myclass.prototype.test = function() { this.fn(); this.fn = function() { }; }"));
+    config.setCheckDependencies(false);
+    config.setWarningLevel(CheckLevel.ERROR);
+    config.addChecks(new CheckParameterTypes(true));
+    final JSError[] errors = new JSError[1];
+    ErrorReporter testReporter = new ErrorReporter() {
+        public void report(JSError warning) {
+            errors[0] = warning;
+        }
+    };
+    config.setErrorReporter(testReporter);
+    new Compiler(config).compile();
+    assertEquals("Bad type annotation. "
+        + "expected (null|boolean) found (null|undefined)", errors[0].description);

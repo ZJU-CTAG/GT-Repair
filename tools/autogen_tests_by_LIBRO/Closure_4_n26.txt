@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String script = "var OtherType = function() {}\n" +
+              "/\*\* @implements {MyType} \* @constructor \*/\n" +
+              "var MyType = function() {}\n" +
+              "/\*\* @type {MyType} \*/\n" +
+              "var x = /\*\* @type {!OtherType} \* / (new Object());";
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("[extern]", ""),
+        SourceFile.fromCode("[testcode]", script),
+        new CompilerOptions());
+
+    assertNull("Expected no errors or warnings, but got: " + Joiner.on("\n").join(result.errors), result.errors);
+}

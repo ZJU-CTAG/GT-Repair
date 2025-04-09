@@ -1,0 +1,24 @@
+public void testIssue1072() {
+    final ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping()
+            .enable(MapperFeature.AUTO_DETECT_GETTERS)
+            .enable(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS)
+            .disable(MapperFeature.USE_GETTERS_AS_SETTERS)
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    final Foo foo = new Foo("bar");
+    final String serialized = mapper.writeValueAsString(foo); // {"bar" : "bar"}
+
+    final JsonNode jsonNode = mapper.readTree(serialized);
+    assertEquals("bar", jsonNode.get("bar").asText());
+}
+
+public static class Foo {
+    private String bar;
+
+    public Foo() {
+    }
+
+    public Foo(String bar) {

@@ -1,0 +1,25 @@
+public void testClosure() {
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("crash.js",
+                    "var test = {};"
+                    + "/**"
+                    + " * @interface"
+                    + " */"
+                    + "test.T = function() {};"
+                    + "/**"
+                    + " * @constructor"
+                    + " * @implements {test.T}"
+                    + " */"
+                    + "test.A = function() {};"
+                    + "/**"
+                    + " * @constructor"
+                    + " * @implements {test.T}"
+                   

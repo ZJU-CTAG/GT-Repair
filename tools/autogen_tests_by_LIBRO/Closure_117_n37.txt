@@ -1,0 +1,19 @@
+public void testIssue108() {
+    ErrorReporter reporter = new ErrorReporter() {
+        @Override
+        public void report(CheckLevel level, JSError error) {
+            assertEquals("Property prop never defined on C2", error.description);
+        }
+
+        @Override
+        public void generateReport() {
+        	//do nothing
+        }
+    };
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(reporter);
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    compiler.compile(new JSSourceFile[0], ImmutableList.of(JSSourceFile.fromCode("test", "function C2() {}\n" +
+                                                                                   "function C3(c2) { this.c2_; use(this.c2_.prop) }")), options);
+}

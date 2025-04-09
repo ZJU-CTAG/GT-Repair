@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String code = "/** @constructor */\n" +
+                  "var myclass = function() {\n" +
+                  "}\n" +
+                  "\n" +
+                  "/** @param {boolean} success */\n" +
+                  "myclass.prototype.fn = function(success) { }\n" +
+                  "\n" +
+                  "myclass.prototype.test = function() {\n" +
+                  "  this.fn();\n" +
+                  "  this.fn = function() { };\n" +
+                  "}\n";
+    CompilationUnit unit = compile(code);
+
+    // assert an error at the first call
+    assertEquals(1, unit.getErrors().length);
+    assertEquals(3, unit.getErrors()[0].getLineNumber());
+    assertTrue(unit.getErrors()[0].getMessage().contains("expected"));
+
+    // assert no error at the second call
+    assertEquals(0, unit.getWarnings().length);
+}

@@ -1,0 +1,15 @@
+public void testConstructor() {
+    String[] sourceLines = new String[] {
+        "/** @type {function(new:?)} */ var foo = function() {};",
+        "/** @type {function(new:*)} */ var bar = function() {};"
+    };
+    List<JSError> errors = new ArrayList<JSError>();
+    for (String sourceLine : sourceLines) {
+        Config config = new Config(JSHint.DATA, false, false);
+        JSHint jshint = new JSHint(sourceLine, config);
+        JSHint.Result result = jshint.run();
+        errors.addAll(result.getErrors());
+    }
+
+    assertEquals(0, errors.size());
+}

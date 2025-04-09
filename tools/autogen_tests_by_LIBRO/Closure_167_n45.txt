@@ -1,0 +1,28 @@
+public void testIssue() {
+    Object result = compileAndExecute(
+        "inloop-externs.js",
+        "inloop.js");
+    assertTrue(result == null || result instanceof UndefinedValue);
+}
+
+private static Object compileAndExecute(String... fileNames) {
+    List<SourceFile> input = Lists.newArrayList();
+    for (String fileName : fileNames) {
+        input.add(SourceFile.fromCode(fileName, getTestInput(fileName)));
+    }
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.disableThreads();
+    compiler.compile(
+        externs,
+        input,
+        new CompilerOptions());
+    Result result = compiler.getResult();
+    String code = compiler.toSource();
+    if (!result.success) {
+        String err = Joiner.on(LINE_SEPARATOR).join(result.errors);
+        fail("Unexpected errors: " + LINE_SEPARATOR + err);
+    }
+    return execute(code);
+}
+

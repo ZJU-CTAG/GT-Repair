@@ -1,0 +1,18 @@
+public void testIssue108() {
+    // This test is provided in the issue, I have just added a check to ensure it compiles as expected.
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("testIssue108", "var i = 0; \n" +
+                "lab1: do{ \n" +
+                " lab2: do{ \n" +
+                " i++; \n" +
+                " if (1) { \n" +
+                " break lab2; \n" +
+                " } else { \n" +
+                " break lab1; \n" +
+                " } \n" +
+                " } while(false); \n" +
+                "} while(false); \n" +
+                "console.log(i); ")
+        }, new CompilerOptions());
+}

@@ -1,0 +1,19 @@
+public void testIssue107() throws IOException {
+    final String comment = "ZipArchiveOutputStream with Data Descriptor";
+    final String filename = "ZipArchiveOutputStream.zip";
+    File file = new File(filename);
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file)) {
+        zos.setUseDataDescriptor(true);
+        zos.setComment(comment);
+        ZipArchiveEntry ze = new ZipArchiveEntry("foo.txt");
+        ze.setTime(System.currentTimeMillis());
+        ze.setMethod(ZipEntry.DEFLATED);
+        zos.putArchiveEntry(ze);
+        zos.write("test".getBytes());
+        zos.closeArchiveEntry();
+    }
+    try (ZipFile zipFile = new ZipFile(file)) {
+        assertEquals(comment, zipFile.getComment());
+        assertEquals(1, zipFile.size());
+    }
+}

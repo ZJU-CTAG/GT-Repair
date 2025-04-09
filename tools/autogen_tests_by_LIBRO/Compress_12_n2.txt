@@ -1,0 +1,19 @@
+public void testTarArchiveInputStream() throws Exception {
+    byte[] buf = new byte[512];
+    buf[0] = 0;
+    buf[1] = 0;
+    buf[2] = 0;
+    buf[3] = 0;
+    buf[4] = 0;
+    buf[5] = 0;
+    buf[6] = 0;
+    buf[7] = 0;
+    // missing buf[8]
+    ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+    try {
+        new TarArchiveInputStream(new BufferedInputStream(bais)).getNextEntry();
+        fail("IOException expected");
+    } catch(IOException ex) {
+        // expected
+    }
+}

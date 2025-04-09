@@ -1,0 +1,21 @@
+public void testDelete() throws IOException {
+    File arFile = new File(getTestDirectory(), "test.ar");
+    ArArchiveOutputStream ar = new ArArchiveOutputStream(new FileOutputStream(arFile));
+    ArchiveEntry entry = new ArArchiveEntry("test2.xml");
+    ar.putArchiveEntry(entry);
+    ar.closeArchiveEntry();
+    ar.close();
+    ar = new ArArchiveOutputStream(new FileOutputStream(arFile));
+    entry = new ArArchiveEntry("test1.xml");
+    ar.putArchiveEntry(entry);
+    ar.closeArchiveEntry();
+    ar.close();
+    ar = new ArArchiveOutputStream(new FileOutputStream(arFile));
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(arFile));
+    ArchiveEntry e;
+    while ((e = in.getNextEntry()) != null) {
+      if (e.getName().equals("test2.xml")) {
+        ar.deleteArchiveEntry(e);
+      }
+    }
+    in.

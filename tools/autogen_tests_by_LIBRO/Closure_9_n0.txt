@@ -1,0 +1,22 @@
+public void testIssue1075() {
+    Compiler compiler = new Compiler();
+    SourceFile externs = SourceFile.fromCode("externs", "");
+    compiler.addExterns(externs);
+
+    SourceFile input = SourceFile.fromCode("input",
+"define(function(require, exports, module) {\n"
++ "  var Foo = require('./lib/Foo');\n"
++ "  module.exports = function () {\n"
++ "    return new Foo();\n"
++ "  }\n"
++ "});");
+
+    compiler.addInput(input);
+
+    compiler.compile(new ErrorManager() {
+        @Override
+        public void report(CheckLevel level, JSError error) {
+            throw new RuntimeException(error.toString());
+        }
+    }, CompilerOptions.builder().setPrintAst(true).setPrintTree(true).setCheckSymbols(true).build());
+}

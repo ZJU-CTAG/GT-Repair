@@ -1,0 +1,10 @@
+public void testIssue1154() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+
+    // note: we have to use custom constructor (for now) to have desired effect
+    DateTimeZone tz = DateTimeZone.forID("Europe/Paris");
+    DateTime dt = new DateTime(2011, 1, 8, 15, 16, 32, 333, tz);
+    String json = mapper.writeValueAsString(dt);
+    assertEquals("\"2011-01-08T15:16:32.333+01:00\"", json);
+}

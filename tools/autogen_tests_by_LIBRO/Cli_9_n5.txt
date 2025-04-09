@@ -1,0 +1,19 @@
+public void testMissingOptionMessage() {
+    Options options = new Options();
+    options.addOption("l", "long-option", false, "long-option");
+    options.addOption("f", "format", true, "format");
+    options.addOption("s", "source", true, "source");
+    options.addOption("p", "properties", true, "properties");
+    options.addOption("r", "required", true, "properties");
+
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[] { "-l", "-p", "/path/to/file" });
+        fail("MissingOptionsException should be thrown");
+    } catch (MissingOptionException moe) {
+        String message = moe.getMessage();
+        String expected = "Missing required options: " +
+            "-format -source -required";
+        assertEquals(expected, message);
+    }
+}

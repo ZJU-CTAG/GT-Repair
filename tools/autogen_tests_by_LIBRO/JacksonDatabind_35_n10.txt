@@ -1,0 +1,17 @@
+public void testWithTypeId() throws Exception
+{
+   ObjectMapper mapper = new ObjectMapper();
+   mapper.registerModule(new JaxbAnnotationModule());
+   mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_OBJECT);
+
+   BeanWithObjectId bean = new BeanWithObjectId();
+   bean.name = "Foo";
+   assertEquals("{\"name\":\"Foo\"}", mapper.writeValueAsString(bean));
+}
+
+@XmlRootElement(name="Bean")
+public class BeanWithObjectId
+{
+    @XmlID
+    public String name;
+}

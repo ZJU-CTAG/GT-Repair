@@ -1,0 +1,8 @@
+public void testAllowMultipleMatches() throws Exception {
+    String json = "{ \"a\" : \"b\", \"c\" : \"d\" }";
+    String filter = "{\"a\" : null, \"c\" : null}";
+    ObjectMapper mapper = new ObjectMapper();
+    FilterProvider filters = new SimpleFilterProvider().addFilter("filter", new SimpleBeanPropertyFilter().setAllowMultipleMatches(true));
+    JsonNode jsonNode = mapper.readTree(json);
+    assertEquals("{\"a\":\"b\",\"c\":\"d\"}", mapper.writer(filters).writeValueAsString(jsonNode));
+}

@@ -1,0 +1,23 @@
+public void testSpyAbstractClass() {
+    FooAbstract foo = Mockito.spy(new FooImpl());
+    Mockito.when(foo.bar()).thenReturn("baz");
+    assertEquals("baz", foo.bar());
+    assertEquals("baz", foo.bar("quux"));
+}
+
+abstract class FooAbstract {
+
+    public String bar() {
+        return bar("");
+    }
+
+    public abstract String bar(String s);
+}
+
+class FooImpl extends FooAbstract {
+
+    @Override
+    public String bar(String s) {
+        return "foo" + s;
+    }
+}

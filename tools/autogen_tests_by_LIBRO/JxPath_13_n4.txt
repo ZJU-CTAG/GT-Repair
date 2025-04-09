@@ -1,0 +1,16 @@
+public void testIssueWithAttributes() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new InputSource(new StringReader(
+        "<ElementA A:myAttr=\"Mytype\">" +
+        "<B:ElementB>MY VALUE</B:ElementB>" +
+        "</ElementA>")));
+
+    DOMNodePointer ptr = DOMNodePointer.newNodePointer(doc);
+    JXPathContext context = JXPathContext.newContext(ptr);
+    context.setLenient(true);
+    context.registerNamespace("A", "http://test.com");
+    context.registerNamespace("B", "http://test.com");
+
+    assertEquals("MY VALUE", context.getValue("/ElementA/B:ElementB"));
+}

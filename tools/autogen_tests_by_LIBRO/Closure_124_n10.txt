@@ -1,0 +1,20 @@
+public void testIssue115() {
+    String input = "function removeForeignObject () {" +
+            "  var gfx = this.gfx;" +
+            "  var parentContainer = gfx.parentNode;" +
+            "  var foreignObject = gfx.parentNode.parentNode;" +
+            "  var parentContainer = foreignObject.parentNode.parentNode;" +
+            "  if ( parentContainer !== null ) {" +
+            "    parentContainer.removeChild(foreignObject);" +
+            "  }" +
+            "}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            CommandLineRunner.getDefaultExterns(),
+            Collections.singletonList(SourceFile.fromCode("test.js", input)),
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("function removeForeignObject(){" +
+            "var a=this.gfx;" +
+            "if(a=a.parentNode,a=a.parentNode,null!==a)a.removeChild(a)" +
+            "};\n", compiler

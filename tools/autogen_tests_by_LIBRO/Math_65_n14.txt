@@ -1,0 +1,18 @@
+public void testResidualsWeights() {
+    double[] tval = {0, 1, 2, 3, 4};
+    double[] yval = {1, 2, 1, 0, -1};
+    double[] sigval = {1, 1, 1, 1, 1};
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    for (int i = 0; i < tval.length; i++) {
+        obs.add(tval[i], yval[i], sigval[i]);
+    }
+    UnivariateFunction f = new PolynomialFunction(new double[]{-1, 0, 1});
+    double min = -10;
+    double max = 10;
+    AbstractLeastSquaresProblem fit = new LeastSquaresBuilder().
+            maxEvaluations(100).
+            maxIterations(100).
+            start(new double[]{0, 0, 0}).
+            model(f, new PolynomialFunction(new double[]{1, 0, 0})).
+            target(obs.toList()).
+            parameterValidator(new ParameterValidator()

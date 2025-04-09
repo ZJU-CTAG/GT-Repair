@@ -1,0 +1,15 @@
+public void testIssueMulticheck() {
+    String multicheck = FileUtils.readFileToString(new File("src/test/resources/multicheck.js"), "UTF-8");
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        JqueryTestUtils.EXTERNS,
+        multicheck,
+        new CompilerOptions()
+    );
+    assertEquals(0, result.getErrors().length);
+    assertTrue(result.getWarnings().length > 0); // we expect one warning about preload_check_all
+    assertTrue(result.getCode().contains("\"preload_check_all\""));
+    //assertTrue(result.getCode().contains("a.preload_check_all=function()")); // this is the new function declaration that the compiler inserted
+    //assertTrue(result.getCode().contains("a.preload_check_all();")); // this is the call to the function
+}

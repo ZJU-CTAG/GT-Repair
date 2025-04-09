@@ -1,0 +1,12 @@
+public void testEmptyHeader() throws IOException {
+    String csv = "A,B,C,,\na,b,c,d,e";
+    Reader reader = new StringReader(csv);
+    CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+    assertEquals("a", records.get(1).get(0));
+    assertEquals("b", records.get(1).get(1));
+    assertEquals("c", records.get(1).get(2));
+    assertEquals("d", records.get(1).get(3));
+    assertEquals("e", records.get(1).get(4));
+}

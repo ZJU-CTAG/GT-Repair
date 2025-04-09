@@ -1,0 +1,13 @@
+public void testByteQuadsCanonicalizer() throws Exception {
+    for ( int i = 0; i < 100000; i++ ) {
+        ByteQuadsCanonicalizer t = ByteQuadsCanonicalizer.createRoot();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion( Include.NON_NULL );
+        mapper.setSerializationInclusion( Include.NON_EMPTY );
+        mapper.enable( SerializationFeature.INDENT_OUTPUT );
+        mapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+        mapper.setDateFormat( new StdDateFormat() );
+        mapper.getSerializationConfig().withSerializationInclusion( Include.NON_EMPTY );
+        mapper.getSerializationConfig().withSerializationInclusion( Include.NON_NULL );
+        mapper.getSerializationConfig().with( new JodaDateTimeSerializer() );
+        mapper.getSerializationConfig().withSerializationInclusion( Include.NON_DEFAULT );

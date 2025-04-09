@@ -1,0 +1,12 @@
+public void testIssue109() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setCodingConvention(new GoogleCodingConvention());
+    options.setThirdParty(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("test.js", "function assert(b) {if (!b) throw 'error';} assert(f() === 1); var f = function() {return 2;}; assert(f() === 2); function f() {return 1;}"),
+            SourceFile.fromCode("third_party.js", "var goog = {}; goog.provide = function() {};"),
+            options);
+    assertEquals(1, compiler.getErrors().length);
+}

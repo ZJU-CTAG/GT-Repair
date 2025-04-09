@@ -1,0 +1,24 @@
+public void testIssue45() {
+    FastDateFormat serial = FastDateFormat.getInstance("yyyyMMdd");
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream os = null;
+    try {
+        os = new ObjectOutputStream(out);
+        os.writeObject(serial);
+        os.close();
+    } catch (IOException ex) {
+        throw new RuntimeException(ex);
+    }
+    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+    ObjectInputStream is = null;
+    Object obj = null;
+    try {
+        is = new ObjectInputStream(in);
+        obj = is.readObject();
+    } catch (IOException ex) {
+        throw new RuntimeException(ex);
+    } catch (ClassNotFoundException ex) {
+        throw new RuntimeException(ex);
+    }
+    assertEquals(serial, obj);
+}

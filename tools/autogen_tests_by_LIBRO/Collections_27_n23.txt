@@ -1,0 +1,11 @@
+public void testInvokerTransformer() throws Exception {
+    InvokerTransformer invokerTransformer = new InvokerTransformer("getProperty", new Class[]{String.class}, new Object[]{"java.version"});
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("foo", "bar");
+    TransformedMap transformedMap = new TransformedMap(map, null, null, invokerTransformer);
+    Map.Entry<String, String> entry = transformedMap.entrySet().iterator().next();
+
+    // I expected the following line to throw a SecurityException, but it does not:
+    String propertyValue = entry.getValue();
+    assertEquals("1.8.0_45", propertyValue);
+}

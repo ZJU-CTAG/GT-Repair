@@ -1,0 +1,12 @@
+public void testIssue107() {
+    String hugeKey = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(262145);
+    String json = "{" + hugeKey + ":123}";
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.readValue(json, Object.class);
+        fail("Should throw JsonParseException");
+    } catch (JsonParseException e) {
+        assertTrue(e.getMessage().contains("Too long key"));
+    }
+}
+

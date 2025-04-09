@@ -1,0 +1,11 @@
+public void testIssue123() throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    WarningLevel level = WarningLevel.VERBOSE;
+    level.setOptionsForWarningLevel(compiler.getOptions());
+    compiler.compile(
+            SourceFile.fromCode("foo.js", "var a = 'あ';"),
+            SourceFile.fromCode("bar.js", "var b = 'い';"));
+    System.out.println(compiler.toSource());
+}

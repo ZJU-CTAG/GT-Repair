@@ -1,0 +1,17 @@
+public void testWriting() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new SimpleModule("ListAttribute", new
+Version(1, 0, 0, null)) {
+        {
+            addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+        }
+    });
+    ListAttribute listAttribute = new ListAttribute();
+    listAttribute.setItemJsonKey("toto");
+    listAttribute.setItems(Collections.emptyList());
+    JsonNode rootNode = mapper.valueToTree(listAttribute);
+    System.out.println(mapper.writeValueAsString(rootNode));
+}

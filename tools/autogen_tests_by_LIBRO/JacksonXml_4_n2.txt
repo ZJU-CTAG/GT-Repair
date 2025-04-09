@@ -1,0 +1,10 @@
+public void testXmlSerializerProvider() {
+        final String rootName = "rootName";
+        XmlMapper mapper = new XmlMapper();
+        mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+        final String xml = mapper.writer()
+                .withRootName(rootName)
+                .writeValueAsString(null);
+        assertEquals("<?xml version='1.0' encoding='UTF-8'?><" + rootName + " />", xml);
+    }

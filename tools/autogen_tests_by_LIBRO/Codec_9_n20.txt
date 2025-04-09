@@ -1,0 +1,14 @@
+public void testBase64ChunkedMaxResultSize() {
+    byte[] data = new byte[] { 0, 1, 2, 3, 4, 5 };
+    // Should be ok
+    Base64.encodeBase64(data, false, false, 8);
+    // Should be ok
+    Base64.encodeBase64(data, false, false, 7);
+    try {
+        // Should throw IAE
+        Base64.encodeBase64(data, false, false, 6);
+        fail("Expected IAE for maxResultSize < 7 when not chunked");
+    } catch(IllegalArgumentException iae) {
+        // Expected
+    }
+}

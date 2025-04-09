@@ -1,0 +1,20 @@
+public void testBooks() throws Exception {
+    FromXMLParser parser = XML_F.createParser(
+        "<Books><Book Number='1'><Name>Foo</Name></Book><Book Number='2'><Name>Bar</Name></Book></Books>"
+    );
+    while (parser.nextToken() != JsonToken.END_OBJECT) {
+        if (parser.isStartObject()) {
+            while (parser.nextToken() != JsonToken.END_OBJECT) {
+                if (parser.isStartObject()) {
+                    parser.nextToken();
+                    String name = parser.getCurrentName();
+                    // check for "Number"
+                    if (name.equals("Number")) {
+                        String num = parser.nextTextValue();
+                        System.out.println("Number: " + num);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue1492() {
+    String js = "function Foo() {\n"
+        + " var self = this;\n"
+        + " window.setTimeout(function() {\n"
+        + " window.location = self.location;\n"
+        + " }, 0);\n"
+        + "}\n"
+        + "Foo.prototype.setLocation = function(loc) {\n"
+        + " this.location = loc;\n"
+        + "};\n"
+        + "(new Foo()).setLocation('http://www.google.com/');";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("testcode", js),
+        new CompilerOptions());
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new InputSource(new java.io.StringReader(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<ns1:a xmlns:ns1=\"http://www.example.org/a\" xmlns:ns2=\"http://www.example.org/b\">"+
+            "  <ns2:b attr=\"value\">some text</ns2:b>"+
+            "</ns1:a>")));
+    BeanUtils.getProperty(doc, "a.b[@ns2:attr]");
+}

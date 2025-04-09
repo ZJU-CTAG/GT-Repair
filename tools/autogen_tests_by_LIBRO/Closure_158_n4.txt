@@ -1,0 +1,22 @@
+public void testCompilationLevel() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+                     SourceFile.fromCode("input.js", "alert('hello');"),
+                     options);
+
+    assertEquals(Result.SUCCESS, compiler.getResult().success);
+
+    CompilerOptions newOptions = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(newOptions);
+
+    newOptions.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    //newOptions.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+                     SourceFile.fromCode("input.js", "alert('hello');"),
+                     newOptions);
+
+    assertEquals

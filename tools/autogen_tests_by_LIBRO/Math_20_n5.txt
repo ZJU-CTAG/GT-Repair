@@ -1,0 +1,23 @@
+public void testIssue108() {
+    final int dim = 10;
+    final double[] guess = new double[dim];
+    Arrays.fill(guess, 2);
+    final double[] lb = new double[dim];
+    Arrays.fill(lb, 0);
+    final double[] ub = new double[dim];
+    Arrays.fill(ub, 10);
+    final CMAESOptimizer optimizer = new CMAESOptimizer();
+    final PointValuePair optimum = optimizer.optimize(
+        new ObjectiveFunction(new MultivariateFunction() {
+            public double value(final double[] x) {
+                return 1; // always return 1
+            }
+        }),
+        new MaxEval(1000),
+        new InitialGuess(guess),
+        new SimpleBounds(lb, ub));
+    for (int i = 0; i < dim; i++) {
+        assertTrue(optimum.getPoint()[i] >= lb[i]);
+        assertTrue(optimum.getPoint()[i] <= ub[i]);
+    }
+}

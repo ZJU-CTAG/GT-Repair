@@ -1,0 +1,13 @@
+public void testWeightVsSigma() {
+    // a few linear data with noise and sigma
+    double[][] data = { { 0, 1.0, 1.0 }, { 1, 1.0, 2.0 }, { 2, 1.0, 3.0 }, { 3, 1.0, 0.0 }, { 4, 1.0, 5.0 } };
+    double[] sigma = { 1.1, 1.2, 1.3, 1.4, 1.5 };
+    RealMatrix m = new RealMatrixImpl(data);
+    // weight = 1/sigma
+    double[][] weight = new double[sigma.length][1];
+    for (int i = 0; i < sigma.length; ++i) {
+        weight[i][0] = 1 / (sigma[i] * sigma[i]);
+    }
+    RealMatrix w = new RealMatrixImpl(weight);
+    // we solve a*x = b
+    double[][] b = { { 2.0 }, { 3.0 }, { 4.0 }, { 1.0 }, { 6.0 } };

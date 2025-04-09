@@ -1,0 +1,20 @@
+public void testIssue120() throws Exception
+    {
+
+        ObjectMapper ser = new ObjectMapper();
+        ser.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.WRAPPER_ARRAY);
+        ser.enable(SerializationFeature.INDENT_OUTPUT);
+        ObjectMapper deser = new ObjectMapper();
+        deser.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.WRAPPER_ARRAY);
+        deser.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        deser.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+        final String json = "{\"a\":1,\"b\":2}";
+
+        @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="id")
+        @JsonIdentityReference(alwaysAsId=true)
+        static class ReallyAlwaysAsId
+        {
+            public int value;
+
+            public ReallyAlwaysAsId() { this

@@ -1,0 +1,9 @@
+public void testPreconditionCrash() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.aliasableStrings = new AliasableString("goog.scope");
+    compiler.init(ImmutableList.<SourceFile>of(), ImmutableList.of(SourceFile.fromCode("test", "var goog = {};\ngoog.scope;\nvar ns = {};\nns.sub = {};\n/** @constructor */\nns.sub.C = function() {};\ngoog.scope(function() {var sub = ns.sub;\n/** @type {sub.C} */\nvar x = null;\n});")), options);
+    compiler.parseInputs();
+    compiler.analyze();
+    compiler.transform();
+}

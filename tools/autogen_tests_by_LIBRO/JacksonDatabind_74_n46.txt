@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    String json = "{\"value\":\"\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(BigDecimal.class, new AsPropertyTypeDeserializer(BigDecimal.class));
+    mapper.registerModule(module);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    TestBean bean = mapper.readValue(json, TestBean.class);
+    assertNull(bean.value);
+}
+
+public static class TestBean {
+    public BigDecimal value;
+}

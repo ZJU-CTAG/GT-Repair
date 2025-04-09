@@ -1,0 +1,20 @@
+public void testNegativeZero() throws Exception {
+    JsonObject obj = new JsonObject();
+    obj.add("number", new JsonPrimitive("-0"));
+
+    StringWriter stringWriter = new StringWriter();
+    JsonWriter jsonWriter = new JsonWriter(stringWriter);
+    jsonWriter.setLenient(true);
+    jsonWriter.setSerializeNulls(false);
+    jsonWriter.setHtmlSafe(false);
+    //jsonWriter.setIndent("  ");
+    obj.write(jsonWriter);
+    jsonWriter.close();
+
+    System.out.println(stringWriter.toString());
+
+    JsonElement element = new JsonParser().parse(stringWriter.toString());
+    JsonObject object = element.getAsJsonObject();
+    JsonPrimitive number = object.getAsJsonPrimitive("number");
+    assertEquals("-0", number.getAsString());
+}

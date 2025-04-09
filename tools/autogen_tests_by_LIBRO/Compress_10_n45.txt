@@ -1,0 +1,11 @@
+public void testUnicodeExtraFields() throws Exception {
+    final ZipFile zipFile = new ZipFile("src/test/resources/test-unicode.zip");
+    final Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        final ZipArchiveEntry entry = entries.nextElement();
+        final InputStream is = zipFile.getInputStream(entry);
+        assertNotNull("unable to read entry " + entry.getName(), is);
+        is.close();
+    }
+    zipFile.close();
+}

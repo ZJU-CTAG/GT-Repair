@@ -1,0 +1,12 @@
+public void testIssueNextTextValue() throws Exception {
+    final String xml = "<?xml version='1.0' encoding='UTF-8'?><root><attr>attr1</attr><attr>attr2</attr><attr>attr3</attr></root>";
+    XmlMapper xmlMapper = new XmlMapper();
+    JsonParser jsonParser = xmlMapper.getFactory().createParser(xml);
+    assertEquals(JsonToken.START_OBJECT, jsonParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParser.nextToken());
+    assertEquals(JsonToken.START_ARRAY, jsonParser.nextToken());
+    assertEquals(JsonToken.START_OBJECT, jsonParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParser.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, jsonParser.nextToken());
+    assertEquals("attr1", jsonParser.nextTextValue());
+    assertEquals(JsonToken.END_OBJECT, jsonParser.nextToken

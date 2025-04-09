@@ -1,0 +1,24 @@
+public void testLongDirectoryNames() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 101; ++i) {
+            sb.append("a");
+        }
+        assertEquals(101, sb.length());
+
+        final String entryName = sb.toString() + "/";
+        final File file = new File(entryName);
+        file.mkdir();
+        try {
+            OutputStream os = new FileOutputStream("test.tar");
+            TarArchiveOutputStream tos = new TarArchiveOutputStream(os);
+            try {
+                TarArchiveEntry entry = new TarArchiveEntry(entryName);
+                tos.putArchiveEntry(entry);
+            } finally {
+                tos.closeArchiveEntry();
+                tos.close();
+            }
+        } finally {
+            file.delete();
+        }
+    }

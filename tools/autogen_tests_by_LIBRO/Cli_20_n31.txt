@@ -1,0 +1,12 @@
+public void testStopAtNonOption() throws Exception {
+        final Options options = new Options();
+        options.addOption("a", false, "a");
+        options.addOption("b", true, "b");
+        final CommandLineParser clp = new PosixParser();
+        final String[] args = new String[] { "--zop", "-abfoo" };
+        final CommandLine cl = clp.parse(options, args, true);
+        assertFalse(cl.hasOption("a"));
+        assertFalse(cl.hasOption("b"));
+        assertEquals(1, cl.getArgList().size());
+        assertEquals("--zop -abfoo", cl.getArgList().get(0));
+}

@@ -1,0 +1,24 @@
+public void test_asproperty_deser_empty_string() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(MyType.class, new MyTypeDeserializer());
+    mapper.registerModule(module);
+    MyBean bean = mapper.readValue("{\"type\":\"\"}", MyBean.class);
+    assertNull(bean.type);
+    bean = mapper.readValue("{\"type\":\"abc\"}", MyBean.class);
+    assertNotNull(bean.type);
+    assertEquals("abc", bean.type.name);
+}
+
+static class MyBean {
+    public MyType type;
+}
+
+static class MyType {
+    public String name;
+    public MyType() { }
+}
+
+static class MyTypeDeserializer extends AsPropertyTypeDeserializer<MyType> {
+    public MyTypeDeserializer() {

@@ -1,0 +1,17 @@
+public void testFilteringParserDelegateTail() throws Exception
+{
+    String json = aposToQuotes("{'a':123,'array':[1,2],'ob':{'value0':2,'value':3,'value2':4},'b':true}");
+    JsonParser p0 = MAPPER.getFactory().createParser(json);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+             );
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals("a", p.nextFieldName());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(123, p.getIntValue());
+    assertEquals("array", p.nextFieldName());
+    assertToken(JsonToken.START_ARRAY, p.nextToken());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(1, p

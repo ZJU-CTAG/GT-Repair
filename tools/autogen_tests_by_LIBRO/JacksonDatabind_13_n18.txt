@@ -1,0 +1,25 @@
+public void testNullObjectId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+
+    mapper.addMixInAnnotations(MyIdClass.class, MyIdClassMixin.class);
+    mapper.addMixInAnnotations(MyIdClassWithId.class, MyIdClassMixin.class);
+
+    String actual = mapper.writeValueAsString(new MyIdClass());
+    String expected = "{\"id\":null,\"name\":\"Bob\"}";
+    assertEquals(expected, actual);
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+class MyIdClass {
+    public String name = "Bob";
+    public MyIdClassWithId id;
+}
+
+class MyIdClassWithId {
+    public String name = "Bob";
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+abstract class MyIdClassMixin {
+    @J

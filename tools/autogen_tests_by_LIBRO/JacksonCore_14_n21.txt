@@ -1,0 +1,16 @@
+public void testIssue108() {
+    try {
+        final int bs = 32;
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final AsyncOutputStream aos = new AsyncOutputStream(baos, bs, true);
+
+        for (int i = 0; i < 1000; i++) {
+            final ByteBuffer b = ByteBuffer.allocate(bs);
+            b.put(new byte[bs/2]);
+            b.flip();
+            aos.write(b);
+        }
+    } catch (final Exception e) {
+        fail(e.toString());
+    }
+}

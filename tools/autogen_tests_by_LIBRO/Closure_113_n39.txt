@@ -1,0 +1,10 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.syntheticBlockStartMarker = "start";
+    options.syntheticBlockEndMarker = "end";
+    compiler.initOptions(options);
+    Node root = compiler.parseTestCode("goog.require('foo');");
+    new NodeTraversal(compiler, new ProcessClosurePrimitives(compiler, CheckLevel.ERROR)).traverse(root);
+    assertEquals("start;end;", compiler.toSource());
+}

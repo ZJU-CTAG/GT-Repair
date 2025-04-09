@@ -1,0 +1,13 @@
+public void testNot() throws Exception {
+  String html = "<body><div id='content'><h2>Headline</h2><div class='article'>blah</div></div></body>";
+  Document doc = Jsoup.parse(html);
+  
+  assertEquals(1, doc.select("body :not(div)").size());
+  assertEquals(1, doc.select("body :not(:has(div))").size());
+  assertEquals(2, doc.select("body :not(:has(h2)").size());
+  assertEquals(1, doc.select("div.article :not(p)").size());
+  assertEquals(1, doc.select("div.article :not(:has(p))").size());
+
+  assertEquals(1, doc.select("div#content :not(:has(*))").size());
+  assertEquals(0, doc.select("div#content :not(:has(*))").size());
+}

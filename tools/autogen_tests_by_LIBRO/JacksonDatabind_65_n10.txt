@@ -1,0 +1,22 @@
+public void testPOJOWithStaticValueOf() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    Map<POJOWithStaticValueOf, Double> map = mapper.readValue("{\"first.last\": 42}", new TypeReference<Map<POJOWithStaticValueOf, Double>>() {
+    });
+    Entry<POJOWithStaticValueOf, Double> entry = map.entrySet().iterator().next();
+
+    assertEquals(entry.getKey().first, "first");
+    assertEquals(entry.getKey().last, "last");
+    assertEquals(entry.getValue().doubleValue(), 42, 0);
+}
+
+public class POJOWithStaticValueOf {
+    public String first;
+    public String last;
+
+    @JsonCreator
+    public static POJOWithStaticValueOf fromString(String value) {
+        String[] mySplit = value.split("\\.");
+        POJOWithStaticValueOf p = new POJOWithStaticValueOf();
+        p.first = mySplit[0];
+        p.last = mySplit[1];
+        return

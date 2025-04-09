@@ -1,0 +1,18 @@
+public void testMockWithIntelligence() {
+    // Setup fake.
+    @Fake
+    class FakeUserAccount implements UserAccount {
+        private final List<String> emails = new ArrayList<>();
+        @Override public void addEmail(String email) {
+            emails.add(email);
+        }
+        @Override public List<String> getEmails() {
+            return ImmutableList.copyOf(emails);
+        }
+    }
+
+    // Verify.
+    FakeUserAccount userAccount = mock(FakeUserAccount.class);
+    userAccount.addEmail("test@test.com");
+    assertEquals(ImmutableList.of("test@test.com"), userAccount.getEmails());
+}

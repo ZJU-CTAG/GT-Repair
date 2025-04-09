@@ -1,0 +1,10 @@
+public void testIssue() {
+    JXPathContext context = JXPathContext.newContext(new Foo());
+    context.registerNamespace(null, "http://www.nsa.gov");
+    context.setLenient(true);
+    context.setFactory(new DOMFactory());
+    context.createPathAndSetValue("ElementA/@A:myAttr", "MyType");
+    context.createPathAndSetValue("ElementA/B:ElementB", "My Value");
+    String xml = ((Document)context.getContextBean()).asXML();
+    System.out.println(xml);
+}

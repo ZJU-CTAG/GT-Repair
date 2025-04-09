@@ -1,0 +1,16 @@
+public void testRecordTypeInvalidProperty() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(CheckLevel.ERROR);
+    options.setCheckSymbols(true);
+    options.setCheckGlobalThisLevel(CheckLevel.ERROR);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.setDefaultExterns(Compiler.getDefaultExterns(options.getLanguageIn()));
+    Result result = compiler.compile(JSSourceFile.fromCode("record.js", "var makeClass = function(protoMethods) {\n" +
+            " var clazz = function() {\n" +
+            " this.initialize.apply(this, arguments);\n" +
+            " }\n" +
+            " for (var i in protoMethods) {\n" +
+            " clazz.prototype[i] = protoMethods[i];\n

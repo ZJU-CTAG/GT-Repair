@@ -1,0 +1,18 @@
+public void testTypeHierarchyAdaptersWork() {
+    TypeHierarchyAdapterFactory factory = new TypeHierarchyAdapterFactory();
+    Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Vehicle.class, factory.create(Vehicle.class)).create();
+    String carJson = "{\"type\":\"car\",\"horsepower\":\"250\"}";
+    String truckJson = "{\"type\":\"truck\",\"horsepower\":\"500\"}";
+    Car c = gson.fromJson(carJson, Car.class);
+    assertEquals(250, c.horsepower);
+    Truck t = gson.fromJson(truckJson, Truck.class);
+    assertEquals(500, t.horsepower);
+    try {
+        t = gson.fromJson(carJson, Truck.class);
+        fail("Type hierarchy adapter does not work");
+    } catch (JsonSyntaxException expected) {}
+}
+
+private class TypeHierarchyAdapterFactory {
+
+    public <T> TypeAdapter<T> create(Class<T> clazz

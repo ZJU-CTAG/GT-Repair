@@ -1,0 +1,25 @@
+public void testIssue1148() throws Exception {
+    EnumMap<MyEnum, String> map = new EnumMap<>(MyEnum.class);
+    map.put(MyEnum.APPLE, "fruit");
+    map.put(MyEnum.BANANA, "fruit");
+    map.put(MyEnum.CARROT, "vegetable");
+
+    ObjectMapper mapper = new ObjectMapper();
+    String text = mapper.writeValueAsString(map);
+    assertEquals(
+            "{\"APPLE\":\"fruit\",\"BANANA\":\"fruit\",\"CARROT\":\"vegetable\"}",
+            text);
+}
+
+@JsonFormat(shape = JsonFormat.Shape.STRING)
+public enum MyEnum {
+
+    @JsonProperty("apple")
+    APPLE,
+
+    @JsonProperty("banana")
+    BANANA,
+
+    @JsonProperty("carrot")
+    CARROT
+}

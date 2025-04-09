@@ -1,0 +1,15 @@
+public void testIssue171() throws Exception
+{
+    Properties props = new Properties() {
+      {
+        put("a", new Integer(3));
+      }
+    };
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      mapper.writeValueAsString(props);
+      fail("should have failed");
+    } catch (JsonMappingException e) {
+      verifyException(e, "No serializer found");
+    }
+}

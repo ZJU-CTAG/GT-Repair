@@ -1,0 +1,10 @@
+public void testIssue108() {
+    Whitelist whitelist = Whitelist.basic();
+    whitelist.addTags("img");
+    whitelist.addAttributes("img", "src");
+    whitelist.addAttributes("img", "cid");
+    whitelist.addProtocols("img", "src", "cid");
+    String unsafe = "<img src=\"http://www.google.com/logos/2012/tempelhof12_hp.jpg\" width=\"800\" height=\"600\" alt=\"PICTURE\" cid=\"1234\">";
+    String safe = Jsoup.clean(unsafe, whitelist);
+    assertEquals(safe, unsafe);
+}

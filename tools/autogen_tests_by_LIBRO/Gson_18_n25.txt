@@ -1,0 +1,10 @@
+public void testIssue1184() {
+    Gson gson = new Gson();
+    BigClass bc = gson.fromJson(
+        "{ \"inBig\": { \"key\": [{ \"inSmall\": \"hello\" }] } }",
+        BigClass.class);
+
+    assertEquals(1, bc.inBig.size());
+    assertEquals(1, bc.inBig.get("key").size());
+    assertEquals("hello", bc.inBig.get("key").get(0).inSmall);
+}

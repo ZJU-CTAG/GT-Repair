@@ -1,0 +1,18 @@
+public void testIssue107() throws IOException {
+    Document doc = Jsoup.connect("http://jornutzon.sydneyoperahouse.com/home.htm").get();
+    Element head = doc.head();
+    Element body = doc.body();
+    
+    for (Element child : head.children()) {
+        System.out.println("Head: " + child.toString());
+    }
+    
+    for (Element child : body.children()) {
+        System.out.println("Body: " + child.toString());
+    }
+    
+    assertEquals("Head contains incorrect number of children", 2, head.childNodeSize());
+    assertTrue("Head contains incorrect content", head.text().contains("Site by BWD"));
+    assertEquals("Body contains incorrect number of children", 2, body.childNodeSize());
+    assertTrue("Body contains incorrect content", body.text().contains("Site by BWD"));
+}

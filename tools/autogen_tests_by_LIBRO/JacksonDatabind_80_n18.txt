@@ -1,0 +1,11 @@
+public void testIssue110() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    // by default, base type will not be included in type id mappings
+    assertEquals("{\"@type\":\"MyObject\",\"id\":0}", mapper.writeValueAsString(new MyObject()));
+
+    // but if so configured, it will be included
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    assertEquals("{\"@type\":\"com.fasterxml.jackson.datatype.joda.issue110.MyObject\",\"id\":0}", mapper.writeValueAsString(new MyObject()));
+}

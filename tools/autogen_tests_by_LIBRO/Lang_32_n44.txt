@@ -1,0 +1,7 @@
+public void testThreadLocalLeak() {
+    Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+    Field field = clazz.getDeclaredField("fieldSeparatorThreadLocal");
+    field.setAccessible(true);
+    ThreadLocal<?> threadLocal = (ThreadLocal<?>)field.get(null);
+    assertNotNull(threadLocal);
+}

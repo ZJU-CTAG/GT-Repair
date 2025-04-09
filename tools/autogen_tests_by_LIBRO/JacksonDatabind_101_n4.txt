@@ -1,0 +1,12 @@
+public void testUnwrappedAfterCreators() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    Bean bean = mapper.readValue(
+            "{\"x\":1,\"a\":2,\"y\":3,\"b\":4}",
+            Bean.class);
+
+    assertThat(bean.x, is(1));
+    assertThat(bean.y, is(3));
+    assertThat(bean.w.a, is(2));
+    assertThat(bean.w.b, is(4));
+}

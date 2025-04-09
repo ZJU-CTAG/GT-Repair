@@ -1,0 +1,12 @@
+public void testRFC7159() {
+    // This can be parsed with or without leniency
+    String json = "{\"a\":1,\"b\":2,\"c\":[{\"d\":3},{\"d\":4},{\"d\":5}]}";
+    JSONReader jr = JSONUtils.createJSONReader(json);
+    Map<String, Object> map = jr.readObject();
+    assertEquals(map.get("a"), 1);
+    assertEquals(map.get("b"), 2);
+    List<Object> cList = (List<Object>) map.get("c");
+    assertEquals(cList.get(0), Collections.singletonMap("d", 3));
+    assertEquals(cList.get(1), Collections.singletonMap("d", 4));
+    assertEquals(cList.get(2), Collections.singletonMap("d", 5));
+}

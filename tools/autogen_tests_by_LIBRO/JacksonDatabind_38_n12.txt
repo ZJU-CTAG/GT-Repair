@@ -1,0 +1,27 @@
+public void testSimpleTypeConstruct() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
+    mod.addDeserializer(MyBean.class, new MyBeanDeserializer());
+    mapper.registerModule(mod);
+
+    MyBean bean = mapper.readValue("{\"value\":13}", MyBean.class);
+    assertEquals(13, bean.value);
+}
+
+public class MyBean {
+    public int value;
+}
+
+public class MyBeanDeserializer extends StdScalarDeserializer<MyBean>
+{
+    public MyBeanDeserializer() { super(MyBean.class); }
+
+    @Override
+    public MyBean deserialize(JsonParser jp, DeserializationContext ctxt)
+        throws IOException
+    {
+        MyBean bean = new MyBean();
+        JsonToken t = jp.getCurrentToken();
+        if (t == JsonToken.VALUE_NUMBER_INT) {
+            bean

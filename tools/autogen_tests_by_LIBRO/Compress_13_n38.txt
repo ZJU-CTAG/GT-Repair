@@ -1,0 +1,14 @@
+public void testIssue107() throws Exception {
+    File zipFile = new File(getClass().getResource("test.zip").toURI());
+    assertTrue(zipFile.exists());
+    assertTrue(zipFile.isFile());
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(zipFile));
+    assertTrue(ais instanceof ZipArchiveInputStream);
+    ZipArchiveInputStream zis = (ZipArchiveInputStream) ais;
+    ZipArchiveEntry entry = zis.getNextZipEntry();
+    while (entry != null) {
+        System.out.println(entry.getName());
+        entry = zis.getNextZipEntry();
+    }
+    zis.close();
+}

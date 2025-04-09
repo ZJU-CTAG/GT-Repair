@@ -1,0 +1,17 @@
+public void testJoinWithComma() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("var variable = confirm(\"value from user\");");
+    sb.append("var array = [ \"constant\", variable ];");
+    sb.append("alert( array.join(\",\") );");
+    String result = Compiler.compile(sb.toString());
+    assertEquals("var a=[\"constant\",confirm(\"value from user\")];alert(a.join());", result);
+}
+
+public void testJoinWithoutComma() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("var variable = confirm(\"value from user\");");
+    sb.append("var array = [ \"constant\", variable ];");
+    sb.append("alert( array.join() );");
+    String result = Compiler.compile(sb.toString());
+    assertEquals("var a=[\"constant\",confirm(\"value from user\")];alert(a.join());", result);
+}

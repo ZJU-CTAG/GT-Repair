@@ -1,0 +1,19 @@
+public void testGoogScope() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("input.js",
+                "/** @constructor */ function Foo() {}"
+                + "goog.provide('main');"
+                + "goog.scope(function (){"
+                + " var a = Foo, b, c = 1;"
+                + "});"
+            )
+        },
+        new CompilerOptions()
+    );
+    assertEquals(1, result.errors.length);
+    assertEquals("JSC_REFERENCE_BEFORE_DECLARE", result.errors[0].type);
+    assertEquals("Foo", result.errors[0].node.getFirstChild().getQualifiedName());
+    assertEquals("Foo", result.errors[0].node.getLastChild().getQualifiedName());
+}

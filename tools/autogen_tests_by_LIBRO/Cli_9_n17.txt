@@ -1,0 +1,16 @@
+public void testMissingOptionException() {
+    Options options = new Options();
+    options.addOption(new Option("f", "format", false, "input file type format"));
+    options.addOption(new Option("s", "source", false, "input file path"));
+    options.addOption(new Option("p", "properties", false, "path to properties file"));
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse( options, new String[] { "test" } );
+        fail("should have failed");
+    } catch (MissingOptionException e) {
+        String message = e.getMessage();
+        assertTrue(message.contains("format"));
+        assertTrue(message.contains("source"));
+        assertTrue(message.contains("properties"));
+    }
+}

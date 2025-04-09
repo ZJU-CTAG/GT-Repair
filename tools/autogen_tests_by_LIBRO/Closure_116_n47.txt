@@ -1,0 +1,11 @@
+public void testIssue9() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setOptimizationLevel(CompilerOptions.CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    SourceFile sf = SourceFile.fromCode("input.js", "window['foo'] = function (obj, modifiesProp) { return (function (saved) { return modifiesProp(obj) + saved; })(obj['prop']); }");
+    SourceFile extern = SourceFile.fromCode("externs.js", "var window = {};");
+    List<SourceFile> externs = ImmutableList.of(extern);
+    compiler.compile(externs, ImmutableList.of(sf), options);
+    assertEquals("window['foo'] = function (a, b) {var HOLD = a.prop; return b(a)

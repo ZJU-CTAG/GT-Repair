@@ -1,0 +1,15 @@
+public void testIssue1351() throws Exception {
+    String input = "{\n" +
+      "  \"id\" : \"id\",\n" +
+      "  \"name\" : \"name\"\n" +
+      "}";
+
+    final ObjectMapper om = new ObjectMapper();
+
+    final User user = om.readValue(input, User.class);
+
+    assertNull(user.getId()); // fails here
+    assertNull(user.getName()); // fails here
+
+    assertNull(om.writeValueAsString(new User())); // fails here
+}

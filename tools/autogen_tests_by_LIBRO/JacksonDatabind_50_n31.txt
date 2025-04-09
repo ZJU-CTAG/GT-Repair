@@ -1,0 +1,13 @@
+public void testIssue1256() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonFactory jsonFactory = new JsonFactory(mapper);
+    byte[] bytes = Files.readAllBytes(Paths.get(getClass().getResource("/1256.json").toURI()));
+    JsonParser parser = jsonFactory.createParser(bytes);
+    parser.nextToken();
+    parser.setCodec(mapper);
+    Root root = parser.readValueAs(Root.class);
+    assertNotNull(root);
+    assertNotNull(root.stringField);
+    assertNotNull(root.stringField.otherField);
+    assertEquals(root, root.stringField.otherField.otherField);
+}

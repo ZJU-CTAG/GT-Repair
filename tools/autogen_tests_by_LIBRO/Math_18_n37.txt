@@ -1,0 +1,14 @@
+public void testBounds() {
+    final CMAESOptimizer optim = new CMAESOptimizer(
+        1000, 1e-12, false, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-6, 1e-6));
+    final double[] x0 = { 0.5, 0.5, 0.5, 0.5, 0.5 };
+    final double[] upper = { 1, 1, 1, 1, 1 };
+    final double[] lower = { 0, 0, 0, 0, 0 };
+    final double[] step = { 0.001, 0.001, 0.001, 0.001, 0.001 };
+    optim.optimize(new MaxEval(100),
+                   new ObjectiveFunction(new BoundsTest(upper,lower)),
+                   GoalType.MINIMIZE,
+                   new InitialGuess(x0),
+                   new CMAESOptimizer.Sigma(step),
+                   new SimpleBounds(lower, upper));
+}

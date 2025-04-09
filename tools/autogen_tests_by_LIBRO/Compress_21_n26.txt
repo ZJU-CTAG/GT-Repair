@@ -1,0 +1,26 @@
+public void testWrite7zWithEmptyEntries() throws Exception {
+    final Path archive = Files.createTempFile("7z", ".7z");
+
+    try (final FileOutputStream out = new FileOutputStream(archive.toFile());
+            SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(out)) {
+        int i = 0;
+        while (i < 8) {
+            final SevenZArchiveEntry entry = sevenZOutputFile.createArchiveEntry(new File(Integer.toString(i)), Integer.toString(i));
+            sevenZOutputFile.putArchiveEntry(entry);
+            sevenZOutputFile.closeArchiveEntry();
+            i++;
+        }
+    }
+
+    assertZipFile(archive.toFile(),
+            new String[] {
+                    Integer.toString(0),
+                    Integer.toString(1),
+                    Integer.toString(2),
+                    Integer.toString(3),
+                    Integer.toString(4),
+                    Integer.toString(5),
+                    Integer.toString(6),
+                    Integer.toString(7)
+            },
+            new int

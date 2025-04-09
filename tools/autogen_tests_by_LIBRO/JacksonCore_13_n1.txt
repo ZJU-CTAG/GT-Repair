@@ -1,0 +1,24 @@
+public void testIssue111() throws IOException {
+    // using UTF8JsonGenerator to write JSON to a StringWriter
+    StringWriter writer = new StringWriter();
+    JsonFactory f = new JsonFactory();
+    JsonGenerator g = f.createJsonGenerator(writer);
+    g.writeStartObject();
+    g.writeFieldName("test");
+    g.writeNumber(22);
+    g.writeEndObject();
+    g.close();
+
+    // test string is enclosed by double quotes
+    String json = writer.toString();
+    assertEquals("{\"test\":22}", json);
+
+    // create UTF8JsonGenerator with default JsonGenerator.Feature.QUOTE_FIELD_NAMES enabled
+    writer = new StringWriter();
+    g = f.createJsonGenerator(writer);
+
+    // turn off JsonGenerator.Feature.QUOTE_FIELD_NAMES
+    g.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    g.writeStartObject();
+    g.writeFieldName("test");
+    g.write

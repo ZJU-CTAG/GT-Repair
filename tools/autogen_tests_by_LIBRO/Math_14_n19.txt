@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    // size of the problem
+    int n = 10;
+    // weights
+    final RealVector w = new ArrayRealVector(n);
+    // model
+    final RealPolynomialFunction p = new RealPolynomialFunction(new double[] { 1, 0, 0 });
+    // observations
+    final RealVector y = new ArrayRealVector(n);
+    for (int i = 0; i < n; ++i) {
+        y.setEntry(i, p.value(i));
+    }
+    // fit
+    final CurveFitter<PolynomialFunction> fitter = new CurveFitter<PolynomialFunction>(new WeightedObservedPoints());
+    for (int i = 0; i < n; ++i) {
+        fitter.addObservedPoint(i, y.getEntry(i));
+    }
+    final PolynomialFunction fitted = fitter.fit(new PolynomialFunction.Parametric(), w.toArray());
+    assertTrue(p.equals(fitted));
+}

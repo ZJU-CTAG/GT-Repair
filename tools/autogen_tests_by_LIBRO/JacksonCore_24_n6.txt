@@ -1,0 +1,15 @@
+public void testOverflowCoercion() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        // First, coerce to `int` should work
+        assertEquals(Integer.MAX_VALUE, mapper.readValue("2147483647", Integer.class).intValue());
+        // but bigger value should fail
+        mapper.readValue("2147483648", Integer.class).intValue();
+        fail("Should have failed");
+    } catch (JsonParseException e) {
+        // should have more specific exception
+        verifyException(e, "input to convert");
+        verifyException(e, "Integer");
+    }
+}

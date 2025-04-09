@@ -1,0 +1,11 @@
+public void testIssue106() throws IOException {
+    ListAttributeSerializer serializer = new ListAttributeSerializer();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializerProvider().setNullKeySerializer(new
+NullSerializer());
+    X<ListAttribute> x = new X<ListAttribute>();
+    x.s = "aa";
+    x.items = Arrays.asList(new ListAttribute());
+    JsonNode node = mapper.valueToTree(x);
+    assertTrue(node.get("items").isArray());
+}

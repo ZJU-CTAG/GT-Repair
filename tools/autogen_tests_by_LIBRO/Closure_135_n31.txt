@@ -1,0 +1,15 @@
+public void testInheritanceSimple() throws Exception {
+    String js = "function SuperClass(){}\n" +
+        "SuperClass.prototype.CustomMethod = function() {}\n" +
+        "function SubClass() {}\n" +
+        "SubClass.prototype = new SuperClass();\n" +
+        "SubClass.prototype.CustomMethod = function() {this.myProperty = \"value\";}\n" +
+        "window['SubClassInstance'] = new SubClass();";
+    Compiler compiler = new Compiler();
+    compiler.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel

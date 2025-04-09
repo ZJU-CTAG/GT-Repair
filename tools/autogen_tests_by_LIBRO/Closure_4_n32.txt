@@ -1,0 +1,19 @@
+public void testIssue() {
+    // Options: --externs externs/es3.js --property_renaming OFF --variable_renaming OFF --jscomp_warning=checkTypes --js=t.js
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("t.js",
+                    new StringBuilder()
+                            .append("/**\n")
+                            .append(" * @interface\n")
+                            .append(" */\n")
+                            .append("var OtherType = function() {}\n")
+                            .append("/**\n")
+                            .append(" * @implements {MyType}\n")
+                            .append(" * @constructor\n")
+                            .append(" */\n")
+                            .append("var MyType = function() {}\n")
+                            .append("/**\n")
+                            .append(" * @type {MyType}\n")
+                            .append(" */\n")
+                            .append("var x = /** @type {!OtherType} */ (new Object());

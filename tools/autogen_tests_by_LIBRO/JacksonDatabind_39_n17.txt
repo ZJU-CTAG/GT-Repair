@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE,
+            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+
+    String json = "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+    // can't read item2 - which is valid
+    System.out.println(objectMapper.readValue(json, CallRecord.class));
+
+    json = "{\"version\":0.0,\"application\":\"123\"},{\"item\":{\"type\":\"xevent\",\"location\":\"location1\"}";
+    System.out.println(objectMapper.readValue(json, CallRecord.class));
+
+    json = "{\"item\":{\"type\":\"xevent\",\"location\":\"location

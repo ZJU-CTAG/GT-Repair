@@ -1,0 +1,20 @@
+public void testRecordTypeInThis() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT6_TYPED); // testTyped
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("externs", ""),
+        ImmutableList.of(SourceFile.fromCode("test",
+            "/**\n"
+            + " * @constructor\n"
+            + " * @param {{name: string, height: number}} options\n"
+            + " */\n"
+            + "var Person = function(options){};\n"
+            + "Person = makeClass(/** @lends Person.prototype */ {\n"
+            + " /**\n"
+            + " * @this {Person}\n"
+            + " * @param {{name: string, height: number}} options\n"
+            + " */\n"
+            + " initialize: function(options) {\

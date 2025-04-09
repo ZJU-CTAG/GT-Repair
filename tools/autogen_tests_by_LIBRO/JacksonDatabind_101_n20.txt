@@ -1,0 +1,12 @@
+public void testIssue122() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
+
+    final String JSON = "{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}";
+    final Bean bean = mapper.readValue(JSON, Bean.class);
+    assertEquals(1, bean.x);
+    assertEquals(3, bean.y);
+    assertEquals(2, bean.w.a);
+    assertEquals(4, bean.w.b);
+}

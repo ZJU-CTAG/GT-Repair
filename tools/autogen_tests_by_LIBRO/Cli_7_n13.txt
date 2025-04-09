@@ -1,0 +1,29 @@
+public void testRequiredOptions() throws Exception {
+    Argument option = new ArgumentBuilder()
+        .withName("c")
+        .withDescription("test")
+        .withMinimum(1)
+        .create();
+
+    ArgumentGroup group = new ArgumentGroupBuilder()
+        .addArgument(option)
+        .create();
+
+    CommandLineParser parser = new PosixParser();
+    Group argumentGroup = parser.parse(group, new String[] {"-c", "test"});
+
+    assertTrue(argumentGroup.isSelected("c"));
+    assertEquals(Arrays.asList(new String[] {"test"}),
+                 argumentGroup.getArgument("c").getValues());
+    assertEquals(1, argumentGroup.size());
+    assertEquals(1, argumentGroup.getArguments().size());
+
+    ArgumentGroup requiredGroup = new ArgumentGroupBuilder()
+        .addArgumentGroup(group)
+        .withMinimum(1)
+        .create();
+
+    try {
+        parser.parse(requiredGroup, new String[] {"-h"});
+        fail("Exception expected");
+    } catch (OptionException e) {

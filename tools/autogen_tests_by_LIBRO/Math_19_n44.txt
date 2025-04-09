@@ -1,0 +1,18 @@
+public void testIssue108() {
+    FitnessFunction f = new FitnessFunction() {
+        @Override
+        public double value(double[] params) {
+            for (double d : params) {
+                if (Double.isNaN(d)) {
+                    System.out.println("NaN parameter");
+                    return Double.NaN;
+                }
+            }
+            return 0;
+        }
+    };
+    CMAParameters params = new CMAParameters();
+    params.setBounds(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+    CMAESOptimizer optimizer = new CMAESOptimizer(params, null, f, new CMAESOptimizer.Sigma(1), new CMAESOptimizer.PopulationSize(1), false, 0);
+    optimizer.optimize();
+}

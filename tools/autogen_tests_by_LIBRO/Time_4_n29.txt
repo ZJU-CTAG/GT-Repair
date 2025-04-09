@@ -1,0 +1,12 @@
+public void testPartial() {
+    Partial a = new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(year(), 1).with(hourOfDay(), 1);
+    assertEquals(a, b);
+    try {
+        new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1});
+        fail();
+    } catch (Exception e) {
+        // expected
+    }
+    assertEquals(new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1), new Partial(hourOfDay(), 1).with(clockhourOfDay(), 1));
+}

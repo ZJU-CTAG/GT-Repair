@@ -1,0 +1,22 @@
+public void testZipOutputStream() throws Exception {
+    final int BUFFER = 2048;
+    int count = 0;
+    final int numEntries = 1000;
+    final int duplicateEntries = numEntries - 1;
+    FileOutputStream dest = new FileOutputStream(new File("dest.zip"));
+    ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+    byte data[] = new byte[BUFFER];
+    // the zip file will contain numEntries files named "file.txt"
+    while (count++ < numEntries) {
+        ZipEntry entry = new ZipEntry("file.txt");
+        out.putNextEntry(entry);
+        int len;
+        while ((len = in.read(data, 0, BUFFER)) != -1) {
+            out.write(data, 0, len);
+        }
+        out.closeEntry();
+        in.close();
+    }
+    out.close();
+    dest.close();
+}

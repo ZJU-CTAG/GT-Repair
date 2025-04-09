@@ -1,0 +1,23 @@
+public void testIssue108() {
+    String code = "" +
+            "/** @param {function(string,number):boolean} param */" +
+            "function func(param) {}" +
+            "" +
+            "/** @type {function(string,number,boolean):boolean} */" +
+            "function paramFunc1() {}" +
+            "" +
+            "/** @type {function(string):boolean} */" +
+            "function paramFunc2() {}" +
+            "" +
+            "// first call" +
+            "func(paramFunc1);" +
+            "" +
+            "// second call" +
+            "func(paramFunc2);";
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.ALL);
+    Result result = compiler.compile(
+            JSSourceFile.fromCode("code.js", code));
+    MessageFormatter formatter = new MessageFormatter();
+    for (JSError warning : result.warnings) {
+        System.out.println(formatter.formatError(warning));

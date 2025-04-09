@@ -1,0 +1,18 @@
+public void testHelpFormatter() {
+    String[] args = new String[] { "--foo" };
+    HelpFormatter helpFormatter = new HelpFormatter();
+    Options options = new Options();
+    Option option = OptionBuilder.withLongOpt("foo").withArgName("Foo")
+    .withLongOpt("foo")
+    .withDescription("This is a really long description of " +
+            "the --foo option that should get wrapped based on " +
+            "the width of the terminal. We should test " +
+            "with all sorts of crazy widths. Also, we should " +
+            "test with long descriptions that don't have a " +
+            "whitespace character close to the width, so that " +
+            "we have to find a suitable place to break the " +
+            "string.").create();
+    options.addOption(option);
+
+    helpFormatter.printHelp("test", options);
+}

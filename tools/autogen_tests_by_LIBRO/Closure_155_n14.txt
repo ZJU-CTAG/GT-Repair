@@ -1,0 +1,18 @@
+public void testIssue108() {
+	String script = "function f(callback) { var f = callback; arguments[0] = this; f.apply(this, arguments); return this; }";
+	JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(script), new ErrorReporter() {
+		public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+			fail(message);
+		}
+
+		public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+			fail(message);
+		}
+
+		public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+			return new EvaluatorException(message);
+		}
+	});
+	StringWriter writer = new StringWriter();
+	compressor.compress(writer, -1, true, true, false, false);
+}

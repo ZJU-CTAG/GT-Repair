@@ -1,0 +1,14 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    ArrayNode json = mapper.createArrayNode();
+    ObjectNode node = mapper.createObjectNode();
+    json.add(node);
+    node.put("type", "foo");
+    node.put("id", "bar");
+    node.put("name", "baz");
+    TypeWithId type = mapper.readValue(json.toString(), TypeWithId.class);
+    assertEquals("foo", type.type);
+    assertEquals("bar", type.id);
+    assertEquals("baz", type.name);
+}

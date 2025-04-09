@@ -1,0 +1,13 @@
+public void testGroupValidation() throws Exception {
+    final CommandLineParser parser = new PosixParser();
+    final Options options = new Options();
+    final GroupBuilder gb = new GroupBuilder();
+    final Group group = gb.withName("group").withOption(OptionBuilder.withLongOpt("group").create()).create();
+    final Group subGroup = gb.withName("sub-group").withOption(OptionBuilder.withLongOpt("sub-group").create()).create();
+    group.addOption(subGroup);
+    group.setMinimum(2);
+    options.addOptionGroup(group);
+
+    // this fails, but shouldn't
+    parser.parse(options, new String[]{"--sub-group"});
+}

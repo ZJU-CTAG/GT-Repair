@@ -1,0 +1,15 @@
+public void testPolymorphic() {
+    BeanWithPolymorphicProp bean = new BeanWithPolymorphicProp();
+    bean.setTypeId("0");
+    bean.setValue(new BeanA());
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationConfig(mapper.getSerializationConfig().with(SerializationConfig.Feature.WRAP_ROOT_VALUE));
+    mapper.setDeserializationConfig(mapper.getDeserializationConfig().with(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE));
+    mapper.registerModule(new JodaModule());
+    mapper.registerSubtypes(new NamedType(BeanA.class, "0"));
+    mapper.registerSubtypes(new NamedType(BeanB.class, "1"));
+    final String json = mapper.writeValueAsString(bean);
+    System.out.println(json);
+    assertEquals("{\"typeId\":\"0\",\"value\":{\"name\":\"a\"}}", json);
+    final BeanWithPolymorphicProp result = m

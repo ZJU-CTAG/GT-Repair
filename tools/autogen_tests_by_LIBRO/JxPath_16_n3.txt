@@ -1,0 +1,24 @@
+public void testNode() {
+    String xpath = "/node()";
+    Map<String, String> ns = null;
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            + "<root>\n"
+            + " <a>\n"
+            + "  <b>\n"
+            + "   <c>\n"
+            + "    <d id=\"match\"/>\n"
+            + "   </c>\n"
+            + "  </b>\n"
+            + " </a>\n"
+            + "</root>\n";
+
+    List<String> results = new ArrayList<String>();
+    try {
+        Document doc = builder.build(new StringReader(xml));
+        XPath x = new JDOMXPath(xpath);
+        if (ns != null) {
+            x.addNamespace(ns);
+        }
+        List<Element> elements = x.selectNodes(doc);
+        for (Element e : elements) {
+            results.add(e.getAttribute

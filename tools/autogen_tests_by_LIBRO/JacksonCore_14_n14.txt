@@ -1,0 +1,12 @@
+public void testBufferReuse() throws IOException {
+    Closeable closeable = new Closeable() {
+        @Override
+        public void close() throws IOException {
+
+        }
+    };
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    IOContext context = new IOContext(new BufferRecycler(), closeable, false);
+    context.allocReadIOBuffer(stream.toByteArray().length);
+    context.allocReadIOBuffer(stream.toByteArray().length);
+}

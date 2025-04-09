@@ -1,0 +1,19 @@
+public void testValidationGroup() {
+    Options options = new Options();
+    Group groupA = new GroupBuilder().withName("groupA").withOption(Option.builder("a").build()).create();
+    Group groupB = new GroupBuilder().withName("groupB").withOption(Option.builder("b").build()).create();
+    Group groupC = new GroupBuilder().withName("groupC").withOption(Option.builder("c").build()).create();
+    groupB.addChild(groupA);
+    groupB.addChild(groupC);
+    groupB.setMinimum(2);
+    options.addOptionGroup(groupA);
+    options.addOptionGroup(groupB);
+    options.addOptionGroup(groupC);
+    CommandLineParser parser = new DefaultParser();
+    try {
+        parser.parse(options, new String[]{"-a", "-b", "-c"});
+    } catch (ParseException e) {
+        e.printStackTrace();
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,11 @@
+public void testStopAtNonOption() {
+    Options options = new Options();
+    options.addOption("a", false, "a");
+    options.addOption("b", true, "b");
+    String[] args = {"--zop", "-abfoo"};
+    String[] expectedArgs = {"--zop", "-abfoo"};
+    PosixParser parser = new PosixParser();
+    parser.setStopAtNonOption(true);
+    CommandLine cl = parser.parse(options, args);
+    assertArrayEquals(expectedArgs, cl.getArgs());
+}

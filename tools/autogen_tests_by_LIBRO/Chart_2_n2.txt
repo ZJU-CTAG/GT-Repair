@@ -1,0 +1,22 @@
+public void testIssue959() {
+    XYSeries series1 = new XYSeries("Series 1", true, false);
+    series1.add(1.0, 1.1);
+    XYSeries series2 = new XYSeries("Series 2", true, false);
+    series2.add(1.1, 1.1);
+    series2.add(1.2, 1.2);
+    XYSeriesCollection dataset = new XYSeriesCollection();
+    dataset.addSeries(series1);
+    dataset.addSeries(series2);
+
+    Range range = DatasetUtilities.iterateRangeBounds(dataset);
+    assertEquals(new Range(1.1, 1.2), range);
+
+    range = DatasetUtilities.iterateRangeBounds(
+            dataset, false, false);
+    assertEquals(new Range(1.1, 1.2), range);
+
+    range = DatasetUtilities.iterateRangeBounds(
+            dataset, false, true);
+    assertEquals(new Range(1.1, 1.2), range);
+
+    range = DatasetUtilities.iter

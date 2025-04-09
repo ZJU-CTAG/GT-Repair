@@ -1,0 +1,22 @@
+public void testIssue107() {
+    String json = "{\"ob\": {\"value\": 3}}";
+    String jsonOrig = "{\"a\": 123," +
+            "\"array\": [1, 2]," +
+            "\"ob\": {" +
+            "\"value0\": 2," +
+            "\"value\": 3," +
+            "\"value2\": 4" +
+            "}," +
+            "\"b\": true" +
+            "}";
+    JsonParser p0 = new JsonFactory().createParser(jsonOrig);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    while (p.nextToken() != null) {
+      System.out.println(p.getCurrentToken());
+    }
+    p.close();
+}

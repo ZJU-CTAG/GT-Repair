@@ -1,0 +1,14 @@
+public void testUnrecognizedOption() throws Exception {
+    String[] args = {"-a", "foo"};
+    Options options = new Options();
+    options.addOption("a", false, "");
+    CommandLineParser parser = new PosixParser();
+    CommandLine parse = parser.parse(options, args);
+    assertTrue(parse.hasOption("a"));
+    assertArrayEquals(new String[]{"foo"}, parse.getArgs());
+
+    args = new String[]{"-z", "-a", "foo"};
+    parse = parser.parse(options, args);
+    assertTrue(parse.hasOption("a"));
+    assertArrayEquals(new String[]{"foo"}, parse.getArgs());
+}

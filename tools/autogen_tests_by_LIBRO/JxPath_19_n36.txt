@@ -1,0 +1,19 @@
+public void testBug() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream(
+            ("<a:doc xmlns:a=\"ns\">"
+                    + " <a:elem />"
+                    + " <b:elem xmlns:b=\"ns\" />"
+                    + "</a:doc>").getBytes()));
+
+    JXPathContext context = JXPathContext.newContext(document);
+    context.registerNamespace("a", "ns");
+    context.registerNamespace("b", "ns");
+
+    Iterator it = context.iteratePointers("//a:elem");
+    assertTrue(it.hasNext());
+    assertEquals(it.next().getNode(), document.getElementsByTagName("a:elem").item(0));
+    assertTrue(it.hasNext());
+    assertEquals(it.next().getNode(), document.getElementsByTagName("a:elem").item(0));
+    assertFalse(it

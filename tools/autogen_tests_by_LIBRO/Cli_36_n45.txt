@@ -1,0 +1,17 @@
+public void testIssue() {
+    final OptionGroup group = new OptionGroup();
+    final Option h = Option.builder("h").build();
+    final Option s = Option.builder("s").build();
+    final Option b = Option.builder("b").build();
+    final Option t = Option.builder("t").build();
+    group.addOption(h).addOption(s).addOption(b).addOption(t);
+    final Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    final HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    final StringWriter sw = new StringWriter();
+    formatter.printHelp(sw, formatter.getWidth(), "cmd", "", options, formatter.getLeftPadding(), formatter.getDescPadding(), null, false);
+    System.out.println(sw.toString());
+    assertEquals(sw.toString().indexOf("h"), sw.toString().indexOf("s") - 3);
+    assertEquals

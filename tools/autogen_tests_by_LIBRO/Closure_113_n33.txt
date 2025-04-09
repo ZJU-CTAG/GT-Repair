@@ -1,0 +1,21 @@
+public void testClosureLinter() throws IOException {
+    Compiler.setLoggingLevel(Level.SEVERE);
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager() {
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            System.err.println(error);
+        }
+
+        @Override
+        public void printSummary() {}
+    });
+    String source = "goog.require('goog.module');";
+    SourceFile extern = SourceFile.fromCode("externs.js", "");
+    SourceFile input = SourceFile.fromCode("input

@@ -1,0 +1,11 @@
+public void testExtensionFunctions() {
+    JXPathContext context = JXPathContext.newContext(new ExtensionsBean());
+    context.setLenient(false);
+    context.setFunctions(new ClassFunctions(ExtensionsBean.class,
+            "extensions"));
+    assertEquals("", context.getValue("extensions:empty()"));
+    assertEquals(2, context.getValue("count(extensions:nodeset())"));
+    assertEquals("a", context.getValue("extensions:nodeset()/a"));
+    assertEquals("b", context.getValue("extensions:nodeset()/b"));
+}
+

@@ -1,0 +1,18 @@
+public void testDefaultDateTypeAdapter() {
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new DefaultDateTypeAdapter())
+            .create();
+
+    String nullDate = gson.toJson(null, Date.class);
+    assertEquals("null", nullDate);
+
+    String date = gson.toJson(new Date(0L), Date.class);
+    assertEquals("0", date);
+
+    Date dateFromJson = gson.fromJson("0", Date.class);
+    assertEquals(new Date(0L), dateFromJson);
+    assertNotNull(dateFromJson);
+
+    dateFromJson = gson.fromJson("null", Date.class);
+    assertNull(dateFromJson);
+}

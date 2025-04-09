@@ -1,0 +1,12 @@
+public void testCleaningHtmlContainingTheCidIdentifierBreaksImages() throws IOException {
+    String html = "<html><head><title>First parse</title></head>"
+            + "<body><p>Parsed HTML into a doc.</p>"
+            + "<img src=\"cid:1234@somewhere.com\" /></body></html>";
+    Document doc = Jsoup.parse(html);
+    Whitelist w = Whitelist.relaxed();
+    w.addTags("img");
+    w.addAttributes("img", "src");
+    w.addProtocols("img", "src", "http", "https");
+    String output = Jsoup.clean(doc.html(), w);
+    Assert.assertEquals("<img src=\"cid:1234@somewhere.com\">", output);
+}

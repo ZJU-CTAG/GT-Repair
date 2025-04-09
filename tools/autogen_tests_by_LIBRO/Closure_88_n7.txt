@@ -1,0 +1,12 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilerOptions.CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    compiler.compile(JSSourceFile.fromCode("in", "function closureCompilerTest(someNode) {\n" +
+            "    var nodeId;\n" +
+            "    return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n" +
+            "}"), options);
+    assertEquals("function closureCompilerTest(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0};", compiler.toSource());
+}

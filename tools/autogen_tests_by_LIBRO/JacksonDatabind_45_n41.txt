@@ -1,0 +1,14 @@
+public void testIssue1154() {
+    // make sure we're not using default locale, to avoid false positives
+    Locale l = Locale.getDefault();
+    Locale.setDefault(new Locale("xx"));
+    try {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        String numRepr = nf.format(new BigDecimal(0));
+        BigDecimal parsed = (BigDecimal) new ObjectMapper().readValue(
+                '"'+numRepr+'"', BigDecimal.class);
+        assertEquals(0, parsed.compareTo(BigDecimal.ZERO));
+    } finally {
+        Locale.setDefault(l);
+    }
+}

@@ -1,0 +1,15 @@
+public void testClosureCompiler() throws Exception {
+    String js = "var getNum = function() { return 5; };";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    List<SourceFile> inputs = new ArrayList<>();
+    inputs.add(SourceFile.fromCode("get_num.js", js));
+    inputs.add(SourceFile.fromCode("alert.js", "alert(getNum());"));
+    Result result = compiler.compile(
+            CommandLineRunner.getBuiltinExterns(CompilerOptions.Environment.BROWSER),
+            inputs, options);
+    assertTrue(result.success);
+    assertEquals("'use strict';alert(5);", compiler.toSource());
+}

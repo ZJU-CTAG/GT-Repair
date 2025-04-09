@@ -1,0 +1,25 @@
+public void testSpyOnAbstractClass() {
+        // given
+        MyAbstractClass mock = Mockito.spy(new MyAbstractClass() {
+            @Override
+            protected void methodToBeSpied() {
+                // just to get 100% coverage
+            }
+        });
+
+        // when
+        mock.methodCallingTheAbstractMethod();
+
+        // then
+        Mockito.verify(mock).methodToBeSpied();
+    }
+
+    public abstract class MyAbstractClass {
+
+        public void methodCallingTheAbstractMethod() {
+            methodToBeSpied();
+        }
+
+        protected abstract void methodToBeSpied();
+
+    }

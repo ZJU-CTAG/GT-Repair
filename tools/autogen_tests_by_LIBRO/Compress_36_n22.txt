@@ -1,0 +1,9 @@
+public void testReadingEmptyEntries() throws Exception {
+    byte[] empty7zFile = Base64.decodeBase64("H4sIAAAAAAAAA+3aaW/bNhSG7/x3x0gBcU6iYUoVpUO4u4wVIsgD0Pwx7HG0QSjKV6Ucg6UuVJp"
+            + "VwU4lD8gV7JQSQSRj5/e+9a9X/7zk5M98/vnP/5z5+3j/N/////E3jkpAAAAA==");
+    SevenZFile sevenZFile = new SevenZFile(new ByteArrayInputStream(empty7zFile));
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(0, entry.getSize());
+    assertEquals(0, entry.read(new byte[10]));
+}

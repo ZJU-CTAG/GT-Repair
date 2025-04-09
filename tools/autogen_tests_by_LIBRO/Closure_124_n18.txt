@@ -1,0 +1,15 @@
+public void testIssue107() {
+    String js = "var foreignObject = gfx.parentNode.parentNode;\n"
+        + "var parentContainer = foreignObject.parentNode.parentNode;\n"
+        + "if(parentContainer != null)\n"
+        + "{\n"
+        + "    parentContainer.appendChild(foreignObject);\n"
+        + "}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(js, null, new CompilerOptions());
+    System.out.println(result.success);
+    System.out.println(result.errors);
+    System.out.println(result.warnings);
+    System.out.println(result.code);
+}

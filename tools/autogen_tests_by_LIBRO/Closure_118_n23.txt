@@ -1,0 +1,20 @@
+public void testPrototype() {
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(
+            "/** @const */\n" +
+            "var foo = {};\n" +
+            "foo.bar = {\n" +
+            " 'bar1': function() { console.log('bar1'); }\n" +
+            "}\n" +
+            "/** @constructor */\n" +
+            "function foobar() {}\n" +
+            "foobar.prototype = foo.bar;\n" +
+            "foo.foobar = new foobar;\n" +
+            "console.log(foo.foobar['bar1']);\n"), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+            int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+       

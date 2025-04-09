@@ -1,0 +1,21 @@
+public void testIssue113() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.SnakeCaseStrategy());
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    String json = "{\"firstName\":\"Bob\", \"lastName\":\"Smith\"}";
+    Person p = mapper.readValue(json, Person.class);
+    assertNotNull(p);
+    assertEquals("Bob", p.firstName);
+    assertEquals("Smith", p.lastName);
+}
+
+@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public static class Person {
+    private String firstName;
+    private String lastName;
+}

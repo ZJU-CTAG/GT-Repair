@@ -1,0 +1,19 @@
+public void testCLI1() {
+    final String[] args = new String[] { "-target", "opt" };
+    final Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("target").withDescription("The target").isRequired().withArgName("target").hasArg().create());
+    final CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, args);
+        fail("Expected IllegalArgumentException");
+    } catch (final ParseException e) {
+        fail("Expected IllegalArgumentException");
+    } catch (final IllegalArgumentException e) {
+        try {
+            parser.parse(options, args);
+            fail("Expected ParseException");
+        } catch (final ParseException e1) {
+            assertTrue(e1.getMessage().indexOf("target") > 0 && e1.getMessage().indexOf("opt") > 0);
+        }
+    }
+}

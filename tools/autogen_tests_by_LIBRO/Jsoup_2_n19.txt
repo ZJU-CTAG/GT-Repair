@@ -1,0 +1,8 @@
+public void testIssue108() {
+    String h = "<html><body><script type=\"text/javascript\">var inside=true;</script>this should be outside.</body></html>";
+    Document doc = Jsoup.parse(h);
+    assertEquals(doc.children().size(), 1);
+    assertEquals(doc.body().children().size(), 2);
+    assertEquals(doc.body().child(0).tagName(), "script");
+    assertEquals(doc.body().child(1).tagName(), TextNode.class.getName());
+}

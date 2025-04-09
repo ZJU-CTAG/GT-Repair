@@ -1,0 +1,31 @@
+public void testIssue108() {
+    try {
+        f();
+    } catch (Exception e) {
+        fail("Should not throw exception: " + e);
+    }
+}
+
+public int f() {
+    var uid;
+    function reset() {
+        uid = random();
+    }
+    function doStuff() {
+        reset();
+        var _uid = uid;
+
+        if (uid < 0.5) {
+            doStuff();
+        }
+
+        if (_uid !== uid) {
+            throw 'reset() was called';
+        }
+    }
+    doStuff();
+}
+
+public double random() {
+    return Math.random();
+}

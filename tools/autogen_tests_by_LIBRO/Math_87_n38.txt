@@ -1,0 +1,20 @@
+public void testIssue108() {
+    final LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] {
+            -50, -60
+    }, 0);
+    final Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] {
+            0.75, 0.75
+    }, Relationship.GEQ, 36));
+    constraints.add(new LinearConstraint(new double[] {
+            2, 1
+    }, Relationship.LEQ, 42));
+    constraints.add(new LinearConstraint(new double[] {
+            1, 1
+    }, Relationship.GEQ, 14));
+    constraints.add(new LinearConstraint(new double[] {
+            1, 0
+    }, Relationship.GEQ, 7));
+    final SimplexSolver solver = new SimplexSolver();
+    final RealPointValuePair solution = solver.optimize(f, new LinearConstraintSet(constraints), GoalType.MINIMIZE, false);
+    assertEquals(0, solution.getValue(), 0

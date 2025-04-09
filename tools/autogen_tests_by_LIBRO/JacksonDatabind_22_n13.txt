@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new XyzSerializer());
+    mapper.registerModule(module);
+    mapper.writeValueAsString(new Foo());
+}
+
+class XyzSerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo foo, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+        jsonGenerator.writeString("hohoho");
+    }
+}
+
+class Foo {
+    @JsonValue
+    public String getValue() {
+        return "abc";
+    }
+}

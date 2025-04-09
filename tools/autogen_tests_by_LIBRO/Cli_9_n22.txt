@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(new Option("format", true, "The format of the processed file"));
+    options.addOption(new Option("source", true, "The source file to process"));
+    options.addOption(new Option("properties", true, "The properties file used for the process"));
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{} );
+    } catch (MissingOptionException e) {
+        assertEquals( "Missing required options: -format -source -properties", e.getMessage() );
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

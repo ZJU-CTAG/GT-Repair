@@ -1,0 +1,19 @@
+public void testBounds() {
+    final double lower = -Double.MAX_VALUE;
+    final double upper = Double.MAX_VALUE;
+    final SimpleBounds bounds = new SimpleBounds(new double[] { lower, lower }, new double[] { upper, upper });
+
+    final FitnessFunction fitness = new FitnessFunction() {
+        private static final long serialVersionUID = 1L;
+        @Override
+        public double value(double[] point) {
+            if (Double.isNaN(point[0]) || Double.isNaN(point[1])) {
+                throw new AssertionError("point contains NaN");
+            }
+            return 0;
+        }
+    };
+
+    final CMAESOptimizer optimizer = new CMAESOptimizer(100, 1.0e-8, false, 0, 0, new MersenneTwister(), false, null);
+    optimizer.optimize(new InitialGuess(new double[] { 0, 0 }), fitness, GoalType.MINIMIZE, bounds);
+}

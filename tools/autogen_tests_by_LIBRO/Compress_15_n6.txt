@@ -1,0 +1,16 @@
+public void testReproduction() throws Exception {
+    File temp = File.createTempFile("tempfile", ".zip");
+    temp.deleteOnExit();
+    FileOutputStream out = new FileOutputStream(temp);
+    ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(out);
+    zipOut.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zipOut.write("test".getBytes());
+    zipOut.closeArchiveEntry();
+    zipOut.close();
+
+    ZipFile zipFile = new ZipFile(temp);
+    ZipArchiveInputStream zipIn = new ZipArchiveInputStream(new FileInputStream(temp));
+    ZipArchiveEntry entry = zipIn.getNextZipEntry();
+
+    assertTrue(zipFile.getEntries().containsKey(entry));
+}

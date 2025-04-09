@@ -1,0 +1,16 @@
+public void testElementHashCode() {
+    String html = "<div style=\"blah\">TODO: write content</div>" +
+            "<div style=\"blah\">Nothing here</div>" +
+            "<p style=\"test\">Empty</p>" +
+            "<p style=\"nothing\">Empty</p>";
+
+    Document doc = Jsoup.parse(html);
+    Elements elements = doc.select("[style]");
+    Element div1 = elements.get(0);
+    Element div2 = elements.get(1);
+    Element p1 = elements.get(2);
+    Element p2 = elements.get(3);
+
+    assertNotSame(div1.hashCode(), div2.hashCode());
+    assertNotSame(p1.hashCode(), p2.hashCode());
+}

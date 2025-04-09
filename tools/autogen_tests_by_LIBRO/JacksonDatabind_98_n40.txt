@@ -1,0 +1,10 @@
+public void testPolymorphicEnum() throws JsonProcessingException {
+    EnumPolymorphicTest test = new EnumPolymorphicTest();
+    test.setKind(Kind.CONTACT);
+    test.setTo(new To("Foo"));
+    test.setFrom(new From("Bar"));
+    String s = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(test);
+    System.out.println(s);
+    EnumPolymorphicTest result = MAPPER.readValue(s, EnumPolymorphicTest.class);
+    assertEquals(Kind.CONTACT, result.getKind());
+}

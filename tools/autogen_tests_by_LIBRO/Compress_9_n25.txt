@@ -1,0 +1,9 @@
+public void testGetBytesWritten() throws Exception {
+    final OutputStream os = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("tar", os);
+    aos.putArchiveEntry(new TarArchiveEntry("foo"));
+    IOUtils.write("Some data", aos);
+    aos.closeArchiveEntry();
+    aos.close();
+    assertEquals(13, ((TarArchiveOutputStream) aos).getBytesWritten());
+}

@@ -1,0 +1,15 @@
+public void testFilteringParserDelegate() throws Exception
+{
+    JsonParser p = MAPPER.getFactory().createParser(new StringReader("{\"ob\":{\"value\":3}}"));
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("ob", p.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("value", p.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(3, p.getIntValue());
+    assertEquals(JsonToken.END_OBJECT, p.nextToken());
+    assertEquals(JsonToken.END_OBJECT, p.nextToken());
+    assertNull(p.nextToken());
+}

@@ -1,0 +1,17 @@
+public void testExternExportWithTypedef() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(LanguageMode.ECMASCRIPT5);
+    options.setEnvironment(Environment.BROWSER);
+    options.setGenerateExports(true);
+    SourceFile input = SourceFile.fromCode("input.js",
+    "/** @typedef {{x: string, y: string}} */\n" +
+    "var MyType;\n" +
+    "/** @return {MyType} */\n" +
+    "function f1() {return {x: 'x', y: 'y'};}\n" +
+    "/** @return {MyType=} */\n" +
+    "function f2() {return {x: 'x', y: 'y'};}\n" +
+    "/** @param {MyType} a */\n" +
+    "function f3(a) {}\n" +
+    "/** @param {MyType=} a */\n" +
+    "function f4(a) {}");
+    SourceFile ex

@@ -1,0 +1,25 @@
+public void testCommonJSModulesWithTypesChecked() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setPrettyPrint(true);
+    options.setClosurePass(true);
+    options.setProcessCommonJSModules(true);
+    options.addWarningsGuard(new WarningsGuard() {
+      @Override
+      public CheckLevel level(JSError error) {
+        return CheckLevel.OFF;
+      }
+    });
+
+    // Compiler compiler = new Compiler(System.out);
+
+    Compiler compiler = new Compiler();
+    compiler.setOptions(options);
+
+    JSModule module = new JSModule(null);
+
+    JSSourceFile echo = JSSourceFile.fromCode

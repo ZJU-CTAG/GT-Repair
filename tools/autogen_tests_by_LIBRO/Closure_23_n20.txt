@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String js = "console.log([console.log('hello, '), 'world!'][1]);";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js", js),
+        options);
+    assertEquals("console.log(\"world!\");", result.sourceMap.getOriginalCode());
+}

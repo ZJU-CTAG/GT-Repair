@@ -1,0 +1,18 @@
+public void testMultiplePrefixes() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder docBuilder = factory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+
+    Element docEl = doc.createElementNS("ns", "a:doc");
+    docEl.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:a", "ns");
+    docEl.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:b", "ns");
+    doc.appendChild(docEl);
+    Element elem1 = doc.createElementNS("ns", "a:elem");
+    docEl.appendChild(elem1);
+    Element elem2 = doc.createElementNS("ns", "b:elem");
+    docEl.appendChild(elem2);
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.registerNamespace("a", "ns");
+    c

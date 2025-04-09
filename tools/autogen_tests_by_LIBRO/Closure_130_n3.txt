@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.removeClosureAsserts();
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setCollapseAnonymousFunctions(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setPrettyPrint(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    String input = "function(){ return function () { alert(arguments); } }";
+    String output = compile(input, options);
+
+    assertEquals("function(){return function(){alert(arguments)}}", output);
+}

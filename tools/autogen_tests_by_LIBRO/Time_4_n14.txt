@@ -1,0 +1,19 @@
+public void testIssue107() {
+    Partial a = new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(year(), 1).with(hourOfDay(), 1);
+    assert(a == b);
+    
+    
+    
+    new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1}); // throws Types array must not contain duplicate
+    new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1); // #<Partial [clockhourOfDay=1, hourOfDay=1]>
+    
+    
+    
+    new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1).isEqual(new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1)) // throws objects must have matching field types
+    
+    
+    
+    
+    
+}

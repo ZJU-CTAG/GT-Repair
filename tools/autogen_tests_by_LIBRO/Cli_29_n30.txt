@@ -1,0 +1,15 @@
+public void testQuotes() {
+    String[] args = new String[] { "--baloo", "\"this is a \\\"test\\\"" };
+    Options options = new Options();
+    options.addOption("b", "baloo", false, "just a test");
+    CommandLineParser parser = new org.apache.commons.cli.GnuParser();
+    CommandLine cl;
+    try {
+        cl = parser.parse(options, args);
+        String baloo = cl.getOptionValue("baloo");
+        assertEquals("\"this is a \\\"test\\\"", baloo);
+    } catch (ParseException e) {
+        e.printStackTrace();
+        assertTrue("unexpected exception: " + e.getMessage(), false);
+    }
+}

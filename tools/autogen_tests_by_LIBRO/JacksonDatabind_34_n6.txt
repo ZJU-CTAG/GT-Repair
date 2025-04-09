@@ -1,0 +1,9 @@
+public void testIssue107() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JsonSchemaModule());
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    JsonSchemaGenerator gen = new JsonSchemaGenerator(mapper);
+    JsonSchema schema = gen.generateSchema(BigDecimal.class);
+    assertTrue(schema.isNumberSchema());
+    assertEquals(JsonFormatTypes.NUMBER, schema.getType());
+}

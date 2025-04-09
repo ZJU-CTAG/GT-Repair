@@ -1,0 +1,15 @@
+public void testRegisterNamespace() throws JXPathException {
+        String xml = "<a:ElementA xmlns:a=\"http://example.com/a\" " +
+                "a:myAttr=\"Mytype\"> " +
+                " <b:ElementB xmlns:b=\"http://example.com/b\">MY VALUE</b:ElementB> " +
+                "</a:ElementA>";
+        Document doc = XMLUtils.newDocument(xml);
+
+
+        DOMNodePointer ptr = new DOMNodePointer(doc);
+        ptr.registerNamespace("a", "http://example.com/a");
+        ptr.registerNamespace("b", "http://example.com/b");
+
+        assertEquals("Mytype", ptr.getValue("//a:ElementA/@a:myAttr"));
+        assertEquals("MY VALUE", ptr.getValue("//a:ElementA/b:ElementB"));
+    }

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final OutputStreamWriter osw = new OutputStreamWriter(baos);
+    osw.write("{}");
+    osw.close();
+    final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+
+    final JsonFactory jf = new JsonFactory();
+    final JsonParser jp = jf.createParser(bais);
+    jp.nextToken();
+    final JsonGenerator jg = jf.createGenerator(baos);
+    jg.copyCurrentStructure(jp);
+    jg.flush();
+    jg.close();
+    jp.close();
+    bais.close();
+}

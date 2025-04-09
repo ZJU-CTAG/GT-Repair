@@ -1,0 +1,23 @@
+public void testCompiler() throws IOException, InterruptedException {
+    // Set up compiler and warnings
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    WarningLevel.QUIET.setOptionsForWarningLevel(compiler.getOptions());
+
+    // Set up compiler to preserve closure library calls
+    CompilerOptions compilerOptions = compiler.getOptions();
+    compilerOptions.setClosurePass(false);
+
+    // Set up compiler to sort dependencies
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+    dependencyOptions.setDependencyPruning(true);
+    dependencyOptions.setMoocherDropping(true);
+    dependencyOptions.setRemoveUnusedPrototypeProperties(true);
+    dependencyOptions.setRemoveUnusedPrototypePropertiesInExterns(true);
+    dependencyOptions.setRemoveUnusedClassProperties(true);
+    compilerOptions.setDependencyOptions(dependencyOptions);
+
+    // Create externs source
+    SourceFile externs = SourceFile.from

@@ -1,0 +1,12 @@
+public void testIssue107() {
+    File zip = new File("src/test/resources/issue107.zip");
+    try (FileInputStream is = new FileInputStream(zip);
+         ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(is)) {
+        ArchiveEntry ae;
+        while ((ae = ais.getNextEntry()) != null) {
+            System.out.println(ae.getName() + " " + ae.getSize() + " " + ae.isDirectory());
+        }
+    } catch (IOException|ArchiveException e) {
+        e.printStackTrace();
+    }
+}

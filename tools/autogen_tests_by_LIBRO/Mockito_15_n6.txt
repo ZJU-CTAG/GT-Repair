@@ -1,0 +1,13 @@
+public void testArgumentCaptor() {
+  final int[] save = new int[1];
+  ArgumentCaptor<int[]> captor = ArgumentCaptor.forClass(int[].class);
+  doAnswer(new Answer<Void>() {
+    @Override
+    public Void answer(InvocationOnMock invocation) throws Throwable {
+      save[0] = invocation.getArgument(0)[0];
+      return null;
+    }
+  }).when(mock).save(captor.capture());
+  mock.save(0);
+  assertEquals(0, save[0]);
+}

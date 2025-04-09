@@ -1,0 +1,26 @@
+public void testWrongStepSize() {
+        final int n = 2;
+        double minStep = 0;
+        double maxStep = 10;
+        double scalAbsoluteTolerance = 1.0e-15;
+        double scalRelativeTolerance = 1.0e-15;
+        FirstOrderIntegrator integrator = new DormandPrince853Integrator(minStep, maxStep, scalAbsoluteTolerance, scalRelativeTolerance);
+        FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+
+            public void computeDerivatives(double t, double[] y, double[] yDot) {
+                if (y[1] > 0) {
+                    yDot[0] = 100;
+                    yDot[1] = 0;
+                } else {
+                    yDot[0] = 0;
+                    yDot[1] = 0;
+                }
+            }
+
+            public int getDimension() {
+                return n;
+            }
+        };
+        double[] y = new double[n];
+        double[] y0 = new double[n];
+        y

@@ -1,0 +1,22 @@
+public void testObjectIdWithTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.registerSubtypes(Result.class);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+
+    SomeObject someObject = new SomeObject();
+
+    String strResult = mapper.writeValueAsString(someObject);
+    System.out.println(strResult);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="@type")
+@JsonSubTypes({ @JsonSubTypes.Type(name="result", value=Result.class) })
+static class SomeObject {
+  @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+  public List<Result> results = Arrays.asList(new Result());
+}
+
+@J

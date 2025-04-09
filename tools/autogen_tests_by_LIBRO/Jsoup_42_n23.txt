@@ -1,0 +1,15 @@
+public void testCheckboxes() {
+    // Document doc = Jsoup.parse(html);
+    Document doc = Jsoup.parse("<form><input type=checkbox name=testCheckBox checked=checked /></form>");
+    List<Connection.KeyVal> data = new ArrayList<Connection.KeyVal>();
+    for (Element el: doc.select("input")) {
+        if ("input".equals(el.tagName())) {
+            // Not disabled? Ignore disabled inputs.
+            if(!el.hasAttr("disabled")) {
+                // Deal with checkbox and radio (not checked should not be added to avoid sending to server)
+                if("checkbox".equals(el.attr("type")) || "radio".equals(el.attr("type"))) {
+                    // Checked, but no value? Default should be "on".
+                    if(el.hasAttr("checked") && !el.hasAttr("value")) {
+                        data.add(HttpConnection.KeyVal.create(el.attr("name"), "on"));
+                    }
+                    // Checked? Add it's value

@@ -1,0 +1,10 @@
+public void testExtensionFunction() {
+    JXPathContext context = JXPathContext.newContext(new TestBean());
+    context.setLenient(true);
+    context.registerNamespace("ems", new ExtensionFunctionNamespace());
+    context.setFactory(new JXPathBasicNodeSetFactory());
+    NodeSet result = ((NodeSet)context.getValue("ems:observations()"));
+    assertEquals(2, result.size());
+    assertEquals("foo", result.getPointers().next().getNode().getValue());
+    assertEquals("bar", result.getPointers().next().getNode().getValue());
+}

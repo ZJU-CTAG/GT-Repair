@@ -1,0 +1,18 @@
+public void testIssueReproduction() {
+    String script = "";
+    script += "var t = null;";
+    script += "window.test = function() {";
+    script += "  if (t != null) {";
+    script += "    t = null;";
+    script += "  }";
+    script += "  t = 1;";
+    script += "};";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.DETERMINISTIC_TEST, CheckLevel.OFF);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            SourceFile.fromCode("test", script),
+            options);
+    assertEquals(0, compiler.getErrors().length);
+}

@@ -1,0 +1,16 @@
+public void testIssue107() {
+    String input = "function closureCompilerTest(someNode) {"
+            + "var nodeId;"
+            + "return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);"
+            + "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", input),
+            SourceFile.fromCode("externs.js", ""),
+            options);
+    assertNotNull(result);
+    assertFalse(result.success);
+}

@@ -1,0 +1,15 @@
+public void testFinishIsCalled() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos = new TarArchiveOutputStream(baos);
+    final ArchiveEntry ae = aos.createArchiveEntry(new File("file"), "file");
+    aos.putArchiveEntry(ae);
+    aos.write(new byte[]{0, 1, 2, 3});
+    aos.finish();
+    aos.write(new byte[]{4, 5, 6, 7});
+    aos.close();
+    final TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    final TarArchiveEntry tae = tais.getNextTarEntry();
+    Assert.assertEquals("file", tae.getName());
+    Assert.assertEquals(4, tae.getSize());
+    Assert.assertArrayEquals(new byte[]{0, 1, 2, 3}, IOUtils.toByteArray(tais));
+}

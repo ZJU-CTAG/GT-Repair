@@ -1,0 +1,17 @@
+public void testMappingIteratorRecovery() throws IOException
+{
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final JsonFactory jsonFactory = objectMapper.getFactory();
+
+    final byte[] bytes = "{\"key\":1,\"key\":1.1,\"key\":\"value\",\"key\":\"value\"}".getBytes(StandardCharsets.UTF_8);
+    try (final InputStream inputStream = new ByteArrayInputStream(bytes)) {
+        try (final JsonParser jsonParser = jsonFactory.createParser(inputStream)) {
+            jsonParser.nextToken(); // START_OBJECT
+            final MappingIterator<JsonNode> mappingIterator = objectMapper.readValues(jsonParser, JsonNode.class);
+            assertTrue(mappingIterator.hasNext());
+            assertNotNull(mappingIterator.next());
+            assertTrue(mappingIterator.hasNext());
+            assertNotNull(mappingIterator.next());
+            assertTrue(mappingIterator.hasNext());
+            assertNotNull(mappingIterator.next());
+            assertTrue(mappingIterator.hasNext());

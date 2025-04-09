@@ -1,0 +1,13 @@
+public void testIssueDeserializeNull() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String input = "{\"a\": null}";
+    final MyBean result = mapper.readValue(input, MyBean.class);
+    assertNotNull(result);
+    assertNotNull(result.a);
+    assertNotNull(result.a.get());
+    assertNull(result.a.get().get());
+}
+
+public static class MyBean {
+    public AtomicReference<AtomicReference<Integer>> a;
+}

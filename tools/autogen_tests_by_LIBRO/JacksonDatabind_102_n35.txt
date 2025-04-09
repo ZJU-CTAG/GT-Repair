@@ -1,0 +1,10 @@
+public void testCustomFormatGlobally() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    final Date sqlDate = new Date(0);
+    final Map<String, Object> test1 = new HashMap<>();
+    test1.put("sqlDate", sqlDate);
+    final String json = mapper.writeValueAsString(test1);
+    assertEquals("{\"sqlDate\":\"1970-01-01\"}", json);
+}

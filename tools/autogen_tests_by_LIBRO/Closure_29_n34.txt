@@ -1,0 +1,13 @@
+public void testClosureCompiler() {
+    String js = " isFunction = function(functionToCheck) { "
+        + " var getType; "
+        + " getType = {}; "
+        + " return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]'; "
+        + " }; ";
+    Compiler.setLoggingLevel(Level.FINE);
+    Compiler compiler = new Compiler(new PrintStream(System.err));
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    compiler.compile(externs, Arrays.asList(SourceFile.fromCode("test.js", js)), options);
+}

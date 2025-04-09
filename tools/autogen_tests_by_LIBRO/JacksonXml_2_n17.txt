@@ -1,0 +1,27 @@
+public void testMixedContent() throws Exception
+{
+    final ObjectMapper objectMapper = new ObjectMapper(new XmlFactory());
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    final WindSpeed windSpeed = objectMapper.readValue(
+            "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>", WindSpeed.class);
+
+    assertEquals(windSpeed.getUnits(), "kt");
+    assertEquals(windSpeed.getValue(), 27);
+    assertEquals(windSpeed.getRadius().get(0).getValue(), 20);
+}
+
+public static class WindSpeed {
+
+    public static class Radius {
+        @JacksonXmlProperty(isAttribute = true)
+        private String sector;
+        @JacksonXmlProperty(isAttribute = true)
+        private String units;
+        @JacksonXmlText
+        private int value;
+
+        public String getSector() {
+            return sector;
+        }
+        public void setSector(String sector) {
+            this.sector = sector;

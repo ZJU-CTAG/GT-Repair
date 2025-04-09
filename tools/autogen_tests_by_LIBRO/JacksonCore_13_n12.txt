@@ -1,0 +1,23 @@
+public void testIssue96() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonFactory jf = new JsonFactory();
+    JsonGenerator jg = jf.createGenerator(sw);
+    jg.writeStartArray();
+    jg.writeString("foo");
+    jg.writeEndArray();
+    jg.close();
+    assertEquals("[\"foo\"]", sw.toString());
+    sw = new StringWriter();
+    jf = new JsonFactory();
+    jg = jf.createGenerator(sw);
+    jg.writeStartArray();
+    jg.writeFieldName("foo");
+    jg.writeEndArray();
+    jg.close();
+    assertEquals("[\"foo\"]", sw.toString());
+    sw = new StringWriter();
+    jf = new JsonFactory();
+    jg = jf.createGenerator(sw);
+    jg.enable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);
+    jg.writeStartArray();
+    jg.writeField

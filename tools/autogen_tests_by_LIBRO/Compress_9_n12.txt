@@ -1,0 +1,14 @@
+public void testTarArchiveOutputStream() throws Exception {
+        // data
+        final byte[] data = new byte[] { 'a', 'b', 'c', 'd' };
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final TarArchiveOutputStream taos = new TarArchiveOutputStream(bos);
+        final TarArchiveEntry entry = new TarArchiveEntry("entry");
+        entry.setSize(data.length);
+        taos.putArchiveEntry(entry);
+        taos.write(data);
+        taos.closeArchiveEntry();
+        taos.close();
+
+        assertEquals("getBytesWritten() incorrect", data.length, taos.getBytesWritten());
+}

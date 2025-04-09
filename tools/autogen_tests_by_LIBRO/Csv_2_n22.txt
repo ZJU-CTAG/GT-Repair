@@ -1,0 +1,11 @@
+public void testCsvParserRecordTooLong() throws Exception {
+    CSVParser parser = new CSVParser("a,b", CSVFormat.newBuilder().withHeader("A", "B", "C").build());
+    CSVRecord record = parser.iterator().next();
+    assertFalse(record.isConsistent());
+    try {
+        record.get("C");
+        fail("Expected exception");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        assertEquals("Array index out of range: 2", e.getMessage());
+    }
+}

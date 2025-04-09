@@ -1,0 +1,8 @@
+public void testExternalDeser() throws IOException {
+    String json = "{\"id\":\"id-1\",\"type\":\"type-1\"}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addMixIn(AbstractId.class, AbstractIdMixIn.class);
+    AbstractId id = objectMapper.readValue(json, AbstractId.class);
+    assertEquals("id-1", id.getId());
+    assertEquals("type-1", id.getType());
+}

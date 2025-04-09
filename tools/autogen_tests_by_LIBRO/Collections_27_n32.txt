@@ -1,0 +1,27 @@
+public void testInvokerTransformer() throws Exception {
+    String command = "calc";
+    String[] execArgs = new String[] { command };
+
+    // setup command executor
+    final CommandExecutor exec = new CommandExecutor() {
+        public String execute(Object[] args) {
+            return ((String[]) args[0])[0];
+        }
+    };
+
+    // create an invokertransformer with the exploit
+    InvokerTransformer transformer = new InvokerTransformer("execute",
+            new Class[] { Object[].class },
+            new Object[] { execArgs });
+
+    // create map with AnnotationInvocationHandler
+    Map innerMap = new HashMap();
+    Map mapProxy = (Map) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[] { Map.class },
+            new AnnotationInvocationHandler(innerMap));
+
+    // create map with TransformedMap
+    TransformedMap transformedMap = new TransformedMap(mapProxy, transformer);
+
+    // serialize TransformedMap
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new Object

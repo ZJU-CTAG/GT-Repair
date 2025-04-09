@@ -1,0 +1,8 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.readerFor(TestClass.class);
+    byte[] json = mapper.writeValueAsBytes(new TestClass[]{new TestClass(1), new TestClass(2)});
+    TestClass[] testClasses = reader.forType(TestClass[].class).readValues(json, 1, json.length - 2).readAll().toArray(new TestClass[0]);
+    assertEquals(1, testClasses.length);
+    assertEquals(2, testClasses[0].number);
+}

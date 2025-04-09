@@ -1,0 +1,25 @@
+public void testIssue() throws Exception {
+    SimpleModule testModule = new SimpleModule("MyModule", new Version(1, 0, 0, null))
+            .addSerializer(Throwable.class, new ThrowableSerializer())
+            .addDeserializer(Throwable.class, new ThrowableDeserializer())
+            .addKeyDeserializer(Throwable.class, new ThrowableKeyDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(testModule);
+    MyException e = new MyException("test");
+    String json = mapper.writeValueAsString(e);
+    System.out.println("json " + json);
+    final MyException result = (MyException) mapper.readValue(json, Throwable.class);
+    assertEquals("test", result.getMessage());
+}
+
+public class MyException extends RuntimeException {
+    @JsonIgnoreProperties("cause")
+    public MyException() {
+    }
+
+    public MyException(String message) {
+        super(message);
+    }
+}
+
+public class ThrowableDeserializer

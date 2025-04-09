@@ -1,0 +1,26 @@
+public void testHelpFormatter() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("long-option")
+            .hasArg(false)
+            .isRequired(false)
+            .withDescription("a long description for the long option")
+            .create("l"));
+
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter sw = new StringWriter();
+    formatter.printHelp(
+            new PrintWriter(sw),
+            formatter.getWidth(),
+            "cmd",
+            "\n",
+            options,
+            formatter.getLeftPadding(),
+            formatter.getDescPadding(),
+            "\n",
+            false);
+    String result = sw.toString();
+    String[] lines = result.split("\n");
+    for (int i = 1; i < lines.length; i++) {
+        assertTrue("line #" + i + " is too long", lines[i].length() <= formatter.getWidth());
+    }
+}

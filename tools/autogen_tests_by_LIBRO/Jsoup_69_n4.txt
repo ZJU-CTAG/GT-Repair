@@ -1,0 +1,10 @@
+public void testIssue107() throws IOException {
+    String html = "<form><input type=\"hidden\" name=\"alpha\" /><input type=\"hidden\" name=\"bravo\" /></form>";
+    Document doc = Jsoup.parse(html);
+    FormElement form = (FormElement)doc.select("form").first();
+    doc.select("input[name=alpha]").first().remove();
+    List<Connection.KeyVal> data = form.formData();
+    assertEquals(1, data.size());
+    assertEquals("bravo", data.get(0).key());
+}
+

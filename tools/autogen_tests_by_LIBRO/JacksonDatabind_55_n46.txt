@@ -1,0 +1,20 @@
+public void testEnumMapKeysNotUsingJsonProperty() throws Exception {
+    TestData data = new TestData();
+    data.data.put(TestData.TestEnum.B, "test");
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    String json = objectMapper.writeValueAsString(data);
+    assertEquals("{\"data\":{\"B\":\"test\"}}", json);
+}
+
+public static class TestData {
+    public EnumMap<TestEnum, String> data = new EnumMap<TestEnum, String>(TestEnum.class);
+
+    public enum TestEnum {
+        @JsonProperty("testA")
+        A,
+        @JsonProperty("testB")
+        B
+    }
+}

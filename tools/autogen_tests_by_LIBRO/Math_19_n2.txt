@@ -1,0 +1,14 @@
+public void testOptimizer() throws MathUserException {
+    CMAESOptimizer optimizer = new CMAESOptimizer(100, 0, true, 0, 10, new MersenneTwister(), false,
+            new SimpleValueChecker(-1.0, 1.0));
+    final double[] lowerBound = new double[]{-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE};
+    final double[] upperBound = new double[]{Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE};
+    final double[] startPoint = new double[]{-10, -10, -10};
+    final double[] result = optimizer.optimize(new MaxEval(1000),
+            new ObjectiveFunction(new MultivariateFunction() {
+                @Override
+                public double value(double[] doubles) {
+                    System.out.println(Arrays.toString(doubles));
+                    assertFalse(Double.isNaN(doubles[0]));
+                    assertFalse(Double.isNaN(doubles[1]));
+                    assertFalse(Double.

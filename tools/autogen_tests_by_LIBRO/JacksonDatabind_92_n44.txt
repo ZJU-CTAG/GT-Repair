@@ -1,0 +1,13 @@
+public void testIssue1599() {
+    String json = "{\"@type\":\"javax.management.loading.MLet\",\"@items\":[]}";
+
+    // With the fix
+    try {
+        mapper.readValue(json, Object.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "not allowed");
+        verifyException(e, "blacklisted");
+        verifyException(e, MLet.class.getName());
+    }
+}

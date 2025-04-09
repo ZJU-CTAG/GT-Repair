@@ -1,0 +1,16 @@
+public void testThis() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    options.setClosurePass(true);
+    options.setCheckSuspiciousCode(true);
+    options.setPreserveTypeAnnotations(true);
+    options.setPrettyPrint(true);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.DEFAULT);
+    SourceFile extern = SourceFile.fromCode("extern", "this");
+    SourceFile input = SourceFile.fromCode("input", "goog.isNull(this);");
+    Result result = compiler.compile(extern, input, options);
+    assertEquals(0, result.errors.length);
+}

@@ -1,0 +1,16 @@
+public void testIssue107() {
+    Document original = Jsoup.parse("<!DOCTYPE html><html lang=\"en\"><head></head><body><div>Initial element</div></body></html>");
+    Document clone = original.clone();
+
+    Element originalElement = original.body().child(0);
+    originalElement.after("<div>New element</div>");
+    Element originalNextElementSibling = originalElement.nextElementSibling();
+    assertEquals("<div>New element</div>", originalNextElementSibling.outerHtml());
+    assertEquals("<div>New element</div>", originalElement.nextSibling().outerHtml());
+
+    Element cloneElement = clone.body().child(0);
+    cloneElement.after("<div>New element</div>");
+    Element cloneNextElementSibling = cloneElement.nextElementSibling();
+    assertNull(cloneNextElementSibling);
+    assertEquals("<div>New element</div>", cloneElement.nextSibling().outerHtml());
+}

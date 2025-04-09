@@ -1,0 +1,26 @@
+public void testAr() throws IOException {
+    File testDir = new File("/tmp/dir24825");
+    testDir.mkdirs();
+
+    File arFile = new File(testDir, "bla.ar");
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(arFile));
+
+    ArArchiveEntry entry = new ArArchiveEntry("test1.xml", 12);
+
+    out.putArchiveEntry(entry);
+    out.write(new byte[12]);
+    out.closeArchiveEntry();
+
+    entry = new ArArchiveEntry("test2.xml", 12);
+    out.putArchiveEntry(entry);
+    out.write(new byte[12]);
+    out.closeArchiveEntry();
+    out.close();
+
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(arFile));
+    ArchiveEntry ent = in.getNextEntry();
+    assertNotNull(ent);
+    assertEquals("test1.xml", ent.getName());
+    assertEquals(12, ent.getSize());
+
+    ent

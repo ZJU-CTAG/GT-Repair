@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+
+    String input = "alert(foo);\n"
+        + "alert(bar);";
+
+    String expected = "test.js:1: ERROR - variable foo is undefined\n"
+        + "alert(foo);\n"
+        + " ^\n"
+        + "test.js:2: ERROR - variable bar is undefined\n"
+        + "\n"
+        + "2 error(s), 0 warning(s)\n";
+    String actual = compile(input, options);
+    assertEquals(expected, actual);
+}
+
+private String compile(String input, CompilerOptions options) {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile("test.js", input, options);
+    return compiler.getErrorManager().getOutput();
+}

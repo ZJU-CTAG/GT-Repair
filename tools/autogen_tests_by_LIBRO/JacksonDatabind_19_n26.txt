@@ -1,0 +1,15 @@
+public void testProperties() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+
+    // Serialize properties to json
+    Properties properties = new Properties();
+    properties.setProperty("one", "1");
+    properties.setProperty("two", "2");
+    String json = mapper.writeValueAsString(properties);
+
+    // Deserialize properties from json
+    Properties properties2 = mapper.readValue(json, Properties.class);
+    assertEquals(properties, properties2);
+}

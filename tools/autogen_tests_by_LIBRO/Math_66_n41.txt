@@ -1,0 +1,10 @@
+public void testQuinticMin() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return (x-1) * (x-0.5) * (x+2) * (x+2) * x;
+        }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    double min = optimizer.optimize(f, GoalType.MINIMIZE, -4, 4).getPoint();
+    assertEquals(-2, min, 1e-8);
+}

@@ -1,0 +1,10 @@
+public void testInvoker() throws Exception {
+    Class<?> c = Class.forName("org.apache.commons.collections.functors.InvokerTransformer");
+    Constructor<?> constructor = c.getDeclaredConstructor(String.class, Class[].class, Object[].class);
+    constructor.setAccessible(true);
+    Transformer transformer = (Transformer) constructor.newInstance("getRuntime", new Class[0], new Object[0]);
+    Map<String, ?> map = new HashMap<>();
+    map.put("value", transformer);
+    AnnotationInvocationHandler handler = new AnnotationInvocationHandler(map);
+    assertEquals(Runtime.getRuntime(), handler.invoke(null, null, null));
+}

@@ -1,0 +1,22 @@
+public void testIssue110() throws Exception {
+    @Command(name = "test", version = "1.0", requiredOption = "foo", optionListHeading = "Options:%n", footerHeading = "%nFooter:%n")
+    class Test {
+        @Option(name = "--foo", required = true, description = "foo")
+        private String foo;
+
+        @Option(name = "--bar", description = "bar")
+        private String bar;
+    }
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    Help.help(new Test(), ps);
+    ps.close();
+    String help = new String(baos.toByteArray());
+    assertTrue(help.contains("--foo=<foo>"));
+    assertTrue(help.contains("--bar=<bar>"));
+
+    Properties properties = new Properties();
+    properties.setProperty("foo", "hello");
+    properties.setProperty("bar", "world");
+
+    Test t = CommandLine.populateCommand(new Test(), properties);

@@ -1,0 +1,10 @@
+public void testTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    SubType2 value = new SubType2();
+    String json = mapper.writeValueAsString(value);
+    assertEquals("{\"@type\":\""+SubType2.class.getName()+"\"}", json);
+    Object result = mapper.readValue(json, BaseClass.class);
+    assertSame(SubType2.class, result.getClass());
+}

@@ -1,0 +1,8 @@
+public void testUnion() throws Exception {
+    String xml = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    String xpath = "string(/MAIN/B | /MAIN/A)";
+    XPath p = XPathFactory.newInstance().newXPath();
+    DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document d = b.parse(new InputSource(new StringReader(xml)));
+    assertEquals("avalue", p.evaluate(xpath, d));
+}

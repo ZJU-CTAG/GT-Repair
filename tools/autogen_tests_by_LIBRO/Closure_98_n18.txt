@@ -1,0 +1,17 @@
+public void testClosureCompiler() {
+    final ClosureJavaScriptCompressor compressor = new ClosureJavaScriptCompressor(new ClosureJavaScriptCompressor.ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("[warning] " + message);
+        }
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("[error] " + message);
+        }
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);
+        }
+    });
+    final String input = "function foo() {\n" +
+            "\tvar arr = [1, 2, 3, 4, 5];\n" +
+            "\tfor (var i = 0, l = arr.length; i < l; i++) {\n" +
+            "\t\t

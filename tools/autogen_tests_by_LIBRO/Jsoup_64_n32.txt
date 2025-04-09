@@ -1,0 +1,15 @@
+public void testSelfClosingTags() {
+    testSelfClosingTag("style");
+    testSelfClosingTag("title");
+    testSelfClosingTag("noframes");
+}
+
+private void testSelfClosingTag(String tagname) {
+    String html = "<html><head><" + tagname + "/></head><body><p>Whatever</p></body></html>";
+    Document doc = Jsoup.parse(html);
+    Element head = doc.head();
+    Element body = doc.body();
+
+    assertEquals("<" + tagname + "></" + tagname + ">", head.html());
+    assertEquals("<p>Whatever</p>", body.html());
+}

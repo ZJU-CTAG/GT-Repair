@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String code = "/** @const */ var foo = {};\n"+
+            "foo.bar = {\n"+
+            " 'bar1': function() { console.log('bar1'); }\n"+
+            "};\n"+
+            "\n"+
+            "/** @constructor */ function foobar() {}\n"+
+            "foobar.prototype = foo.bar;\n"+
+            "\n"+
+            "foo.foobar = new foobar;\n"+
+            "\n"+
+            "console.log(foo.foobar['bar1']);";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test.js", code)
+    }, options);
+    assertFalse(result.success);
+}

@@ -1,0 +1,10 @@
+public void testWithCalendar() {
+    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.US);
+    cal.set(1976, Calendar.MARCH, 8, 0, 0, 0);
+    cal.set(Calendar.MILLISECOND, 0);
+    cal.set(Calendar.ERA, GregorianCalendar.BC);
+    LocalDate date = LocalDate.fromCalendarFields(cal);
+    assertEquals(cal.getTime(), date.toDateMidnight(cal).toDate());
+    assertEquals(new LocalDate(1976, 3, 8), date);
+    assertEquals(2, cal.get(Calendar.ERA));
+}

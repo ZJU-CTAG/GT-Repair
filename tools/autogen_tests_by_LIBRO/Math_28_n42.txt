@@ -1,0 +1,20 @@
+public void testUnboundedSolution() {
+    SolverFactory factory = new SolverFactoryLpSolve();
+    factory.setParameter(Solver.VERBOSE, 0);
+    factory.setParameter(Solver.TIMEOUT, 100);
+    Problem problem = new Problem();
+    Linear linear = new Linear();
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        linear.add(1, "t");
+        linear.add(0, "l(" + i + ")");
+    }
+    problem.setObjective(linear, OptType.MIN);
+    // constraints
+    ModelEntity model = new ModelEntity();
+    model.setQ(generateRandomMatrix(M, ENTITIES_COUNT));
+    model.setX(generateRandomMatrix(N, ENTITIES_COUNT));
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        linear = new Linear();
+        for (int j = 0; j < M; j++) {
+            linear.add(-model.getQ().get(j, i), "t");
+            linear

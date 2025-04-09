@@ -1,0 +1,9 @@
+public void testIssue1599() {
+    final String payload = "{\"@type\":\"java.awt.Event\"}";
+    try {
+        objectMapper.readValue(payload, Object.class);
+        fail("Should throw an exception");
+    } catch (InvalidTypeIdException e) {
+        assertEquals("Could not resolve type id 'java.awt.Event' into a subtype of [simple type, class java.lang.Object]: known type ids = [java.awt.Point]", e.getMessage());
+    }
+}

@@ -1,0 +1,26 @@
+public void testIssue108() {
+    Foo f = new Foo();
+    writeMethodWithAnnotation.invoke(f);
+    assertEquals(123, readMethodWithAnnotation.invoke(f));
+}
+
+public void testIssue108_b() {
+    Foo f = new Foo();
+    writeMethodWithoutAnnotation.invoke(f);
+    assertEquals(123, readMethodWithoutAnnotation.invoke(f));
+}
+
+class Foo {
+    public Object _bar = null;
+}
+private static Method writeMethodWithAnnotation;
+private static Method readMethodWithAnnotation;
+private static Method writeMethodWithoutAnnotation;
+private static Method readMethodWithoutAnnotation;
+@BeforeClass
+public static void setup() throws Throwable {
+    writeMethodWithAnnotation = Foo.class.getMethod("writeMethodWithAnnotation");
+    readMethodWithAnnotation = Foo.class.getMethod("readMethodWithAnnotation");
+    writeMethodWithoutAnnotation = Foo.class.getMethod("writeMethodWithoutAnnotation");
+    readMethodWithoutAnnotation = Foo.class.getMethod("readMethodWithoutAnnotation");
+}

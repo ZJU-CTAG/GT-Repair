@@ -1,0 +1,11 @@
+public void testRecursion() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+
+    final String json = mapper.writeValueAsString(new Show());
+    System.out.println(json);
+    final Show show = mapper.readValue(json, Show.class);
+    assertEquals(1, show.getBase());
+    assertEquals(2, show.getSub());
+}

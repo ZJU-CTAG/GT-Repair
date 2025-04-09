@@ -1,0 +1,34 @@
+public void testMockitoJUnitRule() {
+    // Arrange
+    TestClass testClass = new TestClass();
+    MockitoRule mockitoRule = new MockitoRule(this);
+    mockitoRule.mock(MockedClass.class);
+    // Act
+    testClass.run();
+    // Assert
+    assertEquals(String.format("%s%s", "Hello", " World"), testClass.getGreeting());
+}
+
+@RunWith(MockitoJUnitRunner.class)
+public class TestClass {
+
+    private String greeting;
+
+    @InjectMocks
+    private MockedClass mockedClass;
+
+    public void run() {
+        greeting = mockedClass.greet();
+    }
+
+    public String getGreeting() {
+        return greeting;
+    }
+}
+
+public class MockedClass {
+
+    public String greet() {
+        return String.format("%s%s", "Hello", " World");
+    }
+}

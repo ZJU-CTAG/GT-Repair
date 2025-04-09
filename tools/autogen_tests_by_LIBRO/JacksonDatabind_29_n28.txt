@@ -1,0 +1,16 @@
+public void testIssueWithExternalTypeId() throws Exception {
+    String json = "{\"a\":1,\"b\":2}";
+    ObjectMapper mapper = new ObjectMapper();
+    ExternalTypeIdTest test1 = mapper.readValue(json, ExternalTypeIdTest.class);
+    assertEquals(1, test1.a);
+    assertEquals(2, test1.b);
+    json = "{\"b\":2}";
+    ExternalTypeIdTest test2 = mapper.readValue(json, ExternalTypeIdTest.class);
+    assertEquals(0, test2.a);
+    assertEquals(2, test2.b);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXTERNAL_PROPERTY, property="type")
+@JsonSubTypes(value = {
+        @JsonSubTypes.Type(value = ExternalTypeIdTest.class, name = "ExternalTypeIdTest"),
+        @JsonSubTypes.Type(value = ExternalTypeIdTest2.class, name = "test2")

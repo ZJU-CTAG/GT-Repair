@@ -1,0 +1,23 @@
+public void testPolymorphicTypeWithDefaultImpl() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    // This works
+    mapper.readValue("{\"foo\": \"bar\"}", HasFoo.class);
+
+    // This doesn't
+    mapper.readValue("{\"foo\": \"bar\"}", ExtendedFoo.class);
+}
+
+@com.fasterxml.jackson.annotation.JsonSubTypes({
+        @com.fasterxml.jackson.annotation.JsonSubTypes.Type(value = ExtendedFoo.class, name = "ExtendedFoo")
+})
+@com.fasterxml.jackson.annotation.JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+                                              property = "type",
+                                              defaultImpl = Foo.class)
+public interface HasFoo {
+    String getFoo();
+}
+
+@com.fasterxml.jackson.annotation.JsonTypeName("ExtendedFoo")
+public class ExtendedFoo implements HasFoo {
+    @com.fasterxml.jack

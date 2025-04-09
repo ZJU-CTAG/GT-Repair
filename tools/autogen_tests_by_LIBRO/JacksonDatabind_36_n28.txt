@@ -1,0 +1,10 @@
+public void testIssue2() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setDateFormat(new StdDateFormat().setLenient(false));
+    try {
+        objectMapper.readValue("{\"createdAt\":\"2015-01-32\"}", Foo.class);
+        fail("Expected JsonMappingException");
+    } catch (JsonMappingException e) {
+        // expected
+    }
+}

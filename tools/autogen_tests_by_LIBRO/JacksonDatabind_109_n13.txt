@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    final JsonFormat jsonFormat = Test.class.getDeclaredField("value").getAnnotation(JsonFormat.class);
+    String expected = "{\"value\":\"5.0E-10\"}";
+    String actual = objectMapper.writeValueAsString(new Test(new BigDecimal("0.0000000005")));
+    assertEquals(expected, actual);
+}

@@ -1,0 +1,25 @@
+public void testNamespaceResolver() {
+    NamespaceContext nsContext = new SimpleNamespaceContext();
+
+    nsContext.setNamespace("test111", "test111");
+    nsContext.setNamespace("bla", "bla");
+
+    JXPathContext jxPath = JXPathContext.newContext(nsContext);
+
+    XmlObject xmlObject = XmlObject.Factory.newInstance();
+    FooDocument fooDocument = (FooDocument) XmlObject.Factory.parse(
+                    "<b:foo xmlns:b=\"bla\" xmlns=\"test111\">"
+                    + " <b:bar>a</b:bar> "
+                    + " <test xmlns=\"\"></test>"
+                    + "</b:foo>");
+    xmlObject.set(fooDocument);
+
+    String result = (String) jxPath.getValue("//test");
+    assertEquals("", result);
+}
+
+public static class SimpleNamespaceContext implements NamespaceContext {
+
+    private Map<String, String> namespaceMap = new HashMap<String, String>();
+
+    public void setNamespace(String prefix,

@@ -1,0 +1,13 @@
+public void testIssue115() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    List<SourceFile> inputs = Collections.singletonList(
+        SourceFile.fromCode("input.js", "alert(foo);\nalert(bar);"));
+    List<SourceFile> externs = Lists.newArrayList();
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, inputs, options);
+    String output = compiler.toSource();
+    assertTrue(output.contains("\nalert(bar);\n ^"));
+    assertEquals(0, result.errors.length);
+    assertEquals(2, result.warnings.length);
+  }

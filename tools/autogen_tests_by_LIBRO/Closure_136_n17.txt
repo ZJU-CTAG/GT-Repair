@@ -1,0 +1,21 @@
+public void testSuper() {
+    String source = "var o = {}; o.parentMethod = function() {}; o.childMethod = function() { this.parentMethod(); };";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, new JSSourceFile[] { JSSourceFile.fromCode("input.js", source) }, options);
+    assertTrue(result.success);
+    Node root = compiler.getRoot().getLastChild();
+    Set<String> names = new HashSet<String>();
+    new CollectNames(names).process(root);
+    assertTrue(names.contains("$super"));
+}
+
+class CollectNames extends AbstractShallowCallback {
+    Set<String> names;
+    public CollectNames(Set<String> names) {
+        this.names = names;
+    }
+    @Override
+    public void visit(NodeTraversal t, Node n, Node parent) {
+        names.add(n.getString());
+    }
+}

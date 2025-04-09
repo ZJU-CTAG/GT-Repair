@@ -1,0 +1,22 @@
+public void testIssue() {
+    Options opts = new Options();
+    Option opt = new Option("t", "target", true, "target machine");
+    opts.addOption(opt);
+    PosixParser parser = new PosixParser();
+    try {
+        CommandLine cl = parser.parse(opts, new String[] { "-t" });
+        assertFalse(cl.hasOption("t"));
+    } catch (ParseException e) {
+        fail("Exception: " + e.getMessage());
+    }
+    try {
+        CommandLine cl = parser.parse(opts, new String[] { "-target" });
+        assertFalse(cl.hasOption("target"));
+    } catch (ParseException e) {
+        fail("Exception: " + e.getMessage());
+    }
+    try {
+        CommandLine cl = parser.parse(opts, new String[] { "-t", "foobar.com" });
+        assertTrue(cl.hasOption("t"));
+        assertEquals("foobar.com", cl.getOptionValue("t"));
+    } catch (ParseException

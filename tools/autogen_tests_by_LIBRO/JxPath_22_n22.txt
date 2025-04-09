@@ -1,0 +1,30 @@
+public void testIssue108() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db;
+    Document doc = null;
+    try {
+        db = dbf.newDocumentBuilder();
+        doc = db.newDocument();
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    }
+
+    doc.setXmlStandalone(true);
+    doc.setXmlVersion("1.0");
+
+    Element root = doc.createElementNS("root", "root");
+    doc.appendChild(root);
+
+    Element foo = doc.createElementNS("bla", "foo");
+    root.appendChild(foo);
+    foo.setAttributeNS("test111", "test", "");
+
+    Element bar = doc.createElementNS("bla", "bar");
+    root.appendChild(bar);
+    bar.setTextContent("a");
+
+//    Element test = doc.createElementNS("", "test");
+    Element test = doc.createElementNS(null, "test");
+    root.appendChild(test);
+
+    JXPath

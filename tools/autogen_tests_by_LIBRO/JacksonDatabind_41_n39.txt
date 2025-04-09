@@ -1,0 +1,14 @@
+public void testTypeFactoryContext() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType baseType = mapper.constructType(Foo.class);
+
+    try {
+        // fails
+        mapper.getTypeFactory().constructType(baseType, null);
+    } catch (NullPointerException e) {
+        fail("Should not throw NPE here");
+    }
+    // but this works...
+    mapper.getTypeFactory().constructType(baseType, new TypeBindings(mapper.getTypeFactory()));
+}

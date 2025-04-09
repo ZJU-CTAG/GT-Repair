@@ -1,0 +1,18 @@
+public void testTreeTraversingParserBase64Variant() throws IOException {
+    final Base64Variant variant = Base64Variants.MIME;
+    final byte[] bytes = "a".getBytes("UTF-8");
+    final String encoded = variant.encode(bytes);
+    final byte[] decoded = variant.decode(encoded);
+    assertArrayEquals(bytes, decoded);
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final JsonNodeFactory factory = objectMapper.getNodeFactory();
+    final TextNode textNode = factory.textNode(encoded);
+
+    final ObjectReader reader = objectMapper.reader();
+    final TreeTraversingParser parser = new TreeTraversingParser(textNode, reader);
+    parser.setCodec(objectMapper);
+    parser.setBase64Variant(variant);
+    final byte[] bytesRead = parser.readBinaryValue();
+    assertArrayEquals(bytes, bytesRead);
+}

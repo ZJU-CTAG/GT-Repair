@@ -1,0 +1,20 @@
+public void testIssue107() {
+    JsonFactory jsonFactory = new JsonFactory();
+    Map<String, Object> jsonMap = new LinkedHashMap<String, Object>();
+    jsonMap.put("myString", "");
+
+    StringWriter writer = new StringWriter();
+    JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(writer);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(jsonGenerator, jsonMap);
+
+    // Should successfully deserialize the object:
+    Object myString = mapper.readValue(writer.toString(), Object.class);
+    assertEquals(null, myString);
+
+    // But fails with the following exception:
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    myString = mapper.readValue(writer.toString(), Object.class);
+    assertEquals(null, myString);
+}

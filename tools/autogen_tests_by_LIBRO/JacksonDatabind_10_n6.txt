@@ -1,0 +1,31 @@
+public void testIssue107() throws Exception {
+
+    String json = "{\"parameters\":{\"a\":\"b\"}}";
+
+    JsonNode result = mapper.readTree(json);
+    assertEquals("b", result.get("parameters").get("a").asText());
+
+}
+
+@JsonSerialize(using = MySerializer.class)
+public static class ClassWithJsonAnyGetter {
+
+    private Map<String, String> parameters = Maps.newHashMap();
+
+    @JsonAnyGetter
+    public Map<String, String> getParameters(){
+        return parameters;
+    }
+
+    public void addParameter(String key, String value) {
+        parameters.put(key, value);
+    }
+}
+
+public static class MySerializer extends JsonSerializer<Map> {
+    @Override
+    public void serialize(Map value, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException, JsonProcessingException {
+        jgen.writeStartObject();
+        for(Entry entry : (Set<Entry>)value.entrySet()) {
+            jgen.write

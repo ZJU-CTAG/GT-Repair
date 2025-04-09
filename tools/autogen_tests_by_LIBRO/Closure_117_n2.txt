@@ -1,0 +1,25 @@
+public void testPropertyError() throws Exception {
+    String js = "/**" +
+                " * @constructor" +
+                " */" +
+                "function C2() {}" +
+                "" +
+                "/** " +
+                " * @constructor" +
+                " */" +
+                "function C3(c2) {" +
+                "    /**" +
+                "     * @type {C2}" +
+                "     * @private" +
+                "     */" +
+                "    this.c2_;" +
+                "" +
+                "    use(this.c2_.prop);" +
+                "}";
+    ErrorReporter tester = new ErrorReporter(null, null);
+    RhinoErrorReporter rhinoErrorReporter = new RhinoErrorReporter(tester);
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setErrorReporter(rhinoErrorReporter);
+
+    new Parser(env).parse(js, null, 0);
+}

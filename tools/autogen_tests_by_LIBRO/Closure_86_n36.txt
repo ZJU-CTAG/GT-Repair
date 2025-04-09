@@ -1,0 +1,26 @@
+public void testIssue225() {
+    Compiler compiler = new Compiler();
+    compiler.initCompilerOptionsIfTesting();
+    compiler.disableThreads();
+    CompilerOptions options = compiler.getOptions();
+    options.setRemoveDeadCode(true);
+    options.setRemoveUnusedVars(true);
+    options.setRemoveUnusedLocalVars(true);
+    options.setRemoveUnusedPrototypeProperties(true);
+    options.setDeadAssignmentElimination(true);
+    options.setRemoveUnreachableCode(true);
+    options.setCollapseVariableDeclarations(true);
+    Node externsRoot = IR.block();
+    Node root = IR.block();
+    root.addChildToFront(
+        IR.exprResult(
+            IR.call(
+                IR.getprop(
+                    IR.assign(
+                        IR.name("self"),
+                        IR.thisNode()),
+                    IR.string("setLocation")),
+                IR.string("http://www.google.com/"))));
+    root.addChildToFront(
+        IR.var(
+            IR

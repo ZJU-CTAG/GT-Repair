@@ -1,0 +1,22 @@
+public void testDefaultOptionsMayBePartiallyProcessed() throws Exception {
+    String[] args = { "-e0" };
+    Option optionE = OptionBuilder.hasOptionalArg().create('e');
+    
+    Properties defaultOptions = new Properties();
+    defaultOptions.setProperty("a", "false");
+    defaultOptions.setProperty("c", "no");
+    defaultOptions.setProperty("e", "0");
+    
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption(optionE);
+    
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(opts, args, defaultOptions);
+    
+    assertTrue(!cmd.hasOption("a"));
+    assertTrue(!cmd.hasOption("c"));
+    assertTrue(cmd.hasOption("e"));
+    assertEquals(0, OptionUtils.getNumberOfArgs(cmd, optionE));
+}

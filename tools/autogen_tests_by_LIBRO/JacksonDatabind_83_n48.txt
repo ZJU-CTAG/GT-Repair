@@ -1,0 +1,12 @@
+public void testFromStringDeserializer() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType,
+                                             String valueToConvert, String failureMsg) throws IOException {
+            return "foobar";
+        }
+    });
+    assertEquals("foobar", mapper.readValue(quote("xyz"), UUID.class));
+}

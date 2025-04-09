@@ -1,0 +1,10 @@
+public void testIssue513() {
+    InputStream is = getClass().getResourceAsStream("/org/apache/commons/compress/archivers/tar/bug513.tar");
+    TarArchiveInputStream tar = new TarArchiveInputStream(is);
+    TarArchiveEntry entry;
+    while((entry = tar.getNextTarEntry()) != null) {
+        assertEquals("tar entry name", "", entry.getName());
+        assertEquals("tar entry size", 0, entry.getSize());
+    }
+    tar.close();
+}

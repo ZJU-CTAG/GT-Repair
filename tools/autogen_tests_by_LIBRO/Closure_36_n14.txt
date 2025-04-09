@@ -1,0 +1,16 @@
+public void testGoogSingletonGetter() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("foo.js",
+                "var foo = function() { this.values = []; };\n" +
+                "goog.addSingletonGetter(foo);\n" +
+                "foo.prototype.add = function(value) {this.values.push(value)};\n")
+        },
+        options);
+    assertTrue(result.success);
+    assertTrue(result.warnings.isEmpty());
+    assertTrue(result.errors.isEmpty());
+    assertEquals(0, result.externedIdentifiers.size());
+    assertEquals(0, result.code().length());
+}

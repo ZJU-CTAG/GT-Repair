@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    FastDateFormat f1, f2;
+    f1 = FastDateFormat.getInstance("HH:mm:ss");
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(f1);
+    oos.close();
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+    f2 = (FastDateFormat) ois.readObject();
+    assertEquals("10:20:30", f2.format(new Date(10, 20, 30)));
+}

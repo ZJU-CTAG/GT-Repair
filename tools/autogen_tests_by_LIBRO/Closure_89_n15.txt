@@ -1,0 +1,8 @@
+public void testCompiler () {
+    String js = "function f() { alert('f1'); }; f.alwaysCall = true; alert(f.alwaysCall);";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertTrue(result.success);
+    String compiled = compiler.toSource();
+    assertTrue(compiled.contains("f.alwaysCall = !0"));
+}

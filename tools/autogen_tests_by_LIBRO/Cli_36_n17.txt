@@ -1,0 +1,26 @@
+public void testIssue113() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h)
+            .addOption(s)
+            .addOption(b)
+            .addOption(t);
+
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    PrintWriter writer = new PrintWriter(out);
+    formatter.printHelp(writer, 80, "cmd", null, options, 1, 2, null);
+    writer.flush();
+    System.out.println(out);
+
+    String expected = "-h, -s, -b, -t, -o";
+    assertTrue(out.toString().cont

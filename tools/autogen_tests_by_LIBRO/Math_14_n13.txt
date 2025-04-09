@@ -1,0 +1,17 @@
+public void testIssue108() {
+        int n = 41200;
+        final double[] x = new double[n];
+        final double[] y = new double[n];
+        int i = 0;
+        while (i < n) {
+            x[i] = i;
+            y[i] = i;
+            ++i;
+        }
+        PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+        final WeightedObservedPoints obs = new WeightedObservedPoints();
+        for (int k = 0; k < x.length; ++k) {
+            obs.add(x[k], y[k]);
+        }
+        final double[] coeff = fitter.fit(obs.toList());
+}

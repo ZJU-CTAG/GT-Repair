@@ -1,0 +1,22 @@
+public void testIssue113() {
+    assertTrue(instanceOf(new TestIssue113(), TestIssue113.class));
+    assertTrue(instanceOf(new TestIssue113(), Object.class));
+    assertFalse(instanceOf(new TestIssue113(), String.class));
+}
+
+public static boolean instanceOf(Object value, Class type) {
+    try {
+        // first try built-in test -- if it succeeds, we're golden.
+        if (value instanceof type) {
+            return true;
+        }
+    } catch (ClassCastException exception) {
+        // Otherwise, assume the exception was caused by 
+        // the Firefox 1.0.3 bug. Work around it.
+        return (type == Object.class);
+    }
+    return false;
+}
+
+static class TestIssue113 {
+}

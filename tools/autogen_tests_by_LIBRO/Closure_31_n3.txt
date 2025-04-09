@@ -1,0 +1,18 @@
+public void testDependencyManagement() {
+    List<SourceFile> inputs = closureBuilder.createInputs(inputPaths,
+        DependencyOptions.builder()
+            .setManageDependencies(true)
+            .setDependencySorting(true)
+            .build());
+    List<SourceFile> externs = closureBuilder.createExterns(externPaths);
+    List<JSModule> modules = closureBuilder.createModules(modulesByName);
+    List<CompilerInput> closureInputs = closureBuilder.createClosureInputs(inputs, modules);
+    List<CompilerInput> closureExterns = closureBuilder.createClosureExterns(externs);
+    setDependencyOptions(closureInputs, closureExterns,
+        dependencyOptions.shouldManageDependencies(),
+        dependencyOptions.shouldOnlyGoogBase(),
+        dependencyOptions.shouldSortDependencies());
+    compiler.setClosureInputs(closureInputs);
+    compiler.setClosureExterns(closureExterns);
+    compiler.setModuleGraph(closureBuilder.createModuleGraph(modules));
+}

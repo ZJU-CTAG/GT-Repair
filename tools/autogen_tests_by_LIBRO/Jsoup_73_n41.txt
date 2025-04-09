@@ -1,0 +1,10 @@
+public void testW3cDom() throws Exception {
+    Document doc = Jsoup.parse("<html><body><a></a><div></div></body></html>", "", Parser.xmlParser());
+    NodeList nodeList = doc.getElementsByTagName("a").item(0).getChildNodes();
+    assertNull(nodeList.item(0).getNamespaceURI());
+
+
+    doc = Jsoup.parse("<html><body><a xmlns=\"http://www.w3.org/1999/xhtml\"></a><div></div></body></html>", "", Parser.xmlParser());
+    nodeList = doc.getElementsByTagName("a").item(0).getChildNodes();
+    assertEquals("http://www.w3.org/1999/xhtml", nodeList.item(0).getNamespaceURI());
+}

@@ -1,0 +1,17 @@
+public void testIssue1737() {
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    try {
+        mapper.readValue("[\"com.mchange.v2.c3p0.jboss.C3P0PooledDataSource\",{\"identityToken\":\"jboss:name=\\\"C3P0\\\",service=ManagedConnectionPool\"}]", Object.class);
+        fail("Should throw exception");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "Cannot find a (Map) Key deserializer");
+    }
+
+    try {
+        mapper.readValue("[\"com.mchange.v2.c3p0.jboss.C3P0PooledDataSource\",{\"identityToken\":\"jboss:name=\\\"C3P0\\\",service=ManagedConnectionPool\"}]", Object.class);
+        fail("Should throw exception");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "Cannot find a (Map) Key deserial

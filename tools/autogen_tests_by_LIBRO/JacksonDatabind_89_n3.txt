@@ -1,0 +1,10 @@
+public void testIssue110() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(new File("src/test/issues/gh110.json"), MyClass.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "prevented for security reasons");
+        verifyException(e, "sun.reflect.NativeMethodAccessorImpl");
+    }
+}

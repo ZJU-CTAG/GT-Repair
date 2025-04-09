@@ -1,0 +1,13 @@
+public void testWriteObject() throws Exception
+{
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator g = JSON_F.createGenerator(out);
+    g.writeStartArray();
+    g.writeEmbeddedObject(new byte[0]);
+    g.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+    g.writeEmbeddedObject(null);
+    g.writeEndArray();
+    g.close();
+    byte[] data = out.toByteArray();
+    assertEquals("[\"\",\"AQID\",null]", new String(data, "UTF-8"));
+}

@@ -1,0 +1,16 @@
+public void testDelegate() throws IOException {
+    String json = "{ \"array1\": [1,2,3,4,5], \"array2\": [6,7,8,9,10] }";
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonParser jsonParser = objectMapper.getFactory().createParser(json);
+    jsonParser.setCodec(objectMapper);
+
+    FilteringParserDelegate delegate = new FilteringParserDelegate(jsonParser, new MatchingPathFilter("array1"), true, false);
+    JsonNode node = objectMapper.readTree(delegate);
+    assertEquals("{\"array1\":[1,2,3,4,5]}", node.toString());
+
+    JsonParser tmpParser = jsonParser.duplicate();
+    FilteringParserDelegate tmpDelegate = new FilteringParserDelegate(tmpParser, new MatchingPathFilter("array1"), true, false);
+    while (tmpDelegate.nextToken() != null);
+    assertEquals(1, tmpDelegate.getMatchCount());
+}

@@ -1,0 +1,14 @@
+public void testIssue100() {
+    Document doc = Jsoup.parse("<table>" +
+            "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "</table>");
+    Element row2 = doc.select("tr").get(2);
+    Element row5 = doc.select("tr").get(5);
+    assertEquals(row2.elementSiblingIndex(), row5.elementSiblingIndex());
+    assertSame(row2, row2.parent().children().get(row2.elementSiblingIndex()));
+    assertSame(row5, row5.parent().children().get(row5.elementSiblingIndex()));
+}

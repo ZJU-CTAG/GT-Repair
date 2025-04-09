@@ -1,0 +1,21 @@
+public void testPolymorphicWithDefaultImpl() throws Exception
+{
+    final ObjectMapper MAPPER = new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    ObjectReader r = MAPPER.readerFor(MyEvent.class);
+
+    String json = "{\"id\":\"my-id\",\"type\":\"my-type\",\"created_by\":\"me\"}";
+    MyEvent e = r.readValue(json);
+
+    assertNotNull(e);
+    assertEquals("my-id", e.getId());
+    assertEquals("my-type", e.getType());
+    assertEquals(Instant.ofEpochMilli(1), e.getCreated());
+    assertEquals("me", e.getCreatedBy());
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({

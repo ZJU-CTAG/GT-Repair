@@ -1,0 +1,10 @@
+public void testDeserialize() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.addMixIn(Event.class, EventMixIn.class);
+
+    Date eventDate = new Date();
+    Event event = mapper.readValue("{\"date\":\"" + eventDate.getTime() + "\",\"id\":\"my_id\"}", Event.class);
+    assertEquals(eventDate.getTime(), event.getDate().getTime());
+}

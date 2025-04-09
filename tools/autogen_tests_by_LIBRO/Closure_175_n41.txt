@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.compile(JSCompilerTestCase.DEFAULT_EXTERNS,
+     "window['foo'] = function (obj, modifiesProp) {\n" +
+     "  return (function (saved) {\n" +
+     "    return modifiesProp(obj) + saved;\n" +
+     "  })(obj['prop']);\n" +
+     "}");
+    assertEquals("window.foo=function(a,b){var HOLD;HOLD=a.prop;return b(a)+HOLD}",
+     compiler.toSource());
+}

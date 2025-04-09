@@ -1,0 +1,21 @@
+public void testCompilerBug() {
+    final Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setPrintAst(true);
+    final CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    compilerOptions.setWarningLevel(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    compilerOptions.setCodingConvention(new ClosureCodingConvention());
+    compiler.initOptions(compilerOptions);
+    compiler.compile(new JSSourceFile[]{
+            JSSourceFile.fromCode(
+                    "source.js",
+                    "var map = {};\n" +
+                            "\n" +
+                            "var addToMap = function(key, func) {\n" +
+                            "    map[key] = func;\n" +
+                            "};\n" +
+                            "\n" +
+                            "var f1 = function() { alert('f1'); };\n" +
+                            "

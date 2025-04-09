@@ -1,0 +1,16 @@
+public void testInputCoercionException() throws Exception
+{
+    long number = Long.MAX_VALUE;
+    assertFalse(number < Integer.MAX_VALUE);
+
+    byte[] json = ("{\"number\":"+number+"}").getBytes("UTF-8");
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        // should throw exception
+        mapper.readValue(json, SimpleValue.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "exceeds range");
+        verifyException(e, "int");
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
+
+    Bean b = mapper.readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}", Bean.class);
+    assertNotNull(b);
+    assertEquals(1, b.x);
+    assertEquals(3, b.y);
+    assertNotNull(b.w);
+    assertEquals(2, b.w.a);
+    assertEquals(4, b.w.b);
+}

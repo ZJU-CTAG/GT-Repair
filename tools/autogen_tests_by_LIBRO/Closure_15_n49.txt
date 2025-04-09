@@ -1,0 +1,22 @@
+public void testIssue() {
+    JsonObject customData = new JsonObject();
+    customData.addProperty( "key", "value" );
+
+    Function testRemoveKey = new Function() {
+        @Override
+        public Object call( Object key ) {
+            JsonElement dataSlot = customData;
+            Object retval = dataSlot != null ? dataSlot.get( (String) key ) : null;
+            boolean hasKey = dataSlot != null && ( key instanceof String ) && customData.has( (String) key );
+
+            if ( dataSlot != null ) {
+                customData.remove( (String) key );
+            }
+
+            return hasKey ? retval : null;
+        }
+    };
+
+    System.out.println( testRemoveKey.call( "key" ) ); // 'value'
+    System.out.println( customData.has( "key" ) ); // false
+}

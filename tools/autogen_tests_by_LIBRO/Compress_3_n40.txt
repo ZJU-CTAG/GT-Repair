@@ -1,0 +1,27 @@
+public void testFinish() throws IOException {
+    // dummy implementation
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ArchiveOutputStream() {
+        @Override
+        public void close() throws IOException {
+            super.close();
+        }
+
+        @Override
+        public void finish() throws IOException {
+            this.out.write("Hello World!".getBytes());
+        }
+
+        @Override
+        public void putArchiveEntry(ArchiveEntry arg0) throws IOException {
+        }
+
+        @Override
+        public void write(int arg0) throws IOException {
+        }
+    };
+    aos.close();
+    assertEquals("", outputStream.toString());
+    aos.finish();
+    assertEquals("Hello World!", outputStream.toString());
+}

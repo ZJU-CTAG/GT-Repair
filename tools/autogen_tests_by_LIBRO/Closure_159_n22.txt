@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String js = "function preload_check_all() { $('.preload_check').attr('checked', 'checked');}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("externs.js", ""),
+                                     SourceFile.fromCode("input.js", js),
+                                     options);
+    assertTrue(result.success);
+    // This should be:
+    assertEquals("function a(){$('.preload_check').attr('checked','checked')}a();",
+                 compiler.toSource());
+}

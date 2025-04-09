@@ -1,0 +1,29 @@
+public void testIssue107() {
+    Definition def = new Definition("def1", Arrays.asList(new Record("rec1", Arrays.asList()), new Record("rec2", Arrays.asList())));
+    String json = JSON.toJSONString(def, true);
+    System.out.println(json);
+    Definition def2 = JSON.parseObject(json, Definition.class);
+    System.out.println(def2);
+}
+
+public static class Definition {
+    public String name;
+    public List<Record> records;
+    public Definition() {
+    }
+    public Definition(String name, List<Record> records) {
+        this.name = name;
+        this.records = records;
+    }
+    public String toString() {
+        return "{ name: " + name + ", records: " + records + " }";
+    }
+}
+
+public static class Record {
+    public String name;
+    public List<Field> fields;
+    public Record() {
+    }
+    public Record(String name, List<Field> fields) {
+        this.name = name

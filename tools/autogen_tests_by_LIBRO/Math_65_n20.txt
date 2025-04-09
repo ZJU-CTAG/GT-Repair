@@ -1,0 +1,20 @@
+public void testRMS() {
+    double[] target = { 0.0, 0.0, 0.0 };
+    double[] weights = { 1.0, 2.0, 3.0 };
+    double[][] startPoint = { { 1.0, 1.0, 1.0 } };
+    UnivariateVectorialFunction model = new UnivariateVectorialFunction() {
+        private static final long serialVersionUID = -7589776168836227132L;
+
+        public double[] value(double x) throws FunctionEvaluationException {
+            return new double[] { 1.0, x, x * x };
+        }
+    };
+
+    LeastSquaresProblem problem = new LeastSquaresBuilder().start(startPoint).target(target).weight(new DiagonalMatrix(weights)).model(model).build();
+    LeastSquaresOptimizer optimizer = new GaussNewtonOptimizer(true);
+
+    LeastSquaresProblem.Evaluation evaluation = optimizer.optimize(problem);
+
+    // check the evaluation
+    RealVector residuals = evaluation.getResiduals();
+    RealMatrix

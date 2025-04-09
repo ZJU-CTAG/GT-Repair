@@ -1,0 +1,17 @@
+public void testIssue() {
+    String externs =
+            "/** @constructor */\n" +
+            "function MyClass() {}\n" +
+            "MyClass.prototype.x = function() {};";
+    String code =
+            "/** @constructor @extends {MyClass} */" +
+            "function MyClass2() {}\n" +
+            "/** @this {MyClass2} */" +
+            "MyClass2.prototype.y = function() { this.x(); }";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.DANGEROUS_NAME_CHECK, CheckLevel.OFF);
+    Result result = compiler.compile(externs, code, options);
+    assertThat(result.success, is(true));
+}

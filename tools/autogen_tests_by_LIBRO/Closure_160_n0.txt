@@ -1,0 +1,14 @@
+public void testCommandLineVars() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckUndefinedVariables(CheckLevel.ERROR);
+    options.setCheckMissingReturn(CheckLevel.ERROR);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setCheckMissingReturn(CheckLevel.OFF);
+    options.setCheckUndefinedVariables(CheckLevel.OFF);
+
+    String js = "foo = {};\nfoo.bar = function() { alert(this.baz); };\n";
+    Compiler compiler = compile(js, options);
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+}

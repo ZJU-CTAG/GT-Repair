@@ -1,0 +1,19 @@
+public void testDateTimeSerializerBase() {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    mapper.setDateFormat(dateFormat);
+
+    final A a = new A();
+    a.dateTime = new DateTime();
+    final String json = mapper.writeValueAsString(a);
+
+    System.out.println(json);
+    final A a2 = mapper.readValue(json, A.class);
+    assertEquals(a.dateTime, a2.dateTime);
+}
+
+class A {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    DateTime dateTime;
+}

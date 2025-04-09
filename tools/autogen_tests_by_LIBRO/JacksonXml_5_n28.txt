@@ -1,0 +1,15 @@
+public void testRootElementMalfunction() throws Exception
+{
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    System.out.println(noAnnotationsXmlMapper.writeValueAsString(new RootElementMalfunction()));
+    System.out.println(xmlMapper.writeValueAsString(new RootElementMalfunction()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+static class RootElementMalfunction
+{
+}

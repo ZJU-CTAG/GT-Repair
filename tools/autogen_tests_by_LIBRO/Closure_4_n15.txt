@@ -1,0 +1,30 @@
+public void testIssue108() {
+    // given:
+    // File: t.js
+    /**
+     * @interface
+     */
+    var OtherType = function() {}
+    /**
+     * @implements {MyType}
+     * @constructor
+     */
+    var MyType = function() {}
+    /**
+     * @type {MyType}
+     */
+    var x = /** @type {!OtherType} */ (new Object());
+    // when:
+    StringBuilder out = new StringBuilder();
+    String[] args = {
+        "--externs", "externs/es3.js",
+        "--property_renaming", "OFF",
+        "--variable_renaming", "OFF",
+        "--jscomp_warning=checkTypes",
+        "--js", "t.js"
+    };
+    ClosureCommandLineRunner runner = new ClosureCommandLineRunner(args);
+    runner.setPrintStream(new PrintStream(new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+            out.append(new Character((char)

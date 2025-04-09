@@ -1,0 +1,16 @@
+public void testPrivateClash() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSuspiciousCode(true);
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("foo.js", "function Foo() { /** @private */ this.x_ = 3; }"),
+            JSSourceFile.fromCode(
+                "subfoo.js",
+                "function SubFoo() { /** @private */ this.x_ = 3; }")},
+        options);
+    assertEquals(1, compiler.getErrorCount());
+}

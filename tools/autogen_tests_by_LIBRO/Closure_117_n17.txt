@@ -1,0 +1,25 @@
+public void testMissingPropertyError() {
+  String js = "/**\n" +
+      " * @constructor\n" +
+      " */\n" +
+      "function C2() {}\n" +
+      "\n" +
+      "/**\n" +
+      " * @constructor\n" +
+      " */\n" +
+      "function C3(c2) {\n" +
+      "/**\n" +
+      " * @type {C2} \n" +
+      " * @private\n" +
+      " */\n" +
+      "this.c2_;\n" +
+      "\n" +
+      "use(this.c2_.prop);\n" +
+      "}";
+
+  Compiler compiler = new Compiler();
+  List<SourceFile> externs = Lists.newArrayList(
+      SourceFile.fromCode("externs", "function use(x) {}"));
+  List<SourceFile> inputs = Lists.newArrayList(
+      SourceFile.fromCode("input", js));
+  Result result = compiler.comp

@@ -1,0 +1,25 @@
+public void testIssue() {
+    final String id = "id";
+    FakeAccountRpcService service = new FakeAccountRpcService() {
+        @Override
+        Future<Account> getAccount(String id) {
+            assertEquals(id, id); // Common sanity test. Don't have to repeat it in tests.
+            return Futures.immediateFuture(account);
+        }
+    };
+    when(service.getAccount(id)).thenReturn(account);
+}
+
+abstract class FakeAccountRpcService implements AccountRpcService {
+    @Override
+    Future<Account> getAccount(RpcContext context, String id) {
+        assertNotNull(context);  // Common sanity test. Don't have to repeat it in tests.
+        return getAccount(id);
+    }
+
+    abstract Future<Account> getAccount(String id);
+}
+
+interface AccountRpcService {
+    Future<Account> getAccount(RpcContext context, String id);
+}

@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    JsonParser parser = new JsonFactory()
+            .setCodec(new ObjectMapper())
+            .createParser("{\"firstname\": \"John\",\"lastname\": \"Smith\"}");
+
+    FilteringParserDelegate filteredParser = new FilteringParserDelegate(parser, new Filter() {
+        @Override
+        public boolean include(JsonParser p) throws IOException {
+            return true;
+        }
+    });
+
+    assertNotNull(filteredParser);
+
+    assertTrue(filteredParser.getAllowMultipleMatches());
+}

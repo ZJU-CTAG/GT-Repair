@@ -1,0 +1,17 @@
+public void testDepSortWithoutClosurePass() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(false);
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+    compiler.compile(
+            CommandLineRunner.getDefaultExterns(),
+            Lists.newArrayList(SourceFile.fromCode(
+                    "closure-test/src/test/resources/issue107/js-file1.js",
+                    "goog.provide('file.one');\n" +
+                    "goog.require('file.two');\n" +
+                    "file.one = function() {\n" +
+                    "   file.two();\n" +
+                    "}\n")),
+            options, dependencyOptions);
+}

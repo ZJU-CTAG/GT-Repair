@@ -1,0 +1,9 @@
+public void testBreakInFinally() {
+    Context cx = Context.enter();
+    try {
+        Scriptable scope = cx.initStandardObjects();
+        cx.evaluateString(scope, "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');", "<cmd>", 1, null);
+    } finally {
+        Context.exit();
+    }
+}

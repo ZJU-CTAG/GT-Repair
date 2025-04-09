@@ -1,0 +1,18 @@
+public void testReadWriteContextDiffer() throws IOException {
+    SerializationConfig serializationConfig = new SerializationConfig(
+            new BaseSettings(Version.unknownVersion(),
+                    new TypeFactory(TypeFactory.defaultInstance()),
+                    null, null, StdDateFormat.instance, null, null, null,
+                    null, null, null, new HashMap<Object, Object>()),
+            new SimpleMixInResolver(new HashMap<Class<?>, Class<?>>()),
+            new HashMap<Object, Object>(), null, null);
+
+    ObjectMapper objectMapper = new ObjectMapper(null, null, new DefaultSerializerProvider.Impl(serializationConfig),
+            null, null, null, serializationConfig, null, null);
+
+    AnnotatedClass annotatedClass = AnnotatedClass.constructWithoutSuperTypes(
+            SimpleClass.class, new SimpleMixInResolver(new HashMap<Class<?>, Class<?>>()), null, null);
+    BeanDescription beanDescription = BeanDescription.forOtherUse(objectMapper, annotatedClass,
+            SimpleClass.class);
+
+    JsonSerializer<?> serial

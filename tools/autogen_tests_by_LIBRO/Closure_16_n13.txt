@@ -1,0 +1,15 @@
+public void testIssue() {
+    String js = "/** @typedef {string} */\n" +
+            "a.b.c.MyType;\n" +
+            "\n" +
+            "/** @param {a.b.c.MyType} x The variable. */\n" +
+            "a.b.c.myFunc = function(x) {};";
+
+    RhinoErrorReporter reporter = new RhinoErrorReporter();
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new GoogleCodingConvention());
+
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test.js", js) }, options, reporter);
+    System.out.println(result.errors);
+}

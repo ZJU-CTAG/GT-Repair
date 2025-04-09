@@ -1,0 +1,14 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    // This should be an Integer but it's an int
+    assertEquals(Integer.class, mapper.constructType(Issue.class).getSetterType(Issue.class.getMethod("setNumber", int.class)).getRawClass());
+}
+
+public static class Issue {
+    public int getNumber() {
+        return 0;
+    }
+    public void setNumber(int number) {
+    }
+}

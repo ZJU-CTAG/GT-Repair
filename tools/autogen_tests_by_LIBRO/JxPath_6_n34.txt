@@ -1,0 +1,11 @@
+public void testEqualityTest() {
+    VariableResolverFactory factory = new MapVariableResolverFactory();
+    factory.createVariable("d", new String[] { "a", "b" });
+    factory.createVariable("s", "a");
+    ExpressionCompiler compiler = new ExpressionCompiler("d = s");
+    ParserContext context = new ParserContext();
+    context.addInput("d", String[].class);
+    context.addInput("s", String.class);
+    Serializable expression = compiler.compile(context);
+    assertTrue((Boolean) MVEL.executeExpression(expression, null, factory));
+}

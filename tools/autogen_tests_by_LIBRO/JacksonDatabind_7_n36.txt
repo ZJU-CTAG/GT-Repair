@@ -1,0 +1,27 @@
+public void testPossiblyWrongTokenBufferDelegateDeserialization() {
+    Value value = new ObjectMapper().readValue("{ \"a\":1, \"b\":null }", Value.class);
+
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+
+class Value {
+    public int a;
+    public String b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value value = new Value();
+        JsonParser parser = buffer.asParser();
+        while (parser.nextToken() != null) {
+            if ("a".equals(parser.getCurrentName())) {
+                parser.nextToken();
+                value.a = parser.getIntValue();
+            } else if ("b".equals(parser.getCurrentName())) {
+                parser.nextToken();
+                value.b = parser.getText();
+            }
+        }
+        return value;
+    }
+}

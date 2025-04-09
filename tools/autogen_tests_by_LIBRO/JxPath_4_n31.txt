@@ -1,0 +1,22 @@
+public void testTrim() throws JAXBException {
+    StringWriter sw = new StringWriter();
+    JAXBContext jc = JAXBContext.newInstance(Test.class);
+    Unmarshaller unmarshaller = jc.createUnmarshaller();
+    Marshaller marshaller = jc.createMarshaller();
+    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    marshaller.marshal(new Test(" a b "), sw);
+    System.out.println(sw);
+    JAXBElement<Test> unmarshal = (JAXBElement<Test>) unmarshaller.unmarshal(new StringReader(sw.toString()));
+    assertEquals(" a b ", unmarshal.getValue().getValue());
+}
+
+@XmlRootElement
+public class Test {
+    private String value;
+    public Test() {
+    }
+    public Test(String value) {
+        this.value = value;
+    }
+    public String getValue() {
+       

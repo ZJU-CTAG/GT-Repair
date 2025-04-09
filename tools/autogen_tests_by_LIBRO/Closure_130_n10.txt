@@ -1,0 +1,13 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+
+    options.setCodingConvention(new ClosureCodingConvention());
+
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("test.js", "function () { return function () { var arg = arguments; setTimeout(function() { alert(arg); }, 0); } }"), options);
+}

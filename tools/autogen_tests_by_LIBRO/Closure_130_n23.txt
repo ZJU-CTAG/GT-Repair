@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.collapsePropertiesOnExternTypes = true;
+    Compiler compiler = new Compiler();
+    compiler.initOptions(options);
+    Node script = compiler.parseTestCode("function () { return function () { var arg = arguments; setTimeout(function() { alert(arg); }, 0); } }");
+    compiler.check(script);
+    assertEquals(2, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+    compiler.setPassConfig(new HotSwapPassConfig(options, true));
+    compiler.setLifeCycleStage(LifeCycleStage.NORMALIZED);
+    compiler.check(script);
+    assertEquals(2, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+}

@@ -1,0 +1,12 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js",
+                    "/**@constructor*/function A(){};"
+                            + "var a = new A();"
+                            + "var x = a.window;"
+                            + "var y = a.document;"),
+            options);
+}

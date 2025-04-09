@@ -1,0 +1,24 @@
+public void testContains() throws IOException {
+    String html = "<html><head><title>First parse</title></head>"
+            + "<body><p>Parsed HTML into a doc.</p></body></html>";
+    Document doc = Jsoup.parse(html);
+
+    Elements es = doc.select("body > p:contains(html)");
+    assertNotNull(es);
+    assertEquals(1, es.size());
+    assertEquals("p", es.get(0).tagName());
+
+    es = doc.select("body:contains(html)");
+    assertNotNull(es);
+    assertEquals(1, es.size());
+    assertEquals("body", es.get(0).tagName());
+
+    es = doc.select("body:contains(hello)");
+    assertNotNull(es);
+    assertEquals(0, es.size());
+
+    es = doc.select("body:containsData(html)");
+    assertNotNull(es);
+    assertEquals(0, es.size());
+
+    es = doc.select("body:cont

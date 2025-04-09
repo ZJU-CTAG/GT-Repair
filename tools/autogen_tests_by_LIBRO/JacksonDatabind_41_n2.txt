@@ -1,0 +1,10 @@
+public void testIssue1079() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType type = TypeFactory.defaultInstance().constructType(Pojo.class);
+    ObjectReader reader = mapper.readerFor(type);
+
+    // this is probably not legal, but in some cases might happen:
+    Pojo pojo = reader.readValue("{\"b\":1}");
+    assertEquals(1, pojo.b);
+}

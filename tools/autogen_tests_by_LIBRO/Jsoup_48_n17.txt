@@ -1,0 +1,14 @@
+public void testDupHeaders() throws IOException {
+    String html = "<p>One</p><p>Two</p>";
+    Document doc = Jsoup.parse(html);
+    String headerVal = "PHP/5.2.8 ASP.NET";
+    doc.outputSettings().charset("ASCII");
+    assertEquals(doc.html(), html);
+    assertEquals(doc.head().html(), "");
+    assertEquals(doc.body().html(), "<p>One</p>\n<p>Two</p>");
+    Map<String, List> resHeaders = new HashMap<String, List>();
+    resHeaders.put("X-Powered-By", Arrays.asList("PHP/5.2.8"));
+    resHeaders.put("X-Powered-By", Arrays.asList("ASP.NET"));
+    doc.processResponseHeaders(resHeaders);
+    assertEquals(headerVal, doc.header("X-Powered-By"));
+    assertEquals("", doc.header("Content-

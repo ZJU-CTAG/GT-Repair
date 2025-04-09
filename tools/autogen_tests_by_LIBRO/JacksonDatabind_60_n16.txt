@@ -1,0 +1,28 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    Example message = new Example(new byte[]{1,2,3});
+    String json = mapper.writeValueAsString(message);
+    Example deserialized = mapper.readValue(json, Example.class);
+    assertArrayEquals(new byte[]{1,2,3}, deserialized.getBytes());
+}
+
+static class Example {
+    /** @serial */
+    private byte[] apdu;
+
+    public Example(byte[] apdu) {
+        this.apdu = apdu;
+    }
+
+    @JsonCreator
+    public Example(@JsonProperty(value = "bytes") byte[] apdu) {
+        this.apdu = apdu;
+    }
+
+    @JsonValue
+    public byte[] getBytes() {
+        return apdu.clone();
+    }
+}

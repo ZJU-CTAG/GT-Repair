@@ -1,0 +1,12 @@
+public void testInvokerTransformer() throws IOException, ClassNotFoundException {
+    Map innerMap = new HashMap();
+    innerMap.put("value", "100");
+    TransformedMap outerMap = new TransformedMap(innerMap, null, new InvokerTransformer("get", new Class[0], new Object[0]));
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    new ObjectOutputStream(bos).writeObject(outerMap);
+    byte[] bytes = bos.toByteArray();
+
+    Map readMap = (Map) new ObjectInputStream(new ByteArrayInputStream(bytes)).readObject();
+    assertEquals("100", readMap.get("value"));
+}

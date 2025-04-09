@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", ""));
+
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js",
+        "alert(1;\n"));
+
+    Result result = compiler.compile(externs, inputs, options);
+
+    JSError[] errors = result.errors;
+    assertEquals(1, errors.length);
+    assertEquals(1, errors[0].lineNumber);
+    assertEquals(1, errors[0].getCharno());
+    assertEquals(1, errors[0].getLineno());
+    assertEquals("input.js", errors[0].sourceName);
+}

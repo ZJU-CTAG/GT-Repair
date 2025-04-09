@@ -1,0 +1,18 @@
+public void testMixin() {
+    final ObjectMapper mapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule("module");
+
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.AUTO_DETECT_FIELDS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+            .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    final PersonImpl person = new PersonImpl();
+    person.setCity("Milano");
+    final String json = mapper.writeValueAsString(person);
+    assertThat(json, containsString("Milano"));
+}

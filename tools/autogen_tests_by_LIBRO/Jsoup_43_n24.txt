@@ -1,0 +1,7 @@
+public void testIssue116() {
+    // This test does not pass, which is the bug
+    Element table = Jsoup.parse("<table><tr><td>Cell1</td><td>Cell2</td></tr><tr><td>Cell1</td><td>Cell2</td></tr></table>").select("table").first();
+    int n = table.children().get(1).elementSiblingIndex();
+    Element row = table.children().get(n);
+    assertEquals(Jsoup.parse("<tr><td>Cell1</td><td>Cell2</td></tr>").select("tr").first(), row);
+}

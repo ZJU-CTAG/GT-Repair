@@ -1,0 +1,14 @@
+public void testIssue() {
+    String args="--process_closure_primitives true";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        ImmutableList.of(SourceFile.fromCode("test.js", "
+        goog.provide('foo.bar');
+        goog.require('foo.bar');
+        ")),
+        options);
+    System.out.println(compiler.toSource());
+}

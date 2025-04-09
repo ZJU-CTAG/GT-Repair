@@ -1,0 +1,10 @@
+public void testFilteringParserDelegate() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(Arrays.asList(new String[]{"foo", "bar", "baz"}));
+    JsonFactory jsonFactory = new JsonFactory(mapper);
+    FilteringParserDelegate parserDelegate = new FilteringParserDelegate(jsonFactory.createParser(json),
+            new SimpleBeanPropertyFilter("*"));
+    assertEquals("foo", parserDelegate.nextTextValue());
+    assertEquals("bar", parserDelegate.nextTextValue());
+    assertEquals("baz", parserDelegate.nextTextValue());
+}

@@ -1,0 +1,31 @@
+public void testIssue1096() {
+    Gson gson = new Gson();
+
+    Date date = null;
+
+    // pre-2.8.1
+    assertEquals("null", gson.toJson(date));
+    assertNull(gson.fromJson("null", Date.class));
+
+    // 2.8.1
+    try {
+        // serialize
+        gson.toJson(date);
+        fail();
+    } catch (Exception expected) {
+    }
+    assertNull(gson.fromJson("null", Date.class));
+}
+
+public void testIssue1098() {
+    Gson gson = new Gson();
+    assertNull(gson.fromJson("null", Date.class));
+}
+
+public void testIssue1095() {
+    Gson gson = new Gson();
+    TreeTypeAdapter<Date> treeTypeAdapter = gson.getAdapter(Date.class);
+
+    Date date = new Date();
+    assertEquals(treeTypeAdapter, gson.getAdapter(date.getClass()));
+}

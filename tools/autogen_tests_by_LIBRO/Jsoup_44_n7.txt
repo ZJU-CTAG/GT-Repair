@@ -1,0 +1,25 @@
+public void testInvalidTableContents() {
+    String html = "<html>\n" +
+            "    <body>\n" +
+            "        <table>\n" +
+            "            <tr>\n" +
+            "                <td>\n" +
+            "                    <table>\n" +
+            "                        <tr>\n" +
+            "                            <!--Comment-->\n" +
+            "                            <table>\n" +
+            "                                <p>Why am I here?</p>\n" +
+            "                        </tr>\n" +
+            "                    </table>\n" +
+            "                </td>\n" +
+            "            </tr>\n" +
+            "        </table>\n" +
+            "    </body>\n" +
+            "</html>";
+    
+    Document document = Jsoup.parse(html);
+    document.outputSettings().prettyPrint(true);
+    String rendered = document.toString();
+    
+    int endOfEmail = rendered.indexOf("Comment");
+   

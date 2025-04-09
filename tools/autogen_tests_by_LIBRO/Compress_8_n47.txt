@@ -1,0 +1,10 @@
+public void testTarOffset () throws Exception {
+    String name = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+    byte[] header = new byte[512];
+    TarArchiveEntry entry = new TarArchiveEntry(name);
+    entry.setSize(name.length());
+    entry.writeEntryHeader(header, 0);
+    TarArchiveEntry entry2 = new TarArchiveEntry(header, 0);
+    assertEquals(entry.getName(), entry2.getName());
+    assertEquals(entry.getSize(), entry2.getSize());
+}

@@ -1,0 +1,20 @@
+public void testIssue() throws IOException {
+    TarArchiveInputStream input = null;
+    InputStream testTar = getClass().getResourceAsStream("/test.tar");
+    try {
+        input = new TarArchiveInputStream(testTar);
+        ArchiveEntry nextMatchedEntry = input.getNextEntry();
+        while (nextMatchedEntry != null) {
+            String outputPath = PathUtil.join("/tmp/", nextMatchedEntry.getName());
+            OutputStream out = new FileOutputStream(outputPath);
+            ByteStreams.copy(input, out);
+            out.close();
+            nextMatchedEntry = input.getNextEntry();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        testTar.close();
+        input.close();
+    }
+}

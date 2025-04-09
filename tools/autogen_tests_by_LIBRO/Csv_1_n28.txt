@@ -1,0 +1,18 @@
+public void testEOL() throws IOException {
+    ByteArrayInputStream bais = new ByteArrayInputStream("\r\r\n\r\n\n\r\r\r\r\r\n\n".getBytes());
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(new InputStreamReader(bais));
+    int n;
+    int count = 0;
+    while ((n = ebr.read()) > -1) {
+        count++;
+    }
+    assertEquals(14, count);
+    assertEquals(7, ebr.getLineNumber());
+    ebr.reset(true);
+    count = 0;
+    while ((n = ebr.read()) > -1) {
+        count++;
+    }
+    assertEquals(14, count);
+    assertEquals(1, ebr.getLineNumber());
+}

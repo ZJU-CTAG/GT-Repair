@@ -1,0 +1,12 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.addMixInAnnotations(ListAttribute.class, ListAttributeMixIn.class);
+    mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+    mapper.registerModule(new JsonSerializers());
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
+    String itemJsonKey = "referenceText

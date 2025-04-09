@@ -1,0 +1,22 @@
+public void testEmbeddedObject() throws Exception
+{
+    final byte[] BINARY_DATA = "Foo!".getBytes("UTF-8");
+    final byte[] EMPTY_DATA = new byte[0];
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator gen = FACTORY.createGenerator(out, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeFieldName("someName");
+    // no codec, so should not be able to serialize arbitrary objects
+    gen.writeEmbeddedObject(Long.valueOf(123L));
+    gen.writeEndObject();
+    gen.close();
+
+    // but at least should be able to serialize binary data
+    out = new ByteArrayOutputStream();
+    gen = FACTORY.createGenerator(out, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeFieldName("foo");
+    gen.writeEmbeddedObject(BINARY_DATA);
+    gen.writeFieldName("bar");
+    gen.writeEmbeddedObject(EMPTY_DATA);

@@ -1,0 +1,26 @@
+public void testUnquotedFieldNames () throws Exception
+{
+    StringWriter sw = new StringWriter();
+    JsonFactory jf = new JsonFactory();
+    UTF8JsonGenerator gen = new UTF8JsonGenerator(jf, sw, JsonEncoding.UTF8,
+            new ContextAttributes.Impl(), new SimpleValueEncoder());
+    gen.writeStartObject();
+    // use of this method will be discouraged, but for now...
+    gen.setHighestNonEscapedChar(0x7F);
+    gen.setCharacterEscapes(new CharacterEscapes() {
+        @Override
+        public int[] getEscapeCodesForAscii() {
+            return new int[0x80];
+        }
+
+        @Override
+        public SerializableString getEscapeSequence(int ch) {
+            return null;
+        }
+    });
+    gen.disable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);
+    gen.writeFieldName("foo");
+    gen.writeNumber(42);
+    gen.writeEndObject();
+    gen.close();
+    Assert

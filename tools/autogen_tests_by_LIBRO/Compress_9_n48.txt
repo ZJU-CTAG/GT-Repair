@@ -1,0 +1,17 @@
+public void testTarArchiveOutputStream() {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    TarArchiveOutputStream tout = new TarArchiveOutputStream(out);
+
+    TarArchiveEntry entry = new TarArchiveEntry("foo");
+    try {
+        tout.putArchiveEntry(entry);
+        tout.write(new byte[] {0});
+        tout.closeArchiveEntry();
+        tout.write(new byte[] {0});
+    } catch (IOException ex) {
+        fail();
+    }
+
+    // should return 2, but returns 0
+    assertEquals(2, tout.getBytesWritten());
+}

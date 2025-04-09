@@ -1,0 +1,18 @@
+public void testIssue107() {
+    final String methodName = "methodName";
+    
+    @SuppressWarnings("unchecked")
+    final Answer<Object> answer = mock(Answer.class);
+    final A a = mock(A.class, answer);
+    doAnswer(answer).when(a).methodName();
+    
+    when(a.methodName()).thenReturn("");
+    
+    verifyZeroInteractions(answer);
+}
+
+class A {
+    public String methodName() {
+        return "";
+    }
+}

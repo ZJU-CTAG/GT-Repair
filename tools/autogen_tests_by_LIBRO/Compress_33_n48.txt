@@ -1,0 +1,13 @@
+public void testDeflateNoHeader() throws Exception {
+    testCompression(CompressorStreamFactory.DEFLATE, "bla.tar.deflatez");
+}
+
+private void testCompression(String format, String filename) throws Exception {
+    try (InputStream is = new FileInputStream(new File("src/test/resources", filename));
+         CompressorInputStream cis = new CompressorStreamFactory().createCompressorInputStream(is)) {
+        byte[] buffer = new byte[100];
+        int n = cis.read(buffer);
+        // check that we read some bytes
+        assertTrue(n > 0);
+    }
+}

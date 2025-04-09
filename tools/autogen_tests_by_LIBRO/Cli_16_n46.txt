@@ -1,0 +1,19 @@
+public void testGroupMinimumsAndMaximums() {
+    Options options = new Options();
+    OptionGroup groupA = new OptionGroup();
+    groupA.setMaximum(1);
+    groupA.addOption(OptionBuilder.withDescription("group A option 1").create("A"));
+    groupA.addOption(OptionBuilder.withDescription("group A option 2").create("B"));
+    groupA.addOption(OptionBuilder.withDescription("group A option 3").create("C"));
+
+    OptionGroup groupB = new OptionGroup();
+    groupB.setMaximum(1);
+    groupB.addOption(OptionBuilder.withDescription("group B option 1").create("D"));
+    groupB.addOption(OptionBuilder.withDescription("group B option 2").create("E"));
+    groupB.addOption(OptionBuilder.withDescription("group B option 3").create("F"));
+
+    groupA.addOption(groupB);
+    options.addOptionGroup(groupA);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse( options, new String[] { "-A",

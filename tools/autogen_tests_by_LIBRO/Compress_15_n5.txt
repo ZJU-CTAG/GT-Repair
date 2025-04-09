@@ -1,0 +1,16 @@
+public void testZipFileAndZipArchiveInputStream() throws Exception {
+    File file = new File("test.zip");
+    file.deleteOnExit();
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file));
+    zos.putNextEntry(new ZipEntry("test.txt"));
+    zos.closeEntry();
+    zos.close();
+
+    ZipFile zipFile = new ZipFile(file);
+    ZipArchiveEntry zipArchiveEntry = zipFile.getEntry("test.txt");
+    InputStream is = zipFile.getInputStream(zipArchiveEntry);
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(is);
+    assertEquals(zipArchiveEntry, zis.getNextZipEntry());
+    assertNull(zis.getNextZipEntry());
+    zis.close();
+}

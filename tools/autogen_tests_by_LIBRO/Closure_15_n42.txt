@@ -1,0 +1,25 @@
+public void testIssue108() {
+
+    String script = "var customData = { key: 'value' };"
+            + "function testRemoveKey( key ) {"
+            + "   var dataSlot = customData,"
+            + "       retval = dataSlot && dataSlot[ key ],"
+            + "       hadKey = dataSlot && ( key in dataSlot );"
+            + ""
+            + "   if ( dataSlot )"
+            + "       delete dataSlot[ key ];"
+            + ""
+            + "   return hadKey ? retval : null;"
+            + "};"
+            + ""
+            + "console.log( testRemoveKey( 'key' ) ); // 'value'"
+            + "console.log( 'key' in customData ); // false";
+
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+
+    try {
+        engine.eval(script);
+    } catch (ScriptException e) {
+        e.printStackTrace();
+    }
+}

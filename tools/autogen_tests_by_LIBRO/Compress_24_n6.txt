@@ -1,0 +1,14 @@
+public void testTarWithBigUserId() throws IOException {
+    // create a tar with a big uid
+    final TarArchiveOutputStream tos = new TarArchiveOutputStream(new FileOutputStream(testTarWithBigUserId));
+    TarArchiveEntry entry = new TarArchiveEntry("foo");
+    entry.setUserId(Integer.MAX_VALUE);
+    tos.putArchiveEntry(entry);
+    tos.closeArchiveEntry();
+    tos.close();
+
+    // read this tar
+    final TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(testTarWithBigUserId));
+    assertNotNull(tis.getNextTarEntry());
+    tis.close();
+}

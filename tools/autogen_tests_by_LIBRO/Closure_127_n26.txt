@@ -1,0 +1,10 @@
+public void testBreakInFinally() {
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("js");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b };");
+        fail("Should have thrown an exception");
+    } catch(Throwable t) {
+        System.out.println(t);
+        // expected
+    }
+}

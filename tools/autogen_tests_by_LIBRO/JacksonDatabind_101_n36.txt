@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Issue108.Bean.class);
+    mapper.registerSubtypes(Issue108.UnwrappedBean.class);
+    Issue108.Bean bean = mapper.readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}",
+            Issue108.Bean.class);
+    assertEquals(1, bean.x);
+    assertEquals(2, bean.w.a);
+    assertEquals(3, bean.y);
+    assertEquals(4, bean.w.b);
+}

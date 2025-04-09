@@ -1,0 +1,15 @@
+public void testCLIWithDefaultArg() {
+        Option option = new Option("a", "all", false, "test");
+        Option option2 = new Option("b", "bar", true, "test");
+        option2.setDefaultValue("default");
+        option2.setArgs(1);
+
+        Options options = new Options();
+        options.addOption(option);
+        options.addOption(option2);
+
+        CommandLineParser parser = new PosixParser();
+        CommandLine line = parser.parse(options, new String[]{"-ab", "new"});
+
+        assertEquals("new", line.getValue("b"));
+    }

@@ -1,0 +1,30 @@
+public void testIssue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final TypeFactory typeFactory = mapper.getTypeFactory();
+    final SimpleModule module = new SimpleModule("custom", new Version(1, 0, 0, null, null, null));
+    module.addAbstractTypeMapping(Base.class, BaseImpl.class);
+    module.addAbstractTypeMapping(Container.class, ContainerImpl.class);
+    module.setTypeIdResolver(new TypeIdResolver() {
+        @Override
+        public void init(JavaType baseType) {
+            // Do nothing.
+        }
+
+        @Override
+        public String idFromValueAndType(Object value, Class<?> suggestedType) {
+            return idFromValue(value);
+        }
+
+        @Override
+        public String idFromValue(Object value) {
+            return value.getClass().getSimpleName();
+        }
+
+        @Override
+        public String idFromBaseType() {
+            return "Base";
+        }
+
+        @Override
+        public String getDescForKnownTypeIds() {
+            return null;

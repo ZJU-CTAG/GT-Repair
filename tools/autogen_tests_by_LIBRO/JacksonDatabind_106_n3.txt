@@ -1,0 +1,14 @@
+public void testIntTypeConversions() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
+    mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+    JsonNode tree = mapper.readTree("{\"x\": 1e10}");
+
+    // fails with expected error
+    mapper.readerFor(IntClass.class).readValue(tree);
+
+    // fails silently
+    TreeTraversingParser ttp = new TreeTraversingParser(tree, mapper.getFactory());
+    IntClass ic = mapper.readerFor(IntClass.class).readValue(ttp);
+    assertEquals(-2147483648, ic.x);
+}

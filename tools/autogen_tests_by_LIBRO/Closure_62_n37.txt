@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    DefaultErrorManager manager = new DefaultErrorManager() {
+
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            System.out.println(level + " - " + error.description);
+            System.out.println(error.sourceName + ":" + error.lineNumber + ":" + error.getCharno());
+            System.out.println(error.lineSource);
+            System.out.println(error.getCode());
+            System.out.println();
+        }
+    };
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(manager);
+    compiler.compile(SourceFile.fromCode("source", "alert(1;"), options);
+    compiler.compile(SourceFile.fromCode("source", "alert(1;\n"), options);
+}

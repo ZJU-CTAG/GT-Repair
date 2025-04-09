@@ -1,0 +1,17 @@
+public void testCopyZip() throws Exception {
+    try (ZipFile zip = new ZipFile("src/test/resources/test-documents/test.zip")) {
+        File outFile = File.createTempFile("test", ".zip");
+        outFile.deleteOnExit();
+        try (ZipArchiveOutputStream out = new ZipArchiveOutputStream(outFile)) {
+            for (Enumeration<ZipArchiveEntry> e = zip.getEntries(); e.hasMoreElements();) {
+                out.putArchiveEntry(e.nextElement());
+                IOUtils.copy(zip.getInputStream(zip.getEntry("./test.jpg")), out);
+                out.closeArchiveEntry();
+            }
+        }
+        try (ZipFile outZip = new ZipFile(outFile)) {
+            assertNotNull(outZip.getEntry("./test.jpg"));
+            assertNotNull(outZip.getInputStream(outZip.getEntry("./test.jpg")));
+        }
+    }
+}

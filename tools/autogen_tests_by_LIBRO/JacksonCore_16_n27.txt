@@ -1,0 +1,22 @@
+public void testJsonParserSequence() throws Exception {
+    String json = "{\"key\":\"value\"}";
+    String json2 = "{\"key2\":\"value2\"}";
+
+    JsonParser jsonParser = new JsonFactory().createParser(json);
+    JsonParser jsonParser2 = new JsonFactory().createParser(json2);
+
+    JsonParserSequence jsonParserSequence = JsonParserSequence.createFlattened(jsonParser, jsonParser2);
+
+    jsonParserSequence.nextToken();
+    assertEquals(jsonParserSequence.currentToken(), JsonToken.START_OBJECT);
+
+    jsonParserSequence.nextToken();
+    assertEquals(jsonParserSequence.currentToken(), JsonToken.FIELD_NAME);
+    assertEquals(jsonParserSequence.getCurrentName(), "key");
+
+    jsonParserSequence.nextToken();
+    assertEquals(jsonParserSequence.currentToken(), JsonToken.VALUE_STRING);
+    assertEquals(jsonParserSequence.getText(), "value");
+
+    jsonParserSequence.nextToken();
+    assert

@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"a\":1}";
+    MyException e = mapper.readValue(json, MyException.class);
+    assertEquals(1, e.getA());
+}
+
+@JsonIgnoreProperties("cause")
+static class MyException extends Exception
+{
+    private int a;
+
+    public int getA() {
+        return a;
+    }
+
+    public void setA(int a) {
+        this.a = a;
+    }
+}

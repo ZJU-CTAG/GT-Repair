@@ -1,0 +1,24 @@
+public void testRefinementIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+}
+
+// for (1)
+public class WrapperRefinementIssue
+    extends TestCase
+{
+    public void testRefinementIssue() throws Exception
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        Bean bean = mapper.readValue("{\"x\":123}", Bean.class);
+        assertEquals(Integer.valueOf(123), bean.x);
+    }
+
+    public static class Bean {
+        public int x;
+    }
+}

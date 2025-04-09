@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonPointer ptr;
+
+    ptr = JsonPointer.compile("/00");
+    assertEquals(JsonPointer.class, ptr.getClass());
+
+    ptr = JsonPointer.compile("/0");
+    assertEquals(JsonPointer.class, ptr.getClass());
+
+    ptr = JsonPointer.compile("/00");
+    assertEquals(JsonPointer.class, ptr.getClass());
+
+    JsonNode root = mapper.readTree("{\"00\":true}");
+    assertEquals(BooleanNode.TRUE, ptr.get(root));
+
+    root = mapper.readTree("[true]");
+    assertNull(ptr.get(root));
+}

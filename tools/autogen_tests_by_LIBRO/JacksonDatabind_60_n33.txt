@@ -1,0 +1,13 @@
+public void testJsonValue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+
+    final RemoteCall<CommandAPDU> message = new RemoteCall<>(new CommandAPDU(new byte[] {(byte)0x90, 0x00}));
+    String json = mapper.writeValueAsString(message);
+    LOG.v(json);
+
+    RemoteCall<CommandAPDU> readValue = mapper.readValue(json, RemoteCall.class);
+    assertEquals(message.getArguments()[0], readValue.getArguments()[0]);
+}

@@ -1,0 +1,18 @@
+public void testClosure() throws Exception {
+  String js =
+      "var window = {};\n" +
+      "window.globalThis = 'foo';";
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  options.setCodingConvention(new ClosureCodingConvention());
+  options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+  options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+  List<SourceFile> externs = Lists.newArrayList();
+  externs.add(SourceFile.fromCode("externs.js",
+      "function alert(msg) {}"));
+  List<SourceFile> inputs = Lists.newArrayList();
+  inputs.add(SourceFile.fromCode("input.js", js));
+  Result result = compiler.compile(externs, inputs, options);
+  List<JSError> errors = result.errors;
+  assertEquals(2, errors.size());
+  // Using

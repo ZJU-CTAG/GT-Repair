@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(Option.builder().longOpt("importToOpen").hasArg().argName("FILE").build());
+    options.addOption(Option.builder("i").longOpt("import").hasArg().argName("FILE").build());
+
+    CommandLineParser clp = new DefaultParser();
+    try {
+        clp.parse(options, new String[] { "--import=FILE" });
+        fail("Expected exception");
+    } catch (ParseException e) {
+        // expected
+    }
+}

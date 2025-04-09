@@ -1,0 +1,18 @@
+public void testIssue124() {
+    // First, check that we are parsing the same string as the original
+    DateTimeZone london = DateTimeZone.forID("Europe/London");
+    DateTime orig = new DateTime(
+                     "2011-10-30T01:59:00.000Z",
+                     london);
+    DateTime test = new DateTime(
+                     "2011-10-30T01:59:00.000+01:00",
+                     london);
+    assertEquals(orig, test);
+
+    DateTime first = new DateTime(2011, 10, 30, 1, 59, 0, 0, london);
+    DateTime second = new DateTime(2011, 10, 30, 2, 59, 0, 0, DateTimeZone.forID("Europe/Oslo"));
+    DateTime third = new DateTime(2011, 10, 30, 3, 59, 0, 0, DateTimeZone.forID("Europe/Helsinki"));
+
+    // All three DateTime objects should all represent the same moment in time even if they are ambiguous.
+    assertEquals(first, second);
+    assert

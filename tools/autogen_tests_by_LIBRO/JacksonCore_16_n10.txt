@@ -1,0 +1,10 @@
+public void testJsonParserSequence() throws IOException {
+    String json = "{\"a\":{\"b\":{\"c\":{}}}}";
+    JsonParser p1 = new ObjectMapper().readTree(json).traverse();
+    JsonParser p2 = new ObjectMapper().readTree(json).traverse();
+    JsonParserSequence p = JsonParserSequence.createFlattened(p1, p2);
+    p.nextFieldName();
+    assertEquals("a", p.getCurrentName());
+    p.nextFieldName();  // This should return null, but does not
+    assertEquals(null, p.getCurrentName());
+}

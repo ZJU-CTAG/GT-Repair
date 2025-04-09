@@ -1,0 +1,20 @@
+public void testIssue() throws IOException {
+    String json = "{\"@foo\":1}";
+    JsonParser p1 = JSON_F.createJsonParser(json);
+    JsonParser p2 = JSON_F.createJsonParser(json);
+
+    p1.nextToken();
+    p2.nextToken();
+    assertEquals(JsonToken.START_OBJECT, p1.getCurrentToken());
+    assertEquals(JsonToken.START_OBJECT, p2.getCurrentToken());
+
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(p1, p2);
+
+    // First parser calls nextToken() on the second parser and skips the first token
+    sequence.nextToken();
+
+    assertEquals(JsonToken.FIELD_NAME, sequence.getCurrentToken());
+    assertEquals("@foo", sequence.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, sequence.nextToken());
+    assertEquals(1, sequence.getIntValue());
+}

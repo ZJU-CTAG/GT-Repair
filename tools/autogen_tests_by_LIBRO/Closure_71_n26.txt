@@ -1,0 +1,12 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("input1.js",
+                    "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+            JSSourceFile.fromCode("input2.js",
+                    "/** @constructor \n * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }")},
+            new CompilerOptions()
+            );
+    assertTrue(result.success);
+}

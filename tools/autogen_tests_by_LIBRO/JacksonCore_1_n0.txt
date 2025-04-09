@@ -1,0 +1,14 @@
+public void testBigDecimalFloat() throws IOException
+{
+    String text = quote("NaN");
+    JsonParser jp = createParser(ObjectReadContext.empty(), text);
+    jp.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    assertToken(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    try {
+        jp.getDecimalValue();
+        fail("Should have thrown exc");
+    } catch (NullPointerException e) {
+        verifyException(e, "Null Number");
+    }
+    jp.close();
+}

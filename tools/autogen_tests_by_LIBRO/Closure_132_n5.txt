@@ -1,0 +1,21 @@
+public void testGeneratedScript() throws Exception {
+    String[] src = {
+            "if( es[--esi][ es[esi+1] ] === 1) {",
+            "es[esi] = 0;",
+            "}",
+            "else {",
+            "es[esi] = 1;",
+            "}",
+    };
+    Script[] scripts = new Script[src.length];
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    for (int i = 0; i < scripts.length; i++) {
+        scripts[i] = engine.compile(src[i]);
+    }
+    StringWriter out = new StringWriter();
+    CompilerEnvirons env = new CompilerEnvirons();
+    new ScriptNodeToCodeConverter(env).convert(scripts, out);
+    String c = out.toString();
+    System.out.println(c);
+}

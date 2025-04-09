@@ -1,0 +1,21 @@
+public void testPearsonCorrelation() {
+    final int numTreatments = 4;
+    final int numSamples = 10000;
+
+    StandardNormalDistribution standardNormalDistribution = new StandardNormalDistribution();
+    RealDistribution normalDistribution = new NormalDistribution(standardNormalDistribution, 0.0, 1.0);
+
+    double[][] data = new double[numTreatments][numSamples];
+    for (int i = 0; i < numTreatments; ++i) {
+        for (int j = 0; j < numSamples; ++j) {
+            data[i][j] = normalDistribution.sample();
+        }
+    }
+
+    PearsonsCorrelation pearsonsCorrelation = new PearsonsCorrelation(data);
+    double[][] correlationMatrix = pearsonsCorrelation.getCorrelationMatrix().getData();
+
+    for (int i = 0; i < numTreatments; ++i) {
+        for (int j = i + 1; j < numTreatments; ++j) {
+            double r = correlationMatrix[i][j];
+            // This p

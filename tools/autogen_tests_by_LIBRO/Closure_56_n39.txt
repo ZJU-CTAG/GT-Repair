@@ -1,0 +1,9 @@
+public void testLastWarningOrErrorIsTruncated() throws Exception {
+    FlagSpec<LoggingLevel> loggingLevel = CommandLineRunner.getFlag("warning_level");
+    loggingLevel.parse("VERBOSE");
+    Compiler compiler = new Compiler();
+    Node root = compiler.parseFile(new File("test.js"), new File("test.js"));
+    assertEquals(2, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+    compiler.report(root);
+}

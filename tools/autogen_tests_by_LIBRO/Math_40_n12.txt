@@ -1,0 +1,18 @@
+public void testBrokenBracket() {
+    BracketFinder finder = new BracketFinder() {
+        public double[] bracket(double initial) {
+            return new double[] { -100000, 100000 };
+        }
+    };
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return 2 * x * x + 3 * x + 1;
+        }
+    };
+    try {
+        double root = new BracketingNthOrderBrentSolver(1.0e-3, 5).solve(1000, f, -100000, 100000);
+        assertEquals(-1.5, root, 1.0e-5);
+    } catch (MaxCountExceededException ex) {
+        fail("Should not exceed max iterations.");
+    }
+}

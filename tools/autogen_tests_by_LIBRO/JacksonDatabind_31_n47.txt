@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.enable(SerializationFeature.INDENT_OUTPUT);
+    om.setFilters(new SimpleFilterProvider().addFilter("myFilter", new JsonAntPathFilter()));
+    ObjectNode root = om.createObjectNode();
+    root.put("A", "a");
+    ObjectNode left = root.putObject("B");
+    left.put("B.1", "b1");
+    ObjectNode right = root.putObject("C");
+    right.put("C.1", "c1");
+    System.out.println(om.writeValueAsString(root));
+    System.out.println(om.convertValue(root, String.class));
+}

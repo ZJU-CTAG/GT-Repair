@@ -1,0 +1,14 @@
+public void test() throws JsonProcessingException, IOException {
+        String json = "{\"a\":1}a";
+        IOContext ctxt = new IOContext(new ObjectReadContext(null, null, false, null, null), null, true, null);
+        InputStream in = new ByteArrayInputStream(json.getBytes());
+        BytesToNameCanonicalizer sym = BytesToNameCanonicalizer.createRoot();
+        ObjectCodec codec = new DefaultObjectMapper();
+        byte[] inputBuffer = new byte[json.length() + 1];
+        int start = 0;
+        int end = json.length();
+        boolean bufferRecyclable = true;
+
+        UTF8StreamJsonParser parser = new UTF8StreamJsonParser(ctxt, 0, in, codec, sym, inputBuffer, start, end, bufferRecyclable);
+        parser.readValueAs(Object.class);
+    }

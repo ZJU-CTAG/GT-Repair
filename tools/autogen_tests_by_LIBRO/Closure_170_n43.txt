@@ -1,0 +1,20 @@
+public void testIssue128() throws IOException, RecognitionException {
+    String source = "function Test(n) { " +
+                    " var i = 0;" +
+                    " return typeof n !== 'undefined'?(i=n.length):(n='foo'),i" +
+                    "} " +
+                    "var dummy = '6chars';" +
+                    "console && console.log(Test(dummy));";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setIdeMode(true);
+    env.setOptimizationLevel(1);
+    env.setWarnTrailingComma(false);
+    env.setErrorReporter(new ErrorReporter() {
+        @Override
+        public void warning(String arg0, String arg1, int arg2, String arg3, int arg4) {
+        }
+        
+        @Override
+        public EvaluatorException runtimeError(String arg0, String arg1, int arg2, String arg3, int arg4) {
+            return new EvaluatorException

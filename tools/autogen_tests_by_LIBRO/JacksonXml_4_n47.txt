@@ -1,0 +1,20 @@
+public void testWithRootNameForNull() throws Exception {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, true);
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public Object findSerializer(Annotated a) {
+            return super.findSerializer(a);
+        }
+    });
+    mapper.setConfig(mapper.getSerializationConfig().withRootName("myRoot"));
+    final String xml = mapper.writeValueAsString(testVO());
+    assertEquals(xml, "<myRoot>\n" +
+            "  <test>test</test>\n" +
+            "</myRoot>");
+}
+
+private TestVO testVO() {
+    TestVO test

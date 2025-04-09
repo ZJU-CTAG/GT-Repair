@@ -1,0 +1,26 @@
+public void testRequiredOptions() throws Exception {
+    final Argument argument = new Argument("h", "help", false);
+    final Argument argument2 = new Argument("c", "configuration", true);
+    final Argument argument3 = new Argument("d", "debug", false);
+
+    final Option option = new Option(argument);
+    final Option option2 = new Option(argument2);
+    final Option option3 = new Option(argument3);
+
+    final List required = new ArrayList();
+    required.add(option);
+
+    final List options = new ArrayList();
+    options.add(option);
+    options.add(option2);
+    options.add(option3);
+
+    final CommandLineParser parser = new PosixParser();
+
+    final CommandLine commandLine = parser.parse(required, options, new String[] { "-c", "foo", "-h" });
+
+    assertTrue(commandLine.hasOption("h"));
+    assertTrue(commandLine.hasOption("c"));
+    assertEquals("foo", commandLine.getValue("c"));
+
+    assertEquals("[-h]", commandLine.getRequiredOptions().to

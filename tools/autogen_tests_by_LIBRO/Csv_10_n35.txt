@@ -1,0 +1,8 @@
+public void testWithHeaders() throws IOException {
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    try (CSVPrinter printer = CSVFormat.TDF.withHeader("x").print(new PrintWriter(output))) {
+        printer.printRecord(42);
+    }
+    String result = output.toString();
+    assertEquals("x" + System.lineSeparator() + "42" + System.lineSeparator(), result);
+}

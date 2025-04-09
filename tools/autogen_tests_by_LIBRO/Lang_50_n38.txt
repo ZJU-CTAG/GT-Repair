@@ -1,0 +1,15 @@
+public void testLocaleChanged() {
+    FastDateFormat fmt = FastDateFormat.getInstance("yyyy-MM-dd");
+    // Ensure that we use the default locale
+    Locale.setDefault(Locale.ENGLISH);
+    assertEquals("2011-01-03", fmt.format(new Date(1294091600000L)));
+    Locale.setDefault(Locale.FRENCH);
+    assertEquals("2011-01-03", fmt.format(new Date(1294091600000L)));
+
+    // If the locale is not part of the cache key, then it should still work
+    Locale.setDefault(Locale.ENGLISH);
+    fmt = FastDateFormat.getInstance("yyyy-MM-dd", null);
+    assertEquals("2011-01-03", fmt.format(new Date(1294091600000L)));
+    Locale.setDefault(Locale.FRENCH);
+    assertEquals("2011-01-03", fmt.format(new Date(1294091600000L)));
+}

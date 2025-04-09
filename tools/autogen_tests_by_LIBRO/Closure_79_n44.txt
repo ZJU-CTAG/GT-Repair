@@ -1,0 +1,20 @@
+public void testIssue108() {
+    File extern = new File("src/test/resources/externs.js");
+    File js = new File("src/test/resources/issue108.js");
+    File out = new File("target/issue108.js");
+    assertTrue(extern.exists());
+    assertTrue(js.exists());
+
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.OFF);
+
+    List<SourceFile> externs = new ArrayList<>();
+    List<SourceFile> inputs = new ArrayList<>();
+    externs.add(SourceFile.fromFile(extern));
+    inputs.add(SourceFile.fromFile(js));
+    FileOutputStream outStream = new FileOutputStream(out);
+
+    Comp

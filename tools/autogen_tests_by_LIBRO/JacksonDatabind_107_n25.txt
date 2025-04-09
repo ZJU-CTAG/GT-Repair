@@ -1,0 +1,14 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+ObjectMapper mapper = new ObjectMapper();
+mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+mapper.addHandler(new DeserializationProblemHandler() {
+@Override
+public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+return Void.class;
+}
+});
+Void void1 = mapper.readValue("{\"@void\":\"\\\"null\\\"\"}", Void.class);
+assertSame(Void.class, void1.getClass());
+}

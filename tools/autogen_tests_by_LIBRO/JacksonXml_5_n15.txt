@@ -1,0 +1,13 @@
+public void testJsonRootElement () throws Exception
+{
+	ObjectMapper xmlMapper = new XmlMapper();
+	ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+			.configure(MapperFeature.USE_ANNOTATIONS, false)
+			.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+	XMLTest value = new XMLTest();
+	String xml = noAnnotationsXmlMapper.writeValueAsString(value);
+	String xml2 = xmlMapper.writeValueAsString(value);
+	assertEquals("<XMLTest/>", xml);
+	assertEquals("<myname/>", xml2);
+}

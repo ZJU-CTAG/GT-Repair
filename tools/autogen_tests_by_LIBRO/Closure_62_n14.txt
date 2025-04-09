@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String test = "alert(1;\n";
+    List<Error> errors = new ArrayList<Error>();
+    String result = CommandLineRunner.run(
+        new String[] {"--js", test},
+        "",
+        new CompilerOptions(),
+        errors);
+    assertEquals(1, errors.size());
+    assertTrue(result.contains("^"));
+}

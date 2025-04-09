@@ -1,0 +1,8 @@
+public void testBreakInFinallyBlock() {
+    final ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');");
+    } catch (final ScriptException e) {
+        assertEquals("break", e.getCause().getClass().getSimpleName());
+    }
+}

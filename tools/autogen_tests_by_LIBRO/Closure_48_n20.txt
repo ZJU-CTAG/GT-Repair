@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        null, "var myclass = function() { };\n" +
+        "/** @param {boolean} success */\n" +
+        "myclass.prototype.fn = function(success) { };\n" +
+        "myclass.prototype.test = function() { this.fn(); this.fn = function() { }; }\n"
+    );
+    assertEquals("There should be no errors", 0, result.errors.length);
+}

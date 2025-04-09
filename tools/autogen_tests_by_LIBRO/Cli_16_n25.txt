@@ -1,0 +1,19 @@
+public void testGroupConstraints() {
+    OptionGroup groupB = new OptionGroup();
+    groupB.addOption(new Option("A", null));
+    groupB.addOption(new Option("B", null));
+    groupB.setRequired(true);
+    groupB.setMinimum(1);
+
+    Options options = new Options()
+            .addOptionGroup(groupB);
+
+    CommandLineParser parser = new GnuParser();
+    CommandLine commandLine = parser.parse(options, new String[]{"-A", "-B"});
+    assertTrue(commandLine.hasOption("A"));
+    assertTrue(commandLine.hasOption("B"));
+
+    commandLine = parser.parse(options, new String[]{"-B"});
+    assertFalse(commandLine.hasOption("A"));
+    assertTrue(commandLine.hasOption("B"));
+}

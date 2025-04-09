@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+
+    module.addSerializer(new JsonSerializer<TestModel>() {
+        @Override
+        public void serialize(TestModel value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeString("custom");
+        }
+    });
+    mapper.registerModule(module);
+
+    String json = mapper.writeValueAsString(new TestModel());
+    assertEquals("custom", json);
+}
+
+// POJO has @JsonValue
+static class TestModel {
+    @JsonValue
+    public String getValue() {
+        return "default";
+    }
+}

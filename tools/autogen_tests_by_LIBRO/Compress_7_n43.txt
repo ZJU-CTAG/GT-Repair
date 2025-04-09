@@ -1,0 +1,9 @@
+public void testIssue116() throws Exception {
+    File file = new File("file.tar");
+    String fileName = "file.txt";
+    String fileContent = "abcd\u00e4";
+    TarUtils.createTarFile(file, fileName, fileContent);
+    TarEntry tarEntry = TarUtils.parseName(new FileInputStream(file), fileName);
+    assertEquals(fileName, tarEntry.getName());
+    assertEquals(fileContent, TarUtils.getText(tarEntry));
+}

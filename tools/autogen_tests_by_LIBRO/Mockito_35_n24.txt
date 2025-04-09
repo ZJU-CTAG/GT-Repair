@@ -1,0 +1,21 @@
+public void testPowermockito() {
+    new PowerMockito() {
+        @Test
+        public void testSomething() throws Exception {
+            try {
+                mock(CantMockMe.class);
+                fail("Should throw UnableToProxyException");
+            } catch (UnableToProxyException e) {
+                assertEquals("Unable to create a mock for the given class org.mockito.exceptions.base.MockitoCantMockException: Cannot mock/spy class org.mockito.exceptions.CantMockMe\n" +
+                        "Mockito cannot mock/spy following: \n" +
+                        "  - final classes\n" +
+                        "  - anonymous classes\n" +
+                        "  - primitive types", e.getMessage());
+            }
+        }
+    }.run();
+}
+
+public static final class CantMockMe {
+
+}

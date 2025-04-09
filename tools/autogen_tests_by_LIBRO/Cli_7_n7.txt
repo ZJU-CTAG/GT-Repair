@@ -1,0 +1,12 @@
+public void testRequiredOptions() {
+    Options options = new Options().addOption(new Switch("a")).addOption(new Switch("b"));
+    Group group = new GroupBuilder().withOption(new Switch("c")).withOption(new Switch("d")).create();
+    options.addOption(group);
+
+    Option help = new Switch("h").setShortName("h").setRequired(true);
+    help.getPreferredName();
+    options.addOption(help);
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, "-c -h".split(" "));
+    assertEquals("[-h]", cmd.getRequiredOptions().toString());
+}

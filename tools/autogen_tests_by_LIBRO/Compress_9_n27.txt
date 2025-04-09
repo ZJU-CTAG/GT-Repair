@@ -1,0 +1,17 @@
+public void testTarArchiveOutputStream() throws Exception {
+        File file = new File("test.tar");
+        file.deleteOnExit();
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+            TarArchiveOutputStream tarAos = (TarArchiveOutputStream) aos;
+            fis = new FileInputStream(getClass().getResource("test.txt").getFile());
+            TarArchiveEntry tae = new TarArchiveEntry(new File(getClass().getResource("test.txt").getFile()));
+            tarAos.putArchiveEntry(tae);
+            IOUtils.copy(fis, tarAos);
+            tarAos.closeArchiveEntry();
+            assertEquals(new File(getClass().getResource("test.txt").getFile()).length(), tarAos.getBytesWritten());
+            tarAos.close();
+       

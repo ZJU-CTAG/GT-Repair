@@ -1,0 +1,10 @@
+public void testReadTruncated() throws IOException {
+    // 769 is the maximum number of bytes that BZip2CompressorInputStream can read from
+    // the truncated input data.
+    byte[] data = getTruncatedData(769);
+    BZip2CompressorInputStream in = new BZip2CompressorInputStream(new ByteArrayInputStream(data));
+    byte[] buffer = new byte[100];
+    int count = in.read(buffer);
+    in.close();
+    assertEquals("Should read some data", count, 100);
+}

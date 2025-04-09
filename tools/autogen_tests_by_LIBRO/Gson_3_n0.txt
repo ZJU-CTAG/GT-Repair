@@ -1,0 +1,23 @@
+public void testIssue624() {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<String, String>();
+    map.put("a", "aa");
+    map.put("b", "bb");
+    map.put("c", "cc");
+    Test624 test = new Test624();
+    test.setMap(map);
+    String json = new Gson().toJson(test);
+    test = new Gson().fromJson(json, Test624.class);
+    assertEquals("aa", test.getMap().get("a"));
+    assertEquals("bb", test.getMap().get("b"));
+    assertEquals("cc", test.getMap().get("c"));
+}
+
+public class Test624 {
+    private ConcurrentNavigableMap<String, String> map;
+
+    public ConcurrentNavigableMap<String, String> getMap() {
+        return map;
+    }
+
+    public void setMap(ConcurrentNavigableMap<String, String> map) {
+        this.map = map

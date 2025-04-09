@@ -1,0 +1,18 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper om = new ObjectMapper();
+    TypeFactory factory = om.getTypeFactory();
+
+    // simulate real scenario where the class is constructed in a different order
+    JavaType baseType = factory.constructType(Base.class);
+    JavaType subType = factory.constructType(Sub.class);
+
+    Base base = new Base();
+    Sub sub = new Sub();
+    base.sub = sub;
+
+    String baseSerialized = om.writeValueAsString(base);
+    assertEquals("{\"base\":1,\"sub\":{\"sub\":2}}", baseSerialized);
+
+    String subSerialized = om.writeValueAsString(sub);
+    assertEquals("{\"sub\":2}", subSerialized);
+}

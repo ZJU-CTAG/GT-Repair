@@ -1,0 +1,21 @@
+public void testIssue2() {
+
+    ObjectMapper m = new ObjectMapper();
+
+    // class with @JsonProperty on private field
+    class ClassWithJsonProperty {
+        @JsonProperty private int x = 5;
+    }
+    assertEquals("{\"x\":5}", m.writeValueAsString(new ClassWithJsonProperty()));
+
+    // class with @JsonProperty and @JsonUnwrapped on private field
+    class ClassWithJsonPropertyAndJsonUnwrapped {
+        @JsonProperty @JsonUnwrapped private ClassWithJsonProperty x = new ClassWithJsonProperty();
+    }
+    assertEquals("{\"x\":5}", m.writeValueAsString(new ClassWithJsonPropertyAndJsonUnwrapped()));
+
+    // class with @JsonUnwrapped on private field
+    class ClassWithJsonUnwrapped {
+        @JsonUnwrapped private ClassWithJsonProperty x = new ClassWithJsonProperty();
+    }
+    assertEquals("{\"x\":5}", m.writeValueAsString(new ClassWithJsonUn

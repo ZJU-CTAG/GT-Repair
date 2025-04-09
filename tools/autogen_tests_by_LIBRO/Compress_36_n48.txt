@@ -1,0 +1,13 @@
+public void testReadEmptyEntry() throws Exception {
+    File src = new File("src/test/resources/test-empty.7z");
+    SevenZFile file = new SevenZFile(src, new byte[] {});
+    for (SevenZArchiveEntry entry = file.getNextEntry(); entry != null; entry = file.getNextEntry()) {
+        if (entry.getName().equals("test-empty.txt")) {
+            assertEquals(0, entry.getSize());
+            byte[] buffer = new byte[(int) entry.getSize()];
+            int read = file.read(buffer);
+            assertEquals(0, read);
+        }
+    }
+    file.close();
+}

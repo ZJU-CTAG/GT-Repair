@@ -1,0 +1,11 @@
+public void testAttributesWithNextTextValue() {
+    XmlMapper xmlMapper = new XmlMapper();
+    JsonParser jsonParser = xmlMapper.createJsonParser("<Test><Node value=\"test\"/></Test>");
+    assertEquals(JsonToken.START_OBJECT, jsonParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParser.nextToken());
+    assertEquals("Node", jsonParser.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, jsonParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParser.nextToken());
+    assertEquals("value", jsonParser.getCurrentName());
+    assertEquals("test", jsonParser.nextTextValue());
+}

@@ -1,0 +1,20 @@
+public void testIssue113() {
+    RandomData randomData = new RandomDataImpl();
+    List<Double> sample1 = new ArrayList<Double>();
+    List<Double> sample2 = new ArrayList<Double>();
+    for (int i = 0; i < 1500; i++) {
+        sample1.add(randomData.nextGaussian(0, 1));
+        sample2.add(randomData.nextGaussian(0, 1));
+    }
+    
+    MannWhitneyUTest test = new MannWhitneyUTest();
+    double p = test.mannWhitneyUTest(
+            Utils.listToArray(sample1), 
+            Utils.listToArray(sample2));
+    assertFalse(Double.isNaN(p));
+    assertTrue(p < 1.0d);
+    assertTrue(p > 0.0d);
+    p = test.mannWhitneyUTest(sample1.toArray(new Double[0]), 
+            sample2.toArray(new Double[0]));
+    assertFalse(Double.isNaN(p));
+    assertTrue(p < 1

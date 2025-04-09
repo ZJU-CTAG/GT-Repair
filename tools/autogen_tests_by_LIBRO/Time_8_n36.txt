@@ -1,0 +1,10 @@
+public void testIssue107() {
+    // DateTimeZone.forOffsetHoursMinutes(h,m) cannot handle negative offset < 1
+    // hour like -0:30 due to argument range checking. I used forOffsetMillis()
+    // instead.
+
+    // This should probably be mentioned in the documentation or negative
+    // minutes be accepted.
+    DateTimeZone tz = DateTimeZone.forOffsetHoursMinutes(-1, -30);
+    assertEquals(tz, DateTimeZone.forOffsetMillis(-5400000));
+}

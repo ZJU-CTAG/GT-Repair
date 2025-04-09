@@ -1,0 +1,11 @@
+public void testSevenZFileReadOnEmptyFile() throws Exception {
+    File archive = getFile("test1.7z");
+    SevenZFile szf = new SevenZFile(archive);
+    SevenZArchiveEntry entry = null;
+    while ((entry = szf.getNextEntry()) != null) {
+        System.out.println(entry.getName());
+        byte[] content = new byte[(int) entry.getSize()];
+        entry.read(content);
+    }
+    szf.close();
+}

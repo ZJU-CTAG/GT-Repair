@@ -1,0 +1,11 @@
+public void testTypeHierarchy() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JacksonJodaModule());
+    try {
+        mapper.readValue("{\"brand\":\"no such brand\"}", Car.class);
+        fail("No exception");
+    } catch (JsonMappingException e) {
+        assertNotNull(e.getCause());
+        assertTrue(e.getCause() instanceof IllegalArgumentException);
+    }
+}

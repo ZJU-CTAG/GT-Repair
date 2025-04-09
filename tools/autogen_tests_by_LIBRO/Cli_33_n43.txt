@@ -1,0 +1,10 @@
+public void testIssue107() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setSyntaxPrefix("");
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(writer, Integer.MAX_VALUE, "", "footer:\n \tline1\n \tline2\n",
+        new Options().addOption("f", "foo", false, "foo option"));
+    String output = writer.toString();
+    assertTrue(output.contains("\tline1"));
+    assertTrue(output.contains("\tline2"));
+}

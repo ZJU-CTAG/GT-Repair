@@ -1,0 +1,13 @@
+public void testRequiredOptions() {
+    final OptionBuilder builder = new OptionBuilder();
+    final Option help = builder.withShortName("h").create();
+    final Option config = builder.withShortName("c").withRequired(true).withArgument(new ArgumentBuilder().withName("arg").create()).create();
+    final Group group = new GroupBuilder()
+            .withOption(help)
+            .withOption(config)
+            .create();
+    final TestCLI2 cli2 = new TestCLI2(group);
+    final String[] args = new String[]{"-c", "test"};
+    final List<String> list = cli2.main(args);
+    assertEquals("[-h]", list.get(0));
+}

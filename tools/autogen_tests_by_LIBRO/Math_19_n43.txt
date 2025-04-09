@@ -1,0 +1,28 @@
+public void testIssue() {
+    int dim = 1;
+    double[] lowerBound = {-Double.MAX_VALUE};
+    double[] upperBound = {Double.MAX_VALUE};
+    double[] initial = {Double.MAX_VALUE};
+    CMAESOptimizer optimizer = new CMAESOptimizer(500);
+    optimizer.optimize(0, new FitnessFunction(lowerBound, upperBound), GoalType.MINIMIZE, initial);
+}
+
+class FitnessFunction implements MultivariateRealFunction {
+    private double[] lowerBound;
+    private double[] upperBound;
+
+    public FitnessFunction(double[] lowerBound, double[] upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
+
+    @Override
+    public double value(double[] point) {
+        for (int i = 0; i < point.length; ++i) {
+            if (Double.isNaN(point[i])) {
+                return Double.POSITIVE_INFINITY;
+            }
+        }
+        return 0;
+    }
+}

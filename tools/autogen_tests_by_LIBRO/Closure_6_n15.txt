@@ -1,0 +1,12 @@
+public void testThisTypeChecking() {
+    ClosureCompiler compiler = new ClosureCompiler();
+    compiler.compile(
+        new CodeBuilder()
+            .append("function F() {}")
+            .append("F.prototype.bar = function() { this.baz(); };")
+            .append("F.prototype.baz = function() {};")
+            .append("function G() {}")
+            .append("G.prototype.bar = F.prototype.bar;").toString());
+    assertTrue(compiler.getErrors().isEmpty());
+    assertTrue(compiler.getWarnings().isEmpty());
+}

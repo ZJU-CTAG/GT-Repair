@@ -1,0 +1,21 @@
+public void testRecordTypeInvalidPropertyNotReportedOnFunctionWithThisAnnotation() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    compiler.compile(SourceFile.fromCode("[externs]", ""),
+            SourceFile.fromCode("[repro]",
+                    LINE_JOINER.join(
+                            "/**",
+                            " * @constructor",
+                            " * @param {{name: string, height: number}} options",
+                            " */",
+                            "function Person(options){};",
+                            "Person = makeClass(/** @lends Person.prototype */ {",
+                            "  /**",
+                            "   * @this {Person}",
+                            "   * @param {{name: string, height: number}} options",
+                            "   */",
+                            "  initialize: function(options) {",
+                            "    /** @type {string} */ this.name_ = options.thisPropDoesNotExist;",
+                            "  },",
+                           

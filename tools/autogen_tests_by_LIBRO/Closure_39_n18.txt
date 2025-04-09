@@ -1,0 +1,18 @@
+public void testIssue110() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    SourceFile extern = SourceFile.fromCode("closure-externs.js",
+        "/** @typedef {{name: string, end: number}} */\n" +
+        "var MyType;\n" +
+        "/** @param {MyType} foo */\n" +
+        "var M.doesNotWork = function (foo) {}\n" +
+        "/** @param {MyType=} foo */\n" +
+        "var M.doesNotWork2 = function (foo) {}\n");
+    SourceFile input = SourceFile.fromCode("closure-externs.js",
+        "M.doesNotWork({name: 'foo', end: 42});\n" +
+        "/** @param {MyType} foo */\n" +
+        "var M

@@ -1,0 +1,17 @@
+public void testPrefixes() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.newDocument();
+    Element root = document.createElementNS("ns", "a:doc");
+    document.appendChild(root);
+    root.appendChild(document.createElementNS("ns", "a:elem"));
+    root.appendChild(document.createElementNS("ns", "b:elem"));
+    JXPathContext context = JXPathContext.newContext(document);
+    Iterator iter = context.iteratePointers("//*");
+    int count = 0;
+    for (; iter.hasNext(); count++) {
+        Pointer ptr = (Pointer) iter.next();
+        System.out.println(ptr.asPath());
+    }
+    assertEquals(2, count);
+}

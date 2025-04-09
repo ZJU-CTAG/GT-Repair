@@ -1,0 +1,9 @@
+public void testCsvEncoding() throws Exception {
+    OutputStream os = new ByteArrayOutputStream();
+    CSVPrinter printer = new CSVPrinter(new OutputStreamWriter(os, StandardCharsets.UTF_8), CSVFormat.EXCEL);
+    printer.printRecord(Arrays.asList("あ", "い", "う"));
+    printer.close();
+    String csv = os.toString();
+    System.out.println(csv);
+    assertEquals("\"あ\",い,う\r\n", csv);
+}

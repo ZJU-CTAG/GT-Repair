@@ -1,0 +1,20 @@
+public void testCase() {
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+    final ObjectNode node = mapper.createObjectNode();
+    final ArrayNode array = node.putArray("something");
+
+    final ObjectNode node2 = array.addObject();
+    node2.put("id", UUID.randomUUID().toString());
+    node2.put("property", "property 1");
+
+    final ObjectNode node3 = array.addObject();
+    node3.put("id", UUID.randomUUID().toString());
+    node3.put("property", "property 1");
+
+    final Test

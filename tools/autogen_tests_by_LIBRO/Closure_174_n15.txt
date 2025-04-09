@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("a.js", "goog.provide('main');\n" + 
+            "goog.scope (function (){\n" +
+            " var a = foo, b, c = 1;\n" +
+            "});"),
+        },
+        new CompilerOptions()
+    );
+    assertTrue(result.success);
+}

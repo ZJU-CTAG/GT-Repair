@@ -1,0 +1,9 @@
+public void testIssue183() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    final DateFormat df = new StdDateFormat().withLocale(Locale.US);
+    objectMapper.setDateFormat(df);
+    final Date date = objectMapper.readValue("\"2015-01-32\"", Date.class);
+    assertEquals(new Date(2015 - 1900, 0, 32), date);
+}

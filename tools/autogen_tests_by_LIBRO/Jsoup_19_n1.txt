@@ -1,0 +1,7 @@
+public void testIssue107() {
+    Document asDoc = Jsoup.parseBodyFragment("<img src=\"cid:1234\">");
+    Whitelist.simpleText().addTags("img")
+            .addAttributes("img", "src", "alt").addProtocols("img", "src", "cid");
+    String clean = Jsoup.clean(asDoc.body().html(), Whitelist.simpleText());
+    assertEquals("", clean);
+}

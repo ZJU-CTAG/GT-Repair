@@ -1,0 +1,11 @@
+public void testIssue107() throws IOException {
+    File f = new File("src/test/resources/test.tar");
+    TarArchiveInputStream inputStream = new TarArchiveInputStream(new FileInputStream(f));
+    try {
+        inputStream.getNextTarEntry();
+    } catch (IllegalArgumentException expected) {
+        throw new IOException(expected);
+    } finally {
+        inputStream.close();
+    }
+}

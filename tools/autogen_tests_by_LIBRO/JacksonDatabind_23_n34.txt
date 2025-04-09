@@ -1,0 +1,32 @@
+public void test() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    final ObjectWriter jsonWriter = mapper.writerWithDefaultPrettyPrinter();
+    final ObjectReader jsonReader = mapper.reader();
+
+    final Foo foo = new Foo("bar", 5);
+    final String json = jsonWriter.writeValueAsString(foo);
+    System.out.println("Foo as JSON: " + json);
+
+    final Foo foo2 = jsonReader.readValue(json, Foo.class);
+    System.out.println("JSON as Foo: " + foo2);
+}
+
+private static final class Foo {
+
+    @JsonProperty("bar")
+    private String bar;
+    @JsonProperty("baz")
+    private int baz;
+
+    public Foo(final String bar, final int baz) {
+        this.bar = bar;
+        this.baz = baz;
+    }
+
+    public String getBar() {
+        return this.bar;
+    }
+
+    public void setBar(final String bar) {
+       

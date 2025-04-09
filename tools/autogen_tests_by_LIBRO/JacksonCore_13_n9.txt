@@ -1,0 +1,13 @@
+public void testQuoting() throws IOException
+{
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    UTF8JsonGenerator gen = new UTF8JsonGenerator(out, JsonEncoding.UTF8,
+            objectMapper.getFactory().getCharacterEscapes());
+    gen.enable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);
+    gen.writeStartObject();
+    gen.writeObjectFieldStart("a");
+    gen.writeEndObject();
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("{\"a\":{}}".length(), out.size());
+}

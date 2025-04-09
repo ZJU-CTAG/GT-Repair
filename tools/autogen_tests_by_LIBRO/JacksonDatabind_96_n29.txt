@@ -1,0 +1,21 @@
+public void testImplicitConstructorProperties() throws IOException {
+    ObjectMapper mapper = new ObjectMapper()
+            .disable(MapperFeature.USE_GETTERS_AS_SETTERS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
+    final String json = "{\"_id\": \"123\", \"_name\": \"Test\"}";
+    ConstructorWithImplicitProperties constructorWithImplicitProperties = mapper.readValue(json, ConstructorWithImplicitProperties.class);
+
+    assertEquals("123", constructorWithImplicitProperties.id);
+    assertEquals("Test", constructorWithImplicitProperties.name);
+}
+
+public static class ConstructorWithImplicitProperties {
+
+    public final String id;
+    public final String name;
+
+    public ConstructorWithImplicitProperties(@JsonProperty("_id") String id, @JsonProperty("_name") String name) {
+        this.id = id;
+        this.name

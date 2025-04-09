@@ -1,0 +1,25 @@
+public void testSkip() throws Exception {
+    byte[] bytes = new byte[] { 'a', 'b', 'c', 'd' };
+    ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+    CipherInputStream cis = new CipherInputStream(bais, new TestCipher());
+    long numSkipped = IOUtils.skip(cis, 2);
+    assertEquals(2, numSkipped);
+}
+
+private static class TestCipher extends Cipher {
+    private static final BlockCipher bc = new BlockCipher() {
+        public void reset() {
+        }
+        public byte[] getBlockSize() {
+            return 1;
+        }
+        public int processBlock(byte[] in, int inOff, byte[] out, int outOff) {
+            out[outOff] = in[inOff];
+            return 1;
+        }
+    };
+    private static final CipherParameters params = new KeyParameter(new byte[] { 0 });
+    public void init(boolean forEncryption, CipherParameters params) {
+    }
+    public String getAlgorithmName() {
+        return null;

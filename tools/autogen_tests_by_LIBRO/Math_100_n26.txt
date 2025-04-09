@@ -1,0 +1,17 @@
+public void testEstimator() {
+    final double[] observed = { 0.0, 2.0, -1.0, 5.0 };
+    final WeightedMeasurement[] measurements = new WeightedMeasurement[observed.length];
+    final double[] weights = new double[observed.length];
+    Arrays.fill(weights, 1.0);
+    for (int i = 0; i < observed.length; ++i) {
+        measurements[i] = new WeightedMeasurement(1.0,
+                                                  new Measurement(i, i, i, new double[] { i }, new double[] { 1.0 }));
+    }
+    final EstimationProblem problem = new EstimationProblem(measurements, new Parameter[] {
+        new Parameter("p0", 0.0),
+        new Parameter("p1", 1.0),
+        new Parameter("p2", 2.0),
+    });
+    problem.getSolver().solve();
+    System.out.println(problem.getSolver().getRMS(true));
+    System.out.println(problem.getSolver

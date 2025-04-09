@@ -1,0 +1,30 @@
+public void testAnyGetter() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new ClassWithAnyGetter());
+    assertEquals("{\"a\":1}", json);
+}
+
+public void testConverter() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new ClassWithConverter());
+    assertEquals("{\"a\":1}", json);
+}
+
+public static class ClassWithAnyGetter
+{
+    @JsonSerialize(converter = Converter.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters(){
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put("a", "1");
+        return map;
+    }
+}
+
+public static class ClassWithConverter
+{
+    @JsonSerialize(converter = Converter.class)
+    @JsonAnyGetter
+    public

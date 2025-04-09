@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String js = "function d3_call(callback) {" +
+                "  var f = callback;" +
+                "  arguments[0] = this;" +
+                "  f.apply(this, arguments);" +
+                "  return this;" +
+                "}";
+    Compressor compressor = new Compressor(new StringReader(js));
+    String result = compressor.compress(new StringWriter(), 0, 0, false, false, false, false, false, false, false, false).toString();
+    assertTrue(result.startsWith("function d3_call(a){"));
+    assertTrue(result.contains("a.apply(this,arguments);"));
+}

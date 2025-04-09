@@ -1,0 +1,12 @@
+public void testExtensionFunctionNodeSet() {
+ Object contextBean = new MyBean();
+ JXPathContext context = JXPathContext.newContext(contextBean);
+ context.setValue("/name", "JXPath");
+ context.getVariables().declareVariable("ext", new MyExtensions());
+ QName name = new QName("http://commons.apache.org/jxpath/", "observations");
+ context.registerNamespace("ext", name.getNamespaceURI());
+ context.registerFunction(name, "ext:observations");
+ List list = (List) context.getValue("ext:observations()");
+ assertEquals("JXPath", ((MyBean) list.get(0)).getName());
+ assertEquals("JXPath", ((MyBean) list.get(1)).getName());
+}

@@ -1,0 +1,17 @@
+public void testDependencyManagement() throws Exception {
+    List<SourceFile> externs = ImmutableList.of(
+        SourceFile.fromCode("externs",
+            "/** @constructor */ function Object() {}"));
+    List<SourceFile> inputs = ImmutableList.of(
+        SourceFile.fromCode("inputs",
+            "function main(x, y) { return x + y; }" +
+            "/** @constructor */ function Foo() {}" +
+            "function test(x) { return x.baz(); }"));
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(externs, inputs, options);
+    String output = compiler.toSource();
+    assertTrue(output.contains("main"));
+    assertTrue(output.contains("Foo"));
+    assertTrue(output.contains("test"));
+}

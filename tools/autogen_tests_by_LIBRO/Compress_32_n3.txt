@@ -1,0 +1,10 @@
+public void testTarLongIds() throws Exception {
+    InputStream in = TarArchiveInputStreamTest.class.getResourceAsStream("/archive.tar");
+    TarArchiveInputStream tais = new TarArchiveInputStream(in);
+    TarArchiveEntry tae = null;
+    while ((tae = tais.getNextTarEntry()) != null) {
+        assertEquals(-2, tae.getGroupId());
+        assertEquals(-2, tae.getUserId());
+    }
+    in.close();
+}

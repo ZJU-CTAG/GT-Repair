@@ -1,0 +1,24 @@
+public void testOptionGroup() {
+    OptionGroup group = new OptionGroup();
+    Option option1 = OptionBuilder.withDescription("option1").hasArg().create("o1");
+    Option option2 = OptionBuilder.withDescription("option2").hasArg().create("o2");
+    Option option3 = OptionBuilder.withDescription("option3").hasArg().create("o3");
+    Option option4 = OptionBuilder.withDescription("option4").hasArg().create("o4");
+    group.addOption(option1);
+    group.addOption(option2);
+    group.addOption(option3);
+    group.addOption(option4);
+    group.setRequired(true);
+    Options options = new Options();
+    options.addOptionGroup(group);
+
+    CommandLine line = null;
+    try {
+        CommandLineParser parser = new BasicParser();
+        line = parser.parse(options, new String[]{"-o1", "value1"});
+    }
+    catch (ParseException e) {
+        fail(e.getMessage());
+    }
+    assertNotNull(line);
+    assert

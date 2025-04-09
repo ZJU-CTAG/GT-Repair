@@ -1,0 +1,21 @@
+public void testWrite7z() throws IOException {
+    File inputFolder = new File("test-data/testWrite7z/in");
+    File output7z = new File("test-data/testWrite7z/out.7z");
+    output7z.delete();
+    SevenZOutputFile out = new SevenZOutputFile(output7z);
+    File[] files = inputFolder.listFiles();
+    for (File file : files) {
+        if (file.isFile()) {
+            SevenZArchiveEntry entry = out.createArchiveEntry(file, file.getName());
+            out.putArchiveEntry(entry);
+            InputStream in = new FileInputStream(file);
+            IOUtils.copy(in, out);
+            out.closeArchiveEntry();
+        }
+    }
+    out.close();
+    SevenZFile sevenZFile = new SevenZFile(output7z);
+    Map<String, File> filesByName = new HashMap<>();
+    for (File file : files) {
+        if (file.isFile()) {
+            filesByName.put(

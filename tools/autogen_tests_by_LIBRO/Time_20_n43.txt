@@ -1,0 +1,9 @@
+public void testIssue126() {
+    DateTimeZone.setDefault(DateTimeZone.forID("America/New_York"));
+    DateTime dt = new DateTime(2011, 1, 1, 0, 0, DateTimeZone.forID("Europe/London"));
+    assertEquals("Europe/London", dt.getZone().getID());
+    assertEquals("01/01/2011 05:00:00.000 GMT", DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss.SSS zzz").print(dt));
+
+    dt = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss.SSS zzz").parseDateTime("01/01/2011 05:00:00.000 GMT");
+    assertEquals("Europe/London", dt.getZone().getID());
+}

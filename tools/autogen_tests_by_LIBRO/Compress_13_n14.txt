@@ -1,0 +1,16 @@
+public void testIssue107() throws Exception {
+    File file = new File(FileUtils.getTempDirectory(), "umlauts.zip");
+    InputStream in = null;
+    try {
+        in = getClass().getResourceAsStream("/archive.zip");
+        FileUtils.copyInputStreamToFile(in, file);
+        ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(file));
+        ArchiveEntry entry = ais.getNextEntry();
+        while (entry != null) {
+            System.out.println(entry.getName() + " " + entry.isDirectory());
+            entry = ais.getNextEntry();
+        }
+    } finally {
+        IOUtils.closeQuietly(in);
+    }
+}

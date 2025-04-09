@@ -1,0 +1,18 @@
+public void testIntBounds() throws IOException {
+    int[] ints = new int[] {
+            Integer.MIN_VALUE,
+            -1,
+            0,
+            1,
+            Integer.MAX_VALUE
+    };
+    for (int i : ints) {
+        String json = String.format("{\"x\":%d}", i);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.readTree(json);
+        IntClass fromTree = mapper.readerFor(IntClass.class).readValue(tree);
+        IntClass fromString = mapper.readerFor(IntClass.class).readValue(json);
+        assertEquals(i, fromTree.x);
+        assertEquals(i, fromString.x);
+    }
+}

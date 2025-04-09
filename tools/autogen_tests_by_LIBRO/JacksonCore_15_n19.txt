@@ -1,0 +1,19 @@
+public void testFilteringParserDelegateAllowMultipleMatches() throws Exception {
+    String json = Files.toString(new File("src/test/resources/test-allowMultipleMatches.json"), StandardCharsets.UTF_8);
+
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(JsonParserFactory.getInstance().createJsonParser(json), new Filter() {
+        @Override
+        public boolean include(JsonParser jsonParser) throws IOException {
+            if (jsonParser.getCurrentToken().equals(JsonToken.START_OBJECT)) {
+                return true;
+            }
+            return false;
+        }
+    }, false);
+
+    assertEquals(JsonToken.START_OBJECT, filteringParserDelegate.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, filteringParserDelegate.nextToken());
+    assertEquals("name", filteringParserDelegate.getCurrentName());
+    assertEquals("John Doe", filteringParserDelegate.getText());
+    assertEquals("John Doe", filteringParserDelegate.getText());
+    assertEqu

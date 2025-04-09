@@ -1,0 +1,11 @@
+public void testWhitespaceHandling() {
+    Document doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    Element pre = doc.select("pre").get(0);
+    TextNode node = (TextNode) pre.childNodes().get(0);
+    assertEquals("\nabc  def", node.text());
+    assertEquals("abc  def", node.getWholeText());
+    assertEquals("\n", node.wholeTextNodes().get(0).text());
+    assertEquals("abc  def", node.wholeTextNodes().get(1).text());
+    assertEquals("abc def", pre.text());
+    assertEquals("abc  def", pre.getWholeText());
+}

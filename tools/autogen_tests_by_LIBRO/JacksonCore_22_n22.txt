@@ -1,0 +1,15 @@
+public void testFilteringGeneratorDelegate() throws IOException {
+    final StringWriter out = new StringWriter();
+    final JsonGenerator gen = new JsonFactory()
+            .createGenerator(out)
+            .setPrettyPrinter(new DefaultPrettyPrinter());
+    final FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(gen,
+            new SimpleBeanPropertyFilter.FilterExceptFilter(Collections.singleton("category")), true, false);
+    delegate.writeStartObject();
+    delegate.writeStringField("category", "a");
+    delegate.writeEndObject();
+    delegate.close();
+    gen.close();
+
+    assertEquals("{}", out.toString());
+}

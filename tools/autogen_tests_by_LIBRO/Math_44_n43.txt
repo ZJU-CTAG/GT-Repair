@@ -1,0 +1,25 @@
+public void testIssue108() {
+    Simulation sim = new DefaultSimulation();
+    final AtomicReference<ActivityStartEvent> startAR = new AtomicReference<>();
+    final AtomicReference<ActivityEndEvent> endAR = new AtomicReference<>();
+    sim.addSimEventListener(new SimEventListener() {
+        public void notify(SimEvent event) {
+            if (event instanceof ActivityStartEvent) {
+                if (startAR.get() == null) {
+                    startAR.set((ActivityStartEvent) event);
+                } else {
+                    System.out.println("Start event triggered twice in the same step: " + event);
+                }
+            } else if (event instanceof ActivityEndEvent) {
+                if (endAR.get() == null) {
+                    endAR.set((ActivityEndEvent) event);
+                } else {
+                    System.out.println("End event triggered twice in the same step: " + event);
+                }
+            }
+        }
+    });
+
+    Activity a1 = new ConcreteActivity();
+    Activity a2 = new ConcreteActivity();
+    sim.insertEvent(new ActivityStart

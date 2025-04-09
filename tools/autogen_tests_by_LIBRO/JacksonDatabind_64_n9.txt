@@ -1,0 +1,15 @@
+public void testIssue1351_part2() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.setSerializationInclusion(Include.NON_DEFAULT);
+    String json = mapper.writeValueAsString(new TestClassNON_DEFAULT());
+    System.out.println(json);
+    assertEquals("{}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+private static class TestClassNON_DEFAULT {
+
+    public String defaultString = null;
+    public String nonDefaultString = "test";
+}

@@ -1,0 +1,11 @@
+public void testIssue136() throws IOException {
+    String h = "<table><tr><td><table><tr><!--Comment--><table><p>Why am I here?</p>";
+    Document doc = Jsoup.parse(h);
+    doc.outputSettings().prettyPrint(true);
+    String rendered = doc.toString();
+    int endOfEmail = rendered.indexOf("Comment");
+    int guarantee = rendered.indexOf("Why am I here?");
+    assertTrue("Comment not found", endOfEmail > -1);
+    assertTrue("Search text not found", guarantee > -1);
+    assertTrue("Search text did not come after comment", guarantee > endOfEmail);
+}

@@ -1,0 +1,18 @@
+public void testDeserializeEmptyObjectToObjectNode() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+
+    MyValue de2 = om.readValue(om.writeValueAsString(object), MyValue.class);
+    assertEquals(object, de2.getObject());
+}
+
+public class MyValue
+{
+    private final ObjectNode object;
+
+    public MyValue(ObjectNode object) { this.object = object; }
+
+    @JsonValue
+    public ObjectNode getObject() { return object; }
+}

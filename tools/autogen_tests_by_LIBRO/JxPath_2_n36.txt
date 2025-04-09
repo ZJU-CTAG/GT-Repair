@@ -1,0 +1,19 @@
+public void testNodeSet() {
+    Map ns = new HashMap();
+    ns.put("test", Fixture.class);
+    JXPathContext context = JXPathContext.newContext(null);
+    context.setNamespaceContextPointer(new Pointer("", ns));
+    List list = context.selectNodes("test:nodeSet()");
+    assertEquals(3, list.size());
+    assertEquals("A", list.get(0));
+    assertEquals("B", list.get(1));
+    assertEquals("C", list.get(2));
+}
+
+public static Object nodeSet() {
+    BasicNodeSet result = new BasicNodeSet();
+    result.add(new Pointer("", "A"));
+    result.add(new Pointer("", "B"));
+    result.add(new Pointer("", "C"));
+    return result;
+}

@@ -1,0 +1,19 @@
+public void testThisType() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkTypes = true;
+    Result result = compiler.compile(SourceFile.fromCode("externs", 
+      "/** @constructor */\n" +
+      "function F() {}\n" +
+      "/** @return {void} */\n" +
+      "F.prototype.bar = function() { this.baz(); };\n" +
+      "/** @return {void} */\n" +
+      "F.prototype.baz = function() { };\n" +
+      "/** @constructor */\n" +
+      "function G() {}\n" +
+      "G.prototype.bar = F.prototype.bar;\n"), 
+    SourceFile.fromCode("input", ""), options);
+    assertEquals(0, result.errors.length);
+}

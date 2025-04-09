@@ -1,0 +1,28 @@
+public void testAnyGetterWithSerializer() throws Exception
+{
+    String json = "{\"key\":\"value\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    Impl impl = mapper.readValue(json, Impl.class);
+    assertEquals(json, mapper.writeValueAsString(impl));
+}
+
+static class Impl
+{
+    @JsonSerialize(using = MySerializer.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters()
+    {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("key", "value");
+        return params;
+    }
+}
+
+static class MySerializer extends JsonSerializer<String>
+{
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException
+    {
+        jgen.writeString(value);
+    }
+}

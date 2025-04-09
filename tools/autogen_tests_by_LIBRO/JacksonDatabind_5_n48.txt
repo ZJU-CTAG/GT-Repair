@@ -1,0 +1,12 @@
+public void testMixinAnnotations() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("test", new Version(1, 0, 0, null, null, null));
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    PersonImpl person = new PersonImpl();
+    person.setCity("The City");
+
+    String result = mapper.writeValueAsString(person);
+    assertEquals("{\"city\":\"The City\"}", result);
+}

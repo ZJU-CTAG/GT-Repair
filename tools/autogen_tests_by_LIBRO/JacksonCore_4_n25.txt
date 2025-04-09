@@ -1,0 +1,13 @@
+public void testLongKeyName() throws Exception {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 260000; i++) {
+        sb.append("a");
+    }
+    String json = "{\"" + sb.toString() + "\":1}";
+    JSONParser parser = new JSONParser(json);
+    parser.nextToken();
+    int keyLen = parser.getCurrentName().length();
+    assertEquals(json, 260000, keyLen);
+    parser.nextToken();
+    assertEquals(json, 1, parser.getIntValue());
+}

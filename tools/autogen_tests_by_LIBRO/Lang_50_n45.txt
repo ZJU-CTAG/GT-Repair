@@ -1,0 +1,12 @@
+public void testGetInstanceKey() {
+    Locale.setDefault(Locale.CANADA_FRENCH);
+    Map<String, FastDateFormat> cache = new HashMap<String, FastDateFormat>();
+    cache.put(FastDateFormat.getInstance("yyyy", Locale.FRANCE).getPattern() + "|" + Locale.FRANCE, FastDateFormat.getInstance("yyyy", Locale.FRANCE));
+    Locale.setDefault(Locale.US);
+    String key = FastDateFormat.getInstance("yyyy").getPattern() + "|" + Locale.FRANCE;
+    assertTrue("Cache should contain " + key, cache.containsKey(key));
+    cache.put(key, FastDateFormat.getInstance("yyyy", Locale.FRANCE));
+    Locale.setDefault(Locale.CANADA_FRENCH);
+    FastDateFormat fdf = FastDateFormat.getInstance("yyyy", Locale.FRANCE);
+    assertEquals("Cache should contain " + fdf, fdf, cache.get(key));
+}

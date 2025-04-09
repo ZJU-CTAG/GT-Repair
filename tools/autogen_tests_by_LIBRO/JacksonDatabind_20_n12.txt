@@ -1,0 +1,17 @@
+public void testPresenceOfPropertyNamingStrategyMakesDeserializationFail() throws Exception {
+    SimpleModule testModule = new SimpleModule("test", new Version(1, 0, 0, null));
+    testModule.addSerializer(new SerializerBase<ClassWithObjectNodeField>(ClassWithObjectNodeField.class) {
+        @Override
+        public void serialize(ClassWithObjectNodeField value, JsonGenerator jgen, SerializerProvider provider)
+                throws IOException, JsonGenerationException {
+            jgen.writeStartObject();
+            jgen.writeStringField("id", value.id);
+            jgen.writeObjectField("json", value.json);
+            jgen.writeEndObject();
+        }
+    });
+    ObjectMapper mapper = new ObjectMapper().registerModule(testModule);
+
+    ClassWithObjectNodeField deserialized = mapper.readValue("{ \"id\": \"1\", \"json\": { \"foo\": \"bar\", \"baz\": \"bing\" } }",
+            ClassWithObjectNodeField.class);
+    assertEquals("1", deserialized.id);

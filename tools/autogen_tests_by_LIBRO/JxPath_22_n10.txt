@@ -1,0 +1,17 @@
+public void testIssue_103() {
+    Document doc = createDocument();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    Element foo = doc.createElementNS("bla", "foo");
+    root.appendChild(foo);
+    foo.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE + ":b", "bla");
+    foo.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XMLConstants.XMLNS_ATTRIBUTE, "test111");
+    Element bar = doc.createElementNS("bla", "bar");
+    foo.appendChild(bar);
+    bar.appendChild(doc.createTextNode("a"));
+    Element test = doc.createElementNS(null, "test");
+    foo.appendChild(test);
+
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(false);
+    context.setNamespaceContextPointer

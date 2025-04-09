@@ -1,0 +1,8 @@
+public void testIssue105() throws Exception {
+    File f = new File(getClass().getResource("/bla.tar.deflatez").toURI());
+    InputStream is = new FileInputStream(f);
+    CompressorInputStream in = new CompressorStreamFactory().createCompressorInputStream(is);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    IOUtils.copy(in, baos);
+    assertEquals(baos.size(), f.length());
+}

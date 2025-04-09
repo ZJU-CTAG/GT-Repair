@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    StringWriter out = new StringWriter();
+    CSVFormat csvFormat = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
+    final CSVPrinter printer = new CSVPrinter(out, csvFormat);
+    printer.printRecord("-1", "2", "3");
+    printer.printRecord("4", "5", "6");
+    printer.close();
+
+    String result = out.toString();
+    String[] lines = StringUtils.split(result, '\n');
+    // the first record is quoted, the second is not
+    assertTrue(lines[0].startsWith("\"-1\""));
+    assertTrue(lines[1].startsWith("4"));
+}

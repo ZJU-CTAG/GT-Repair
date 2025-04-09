@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode root = mapper.createObjectNode();
+    ObjectNode inner = mapper.createObjectNode();
+    inner.put("type", "typeA");
+    ObjectNode innerInner = mapper.createObjectNode();
+    innerInner.put("type", "typeA");
+    innerInner.put("id", "idA");
+    inner.set("inner", innerInner);
+    root.set("inner", inner);
+    String json = mapper.writeValueAsString(root);
+    System.out.println("json = " + json);
+    Root root2 = mapper.readValue(json, Root.class);
+    assertEquals("typeA", root2.getInner().getType());
+    assertEquals("typeA", root2.getInner().getInner().getType());
+    assertEquals("idA", root2.getInner().getInner().getId());
+}
+
+abstract class Base {
+    protected String type;
+
+    public String getType()

@@ -1,0 +1,15 @@
+public void testIssue() {
+    String inputJs = "window[\"anchor\"] = function (obj, modifiesProp) {return (function (saved) {return modifiesProp(obj) + saved;})(obj[\"prop\"]);}";
+    String expectedOutputJS = "window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("window.js", "")),
+            ImmutableList.of(SourceFile.fromCode("input.js", inputJs)),
+            options
+    );
+    assertEquals(expectedOutputJS, compiler.toSource());
+}

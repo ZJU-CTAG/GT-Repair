@@ -1,0 +1,20 @@
+public void testIssue107() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping()
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .disable(MapperFeature.USE_GETTERS_AS_SETTERS)
+            .enable(MapperFeature.AUTO_DETECT_GETTERS)
+            .enable(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS)
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .enable(SerializationFeature.INDENT_OUTPUT);
+
+    Foo foo = new Foo("bar");
+    String serialized = mapper.writeValueAsString(foo); // {"bar" : "bar"}
+
+    JsonNode jsonNode = mapper.readTree(serialized); // exception here
+    JsonNode node = mapper.valueToTree(foo); // and here
+}
+
+public static class Foo

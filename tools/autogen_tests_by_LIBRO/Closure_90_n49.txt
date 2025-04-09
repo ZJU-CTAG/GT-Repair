@@ -1,0 +1,20 @@
+public void testThisWithTypedef() {
+    String code =
+        "goog.provide('bug');\n"+
+        "/** @this {bug.Thing} */\n"+
+        "bug.sharedMethod = function() {};\n"+
+        "/** @constructor */\n"+
+        "bug.A = function() {};\n"+
+        "/** @constructor */\n"+
+        "bug.B = function() {};\n"+
+        "/** @type {bug.A|bug.B} */\n"+
+        "bug.Thing = goog.typedef;\n";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    // TODO(bolinfest): This should be an error.
+    Result result = compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("testcode", code)),
+        ImmutableList.<SourceFile>of(),
+        compiler.getOptions());
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.

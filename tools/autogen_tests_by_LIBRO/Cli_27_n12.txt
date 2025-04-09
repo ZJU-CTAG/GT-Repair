@@ -1,0 +1,11 @@
+public void testGroupWithLongOnlyOption() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option option = new Option("a", "long-option", false, "an option with a long name");
+    group.addOption(option);
+    options.addOptionGroup(group);
+    CommandLineParser parser = new GnuParser();
+    CommandLine cmd = parser.parse(options, new String[]{"--long-option"});
+    assertTrue(cmd.hasOption("a"));
+    assertEquals(option, group.getSelected());
+}

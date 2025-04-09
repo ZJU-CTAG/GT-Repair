@@ -1,0 +1,24 @@
+public void testCMAESOptimizer() {
+    // create random but repeatable initial guess
+    Random rng = new Well1024a(0L);
+    int dim = 100;
+    double[] guess = new double[dim];
+    for (int i = 0; i < dim; ++i) {
+        guess[i] = rng.nextUniform(-1.0, 1.0);
+    }
+    // create problem to optimize
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] point) {
+            double sum = 0;
+            for (int i = 0; i < point.length; ++i) {
+                sum += (point[i] - 1.0) * (point[i] - 1.0);
+            }
+            return sum;
+        }
+    };
+    // create bounds
+    double[] min = new double[dim];
+    double[] max = new double[dim];
+    for (int i = 0; i < dim; ++i) {
+        min[i] = -10.0;
+        max[i] = 10.

@@ -1,0 +1,19 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    double [] min = {0.0, 1.0}; // minimum values
+    double [] max = {1.0, 1.0}; // maximum values
+    double [][] constraints = {
+            {1, 1},
+            {1, -1},
+            {-1, 1}
+    };
+    double [] constants = {1, 1, 0};
+    double [] coefficients = {1.0, 1.0};
+    LinearObjectiveFunction f = new LinearObjectiveFunction(
+            coefficients, 0);
+    Collection<LinearConstraint> c = new ArrayList<LinearConstraint>();
+    for (int i = 0; i < constraints.length; i++) {
+        c.add(new LinearConstraint(constraints[i], Relationship.LEQ, constants[i]));
+    }
+    PointValuePair solution = solver.optimize(f, c, GoalType.MAXIMIZE, true);
+    System.out.println("solution = " + solution);

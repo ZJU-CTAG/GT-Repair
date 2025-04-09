@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Context cx = Context.enter();
+    try {
+        cx.setLanguageVersion(Context.VERSION_1_6);
+        cx.setOptimizationLevel(-1);
+        cx.setWarnings(true);
+        cx.setWarningLevel(RhinoException.VERBOSE);
+        Scriptable scope = cx.initStandardObjects();
+        String source = "" +
+                "var s = new String(\"hello\");\n" +
+                "alert(s.toLowerCase.indexOf(\"l\"));";
+        Script script = cx.compileString(source, "<cmd>", 1, null);
+        script.exec(cx, scope);
+    } finally {
+        Context.exit();
+    }
+}

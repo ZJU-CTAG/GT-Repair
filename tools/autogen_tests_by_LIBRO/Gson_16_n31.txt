@@ -1,0 +1,29 @@
+public void testIssue122() {
+    Gson gson = new GsonBuilder()
+        .registerTypeAdapterFactory(new GsonAdaptersTestType())
+        .create();
+    TestType testType = gson.fromJson("{}", TestType.class);
+    assertNotNull(testType);
+}
+
+private static class TestType {
+    TestType<? super X> superType;
+}
+
+private static class X {}
+
+private static class GsonAdaptersTestType implements TypeAdapterFactory {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        TypeAdapter<T> x = null;
+        if (type.getRawType() == TestType.class) {
+            x = (TypeAdapter<T>) new TestTypeAdapter();
+        }
+
+        return x;
+    }
+}
+
+private static class TestTypeAdapter extends TypeAdapter<TestType> {
+    public void write(JsonWriter out, TestType value) throws IOException {
+        out.beginObject

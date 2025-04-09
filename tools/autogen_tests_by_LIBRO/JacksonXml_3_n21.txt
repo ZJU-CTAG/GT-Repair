@@ -1,0 +1,9 @@
+public void testIssue129() throws IOException {
+    String xml = "<test attr='test'/>";
+    XmlMapper mapper = new XmlMapper();
+    XmlParser parser = mapper.getFactory().createParser(xml);
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+    assertEquals("test", parser.nextTextValue()); // returns null
+}

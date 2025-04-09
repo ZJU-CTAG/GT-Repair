@@ -1,0 +1,15 @@
+public void testNamespace() throws Exception {
+//        Document html = Jsoup.parse(new File("test.html"), null);
+    Document html = Jsoup.parse(new File("test.html"), "UTF-8", "http://example.com/");
+    Assert.assertEquals("http://example.com/", html.getRootElement().getNamespaceURI());
+    for (Node node : html.getAllElements()) {
+        if (node instanceof Element) {
+            Element element = (Element) node;
+            if (element.is("body")) {
+                Assert.assertNull(element.getNamespaceURI());
+            } else if (element.is("svg")) {
+                Assert.assertEquals("http://www.w3.org/2000/svg", element.getNamespaceURI());
+            } else if (element.is("g")) {
+                Assert.assertEquals("http://www.w3.org/2000/svg", element.getNamespaceURI());
+            } else {
+                Assert.assertEquals("http://example.com/", element

@@ -1,0 +1,27 @@
+public void testPearsonsCorrelation() {
+    int nSamples = 10000;
+    int nTreatments = 100;
+
+    // create random data
+    RandomDataGenerator rdg = new RandomDataGenerator();
+    rdg.reSeed(123456789);
+    double[][] data = new double[nSamples][nTreatments];
+    for (int i = 0; i < nSamples; i++) {
+        for (int j = 0; j < nTreatments; j++) {
+            data[i][j] = rdg.nextUniform(-1.0, 1.0);
+        }
+    }
+
+    // calculate p-values
+    PearsonsCorrelation pc = new PearsonsCorrelation(data);
+    double[] pVals = pc.getCorrelationPValues();
+
+    // find maximum p-value
+    double maxP = Double.NEGATIVE_INFINITY;
+    for (double p : pVals) {
+        if (p > maxP) {
+            maxP = p;
+        }
+    }
+
+    // for

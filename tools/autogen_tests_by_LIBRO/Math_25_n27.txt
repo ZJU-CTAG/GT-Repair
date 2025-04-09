@@ -1,0 +1,13 @@
+public void testHarmonicFitter() {
+    HarmonicFitter fitter = new HarmonicFitter();
+    double[] data = new double[]{0.9, 0.95, 1.0, 1.05, 1.1};
+    for (double d : data) {
+        fitter.addObservedPoint(1, d, 0.1);
+    }
+    double[] guess = fitter.guess();
+    HarmonicFunction function = new HarmonicFunction(guess[0], guess[1], guess[2]);
+    double[] fit = fitter.fit();
+    HarmonicFunction fitted = new HarmonicFunction(fit[0], fit[1], fit[2]);
+    Assert.assertEquals(1.0, function.value(1), 0.0);
+    Assert.assertEquals(1.0, fitted.value(1), 0.0);
+}

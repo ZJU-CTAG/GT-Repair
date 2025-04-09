@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Map<String, String> options = new HashMap<String, String>();
+    options.put("compilation\_level", "ADVANCED\_OPTIMIZATIONS");
+    options.put("warning\_level", "verbose");
+    CompilationLevel.ADVANCED\_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.setWarningLevel(DiagnosticGroups.CHECK\_TYPES, CheckLevel.WARNING);
+    Result result = compiler.compile(Files.readAllBytes(Paths.get("src/test/resources/core.js")), options);
+    if (result.errors.length > 0) {
+        for (JSError jsError : result.errors) {
+            System.out.println(jsError);
+        }
+        fail("Unexpected errors: " + result.errors.length);
+    }
+    if (result.warnings.length > 0) {
+        for (JSError jsError : result.errors) {
+            System

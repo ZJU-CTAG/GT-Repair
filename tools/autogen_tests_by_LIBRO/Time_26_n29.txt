@@ -1,0 +1,20 @@
+public void testIssue60() {
+    Chronology chronUSCentral =
+        GregorianChronology.getInstance(DateTimeZone.forID("US/Central"));
+
+    Assert.assertTrue("Should be standard time",
+        chronUSCentral.getZone().isStandardOffset(
+            usCentralStandardInUTC.getMillis()));
+    Assert.assertFalse("Should be daylight time",
+        chronUSCentral.getZone().isStandardOffset(
+            usCentralDaylightInUTC.getMillis()));
+
+    DateTime usCentralStandardInUSCentral =
+        usCentralStandardInUTC.toDateTime(chronUSCentral);
+    DateTime usCentralDaylightInUSCentral =
+        usCentralDaylightInUTC.toDateTime(chronUSCentral);
+    assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
+    assertEquals(usCentralStandardInUSCentral.getHourOfDay(),
+        usCentralDaylightInUSCentral.getHourOfDay());
+    Assert.assertTrue(usCentralStandardInUSCentral.getMillis() !=
+        usCentralDaylightInUSCentral.getMill

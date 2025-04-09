@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    String js = "function assert(b) {if (!b) throw 'error'}\n"
+     + "assert(f() === 1)\n"
+     + "var f = function() {return 2;}\n"
+     + "assert(f() === 2)\n"
+     + "function f() {return 1;}\n";
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setCheckTypes(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    String compiled = compiler.toSource();
+    assertTrue(compiled.indexOf("var f = function() {return 2

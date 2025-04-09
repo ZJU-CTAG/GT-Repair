@@ -1,0 +1,16 @@
+public void testExtendedBufferReader() {
+    String testString = "line1\nline2\rline3\r\nline4\n\rline5\r";
+    ExtendedLineReader er = new ExtendedLineReader(new StringReader(testString));
+    assertEquals("line1", er.readLine());
+    assertEquals(2, er.getLineNumber());
+    assertEquals("line2", er.readLine());
+    assertEquals(4, er.getLineNumber());
+    assertEquals("line3", er.readLine());
+    assertEquals(6, er.getLineNumber());
+    assertEquals("line4", er.readLine());
+    assertEquals(7, er.getLineNumber());
+    assertEquals("", er.readLine());
+    assertEquals(8, er.getLineNumber());
+    assertEquals("line5", er.readLine());
+    assertEquals(9, er.getLineNumber());
+}

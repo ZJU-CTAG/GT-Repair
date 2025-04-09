@@ -1,0 +1,21 @@
+public void testIssue(String[] args) {
+		int count = 0;
+		for (String arg : args) {
+			if (arg.contains("--count=")) {
+				String argValue = arg.substring(8);
+				try {
+					count = Integer.parseInt(argValue);
+				} catch (NumberFormatException e) {
+					System.out.println("Unable to parse " + arg);
+				}
+			}
+		}
+		File srcDir = new File(System.getProperty("user.dir"));
+		File parentDir = srcDir.getParentFile();
+		File testDir = new File(parentDir, "test");
+		File targetDir = new File(parentDir, "target");
+		testFiles(testDir, count);
+		if (targetDir.exists()) {
+			testFiles(targetDir, count);
+		}
+	}

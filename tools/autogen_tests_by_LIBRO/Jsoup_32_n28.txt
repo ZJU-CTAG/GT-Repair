@@ -1,0 +1,17 @@
+public void testElementClassNamesClone() throws Exception {
+    Element original = new Element("test");
+    original.addClass("one").addClass("two");
+    assertTrue(original.classNames().contains("one"));
+    assertTrue(original.classNames().contains("two"));
+
+    Element cloned = original.clone();
+    assertEquals(2, cloned.classNames().size());
+    assertTrue(cloned.classNames().contains("one"));
+    assertTrue(cloned.classNames().contains("two"));
+
+    original.removeClass("two");
+    // the cloned element also has class "two" removed, because the classNames Set is shared.
+    assertEquals(2, cloned.classNames().size());
+    assertTrue(cloned.classNames().contains("one"));
+    assertFalse(cloned.classNames().contains("two"));
+}

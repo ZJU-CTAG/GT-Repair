@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "@class");
+    om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+    Constructor constructor = om.getDeserializationConfig().getTypeFactory().constructType(Constructor.class).getConstructor();
+    String json = om.writeValueAsString(constructor);
+    om.readValue(json, Constructor.class);
+}

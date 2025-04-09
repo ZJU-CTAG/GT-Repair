@@ -1,0 +1,16 @@
+public void testFoldArrayAccess() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("/tmp/test.js",
+                    "console.log([console.log('hello, '), 'world!'][1]);"),
+            options);
+    assertEquals(true, result.success);
+    assertEquals(
+            "console.log(\"world!\");",
+            compiler.toSource());
+}

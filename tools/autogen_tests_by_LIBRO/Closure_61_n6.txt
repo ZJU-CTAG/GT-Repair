@@ -1,0 +1,16 @@
+public void testClosure() {
+    String code = "Math.blah = function(test) { test.a = 5; };\n"
+            + "var test = new Object();\n"
+            + "Math.blah(test);\n";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input", code),
+            options);
+    assertTrue(result.success);
+    assertTrue(result.compiledSource
+            .contains("var test={};"));
+    assertTrue(result.compiledSource
+            .contains("Math.blah=function(a){a.a=5};"));
+}

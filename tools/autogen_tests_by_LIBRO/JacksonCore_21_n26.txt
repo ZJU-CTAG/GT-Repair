@@ -1,0 +1,20 @@
+public void testFilteringParserDelegateIssue() throws Exception {
+    String json = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    ObjectMapper om = new ObjectMapper();
+    JsonParser p0 = om.getFactory().createParser(json);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    JsonToken t = p.nextToken();
+    assertNotNull(t);
+    assertEquals(JsonToken.START_OBJECT, t);
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNotNull(p.nextToken());
+    assertNull(p.nextToken());

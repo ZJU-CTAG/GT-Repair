@@ -1,0 +1,17 @@
+public void testIssue146() {
+    DecimalFormat df = new DecimalFormat();
+    df.setParseBigDecimal(true);
+    df.setParseIntegerOnly(false);
+    df.setParseStrict(false);
+    df.setDecimalSeparatorAlwaysShown(false);
+    df.setGroupingUsed(false);
+    df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+    df.setMinimumFractionDigits(1);
+    df.setMaximumFractionDigits(1);
+    df.setNegativePrefix("-");
+    df.setNegativeSuffix("");
+    df.setPositivePrefix("");
+    df.setPositiveSuffix("");
+    BigDecimal bd = (BigDecimal) df.parse(" -0.0 ", new ParsePosition(0));
+    assertEquals(false, bd.equals(BigDecimal.ZERO));
+}

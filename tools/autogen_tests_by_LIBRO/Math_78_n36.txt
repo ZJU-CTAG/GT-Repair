@@ -1,0 +1,21 @@
+public void testIssue103() {
+    final TestProblem3 pb = new TestProblem3();
+    double minStep;
+    double maxStep;
+    double scalAbsoluteTolerance;
+    double scalRelativeTolerance;
+
+    minStep = 0;
+    maxStep = pb.getFinalTime() - pb.getInitialTime();
+    scalAbsoluteTolerance = 1.0e-8;
+    scalRelativeTolerance = 0.01 * scalAbsoluteTolerance;
+
+    FirstOrderIntegrator integ = new DormandPrince54Integrator(minStep, maxStep,
+                                                               scalAbsoluteTolerance,
+                                                               scalRelativeTolerance);
+    FirstOrderConverter converter = new FirstOrderConverter(integ,
+                                                            1.0e-12 * maxStep);
+    integ.addEventHandler(pb, 0.3, 1.0e-12 * maxStep, 1000);
+    integ.integrate(pb,
+                    pb.getInitialTime(), pb.getInitialState(),
+                    pb.getFinalTime(), new double[pb.getDimension()

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String[] args = new String[] {
+            "--language_in=ECMASCRIPT5",
+            "--jscomp_error=parseError",
+            "--jscomp_error=getterParseError",
+            "--jscomp_error=setterParseError",
+            "--jscomp_error=quotedPropertyAccessor",
+            "--jscomp_error=quotedPropertyAccessorParseError",
+            "--jscomp_error=quotedPropertyAssignment",
+            "--jscomp_error=quotedPropertyAssignmentParseError",
+    };
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.setErrorManager(new BasicErrorManager() {
+        @Override
+        public void report(CheckLevel level, JSError error) {
+            // disable logging
+        }
+    });
+    compiler.compile(SourceFile.fromCode("script.js", "var x = { get 'x'() { return 1 } };"), SourceFile.fromCode("script.js", "var x = { get

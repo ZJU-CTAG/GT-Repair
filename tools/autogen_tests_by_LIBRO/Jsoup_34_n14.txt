@@ -1,0 +1,12 @@
+public void testCommentInCData() throws IOException {
+    String html = "<html><head></head><body><b>test</b></body></html>";
+    Document doc = Jsoup.parse(html);
+    Element body = doc.select("body").first();
+    body.prepend("<![CDATA[\n" +
+            "// ]]>\n" +
+            "]]>");
+
+    String html2 = doc.html();
+    Document doc2 = Jsoup.parse(html2);
+    assertEquals("test", doc2.select("b").text());
+}

@@ -1,0 +1,9 @@
+public void testIssue108() {
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')");
+    } catch (ScriptException e) {
+        fail("Should not have thrown an exception");
+    }
+}

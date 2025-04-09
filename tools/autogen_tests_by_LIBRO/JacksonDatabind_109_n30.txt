@@ -1,0 +1,25 @@
+public void testIssue108() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+
+    final Test test = new Test(new BigDecimal("0.0000000005"));
+    final String str = mapper.writeValueAsString(test);
+    assertEquals("{\"value\":\"0.00000000050\"}", str);
+}
+
+public static class Test {
+    @com.fasterxml.jackson.annotation.JsonFormat(shape=com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING)
+    private BigDecimal value;
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public Test(BigDecimal value) {
+        this.value = value;
+    }
+}

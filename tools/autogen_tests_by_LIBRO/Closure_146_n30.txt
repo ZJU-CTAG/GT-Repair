@@ -1,0 +1,19 @@
+public void testIssue176() {
+    final String js =
+      "function g(x) {};\n" +
+      "function f(x) {\n" +
+      "  if (x != undefined) { g(x); }\n" +
+      "}\n";
+    RhinoErrorReporter reporter = new RhinoErrorReporter();
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setErrorReporter(reporter);
+    env.setRecoverFromErrors(true);
+    env.setLanguageVersion(CompilerEnvirons.LanguageVersion.DEFAULT);
+    env.setOptimizationLevel(CompilerEnvirons.DEFAULT_OPTIMIZATION_LEVEL);
+    env.setGeneratingSource(false);
+    env.setGenerateDebugInfo(true);
+    env.setReservedKeywordAsIdentifier(true);
+    env.setAllowMemberExprAsFunctionName(true);
+    env.setStrictMode(false);
+    env.setWarnTrailingComma(true);
+    Script script = env.parseString(js,

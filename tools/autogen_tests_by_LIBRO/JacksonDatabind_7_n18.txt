@@ -1,0 +1,31 @@
+public void testDelegatingDeserializer() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+
+static class Value {
+    final int a;
+    final String b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        int a = 0;
+        String b = null;
+
+        while (buffer.nextToken() != null) {
+            final String fieldName = buffer.getCurrentName();
+            if ("a".equals(fieldName)) {
+                buffer.nextToken();
+                a = buffer.getIntValue();
+            } else if ("b".equals(fieldName)) {
+                buffer.nextToken();
+                b = buffer.getValueAsString();
+            }
+        }
+        return new Value(a, b);
+    }
+
+    public Value(int a, String b) {
+        this.a =

@@ -1,0 +1,16 @@
+public void testDefaultPrettyPrinter() throws JsonGenerationException, JsonMappingException, IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    //mapper.configure(Feature.USE_LEGACY_DATE_FORMAT, true);
+    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+
+    final StringWriter sw = new StringWriter();
+    final JsonGenerator generator = mapper.getJsonFactory().createJsonGenerator(sw);
+    generator.setPrettyPrinter(DefaultPrettyPrinter.createInstance());
+
+    Date date = new Date();
+    String data = mapper.writeValueAsString(date);
+    System.out.println(data);
+}

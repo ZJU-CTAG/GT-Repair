@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    final InputStream input = new BufferedInputStream(new FileInputStream(new File("src/test/resources/issue108.tar")));
+    TarArchiveInputStream tarInput = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", input);
+    TarArchiveEntry entry;
+    while ((entry = tarInput.getNextTarEntry()) != null) {
+        byte[] data = new byte[(int) entry.getSize()];
+        int read = tarInput.read(data);
+        assertEquals((int) entry.getSize(), read);
+    }
+    tarInput.close();
+    input.close();
+}

@@ -1,0 +1,14 @@
+public void testAttributeNamespaces() throws Exception {
+    String xml = "<?xml version='1.0'?>\n" +
+"<ElementA A:myAttr=\"Mytype\">\n" +
+" <B:ElementB>MY VALUE</B:ElementB>\n" +
+"</ElementA>\n";
+    Document doc = XMLUtils.documentFromString(xml);
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.registerNamespace("A", "http://www.a.com");
+    ctx.registerNamespace("B", "http://www.b.com");
+    BeanPointer bp = (BeanPointer) ctx.getPointer("/ElementA");
+    Object attr = bp.getValue("A:myAttr");
+    assertNull(attr);
+    assertEquals("MY VALUE", ((Element) ctx.getValue("//B:ElementB")).getTextContent());
+}

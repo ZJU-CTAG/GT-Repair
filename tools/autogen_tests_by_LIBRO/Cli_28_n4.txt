@@ -1,0 +1,19 @@
+public void testDefaultOptions() throws Exception {
+    Options opts = new Options();
+    opts.addOption("flag1", false, "flag1");
+    opts.addOption("flag2", true, "flag2");
+    opts.addOption("flag3", "flag3", false, "flag3");
+    opts.addOption("flag4", "flag4", true, "flag4");
+
+    Properties properties = new Properties();
+    properties.setProperty( "flag1", "false" );
+    properties.setProperty( "flag2", "value" );
+    properties.setProperty( "flag3", "no" );
+    properties.setProperty( "flag4", "value" );
+
+    CommandLine cmd = parser.parse(opts, null, properties);
+    assertTrue( !cmd.hasOption("flag1") );
+    assertEquals("value", cmd.getOptionValue("flag2"));
+    assertTrue( !cmd.hasOption("flag3") );
+    assertEquals("value", cmd.getOptionValue("flag4"));
+}

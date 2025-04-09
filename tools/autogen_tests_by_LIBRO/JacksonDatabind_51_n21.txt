@@ -1,0 +1,10 @@
+public void testResolveTypeId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new Java8TypeModifier()));
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(Message.class, MessageImpl.class));
+    mapper.registerModule(new SimpleModule().setMixInAnnotation(Message.class, MessageMixIn.class));
+    ObjectWriter writer = mapper.writerFor(Message.class);
+    Message m = new MessageImpl("test");
+    Map json = mapper.readValue(writer.writeValueAsString(m), Map.class);
+    assertEquals("test", json.get("content"));
+}

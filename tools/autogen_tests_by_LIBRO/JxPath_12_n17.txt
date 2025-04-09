@@ -1,0 +1,12 @@
+public void testIssue() {
+    Document doc = JXPathContext.newContext(new ElementX()).getDocument();
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setNamespaceURI("a", "nsa");
+    context.setNamespaceURI("b", "nsb");
+    context.createPathAndSetValue("/elementX/a:elementA/@a:myAttr", "Mytype");
+    context.createPathAndSetValue("/elementX/a:elementA/b:elementB", "MY VALUE");
+    JXPathContext context2 = JXPathContext.newContext(doc);
+    context2.registerNamespace("a", "nsa");
+    context2.registerNamespace("b", "nsb");
+    assertEquals("/nsa:elementX/nsa:elementA/@nsa:myAttr", context2.getValue("/elementX/a:elementA/@a:myAttr"));
+    assertEquals("/nsa:elementX/nsa:elementA/nsb:elementB",

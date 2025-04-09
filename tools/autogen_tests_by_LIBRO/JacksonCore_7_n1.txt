@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    
+    try {
+        mapper.getFactory().createJsonGenerator(new ByteArrayOutputStream()).writeString("abc");
+        fail("Write method should not be legal");
+    } catch (JsonGenerationException e) {
+        verifyException(e, "without first writing a field name");
+    }
+}

@@ -1,0 +1,16 @@
+public void testLevenbergMarquardt() {
+    double[] target = {0.9, 0.95, 1.0, 1.05, 1.1};
+    // observe the following is similar to the example in the doc
+    LeastSquaresBuilder builder = new LeastSquaresBuilder();
+    builder.model(new GaussianCurve.Parametric(), new double[] { 0.1, 1.0, 0.0 });
+    builder.target(target);
+    builder.lazyEvaluation(false);
+    builder.maxEvaluations(100);
+    builder.maxIterations(100);
+    LeastSquaresProblem problem = builder.build();
+
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair optimum = optimizer.optimize(problem);
+    System.out.println(Arrays.toString(optimum.getPoint()));
+    System.out.println(Arrays.toString(optimum.getResiduals()));
+    System.out.println(optimum.getValue

@@ -1,0 +1,13 @@
+public void testThreadLocalLeak() throws Exception {
+    ClassLoader loader = getClass().getClassLoader();
+    Class<?> toStringStyleClass = loader.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+    assertNotNull(toStringStyleClass);
+    Field field = toStringStyleClass.getDeclaredField("stylePerThread");
+    assertTrue(Modifier.isStatic(field.getModifiers()));
+    assertTrue(Modifier.isPrivate(field.getModifiers()));
+    field.setAccessible(true);
+    Object threadLocal = field.get(null);
+    assertNotNull(threadLocal);
+
+    // if thread local is not null, that means it's leaked
+}

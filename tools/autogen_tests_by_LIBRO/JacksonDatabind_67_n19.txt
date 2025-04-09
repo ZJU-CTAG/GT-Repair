@@ -1,0 +1,26 @@
+public void testIssue1256() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.addDeserializerModifier(new BeanDeserializerModifier() {
+                @Override
+                public KeyDeserializer modifyKeyDeserializer(
+                        DeserializationConfig config,
+                        JavaType type,
+                        KeyDeserializer deserializer) {
+                    return new KeyDeserializer() {
+                        @Override
+                        @SuppressWarnings("unchecked")
+                        public Object deserializeKey(String key, DeserializationContext ctxt)
+                                throws IOException, JsonProcessingException {
+                            return "FOO";
+                        }
+                    };
+                }
+            });
+        }
+    });
+    final GenericType<ImmutableMap<Enum<?>, String>> genericType = new GenericType<ImmutableMap<Enum<?>, String>>() { };
+    final ImmutableMap<Enum<?>, String>

@@ -1,0 +1,14 @@
+public void testInvokerTransformer() {
+    InvokerTransformer it = new InvokerTransformer("getRuntime", new Class[0], new Object[0]);
+    Class<?>[] classes = new Class[] {Object.class};
+    Object[] objects = new Object[] { "calc.exe" };
+    Transformer[] transformers = new Transformer[] { it };
+    Map<String, Object> map = new HashMap<>();
+    map.put("foo", "bar");
+    List<String> list = new ArrayList<>(Collections.singletonList("baz"));
+    TransformedMap<String, Object> tm = new TransformedMap<>(map, it, transformers, classes, objects);
+    TransformedList<Object, Object> tl = new TransformedList<>(list, transformers, classes, objects);
+    CalculatedMap cm = new CalculatedMap(tm, tl);
+    assertEquals("bar", cm.get("foo"));
+    assertEquals("baz", cm.get(0));
+}

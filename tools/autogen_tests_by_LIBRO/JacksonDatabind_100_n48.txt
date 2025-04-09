@@ -1,0 +1,11 @@
+public void testBase64Variant() throws Exception {
+    String json = "{\"data\":\"AQID\"}";
+    JsonParser parser = new JsonFactory().createParser(json);
+    parser.nextToken();
+    parser.nextToken();
+    parser.nextToken();
+    InputStream result = parser.getBinaryValue(Base64Variants.MODIFIED_FOR_URL);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    IOUtils.copy(result, baos);
+    assertEquals("\1\2\3", baos.toString());
+}

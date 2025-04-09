@@ -1,0 +1,15 @@
+public void testForwardReference() throws Exception {
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        // create structure to serialize
+        Foo mo = new Foo();
+        mo.bar1 = new Bar();
+        mo.bar2 = mo.bar1;
+        // serialize it
+        String json = mapper.writeValueAsString(mo);
+        assertEquals("{\n  \"bar1\" : 1,\n  \"bar2\" : 1\n}", json);
+    } catch (Throwable t) {
+        outputMgr.failWithThrowable(name.getMethodName(), t);
+    }
+}

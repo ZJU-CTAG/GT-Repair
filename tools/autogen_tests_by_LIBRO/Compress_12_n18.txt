@@ -1,0 +1,10 @@
+public void testTarArchiveInputStream() throws IOException{
+    File tmp = File.createTempFile("commons-compress-test", ".tar");
+    tmp.deleteOnExit();
+    OutputStream out = new FileOutputStream(tmp);
+    out.write(new byte[]{'d', 'u', 'm', 'm', 'y'});
+    out.close();
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(tmp))) {
+        tais.getNextEntry();
+    }
+}

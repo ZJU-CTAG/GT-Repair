@@ -1,0 +1,9 @@
+public void testIssue107() {
+    String json = "{\"x\": 2147483648}";
+    JsonNode tree = mapper.readTree(json);
+    try {
+        mapper.readerFor(IntClass.class).readValue(tree);
+    } catch (IOException ex) {
+        assertEquals(JsonMappingException.class, ex.getClass());
+    }
+}

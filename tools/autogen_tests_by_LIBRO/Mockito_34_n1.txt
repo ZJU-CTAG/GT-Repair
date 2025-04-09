@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    File srcJar = new File("mockito-core-" + Mockito.version() + "-sources.jar");
+    assertTrue("source jar does not exist", srcJar.exists());
+    ZipFile zipFile = new ZipFile(new File("mockito-core-" + Mockito.version() + ".jar"));
+    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+    while (entries.hasMoreElements()) {
+        ZipEntry entry = entries.nextElement();
+        if (entry.getName().endsWith(".java")) {
+            fail("Source file found in binary jar");
+        }
+    }
+}

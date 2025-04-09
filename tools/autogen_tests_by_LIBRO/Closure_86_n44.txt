@@ -1,0 +1,11 @@
+public void testIssue110() {
+    Compiler compiler = new Compiler();
+    Node n = compiler.parseTestCode("(new Foo()).setLocation('http://www.google.com/');");
+    assertEquals("EXPR_RESULT\n" +
+            "  CALL\n" +
+            "    GETPROP\n" +
+            "      NAME foo\n" +
+            "      STRING setLocation\n" +
+            "    STRING http://www.google.com/\n",
+            compiler.toSource(n).trim());
+}

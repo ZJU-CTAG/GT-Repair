@@ -1,0 +1,16 @@
+public void testOrderPreserved() {
+    List<String> options = new ArrayList<String>();
+    options.add("--jscomp_off=missingProperties");
+    options.add("--jscomp_error=missingProperties");
+    options.add("--jscomp_error=strictMissingProperties");
+    options.add("--jscomp_warning=strictMissingProperties");
+    options.add("--jscomp_warning=missingProperties");
+    CompilerOptions compilerOptions = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager());
+    compiler.initOptions(compilerOptions);
+    compiler.setLoggingLevel(Level.OFF);
+    compiler.parseCompilerOptions(options);
+    assertEquals(CheckLevel.OFF, compilerOptions.getWarningLevel(DiagnosticGroups.MISSING_PROPERTIES));
+    assertEquals(CheckLevel.ERROR, compilerOptions.getWarningLevel(Di

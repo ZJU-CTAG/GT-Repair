@@ -1,0 +1,13 @@
+public void testTokenSequence() throws IOException {
+    JsonParser jp1 = createParserUsingReader(
+            "\"f1\" : 5, \"f2\" : 6, \"f3\" : 7,");
+    jp1.nextToken();
+    JsonParser jp2 = createParserUsingReader("\"f4\" : 8");
+    jp2.nextToken();
+    JsonParserSequence jp = JsonParserSequence.createFlattened(jp1, jp2);
+    Assert.assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    Assert.assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+    Assert.assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    Assert.assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+    Assert.assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    Assert.assertEquals(JsonToken.VALUE_NUMBER_INT,

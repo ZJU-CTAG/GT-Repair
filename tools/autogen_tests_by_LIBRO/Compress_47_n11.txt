@@ -1,0 +1,12 @@
+public void testZipArchiveInputStream() throws Exception {
+    File input = new File("src/test/resources/compress/test1.zip");
+    ZipFile zip = new ZipFile(input);
+    ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(input));
+    ZipArchiveEntry zae = zais.getNextZipEntry();
+    assertEquals("test1/", zae.getName());
+    zae = zais.getNextZipEntry();
+    assertEquals("test1/TEST-org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest.xml", zae.getName());
+    assertEquals(zip.getEntry("test1/TEST-org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest.xml").getCompressedSize(), zae.getCompressedSize());
+    zae = zais.getNextZipEntry();
+    assertEquals("test1/test.xml", zae.getName());
+    assertEquals(zip.getEntry("test1/

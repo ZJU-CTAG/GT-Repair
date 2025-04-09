@@ -1,0 +1,11 @@
+public void testIssue107() throws IOException {
+    final String url = "https://files.fm/u/v43yemgb";
+    final Document html = Jsoup.connect(url).ignoreContentType(true).get();
+    final Elements elements = html.select("iframe.giphy-embed");
+    for (Element element : elements) {
+        final String src = element.attr("src");
+        final Document iframe = Jsoup.connect(src).ignoreContentType(true).get();
+        final String gifUrl = iframe.select("meta[property=og:image]").first().attr("content");
+        System.out.println(gifUrl);
+    }
+}

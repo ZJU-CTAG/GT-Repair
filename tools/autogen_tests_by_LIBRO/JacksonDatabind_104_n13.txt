@@ -1,0 +1,16 @@
+public void testLargeDates() throws ParseException
+{
+    TimeZone tz = TimeZone.getTimeZone("GMT");
+    StdDateFormat formatter = new StdDateFormat().withTimeZone(tz);
+
+    // NOTE: Long.MIN_VALUE is invalid (negative time before epoch)
+    // but we can use it as an "impossible" value to test against
+    Date d1 = new Date(Long.MIN_VALUE);
+    Date d2 = new Date(Long.MAX_VALUE);
+
+    String s1 = formatter.format(d1);
+    String s2 = formatter.format(d2);
+
+    assertNotEquals(Long.MIN_VALUE, formatter.parse(s1).getTime());
+    assertEquals(Long.MAX_VALUE, formatter.parse(s2).getTime());
+}

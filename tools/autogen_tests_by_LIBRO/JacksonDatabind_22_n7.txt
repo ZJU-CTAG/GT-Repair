@@ -1,0 +1,30 @@
+public void testSerializerPrecedence() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new CustomSerializer());
+    mapper.registerModule(module);
+
+    assertEquals("{\"value\":\"custom\"}",
+            mapper.writeValueAsString(new CustomValue()));
+}
+
+@JsonTypeName("custom")
+public class CustomValue {
+    private int value = 1;
+
+    @JsonValue
+    public String getValue() {
+        return "value";
+    }
+}
+
+public class CustomSerializer extends JsonSerializer<CustomValue> {
+    @Override
+    public void serialize(CustomValue value, JsonGenerator jgen,
+                          SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+        jgen.writeStringField("value", "custom");
+        jgen.writeEndObject();
+    }
+}

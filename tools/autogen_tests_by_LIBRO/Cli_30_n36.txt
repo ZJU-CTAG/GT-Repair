@@ -1,0 +1,17 @@
+public void testDefaultOptionsGroup() {
+    Options options = new Options()
+            .addOptionGroup(new OptionGroup()
+                    .addOption(new Option("a", "a option"))
+                    .addOption(new Option("b", "b option"))
+                    .addOption(new Option("c", "c option")));
+    Properties defaults = new Properties();
+    defaults.setProperty("a", "true");
+    defaults.setProperty("b", "true");
+    CommandLineParser parser = new DefaultParser();
+    try {
+        CommandLine line = parser.parse(options, new String[]{ "-a", "true", "-b", "true" }, defaults);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        System.out.println(e);
+    }
+}

@@ -1,0 +1,19 @@
+public void testSpyingAbstractClass() {
+    AbstractClass spy = Mockito.spy(new AbstractClass() {
+        @Override
+        protected void abstractMethod() {
+            //noop
+        }
+    });
+    Mockito.doReturn(1).when(spy).getInt();
+    assertEquals(1, spy.getInt());
+}
+
+abstract class AbstractClass {
+    public int getInt() {
+        abstractMethod();
+        return 0;
+    }
+
+    protected abstract void abstractMethod();
+}

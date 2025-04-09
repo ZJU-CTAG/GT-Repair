@@ -1,0 +1,20 @@
+public void testParseWithDefaults() throws Exception {
+    Options options = new Options();
+    options.addOption("x", "x", false, "x");
+    options.addOption("y", "y", false, "y");
+    options.addOption("z", "z", false, "z");
+    options.addOption("v", "v", false, "v");
+    options.addOption("a", "a", false, "a");
+
+    Properties props = new Properties();
+    props.setProperty("x", "true");
+    props.setProperty("y", "no");
+    props.setProperty("v", "false");
+    props.setProperty("z", "yes");
+    props.setProperty("a", "true");
+    CommandLine cl = new DefaultParser().parse(options, new String[0], props);
+    assertTrue(!cl.hasOption("x"));
+    assertTrue(!cl.hasOption("y"));
+    assertTrue(cl.hasOption("z"));
+    assertTrue(!cl.hasOption("v"));
+    assertTrue(cl.hasOption

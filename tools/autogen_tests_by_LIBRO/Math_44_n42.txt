@@ -1,0 +1,25 @@
+public void testIssue108() {
+    StateMachine fsm = new StateMachine("test");
+    State s1 = new State("S1");
+    fsm.addState(s1);
+    State s2 = new State("S2");
+    fsm.addState(s2);
+    State s3 = new State("S3");
+    fsm.addState(s3);
+
+    fsm.setStartState(s1);
+
+    Transition t1 = new Transition(s1, s2, "event1", "action1");
+    fsm.addTransition(t1);
+    Transition t2 = new Transition(s1, s3, "event2", "action2");
+    fsm.addTransition(t2);
+
+    StateMachineExecutor fsmExecutor = new StateMachineExecutor(fsm);
+
+    fsmExecutor.go();
+    assertEquals(s1, fsmExecutor.getCurrentState());
+
+    fsmExecutor.fireEvent("event1", new Object());
+    assertEquals(s2, fsmExecutor.getCurrentState());
+
+    fsmExecutor

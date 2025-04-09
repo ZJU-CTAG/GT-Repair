@@ -1,0 +1,18 @@
+public void testComma() throws Exception {
+    String source = "function Test(n) {\n" +
+        " var i = 0;\n" +
+        " return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i\n" +
+        "}\n" +
+        "var dummy = \"6chars\";\n" +
+        "console && console.log( Test(dummy) );";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(SourceFile.fromCode("f.js", source));
+    String result = compiler.toSource();
+    assertEquals("function Test(a) {\n" +
+            " return a.length\n" +
+            "}\n" +
+            "var dummy = \"6chars\";\n" +
+            "console && console.log(Test(dummy));\n", result);
+}

@@ -1,0 +1,19 @@
+public void testPearsonCorrelation() {
+    // This is a modified version of PearsonsCorrelation.getCorrelationPValues()
+    // that calculates the p-value using a Tdistribution rather than a
+    // ChiSquaredDistribution
+
+    // Create a random set of x,y values
+    double[][] data = new double[2][10000];
+    Random r = new Random();
+    for (int i = 0; i < 10000; i++) {
+        data[0][i] = r.nextGaussian();
+        data[1][i] = r.nextGaussian();
+    }
+
+    PearsonsCorrelation pc = new PearsonsCorrelation();
+    double[] corrs = pc.getCorrelationMatrix(data).getDataRef()[0];
+    double[] ps = new double[corrs.length];
+    for (int i = 0; i < corrs.length; i++) {
+        double t = corrs[i] / (Math.sqrt((1 - corrs[i] * corrs[i]) / (10000 - 2)));
+        TDistribution tDistribution = new

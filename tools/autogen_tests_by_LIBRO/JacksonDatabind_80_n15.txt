@@ -1,0 +1,33 @@
+public void testIssue118() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    final SimpleModule module = new SimpleModule()
+            .addAbstractTypeMapping(Base.class, Sub.class)
+            .addAbstractTypeMapping(Base.class, Sub2.class);
+    mapper.registerModule(module);
+
+    String json = "[ \"Base\", { \"a\": 3, \"b\": \"String\" } ]";
+    Base base = (Base) mapper.readValue(json, Base.class);
+
+    assertEquals(Sub.class, base.getClass());
+    assertEquals(3, ((Sub)base).a);
+    assertEquals("String", ((Sub)base).b);
+}
+
+abstract class Base {
+}
+
+class Sub extends Base {
+    public int a;
+    public String b;
+
+    public Sub() {
+    }
+
+    public Sub(int a, String b) {
+        this.a = a;
+        this.b = b;
+    }
+}
+
+class Sub2 extends Base {

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String json = "";
+    ObjectMapper mapper = new ObjectMapper();
+    FilterProvider filterProvider = new SimpleFilterProvider()
+            .addFilter("myFilter", SimpleBeanPropertyFilter.filterOutAllExcept("prop1"))
+            .addFilter("myFilter2", SimpleBeanPropertyFilter.filterOutAllExcept("prop2"));
+    mapper.setFilters(filterProvider);
+    MyBean myBean = new MyBean("prop1", "prop2", "prop3");
+    try {
+        json = mapper.writer(new SimpleFilterProvider().addFilter("myFilter", SimpleBeanPropertyFilter.serializeAll()))
+                .with(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+                .writeValueAsString(myBean);
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+    }
+    try {
+        json = mapper.writer(new SimpleFilterProvider().addFilter("myFilter2", SimpleBeanPropertyFilter.serializeAll()))
+                .with(Serial

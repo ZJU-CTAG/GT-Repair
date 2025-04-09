@@ -1,0 +1,24 @@
+public void testLoops() throws Exception {
+    DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
+    DocumentBuilder db=dbf.newDocumentBuilder();
+    Document d=db.newDocument();
+
+    Element root=d.createElement("root");
+    d.appendChild(root);
+    Element foo=d.createElement("foo");
+    foo.setPrefix("b");
+    foo.setAttribute("xmlns","test111");
+    foo.setAttribute("xmlns:b","bla");
+    root.appendChild(foo);
+    Element bar=d.createElement("bar");
+    bar.setPrefix("b");
+    bar.setTextContent("a");
+    foo.appendChild(bar);
+    Element test=d.createElement("test");
+    test.setAttribute("xmlns","");
+    foo.appendChild(test);
+
+    DOMDocumentContainer doc=new DOMDocumentContainer(d);
+    String xpath="//b:foo/test";
+    JXPathContext context=JXPathContext.newContext(doc.getNode());
+    NodePointer nodePointer=context

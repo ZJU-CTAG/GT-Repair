@@ -1,0 +1,19 @@
+public void testJsonParserSequence() throws IOException {
+  JsonFactory jsonFactory = new JsonFactory();
+  final String testData = "[{\"a\":1},{\"b\":2}]";
+  JsonParser parser1 = jsonFactory.createParser(testData);
+  JsonParser parser2 = jsonFactory.createParser(testData);
+  JsonParser p = JsonParserSequence.createFlattened(parser1, parser2);
+  JsonToken token = p.nextToken();
+  assertNotNull(token);
+  assertEquals(JsonToken.START_ARRAY, token);
+  token = p.nextToken();
+  assertNotNull(token);
+  assertEquals(JsonToken.START_OBJECT, token);
+  token = p.nextToken();
+  assertNotNull(token);
+  assertEquals(JsonToken.FIELD_NAME, token);
+  token = p.nextToken();
+  assertNotNull(token);
+  assertEquals(JsonToken.VALUE_NUMBER_INT, token);
+  token = p.nextToken();

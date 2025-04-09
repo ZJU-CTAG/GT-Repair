@@ -1,0 +1,23 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final List<Record> records = new ArrayList<Record>();
+
+    final Record record = new Record();
+    record.fields = new ArrayList<Field>();
+    records.add(record);
+    records.add(null);
+
+    mapper.writeValueAsString(records);
+    final List<Record> read = mapper.readValue("[{},null]", new TypeReference<List<Record>>() {});
+    assertEquals(2, read.size());
+    assertEquals(Record.class, read.get(0).getClass());
+    assertNull(read.get(1));
+}
+
+static class Record {
+    @JsonProperty("fields") @JsonDeserialize(as = ArrayList.class)
+    public List<Field> fields;
+}
+
+static class Field {
+}

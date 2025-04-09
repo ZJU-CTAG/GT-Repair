@@ -1,0 +1,19 @@
+public void testIssue() {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    StdDateFormat df = new StdDateFormat();
+    df.setLenient(false);
+    objectMapper.setDateFormat(df);
+
+    DateTime dateTime = new DateTime();
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+    String dateString = formatter.print(dateTime); // i.e. 2015-01-32T18:45:05.958-05:00
+
+    try {
+        objectMapper.readValue("\"" + dateString + "\"", java.util.Date.class);
+        fail("Expected JsonMappingException");
+    }
+    catch (JsonMappingException e) {
+        assertEquals("Unparseable date: \"2015-01-32T18:45:05.958-05:00\"", e.getMessage());
+    }
+}

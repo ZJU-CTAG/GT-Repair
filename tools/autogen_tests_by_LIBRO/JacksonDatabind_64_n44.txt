@@ -1,0 +1,23 @@
+public void testNulls() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.setMixInAnnotation(Collection.class, CollectionMixIn.class);
+    mapper.registerModule(module);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    System.out.println(mapper.writeValueAsString(new Collection()));
+}
+
+public static class Collection {
+    private String myString;
+    public String getMyString() {
+        return myString;
+    }
+    public void setMyString(String myString) {
+        this.myString = myString;
+    }
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+public static class CollectionMixIn {}

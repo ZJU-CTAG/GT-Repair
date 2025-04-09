@@ -1,0 +1,26 @@
+public void testRefinePrimitive() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.USE_ANNOTATIONS);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.registerModule(new JodaModule());
+    final String json = mapper.writeValueAsString(new StringBean());
+    final StringBean result = mapper.readValue(json, StringBean.class);
+    assertNull(result.getInt());
+}
+@XmlRootElement(name = "stringBean")
+public static class StringBean {
+    private Integer intValue;
+    @XmlJavaTypeAdapter(IntegerAdapter.class)
+    public Integer getInt() {
+        return intValue;
+    }
+    public void setInt(Integer intValue) {
+        this.intValue = intValue;
+    }
+}
+public static class LongAdapter extends XmlAdapter<String, Long> {
+    @Override
+    public Long unmarshal(String v) throws Exception {
+        return Long.valueOf(v);
+   

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+    try {
+        mapper.readValue("{\"value\":\"NOT_A_NUMBER\"}", Wrapper.class);
+    } catch (InvalidFormatException e) {
+        String msg = e.getMessage();
+        assertEquals("Cannot deserialize value of type `java.math.BigDecimal` from String \"NOT_A_NUMBER\": not a valid representation: \"NOT_A_NUMBER\"", msg);
+        assertTrue(msg.indexOf("\"NOT_A_NUMBER\"") > 0);
+        assertTrue(msg.indexOf(" at [Source: ") > 0);
+        assertTrue(msg.indexOf(" at [Source: ") == msg.lastIndexOf(" at [Source: "));
+    }
+}
+
+public static class Wrapper {
+    public BigDecimal value;
+}

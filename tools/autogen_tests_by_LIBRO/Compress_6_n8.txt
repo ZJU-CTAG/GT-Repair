@@ -1,0 +1,21 @@
+public void testZipOutputStream() {
+    try {
+        String[] filenames = new String[] { "file1", "file2", "file3", "file4", "file5" };
+        File outFile = new File("target/test.zip");
+
+        FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
+        Path root = fs.getPath("/");
+
+        FileUtils.deleteQuietly(outFile);
+        List<File> files = new ArrayList<>();
+        for (int i = 0; i < filenames.length; i++) {
+            String filename = filenames[i];
+            String content = "file" + i;
+            Path p = fs.getPath(root.toString(), filename);
+            FileUtils.writeStringToFile(p.toFile(), content, "UTF-8");
+            files.add(p.toFile());
+        }
+
+        try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(outFile)) {
+            for (File f : files) {
+                try (InputStream is = new FileInput

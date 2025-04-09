@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException, ParserConfigurationException, SAXException {
+    Document html = Jsoup.parse(new File("test.html"), "UTF-8");
+
+    Element body = html.select("body").first();
+
+    System.out.println("body namespace: " + body.namespace());
+    System.out.println("body attributes: " + body.attributes());
+    System.out.println("body children: ");
+    for (Node child : body.childNodes()) {
+        System.out.println("\t" + child.nodeName() + " " + child.namespace());
+    }
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new File("test.html"));
+
+    System.out.println("body namespace: " + doc.getElementsByTagName("body").item(0).getNamespaceURI());
+    System.out.println("body children: ");
+    NodeList bodyChildren = doc.getElementsByTagName("body").item(

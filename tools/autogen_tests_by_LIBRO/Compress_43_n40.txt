@@ -1,0 +1,18 @@
+public void testZip() throws IOException {
+    File archiveFile = new File("target/test.zip");
+    try (FileOutputStream fos = new FileOutputStream(archiveFile)) {
+        try (ZipArchiveOutputStream tos = new ZipArchiveOutputStream(fos)) {
+            tos.setMethod(ZipEntry.DEFLATED);
+            tos.setEncoding("UTF-8");
+            tos.setLevel(Deflater.BEST_COMPRESSION);
+            ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+            entry.setSize(0);
+            tos.putArchiveEntry(entry);
+            tos.closeArchiveEntry();
+        }
+    }
+    try (ZipFile zf = new ZipFile(archiveFile)) {
+        ZipArchiveEntry ze = zf.getEntry("test.txt");
+        assertEquals(10, ze.getVersionNeededToExtract());
+    }
+}

@@ -1,0 +1,24 @@
+public void testFilteringParserDelegate() throws IOException {
+	JsonFactory jsonFactory = new JsonFactory();
+	String input = "{\"a\":1, \"b\":2}";
+	JsonParser jsonParser = jsonFactory.createParser(input);
+	FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonParser, new MatchFilter() {
+
+		@Override
+		public boolean includeValue(JsonParser p) throws IOException {
+			return p.getCurrentName().contentEquals("a");
+		}
+
+		@Override
+		public boolean includeValue(JsonParser jp, MatchType mt) throws IOException {
+			return jp.getCurrentName().contentEquals("a");
+		}
+
+		@Override
+		public boolean includePath(String path) {
+			return false;
+		}
+
+	}, false, null);
+	assertEquals(2, filteringParserDelegate.getMatchCount());
+}

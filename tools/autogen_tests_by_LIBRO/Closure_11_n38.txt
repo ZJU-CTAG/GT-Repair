@@ -1,0 +1,15 @@
+public void testIssue1() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.EXTERNS_VALIDATION, CheckLevel.ERROR);
+    options.setPrettyPrint(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        getSourceFile("externs.js"),
+        getSourceFile("repro.js"),
+        options);
+    assertEquals(0, result.errors.length);
+}

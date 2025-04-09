@@ -1,0 +1,31 @@
+public void testIssue() {
+    TestBean testBean = new TestBean();
+    TestBean result = mapper.readValue(mapper.writeValueAsString(testBean), TestBean.class);
+}
+
+public static class TestBean {
+    @JsonProperty("map1")
+    @JsonDeserialize(contentUsing = CustomDeserializer.class)
+    Map<String, Integer> map1;
+    @JsonProperty("map2")
+    Map<String, Integer> map2;
+
+    public Map<String, Integer> getMap1() {
+        return map1;
+    }
+
+    public void setMap1(Map<String, Integer> map1) {
+        this.map1 = map1;
+    }
+
+    public Map<String, Integer> getMap2() {
+        return map2;
+    }
+
+    public void setMap2(Map<String, Integer> map2) {
+        this.map2 = map2;
+    }
+}
+
+public static class CustomDeserializer extends StdDeserializer<Integer> {
+    public CustomDeserial

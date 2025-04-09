@@ -1,0 +1,15 @@
+public void testHeaderSize() throws Exception {
+    File file = File.createTempFile("test", ".tar");
+    file.deleteOnExit();
+    try (TarOutputStream out = new TarOutputStream(new FileOutputStream(file))) {
+        TarArchiveEntry entry = new TarArchiveEntry(file);
+        entry.setName("name");
+        entry.setSize(12345678901L);
+        out.putArchiveEntry(entry);
+        out.closeArchiveEntry();
+    }
+    try (TarArchiveInputStream in = new TarArchiveInputStream(new FileInputStream(file))) {
+        TarArchiveEntry entry = in.getNextTarEntry();
+        assertEquals(12345678901L, entry.getSize());
+    }
+}

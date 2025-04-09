@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String text = "goog.scope(function() {" +
+        "  /** @private */" +
+        "  function test() {}" +
+        "});";
+    final Compiler compiler = new Compiler();
+    final CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("input.js", text)),
+        ImmutableList.<SourceFile>of(), options);
+}

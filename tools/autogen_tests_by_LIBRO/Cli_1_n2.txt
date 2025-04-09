@@ -1,0 +1,22 @@
+public void testIssue107() {
+    Option debug = OptionBuilder
+        .withArgName("debug")
+        .withDescription("turn on debugging")
+        .withLongOpt("debug")
+        .create('d');
+    Option option = OptionBuilder
+        .hasOptionalArgs()
+        .withArgName("option")
+        .withDescription("optional option")
+        .withLongOpt("option1")
+        .create('o');
+    Options options = new Options();
+    options.addOption(debug);
+    options.addOption(option);
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = parser.parse(options, new String[]{"-o", "optionVal", "--debug"});
+    assertEquals("optionVal", commandLine.getOptionValue('o'));
+    assertEquals("optionVal", commandLine.getOptionValue("option1"));
+    assertNull(commandLine.getOptionValue('d'));
+    assertEquals("", commandLine.getOptionValue("debug"));
+}

@@ -1,0 +1,10 @@
+public void testNilSerialization() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    NilSerializableBean bean = new NilSerializableBean();
+    String serialized = mapper.writeValueAsString(bean);
+    NilSerializableBean bean2 = mapper.readValue(serialized, NilSerializableBean.class);
+    assertNotNull(bean2);
+    assertEquals(0, bean2.getId());
+}

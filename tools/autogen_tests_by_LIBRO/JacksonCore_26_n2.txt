@@ -1,0 +1,13 @@
+public void testNonBlocking() throws IOException {
+    byte[] JSON = "{\"a\":1,\"b\":true,\"c\":\"some string\"}".getBytes(StandardCharsets.UTF_8);
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createNonBlockingByteArrayParser();
+    ByteArrayFeeder feeder = (ByteArrayFeeder) p.getNonBlockingInputFeeder();
+    feeder.feedInput(JSON, 0, JSON.length);
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    feeder.endOfInput();
+    assertEquals(JsonToken.END_OBJECT, p.nextToken());
+    assertEquals(JsonToken.NOT_AVAILABLE, p.nextToken());
+    assertEquals(JSON.length, p.getTokenLocation().getByteOffset());
+    assertEquals(JSON.length, p.getCurrentLocation().getByteOffset());
+}

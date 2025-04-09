@@ -1,0 +1,19 @@
+public void testIssue() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.setMixInAnnotations(Object.class, ObjectMixIn.class);
+            context.addTypeResolver(new TypeResolverBuilder<MyTypeResolverBuilder>() {
+                @Override
+                public TypeIdResolver idResolver(MapperConfig<?> config,
+                    AnnotatedMember property, JavaType baseType) {
+                    return new MyTypeIdResolver(config, baseType);
+                }
+            });
+        }
+    });
+    ObjectWithGeneric<String> obj = new ObjectWithGeneric<>(Arrays.asList("one", "two"));
+    ObjectWithGeneric<?> result = om.readValue(om.writeValueAsString(obj), ObjectWithGeneric.class);
+    System.out.println(result);
+}

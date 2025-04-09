@@ -1,0 +1,14 @@
+public void testIssue113() throws Exception {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withMinimalQuoteMode());
+    printer.printRecord("-1.1", "2.2", "3.3");
+    printer.printRecord("a", "b", "c");
+    printer.printRecord("x", "y", "z");
+    printer.flush();
+    printer.close();
+    String result = sw.toString();
+    // note, the first field is quoted, the others are not
+    assertEquals("\"-1.1\",2.2,3.3\r\n" +
+                 "a,b,c\r\n" +
+                 "x,y,z\r\n", result);
+}

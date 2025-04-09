@@ -1,0 +1,12 @@
+public void testLargeUid() throws IOException {
+    FileInputStream fis = new FileInputStream(new File("src/test/resources/issue107.tar"));
+    try {
+        TarArchiveInputStream tais = new TarArchiveInputStream(fis);
+        TarArchiveEntry tae;
+        while ((tae = tais.getNextTarEntry()) != null) {
+            assertEquals(4294967294L, tae.getLongUserId());
+        }
+    } finally {
+        fis.close();
+    }
+}

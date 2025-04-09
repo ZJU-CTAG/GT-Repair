@@ -1,0 +1,10 @@
+public void testExternalTypeId() throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new AfterburnerModule());
+    final ObjectReader r = mapper.readerFor(ExternalTypeIdSub.class);
+    ExternalTypeIdSub value = r.readValue("{\"a\":3,\"@type\":\"externalTypeIdSub\"}");
+    assertEquals(3, value.a);
+}

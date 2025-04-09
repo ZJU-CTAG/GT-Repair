@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String html = "<div>\n" +
+            "  <table class=x>\n" +
+            "    <tbody>\n" +
+            "    <tr>\n" +
+            "      <td>1</td>\n" +
+            "      <td>2</td>\n" +
+            "    </tr>\n" +
+            "    </tbody>\n" +
+            "  </table>\n" +
+            "</div>";
+    Document doc = Jsoup.parse(html);
+    Pattern p = Pattern.compile("x|y");
+    
+    
+    assertEquals(1, doc.select("div table[class~=x|y]").size());
+    assertEquals(1, doc.select("div > table[class~=x|y]").size());
+    assertEquals(1, doc.select("div + table[class~=x|y]").size());
+    assertEquals(1, doc.select("div ~ table[class~=x|y]

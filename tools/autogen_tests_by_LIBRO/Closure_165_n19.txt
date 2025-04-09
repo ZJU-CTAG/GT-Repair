@@ -1,0 +1,21 @@
+public void testRecordType1() {
+    String js = "/** @typedef {{name: string, id: number}} */\n" +
+            "var RecordType1;\n" +
+            "\n" +
+            "/**\n" +
+            " * @param {RecordType1} rec\n" +
+            " */\n" +
+            "var func = function(rec) {\n" +
+            " alert(rec.name2);\n" +
+            "};\n" +
+            "func({name: 'jim', id: 0});";
+    //Expect errors
+    test(js, CheckLevel.ERROR, DiagnosticType.ACCESS_CONTROLS,
+            DiagnosticType.CHECK_TYPES, DiagnosticType.CHECK_VARS);
+}
+
+public void testRecordType2() {
+    String js = "/** @typedef {{name: string, id: number}} */\n" +
+            "var RecordType1;\n" +
+            "/** @typedef {{name2: string}} */\n" +
+            "var Record

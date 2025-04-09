@@ -1,0 +1,12 @@
+public void testIssueL130() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+        JSSourceFile.fromCode("testcode",
+            "/** @type {function(new:?)} */ var foo = function() {};" +
+            "/** @type {function(new:*)} */ var bar = function() {};"),
+        }, options);
+    assertEquals(0, result.errors.length);
+}

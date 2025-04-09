@@ -1,0 +1,14 @@
+public void testImplicitCreatorName() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    final TestValue value = mapper.readValue("{\"test_value\":\"value\"}", TestValue.class);
+    assertEquals("value", value.testValue);
+}
+
+static class TestValue {
+    public final String testValue;
+
+    public TestValue(String testValue) {
+        this.testValue = testValue;
+    }
+}

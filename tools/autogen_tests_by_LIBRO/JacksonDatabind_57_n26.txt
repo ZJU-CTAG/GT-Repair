@@ -1,0 +1,10 @@
+public void testIssue105() throws IOException {
+    char[] in = "foo".toCharArray();
+    ObjectMapper mapper = new ObjectMapper();
+    JsonParser parser = new ReaderBasedJsonParser(new StringReader("[1,2,3]"));
+    // API that ObjectReader uses
+    JsonParser p = mapper.reader().readValues(parser, in, 1, 2);
+    assertEquals("oo", p.getText());
+    assertEquals(JsonToken.END_ARRAY, p.nextToken());
+    assertEquals(JsonToken.END_ARRAY, p.nextToken());
+}

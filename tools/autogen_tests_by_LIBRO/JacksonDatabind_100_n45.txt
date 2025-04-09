@@ -1,0 +1,12 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree("\"YQ==\"");
+
+    Base64Variant variant = Base64Variants.getDefaultVariant();
+    JsonParser p = new TreeTraversingParser(node, mapper);
+    p.setCodec(mapper);
+    p.nextToken();
+
+    assertArrayEquals(new byte[] { 1 }, p.getBinaryValue(variant));
+    assertArrayEquals(new byte[] { 1 }, node.binaryValue());
+}

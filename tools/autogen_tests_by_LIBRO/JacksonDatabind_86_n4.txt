@@ -1,0 +1,9 @@
+public void testIssue130() throws IOException {
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new SimpleModule()
+                    .addAbstractTypeMapping(IFace.class, Sub.class));
+    Sub sub = new Sub();
+
+    IFace<Sub> serialized = mapper.readValue(mapper.writeValueAsString(sub), new TypeReference<IFace<Sub>>() {});
+    assertEquals(1, serialized.getBase());
+}

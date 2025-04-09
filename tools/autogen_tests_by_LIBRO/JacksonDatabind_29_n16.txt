@@ -1,0 +1,32 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    WatchableData data = new WatchableData();
+    String json = mapper.writeValueAsString(data);
+    System.out.println(json);
+    WatchableData read = mapper.readValue(json, WatchableData.class);
+    assertEquals(data.getName(), read.getName());
+    assertEquals(data.getValue(), read.getValue());
+}
+
+public class WatchableData  {
+    private String name;
+    private Object value;
+    private Map<String, Object> properties;
+
+    public WatchableData() {
+
+    }
+
+    public WatchableData(String name, Object value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name

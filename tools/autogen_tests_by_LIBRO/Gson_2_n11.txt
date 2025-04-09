@@ -1,0 +1,13 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.USE_ANNOTATIONS, false);
+    mapper.getDeserializationConfig().addMixInAnnotations(Vehicle.class, VehicleMixin.class);
+    mapper.configure(DeserializationConfig.Feature.USE_GETTERS_AS_SETTERS, true);
+
+try{
+        mapper.readValue("{\"type\":\"Truck\",\"load\":\"cargo\",\"brand\":\"Ford\"}", Car.class);
+        fail("Expected UnableToDeserializeException");
+    }catch(JsonMappingException e){
+        assertTrue(e.getCause() instanceof UnableToDeserializeException);
+    }
+}

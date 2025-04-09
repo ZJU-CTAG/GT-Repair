@@ -1,0 +1,22 @@
+public void testIssue108() {
+  final RealMatrix m = new Array2DRowRealMatrix(new double[][] {
+      { 2, 1, 1 },
+      { 1, 1, 1 },
+      { 1, 1, 1 } });
+  final RealVector b = new ArrayRealVector(new double[] { 2, 1, 2 });
+  QRDecomposition qr = new QRDecompositionImpl(m);
+  LeastSquaresProblem lsp =
+      new LeastSquaresBuilder().
+  start(qr.getSolver().solve(b))
+  .model(new ModelFunction() {
+    @Override
+    public RealVector value(RealVector point) {
+      return m.operate(point);
+    }
+  })
+  .target(b)
+  .weight(new DiagonalMatrix(new double[] { 2, 1, 2 }))
+  .build();
+  LeastSquaresOptimizer lso = new LevenbergMarquardtOptimizer();
+  lso.optimize(lsp);
+  assertTrue(lso.getRMS() == 0.0);

@@ -1,0 +1,11 @@
+public void testHandleNull() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+    try {
+        mapper.readValue("null", ObjectId.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Can not instantiate value of type `org.bson.types.ObjectId`");
+    }
+}

@@ -1,0 +1,17 @@
+public void testZipFile() throws Exception {
+    File file = new File("D:\\tmp\\test.zip");
+    System.out.println(file.exists());
+    ZipFile zipFile = new ZipFile(file);
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        System.out.println(entry);
+    }
+    ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(file));
+    ZipArchiveEntry entry = in.getNextZipEntry();
+    System.out.println(entry);
+
+    ZipArchiveEntry entry2 = zipFile.getEntry(entry.getName());
+    System.out.println(entry2);
+    System.out.println(entry.equals(entry2));
+}

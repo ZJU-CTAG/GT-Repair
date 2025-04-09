@@ -1,0 +1,17 @@
+public void testIssueNegativeNumber() throws IOException {
+    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+    System.setErr(new java.io.PrintStream(baos));
+    try {
+        Argument numArg = aBuilder.withValidator(NumberValidator.getNumberInstance()).withMinimum(1).withMaximum(1).create();
+        Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+        Group options = gBuilder.withOption(numOpt).create();
+
+        CommandLine cmdLine = new CommandLine(options);
+        cmdLine.parse("--num", "-0.1");
+        fail("Should fail");
+    } catch (ArgumentException ex) {
+        // expected
+    }
+    String actual = baos.toString();
+    assertTrue(actual.indexOf("Unexpected -0.1 while processing --num") >= 0);
+}

@@ -1,0 +1,20 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    options.setPrettyPrint(false);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(
+            JSSourceFile.fromCode("window.js", "var window = {};"),
+            JSSourceFile.fromCode("input.js",
+                    "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+                            "  return (function (saved) {\n" +
+                            "    return modifiesProp(obj) + saved;\n" +
+                            "  })(obj[\"prop\"]);\n" +
+                            "}\n"),
+            options
+    );
+    String result

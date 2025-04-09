@@ -1,0 +1,24 @@
+public void testFinish() throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, out);
+
+    aos.putArchiveEntry(new ZipArchiveEntry("testdata1.bin"));
+    aos.write(new byte[1024]);
+    aos.closeArchiveEntry();
+
+    aos.putArchiveEntry(new ZipArchiveEntry("testdata2.bin"));
+    aos.write(new byte[1024]);
+    aos.closeArchiveEntry();
+
+    aos.finish();
+
+    aos.close();
+
+    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, in);
+
+    ZipArchiveEntry ze = (ZipArchiveEntry) ais.getNextEntry();
+    assertEquals("testdata1.bin", ze.getName());
+    ais.closeEntry();
+
+    ze = (ZipArch

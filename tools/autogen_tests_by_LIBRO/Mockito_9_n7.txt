@@ -1,0 +1,20 @@
+public void testAbstractClassSpy() {
+    SpyAbstractClass spy = new SpyAbstractClass() {
+        @Override
+        public void abstractMethod() {
+            System.out.println("abstract method spy");
+        }
+    };
+    System.out.println("spy " + spy);
+    System.out.println("spy.toString() " + spy.toString());
+    doReturn("abstract method spy").when(spy).toString();
+    System.out.println("spy.toString() " + spy.toString());
+}
+
+abstract class SpyAbstractClass {
+    public String toString() {
+        abstractMethod();
+        return "real method";
+    }
+    public abstract void abstractMethod();
+}

@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    CsvFormat csvFormat = new CsvFormat.Builder()
+            .withNullString("\\N")
+            .withEscape('\\')
+            .build();
+
+    StringWriter writer = new StringWriter();
+    CsvWriter csvWriter = new CsvWriter(writer, csvFormat);
+    csvWriter.writeValues(List.of(null));
+    csvWriter.close();
+    String string = writer.toString();
+    assertEquals("\\N\n", string);
+}

@@ -1,0 +1,7 @@
+public void testDuplicatedAttributeParsing() {
+    String html = "<html><head><title foo=\"bar\" foo=\"baz\">Test</title></head><body></body></html>";
+    final Element head = Jsoup.parse( html ).head();
+    final Attributes attributes = head.children().get( 0 ).attributes();
+    assertEquals( 1, attributes.size() );
+    assertEquals( "baz", attributes.get( "foo" ) );
+}

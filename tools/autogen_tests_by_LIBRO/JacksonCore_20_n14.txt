@@ -1,0 +1,12 @@
+public void testIssue122() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = mapper.getFactory().createGenerator(sw);
+    byte[] byteArray = new byte[] { 1, 2, 3 };
+    gen.writeStartObject();
+    gen.writeFieldName("binary");
+    gen.writeEmbeddedObject(byteArray);
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("{\"binary\":[1,2,3]}", sw.toString());
+}

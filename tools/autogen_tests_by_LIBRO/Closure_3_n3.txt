@@ -1,0 +1,22 @@
+public void testIssue110() {
+    String js = "function getStack() {"
+        + "  var getErrorObject = function() {"
+        + "    try {"
+        + "      throw Error(\"\");"
+        + "    } catch(err) {"
+        + "      return err;"
+        + "    }"
+        + "  };"
+        + "  return getErrorObject().stack;"
+        + "}"
+        + "window['getStackTrace']=getStack;";
+    Node parsed = parse(js);
+    compiler.resetUniqueNameId();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.getOptions().setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.getOptions().setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compiler.getOptions().setOutputCharset("UTF-8");
+    compiler.getOptions().setLineLengthThreshold(10000);
+    compiler.getOptions().setSourceMapIncludeSourcesContent(false);
+    Node externs = new Node(Token.BLOCK);

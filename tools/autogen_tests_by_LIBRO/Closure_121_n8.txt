@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Chronology chrono = IslamicChronology.getInstanceUTC();
+    DateTimeZone zone = DateTimeZone.forID("Asia/Damascus");
+    DateTime start = new DateTime(2008, 7, 1, 0, 0, 0, 0, chrono);
+    DateTime end = new DateTime(2008, 8, 1, 0, 0, 0, 0, chrono);
+    Interval interval = new Interval(start, end);
+    System.out.println(interval);
+    List<DateTime> dates = new ArrayList<DateTime>();
+    while (!interval.isBefore(start)) {
+        DateTime dt = start.minusMonths(1);
+        System.out.println(dt);
+        dates.add(dt);
+        start = dt;
+    }
+    for (DateTime dt : dates) {
+        System.out.println(dt);
+    }
+}

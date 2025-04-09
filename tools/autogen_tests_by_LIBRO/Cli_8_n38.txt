@@ -1,0 +1,15 @@
+public void testHelpFormatter() {
+    Options options = new Options();
+    Option option = OptionBuilder.hasArg(false).withDescription("a test option").withLongOpt("test").create("t");
+    options.addOption(option);
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printHelp(pw, 80, "test-app", "test-header", options, 2, 5, "test-footer", false);
+    pw.flush();
+    String output = sw.toString().replace("\r", "");
+    String[] lines = output.split("\n");
+    assertEquals("usage: test-app -t", lines[0]);
+    assertEquals("  -t                                 a test option", lines[1]);
+    assertEquals("", lines[2]);
+}

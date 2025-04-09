@@ -1,0 +1,10 @@
+public void testWinZipWithUnicodeExtraFields() throws Exception {
+    final File archive = getFile("COMPRESS-243.zip");
+    final ZipFile zf = new ZipFile(archive, "Cp850");
+    final Enumeration<ZipArchiveEntry> entries = zf.getEntries();
+    assertTrue(entries.hasMoreElements());
+    final ZipArchiveEntry entry = entries.nextElement();
+    assertEquals("J\u00F6rg Sch\u00E4fer.txt", entry.getName());
+    final InputStream inputStream = zf.getInputStream(entry);
+    assertNotNull(inputStream);
+}

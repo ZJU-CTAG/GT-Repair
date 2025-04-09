@@ -1,0 +1,32 @@
+public void testIssue108() {
+    // setup mock
+    final Foo foo = mock(Foo.class);
+    when(foo.bar()).thenReturn("bar");
+
+    // test
+    JUnitCore core = new JUnitCore();
+    Result result = core.run(new BlockJUnit4ClassRunner(Issue108.class) {
+        @Override
+        protected void validateConstructor(List<Throwable> errors) {
+        }
+
+        @Override
+        protected Statement classBlock(RunNotifier notifier) {
+            return childrenInvoker(notifier);
+        }
+
+        @Override
+        protected AnnotatedElement getElements() {
+            return new AnnotatedElement() {
+                public <T extends Annotation> T getAnnotation(
+                        Class<T> annotationType) {
+                    return Issue108.this.getClass().getAnnotation(
+                            annotationType);
+                }
+
+                public Annotation[] getAnnotations() {
+                    return Issue108.this.getClass().getAnnotations();
+                }
+
+                public Annotation[] getDeclaredAnnotations() {
+                    return Issue108.this.getClass

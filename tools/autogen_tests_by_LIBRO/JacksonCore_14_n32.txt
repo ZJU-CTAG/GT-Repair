@@ -1,0 +1,11 @@
+public void testIssue116() throws IOException {
+    final byte[] data = new byte[1000];
+    Arrays.fill(data, (byte) 'a');
+    final ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+    final SizeTrackingInputStream testStream = new SizeTrackingInputStream(dataStream);
+    final IOContext ctxt = new IOContext(new BufferRecycler(), testStream, false);
+    final InputStream wrapper = ctxt.allocReadIOContext(data.length).stream;
+    assertEquals(0, testStream.getReadSize());
+    wrapper.close();
+    assertEquals(0, testStream.getReadSize());
+}

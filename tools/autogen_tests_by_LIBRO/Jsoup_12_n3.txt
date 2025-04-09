@@ -1,0 +1,12 @@
+public void testIssue123() {
+    String html = "<div><table class='x'></table><table class='y'></table></div>";
+    Document doc = Jsoup.parse(html);
+    for (String selector : new String[] {"div table[class~=x|y]",
+            "div > table[class~=x|y]",
+            "div + table[class~=x|y]",
+            "div ~ table[class~=x|y]"
+    }) {
+        Elements els = doc.select(selector);
+        assertEquals(2, els.size());
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    // create a model, with the constraints
+    SimplexModel model = new SimplexModel();
+    model.addVariable("x").lower(0).weight(1);
+    model.addVariable("y").lower(0).weight(1);
+    model.addVariable("z").lower(1).weight(1);
+    model.addConstraint("x").lower(0).upper(5).weight(1);
+    model.addConstraint("y").lower(0).upper(5).weight(1);
+    model.addConstraint("z").lower(0).upper(5).weight(1);
+    model.addConstraint("x").plus("y").plus("z").lower(1).upper(10).weight(1);
+
+    model.setMinimization();
+    SimplexSolver solver = new SimplexSolver();
+    Solution solution = solver.solve(model);
+    System.out.println(solution);
+    assertTrue(solution.isOptimal());
+    assertEquals(0.0, solution.getValue("x"), .

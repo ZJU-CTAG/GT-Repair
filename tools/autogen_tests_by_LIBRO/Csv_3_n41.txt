@@ -1,0 +1,19 @@
+public void testUnEscape() {
+    String[] tests = new String[] {
+        // Normal case
+        "abcefg", "abcefg",
+        // Ignore escaped slash
+        "\\/", "/",
+        // Escaped slash followed by letter is not special
+        "\\/a", "\\/a",
+        // Escaped backslash is not special, and the second is not a special character
+        "\\\\a", "\\a",
+        // Escaped backslash is not special, and the second is a slash
+        "\\\\/", "\\/",
+        // Escaped backslash is not special, and then we have a unicode escape
+        "\\\\u1234", "\\u1234",
+        // Escaped backslash is not special, and then we have a unicode escape, but it's not the correct length
+        "\\\\u123", "\\u123",
+        // Escaped backslash is not special, and then we have a unicode escape, but it's not terminated
+        "\\\\u1234 ", "\\u1234 ",
+        // Escaped backslash is not special, and

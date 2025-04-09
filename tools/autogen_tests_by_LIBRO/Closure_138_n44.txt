@@ -1,0 +1,23 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    options.setPreserveDetailedSourceInfo(true);
+    options.setDeterminateUndefined(true);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+
+    String code = "var t = null;\n"
+        + "window.test = function() {\n"
+        + "if (t != null) {\n"
+        + "t = null;\n"
+        + "}\n"
+        + "t = 1;\n"
+        + "};";
+
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        Collections.singletonList(SourceFile.fromCode("test", code)),
+        options);
+    assertFalse("Compilation failed with errors:\n" + Joiner.on("\n").join(result.errors), result.success

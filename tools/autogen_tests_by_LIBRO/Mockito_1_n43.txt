@@ -1,0 +1,17 @@
+public void testIssue108() {
+    TestService testService = new TestService();
+    TestService mock = Mockito.spy(testService);
+    ArgumentCaptor<TestParam> captor = ArgumentCaptor.forClass(TestParam.class);
+    mock.testMethod(new TestParam());
+    Mockito.verify(mock, Mockito.times(1)).testMethod(captor.capture());
+    TestParam captured = captor.getValue();
+    assertNotNull(captured);
+}
+
+static class TestService {
+    void testMethod(TestParam... params) {
+    }
+}
+
+static class TestParam {
+}

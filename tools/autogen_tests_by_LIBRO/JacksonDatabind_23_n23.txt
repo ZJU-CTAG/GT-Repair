@@ -1,0 +1,18 @@
+public void testNON_EMPTY() throws Exception {
+    String json = "{\"a\":10,\"b\":20,\"c\":0,\"d\":\"\"}";
+    Pojo p = new ObjectMapper().readValue(json, Pojo.class);
+    assertEquals(10, p.a);
+    assertEquals(20, p.b);
+    assertEquals(0, p.c);
+    assertNull(p.d);
+}
+
+static class Pojo {
+    public int a, b, c;
+    public String d;
+
+    @JsonSetter(value=JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY))
+    public void setD(String d) {
+        this.d = d;
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String source = "function getStack() {" + "var getErrorObject = function() {" + "try {" + "throw Error(\"\");" + "} catch(err) {" + "return err;" + "}" + "};" + "return getErrorObject().stack;" + "}";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setSourceMapOutputPath("/tmp/closure.sourcemap");
+    options.setSourceMapIncludeSourcesContent(false);
+    options.setSourceMapIncludeSourcesContent(true);
+    options.setSourceMapFormat(SourceMap.Format.V3);
+    options.setSourceMapDetailLevel(SourceMap.DetailLevel.ALL);
+    options.setSourceMapLocationMappings(ImmutableList.of(new SourceMap.LocationMapping(null, "closure.js")));
+    Compiler compiler = new Compiler();
+    Result result

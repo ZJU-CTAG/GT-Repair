@@ -1,0 +1,20 @@
+public void testParseNegative(){
+    ProperFractionFormat properFormat = new ProperFractionFormat();
+    Fraction result = null;
+
+    //Test 1 : fail
+    String source = "-1 -2 / 3";
+    ParsePosition pos = new ParsePosition(0);
+
+    Fraction actual = properFormat.parse(source, pos);
+    assertNull(actual);
+
+    //Test 2 : success
+    source = "1 -2 / 3";
+    pos = new ParsePosition(0);
+
+    actual = properFormat.parse(source, pos);
+    assertNotNull(actual);
+    assertEquals(-1, actual.getNumerator());
+    assertEquals(3, actual.getDenominator());
+}

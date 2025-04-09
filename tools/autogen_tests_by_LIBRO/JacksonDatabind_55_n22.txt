@@ -1,0 +1,25 @@
+public void testIssue() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.enable(SerializationFeature.INDENT_OUTPUT);
+    String json = om.writeValueAsString(new IssueEnumMap());
+    assertEquals(om.readTree(""
+                + "{\n"
+                + "  \"map\" : {\n"
+                + "    \"ENUM_1\" : \"enum1\",\n"
+                + "    \"ENUM_2\" : \"enum2\"\n"
+                + "  }\n"
+                + "}"), om.readTree(json));
+}
+
+public static class IssueEnumMap {
+    @JsonProperty("map")
+    public EnumMap<IssueEnum, String> map = new EnumMap<>(IssueEnum.class);
+
+    public IssueEnumMap() {
+        map.put(IssueEnum.ENUM_1, "enum1");
+        map.put(IssueEnum.ENUM_2, "enum2");
+    }
+}
+
+public enum IssueEnum {
+    @J

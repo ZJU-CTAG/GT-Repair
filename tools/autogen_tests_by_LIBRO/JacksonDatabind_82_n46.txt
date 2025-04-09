@@ -1,0 +1,8 @@
+public void testJacksonIgnore() {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonTest json = new JsonTest("user", "password");
+    assertEquals("{\"username\":\"user\"}", mapper.writeValueAsString(json));
+    JsonTest json2 = mapper.readValue("{ \"username\":\"username\",\"password\":\"password\" }", JsonTest.class);
+    assertEquals("username", json2.getUsername());
+    assertEquals("password", json2.getPassword());
+}

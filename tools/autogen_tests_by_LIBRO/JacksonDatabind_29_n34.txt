@@ -1,0 +1,15 @@
+public void testHandleNullTypeId() throws IOException
+{
+    final ObjectMapper mapper = javatype(ObjectMapper.class);
+    final ObjectReader reader = javatype(ObjectReader.class);
+    final ObjectNode tree = javatype(ObjectNode.class);
+    final Map<String,Object> map = javatype(Map.class);
+
+    tree.put("a", 1);
+    tree.put("b", 2);
+    map.put("A", tree);
+
+    final String json = mapper.writeValueAsString(map);
+    final Map<String,Object> map2 = reader.withType(map.getClass()).readValue(json);
+    assertEquals(tree, map2.get("A"));
+}

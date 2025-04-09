@@ -1,0 +1,13 @@
+public void testPrototypeQuote() {
+    String js = "/\*\* @constructor \*/ function MyClass() {} MyClass.prototype[\"MyMethod\"] = function(a) { this.a = a; } window[\"MyClass\"] = MyClass;";
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(SourceFile.fromCode("test", js), options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(1, compiler.getWarnings().length);
+    assertEquals(DiagnosticType.JSC_USED_GLOBAL_THIS, compiler.getWarnings()[0].getType());
+}

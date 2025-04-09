@@ -1,0 +1,19 @@
+public void testForEach() {
+    String text = "contactcenter.screenpop.updatePopStatus = function(stamp, status) {\n" +
+            "for each ( var curTiming in this.timeLog.timings ) {\n" +
+            "if ( curTiming.callId == stamp ) {\n" +
+            "curTiming.flag = status;\n" +
+            "break;\n" +
+            "}\n" +
+            "}\n" +
+            "};";
+    assertEquals(text, new JavaScriptCompressor(new StringReader(text), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {

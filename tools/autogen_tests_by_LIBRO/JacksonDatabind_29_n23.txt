@@ -1,0 +1,14 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.registerModule(new JodaModule());
+    String json = "{\"dateTime\":\"2011-01-03T00:00:00.000+01:00\"}";
+    Issue108 issue = mapper.readValue(json, Issue108.class);
+    assertEquals(2011, issue.dateTime.getYear());
+    assertEquals(1, issue.dateTime.getMonthOfYear());
+    assertEquals(3, issue.dateTime.getDayOfMonth());
+    json = "{\"dateTime\":\"2011-01-03T00:00:00.000+01:00\",\"type\":\"datetime\"}";
+    issue = mapper.readValue(json, Issue108.class);
+    assertEquals(2011, issue.dateTime.getYear());
+    assertEquals(1, issue.dateTime.getMonthOfYear());
+    assertEquals

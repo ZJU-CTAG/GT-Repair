@@ -1,0 +1,13 @@
+public void testMissingOptionException() throws Exception {
+    Options options = new Options();
+    options.addOption(new Option("format", false, "format"));
+    options.addOption(new Option("source", false, "source"));
+    options.addOption(new Option("properties", false, "properties"));
+
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{"-source", "-properties"});
+    } catch(MissingOptionException e) {
+        assertEquals("Missing required options: -format", e.getMessage());
+    }
+}

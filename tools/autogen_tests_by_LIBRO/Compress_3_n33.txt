@@ -1,0 +1,16 @@
+public void testIssue() {
+    final String[] names = {"test1.txt", "test2.txt"};
+    try {
+        final FileOutputStream out = new FileOutputStream("target/issue.zip");
+        final ArchiveOutputStream os = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, out);
+        for (final String name : names) {
+            os.putArchiveEntry(new ZipArchiveEntry(name));
+            os.write(name.getBytes());
+            os.closeArchiveEntry();
+        }
+        os.finish();
+        os.close();
+    } catch (final Exception ex) {
+        ex.printStackTrace();
+    }
+}

@@ -1,0 +1,11 @@
+public void testArchiveStreamFactory() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    List<ArchiveStream> streams = new ArrayList<ArchiveStream>();
+    streams.add(factory.createArchiveInputStream(ArchiveStreamFactory.ARJ, new ByteArrayInputStream(new byte[0])));
+    streams.add(factory.createArchiveInputStream(ArchiveStreamFactory.CPIO, new ByteArrayInputStream(new byte[0])));
+    streams.add(factory.createArchiveInputStream(ArchiveStreamFactory.DUMP, new ByteArrayInputStream(new byte[0])));
+    streams.add(factory.createArchiveInputStream(ArchiveStreamFactory.JAR, new ByteArrayInputStream(new byte[0])));
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    streams.add(factory.createArchiveOutputStream(ArchiveStreamFactory.JAR, baos));
+    for (ArchiveStream stream: streams) {
+        System.out.println(stream.getClass().getName() + ":

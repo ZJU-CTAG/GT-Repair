@@ -1,0 +1,22 @@
+public void testJsonValue_serializer() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("Test", Version.unknownVersion());
+    module.addSerializer(new MySerializer());
+    mapper.registerModule(module);
+    // fail(mapper.writeValueAsString(new MyPojo()));
+}
+
+static class MySerializer extends JsonSerializer<MyPojo>
+{
+    @Override
+    public void serialize(MyPojo value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeString("foobar");
+    }
+}
+
+static class MyPojo
+{
+    @JsonValue
+    public String getValue() { return "bogus"; }
+}

@@ -1,0 +1,14 @@
+public void testRegisterNamespaceParsing() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream(NS_XML.getBytes()));
+    DOMNodePointer pointer = new DOMNodePointer(doc);
+    pointer.registerNamespace("ns1", "http://ns1.com");
+    pointer.registerNamespace("ns2", "http://ns2.com");
+    pointer.registerNamespace("ns3", "http://ns3.com");
+    pointer.registerNamespace("ns4", "http://ns4.com");
+    pointer.registerNamespace("ns5", "http://ns5.com");
+    pointer.registerNamespace("ns6", "http://ns6.com");
+    assertEquals("Mytype", pointer.getValue("/ns1:ElementA/@ns2:myAttr"));
+    assertEquals("MY VALUE", pointer.getValue("/ns1:ElementA/ns3:

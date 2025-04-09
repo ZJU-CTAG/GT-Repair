@@ -1,0 +1,21 @@
+public void testIssue108() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    mapper.configure(SerializationConfig.Feature.FAIL_ON_SELF_REFERENCES, true);
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    ListAttribute listAttribute = new ListAttribute();
+    listAttribute.setItemJsonKey("test");
+    List list = new ArrayList();
+    list.add("abc");
+    list.add("def");
+    listAttribute.setItems(list);
+
+    JsonNode node = mapper.valueToTree(listAttribute);
+    System.out.println("node = " + node);
+
+    byte[] json = mapper.writeValueAsBytes(listAttribute);
+    System.out.println("json = " + new String(json, "UTF-8"));
+
+    JsonNode fromJson = mapper.readTree(json);
+    System

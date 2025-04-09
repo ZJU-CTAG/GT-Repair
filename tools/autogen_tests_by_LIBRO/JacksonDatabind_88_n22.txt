@@ -1,0 +1,14 @@
+public void testIssue108() {
+        ObjectMapper m = new ObjectMapper();
+        m.getTypeFactory().constructType(new TypeReference<Map<String, List<Integer>>>() { });
+        m.getTypeFactory().constructType(new TypeReference<Map<String, List<String>>>() { });
+        m.getTypeFactory().constructType(new TypeReference<Map<String, List<Object>>>() { });
+        m.getTypeFactory().constructType(new TypeReference<Map<String, List<?>>>() { });
+
+        // should not work
+        try {
+            m.getTypeFactory().constructType(new TypeReference<Map<String, List<Integer>>>() { });
+            fail("Should not have passed");
+        } catch (IllegalArgumentException e) {
+        }
+}

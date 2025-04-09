@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    // set up command line with option -t that takes an argument
+    final Option option = new Option("t", "target", true, "Generate files for the specified target machine");
+    final Options options = new Options();
+    options.addOption(option);
+
+    final PosixParser parser = new PosixParser();
+    CommandLine commandLine = parser.parse(options, new String[]{"-target", "foobar.com"});
+
+    assertEquals("foobar.com", commandLine.getOptionValue("target"));
+    assertEquals("foobar.com", commandLine.getOptionValue("t"));
+}

@@ -1,0 +1,13 @@
+public void testStopAtNonOption() {
+        final Options options = new Options();
+        options.addOption("a", "alpha", false, "alpha");
+        options.addOption("b", "beta", false, "beta");
+
+        final PosixParser parser = new PosixParser();
+        parser.setStopAtNonOption(true);
+
+        final CommandLine commandLine = parser.parse(options, new String[] { "-azb" });
+        assertEquals("-a", commandLine.getArgList().get(0));
+        assertEquals("zb", commandLine.getArgList().get(1));
+        assertEquals("-b", commandLine.getArgList().get(2));
+}

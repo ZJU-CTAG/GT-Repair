@@ -1,0 +1,20 @@
+public void testIssue107() {
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+
+    Compiler compiler = new Compiler(new PrintStream(new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+        }
+    }));
+    compiler.disableThreads();
+    Compiler.setLoggingLevel(Level.WARNING);
+    SourceFile[] sf = new SourceFile[]{SourceFile.fromCode("test1.js", "goog.require('test2');"),
+            SourceFile.fromCode("test2.js", "goog.require('test3');"),
+            SourceFile.fromCode("test3.js", "")};
+    Result result = compiler.compile(sf, compilerOptions);
+    assertTrue(result.success);
+}

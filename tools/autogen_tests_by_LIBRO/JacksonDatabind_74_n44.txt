@@ -1,0 +1,8 @@
+public void testAsPropertyTypeDeserializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(String.class, new AsPropertyTypeDeserializer(mapper.constructType(String.class), "string"));
+    mapper.registerModule(module);
+    assertNull(mapper.readValue("{\"string\":\"\"}", TestClass.class).getString());
+}

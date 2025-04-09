@@ -1,0 +1,8 @@
+public void testExcelFormat() throws IOException {
+    CSVFormat format = CSVFormat.EXCEL;
+    Assert.assertEquals(format.getQuoteMode(), CSVFormat.QuoteMode.MINIMAL);
+    try (StringWriter sw = new StringWriter(); CSVPrinter printer = new CSVPrinter(sw, format)) {
+        printer.printRecord(Arrays.asList("あ", "い", "う"));
+        Assert.assertEquals(sw.toString(), "あ,い,う\n");
+    }
+}

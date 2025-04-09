@@ -1,0 +1,11 @@
+public void testRepro() {
+  Options options = new Options();
+  options.addOption(OptionBuilder.hasArg(true).withDescription("Generate files for the specified target machine")
+    .withLongOpt("target").create("t"));
+
+  String[] args = new String[] {"-target", "foobar.com"};
+
+  CommandLineParser parser = new PosixParser();
+  CommandLine cl = parser.parse(options, args);
+  assertEquals("foobar.com", cl.getOptionValue("t"));
+}

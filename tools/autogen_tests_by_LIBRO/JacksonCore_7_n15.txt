@@ -1,0 +1,14 @@
+public void testInvalidSequence() throws Exception
+{
+    final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = new JsonFactory().createJsonGenerator(bytes, JsonEncoding.UTF8);
+
+    gen.writeStartObject();
+    gen.writeString("foo");
+    gen.writeEndObject();
+    gen.close();
+
+    byte[] json = bytes.toByteArray();
+    JsonNode tree = new ObjectMapper().readTree(json);
+    assertEquals("foo", tree.get("foo").asText());
+}

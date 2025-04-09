@@ -1,0 +1,18 @@
+public void testIssue_AdvancedOptimizations_ErroneousOptimization() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("input.js", "window[\"foo\"] = function (obj, modifiesProp) {"
+                            + "    return (function (saved) {"
+                            + "        return modifiesProp(obj) + saved;"
+                            + "    })(obj[\"prop\"]);"
+                            + "};")
+            },
+            new CompilerOptions(),
+            new DefaultExternsProvider(
+                    Compiler.class.getClassLoader().getResourceAsStream("externs.zip")));
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    System.out.println(output);
+    assertTrue(output.contains("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};"));
+}

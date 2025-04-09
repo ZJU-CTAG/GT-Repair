@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    List list = new ArrayList();
+    list.add("foo");
+    list.add(new InvokerTransformer("toString", new Class[0], new Object[0]));
+    list.add("foo");
+    List list2 = (List) SerializationUtils.clone(list);
+    assertEquals("foo", list2.get(0));
+    assertEquals("foofoofoo", list2.get(2));
+}

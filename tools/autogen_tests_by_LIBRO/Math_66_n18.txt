@@ -1,0 +1,18 @@
+public void testQuadratic() {
+    UnivariateRealFunction f = new QuadraticFunction();
+    UnivariateRealPointValuePair result;
+    double expected, resultValue, tolerance;
+    //
+    // Reference values from scipy
+    //
+    // x in (-100, -10):
+    expected = -9.9772372209558108;
+    result = optimizer.optimize(new MaxEval(1000),
+                                new UnivariateRealFunctionGoalType(GoalType.MINIMIZE),
+                                new SearchInterval(-100, -10),
+                                new UnivariateObjectiveFunction(f),
+                                new UnivariateRealPointValuePair(-95.0, Double.NaN));
+    resultValue = result.getValue();
+    tolerance = Math.max(Math.abs(resultValue) * 1e-10, 1e-10);
+    assertEquals(expected, resultValue, tolerance);
+}

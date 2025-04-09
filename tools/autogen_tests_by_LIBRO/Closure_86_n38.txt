@@ -1,0 +1,20 @@
+public void testBug() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setAggressiveVarCheck(CheckLevel.OFF);
+    options.setCheckSuspiciousCode(false);
+    options.setCheckMissingReturn(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(options);
+    compiler.compile(
+        new JSSourceFile[] {
+            new JSSourceFile("Foo.js",
+                "/** @constructor */\n" +
+                "function Foo() {\n" +
+                " var self = this;\n" +
+                " window.setTimeout(function() {\n" +
+                " window.location = self.location;\n"

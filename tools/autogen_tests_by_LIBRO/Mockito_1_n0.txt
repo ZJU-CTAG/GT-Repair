@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final Foo foo = Mockito.mock(Foo.class);
+    final ArgumentCaptor<String> argCaptor = ArgumentCaptor.forClass(String.class);
+
+    Mockito.doNothing().when(foo).doSomething(argCaptor.capture());
+    
+    foo.doSomething("1", "2");
+
+    assertThat(argCaptor.getAllValues(), hasSize(1));
+    assertThat(argCaptor.getAllValues().get(0), is("1"));
+}
+
+public class Foo {
+    
+    public void doSomething(String... values) {
+        // do nothing
+    }
+}

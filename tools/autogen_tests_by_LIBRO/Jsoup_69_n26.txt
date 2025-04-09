@@ -1,0 +1,11 @@
+public void testRemoveNode() {
+    Document doc = Jsoup.parse("<form><input name=alpha></form>");
+
+    FormElement form = (FormElement)doc.select("form").first();
+
+    doc.select("input[name=alpha]").first().remove();
+
+    List<Connection.KeyVal> data = form.formData();
+
+    assertFalse(data.toString().contains("alpha"));
+}

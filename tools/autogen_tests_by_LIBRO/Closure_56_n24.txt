@@ -1,0 +1,19 @@
+public void testTruncation() throws Exception {
+    String js = "alert(foo);\nalert(bar);";
+    String output = compile(js, "--warning_level VERBOSE");
+    assertTrue(output.contains("variable foo is undefined"));
+    assertTrue(output.contains("variable bar is undefined"));
+}
+
+private static String compile(String js, String... extraArgs) throws Exception {
+    String[] args = new String[extraArgs.length + 3];
+    args[0] = "--js";
+    args[1] = "-";
+    System.arraycopy(extraArgs, 0, args, 2, extraArgs.length);
+    args[args.length - 1] = "-";
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ByteArrayOutputStream err = new ByteArrayOutputStream();
+    Main main = new Main(new PrintStream(out), new PrintStream(err), System.in, "UTF-8");
+    main.doRun(args);
+    return err.toString();
+}

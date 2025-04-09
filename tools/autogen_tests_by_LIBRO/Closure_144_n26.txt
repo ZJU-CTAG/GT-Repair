@@ -1,0 +1,14 @@
+public void testAutoIdentify() {
+    JsScope jsScope = new JsScope(ScopeType.WITH, null);
+    JsVars jsVars = new JsVars();
+    jsVars.add(new JsVar(null, "f", new JsFunction(jsScope, "f", new JsParam[]{}, new JsBlock(null))));
+    JsAlert jsAlert = new JsAlert(new JsInvocation(new JsNameRef("f")));
+    List<JsStatement> jsStatements = new ArrayList<JsStatement>();
+    jsStatements.add(jsVars);
+    jsStatements.add(jsAlert);
+    JsBlock jsBlock = new JsBlock(null, jsStatements);
+    JsProgram jsProgram = new JsProgram();
+    jsProgram.getGlobalBlock().getStatements().add(jsBlock);
+    JsMessage message = new JsMessage(MessageType.WARNING, "void function invoked", new JsSourceGenerationVisitor().exec(jsProgram));
+    assertTrue(message!=null);
+}

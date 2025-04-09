@@ -1,0 +1,14 @@
+public void testIssue131() {
+    List<String> list = mock(List.class);
+    list.addAll(Arrays.asList("foo", "bar"));
+
+    ArgumentCaptor<List<String>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+
+    verify(list).addAll(argumentCaptor.capture());
+    assertEquals(2, argumentCaptor.getValue().size());
+
+    Set<String> set = new HashSet<String>(argumentCaptor.getValue());
+    assertEquals(2, set.size());
+    assertTrue(set.contains("foo"));
+    assertTrue(set.contains("bar"));
+}

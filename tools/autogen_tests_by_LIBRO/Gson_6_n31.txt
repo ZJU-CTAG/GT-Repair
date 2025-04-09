@@ -1,0 +1,16 @@
+public void testGsonDateFormat2() {
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+
+        @Override
+        public Date deserialize(JsonElement jsonElement, Type type,
+                JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            return null;
+        }
+
+    });
+    Gson gson = gsonBuilder.create();
+    String json = "{\"date\": \"2013-08-02T18:30:00.000+02:00\"}";
+    DateWrapper dw = gson.fromJson(json, DateWrapper.class);
+    assertNull(dw.date);
+}

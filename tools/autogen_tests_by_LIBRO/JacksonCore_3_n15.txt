@@ -1,0 +1,15 @@
+public void testIssue() throws IOException {
+    // {"a":[1,2,3]}
+    byte[] input = new byte[]{123, 34, 97, 34, 58, 91, 49, 44, 50, 44, 51, 93, 125};
+    UTF8StreamJsonParser parser = new UTF8StreamJsonParser(new IOContext(new BufferRecycler(), input, true), 0, new ByteArrayInputStream(input),
+            new UTF8JsonFactory().getCodec(), new BytesToNameCanonicalizer());
+    try {
+        parser.nextToken();
+        parser.nextToken();
+        parser.nextToken();
+        parser.nextToken();
+    } catch (JsonParseException e) {
+        assertEquals(1, e.getLocation().getLineNr());
+        assertEquals(4, e.getLocation().getColumnNr());
+    }
+}

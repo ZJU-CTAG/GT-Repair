@@ -1,0 +1,12 @@
+public void testNullDouble() throws Exception {
+    // issue 146
+    assertEquals("{\"value\":-0.0}", JSONObject.toJSONString(new NullDoubleBean()));
+    assertEquals("{\"value\":-0.0}", JSONObject.toJSONString(new NullDoubleBean(), new SerializerFeature[] { SerializerFeature.WriteNullNumberAsZero }));
+    assertEquals("{\"value\":-0.0}", JSONObject.toJSONString(new NullDoubleBean(), new SerializerFeature[] { SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteClassName }));
+    assertEquals("{\"value\":null}", JSONObject.toJSONString(new NullDoubleBean(), new SerializerFeature[] { SerializerFeature.WriteMapNullValue }));
+    assertEquals("{\"value\":-0.0}", JSONObject.toJSONString(new NullDoubleBean(), new SerializerFeature[] { SerializerFeature.WriteClassName, SerializerFeature.WriteMapNullValue }));
+}
+
+public static class NullDoubleBean {
+
+    public Double value;

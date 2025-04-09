@@ -1,0 +1,19 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    Compiler compiler = new Compiler(System.err);
+
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("nodebug.js", "// ==ClosureCompiler==\n" +
+            "// @output_file_name default.js\n" +
+            "// @compilation_level SIMPLE_OPTIMIZATIONS\n" +
+            "// @code_url https://raw.github.com/scottschiller/SoundManager2/master/script/soundmanager2-nodebug.js\n" +
+            "// ==/ClosureCompiler=="));
+
+    Result result = compiler.compile(externs, inputs, options);
+}

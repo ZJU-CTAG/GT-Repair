@@ -1,0 +1,13 @@
+public void testIssue109() {
+    String json = "{\"count\":1,\"object\":{\"id\":1,\"name\":\"abc\",\"created_at\":\"2015-01-32T12:00:00\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+    try {
+        mapper.readValue(json, Object.class);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

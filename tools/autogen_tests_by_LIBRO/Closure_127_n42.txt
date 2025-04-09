@@ -1,0 +1,14 @@
+public void testTryFinallyBreak() {
+    Message msg = Message.newBuilder().setName("throw me").setNumber(1).build();
+    byte[] b = msg.toByteArray();
+    final Input input = new Input(b);
+    try {
+        final Message msg2 = Message.parseFrom(input);
+        assertEquals("throw me", msg2.getName());
+        assertEquals(1, msg2.getNumber());
+    } finally {
+        input.seek(0);
+        break;
+    }
+    fail("Should not reach here");
+}

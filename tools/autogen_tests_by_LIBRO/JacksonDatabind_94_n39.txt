@@ -1,0 +1,13 @@
+public void testCVE2018_7489() throws Exception {
+    // Exception in thread "main" com.fasterxml.jackson.databind.JsonMappingException:
+    // Illegal type (org.jboss.marshalling.river.BubbaUnmarshaller) to deserialize:
+    // prevented for security reasons
+    // at [Source: (String)"{"@type":"org.jboss.marshalling.river.BubbaUnmarshaller"}"; line: 1, column: 2]
+    final String json = "{\"@type\":\"org.jboss.marshalling.river.BubbaUnmarshaller\"}";
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    // throws exception
+    final Object unmarshalled = mapper.readValue(json, Object.class);
+    // never reached
+    System.out.println("object: " + unmarshalled);
+}

@@ -1,0 +1,11 @@
+public void testNullInStringArray() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+
+    String[] array = new String[]{"foo", null, "bar"};
+    String encoded = mapper.writeValueAsString(array);
+
+    String[] decoded = mapper.readValue(encoded, String[].class);
+    assertThat(decoded, is(array));
+}

@@ -1,0 +1,18 @@
+public void testZipFileEntryEquals() throws IOException {
+    final File file = File.createTempFile("test", ".zip");
+    ZipArchiveOutputStream out = new ZipArchiveOutputStream(new FileOutputStream(file));
+    out.putArchiveEntry(new ZipArchiveEntry("tmp.txt"));
+    out.write("test".getBytes());
+    out.closeArchiveEntry();
+    out.close();
+    out = new ZipArchiveOutputStream(new FileOutputStream(file));
+    out.putArchiveEntry(new ZipArchiveEntry("tmp2.txt"));
+    out.write("test2".getBytes());
+    out.closeArchiveEntry();
+    out.close();
+    final ZipFile zipFile = new ZipFile(file);
+    Enumeration<ZipArchiveEntry> e = zipFile.getEntries();
+    ZipArchiveEntry zipEntry = e.nextElement();
+    ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(file));
+    ZipArchiveEntry inEntry = in.getNextZipEntry();
+    assertEquals(

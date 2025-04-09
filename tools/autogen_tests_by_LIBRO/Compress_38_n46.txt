@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+    final File file = File.createTempFile("testIssue", ".tar");
+    file.deleteOnExit();
+
+    try(TarArchiveOutputStream taos = new TarArchiveOutputStream(new FileOutputStream(file))) {
+        taos.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+        taos.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+
+        TarArchiveEntry entry = new TarArchiveEntry("test");
+        entry.setMode(TarConstants.LF_PAX, TarConstants.PAX_FORMAT_NONASCII);
+        entry.setSize(0);
+        taos.putArchiveEntry(entry);
+        taos.closeArchiveEntry();
+
+        entry = new TarArchiveEntry("test/");
+        entry.setMode(TarConstants.LF_PAX, TarConstants.PAX_FORMAT_NONASCII);
+        entry.setSize(0);
+        taos.putArchiveEntry(entry);
+        taos.

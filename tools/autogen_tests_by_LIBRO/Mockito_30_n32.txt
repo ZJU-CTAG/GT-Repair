@@ -1,0 +1,24 @@
+public void testClassLoaders() throws Exception {
+    ClassLoader classLoader = createClassLoader();
+    classLoader.loadClass("org.mockito.internal.progress.TimesTest");
+}
+
+private ClassLoader createClassLoader() {
+    ClassLoader parent = getClass().getClassLoader();
+    String[] prefixes = {"org.junit", "junit"};
+    List<File> files = collectJars(new File("."));
+    URL[] urls = files.stream().map(f -> {
+        try {
+            return f.toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }).toArray(size -> new URL[size]);
+    return new ClassLoaders.LocalExcludingURLClassLoader(urls, parent, prefixes);
+}
+
+private List<File> collectJars(File file) {
+    List<File> files = new ArrayList<>();
+    if (file.isDirectory()) {
+        for (File sub : file.listFiles()) {
+            files.addAll(collect

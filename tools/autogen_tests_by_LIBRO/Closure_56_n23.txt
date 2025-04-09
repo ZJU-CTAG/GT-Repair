@@ -1,0 +1,16 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_EVENTFUL_OBJECT_DISPOSAL, CheckLevel.WARNING);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.checkSuspiciousCode = true;
+    // Test that we can parse the output.
+    TestErrorManager errorManager = new TestErrorManager(TestErrorManager.Purpose.PARSE, false);
+    options.setErrorManager(errorManager);
+    Compiler compiler = new Compiler(errorManager);
+    compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("in1", "")),
+            ImmutableList.<SourceFile>of(),
+            options);
+    assertTrue(errorManager.hasEncounteredAllWarnings());
+    assertFalse(errorManager.hasEncounteredAllErrors());
+}

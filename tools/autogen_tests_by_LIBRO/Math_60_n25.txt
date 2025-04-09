@@ -1,0 +1,21 @@
+public void testIssue108() {
+    testCumulative(Double.NEGATIVE_INFINITY);
+    testCumulative(Double.POSITIVE_INFINITY);
+}
+private void testCumulative(final double arg) {
+    final NormalDistribution nd = new NormalDistributionImpl(0,1);
+    try {
+        final double c = nd.cumulativeProbability(arg);
+        if (Double.isInfinite(arg)) {
+            if (arg > 0) {
+                assertEquals(1, c, 0);
+            } else {
+                assertEquals(0, c, 0);
+            }
+        }
+    } catch (MathException e) {
+        //System.out.println("Cumulative failed for " + arg);
+        //e.printStackTrace();
+        fail("Failed for " + arg);
+    }
+}

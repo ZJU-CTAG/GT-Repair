@@ -1,0 +1,19 @@
+public void testIssue107() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    JsonSchema schema = mapper.generateJsonSchema(TestBigDecimal.class);
+    assertNotNull(schema);
+    System.out.println(schema);
+    assertEquals("object", schema.getType());
+    assertEquals(1, schema.asObjectSchema().getProperties().size());
+    JsonSchema valueSchema = schema.asObjectSchema().getProperties().get("value");
+    assertEquals("number", valueSchema.getType());
+    assertTrue(valueSchema.getMaximum() instanceof BigDecimal);
+    assertTrue(valueSchema.getExclusiveMaximum());
+}
+
+public static class TestBigDecimal {
+    @JsonProperty @JsonSerialize(using=ToStringSerializer.class)
+    public BigDecimal value = new BigDecimal("1");
+}

@@ -1,0 +1,9 @@
+public void testCMAESOptimizer() throws Exception {
+    final SimpleBounds bounds = new SimpleBounds(new double[]{-5.12}, new double[]{5.12});
+    final MersenneTwister twister = new MersenneTwister(RandomUtils.getSeed(1));
+    final CMAESOptimizer optimizer = new CMAESOptimizer(100, 0.001, false, 0, 0, twister, false, new SimpleValueChecker(1e-12, 1e-12));
+    final ValuePenaltySolutionFunction penalty = new ValuePenaltySolutionFunction(new CMAESMultiStartMultivariateRealOptimizer(optimizer), new MaxEval(100), new InitialGuess(new double[]{4.0}), bounds);
+    final PointValuePair optimum = optimizer.optimize(penalty, GoalType.MINIMIZE, bounds.getLower(), bounds.getUpper());
+    // the following fails
+    Assert.assertTrue(bounds.isFeasible(optimum.getPointRef()));
+}

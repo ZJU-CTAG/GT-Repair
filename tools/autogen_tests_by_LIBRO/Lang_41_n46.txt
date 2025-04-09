@@ -1,0 +1,20 @@
+public void testIssue114() {
+    Object[] array1 = new Object[] {
+        "a", "b"
+    };
+    assertEquals("Object;", ClassUtils.getShortClassName(array1, null));
+    assertEquals("String;", ClassUtils.getShortClassName(array1, "Object"));
+    assertEquals("String[]", ClassUtils.getShortClassName(array1, "java.lang.Object"));
+
+    Object[] array2 = new Object[] {
+        array1
+    };
+    assertEquals("Object;", ClassUtils.getShortClassName(array2, null));
+    assertEquals("Object;[];", ClassUtils.getShortClassName(array2, "Object"));
+    assertEquals("Object[][]", ClassUtils.getShortClassName(array2, "java.lang.Object"));
+
+    Object[] array3 = new Object[] {
+        array2
+    };
+    assertEquals("Object;", ClassUtils.getShortClassName(array3, null));
+    assertEquals("Object;[];[];

@@ -1,0 +1,23 @@
+public void testMultiDirectionalCorrectStart() throws Exception {
+    final int n = 100;
+    final double[] c = new double[n];
+    final double[][] a = new double[n][n];
+    final double[] b = new double[n];
+    for (int i = 0; i < n; i++) {
+        b[i] = 1;
+        for (int j = 0; j < n; j++) {
+            a[i][j] = 1;
+        }
+    }
+    final SimplexSolver solver = new SimplexSolver();
+    final PointValuePair solution = solver.optimize(new MaxIter(1000), new ObjectiveFunction(new MultivariateFunction() {
+        public double value(double[] point) {
+            double ret = 0;
+            for (int i = 0; i < n; i++) {
+                ret += c[i] * point[i];
+            }
+            return ret;
+        }
+    }), new ObjectiveFunctionGradient(new MultivariateVectorFunction() {
+        public double[] value(double[] point) {
+            return c;

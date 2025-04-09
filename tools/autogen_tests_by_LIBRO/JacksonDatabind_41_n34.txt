@@ -1,0 +1,17 @@
+public void testDeprecatedGenericCollectionWithNonNullCtxt()
+{
+    // This works
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType type = mapper.getTypeFactory()
+            .constructType(new TypeReference<List<String>>() { });
+    assertEquals(String.class, type.getContentType().getRawClass());
+}
+
+public void testDeprecatedGenericCollectionWithNullCtxt()
+{
+    // This fails
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType type = mapper.getTypeFactory()
+            .constructType(new TypeReference<List<String>>() { }, null);
+    assertEquals(String.class, type.getContentType().getRawClass());
+}

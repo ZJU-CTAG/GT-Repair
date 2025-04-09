@@ -1,0 +1,21 @@
+public void testEnumJackson() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    assertEquals("{\"color\":2}", mapper.writeValueAsString(new Foo(Color.GREEN)));
+}
+
+public class Test {
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+    enum Color {
+        RED,
+        YELLOW,
+        GREEN
+    }
+
+    static class Foo {
+        public final Color color;
+
+        Foo(Color color) {
+            this.color = color;
+        }
+    }
+}

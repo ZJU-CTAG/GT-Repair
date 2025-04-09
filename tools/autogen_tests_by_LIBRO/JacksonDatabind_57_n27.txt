@@ -1,0 +1,17 @@
+public void testObjectReaderWithOffsetAndLength() throws Exception {
+    String json = "{\"field\":\"value\"}";
+    byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader();
+
+    // The following works
+    assertEquals("value", reader.forType(TestObject.class).readValue(bytes));
+
+    // The following fails with WrongTokenException
+    assertEquals("value", reader.forType(TestObject.class).readValue(bytes, 1, bytes.length - 1));
+}
+
+private static class TestObject {
+    public String field;
+}

@@ -1,0 +1,23 @@
+public void testByteArray() throws Exception
+{
+    final byte[] BYTES = "Foobar".getBytes("UTF-8");
+    ObjectMapper mapper = new ObjectMapper();
+    assertEquals("\"Rm9vYmFy\"", mapper.writeValueAsString(BYTES));
+
+    // but with writeEmbeddedObject, exception
+    JsonGenerator gen = mapper.getFactory().createGenerator(new StringWriter());
+    gen.writeStartObject();
+    gen.writeFieldName("field1");
+    try {
+        gen.writeEmbeddedObject(BYTES);
+        fail("Expected exception");
+    } catch (UnsupportedOperationException e) {
+        verifyException(e, "No native support for writing embedded objects");
+    }
+    
+    // however, `null` should work
+    gen.writeFieldName("field2");
+    gen.writeEmbeddedObject(null);
+    gen.writeEndObject();
+    gen.close();
+}

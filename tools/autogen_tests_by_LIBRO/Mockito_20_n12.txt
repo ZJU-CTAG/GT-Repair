@@ -1,0 +1,28 @@
+public void testFakeUserAccount() {
+  FakeUserAccount fakeAccount = new FakeUserAccount() { };
+  fakeAccount.addEmail("abc@gmail.com");
+  fakeAccount.addEmail("bcd@gmail.com");
+  assertEquals(2, fakeAccount.getEmails().size());
+}
+
+public void testMockAccountService() {
+  MockAccountService service = mock(MockAccountService.class);
+  // Stubbing
+  when(service.getAccount("id")).thenReturn(fakeAccount);
+  // Test
+  service.getAccount("id", new AsyncCallback<UserAccount>() {
+    public void onSuccess(UserAccount result) {
+      assertNotNull(result);
+    }
+    public void onFailure(Throwable caught) {
+      fail();
+    }
+  });
+}
+
+public void testMockAccountRpcService() {
+  MockAccountRpcService service = mock(MockAccountRpcService.class);
+  // Stubbing
+  when(service.getAccount("id")).thenReturn(fakeAccount);
+  // Test
+  service.getAccount(

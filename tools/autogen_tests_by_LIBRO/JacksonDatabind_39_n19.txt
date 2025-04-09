@@ -1,0 +1,12 @@
+public void testJacksonParse() throws Exception {
+    ObjectMapper mapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+    String json =
+            "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+    CallRecord call = mapper.readValue(json, CallRecord.class);
+    assertEquals(0.0, call.version);
+    assertEquals("123", call.application);
+    assertNotNull(call.item);
+    assertNotNull(call.item2);
+    assertEquals("xevent", call.item.getClass().getSimpleName());
+    assertEquals("location1", ((Event) call.item).location);
+    assertEquals("event", call.item2.getClass

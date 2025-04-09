@@ -1,0 +1,31 @@
+public void test_suspend_resume_stop() {
+    StopWatch sw = new StopWatch();
+
+    sw.start();
+    assertEquals(-1, sw.getTime());
+    assertTrue(sw.isStarted());
+    assertTrue(sw.isSuspended());
+
+    sw.suspend();
+    assertEquals(-1, sw.getTime());
+    assertTrue(sw.isStarted());
+    assertFalse(sw.isSuspended());
+
+    sw.resume();
+    assertEquals(-1, sw.getTime());
+    assertTrue(sw.isStarted());
+    assertTrue(sw.isSuspended());
+    try {
+        Thread.sleep(1000);
+    } catch (InterruptedException e) {
+    }
+
+    sw.suspend();
+    assertTrue(sw.getTime() > 0);
+    assertTrue(sw.isStarted());
+    assertFalse(sw.isSuspended());
+
+    sw.resume();
+    assertTrue(sw.getTime() > 0);
+    assertTrue(sw.isStarted());
+    assertTrue(sw.

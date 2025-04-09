@@ -1,0 +1,19 @@
+public void testIssue807() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setGenerateExports(true);
+    options.setEmitUseStrict(true);
+
+    // Create mock registry
+    ModuleRegistry registry = new ModuleRegistry(ImmutableMap.<String, ModuleConfig>of(), null);
+    options.moduleResolutionMode = ModuleLoader.ResolutionMode.NODE;
+    options.moduleRoot = "./";
+    options.moduleConfigs = ImmutableList.of(
+            new ModuleConfig("/lib/Foo.js", ModuleType.GOOG),
+            new ModuleConfig("/Bar.js", ModuleType.GOOG));
+    compiler.init(
+            ImmutableList.<SourceFile>of(),
+            ImmutableList.of(
+                    SourceFile.fromCode("/lib/Foo.js", "goog.module('lib.Foo');\n" +

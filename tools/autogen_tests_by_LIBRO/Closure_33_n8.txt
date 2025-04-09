@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input", "function callee() { var output = temp3({ n: 0, text: 'a string', b: true }) }"));
+    inputs.add(SourceFile.fromCode("input", "function temp1(opt_data) { return opt_data.text; }"));
+    inputs.add(SourceFile.fromCode("input", "function temp2(opt_data) { /** @notypecheck */ function __inner() { return temp1(opt_data.activity); } return __inner(); }"));
+    inputs.add(SourceFile.fromCode("input", "function temp3(opt_data) { return 'n: ' + opt_data.n + ', t: ' + opt_data.text + '.'; } "));
+    Result result = compiler.compile(CommandLineRunner.getDefaultExterns(), inputs, new CompilerOptions());
+    if (!result.success) {
+        throw new RuntimeException("failed");
+   

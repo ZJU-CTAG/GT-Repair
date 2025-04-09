@@ -1,0 +1,10 @@
+public void testIssue114() throws Exception {
+    try (ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.CPIO, getClass().getResourceAsStream("/cpio-trailer-mode.cpio"))) {
+        ArchiveEntry entry = null;
+        while ((entry = (ArchiveEntry) ais.getNextEntry()) != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            IOUtils.copy(ais, baos);
+            assertEquals("Hello World!", baos.toString());
+        }
+    }
+}

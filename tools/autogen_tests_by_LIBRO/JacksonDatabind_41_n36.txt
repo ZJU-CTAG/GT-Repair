@@ -1,0 +1,13 @@
+public void testIssue1079() throws Exception
+{
+    // first, test with non-null
+    ObjectMapper m = new ObjectMapper();
+    m.registerModule(new JavaTimeModule());
+    TypeFactory tf = m.getTypeFactory();
+    JavaType type = tf.constructType(LocalDateTime.class);
+    assertEquals(LocalDateTime.class, type.getRawClass());
+
+    // then with null
+    type = tf.constructType(LocalDateTime.class, null);
+    assertEquals(LocalDateTime.class, type.getRawClass());
+}

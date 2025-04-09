@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Document doc = getXmlDoc("ns:a:elem ns:b:elem");
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    Iterator pointers = ctx.iteratePointers("//*");
+    assertTrue(pointers.hasNext());
+    assertEquals("elem", ((NodePointer) pointers.next()).getName());
+    assertTrue(pointers.hasNext());
+    assertEquals("elem", ((NodePointer) pointers.next()).getName());
+    assertFalse(pointers.hasNext());
+}
+private Document getXmlDoc(String nsElem) {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder;
+    try {
+        builder = factory.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+        throw new RuntimeException();
+    }
+    Document doc = builder.newDocument();
+    Element root = doc.createElementNS("ns", "a:doc");
+    doc.appendChild(root);
+    StringTokenizer st = new StringToken

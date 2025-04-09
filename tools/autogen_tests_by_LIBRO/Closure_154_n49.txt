@@ -1,0 +1,21 @@
+public void testIssue108() {
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    compilerEnv.setAllowSharpComments(true);
+    compilerEnv.setRecoverFromErrors(true);
+    compilerEnv.setIdeMode(true);
+    compilerEnv.setGenerateDebugInfo(true);
+    ErrorReporter compilationErrorReporter = compilerEnv.getErrorReporter();
+
+    Parser p = new Parser(compilerEnv, compilationErrorReporter);
+    AstRoot root = p.parse("/**\n * @interface\n */\n" +
+            "function I() {};\n" +
+            "\n" +
+            "/** @type {string} */\n" +
+            "I.prototype.foobar;\n" +
+            "\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " * @implements {I}\n" +
+            " */\n" +
+            "function C() {\n

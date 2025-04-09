@@ -1,0 +1,13 @@
+public void testPrototypeMethodIssue() {
+  String script = "/** @const */var foo = {};" +
+      "foo.bar = {'bar1': function() { console.log('bar1'); }};" +
+      "/** @constructor */function foobar() {}" +
+      "foobar.prototype = foo.bar;" +
+      "foo.foobar = new foobar;";
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  compiler.initOptions(new CompilerOptions());
+  compiler.compile(JSSourceFile.fromCode("test.js", script));
+  assertFalse(compiler.getErrorManager().getErrorCount() > 0);
+  assertNull(compiler.getExternsRoot().getVar("foo").getProperties().getProperty("foobar").getProperties().getProperty("bar1").getParent());
+}

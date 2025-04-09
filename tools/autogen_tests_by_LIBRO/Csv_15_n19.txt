@@ -1,0 +1,11 @@
+public void testExcelCJK() throws IOException {
+    CSVFormat csvFormat = CSVFormat.EXCEL;
+    String[] data = { "あ", "い", "う" };
+    StringWriter stringWriter = new StringWriter();
+    CSVPrinter csvPrinter = csvFormat.print(stringWriter, Charset.forName("UTF-8"));
+    csvPrinter.printRecord(data);
+    csvPrinter.close();
+    stringWriter.close();
+    String csv = stringWriter.toString();
+    assertEquals("\"あ\",い,う", csv);
+}

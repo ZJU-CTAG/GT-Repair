@@ -1,0 +1,18 @@
+public void testIssue106() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new GoogleCodingConvention());
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.OFF);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        SourceFile.fromCode("test", "@typedef {string} someTypedef; /** @type {someTypedef} */ var someVar; var foo = function(/** someTypedef */ opt_someType) {};"),
+        SourceFile.fromCode("externs", "/** @externs */"),
+        options);
+
+    // show what the externs were
+    System.out.println("EXTERNS:\n\n" + result.externExport);
+}

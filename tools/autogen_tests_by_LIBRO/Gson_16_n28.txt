@@ -1,0 +1,10 @@
+public void testInfiniteRecursion() {
+    TypeToken<TestType<String>> typeToken = new TypeToken<TestType<String>>() {};
+    Gson gson = new Gson();
+    JsonSerializer<TestType<String>> serializer = gson.getAdapter(typeToken);
+    assertNotNull(serializer);
+}
+
+private static class TestType<T> {
+    TestType<? super T> superType;
+}

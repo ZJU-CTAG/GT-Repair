@@ -1,0 +1,22 @@
+public void testIssue()
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    ObjectIdGenerator<Long> generator = new SimpleObjectIdGenerator<Long>() {
+        private AtomicLong counter = new AtomicLong(0);
+        @Override
+        public Long generateId(Object forPojo) {
+            return counter.incrementAndGet();
+        }
+    };
+    ObjectIdResolver resolver = new ObjectIdResolver(mapper.getSerializerProvider(), generator,
+            Long.class) {
+        private HashMap<Long, Object> map = new HashMap<Long, Object>();
+        @Override
+        public void bindItem(Long id, Object ob) throws JsonMappingException {
+            map.put(id, ob);
+        }
+        @Override
+        public Object resolveId(Long id

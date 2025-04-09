@@ -1,0 +1,11 @@
+public void testWriteEmbeddedObjectForBytes() throws Exception
+{
+  ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+  JsonFactory jf = new JsonFactory();
+  JsonGenerator g = jf.createGenerator(bytes, JsonEncoding.UTF8);
+  g.writeStartArray();
+  g.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+  g.writeEndArray();
+  g.close();
+  assertEquals("[\"AQID\"]", bytes.toString("UTF-8"));
+}

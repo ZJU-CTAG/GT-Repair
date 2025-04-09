@@ -1,0 +1,21 @@
+public void testIssue105() {
+    final TestProblem3 pb = new TestProblem3(0.9);
+    double minStep;
+    double maxStep;
+    double scalAbsoluteTolerance;
+    double scalRelativeTolerance;
+    int order;
+    for (int i = 2; i < 8; ++i) {
+        order = i;
+        DormandPrince853Integrator integ = new DormandPrince853Integrator(minStep = 0, maxStep = 1.0, scalAbsoluteTolerance = 1.0e-8, scalRelativeTolerance = 0.0);
+        integ.setOrderStepControl(order);
+        integ.addEventHandler(new EventHandler() {
+            public void init(double t0, double[] y0, double t) {
+            }
+            public void resetState(double t, double[] y) {
+            }
+            public double g(double t, double[] y) {
+                return y[0] - pb.getFinalTime();
+            }
+            public Action eventOccurred(double t, double[] y, boolean increasing) {
+                return

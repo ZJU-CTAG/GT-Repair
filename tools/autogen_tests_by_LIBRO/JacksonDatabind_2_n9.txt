@@ -1,0 +1,16 @@
+public void testIssue102() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    mapper.configure(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES, false);
+
+    ListAttribute value = new ListAttribute();
+    value.setItemJsonKey("foo");
+    value.setItemType(String.class);
+    value.getItems().add("bar");
+
+    JsonNode tree = mapper.valueToTree(value);
+    System.out.println(tree);
+
+    String json = mapper.writeValueAsString(value);
+    System.out.println(json);
+}

@@ -1,0 +1,16 @@
+public void testDefaultPrettyPrinterCreateInstance() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final String json = objectMapper.writeValueAsString(new TestClass());
+    final TestClass test = objectMapper.readValue(json, TestClass.class);
+    assertNotNull(test);
+}
+
+private class TestClass {
+    public int value = 42;
+}
+
+private class TestPrettyPrinter extends DefaultPrettyPrinter {
+    public static TestPrettyPrinter createInstance() {
+        return new TestPrettyPrinter();
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssueDocker() throws Exception {
+    try (final InputStream stream = getClass().getResourceAsStream("/issue-docker.tar")) {
+        try (final TarArchiveInputStream tarStream = new TarArchiveInputStream(stream)) {
+            TarArchiveEntry entry = tarStream.getNextTarEntry();
+            while (entry != null) {
+                if (entry.getName().equals("d4d984e2da10a4f4c0f8327d6f02b8f7286e1f2b53f9b9a8b7f45b3a3a3a3d3f/layer.tar")) {
+                    try (final TarArchiveInputStream nested = new TarArchiveInputStream(tarStream)) {
+                        TarArchiveEntry nestedEntry = nested.getNextTarEntry();
+                        while (nestedEntry != null) {
+                            final byte[] bytes = IOUtils.toByteArray(nested);
+                            assertTrue("Did not read content for " + nestedEntry.getName(),
+                                    bytes.length > 0);
+                            nestedEntry

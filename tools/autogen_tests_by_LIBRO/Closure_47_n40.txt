@@ -1,0 +1,14 @@
+public void testSourceMapLineNumber() throws IOException {
+        DateTimeZone zone = DateTimeZone.forID("America/Los_Angeles");
+
+        DateTime now = new DateTime(zone);
+        DateTime lastYear = now.minusYears(1);
+        DateTime lastMonth = now.minusMonths(1);
+
+        DateTime start = lastMonth.withDayOfMonth(1).withTimeAtStartOfDay();
+        DateTime end = lastMonth.dayOfMonth().withMaximumValue().withTime(23, 59, 59, 999);
+
+        DateTimeFormatter fmt = ISODateTimeFormat.dateTime().withZone(zone);
+
+        String json = String.format("{ start: '%s', end: '%s' }", fmt.print(start), fmt.print(end));
+        String compressedJavascript = "eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString

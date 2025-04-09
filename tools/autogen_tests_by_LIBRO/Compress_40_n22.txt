@@ -1,0 +1,11 @@
+public void testBitInputStream() throws Exception {
+    //              87, 45, 66, 15,
+    //              90, 29, 88, 61, 33, 74
+    byte[] bytes = new byte[]
+    {(byte)0x87, (byte)0x45, (byte)0x66, (byte)0x15,
+     (byte)0x90, (byte)0x29, (byte)0x88, (byte)0x61, (byte)0x33, (byte)0x74};
+    ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+    BitInputStream bin = new BitInputStream(in, ByteOrder.LITTLE_ENDIAN);
+    assertEquals(0b1010011, bin.readBits(7));
+    assertEquals(0b10101000000001010011101101001110110100011, bin.readBits(63));
+}

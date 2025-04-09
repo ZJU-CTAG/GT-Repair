@@ -1,0 +1,13 @@
+public void testNamespaceAttribute() throws Exception {
+    JXPathContext context = JXPathContext.newContext(new Object());
+    context.registerNamespace("A", "http://my/namespace");
+    context.setFactory(new DOMFactory());
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new InputSource(new StringReader("<ElementA A:myAttr='Mytype'><B:ElementB>MY VALUE</B:ElementB></ElementA>")));
+    System.out.println(doc.getDocumentElement().getNodeName());
+    context.setValue("/ElementA/B:ElementB/text()", "NEW VALUE");
+    assertEquals("NEW VALUE", doc.getDocumentElement().getFirstChild().getFirstChild().getNodeValue());
+    context.setValue("/ElementA/@A:myAttr", "newType");
+    assertEquals("newType", doc.getDocumentElement().getAttributeNS

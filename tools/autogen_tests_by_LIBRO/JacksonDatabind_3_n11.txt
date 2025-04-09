@@ -1,0 +1,18 @@
+public void testFull()
+    throws IOException
+{
+    LoggingEvent loggingEvent = createLoggingEvent();
+    loggingEvent.getThrowableProxy().getThrowable().getStackTrace()[1].setFileName("This is a really long file name that would lead to an overflow. Just what we need. :)");
+    loggingEvent.getArgumentArray()[0] = null;
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder(new LoggingJsonEncoderFactory());
+    byte[] result = encoder.toByteArray(loggingEvent);
+    LoggingJsonDecoder decoder = new LoggingJsonDecoder(new LoggingJsonDecoderFactory());
+    LoggingEvent decodedEvent = decoder.decode(result);
+    assertEquals(loggingEvent, decodedEvent);
+}
+
+public void testNullArgument() throws IOException
+{
+    LoggingEvent loggingEvent = createLoggingEvent();
+    loggingEvent.getArgumentArray()[0] = null;
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder(new Log

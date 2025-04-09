@@ -1,0 +1,21 @@
+public void testTopLevelArray() {
+    JsonObject json = null;
+    try {
+        json = Json.createReader(new StringReader("[\"this\",\"is\",\"an\",\"array\"]")).readObject();
+        fail("Should throw a JsonParsingException");
+    } catch (Exception e) {
+        assertTrue(e instanceof JsonParsingException);
+    }
+
+    try {
+        JsonReader reader = Json.createReader(new StringReader("[\"this\",\"is\",\"an\",\"array\"]"), JsonReader.Leniency.STRICT);
+        json = reader.readObject();
+        fail("Should throw a JsonParsingException");
+    } catch (Exception e) {
+        assertTrue(e instanceof JsonParsingException);
+    }
+
+    try {
+        JsonReader reader = Json.createReader(new StringReader("[\"this\",\"is\",\"an\",\"array\"]"), JsonReader.Leniency.RELAXED);
+        json = reader.readObject();
+        fail("Should throw a JsonP

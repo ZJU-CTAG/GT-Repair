@@ -1,0 +1,13 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setUseTypesForLocalOptimization(true);
+    options.setPrettyPrint(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new SourceFile("externs", externs), new SourceFile("input", input), options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    assertEquals(externs, result.externExport);
+}

@@ -1,0 +1,14 @@
+public void testBug() throws Exception {
+        final Commandline cli = new Commandline();
+
+        final LongOption option = new LongOption( "x" );
+        option.addArgument( new ArgumentImpl( "1", false ) );
+        option.addArgument( new ArgumentImpl( "2", false ) );
+
+        cli.addOption( option );
+
+        cli.parse( new String[] { "--x", "3", "4" } );
+
+        final Option x = cli.getOption( "x" );
+        assertEquals( "x", "3", x.getArgument().getValue() );
+    }

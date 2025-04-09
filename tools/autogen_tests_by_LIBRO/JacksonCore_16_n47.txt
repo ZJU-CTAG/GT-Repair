@@ -1,0 +1,8 @@
+public void testIssue() throws IOException {
+    JsonFactory f = new JsonFactory();
+    JsonParser p1 = f.createParser("{\"test1\":[{\"test2\":\"test3\"}]}");
+    JsonParser p2 = f.createParser("[{\"test4\":[{\"test5\":\"test6\"}]}]");
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(p1, p2);
+    sequence.nextToken();
+    assertEquals(sequence.nextToken(), JsonToken.START_OBJECT);
+}

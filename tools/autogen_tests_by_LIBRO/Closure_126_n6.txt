@@ -1,0 +1,23 @@
+public void testFinallyOptimization() {
+    final Parser parser = new Parser();
+
+    parser.setCompileMode(CompileMode.BC);
+    parser.setLocale(Locale.ENGLISH);
+    parser.setScripting(false);
+    parser.setStrict(true);
+    parser.setLogging(null);
+    parser.setReuseScripts(false);
+    parser.setPreferIndexedAccess(false);
+    parser.setPreferTypedArrays(false);
+    parser.setDebugSymbols(false);
+    parser.setOptimizationLevel(OptimizationLevel.SIMPLE);
+
+    final CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingComments(true);
+    env.setStrictMode(true);
+    env.setRecoverFromErrors(true);
+    env.setAllowSharpComments(true);
+
+    parser.setCompilerEnvirons(env);
+
+    final String scriptText = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok

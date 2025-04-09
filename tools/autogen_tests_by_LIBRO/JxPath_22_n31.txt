@@ -1,0 +1,11 @@
+public void testIssue() {
+    String xml = "<...> " +
+            " <b:foo xmlns:b=\"bla\" xmlns=\"test111\">    <!--  No nodes are placed in the tree within ns \"test111\" but the attribute is still there.--> " +
+            "  <b:bar>a</b:bar>                         <!-- is in ns 'bla' --> " +
+            "  <test xmlns=\"\"></test>                   <!-- does not have a namespace --> " +
+            " </b:foo> " +
+            "</...>";
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes()));
+    DOMNodePointer ptr = new DOMNodePointer(doc.getDocumentElement(), new JXPathContext());
+    assertEquals("/:b:foo[1]/null:test[1]", ptr.getValue("test").asPath());
+}

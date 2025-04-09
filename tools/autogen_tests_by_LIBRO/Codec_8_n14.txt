@@ -1,0 +1,11 @@
+public void testIssue108() {
+    InputStream in = new Base64InputStream(new ByteArrayInputStream("Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.".getBytes()), true, 0, null);
+    try {
+        for (int i=0; i<10920; i++) {
+            assertEquals("fails at iteration " + (i+1), in.read(), 'M');
+        }
+        assertEquals("fails after 10920 reads", in.read(), 'a');
+    } catch (IOException ioe) {
+        fail("unexpected exception");
+    }
+}

@@ -1,0 +1,16 @@
+public void testStackOverflow() {
+    new GsonBuilder()
+        .registerTypeAdapterFactory(new GsonAdaptersTestType())
+        .create().toJson(new TestType());
+}
+
+public static class TestType {
+    TestType<? super TestType<X>> superType;
+    static class X {}
+}
+
+public static class GsonAdaptersTestType implements TypeAdapterFactory {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        return null;
+    }
+}

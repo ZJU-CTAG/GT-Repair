@@ -1,0 +1,27 @@
+public void testMiscOptimizationIssues() {
+    OptimizationException thrown = null;
+
+    // "BrentOptimizer": a specific convergence checker must be used.
+    // "LevenbergMarquardtOptimizer" also has specific convergence checks.
+    // ---
+    try {
+        new BrentOptimizer(0, 0).getConvergenceChecker();
+    } catch (NullPointerException e) {
+        thrown = null;
+    }
+    assertNotNull(thrown);
+    try {
+        new LevenbergMarquardtOptimizer().getConvergenceChecker();
+    } catch (NullPointerException e) {
+        thrown = null;
+    }
+    assertNotNull(thrown);
+    // ---
+
+    // Ugly workaround for the checked "ConvergenceException".
+    // ---
+    // NonLinearConjugateGradientOptimizer
+    final RealConvergenceChecker c = new RealConvergenceChecker() {
+            public boolean converged(final int iteration,
+                                     final RealPointValuePair previous,
+                                     final RealPoint

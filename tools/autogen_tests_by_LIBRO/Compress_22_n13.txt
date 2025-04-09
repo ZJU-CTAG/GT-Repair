@@ -1,0 +1,14 @@
+public void testTruncated() {
+    try {
+        InputStream stream = new BZip2CompressorInputStream(new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return -1;
+            }
+        });
+        stream.read();
+        fail("BZip2CompressorInputStream should throw an EOFException");
+    } catch (IOException expected) {
+        assertEquals("Unexpected end of stream", expected.getMessage());
+    }
+}

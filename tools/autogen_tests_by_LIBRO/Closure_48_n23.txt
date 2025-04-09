@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        "myclass.prototype.test = function() {\n" +
+        "  this.fn();\n" +
+        "  this.fn = function() { };\n" +
+        "};\n" +
+        "/** @constructor */\n" +
+        "var myclass = function() { };\n" +
+        "/** @param {boolean} success */\n" +
+        "myclass.prototype.fn = function(success) {};\n",
+        new Function<Void, Void>() {
+            @Override
+            public Void apply(Void arg0) {
+                return null;
+            }
+        });
+    assertEquals("Wrong number of errors", 2,
+        result.errors.length);
+    assertEquals("Wrong error: " + Arrays.toString(result.errors),
+        "test.js:2: WARNING - actual parameter 1 of myclass.fn does not match formal parameter\n" +
+        "found   :

@@ -1,0 +1,16 @@
+public void testIncludeBaseType() throws IOException
+{
+    // first, without explicit name
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Cat.class);
+    Animal result = mapper.readValue(aposToQuotes("{'type':'cat','name':'Bob'}"), Animal.class);
+    assertNotNull(result);
+    assertEquals(Cat.class, result.getClass());
+
+    // and then with explicit name
+    mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(Cat.class, "cat"));
+    result = mapper.readValue(aposToQuotes("{'type':'cat','name':'Bob'}"), Animal.class);
+    assertNotNull(result);
+    assertEquals(Cat.class, result.getClass());
+}

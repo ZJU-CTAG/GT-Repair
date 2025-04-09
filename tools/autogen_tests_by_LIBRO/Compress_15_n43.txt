@@ -1,0 +1,13 @@
+public void testEquals() throws IOException {
+    ZipArchiveOutputStream zipArchiveOutputStream = new ZipArchiveOutputStream(new ByteArrayOutputStream());
+    ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("a");
+    zipArchiveEntry.setCreationTime(new Date());
+    zipArchiveEntry.setLastModifiedDate(new Date());
+    zipArchiveOutputStream.putArchiveEntry(zipArchiveEntry);
+    zipArchiveOutputStream.close();
+    byte[] bytes = ((ByteArrayOutputStream) zipArchiveOutputStream.getOutputStream()).toByteArray();
+    ZipArchiveInputStream zipArchiveInputStream = new ZipArchiveInputStream(new ByteArrayInputStream(bytes));
+    ZipArchiveEntry zipArchiveEntry1 = zipArchiveInputStream.getNextZipEntry();
+    ZipFile zipFile = new ZipFile(new ByteArrayInputStream(bytes));
+    assertEquals(zipArchiveEntry1, zipFile.getEntry("a"));
+}

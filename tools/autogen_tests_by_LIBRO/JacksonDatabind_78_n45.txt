@@ -1,0 +1,10 @@
+public void testJacksonDeserializerSecurityVulnerability() {
+    String json = "{\"@class\": \"java.lang.ProcessBuilder\", \"command\": \"touch /tmp/x\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    try {
+        ProcessBuilder processBuilder = mapper.readValue(json, ProcessBuilder.class);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

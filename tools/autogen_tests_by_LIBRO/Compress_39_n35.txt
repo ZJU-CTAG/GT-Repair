@@ -1,0 +1,12 @@
+public void testDefectiveZipFile() throws IOException {
+    ZipFile zf = new ZipFile("src/test/resources/defective.zip");
+    try {
+        zf.entries();
+        fail("expected exception");
+    } catch (EOFException e) {
+        String msg = e.getMessage();
+        assertEquals("Unexpected end of ZLIB input stream", msg);
+    } finally {
+        zf.close();
+    }
+}

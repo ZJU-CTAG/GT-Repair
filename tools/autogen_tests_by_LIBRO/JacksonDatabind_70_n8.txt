@@ -1,0 +1,15 @@
+public void testIssue247() throws Exception
+{
+    CsvMapper mapper = new CsvMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    CsvSchema schema = mapper.schemaFor(Person.class);
+    ObjectReader reader = mapper.readerFor(Person.class);
+    Person person = reader.with(schema)
+            .<Person>readValues(new StringReader("\"businessAddress.street\",\"businessAddress.ADDON\",\"businessAddress.zip\",\"businessAddress.town\",\"businessAddress.country\"\n" +
+                    "\"street\",\"addon\",\"12345\",\"town\",\"country\"\n")).next();
+    assertEquals("street", person.businessAddress.street);
+    assertEquals("addon", person.businessAddress.addon);
+    assertEquals("12345", person.businessAddress.zip);
+    assertEquals("town", person.businessAddress.town);
+    assertEquals("country", person.businessAddress.country);
+}

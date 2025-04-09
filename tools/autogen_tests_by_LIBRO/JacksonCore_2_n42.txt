@@ -1,0 +1,10 @@
+public void testIssue123() throws IOException {
+    String json = "123true";
+    try {
+        MAPPER.readValue(json, Boolean.class);
+        fail("Expected JsonMappingException");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Unexpected token");
+        verifyException(e, "true");
+    }
+}

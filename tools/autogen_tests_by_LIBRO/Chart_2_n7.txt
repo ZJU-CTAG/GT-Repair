@@ -1,0 +1,16 @@
+public void testBug959() {
+    // test the following
+    // DatasetUtilities.iterateDomainBounds(XYDataset)
+    // DatasetUtilities.iterateRangeBounds(XYDataset, boolean ignore)
+    // DatasetUtilities.iterateDomainBounds(CategoryDataset, boolean ignore)
+    // DatasetUtilities.iterateRangeBounds(CategoryDataset, boolean ignore)
+    // DatasetUtilities.iterateDomainBounds(XYZDataset)
+    // DatasetUtilities.iterateRangeBounds(XYZDataset, boolean ignore)
+    XYSeries xySeries = new XYSeries("S1");
+    xySeries.add(1.0, null);
+    XYSeriesCollection xyDataset = new XYSeriesCollection();
+    xyDataset.addSeries(xySeries);
+    assertEquals(new Range(Double.NaN, Double.NaN),
+            DatasetUtilities.iterateRangeBounds(xyDataset, true));
+
+    DefaultCategoryDataset categoryDataset

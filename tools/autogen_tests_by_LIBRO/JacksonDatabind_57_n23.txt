@@ -1,0 +1,17 @@
+public void testReaderValues() throws IOException {
+  final ObjectMapper mapper = new ObjectMapper();
+  final ObjectReader reader = mapper.reader();
+
+  final byte[] input = new byte[] {
+    0x7B, // {
+    0x22, 0x61, 0x22, 0x3A, 0x33, 0x7D, // "a":3}
+    0x7B, // {
+    0x22, 0x61, 0x22, 0x3A, 0x34, 0x7D // "a":4}
+  };
+  final ArrayNode arrayNode = mapper.readTree(input);
+  final JsonNode[] jsonNodes = reader.readValues(arrayNode.elements()).readAll().toArray(new JsonNode[0]);
+  assertEquals(2, jsonNodes.length);
+  assertEquals(3, jsonNodes[0].get("a").asInt());
+  assertEquals(4, jsonNodes[1].get("a").asInt());
+
+  final JsonNode[] jsonNodesWithOffsetAndLength =

@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Date.class, new DateDeserializer());
+    mapper.registerModule(module);
+    try {
+        mapper.readValue("{\"date\":\"foo\"}", Foo.class);
+        fail();
+    } catch (JsonMappingException e) {
+        assertEquals("Can not deserialize value of type java.util.Date from String \"foo\": not a valid representation (error: Failed to parse Date value 'foo': Can not parse date \"foo\": not compatible with any of standard forms (\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\", \"yyyy-MM-dd'T'HH:mm:ss.SSS\", \"EEE, dd MMM yyyy HH:mm:ss zzz\", \"yyyy-MM-dd\"))\n at [Source: {\"date\":\"foo\"}; line: 1, column: 11] (through reference chain: com.fasterxml.jackson.

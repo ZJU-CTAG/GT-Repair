@@ -1,0 +1,19 @@
+public void testWriteArchive() throws IOException {
+    File zip = new File("test.zip");
+    try {
+        FileOutputStream fos = new FileOutputStream(zip);
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+
+        ZipArchiveEntry ze = new ZipArchiveEntry("a");
+        zos.putArchiveEntry(ze);
+        zos.closeArchiveEntry();
+
+        ze = new ZipArchiveEntry("b");
+        zos.putArchiveEntry(ze);
+        zos.closeArchiveEntry();
+
+        zos.close();
+    } finally {
+        zip.delete();
+    }
+}

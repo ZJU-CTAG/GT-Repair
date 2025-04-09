@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("test.js", "foo={bar:function(){alert(this.baz)}};")
+        },
+        options);
+    assertFalse(compiler.hasErrors());
+    assertFalse(compiler.hasWarnings());
+}

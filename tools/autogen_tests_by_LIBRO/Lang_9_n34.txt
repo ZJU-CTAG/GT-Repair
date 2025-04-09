@@ -1,0 +1,21 @@
+public void testUnterminatedQuoteIssue() throws Exception {
+    String format = "d'd'";
+    String date = "d3";
+
+    DateFormat df = new SimpleDateFormat(format);
+
+    try {
+        df.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException ex) {
+        // expected
+    }
+
+    FastDateParser fdp = new FastDateParser(format, TimeZone.getDefault(), Locale.getDefault());
+    try {
+        fdp.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException ex) {
+        // expected
+    }
+}

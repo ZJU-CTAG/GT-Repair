@@ -1,0 +1,20 @@
+public void testIssue766() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    // the object to serialize
+    final User user = new User();
+    user.setId(new Id(1, 42));
+
+    // serialize the user
+    final String json = mapper.writeValueAsString(user);
+    assertEquals("{\"@class\":\"com.fasterxml.jackson.databind.test.User\",\"id\":{\"@class\":\"com.fasterxml.jackson.databind.test.Id\",\"objectId\":1,\"typeId\":42}}", json);
+
+    // deserialize the user
+    final User deserializedUser = mapper.readValue(json, User.class);
+    assertEquals(1, deserializedUser.getId().getObjectId());
+    assertEquals(42, deserializedUser.getId().getTypeId());
+}
+
+@JsonTypeInfo(

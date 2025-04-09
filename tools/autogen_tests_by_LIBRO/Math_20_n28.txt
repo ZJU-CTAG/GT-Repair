@@ -1,0 +1,22 @@
+public void testOptimizer() {
+    final int n = 10;
+    final double[] lBounds = new double[n];
+    final double[] uBounds = new double[n];
+    for (int i = 0; i < n; i++) {
+        lBounds[i] = 0.0;
+        uBounds[i] = 1.0;
+    }
+    final RandomGenerator rg = new JDKRandomGenerator();
+    rg.setSeed(12345);
+    MultivariateFunction f = new MultivariateFunction() {
+        public double value(double[] x) {
+            double s = 0;
+            for (int i = 0; i < n; i++) {
+                s += x[i];
+            }
+            return s;
+        }
+    };
+    CMAESOptimizer opt = new CMAESOptimizer(200, 0, true, 0, 0, rg, false, 0);
+    PointValuePair pvp = opt.optimize(f, GoalType.MINIMIZE, new double[n], lBounds, uBounds);
+    double[]

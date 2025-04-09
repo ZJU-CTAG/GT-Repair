@@ -1,0 +1,22 @@
+public void testArArchiveIssue() throws IOException {
+    File file = new File(getTestFile(), "bla.ar");
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(file));
+
+    ArArchiveEntry entry = in.getNextEntry();
+    in.close();
+
+    List<ArchiveEntry> list = new ArrayList<ArchiveEntry>();
+    list.add(entry);
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(file));
+    out.setEncoding("ISO-8859-1");
+    out.setKeepOldFiles(true);
+    out.setTruncateMode(ArArchiveOutputStream.TRUNCATE_MIDDLE);
+    out.setLongFileMode(ArArchiveOutputStream.LONGFILE_BSD);
+    out.setAddLastModifiedDate(true);
+    for (ArchiveEntry ae : list) {
+        out.putArchiveEntry(ae);
+        out.closeArchiveEntry();
+    }
+    out.close();
+
+    in = new ArArch

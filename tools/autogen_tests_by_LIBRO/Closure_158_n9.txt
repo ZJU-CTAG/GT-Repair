@@ -1,0 +1,14 @@
+public void testOrdering() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(JSSourceFile.fromCode("input.js", ""),
+            JSSourceFile.fromCode("input.js", "var a = 1;"), options);
+    assertTrue(result.success);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.WARNING);
+    result = compiler.compile(JSSourceFile.fromCode("input.js", "/** @suppress {uselessCode} */ var a = 1;"),
+            JSSourceFile.fromCode("input.js", "/** @suppress {uselessCode} */ var a = 1;"), options);
+    assertTrue(result.success);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    result = compiler

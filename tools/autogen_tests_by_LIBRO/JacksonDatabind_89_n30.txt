@@ -1,0 +1,16 @@
+public void testUnsafeDeserialization() {
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectMapper mapperWithUnsafe = new ObjectMapper();
+    mapperWithUnsafe.enableDefaultTyping();
+
+    final String json = 
+        "[\"org.apache.commons.collections.functors.InvokerTransformer\", \"transf\"," +
+        "     [\"java.lang.reflect.Field\", null, \"staticField\", \"Ljava/util/HashMap;\"]," +
+        "     {\"i\":\"x\",\"s\":[\"y\"],\"r\":\"z\"}" +
+        "]";
+
+    try {
+        mapperWithUnsafe.readValue(json, Object.class);
+        fail("should not be able to deserialize polymorphic types");
+    } catch (MismatchedInputException e) {
+        assertEquals("Cannot resolve type id 'org.apache.commons.collections.functors.InvokerTransformer' into a subtype of [simple type, class java.lang.Object]: known type ids = [BASE64

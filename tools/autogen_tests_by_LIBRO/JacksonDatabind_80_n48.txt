@@ -1,0 +1,31 @@
+public void testExtraneousTypeIdMapping() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(PolymorphicObject.A.class, "A"));
+    mapper.registerSubtypes(new NamedType(PolymorphicObject.B.class, "B"));
+    PolymorphicObject po = new PolymorphicObject();
+    po.polyObject = new PolymorphicObject.A("val");
+    String json = mapper.writeValueAsString(po);
+    System.out.println("JSON: " + json);
+}
+
+public static class PolymorphicObject
+{
+    public PolymorphicBase polyObject;
+
+    public static abstract class PolymorphicBase
+    {
+    }
+
+    public static class A extends PolymorphicBase
+    {
+        public String val;
+        public A(){}
+        public A(String val){this.val = val;}
+    }
+
+    public static class B extends PolymorphicBase
+    {
+        public String val;
+        public B(){}
+        public B(String val){this.

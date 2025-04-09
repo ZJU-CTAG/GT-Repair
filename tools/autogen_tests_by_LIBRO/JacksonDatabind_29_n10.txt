@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE);
+    final String withoutId = "{\"a\":\"java.lang.String\",\"b\":\"b\"}";
+    final String withId = "{\"@type\":\"java.lang.String\",\"b\":\"b\"}";
+    String output = mapper.writeValueAsString(new String("b"));
+    assertEquals(output, withoutId);
+    assertEquals(output, withId);
+    assertEquals(new String("b"), mapper.readValue(withoutId, Object.class));
+    assertEquals(new String("b"), mapper.readValue(withId, Object.class));
+}

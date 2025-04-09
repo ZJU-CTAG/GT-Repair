@@ -1,0 +1,19 @@
+public void testFilterDelegate() throws Exception
+{
+    String json = "{\"Test\":{\"test\":\"value\"}}";
+    StringFilterProvider filterProvider = new StringFilterProvider()
+            .addFilter(Object.class.getName(), SimpleBeanPropertyFilter.serializeAllExcept("test"));
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setFilterProvider(filterProvider);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.addMixIn(Object.class, MixIn.class);
+    Map map = mapper.readValue(json, Map.class);
+    assertEquals(1, map.size());
+    assertNull(map.get("test"));
+}
+
+abstract class MixIn {
+    @JsonFilter("Test")
+    abstract boolean isTest();
+}

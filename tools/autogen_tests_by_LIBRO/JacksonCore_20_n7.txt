@@ -1,0 +1,11 @@
+public void testEmbeddedByteArray() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = mapper.createGenerator(bytes);
+    gen.writeStartArray();
+    gen.writeEmbeddedObject(new byte[123]);
+    gen.writeEndArray();
+    gen.close();
+    assertEquals("[\"AQID\"]", bytes.toString("UTF-8"));
+}

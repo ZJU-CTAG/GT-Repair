@@ -1,0 +1,17 @@
+public void testPolymorphicTypes() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    String json = "{\"@type\":\"foo\",\"clazz\":\"FOO\",\"x\":0,\"y\":0}";
+    System.out.println(json);
+    BaseType<String> bt = mapper.readValue(json, BaseType.class);
+    System.out.println(bt.getClass().getName());
+    assertNotNull(bt);
+    assertEquals("FOO", bt.getClazz());
+
+    BaseType<String> bt2 = new Foo<String>("FOO", 0, 0);
+    json = mapper.writeValueAsString(bt2);
+    System

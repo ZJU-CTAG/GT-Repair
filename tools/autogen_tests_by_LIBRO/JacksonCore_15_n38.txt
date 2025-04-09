@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    final JsonGenerator jsonGenerator = Json.createGenerator(new StringWriter());
+    final JsonParser jsonParser = Json.createParser(new StringReader("{\"a\":1,\"a\":2}"));
+    final FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(jsonGenerator, null, true, true, null);
+    final FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonParser, null, true, true);
+    while (jsonParser.hasNext()) {
+        final JsonParser.Event event = jsonParser.next();
+        filteringGeneratorDelegate.delegateEvent(filteringParserDelegate, event);
+    }
+    jsonParser.close();
+    jsonGenerator.close();
+}

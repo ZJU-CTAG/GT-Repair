@@ -1,0 +1,13 @@
+public void testAndroidBackup() throws Exception {
+    InputStream is = getClass().getResourceAsStream("/test-data/issue107.tar");
+    TarArchiveInputStream tis = new TarArchiveInputStream(is);
+    TarArchiveEntry entry;
+    while ((entry = tis.getNextTarEntry()) != null) {
+        if (entry.getName().startsWith("application.log")) {
+            byte[] buffer = new byte[4096];
+            while (tis.read(buffer) != -1) {
+                // do something with buffer
+            }
+        }
+    }
+}

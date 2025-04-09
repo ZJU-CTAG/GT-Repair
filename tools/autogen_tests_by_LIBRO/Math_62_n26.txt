@@ -1,0 +1,16 @@
+public void testOptimizer() {
+    SimpleBounds bounds = new SimpleBounds(new double[] { -100, -100, -100 },
+            new double[] { 100, 100, 100 });
+    MultivariateFunction f = new MultivariateFunction() {
+        public double value(double[] point) {
+            double x = point[0];
+            double y = point[1];
+            double z = point[2];
+            return 1e0 - x + 2e0 * y - 3e0 * z + 4e0 * x * x + 5e0 * y * y
+                    + 6e0 * z * z + 7e0 * x * y + 8e0 * y * z + 9e0 * z * x;
+        }
+    };
+    NonLinearConjugateGradientOptimizer optimizer = new NonLinearConjugateGradientOptimizer(
+            NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE,
+            new SimpleValueChecker(1e-6, 1e-6));
+    PointValuePair optimum = optimizer.optimize(

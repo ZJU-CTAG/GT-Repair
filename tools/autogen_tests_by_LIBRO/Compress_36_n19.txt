@@ -1,0 +1,22 @@
+public void testIssue() throws IOException {
+    SevenZArchiveEntry entry = new SevenZArchiveEntry();
+    entry.setDirectory(true);
+    entry.setHasCrc(false);
+    entry.setHasMTime(false);
+    entry.setHasSize(false);
+    entry.setHasUnpackSize(true);
+    entry.setSize(0);
+    entry.setUnpackSize(0);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    SevenZOutputFile archive = new SevenZOutputFile(baos);
+    archive.putArchiveEntry(entry);
+    archive.closeArchiveEntry();
+    archive.close();
+
+    SevenZFile file = new SevenZFile(new ByteArrayInputStream(baos.toByteArray()));
+    entry = file.getNextEntry();
+    byte[] b = new byte[(int) entry.getSize()];
+    int length = file.read(b);
+    assertEquals(0, length);
+}

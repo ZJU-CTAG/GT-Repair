@@ -1,0 +1,15 @@
+public void testIssue121() {
+        Compiler compiler = new Compiler();
+        CompilerOptions options = new CompilerOptions();
+        options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+        options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+        SourceFile extern = SourceFile.fromCode("[externs]", "");
+        SourceFile input1 = SourceFile.fromCode("test1.js", 
+                "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }");
+        SourceFile input2 = SourceFile.fromCode("test2.js",
+                "/** @constructor \n" +
+                " * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }");
+        compiler.compile(extern, input1, input2, options);
+        assertEquals(0, compiler.getErrorCount());
+        assertEquals(0, compiler.getWarningCount());
+}

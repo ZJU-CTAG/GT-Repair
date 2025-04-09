@@ -1,0 +1,18 @@
+public void testDeserialization_1599_CVE2017_15095() throws Exception
+{
+    // well-known class, but not loaded by Jackson
+    String JSON = "{\"@class\": \"org.apache.tomcat.dbcp.dbcp2.BasicDataSource\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    // first: allow, verify it works
+    mapper.enableDefaultTyping();
+    assertEquals(BasicDataSource.class, mapper.readValue(JSON, Object.class).getClass());
+    // and then: no go
+    mapper = new ObjectMapper();
+    mapper.disableDefaultTyping();
+    try {
+        mapper.readValue(JSON, Object.class);
+        fail("Should not allow `BasicDataSource`");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "problem: known deserializer");
+    }
+}

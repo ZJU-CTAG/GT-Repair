@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(false);
+    options.setGeneratePseudoNames(true);
+    compiler.compile(EXTERNS_JS, new JSSourceFile[] { JSSourceFile.fromCode("test", "var test={\"a\\u0004b\":\"c\"};")}, options);
+    String result = compiler.toSource();
+    assertTrue(result.contains("a\\u0004b"));
+}

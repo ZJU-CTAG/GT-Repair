@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    Options options = new Options();
+    Option option = new Option("t", "target", true, "Generate files for the specified target machine");
+    option.setRequired(false);
+    options.addOption(option);
+
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine line = parser.parse(options, new String[]{"-target", "foobar.com"});
+        assertEquals("foobar.com", line.getOptionValue("target"));
+    } catch (ParseException pe) {
+        fail("ParseException: " + pe.getMessage());
+    }
+}

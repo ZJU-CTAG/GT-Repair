@@ -1,0 +1,11 @@
+public void testIssue107() throws IOException {
+    Document doc = Jsoup.parse(new File("test/test.html"), null);
+    Element e = doc.getElementById("a");
+    assertEquals("http://www.w3.org/1999/xhtml", e.namespace());
+    Element p = e.getElementsByTag("p").first();
+    assertEquals("http://www.w3.org/1999/xhtml", p.namespace());
+    Element div = doc.getElementsByTag("div").first();
+    assertNull(div.namespace());
+    Element body = doc.getElementsByTag("body").first();
+    assertNull(body.namespace());
+}

@@ -1,0 +1,15 @@
+public void testParsing() throws IOException {
+        String html = "<html><head><title>First parse</title></head>"
+                + "<body><p>Parsed HTML into a doc.</p></body></html>";
+        Document doc = Jsoup.parse(html);
+        Assert.assertEquals("<html><head><title>First parse</title></head><body><p>Parsed HTML into a doc.</p></body></html>",
+                doc.toString());
+    }
+
+    @Test
+    public void testParsingWithURL() throws IOException {
+        String url = "http://jornutzon.sydneyoperahouse.com/home.htm";
+        Document doc = Jsoup.connect(url).get();
+        assertFalse(doc.head().html().contains("<body>"));
+        assertFalse(doc.head().html().contains("</body>"));
+    }

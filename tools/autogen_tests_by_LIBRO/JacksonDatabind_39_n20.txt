@@ -1,0 +1,18 @@
+public void testIssueIssueJACKSON_1315() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE,
+            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+    final CallRecord call = new CallRecord();
+
+    final Event event = new Event();
+    event.location = "location1";
+    call.item = event;
+    call.item2 = event;
+    call.application = "123";
+
+    final String json =
+            "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+
+    final CallRecord result = objectMapper.readValue(json, CallRecord.class);
+    assertEquals(0.0, result.version);
+    assertEquals(2, result.item2

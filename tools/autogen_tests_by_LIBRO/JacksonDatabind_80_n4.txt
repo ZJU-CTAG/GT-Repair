@@ -1,0 +1,9 @@
+public void testIssue115() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Bar.class);
+    final Map<String,Object> map = mapper.readValue("{\"@type\": \"foo\" }", Map.class);
+    assertEquals(Foo.class, map.get(JsonTypeInfo.TYPE_PROPERTY));
+}
+
+static class Foo { }
+static class Bar extends Foo { }

@@ -1,0 +1,28 @@
+public void testIssue114() {
+    String source = "/** @constructor */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { }\n" +
+            "myclass.prototype.test = function() {\n" +
+            "    this.fn();\n" +
+            "    this.fn = function() { };\n" +
+            "}";
+    List<JSError> errors = new ArrayList<JSError>();
+    ErrorReporter reporter = new ErrorReporter() {
+        @Override
+        public void report(CheckLevel level, JSError error) {
+            errors.add(error);
+        }
+
+        @Override
+        public CheckLevel getMaxSeverity() {
+            return CheckLevel.ERROR;
+        }
+
+        @Override
+        public void setMaxSeverity(CheckLevel level) {
+        }
+    };
+    Compiler compiler = new Compiler();
+    compiler

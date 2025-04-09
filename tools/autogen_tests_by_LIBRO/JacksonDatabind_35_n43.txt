@@ -1,0 +1,19 @@
+public void testIssue107() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.configure(SerializationFeature.WRITE_TYPES_AS_PROPERTIES, true);
+    mapper.setDefaultUseWrapper(true);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    AbstractSupplier<?> supplier = new AbstractSupplier<Object>() {
+        @XmlAttribute(name = "id")
+        @Override
+        public String getId() {
+            return "abcd";
+        }
+    };
+
+    String result = mapper.writeValueAsString(supplier);
+    assertEquals("{\"abstractSupplier\":{\"id\":\"abcd\",\"@class\":\"com.fasterxml.jackson.databind.jsontype.AbstractTypeIdResolverTest$1\"}}", result);
+}

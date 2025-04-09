@@ -1,0 +1,11 @@
+public void testIssue107() {
+    FastDateFormat dtf = FastDateFormat.getInstance();
+    ByteArrayOutputStream ba = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(ba);
+    oos.writeObject(dtf);
+    oos.close();
+    ByteArrayInputStream bi = new ByteArrayInputStream(ba.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bi);
+    FastDateFormat dtf2 = (FastDateFormat) ois.readObject();
+    ois.close();
+}

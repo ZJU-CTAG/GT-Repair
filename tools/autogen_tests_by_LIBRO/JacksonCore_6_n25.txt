@@ -1,0 +1,7 @@
+public void testIssue108() throws Exception {
+    JsonNode json = new ObjectMapper().readTree("[\"\",\"\",\"\"]");
+    assertEquals("", json.at("/0").asText());
+    assertEquals("", json.at("/00").asText());
+    assertEquals(PointerException.class,
+            catchThrowable(() -> json.at("/000")).getClass());
+}

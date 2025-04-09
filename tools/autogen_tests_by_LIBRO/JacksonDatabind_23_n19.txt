@@ -1,0 +1,18 @@
+public void testExclusion() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectMapper mapperWithAfterburner = new ObjectMapper();
+    mapperWithAfterburner.registerModule(new AfterburnerModule());
+
+    // First, simple test case, ok
+    POJOWithDefaults bean = new POJOWithDefaults("a", 1, 2);
+    String json = mapper.writeValueAsString(bean);
+    assertEquals("{\"s\":\"a\",\"i\":1,\"j\":2}", json);
+    json = mapperWithAfterburner.writeValueAsString(bean);
+    assertEquals("{\"s\":\"a\",\"i\":1,\"j\":2}", json);
+
+    // but then, for empty int, problems
+    bean = new POJOWithDefaults("a", 0, 0);
+    json = mapper.writeValueAsString(bean);
+    assertEquals("{\"s\":\"a\",\"i\":0,\"j\":0}", json);
+    json = mapperWithAfterburner.writeValue

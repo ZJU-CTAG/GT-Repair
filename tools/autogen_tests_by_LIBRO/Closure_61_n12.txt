@@ -1,0 +1,13 @@
+public void testClosure1() {
+    assertEquals("var a={};a.blah=function(a){a.a=5};var test={};a.blah(test);",
+            closure("a.blah = function(test) { test.a = 5; };\nvar test = new Object();\na.blah(test);", "SIMPLE_OPTIMIZATIONS"));
+}
+
+public void testClosure2() {
+    assertEquals("var n={};n.blah=function(a){a.a=5};var test={};n.blah(test);",
+            closure("n.blah = function(test) { test.a = 5; };\nvar test = new Object();\nn.blah(test);", "SIMPLE_OPTIMIZATIONS"));
+}
+
+public void testClosure3() {
+    assertEquals("var test={};Math.blah(test);",
+            closure("Math.blah = function(test) { test.a = 5; };\nvar test = new Object();\nMath.blah(test);",

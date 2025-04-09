@@ -1,0 +1,17 @@
+public void testSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader();
+    ObjectWriter writer = mapper.writer();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oout = new ObjectOutputStream(out);
+    oout.writeObject(reader);
+    oout.writeObject(writer);
+    oout.close();
+    byte[] bytes = out.toByteArray();
+    ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+    ObjectInputStream oin = new ObjectInputStream(in);
+    ObjectReader reader2 = (ObjectReader) oin.readObject();
+    ObjectWriter writer2 = (ObjectWriter) oin.readObject();
+    assertEquals(reader, reader2);
+    assertEquals(writer, writer2);
+}

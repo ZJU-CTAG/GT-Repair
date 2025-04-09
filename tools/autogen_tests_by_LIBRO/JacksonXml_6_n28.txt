@@ -1,0 +1,17 @@
+public void testWriteBinary() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    JsonFactory jsonFactory = new JsonFactory();
+    ToXmlGenerator generator = jsonFactory.createGenerator(baos, JsonEncoding.UTF8);
+
+    generator.writeStartObject();
+    generator.writeFieldName("myField");
+    generator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[]{0x01, 0x02, 0x03}), -1);
+    generator.writeEndObject();
+    generator.close();
+
+    byte[] actual = baos.toByteArray();
+    byte[] expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><myField>AQID</myField></root>".getBytes(StandardCharsets.UTF_8);
+
+    assertTrue(Arrays.equals(expected, actual));
+}
+

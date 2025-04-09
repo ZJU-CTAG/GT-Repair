@@ -1,0 +1,17 @@
+public void testWriteBinaryWithInputStream() throws Exception {
+    StringWriter sw = new StringWriter();
+
+    ToXmlGenerator generator = new ToXmlGenerator(sw);
+    generator.writeStartDocument();
+    generator.writeStartObject();
+
+    generator.writeFieldName("f");
+    generator.writeBinary(Base64Variants.getDefaultVariant(),
+            new ByteArrayInputStream(new byte[] { 0x00, 0x01 }), 2);  // <-- this call does not exist
+
+    generator.writeEndObject();
+    generator.writeEndDocument();
+    generator.flush();
+
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><f>AAE=</f></root>", sw.toString());
+}

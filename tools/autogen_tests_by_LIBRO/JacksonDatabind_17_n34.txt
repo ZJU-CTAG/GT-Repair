@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Foo foo = new Foo("bar");
+    ObjectMapper mapper = new ObjectMapper()
+        .enableDefaultTyping()
+        .enable(MapperFeature.AUTO\_DETECT\_GETTERS)
+        .enable(MapperFeature.REQUIRE\_SETTERS\_FOR\_GETTERS)
+        .disable(MapperFeature.USE\_GETTERS\_AS\_SETTERS)
+        .disable(MapperFeature.CAN\_OVERRIDE\_ACCESS\_MODIFIERS)
+        .enable(SerializationFeature.INDENT\_OUTPUT)
+        .disable(SerializationFeature.FAIL\_ON\_EMPTY\_BEANS);
+    String serialized = mapper.writeValueAsString(foo);
+    JsonNode jsonNode = mapper.readTree(serialized);
+    JsonNode node = mapper.valueToTree(foo);
+}

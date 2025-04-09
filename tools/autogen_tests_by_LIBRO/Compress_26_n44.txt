@@ -1,0 +1,29 @@
+public void testIOUtilsSkip() throws IOException {
+    InputStream testData = new ByteArrayInputStream("The quick brown fox jumps over the lazy dog".getBytes("UTF-8"));
+    CipherInputStream cipher = new CipherInputStream(testData, new NullCipher());
+    TarInputStream tar = new TarInputStream(cipher);
+    TarEntry entry = tar.getNextEntry();
+    assertEquals("The quick brown fox jumps over the lazy dog", IOUtils.toString(tar));
+}
+
+private static class NullCipher extends Cipher {
+    private static final long serialVersionUID = 1L;
+
+    protected NullCipher() {
+        super(new NullCipherSpi(), new NullProvider(), "NullCipher");
+    }
+}
+
+private static class NullCipherSpi extends CipherSpi {
+    private static final long serialVersionUID = 1L;
+
+    protected NullCipherSpi() {
+    }
+
+    protected void engineSetMode(String mode) {
+    }
+
+    protected void engineSetPadding(String padding) {
+    }
+
+    protected int engineGetBlockSize() {

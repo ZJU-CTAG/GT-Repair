@@ -1,0 +1,17 @@
+public void testIssue152() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    SimpleTree t = mapper.readValue("{\"value\":1}", SimpleTree.class);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_ARRAY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SimpleTree.class, name = "simple"),
+})
+public abstract class AbstractTree {
+    public String name;
+}
+
+public class SimpleTree extends AbstractTree {
+    public int value;
+}

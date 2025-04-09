@@ -1,0 +1,12 @@
+public void testClassLoaders() {
+    SourceUrl sourceUrl = mock(SourceUrl.class);
+    URLClassLoader cl = new ClassLoaders.ExcludingClassLoader(sourceUrl, this.getClass().getClassLoader());
+    assertNotNull(cl.getResource("org/mockitoutil/ClassLoaders.class"));
+    assertNotNull(cl.getResource("org/mockitoutil/NestedClass.class"));
+    assertNotNull(cl.getResource("org/mockitoutil/ClassLoaders.class"));
+    assertNotNull(cl.getResource("org/mockitoutil/NestedClass.class"));
+    assertNull(cl.getResource("junit/framework/Assert.class"));
+    assertNull(cl.getResource("org/junit/Assert.class"));
+    assertNull(cl.getResource("org/hamcrest/Matcher.class"));
+    assertNull(cl.getResource("org/hamcrest/core/AnyOf.class"));
+    assertNull(cl.getResource("org/hamcrest

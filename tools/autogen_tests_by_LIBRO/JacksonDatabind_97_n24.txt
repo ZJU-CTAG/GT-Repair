@@ -1,0 +1,26 @@
+public void testIssue()
+{
+    // create custom serializer
+    StdSerializer<Data> ser = new StdSerializer<Data> (Data.class)
+    {
+        @Override
+        public void serialize(Data value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            String attrStr = (String) provider.getAttribute("myAttr");
+            gen.writeStartObject();
+            gen.writeObjectField("aStr", "The value is: " + (attrStr == null ? "NULL" : attrStr));
+            gen.writeEndObject();
+        }
+    };
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("TestModule", Version.unknownVersion());
+    module.addSerializer(Data.class, ser);
+    mapper.registerModule(module);
+
+    // serialize Data via both Map and ObjectNode
+    Data data = new Data();
+    data.aStr = "Hello";
+
+    Map<String, Object> mapTest = new HashMap<>();
+    mapTest.put("data", data);
+
+   

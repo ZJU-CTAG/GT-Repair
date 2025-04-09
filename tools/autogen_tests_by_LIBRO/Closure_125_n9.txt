@@ -1,0 +1,7 @@
+public void testGoogleClosure() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    CompilerInput input = new CompilerInput(SourceFile.fromCode("crash.js", "var test = {};\n\n/**\n * @interface\n */\ntest.T = function() {};\n\n/**\n * @constructor\n * @implements {test.T}\n */\ntest.A = function() {};\n\n/**\n * @constructor\n * @implements {test.T}\n */\ntest.B = function() {};\n\n/**\n * @constructor\n */\ntest.X = function() {\n  this.type = test.A;\n  this.t = this.f();\n};\n

@@ -1,0 +1,25 @@
+public void testTypeIds() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    // Ok: "String" is compatible with "CharSequence"
+    CharSequence cs = mapper.readValue("[\"java.lang.String\",\"abc\"]", CharSequence.class);
+    assertNotNull(cs);
+    assertEquals("abc", cs.toString());
+
+    // Error: should fail, since JSON String is not compatible with int (but does not)
+    Integer i = mapper.readValue("[\"java.lang.Integer\",\"abc\"]", Integer.class);
+    assertEquals(Integer.valueOf(0), i);
+
+    // Ok, works as expected
+    try {
+        mapper.readValue("[\"java.lang.Integer\",\"abc\"]", Long.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Incompatible generic type");
+    }
+
+    // Ok, works as expected
+    try {
+        mapper.

@@ -1,0 +1,29 @@
+public void testRecursiveType() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(Base.class, BaseMixin.class);
+    mapper.addMixInAnnotations(IFace.class, IFaceMixin.class);
+
+    // serialize the sub class first
+    {
+        Sub sub = new Sub();
+        String json = mapper.writeValueAsString(sub);
+        System.out.println(json);
+        assertEquals("{\"sub\":2}", json);
+    }
+
+    // serialize the base class with sub type second
+    {
+        Base base = new Base();
+        String json = mapper.writeValueAsString(base);
+        System.out.println(json);
+        assertEquals("{\"base\":1}", json);
+    }
+}
+
+interface IFace<T> { }
+
+class Base implements IFace<Sub> {
+    public int base = 1;
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.

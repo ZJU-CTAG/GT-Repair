@@ -1,0 +1,16 @@
+public void testNullOption() throws Exception {
+    Options options = new Options();
+    // Add an option that takes an argument
+    Option option = OptionBuilder.withArgName("file")
+                                 .hasArg()
+                                 .withDescription("file to save XML to")
+                                 .create( "o" );
+    options.addOption( option );
+    // Add an option that doesn't take an argument
+    options.addOption( "a", "enable-all", false, "do not hide entries starting with ." );
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[] { "-a", "-o", "foo.txt" };
+    CommandLine line = parser.parse( options, args );
+
+    assertTrue( line.hasOption( null ));
+}

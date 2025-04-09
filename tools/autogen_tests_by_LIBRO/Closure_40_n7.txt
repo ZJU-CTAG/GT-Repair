@@ -1,0 +1,17 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    options.setExtraSmartNameRemoval(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(JSSourceFile.fromCode("input.js",
+            "var goog = {};\n" +
+                    "goog.inherits = function(x, y) {};\n" +
+                    "var ns = {};\n" +
+                    "/** @constructor */ ns.PageSelectionModel = function(){};\n" +
+                    "\n" +
+                    "/** @constructor */ \n" +
+                    "ns.PageSelectionModel.FooEvent = function() {};\n" +
+                    "/** @constructor */ \n" +
+                    "ns.PageSelectionModel.SelectEvent = function() {};\

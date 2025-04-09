@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.compile(new File("src/test/resources/issue108.js"), new PrintWriter(System.out), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("Warning: " + message);
+        }
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("Error: " + message);
+        }
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("Runtime Error: " + message);
+            return new EvaluatorException(message);
+        }
+    });
+}

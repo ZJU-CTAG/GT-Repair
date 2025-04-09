@@ -1,0 +1,15 @@
+public void testIssueSelectors() {
+    String html = "<div><table class=x /></div><table class=y />";
+
+    Elements els = Jsoup.parse(html).select("div table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("table", els.get(0).tagName());
+    assertEquals("x", els.get(0).className());
+    els = Jsoup.parse(html).select("div > table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("table", els.get(0).tagName());
+    assertEquals("x", els.get(0).className());
+    els = Jsoup.parse(html).select("div + table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("table", els.get(0).tagName());
+    assertEquals("y", els.get(0).className());

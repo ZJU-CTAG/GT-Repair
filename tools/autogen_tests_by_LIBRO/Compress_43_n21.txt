@@ -1,0 +1,21 @@
+public void testZipIssue() throws IOException {
+    byte[] data = {0x01, 0x02, 0x03};
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+    zaos.setEncoding("UTF-8");
+    zaos.setMethod(ZipEntry.DEFLATED);
+    zaos.setUseLanguageEncodingFlag(true);
+    zaos.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS);
+    zaos.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zaos.write(data);
+    zaos.closeArchiveEntry();
+    zaos.close();
+
+    ZipFile zf = new ZipFile(new ByteArrayInputStream(baos.toByteArray()), "UTF-8");
+
+    assertEquals("UTF-8", zf.getEncoding());
+
+    ZipArchiveEntry entry = zf.getEntry("test.txt");
+    assertNotNull(entry);
+
+   

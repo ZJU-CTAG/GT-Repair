@@ -1,0 +1,12 @@
+public void testIssue () throws Exception {
+    String inputXml = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    Document document = XmlUtils.parseXml(inputXml);
+    XPathExecutionContext executionContext = new XPathExecutionContext();
+    executionContext.setDocument(document);
+    executionContext.setFunctionContext(new FunctionContext(FunctionLibrary.getFunctionLibrary()));
+    VariableContext variableContext = new VariableContext();
+    executionContext.setVariableContext(variableContext);
+    XPathExpression expression = new XPathParser().parseXPath("string(/MAIN/B | /MAIN/A)");
+    String result = (String) expression.evaluate(executionContext);
+    assertEquals("avalue", result);
+}

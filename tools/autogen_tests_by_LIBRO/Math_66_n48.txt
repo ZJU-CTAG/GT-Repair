@@ -1,0 +1,11 @@
+public void testCigarFunction() throws Exception {
+    UnivariateRealFunction cigar = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x + 1e6 * Math.pow(Math.sin(x), 2);
+        }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    optimizer.optimize(100, cigar, GoalType.MINIMIZE, -1.0, 1.0);
+    // at this point, optimizer.getIterations() == 99
+    // (see [MATH-718])
+}

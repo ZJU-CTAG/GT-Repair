@@ -1,0 +1,30 @@
+public void testObjectId() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    org.codehaus.jackson.map.ObjectIdGenerator<DateTime> generator = new org.codehaus.jackson.map.ObjectIdGenerators.PropertyGenerator() {
+        @Override
+        public ObjectIdGenerator<DateTime> forScope(Class<?> scope) {
+            return this;
+        }
+        @Override
+        public ObjectIdGenerator<?> newForSerialization(Object context) {
+            return this;
+        }
+        @Override
+        public ObjectIdResolver resolverFor(Annotated a, ObjectIdInfo objectIdInfo) {
+            return null;
+        }
+        @Override
+        public IdKey key(Object key) {
+            return null;
+        }
+        @Override
+        public Object generateId(Object forPojo) {
+            return forPojo;
+        }
+        @Override
+        public boolean canUseFor(ObjectIdGenerator<?> gen) {
+            return false;
+        }
+    };
+   

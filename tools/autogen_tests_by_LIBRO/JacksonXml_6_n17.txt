@@ -1,0 +1,25 @@
+public void testJsonWithBinaryStream() throws IOException {
+    final long originalSize = 1024 * 1024;
+    final int bufferSize = 2048;
+    final long bufferCount = (originalSize + bufferSize - 1) / bufferSize;
+    final long expectedSize = bufferCount * bufferSize;
+
+    JsonFactory jsonFactory = new JsonFactory();
+    ByteArrayOutputStream jsonOut = new ByteArrayOutputStream();
+    UTF8JsonGenerator jsonGenerator = (UTF8JsonGenerator) jsonFactory.createGenerator(jsonOut);
+
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("fieldName");
+
+    jsonGenerator.writeBinary(Base64Variants.getDefaultVariant(), new InputStream() {
+        long bufferIndex = 0;
+
+        @Override
+        public int read() throws IOException {
+            if (bufferIndex >= expectedSize) {
+                return -1;
+            }
+
+            byte[] buffer = new byte[bufferSize];
+            for (int i = 0; i < bufferSize; i++) {
+                buffer[i] = (byte) (bufferIndex++

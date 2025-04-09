@@ -1,0 +1,11 @@
+public void testIssue749 () throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule());
+    ImmutableMap<Status, String> value = mapper.readValue(
+            aposToQuotes("{'OPEN':'Open'}"),
+            TYPE_REF);
+    assertNotNull(value);
+    assertEquals(1, value.size());
+    assertEquals("Open", value.get(Status.OPEN));
+}

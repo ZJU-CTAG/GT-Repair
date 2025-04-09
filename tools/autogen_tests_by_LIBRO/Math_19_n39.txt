@@ -1,0 +1,21 @@
+public void testNaN() {
+    final class NaNFitnessFunction implements MultivariateFunction {
+        @Override
+        public double value(double[] point) {
+            for (int i = 0; i < point.length; i++) {
+                if (Double.isNaN(point[i])) {
+                    return Double.NaN;
+                }
+            }
+            return 0.0;
+        }
+    }
+
+    MultivariateFunction fit = new NaNFitnessFunction();
+    double[] lowerBound = new double[10];
+    double[] upperBound = new double[10];
+    Arrays.fill(lowerBound, Double.NEGATIVE_INFINITY);
+    Arrays.fill(upperBound, Double.POSITIVE_INFINITY);
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.optimize(fit, lowerBound, upperBound);
+}

@@ -1,0 +1,13 @@
+public void testIssueJira107() {
+  String xml =
+    "<A:ElementA A:myAttr=\"Mytype\" xmlns:A=\"http://A.com\" xmlns:B=\"http://B.com\">\n" +
+    "<B:ElementB>MY VALUE</B:ElementB>\n" +
+    "</A:ElementA>";
+
+  Document doc = JXPathContext.newContext(xml).getContextNode();
+  DOMNodePointer ptr = new DOMNodePointer(doc);
+  JXPathContext context = JXPathContext.newContext(ptr);
+  context.registerNamespace("A","http://A.com");
+  context.registerNamespace("B","http://B.com");
+  assertEquals("Mytype", context.getValue("//A:ElementA/@myAttr"));
+}

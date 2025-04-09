@@ -1,0 +1,19 @@
+public void testJavaUtilProperties () throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Properties props = new Properties();
+    props.put("string", "foobar");
+    props.put("int", Integer.valueOf(123));
+    props.put("float", Float.valueOf(0.25f));
+    // alas, fails to coerce:
+    props.put("date", new Date());
+    // fails likewise
+    props.put("bigint", BigInteger.valueOf(123456789L));
+    props.put("bigdec", new BigDecimal("123456789.123456789"));
+
+    String json = mapper.writeValueAsString(props);
+    assertTrue(json.contains("{\"string\":\"foobar\""));
+    assertTrue(json.contains("\"int\":123"));
+    assertTrue(json.contains("\"float\":0.25"));
+    assertTrue(json.contains("\"date\":\""));
+    assertTrue(json.contains("\"bigint\":123456789"));

@@ -1,0 +1,34 @@
+public void testIssueWithTagTR() {
+    final StringWriter writer = new StringWriter();
+    final HtmlCanvas html = new HtmlCanvas(writer);
+    try {
+        html.html()
+                .body()
+                .div()
+                .table()
+                .tr()
+                .td()
+                .write("123")
+                ._td()
+                ._tr()
+                ._table()
+                ._div()
+                ._body()
+                ._html();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    assertEquals("<html>" +
+            "<body>" +
+            "<div>" +
+            "<table>" +
+            "<tr>" +
+            "<td>" +
+            "123" +
+            "</td>" +
+            "</tr>" +
+            "</table>" +
+            "</div>" +
+            "</body>" +
+            "</html>", writer.toString());
+}

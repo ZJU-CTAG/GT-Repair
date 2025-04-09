@@ -1,0 +1,10 @@
+public void testEncoding() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    Map<String, Object> entryProperties = new HashMap<String, Object>();
+    entryProperties.put(ArchiveStreamFactory.ENTRY_ENCODING, "UTF-8");
+    ArchiveInputStream in = factory.createArchiveInputStream(
+            ArchiveStreamFactory.ZIP,
+            new FileInputStream("src/test/resources/test-documents.zip"));
+    ZipArchiveEntry zipEntry = (ZipArchiveEntry)in.getNextEntry();
+    assertEquals("UTF-8", zipEntry.getName());
+}

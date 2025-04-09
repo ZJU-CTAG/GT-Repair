@@ -1,0 +1,30 @@
+public void testIssue() {
+    Car car = new Car();
+    car.setModel("Ford");
+
+    Truck truck = new Truck();
+    truck.setModel("Chevy");
+
+    Gson gson = new Gson();
+
+    String json = gson.toJson(car);
+
+    TypeAdapter<Car> adapter = new TypeAdapter<Car>() {
+        @Override
+        public void write(JsonWriter out, Car value) throws IOException {
+        }
+
+        @Override
+        public Car read(JsonReader in) throws IOException {
+            return null;
+        }
+    };
+
+    String json2 = gson.toJson(truck);
+    JsonAdapter<Car> jsonAdapter = (JsonAdapter<Car>) RuntimeTypeAdapterFactory.of(Vehicle.class)
+            .registerSubtype(Car.class, "car")
+            .registerSubtype(Truck.class, "truck");
+
+    // we may have a json string that was encoded as a Car, but
+    // we're decoding it as a Truck.
+    Truck truck2 = gson.fromJson(json, Truck

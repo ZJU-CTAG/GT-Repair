@@ -1,0 +1,9 @@
+public void testArgCaptor() {
+    Mockito.doNothing().when(service).invoke(ArgumentCaptor.forClass(Person.class).capture());
+    service.invoke(new Person(), new Person(), new Person());
+    ArgumentCaptor<Person> captor = ArgumentCaptor.forClass(Person.class);
+    Mockito.verify(service).invoke(captor.capture());
+}
+public interface Service {
+    public void invoke(Person... persons);
+}

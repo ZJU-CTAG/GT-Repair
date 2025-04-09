@@ -1,0 +1,13 @@
+public void testIssue106() {
+    StdDateFormat formatter = new StdDateFormat();
+    DateTime dt = new DateTime("痝055-12-02T16:47:04.192+0000", DateTimeZone.UTC);
+    String formatted = formatter.format(dt.toDate());
+    assertEquals("痝055-12-02T16:47:04.192+0000", formatted);
+    try {
+        formatter.parse(formatted);
+        fail("Should not parse a date with year of more than 9999");
+    } catch (ParseException e) {
+        assertEquals("Cannot parse date \"痝055-12-02T16:47:04.192+0000\": not compatible with any of standard forms (\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\", \"yyyy-MM-dd'T'HH:mm:ss.SSS\", \"EEE, dd MMM yyyy HH:mm:ss zzz\", \"yyyy-MM-dd\")", e.getMessage());
+    }
+}
+``

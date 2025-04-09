@@ -1,0 +1,16 @@
+public void testTruncatedZip() throws Exception {
+    File test = getTestFile("test.zip");
+    // make it smaller
+    FileOutputStream fos = new FileOutputStream(test);
+    fos.write(new byte[100]);
+    fos.close();
+    ZipFile zf = new ZipFile(test);
+    ZipArchiveEntry ze = zf.getEntry("test1.xml");
+    assertEquals(100, ze.getSize());
+    InputStream is = zf.getInputStream(ze);
+    byte[] buf = new byte[100];
+    int read = is.read(buf);
+    assertEquals(100, read);
+    assertEquals(-1, is.read());
+    is.close();
+}

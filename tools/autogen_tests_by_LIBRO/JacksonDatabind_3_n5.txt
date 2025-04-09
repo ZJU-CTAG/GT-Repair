@@ -1,0 +1,19 @@
+public void testNullArgument()
+throws Exception
+{
+    String[] arguments = {null, "Argument1", null, "Argument2", null};
+    LoggingEvent event = createLoggingEvent("testLogger");
+    event.setArgumentArray(arguments);
+    assertNullArgument(event);
+}
+
+private void assertNullArgument(LoggingEvent event)
+throws Exception
+{
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder();
+    LoggingJsonDecoder decoder = new LoggingJsonDecoder();
+    byte[] data = encoder.toByteArray(event);
+    LoggingEvent parsed = decoder.decodeLoggingEvent(data);
+    assertEquals(event, parsed);
+    assertEquals(event.getArgumentArray(), parsed.getArgumentArray());
+}

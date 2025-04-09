@@ -1,0 +1,19 @@
+public void testArchive() throws Exception {
+    final byte[] data = new byte[] {0, 1, 2, 3, 4, 5, 6};
+    final String name1 = "test1.xml";
+    final String name2 = "test2.xml";
+    final String name3 = "test.txt";
+    final File archive = new File(getTestDirectory(), "test.ar");
+    final ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(archive));
+    final ArArchiveEntry entry1 = new ArArchiveEntry(name1);
+    entry1.setSize(data.length);
+    out.putArchiveEntry(entry1);
+    out.write(data);
+    out.closeArchiveEntry();
+    final ArArchiveEntry entry2 = new ArArchiveEntry(name2);
+    entry2.setSize(data.length);
+    out.putArchiveEntry(entry2);
+    out.write(data);
+    out.closeArchiveEntry();
+    out.close();
+    final ArArchiveInputStream in = new ArArchiveInputStream(new

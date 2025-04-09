@@ -1,0 +1,22 @@
+public void testSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader(Object.class).with(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+
+    ObjectReader copy1 = copyViaSerialization(reader);
+    ObjectReader copy2 = copyViaSerialization(copy1);
+    ObjectReader copy3 = copyViaSerialization(copy2);
+
+    assertSame(reader.getTypeFactory(), copy1.getTypeFactory());
+    assertSame(copy1.getTypeFactory(), copy2.getTypeFactory());
+    assertSame(copy2.getTypeFactory(), copy3.getTypeFactory());
+}
+
+private <T> T copyViaSerialization(T object) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(object);
+    oos.close();
+
+    ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(out.toByteArray()));
+    try {
+        return

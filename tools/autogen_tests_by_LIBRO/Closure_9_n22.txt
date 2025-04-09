@@ -1,0 +1,24 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    SourceFile externs = SourceFile.fromCode("externs.js",
+            "var window;" +
+            "var module;" +
+            "var process;" +
+            "var exports;" +
+            "var define;" +
+            "var require;" +
+            "var __dirname;" +
+            "var __filename;");
+    SourceFile input = SourceFile.fromCode("input.js",
+            "var foo = require('./lib/Foo.js');\n" +
+            "\n" +
+            "foo.hello();\n" +
+            "\n" +
+            "console.log('hello from bar.js');\n");
+    SourceFile lib = SourceFile.fromCode("lib/Foo.js",
+            "exports.hello = function() {\n" +
+            "  console.log('hello from foo.js');\n" +
+            "};\n");
+    compiler.compile(ex

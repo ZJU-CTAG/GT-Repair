@@ -1,0 +1,19 @@
+public void testBugs() throws IOException, ParseException {
+    String externs = "var window;";
+    String js = "window.alert('hello world');";
+    CompilerOptions options = new CompilerOptions();
+    options.setManageClosureDependencies(true);
+    options.setDependencyOptions(new DependencyOptions()
+        .setDependencyPruning(true)
+        .setDependencySorting(true)
+        .setMoocherDropping(false)
+        .setEntryPoints(Lists.newArrayList(
+            new ModuleIdentifier("base"))));
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWhitelistedDefineValues(ImmutableMap.<String, Node>of());
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertFalse(result.success);
+    assertEquals(0, compiler.getWarnings().size());
+    assertEquals(1, compiler.getErrors().size());
+}

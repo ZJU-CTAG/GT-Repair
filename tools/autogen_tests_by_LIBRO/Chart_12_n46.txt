@@ -1,0 +1,15 @@
+public void testMultiplePiePlot() {
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.setValue("one", 1);
+    dataset.setValue("two", 2);
+    dataset.setValue("three", 3);
+    MultiplePiePlot plot = new MultiplePiePlot(dataset);
+
+    PiePlot subplot1 = (PiePlot) plot.getPieChart().getPlot();
+    PiePlot subplot2 = (PiePlot) plot.getPieChart2().getPlot();
+    assertEquals(1.0, subplot1.getDataset().getValue("one"));
+    assertEquals(2.0, subplot2.getDataset().getValue("two"));
+    dataset.setValue("four", 4);
+    assertEquals(4.0, subplot1.getDataset().getValue("four"));
+    assertEquals(4.0, subplot2.getDataset().getValue("four"));
+}

@@ -1,0 +1,22 @@
+public void testIssueMiscOptimization() {
+    final double[] startPoint = new double[] { -1.2, 1.0 };
+    final double[] start = new double[] { 0.9, 1.2 };
+    final double[] upper = new double[] { 1.5, Double.POSITIVE_INFINITY };
+    final double[] lower = new double[] { Double.NEGATIVE_INFINITY, 0.8 };
+    final int maxIter = 1000;
+    final int maxEval = maxIter * 100;
+    // Create the objective function.
+    final double[] target = new double[] { 0.0, 0.0 };
+    final MultivariateVectorialFunction func = new MultivariateVectorialFunction() {
+
+        public double[] value(double[] point) {
+            double[] result = new double[target.length];
+            for (int i = 0; i < result.length; i++) {
+                double xi = point[i] - target[i];
+                result[i] = xi * xi;
+            }
+            return result;
+        }
+    };
+
+    final

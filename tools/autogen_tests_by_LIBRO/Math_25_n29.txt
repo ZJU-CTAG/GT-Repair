@@ -1,0 +1,18 @@
+public void testHarmonicFitterParameterGuesser() {
+    HarmonicFitter fitter = new HarmonicFitter();
+    HarmonicFitter.ParameterGuesser guesser = fitter.guess();
+    for (int i = 0; i < 100; i++) {
+        double[] data = new double[100];
+        for (int j = 0; j < data.length; j++) {
+            data[j] = j;
+        }
+        double[] guess = guesser.guess(data);
+        // check that guess seems reasonable
+        assertEquals(3, guess.length);
+        // frequency can be any value
+        // amplitude should be strictly positive
+        assertTrue("amplitude: " + guess[2], guess[2] > 0);
+        // phase must be between -pi and pi
+        assertTrue("phase: " + guess[1], guess[1] >= -Math.PI && guess[1] <= Math.PI);
+    }
+}

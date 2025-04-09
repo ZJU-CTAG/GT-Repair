@@ -1,0 +1,19 @@
+public void testIssue1154() {
+
+    String numberAsString = "1.000,00";
+    NumberFormat nf = NumberFormat.getNumberInstance(Locale.FRANCE);
+
+    DecimalFormat df = (DecimalFormat) nf;
+    df.setParseBigDecimal(true);
+
+    BigDecimal bd;
+    try {
+        bd = (BigDecimal) nf.parse(numberAsString);
+        // should not get here, as the number is above
+        // Integer.MAX_VALUE
+        assertTrue(false);
+    } catch (ParseException e) {
+        assertTrue(true);
+    }
+
+}

@@ -1,0 +1,13 @@
+public void testIssueCsv133() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
+    String csv = "businessaddress.street,businessaddress.addon,businessaddress.zip,businessaddress.town,businessaddress.country" +
+            "\n,," +
+            "\n";
+    Person person = mapper.readerFor(Person.class).readValue(csv);
+    assertNotNull(person);
+    assertNotNull(person.businessAddress);
+}

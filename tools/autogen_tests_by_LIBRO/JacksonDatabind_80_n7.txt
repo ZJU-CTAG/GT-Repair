@@ -1,0 +1,9 @@
+public void testExtraneousTypeIds() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType type = mapper.getTypeFactory().constructType(PolymorphicTestBean.class);
+    TypeIdResolver resolver = mapper.getSerializationConfig().getTypeIdResolver(type, null);
+    
+    assertEquals("java.util.Collection", resolver.idFromValueAndType(new ArrayList(), Collection.class));
+    assertEquals("[Ljava.lang.Object;", resolver.idFromValueAndType(new Object[0], Object[].class));
+}

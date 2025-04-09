@@ -1,0 +1,11 @@
+public void testIssue133() throws Exception {
+    ObjectMapper m = new ObjectMapper();
+    m.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    JacksonTest.Wrapper w = new JacksonTest.Wrapper();
+    w.typeEnum = JacksonTest.Type.BIG_DECIMAL;
+    w.value = new BigDecimal("-10000000000.0000000001");
+    String json = m.writeValueAsString(w);
+    JacksonTest.Wrapper w2 = m.readValue(json, JacksonTest.Wrapper.class);
+    assertEquals(w.typeEnum, w2.typeEnum);
+    assertEquals(w.value, w2.value);
+}

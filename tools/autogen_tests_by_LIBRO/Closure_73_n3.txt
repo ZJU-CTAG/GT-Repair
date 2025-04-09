@@ -1,0 +1,12 @@
+public void testGwtIssue() throws IOException, CompilerException {
+    com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(true);
+    JSSourceFile[] externs = new JSSourceFile[0];
+    JSSourceFile[] inputs = new JSSourceFile[] {
+        JSSourceFile.fromCode("source", "alert('\x7f');")
+    };
+    compiler.compile(externs, inputs, options);
+    String compiledSource = compiler.toSource();
+    assertEquals("alert(\"\\x7f\");", compiledSource);
+}

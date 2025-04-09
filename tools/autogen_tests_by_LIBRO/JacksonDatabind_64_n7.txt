@@ -1,0 +1,11 @@
+public void testNullStringSuppression() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    String json = mapper.writeValueAsString(new TestClass());
+    assertNotNull(json);
+    assertFalse(json.contains("a"));
+}
+
+public static class TestClass {
+    public String a = null;
+}

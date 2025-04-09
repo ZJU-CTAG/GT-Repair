@@ -1,0 +1,10 @@
+public void testTreeTraversingParserBase64Variant() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectReader reader = objectMapper.reader(JsonNode.class)
+            .with(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER);
+    JsonNode node = reader.readTree(new ByteArrayInputStream("{\"key\":\"" + Base64Variants.MODIFIED_FOR_URL.encodeToString("abc".getBytes()) + "\"}".getBytes()));
+    TreeTraversingParser p = new TreeTraversingParser(node, new ObjectCodec() {
+    });
+    p.setCodec(reader);
+    assertEquals("{\"key\":\"abc\"}", p.readValueAsTree().toString());
+}

@@ -1,0 +1,29 @@
+public void test() throws IOException {
+    JsonFactory factory = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(factory);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    ObjectWriter writer = mapper.writer();
+    ObjectWriter filteredWriter = writer.withFilters(Jackson2PathFilter.of("a.b"));
+
+    String result = filteredWriter.writeValueAsString(getTestValue());
+    System.out.println(result);
+    //result:
+    //{
+    //  "a" : {
+    //    "b" : {
+    //      "c" : {
+    //        "foo" : "bar"
+    //      }
+    //    }
+    //  },
+    //  "c" : {
+    //    "foo" : "bar"
+    //  }
+    //}
+
+    result = mapper.convertValue(getTestValue(), JsonNode.class).toString();
+    System.out.println(result);
+    //result:
+    //{
+    //  "c"

@@ -1,0 +1,13 @@
+public void testVarCheckCrashWhenUsingModules() {
+    Options options = new Options();
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+            JSSourceFile.fromCode("mod_jquery.js", "var jQuery = function() {};"),
+            JSSourceFile.fromCode("mod_core.js", "var equal = function() {};"),
+            JSSourceFile.fromCode("jquery.js", "equal( jQuery(\" <div/> \" ).length, 1, \"Make sure whitespace is trimmed.\" );")
+    }, options);
+    assertTrue(result.success);
+}

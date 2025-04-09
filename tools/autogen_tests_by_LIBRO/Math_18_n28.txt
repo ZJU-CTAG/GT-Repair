@@ -1,0 +1,26 @@
+public void testCMAES() {
+    // Test data
+    int n = 25;
+    final double x[] = new double[n];
+    final double y[] = new double[n];
+    final double sigma = 0.01;
+    for (int i = 0; i < n; i++) {
+        x[i] = i * 0.1 + 1;
+        y[i] = Math.exp(-x[i]);
+    }
+
+    // Test function
+    ParametricUnivariateFunction function = new ParametricUnivariateFunction() {
+        public double value(double t, double... parameters) {
+            return parameters[0] * Math.exp(-parameters[1] * t);
+        }
+
+        public double[] gradient(double t, double... parameters) {
+            double expt = Math.exp(-parameters[1] * t);
+            return new double[]{ expt, -parameters[0] * t * expt};
+        }
+    };
+
+    // Optimizer
+    CMAESOptimizer opt = new CMAESOptimizer();
+    double start[] = {1, 1};

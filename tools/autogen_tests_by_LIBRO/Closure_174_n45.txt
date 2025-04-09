@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCodingConvention(new ClosureCodingConvention());
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new SourceFile[] {SourceFile.fromCode("input.js", "goog.provide('main'); goog.scope (function (){ var a = foo, b, c = 1; });")},
+        options);
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals("input.js:1: ERROR - Parse error. identifier is a reserved word\n", result.errors[0].toString());
+}

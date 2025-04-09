@@ -1,0 +1,25 @@
+public void testIssueWithFinalField() {
+    final Foo foo = new Foo();
+
+    final Bar bar = new Bar();
+
+    Injector injector = Guice.createInjector(new AbstractModule() {
+        @Override
+        protected void configure() {
+            bind(Foo.class).toInstance(foo);
+        }
+    });
+    injector.injectMembers(bar);
+}
+
+private class Bar {
+    @InjectMocks
+    private final Foo foo;
+
+    public Bar() {
+        this.foo = null;
+    }
+}
+
+private class Foo {
+}

@@ -1,0 +1,13 @@
+public void testContainsAny() {
+    String str = "a\uD840\uDC00b";
+    assertFalse(StringUtils.containsAny(str, "c"));
+    assertTrue(StringUtils.containsAny(str, "a"));
+    assertTrue(StringUtils.containsAny(str, "b"));
+    assertTrue(StringUtils.containsAny(str, "\uD840\uDC00"));
+    assertFalse(StringUtils.containsAny(str, "de"));
+    assertTrue(StringUtils.containsAny(str, "\uD840\uDC00b"));
+    assertTrue(StringUtils.containsAny(str, "a\uD840\uDC00"));
+    assertTrue(StringUtils.containsAny(str, "\uD840\uDC00\uD840\uDC00"));
+    // LANG-727
+    assertTrue(StringUtils.containsAny(str, "b\uD840\uDC00"));
+    assertTrue(StringUtils.containsAny

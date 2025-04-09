@@ -1,0 +1,15 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(new ParameterNamesModule());
+    mapper.registerModule(new JAXBAnnotationModule());
+    mapper.registerModule(new GuavaModule());
+    mapper.registerModule(new GuavaExtrasModule());
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    mapper.setDefaultPropertyInclusion(Include.NON_EMPTY);
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+    mapper.configure(DeserializationFeature.

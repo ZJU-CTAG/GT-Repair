@@ -1,0 +1,26 @@
+public void testZipVersionNeededToExtract() {
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(bos);
+    zos.setUseZip64(Zip64Mode.Never);
+    ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+    entry.setMethod(Deflater.DEFLATED);
+    entry.setSize(10);
+    entry.setCrc(10);
+
+    try {
+        zos.putArchiveEntry(entry);
+        zos.closeArchiveEntry();
+        zos.close();
+    } catch (final IOException e) {
+        e.printStackTrace();
+    }
+
+    final byte[] bytes = bos.toByteArray();
+
+    final byte[] lfh = new byte[30];
+    System.arraycopy(bytes, 0, lfh, 0, 30);
+
+    final byte[] cdh = new byte[46];
+    System.arraycopy(bytes, 30, cdh, 0, 46);
+
+    final int lfhVersionNeededTo

@@ -1,0 +1,12 @@
+public void testIssue108() {
+    try {
+        // see http://es5.github.com/#A.3.1
+        // Unnamed function statements are a parse error
+        // function () {};
+        new JavaScriptEngine().eval("function () {};");
+        fail();
+    } catch (ScriptException e) {
+        // expected
+        assertEquals("Invalid character 'f'", e.getMessage());
+    }
+}

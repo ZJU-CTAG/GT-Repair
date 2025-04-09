@@ -1,0 +1,15 @@
+public void testReadIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    ObjectReader reader = mapper.reader(new TypeReference<Map<String, String>>() {});
+    try {
+        Map<String, String> map = reader.readValue("{\"a\":\"b\", \"b\": 1}");
+    }
+    catch(MismatchedInputException e) {
+        Reference reference = e.getPath().get(0);
+        assertEquals(1, reference.getIndex());
+    }
+    catch(Exception e) {
+        fail("Not the expected exception");
+    }
+}

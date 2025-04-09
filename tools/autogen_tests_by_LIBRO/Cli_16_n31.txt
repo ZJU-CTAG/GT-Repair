@@ -1,0 +1,23 @@
+public void testIssue108() {
+    Options options = new Options();
+    GroupBuilder gb = new GroupBuilder();
+    Group g = gb.withName("group").withOption(OptionBuilder.withLongOpt("A").create('a')).create();
+    options.addOption(g);
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{"-a"});
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        assertEquals("The group group [a] option(s) is/are required.", e.getMessage());
+    }
+}
+
+public void testIssue108b() {
+    Options options = new Options();
+    GroupBuilder gb = new GroupBuilder();
+    Group g = gb.withName("group").withOption(OptionBuilder.withLongOpt("A").create('a')).create();
+    options.addOption(g);
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{});
+        fail("Expected Parse

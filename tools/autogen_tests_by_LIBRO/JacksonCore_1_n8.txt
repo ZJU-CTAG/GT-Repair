@@ -1,0 +1,12 @@
+public void testNaNDecimal() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    String json = mapper.writeValueAsString(Double.NaN);
+    try {
+        mapper.readValue(json, BigDecimal.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "has no valid representation");
+    }
+}

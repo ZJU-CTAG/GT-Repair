@@ -1,0 +1,19 @@
+public void testBug() {
+    final double[] targetValues = new double[] { 1.0, 2.0 };
+    final double[][] jacobian = new double[][] { { 0.1, 0.2 }, { 0.3, 0.4 } };
+    final double[] params = new double[] { 1.0, 2.0, 3.0 };
+    final double[] sigmas = new double[] { 10.0, 20.0 };
+    final AbstractEstimator estimator = new AbstractEstimator() {
+        @Override
+        protected void estimate(final double[] params, final double[] targetValues, final double[][] jacobian,
+                final double[] sigmas, final double[] weights) {
+        }
+
+        @Override
+        protected void setParameters(final double[] params) {
+            super.setParameters(params);
+        }
+    };
+    estimator.setParameters(params);
+    final ParameterGuesser guesser = new ParameterGuesser(targetValues, jacobian, sigmas, estimator);
+    assertNotNull(guesser.guessParameters

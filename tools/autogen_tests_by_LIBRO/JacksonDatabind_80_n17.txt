@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception
+{
+    // First: let's check that adding type id DOES work
+    final ObjectMapper mapper = new ObjectMapper();
+    // first, default type id inclusion
+    mapper.getSerializationConfig().addMixInAnnotations(Number.class, MixInFor108.class);
+    assertEquals("[1,2]", mapper.writeValueAsString(new int[] { 1, 2 }));
+    assertEquals("[\"abc\"]", mapper.writeValueAsString(new String[] { "abc" }));
+    assertEquals("[\"abc\"]", mapper.writeValueAsString(new Object[] { "abc" }));
+
+    // and then with explicit type id
+    mapper.getSerializationConfig().addMixInAnnotations(Number.class, MixInFor108.class);
+    assertEquals("[1,2]", mapper.writeValueAsString(new int[] { 1, 2 }));
+    assertEquals("[\"abc\"]", mapper.writeValueAsString(new String[] { "abc" }));
+    assert

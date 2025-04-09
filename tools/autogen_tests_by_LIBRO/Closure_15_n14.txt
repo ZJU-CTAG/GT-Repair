@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String js = "var customData = { key: 'value' }; " +
+            "function testRemoveKey( key ) { " +
+            "var dataSlot = customData, " +
+            "retval = dataSlot && dataSlot[ key ], " +
+            "hadKey = dataSlot && ( key in dataSlot ); " +
+            "if ( dataSlot ) " +
+            "delete dataSlot[ key ]; " +
+            "return hadKey ? retval : null;" +
+            "}; " +
+            "console.log( testRemoveKey( 'key' ) ); // 'value' " +
+            "console.log( 'key' in customData ); // false";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", js),
+            new CompilerOptions());
+    assertEquals("", result.errors.toString());
+    assertEquals("var customData={key:\"value\"};" +
+            "function testRemoveKey(b){var a=customData,c=a&&a[

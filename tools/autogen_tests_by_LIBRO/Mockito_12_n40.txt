@@ -1,0 +1,11 @@
+public void testVarargs() {
+    MyService service = mock(MyService.class);
+    doNothing().when(service).add(any(String.class), any(String[].class));
+    service.add("test", "1", "2", "3");
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    verify(service).add(any(String.class), captor.capture());
+    assertEquals(3, captor.getValue().length);
+    assertEquals("1", captor.getValue()[0]);
+    assertEquals("2", captor.getValue()[1]);
+    assertEquals("3", captor.getValue()[2]);
+}

@@ -1,0 +1,12 @@
+public void testIssueNot() {
+    final String html = "<div><p id=1>One</p><p id=2>Two</p><p id=3>Three</p></div>";
+    final String notPseudo = ":not(:root)";
+    final String zenCss = String.format("div %s, div %s *, div * %s", notPseudo, notPseudo, notPseudo);
+    final String xpath = new CssSelectorParser().parse(zenCss).toString();
+    System.out.println(xpath);
+    final Document doc = Jsoup.parse(html);
+    final Elements results = doc.select(zenCss);
+    assertEquals(3, results.size());
+    assertEquals("p", results.first().tagName());
+    assertEquals("1", results.first().id());
+}

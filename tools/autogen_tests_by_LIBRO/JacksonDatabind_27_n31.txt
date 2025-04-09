@@ -1,0 +1,14 @@
+public void testDeserializationWithExternalTypeId() throws Exception {
+    String json = "{\"@class\": \"com.fasterxml.jackson.datatype.joda.TestJodaCustomSerializer$BeanClass\", \"name\": \"Foobar\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    BeanClass result = mapper.readValue(json, BeanClass.class);
+    assertNotNull(result);
+    assertEquals("Foobar", result.name);
+}
+
+...
+
+public class BeanClass {
+    public String name;
+}

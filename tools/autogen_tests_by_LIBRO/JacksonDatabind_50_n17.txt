@@ -1,0 +1,24 @@
+public void testObjects () throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"menu\":{\"id\":\"file\",\"value\":\"File\",\"popup\":{\"menuitem\":[{\"value\":\"New\",\"onclick\":\"CreateNewDoc()\"},{\"value\":\"Open\",\"onclick\":\"OpenDoc()\"},{\"value\":\"Close\",\"onclick\":\"CloseDoc()\"}]}}}";
+    final Menu menu = mapper.readValue(json, Menu.class);
+    System.out.println(menu);
+}
+
+public static class Menu {
+    public String id;
+    public String value;
+    public Popup popup;
+
+    @Override
+    public String toString () {
+        return new ToStringBuilder(this).append("id", id).append("value", value).append("popup", popup).toString();
+    }
+}
+
+public static class Popup {
+    public List<MenuItem> menuItem;
+
+    @Override
+    public String toString () {
+        return new ToStringBuilder(this).

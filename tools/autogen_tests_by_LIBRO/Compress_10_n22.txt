@@ -1,0 +1,15 @@
+public void testUTF8ZipFiles() throws Exception {
+    File archive = getFile("utf8.zip");
+    ZipFile zf = new ZipFile(archive);
+    ZipArchiveEntry ze = zf.getEntry("h\u00e9h\u00e9.txt");
+    assertNotNull(ze);
+    assertEquals("h\u00e9h\u00e9.txt", ze.getName());
+    assertEquals(8, ze.getSize());
+    assertEquals(0, ze.getCompressedSize());
+    assertEquals(Deflater.NO_COMPRESSION, ze.getMethod());
+    assertEquals(ZipArchiveOutputStream.DEFLATED, ze.getMethod());
+    assertEquals(ZipMethod.DEFLATED.getCode(), ze.getMethod());
+    assertEquals(0, ze.getCrc());
+    assertEquals(System.currentTimeMillis(), ze.getTime(), 1000);
+    assertTrue(ze.isUnixSymlink());
+    assertEquals("\u03a9\u03a9", zf.get

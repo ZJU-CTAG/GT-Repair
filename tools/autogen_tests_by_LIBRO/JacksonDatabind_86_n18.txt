@@ -1,0 +1,10 @@
+public void testRecursiveTypes() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(IFace.class, Base.class));
+
+    String json = mapper.writeValueAsString(new Base());
+    System.out.println(json);
+    assertEquals("{\"base\":1}", json);
+}

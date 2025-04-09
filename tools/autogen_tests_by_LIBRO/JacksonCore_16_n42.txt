@@ -1,0 +1,14 @@
+public void testJsonParserSequence() throws Exception {
+    String json = "{\"my_json\":{\"my_key\":\"my_value\"}}";
+    JsonFactory f = new JsonFactory();
+    JsonParser parser1 = f.createParser(new StringReader("{}"));
+    JsonParser parser2 = f.createParser(new StringReader(json));
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(parser1, parser2);
+    assertTrue(sequence.nextToken() == JsonToken.START_OBJECT);
+    assertTrue(sequence.nextToken() == JsonToken.FIELD_NAME);
+    assertTrue(sequence.nextToken() == JsonToken.START_OBJECT);
+    assertTrue(sequence.nextToken() == JsonToken.FIELD_NAME);
+    assertTrue(sequence.nextToken() == JsonToken.VALUE_STRING);
+    assertTrue(sequence.nextToken() == JsonToken.END_OBJECT);
+    assertTrue(sequence.nextToken() == JsonToken.END_OBJECT);
+    assertTrue

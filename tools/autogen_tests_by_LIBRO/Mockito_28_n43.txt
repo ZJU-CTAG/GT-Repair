@@ -1,0 +1,9 @@
+public void testIssue() throws Exception {
+    List<Object> values = new ArrayList<Object>();
+    values.add(1);
+    values.add("2");
+    Method method = TypeSafeMatcher.class.getDeclaredMethod("arrayContents", Object[].class);
+    method.setAccessible(true);
+    Object arguments = method.invoke(null, new Object[] {values.toArray()});
+    assertEquals("(Object[]) [1, (String) \"2\"]", arguments.toString());
+}

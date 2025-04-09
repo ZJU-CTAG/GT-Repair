@@ -1,0 +1,20 @@
+public void testClosure() {
+    String originalSource = "Math.blah = function(test) { test.a = 5; };"
+        + "var test = new Object(); Math.blah(test);";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    level.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("test", originalSource) },
+        new JSSourceFile[] { JSSourceFile.fromCode("externs.js", "") },
+        options);
+    if (result.success) {
+        System.out.println(compiler.toSource());
+    } else {
+        for (JSError error : result.errors) {
+            System.out.println(error.toString());
+        }
+    }
+}

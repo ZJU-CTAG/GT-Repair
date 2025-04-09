@@ -1,0 +1,26 @@
+public void testInvalidPropertyInLoop() {
+    Compiler compiler = new Compiler();
+    SourceFile externs = SourceFile.fromCode("inloop-externs.js",
+            LINE_JOINER.join(
+                    "/**",
+                    " * @constructor",
+                    " */",
+                    "ns=function(){};",
+                    "/**",
+                    " * @constructor",
+                    " */",
+                    "ns.Thing=function(){};",
+                    "/** @type {Object} */",
+                    "ns.Thing.prototype.subthing;",
+                    "/** @type {number} */",
+                    "ns.Thing.prototype.prop;",
+                    "/**",
+                    " * @param {ns.Thing} thing",
+                    " * @constructor",
+                    " */",
+                    "ns.MyClass=function(thing){};",
+                    "/** @type {ns.Thing} */",
+                    "ns.MyClass.prototype.thing_;"
+            ));
+    SourceFile input = SourceFile.fromCode("inloop.js",
+            LINE_JOINER

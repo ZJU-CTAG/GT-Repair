@@ -1,0 +1,12 @@
+public void testWriteEmbedded() throws Exception
+{
+    // for [databind#1361]
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator g = MAPPER.createGenerator(bytes);
+    g.writeStartObject();
+    g.writeObjectField("bytes", new byte[] { 0x00, 0x01, 0x02, 0x03 });
+    g.writeEndObject();
+    g.close();
+    String json = bytes.toString("UTF-8");
+    assertEquals(aposToQuotes("{'bytes':[0,1,2,3]}"), json);
+}

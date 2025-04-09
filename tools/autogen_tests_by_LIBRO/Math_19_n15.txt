@@ -1,0 +1,11 @@
+public void testOptimizer() {
+    CMAESOptimizer optimizer = new CMAESOptimizer(1, 1e-14, false, 1, 10, new MersenneTwister(new Date()), false, new SimpleValueChecker(1e-6, 1e-6));
+    double[] guess = new double[1];
+    double[] lower = new double[1];
+    double[] upper = new double[1];
+    Arrays.fill(guess, 1.0);
+    Arrays.fill(lower, -Double.MAX_VALUE);
+    Arrays.fill(upper, Double.MAX_VALUE);
+    PointValuePair result = optimizer.optimize(new MaxEval(1), new ObjectiveFunction(new MockFitnessFunction()), GoalType.MAXIMIZE, guess, lower, upper);
+    assertEquals(0.0, result.getValue(), 1e-6);
+}

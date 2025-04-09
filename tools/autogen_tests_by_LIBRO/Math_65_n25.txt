@@ -1,0 +1,17 @@
+public void testIssue() {
+    double[][] data = new double[][] {
+        { 0.0, 0.0, 0.0, 0.0 },
+        { 1.0, 0.0, 0.0, 0.0 },
+        { 0.0, 1.0, 0.0, 0.0 },
+        { 0.0, 0.0, 1.0, 0.0 },
+        { 0.0, 0.0, 0.0, 1.0 },
+    };
+    RealMatrix m = new BlockRealMatrix(data);
+    double[] weights = new double[] { 1.0, 1.0, 1.0, 1.0, 1.0 };
+    RealVector target = new ArrayRealVector(new double[] { 1.0, 2.0, 3.0, 4.0 });
+    LeastSquaresProblem lsp = new LeastSquaresBuilder()
+    .model(m)
+    .target(target)
+    .weight(new DiagonalMatrix(weights))
+    .build();
+    LeastSquaresOptimizer optimizer = new NonLinearLeast

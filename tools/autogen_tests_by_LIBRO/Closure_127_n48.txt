@@ -1,0 +1,9 @@
+public void test() {
+    ScriptEngine engine = new NashornScriptEngineFactory().getScriptEngine();
+    try {
+        engine.eval("var b; try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');");
+        assertEquals("ok then...", ((Map)engine.get("console")).get("log"));
+    } catch (ScriptException e) {
+        throw new RuntimeException(e);
+    }
+}

@@ -1,0 +1,9 @@
+public void testIssue173() {
+    CompilerOptions options = CommandLineRunner.parseCompilerOptions("--compilation_level", "WHITESPACE_ONLY", "--js", "testcode/issue107.js", "--manage_closure_dependencies");
+    List<SourceFile> inputs = Lists.newArrayList(SourceFile.fromCode("/input0.js", ""));
+    List<SourceFile> externs = Lists.newArrayList(SourceFile.fromCode("/externs0.js", ""));
+    Result result = CommandLineRunner.getCompiler(options).compile(externs, inputs, options);
+    assertTrue(result.success);
+    assertTrue(result.dependencyOptions.shouldManageDependencies());
+    assertFalse(result.dependencyOptions.shouldOnlyManageDependencies());
+}

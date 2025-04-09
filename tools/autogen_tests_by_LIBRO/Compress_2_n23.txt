@@ -1,0 +1,19 @@
+public void testAr() throws IOException {
+    ArArchiveEntry entry1 = new ArArchiveEntry("test1.xml", 8);
+    entry1.setSize(8);
+    Archiver archiver = ArchiverFactory.createArchiver("ar");
+    File target = new File(getTargetDir(), "bla.ar");
+    ArchiverOutputStream outputStream = archiver.createArchiverOutputStream("ar",
+            new FileOutputStream(target));
+    outputStream.putArchiveEntry(entry1);
+    outputStream.write("bla bla1".getBytes());
+    outputStream.closeArchiveEntry();
+    ArArchiveEntry entry2 = new ArArchiveEntry("test2.xml", 8);
+    entry2.setSize(8);
+    outputStream.putArchiveEntry(entry2);
+    outputStream.write("bla bla2".getBytes());
+    outputStream.closeArchiveEntry();
+    outputStream.close();
+    File archive = archiver.getArchiveFile();
+    outputStream = archiver.createArchiverOutputStream("ar",
+            new FileOutputStream(

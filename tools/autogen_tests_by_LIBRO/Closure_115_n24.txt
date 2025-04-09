@@ -1,0 +1,11 @@
+public void testIssue() {
+    String input = "window[\"anchor\"] = function (obj, modifiesProp) {"
+            + "return (function (saved) {"
+            + "return modifiesProp(obj) + saved;"
+            + "})(obj[\"prop\"]);"
+            + "}";
+    String output = "window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};";
+    String expected = "window.foo=function(a,b){return b(a)+a.prop};";
+    String result = compile(input, CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    assertEquals(expected, result);
+}

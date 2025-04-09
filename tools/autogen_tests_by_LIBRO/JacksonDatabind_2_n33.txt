@@ -1,0 +1,17 @@
+public void testWriteListField() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+
+    ListAttributeSerializer serializer = new ListAttributeSerializer();
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addSerializer(ListAttribute.class, serializer);
+    mapper.registerModule(module);
+
+    ListAttribute listAttr = new ListAttribute();
+    listAttr.setItemJsonKey("item");
+    listAttr.addItem(new Item());
+
+    JsonNode tree = mapper.valueToTree(listAttr);
+    assertEquals("{\"itemType\":\"item\",\"items\":[{\"x\":\"y\"}]}",
+tree.toString());
+}

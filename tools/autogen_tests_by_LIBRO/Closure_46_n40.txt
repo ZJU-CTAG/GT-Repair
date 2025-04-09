@@ -1,0 +1,20 @@
+public void testIssue131() {
+    TypeContext ctx = new TypeContext();
+    TypeDefinition test = new TypeDefinition("test");
+    test.setType(new NamedType("record"));
+    ctx.register("test", test);
+    ctx.register("record", new RecordType("record"));
+    TypeDefinition a = new TypeDefinition("a");
+    a.setType(new NamedType("test"));
+    ctx.register("a", a);
+    ctx.register("b", new RecordType("b"));
+    TypeDefinition c = new TypeDefinition("c");
+    c.setType(new NamedType("b"));
+    ctx.register("c", c);
+    TypeDefinition d = new TypeDefinition("d");
+    d.setType(new ProxyObjectType(
+            new ObjectType(
+                    new TypeReference[] { new NamedType("a"), new NamedType("c") })));
+    ctx.register("d", d);
+    ctx.resolve();
+}

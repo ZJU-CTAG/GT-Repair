@@ -1,0 +1,17 @@
+public void testIntrospect() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+    mapper.acceptJsonFormatVisitor(mapper.constructType(Bean.class), visitor);
+    Schema schema = visitor.finalSchema();
+    assertNotNull(schema);
+    assertEquals(JsonFormatTypes.NUMBER, schema.getType());
+    assertEquals(JsonFormatTypes.DECIMAL, schema.getFormat());
+
+    assertEquals(schema, visitor.getPropertySchema(Bean.class.getDeclaredField("decimalValue")));
+}
+
+static class Bean {
+    public BigDecimal decimalValue;
+}

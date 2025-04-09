@@ -1,0 +1,17 @@
+public void testMockAbstractClass() {
+    AbstractClass spy = Mockito.spy(new ConcreteClass());
+    Mockito.doReturn(false).when(spy).isGreaterThan(0);
+    assertFalse(spy.isGreaterThan(0));
+}
+static abstract class AbstractClass {
+    public abstract boolean isGreaterThan(int num);
+    public boolean isLessThan(int num) {
+        return !isGreaterThan(num);
+    }
+}
+static class ConcreteClass extends AbstractClass {
+    @Override
+    public boolean isGreaterThan(int num) {
+        return num <= 0;
+    }
+}

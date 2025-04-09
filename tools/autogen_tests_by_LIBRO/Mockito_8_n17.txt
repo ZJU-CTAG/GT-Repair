@@ -1,0 +1,16 @@
+public void testGenericsSelfReference() {
+    // create a generic interface
+    interface GenericsSelfReference<T extends GenericsSelfReference<T>> {
+        T self();
+    }
+    // create a generic class
+    class GenericsSelfReferenceImpl<T extends GenericsSelfReference<T>> implements GenericsSelfReference<T> {
+        public T self() {
+            return null;
+        }
+    }
+    // try to infer the generic type
+    GenericMetadataSupport<GenericsSelfReference<String>> genericMetadata = inferFrom(GenericsSelfReferenceImpl.class).resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReference.class));
+    assertThat(genericMetadata.rawType()).isEqualTo(GenericsSelfReference.class);
+    assertThat(genericMetadata.typeParameter(0).rawType()).isEqualTo(String.class);
+}

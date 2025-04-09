@@ -1,0 +1,14 @@
+public void testThisTypeChecking() {
+    String js = "/** @constructor */\n" +
+            "function F() {}\n" +
+            "F.prototype.bar = function() { this.baz(); };\n" +
+            "F.prototype.baz = function() { };\n" +
+            "/** @constructor */\n" +
+            "function G() {}\n" +
+            "G.prototype.bar = F.prototype.bar;";
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    Result result = new Compiler().compile(externs, js, options);
+    assertTrue(!result.success);
+}

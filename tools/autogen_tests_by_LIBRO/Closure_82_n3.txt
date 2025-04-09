@@ -1,0 +1,25 @@
+public void testIssue108() {
+    assertEquals(
+            2,
+            JavaScriptCompressor.compress(
+                "var s = new String(\"hello\");\n" +
+                "alert(s.toLowerCase.indexOf(\"l\"));\n",
+                new ErrorReporter() {
+                    @Override
+                    public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+                        fail();
+                    }
+
+                    @Override
+                    public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+                        fail();
+                    }
+
+                    @Override
+                    public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+                        fail();
+                    }
+                }
+            ).length()
+    );
+}

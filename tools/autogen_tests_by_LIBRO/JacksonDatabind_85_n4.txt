@@ -1,0 +1,23 @@
+public void testIssue115() throws Exception {
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Date.class, new CustomDateSerializer());
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(module)
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    String json = mapper.writeValueAsString(new Bean());
+    assertEquals("{\"date\":\"foo\"}", json);
+}
+
+public static class Bean {
+    @JsonFormat(pattern = "foo")
+    public Date date = new Date();
+}
+
+public static class CustomDateSerializer extends DateSerializerBase<Date> {
+
+    @Override
+    public void serialize(Date value, JsonGenerator gen,
+                          SerializerProvider provider) throws IOException {
+        gen.writeString("foo");
+    }
+}

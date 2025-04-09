@@ -1,0 +1,18 @@
+public void testIssueIncompleteReinitialization() {
+    // Setup
+    EventSelection selection = new EventSelection();
+    selection.add(new AlwaysTrueEventFilter(), new AbstractEventHandler() {
+        @Override
+        public void handleEvent(Event e) {
+        }
+    });
+    EventManager eventManager = new EventManager();
+    eventManager.addEventSelection(selection);
+    eventManager.reset();
+
+    // Exercise
+    eventManager.fire();
+
+    // Verify
+    assertEquals(1, eventManager.getEventTrace().size());
+}

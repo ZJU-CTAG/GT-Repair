@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    JsonGenerator jsonGenerator = new JsonFactory().createGenerator(System.out);
+
+    // Print the writeContext, in this case we do not have an object context
+    System.out.println(jsonGenerator.getOutputContext());
+    System.out.println(jsonGenerator.getOutputContext().getCurrentName());
+    System.out.println(jsonGenerator.getOutputContext().getCurrentValue());
+    System.out.println(jsonGenerator.getOutputContext().getParent());
+
+    jsonGenerator.flush();
+    jsonGenerator.close();
+
+    // Now we use the convert feature
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(System.out, "test");
+
+    // Print the writeContext, this time we do have an object context
+    jsonGenerator = mapper.getJsonFactory().createGenerator(System.out);
+    jsonGenerator.getOutputContext();
+    System.out.println(jsonGenerator.getOutputContext().getCurrentName());
+    System.out.println(jsonGenerator.get

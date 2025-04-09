@@ -1,0 +1,8 @@
+public void testIssue65() {
+    String html = "<td class='x'<div><td class='y'<span>";
+    Document doc = Jsoup.parse(html);
+    Elements divs = doc.select("div");
+    assertEquals(1, divs.size());
+    assertEquals("x", divs.first().parent().className());
+    assertEquals("y", divs.first().nextElementSibling().className());
+}

@@ -1,0 +1,21 @@
+public void testRecovery() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final JsonFactory jsonFactory = new JsonFactory();
+    final String INPUT = "[ { \"name\" : \"Bob\" }, { \"name\" : \"Billy\" } ]";
+    final String INPUT_INCOMPLETE = "[ { \"name\" : \"Bob\" }, { \"name\" : \"Billy\" } ";
+
+    // This one is fine:
+    Iterator<Person> it = mapper.reader(Person.class).readValues(INPUT);
+    assertNotNull(it.next());
+    assertNotNull(it.next());
+    assertNull(it.next());
+
+    // but this can't be fully recovered:
+    it = mapper.reader(Person.class).readValues(jsonFactory.createParser(INPUT_INCOMPLETE));
+    assertNotNull(it.next());
+    try {
+        it.next();
+        fail("Should not have made it this far");
+    } catch (JsonProcessingException e) {
+        // good, is expected, but should be able to continue

@@ -1,0 +1,12 @@
+public void testNoHeadersToMap() {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    String[] headerNames = format.getHeader().toArray(new String[0]);
+    String input = String.join(",", headerNames) + "\n" + String.join(",", headerNames);
+    Reader in = new StringReader(input);
+
+    Iterable<CSVRecord> records = format.parse(in);
+    for (CSVRecord record : records) {
+        Map<String, Integer> map = record.toMap();
+        assertNull(map);
+    }
+}

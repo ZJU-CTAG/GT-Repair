@@ -1,0 +1,14 @@
+public void testTDistribution() {
+    TDistribution tDistribution = new TDistribution(2);
+
+    assertEquals(0.9, 2 * (1 - tDistribution.cumulativeProbability(1.5)), 0.0001);
+    assertEquals(0.5, 2 * (1 - tDistribution.cumulativeProbability(0)), 0.0001);
+    assertEquals(0.05, 2 * (1 - tDistribution.cumulativeProbability(-1.5)), 0.0001);
+
+    // If a large number of treatments is used, the p-value for a given t-statistic can be
+    // zero if the cumulative distribution is just smaller than the machine epsilon.
+    // For example, with t-statistic = -8.08 and 1000 treatments, cumulativeProbability(-8.08)
+    // is 1.1102e-16, which is less than the machine epsilon of 2.22046e-16. As a result,
+    // the p-value is zero.
+    // See http://en.wikipedia.org/wiki/Machine_epsilon
+   

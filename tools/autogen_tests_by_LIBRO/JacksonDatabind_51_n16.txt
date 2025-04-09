@@ -1,0 +1,6 @@
+public void testGenericTypeResolver () throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setDefaultTyping(new CustomTypeIdResolver());
+    final Wrapper<Message> wrapper = mapper.readValue("{\"@type\":\"wrapperOfMessage\",\"value\":{\"value\":\"foo\"}}", Wrapper.class);
+    assertEquals("foo", wrapper.getValue().getValue());
+}

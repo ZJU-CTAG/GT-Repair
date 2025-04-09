@@ -1,0 +1,14 @@
+public void testDefine() {
+    String js = "/** @define {string} */\n" +
+                "test.VERSION = \"\";";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new GoogleCodingConvention());
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+    Result result = compiler.compile(
+        externs,
+        ImmutableList.of(SourceFile.fromCode("test.js", js)),
+        options);
+    assertTrue(result.success);
+}

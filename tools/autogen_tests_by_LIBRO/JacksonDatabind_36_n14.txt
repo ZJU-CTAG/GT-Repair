@@ -1,0 +1,14 @@
+public void testIssue() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.setDateFormat(new StdDateFormat());
+    objectMapper.setDeserializationConfig(objectMapper.getDeserializationConfig().with(new StdDateFormat()));
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+    try {
+        Foo foo = objectMapper.readValue("{\"date\":\"2015-01-32\"}", Foo.class);
+        assertEquals(2015, foo.getDate().getYear());
+        assertEquals(2, foo.getDate().getMonthOfYear());
+        assertEquals(1, foo.getDate().getDayOfMonth());
+    } catch (IOException e) {
+        fail("testIssue() failed

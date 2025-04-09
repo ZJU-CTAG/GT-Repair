@@ -1,0 +1,22 @@
+public void testVerifyZeroInteractions() {
+    final Foo mock = mock(Foo.class, new Answer() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return null;
+        }
+    });
+    mock.get();
+    assertEquals(1, mock.getInvocationCount());
+    verifyZeroInteractions(mock);
+}
+
+class Foo {
+    int count = 0;
+    public Object get() {
+        ++count;
+        return new Object();
+    }
+    public int getInvocationCount() {
+        return count;
+    }
+}

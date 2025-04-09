@@ -1,0 +1,13 @@
+public void testIssue941() throws Exception {
+    Options options = new Options();
+    options.addOption("a", false, "");
+    options.addOption("b", true, "");
+    String[] args = new String[]{"--zop", "-abfoo"};
+    PosixParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args);
+    assertFalse(cmd.hasOption("a"));
+    assertFalse(cmd.hasOption("b"));
+    assertEquals(2, cmd.getArgs().length);
+    assertEquals("--zop", cmd.getArgs()[0]);
+    assertEquals("-abfoo", cmd.getArgs()[1]);
+}

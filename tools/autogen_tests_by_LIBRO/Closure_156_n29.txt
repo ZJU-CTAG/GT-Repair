@@ -1,0 +1,15 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler compiler = new Compiler();
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode(
+                    "test.js",
+                    "var o = {a: 1, b: 2, c: 3};" +
+                    "for (var p in o) {" +
+                    "  alert(o[p]);" +
+                    "}")},
+            new CompilerOptions());
+    assertTrue(result.success);
+}

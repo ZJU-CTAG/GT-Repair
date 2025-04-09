@@ -1,0 +1,31 @@
+public void testIssue228() {
+    final Object mock = mock(Object.class);
+    final ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+
+    mock.toString();
+    verify(mock).toString();
+    // this verify() call makes no sense, but is here to show
+    // how the issue can be reproduced
+    verify(mock).hashCode();
+
+    verify(mock).toString();
+    verify(mock, times(2)).toString();
+
+    verify(mock).toString();
+    verify(mock, atLeastOnce()).toString();
+
+    verify(mock).toString();
+    verify(mock, atLeast(2)).toString();
+
+    verify(mock).toString();
+    verify(mock, atMost(4)).toString();
+
+    verify(mock).toString();
+    verify(mock, never()).toString();
+
+    verify(mock).toString();
+
+    verify(mock, times(2)).toString();
+    verify(mock).toString();
+
+    // the following verify

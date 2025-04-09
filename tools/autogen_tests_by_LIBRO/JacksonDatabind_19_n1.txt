@@ -1,0 +1,24 @@
+public void testProperties() throws Exception
+{
+    // let's assume we have some custom key/value pair, stored as Objects
+    Object key = new Object();
+    Object value = new Object();
+    Properties props = new Properties();
+    props.put(key, value);
+    // and we want to serialize it
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(props);
+    // this will serialize it as
+    // {
+    //   "java.lang.Object": "java.lang.Object"
+    // }
+    // which is not very useful, especially if we have multiple key/value pairs
+    // it would be better if serialized result was
+    // {
+    //   "key": "value"
+    // }
+    // and this can be done by coercing values to Strings
+    mapper.getSerializationConfig().addMixInAnnotations(Object.class, ToStringMixIn.class);
+    json = mapper.writeValueAsString(props);
+    // but then we get an exception:
+    // com.faster

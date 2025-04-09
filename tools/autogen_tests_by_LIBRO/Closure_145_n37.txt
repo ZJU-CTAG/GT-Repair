@@ -1,0 +1,11 @@
+public void testIssue112() {
+    String source = "var i = 0; lab1: do{ lab2: do{ i++; if (1) { break lab2; } else { break lab1; } } while(false); } while(false); console.log(i);";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(false);
+    Compiler compiler = new Compiler();
+    List<SourceFile> input = ImmutableList.of(SourceFile.fromCode("test", source));
+    Result result = compiler.compile(EXTERNS, input, options);
+    System.out.println(result.success);
+    System.out.println(compiler.toSource());
+}

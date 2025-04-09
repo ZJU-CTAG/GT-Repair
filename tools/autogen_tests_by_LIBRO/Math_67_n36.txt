@@ -1,0 +1,11 @@
+public void testBug() {
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(), 10, new UniformRandomGenerator());
+    UnivariateRealFunction function = new UnivariateRealFunction() {
+        public double value(double x) {
+            return -x * x;
+        }
+    };
+    double result = optimizer.optimize(new MaxEval(10), new SearchInterval(0, 1), new UnivariateRealConvergenceChecker(), function);
+    assertTrue(result > 0);
+    assertEquals(0, optimizer.getResult(), 1e-15);
+}

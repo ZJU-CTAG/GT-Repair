@@ -1,0 +1,11 @@
+public void testUnicodeExtraField() throws Exception {
+    final File zip = getFile("COMPRESS-88.zip");
+    final ZipFile zf = new ZipFile(zip);
+    try {
+        assertEquals(4, zf.size());
+        assertNotNull(zf.getEntry("1.txt"));
+        assertNotNull(zf.getInputStream(zf.getEntry("1.txt")));
+    } finally {
+        zf.close();
+    }
+}

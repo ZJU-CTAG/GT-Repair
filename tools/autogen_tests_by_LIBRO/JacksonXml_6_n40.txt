@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    ToXmlGenerator generator = new ToXmlGenerator(new NoCloseOutputStream(bytes), JsonEncoding.UTF8, new JsonFactory());
+    generator.writeStartObject();
+    generator.writeFieldName("binary");
+    generator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("Hello".getBytes("UTF-8")), 5);
+    generator.writeEndObject();
+    generator.close();
+
+    assertEquals("<object><binary>Hello</binary></object>", bytes.toString("UTF-8"));
+}

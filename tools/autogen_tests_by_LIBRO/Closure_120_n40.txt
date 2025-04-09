@@ -1,0 +1,20 @@
+public void testIssue() throws Exception {
+    StringBuffer sb = new StringBuffer();
+    sb.append("var uid;\n");
+    sb.append("function reset() {\n");
+    sb.append("  uid = Math.random();\n");
+    sb.append("}\n");
+    sb.append("function doStuff() {\n");
+    sb.append("  reset();\n");
+    sb.append("  var _uid = uid;\n");
+    sb.append("  if (uid < 0.5) {\n");
+    sb.append("    doStuff();\n");
+    sb.append("  }\n");
+    sb.append("  if (_uid !== uid) {\n");
+    sb.append("    throw 'reset() was called';\n");
+    sb.append("  }\n");
+    sb.append("}\n");
+    sb.append("doStuff();\n");
+    String js = sb.toString();
+
+    CompilerOptions options = new

@@ -1,0 +1,13 @@
+public void testJarArchiveOutputStreamFinish() throws Exception {
+    final byte[] data = "this is a test".getBytes(Charsets.UTF_8);
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.JAR, out);
+    archive.putArchiveEntry(new JarArchiveEntry("test.txt"));
+    archive.write(data);
+    archive.closeArchiveEntry();
+    archive.finish();
+    archive.close();
+    final byte[] archiveData = out.toByteArray();
+    assertEquals(22, archiveData.length);
+    assertEquals(8075, ArchiveUtils.getZipEOCD(archiveData).get(ArchiveUtils.EOCD_OFFSET_CENTRAL_DIRECTORY_SIZE));
+}

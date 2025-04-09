@@ -1,0 +1,10 @@
+public void testJsonParserSequence() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    JsonParser jsonParser1 = factory.createParser("{\"a\":1}");
+    JsonParser jsonParser2 = factory.createParser("{\"b\":2}");
+    JsonParserSequence jsonParserSequence = JsonParserSequence.createFlattened(jsonParser1, jsonParser2);
+    while (jsonParserSequence.nextToken() != null);
+    assertEquals(1, jsonParserSequence.getCurrentLocation().getLineNr());
+    assertEquals(17, jsonParserSequence.getCurrentLocation().getCharOffset());
+    assertEquals(2, jsonParserSequence.getParsers().size());
+}

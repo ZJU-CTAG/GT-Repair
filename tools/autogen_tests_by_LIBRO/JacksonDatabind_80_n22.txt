@@ -1,0 +1,27 @@
+public void testIssue111() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(Base.class, MixIn.class);
+
+    String json = mapper.writeValueAsString(new BaseConcrete());
+    assertEquals("{\"@type\":\"BaseConcrete\",\"value\":\"BaseConcrete\"}", json);
+    Base base = mapper.readValue(json, Base.class);
+    assertTrue(base instanceof BaseConcrete);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes({ @JsonSubTypes.Type(value = BaseConcrete.class, name = "BaseConcrete") })
+abstract class Base {
+
+    public String value;
+
+    public Base() {
+        this.value = this.getClass().getSimpleName();
+    }
+
+}
+
+class BaseConcrete extends Base {
+}
+
+interface MixIn {
+}

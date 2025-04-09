@@ -1,0 +1,23 @@
+public void testJsonIdentityInfo() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    String json = mapper.writeValueAsString(new Root(1));
+    System.out.println(json);
+    Root root = mapper.readValue(json, Root.class);
+    System.out.println(root);
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public static class Root {
+    int id;
+    Simple simple = new Simple(1, this);
+    Simple simple2 = new Simple(2, this);
+    List<Simple> simpleList = new ArrayList<>();
+    Map<String, Simple> simpleMap = new HashMap<>();
+
+    @JsonCreator
+    public Root(@JsonProperty("id") int id) {
+        this.id = id;
+        simpleList.add(simple);
+        simpleList.add(simple2);
+        simpleMap

@@ -1,0 +1,18 @@
+public void testIssue228() {
+    // not testing anything, just making sure the example compiles
+    MyService service = mock(MyService.class);
+    ArgumentCaptor<MyObject> argument = ArgumentCaptor.forClass(MyObject.class);
+    service.doSomething(argument.capture());
+    verify(service).doSomething(argument.capture());
+    assertEquals(new MyObject("expected"), argument.getValue());
+}
+static class MyService {
+    void doSomething(MyObject argument) {
+    }
+}
+static class MyObject {
+    private final String value;
+    MyObject(String value) {
+        this.value = value;
+    }
+}

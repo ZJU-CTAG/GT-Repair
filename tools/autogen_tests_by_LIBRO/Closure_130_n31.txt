@@ -1,0 +1,13 @@
+public void testArguments() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+    options);
+    options.collapsePropertiesOnExternTypes = true;
+    String src =
+        "alert(function() { return arguments; }());";
+    String result = compiler.compile(
+        new JSSourceFile[] {JSSourceFile.fromCode("foo", src)}, options)
+        .toSource();
+    assertTrue(result.contains("arguments"));
+}

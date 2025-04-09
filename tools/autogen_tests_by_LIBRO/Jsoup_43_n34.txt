@@ -1,0 +1,11 @@
+public void testIssue107() {
+    String html = "<p>Para1</p><p>Para2</p><p>Para3</p>";
+    Document doc = Jsoup.parse(html);
+    Elements paras = doc.getElementsByTag("p");
+    Element firstPara = paras.get(0);
+    Element secondPara = paras.get(1);
+    assertEquals(firstPara, secondPara.parent().child(secondPara.elementSiblingIndex()));
+    assertNotSame(firstPara, secondPara.parent().child(secondPara.elementSiblingIndex()));
+    assertEquals(firstPara, secondPara.parent().children().get(secondPara.elementSiblingIndex()));
+    assertNotSame(firstPara, secondPara.parent().children().get(secondPara.elementSiblingIndex()));
+}

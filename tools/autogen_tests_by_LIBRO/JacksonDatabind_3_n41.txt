@@ -1,0 +1,13 @@
+public void testLoggingJsonDecoder()
+throws Exception
+{
+  LoggingEvent event = new LoggingEvent();
+  event.setMessage("Message");
+  event.setArgumentArray(new Object[]{1, 2, "3", null, 4});
+  event.setThrowableInformation(new ThrowableInformation(new NullPointerException("NPE")));
+
+  LoggingJsonDecoder decoder = new LoggingJsonDecoder();
+  LoggingEvent decodedEvent = decoder.decode(encoder.encode(event));
+
+  assertEquals(event, decodedEvent);
+}

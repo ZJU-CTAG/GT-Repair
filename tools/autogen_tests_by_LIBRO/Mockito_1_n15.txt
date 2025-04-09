@@ -1,0 +1,10 @@
+public void testArgumentCaptor() throws Exception {
+    List<Integer> list = mock(List.class);
+    ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+    list.add(0);
+    list.addAll(asList(1, 2, 3));
+    verify(list).add(captor.capture());
+    verify(list).addAll(captor.capture());
+    assertEquals(0, (int) captor.getAllValues().get(0));
+    assertEquals(asList(1, 2, 3), captor.getAllValues().get(1));
+}

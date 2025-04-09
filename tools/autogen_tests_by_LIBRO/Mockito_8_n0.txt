@@ -1,0 +1,8 @@
+public void testGenericMetadataSupport_with_interface_type_variable_bound_to_self() {
+    GenericMetadataSupport genericMetadata = inferFrom(GenericsSelfReference.class).resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReference.class));
+    assertThat(genericMetadata.rawType()).isEqualTo(GenericsSelfReference.class);
+}
+
+interface GenericsSelfReference<T extends GenericsSelfReference<T>> {
+    T self();
+}

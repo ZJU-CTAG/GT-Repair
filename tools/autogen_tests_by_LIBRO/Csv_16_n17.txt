@@ -1,0 +1,23 @@
+public void testPeek() throws Exception {
+    String fiveRows = "1\n2\n3\n4\n5\n";
+
+    CSVParser parser = new CSVParser(new StringReader(fiveRows), CSVFormat.DEFAULT);
+    Iterator<CSVRecord> iter = parser.iterator();
+    int recordNumber = 0;
+
+    while (iter.hasNext()) {
+        CSVRecord record = iter.next();
+        recordNumber++;
+        if (recordNumber >= 2) {
+            break;
+        }
+    }
+
+    // When we use the same iterator, iterator and lexer are in sequence.
+    assertTrue(iter.hasNext());
+    while (iter.hasNext()) {
+        CSVRecord record = iter.next();
+        recordNumber++;
+    }
+    assertEquals(5, recordNumber);
+}

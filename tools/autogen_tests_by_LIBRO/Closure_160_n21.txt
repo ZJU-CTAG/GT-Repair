@@ -1,0 +1,12 @@
+public void testNoDiagnostics() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckVars(CheckLevel.ERROR);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+
+    Result result = compiler.compile(JSSourceFile.fromCode("test.js", "foo = {};\nfoo.bar = function() { alert(this.baz); };"), options);
+    assertTrue(result.success);
+    assertEquals(0, result.warnings.length);
+    assertEquals(0, result.errors.length);
+}

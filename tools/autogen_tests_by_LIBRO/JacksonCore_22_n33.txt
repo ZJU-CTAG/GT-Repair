@@ -1,0 +1,19 @@
+public void testFilteringParserDelegate() throws IOException {
+    String json = "{ \"foo\" : \"bar\", \"bar\" : \"baz\" }";
+    JsonFactory jsonFactory = new JsonFactory();
+
+    JsonParser jsonParser = jsonFactory.createParser(json);
+    JsonToken jsonToken = jsonParser.nextToken();
+    assertEquals(JsonToken.START_OBJECT, jsonToken);
+
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonParser, new SimpleBeanPropertyFilter("foo"), true, false);
+    assertEquals(0, filteringParserDelegate._matchCount);
+
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, jsonToken);
+    assertEquals("bar", filteringParserDelegate.getCurrentName());
+    assertEquals(0, filteringParserDelegate._matchCount);
+
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.VALUE_STRING, jsonToken);
+    assertEquals("baz", filteringParserDelegate.get

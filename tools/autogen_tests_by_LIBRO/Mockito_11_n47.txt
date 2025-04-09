@@ -1,0 +1,18 @@
+public void testCustomVerificationMode() {
+    final InvocationChunk invocationChunk = new InvocationChunk(mock(Foo.class));
+    invocationChunk.add(new Invocation(mock(Foo.class), new MockMethod(Foo.class, "bar", new Class[0]), null, null, null));
+    final List<Invocation> invocations = invocationChunk.getInvocations();
+    final Invocation invocation = invocations.get(0);
+    final Invocation actual = new Invocation(mock(Foo.class), new MockMethod(Foo.class, "bar", new Class[0]), null, null, null);
+    assertTrue(invocation.equals(actual));
+    final VerificationMode firstInvocationMode = new VerificationMode() {
+        public VerificationModeDescription describe() {
+            return new VerificationModeDescription("");
+        }
+
+        public void verify(final List<Invocation> invocations) {
+            for (Invocation invocation : invocations) {
+                if (invocation.equals(actual)) {
+                    return;
+                }
+            }

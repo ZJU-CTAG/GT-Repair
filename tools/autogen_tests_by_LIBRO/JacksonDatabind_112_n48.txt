@@ -1,0 +1,21 @@
+public void testStringCollectionDeserializer() throws Exception {
+// Deserialization works for a custom list of strings
+CustomList customList = new ObjectMapper().readValue("[\"foo\", \"bar\"]", CustomList.class);
+assertEquals(Arrays.asList("foo", "bar"), customList);
+// But fails for a custom list of strings as a property of another class
+MyClass myClass = new ObjectMapper().readValue("{\"someList\": [\"foo\", \"bar\"]}", MyClass.class);
+assertEquals(Arrays.asList("foo", "bar"), myClass.someList);
+}
+// workaround:
+public class MyClass {
+@JsonDeserialize(contentUsing = CustomList.CustomStringListDeserializer.class)
+private CustomList someList;
+}
+public class CustomList extends ArrayList<String> {
+public CustomList() {
+super(ImmutableList.of());
+}
+public CustomList(List<String> l) {
+super(ImmutableList.copyOf(l));
+}
+public static class CustomStringListDeserializer extends JsonDeserializer<

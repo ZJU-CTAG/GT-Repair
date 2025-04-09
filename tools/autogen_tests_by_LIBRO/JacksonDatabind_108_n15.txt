@@ -1,0 +1,10 @@
+public void testNullNodeIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // ... configure...
+    JsonNode n = mapper.readTree(new ByteArrayInputStream(new byte[0]));
+    // or
+    n = mapper.readTree("");
+    assertEquals("Was expecting NullNode, got: "+n.getClass().getName(),
+            NullNode.class, n.getClass());
+}

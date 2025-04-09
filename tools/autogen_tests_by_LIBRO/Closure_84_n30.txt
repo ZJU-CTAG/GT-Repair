@@ -1,0 +1,15 @@
+public void test() {
+    String js = "var x=0,y=1;x||y=8";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(false);
+    env.setStrictMode(true);
+    ErrorReporter er = new ToolErrorReporter(env, true);
+    Parser p = new Parser(env, er);
+    try {
+        p.parse(js, "foo.js", 1);
+    } catch (EvaluatorException e) {
+        // expected
+        return;
+    }
+    fail();
+}

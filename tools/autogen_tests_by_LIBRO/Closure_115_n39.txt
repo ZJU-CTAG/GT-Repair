@@ -1,0 +1,19 @@
+public void testIssue() {
+    String js = "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+            "  return (function (saved) {\n" +
+            "    return modifiesProp(obj) + saved;\n" +
+            "  })(obj[\"prop\"]);\n" +
+            "}";
+    Compiler compiler = new Compiler();
+
+    SourceFile input = SourceFile.fromCode("input.js", js);
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("window.js",
+            "var window = {};"));
+    CompilerOptions options = new CompilerOptions();
+    compiler.disableThreads();
+    options.setWarningLevel(
+            DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    options.setCheckSymbols(false);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.EC

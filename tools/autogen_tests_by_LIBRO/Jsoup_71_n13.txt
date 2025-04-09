@@ -1,0 +1,15 @@
+public void testIssue108() {
+    XMLNode root = new XMLNode("root");
+    XMLNode a = new XMLNode("a");
+    a.appendChild(new XMLText().setText("123"));
+    XMLNode b = new XMLNode("b");
+    b.appendChild(new XMLText().setText("456"));
+    root.appendChild(a).appendChild(b);
+    System.out.println(root.toString(true));
+    assertEquals(2, root.selectNodes("//:text").size());
+    assertEquals(2, root.selectNodes("//:text").size());
+    assertEquals(1, root.selectNodes("//:text[../@name='a']").size());
+    assertEquals(1, root.selectNodes("//:text[../@name='b']").size());
+    assertEquals(1, root.selectNodes("//a/:text").size());
+    assertEquals(1, root.selectNodes("//b/:text").size());
+}

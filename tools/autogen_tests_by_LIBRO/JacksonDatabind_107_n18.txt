@@ -1,0 +1,20 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Wrapper.class,
+            new JsonDeserializer<Wrapper>() {
+                @Override
+                public Wrapper deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+                    return new Wrapper();
+                }
+            });
+    mapper.registerModule(module);
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return ctxt.getTypeFactory().constructType(Void.class);
+        }
+    });
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    Wrapper wrapper = mapper.readValue("{\"object\":{

@@ -1,0 +1,12 @@
+public void testVarargCaptor() {
+    final List<String> list = new ArrayList<String>();
+    list.add("1");
+    list.add("2");
+    list.add("3");
+    final Object mock = mock(Object.class);
+    doCallRealMethod().when(mock).toString();
+    final ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    mock.toString();
+    verify(mock).toString();
+    assertEquals(3, captor.getValue().length);
+}

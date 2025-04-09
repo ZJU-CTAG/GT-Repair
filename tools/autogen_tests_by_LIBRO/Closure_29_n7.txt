@@ -1,0 +1,19 @@
+public void testIssue110() {
+    String js = 
+            "isFunction = function(functionToCheck) { \n"
+          + " var getType; \n"
+          + " getType = {}; \n"
+          + " return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]';  \n"
+          + " };";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            ImmutableList.of("issue110.js"),
+            ImmutableList.of(SourceFile.fromCode("issue110.js", js)),
+            options);
+    assertTrue(result.success);
+    String compiled = compiler.toSource();
+    assertEquals("isFunction=function(a){return a&&\"[object Function]\"===(void 0).apply(a)};

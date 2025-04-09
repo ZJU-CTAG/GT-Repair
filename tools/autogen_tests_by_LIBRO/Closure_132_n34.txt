@@ -1,0 +1,20 @@
+public void test() {
+    String str = "if( es[--esi][ es[esi+1] ] === 1)\n"
+            + "{\n"
+            + " es[esi] = 0;\n"
+            + "}\n"
+            + "else\n"
+            + "{\n"
+            + " es[esi] = 1;\n"
+            + "}";
+    CompilationUnit cu = new CompilationUnit();
+    cu.addType(new TypeDeclaration(ASTHelper.VOID_TYPE, "Test"));
+    MethodDeclaration md = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.VOID_TYPE, "test");
+    BlockStmt body = new BlockStmt();
+    ASTHelper.addStmt(body, new ThrowStmt(new NameExpr("UnsupportedOperationException")));
+    md.setBody(body);
+    ASTHelper.addMember(cu.getTypes().get(0), md);
+
+    StringWriter out = new StringWriter();
+    PrettyPrinterConfiguration config = new PrettyPrinterConfiguration();
+    config.setPrint

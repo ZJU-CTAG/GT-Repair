@@ -1,0 +1,24 @@
+public void testIssue() {
+    String js = "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function C2() {}\n" +
+            "\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function C3(c2) {\n" +
+            "/**\n" +
+            " * @type {C2} \n" +
+            " * @private\n" +
+            " */\n" +
+            "this.c2_;\n" +
+            "\n" +
+            "use(this.c2_.prop);\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs(""), js(""));
+    assertEquals(0, result.warnings.length);
+    assertEquals(1, result.errors.length);
+    assertEquals("Property prop never defined on C2", result.errors[0].description);
+}

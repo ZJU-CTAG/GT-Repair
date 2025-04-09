@@ -1,0 +1,10 @@
+public void testIssue() {
+    String xml="<r><X>A</X><y>B</y></r>";
+	Parser parser = Parser.htmlParser();
+	parser.settings(ParseSettings.preserveCase);
+	org.jsoup.nodes.Document _doc = parser.parseInput(xml, "/");
+	
+	org.jsoup.nodes.Element _el = _doc.getElementsByTag("y").first();
+	assertNotNull("element \"y\" not found", _el);
+	assertEquals("element \"y\" has wrong content", "B", _el.html());
+}

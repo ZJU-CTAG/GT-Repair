@@ -1,0 +1,15 @@
+public void testNextTextValue() throws IOException {
+	String xml = "<?xml version='1.0' encoding='UTF-8'?><Test>test</Test>";
+	XmlMapper xmlMapper = new XmlMapper();
+	FromXmlParser parser = (FromXmlParser) xmlMapper.getFactory().createParser(xml);
+	for (JsonToken nextToken = parser.nextToken(); nextToken != null; nextToken = parser.nextToken()) {
+		if (nextToken == JsonToken.FIELD_NAME) {
+			try {
+				assertEquals(null, parser.nextTextValue());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	parser.close();
+}

@@ -1,0 +1,9 @@
+public void testStringOptimization() {
+    // The compiler optimizes String(x) calls by replacing them with x + ''
+    // This is correct in most cases, but incorrect in corner cases like the one mentioned above.
+    var f = {
+        toString: function() { return "[object Object]"; },
+        valueOf: function() { return undefined; }
+    };
+    assertEquals("[object Object]", "" + f);
+}

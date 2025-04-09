@@ -1,0 +1,10 @@
+public void testIssue() {
+    Runnable runnable = Mockito.mock(Runnable.class);
+    Mockito.verify(runnable, Mockito.never()).run(); // passes as expected
+    Mockito.verify(runnable, Mockito.after(1000).never()).run(); // passes as expected
+    try {
+        Mockito.verify(runnable, Mockito.after(-1000).atLeastOnce()).run(); // passes incorrectly
+        fail("IllegalArgumentException should be thrown");
+    } catch (IllegalArgumentException ignore) {
+    }
+}

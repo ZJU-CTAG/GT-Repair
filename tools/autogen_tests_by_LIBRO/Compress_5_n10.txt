@@ -1,0 +1,24 @@
+public void testTruncatedZip() {
+    File file = new File("target/test-classes/testTruncatedZip.zip");
+    try {
+        // a truncated zip file
+        OutputStream out = new FileOutputStream(file);
+        out.write(new byte[] { 'P', 'K', 3, 4 });
+        out.close();
+        ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(file));
+        assertEquals(0, zais.read());
+        assertEquals(0, zais.read());
+        assertEquals(0, zais.read());
+        assertEquals(0, zais.read());
+        assertEquals(0, zais.read());
+        assertEquals(0, zais.read());
+        try {
+            zais.read();
+            fail("Should have detected truncated archive");
+        } catch (ZipException e) {
+            // expected
+        }
+    } finally {
+        file.delete();
+    }
+}

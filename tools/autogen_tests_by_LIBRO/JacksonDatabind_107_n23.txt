@@ -1,0 +1,12 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.defaultInstance().constructVoidType();
+        }
+    });
+    // NPE will be thrown here.
+    Void value = mapper.readValue("{\"@class\":\"java.lang.Void\"}", Void.class);
+}

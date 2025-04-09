@@ -1,0 +1,17 @@
+public void testVarArgs() {
+    ArgumentCaptor<Integer> captor1 = ArgumentCaptor.forClass(Integer.class);
+    ArgumentCaptor<Object[]> captor2 = ArgumentCaptor.forClass(Object[].class);
+    ArgumentCaptor<String> captor3 = ArgumentCaptor.forClass(String.class);
+    
+    doMock(captor1, captor2, captor3);
+    
+    assertEquals(Integer.valueOf(3), captor1.getValue());
+    assertEquals(3, captor2.getValue().length);
+    assertEquals("1", captor2.getValue()[0]);
+    assertEquals("2", captor2.getValue()[1]);
+    assertEquals("3", captor2.getValue()[2]);
+    assertEquals("1, 2, 3", captor3.getValue());
+}
+
+private void doMock(ArgumentCaptor<Integer> captor1, ArgumentCaptor<Object[]> captor2, ArgumentCaptor<String> captor3) {
+    TestClass tc

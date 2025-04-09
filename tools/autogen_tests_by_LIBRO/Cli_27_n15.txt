@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    OptionGroup g = new OptionGroup();
+    g.addOption(OptionBuilder.withLongOpt("long-opt").create());
+    g.addOption(OptionBuilder.withLongOpt("another-opt").create());
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(
+            new Options()
+                    .addOptionGroup(g),
+            new String[]{"--long-opt"});
+    assertTrue(line.hasOption("long-opt"));
+    assertFalse(line.hasOption("another-opt"));
+}

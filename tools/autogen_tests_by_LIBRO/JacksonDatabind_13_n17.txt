@@ -1,0 +1,14 @@
+public void testNullObjectId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public boolean hasId(AnnotatedMember m) {
+            return false;
+        }
+    });
+    mapper.registerModule(new JodaModule());
+    
+    String json = mapper.writeValueAsString(new DateTime(0));
+    DateTime result = mapper.readValue(json, DateTime.class);
+    assertEquals(0, result.getMillis());
+}

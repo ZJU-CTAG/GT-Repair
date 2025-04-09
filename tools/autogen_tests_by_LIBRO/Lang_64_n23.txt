@@ -1,0 +1,24 @@
+public void testCompareTo() {
+    MyEnum a = MyEnum.A;
+    MyEnum b = MyEnum.B;
+    assertTrue(a.compareTo(b) < 0);
+    assertTrue(b.compareTo(a) > 0);
+    assertTrue(a.compareTo(a) == 0);
+    assertTrue(b.compareTo(b) == 0);
+     
+    assertFalse("Should not be equal, they are different types", a.equals(b));
+     
+    // the following two lines will pass, even though they should not.
+    assertTrue("a and b should not be equal", a.compareTo(b) == 0);
+    assertTrue("b and a should not be equal", b.compareTo(a) == 0);
+}
+ 
+// simple class to demonstrate the issue.
+enum MyEnum extends ValuedEnum {
+    A(1),
+    B(1);
+     
+    private MyEnum(int i) {
+        super(i);
+    }
+}

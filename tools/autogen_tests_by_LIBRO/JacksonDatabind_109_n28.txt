@@ -1,0 +1,17 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+    BigDecimal value = new BigDecimal("0.0000000005");
+    JsonFormat fmt = new JsonFormat();
+    fmt.shape = JsonFormat.Shape.STRING;
+    
+    ObjectWriter writer = mapper.writer();
+    AnnotatedClass ac = AnnotatedClass.construct(Test.class,
+            mapper.getSerializationConfig().getAnnotationIntrospector(), null);
+    AnnotatedMember member = ac.memberMethods().iterator().next();
+    // try with and without this call:
+    fmt = mapper.

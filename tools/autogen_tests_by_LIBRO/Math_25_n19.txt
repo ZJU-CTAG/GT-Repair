@@ -1,0 +1,17 @@
+public void testHarmonicFitter() {
+    final HarmonicFitter fitter = new HarmonicFitter(new LeastSquaresBuilder().maxEvaluations(100).maxIterations(100));
+    final double[] x = new double[10];
+    final double[] y = new double[x.length];
+    for (int i = 0; i < x.length; i++) {
+        x[i] = i;
+        y[i] = i % 2 == 0 ? 1 : -1;
+    }
+    try {
+        HarmonicFitter.ParameterGuesser guesser = new HarmonicFitter.ParameterGuesser(x, y);
+        double[] guessedParameters = guesser.guess();
+        System.out.println(Arrays.toString(guessedParameters));
+        fitter.fit(x, y);
+    } catch (org.apache.commons.math.MathException e) {
+        e.printStackTrace();
+    }
+}

@@ -1,0 +1,12 @@
+public void testBase64EncodeChunked() {
+    Base64 base64 = new Base64();
+    final String text = "Hello World!";
+    final byte[] binaryData = text.getBytes();
+
+    // Chunked
+    assertEquals("SGVsbG8gV29ybGQh", base64.encodeBase64String(binaryData, false, false, 0));
+    assertEquals("SGVsbG8gV29ybGQh", base64.encodeBase64String(binaryData, false, false, 100));
+    assertEquals("SGVsbG8gV29ybGQh", base64.encodeBase64String(binaryData, false, false, binaryData.length));
+    assertEquals("SGVsbG8gV29ybGQh", base64.encodeBase64String(binaryData, false, false, binaryData.length + 1));
+    assertEquals("SGVsbG8gV29ybGQh", base64.encodeBase64String(binaryData, false, false, Integer.MAX_VALUE));
+    try

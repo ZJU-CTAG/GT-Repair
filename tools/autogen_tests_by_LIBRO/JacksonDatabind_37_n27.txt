@@ -1,0 +1,11 @@
+public void testRead() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerSubtypes(JsonSchema.class);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    final InputStream stream = ModelTest.class.getResourceAsStream("/model.json");
+    assertNotNull(stream);
+    final JsonRoot jsonRoot = objectMapper.readValue(stream, JsonRoot.class);
+    final Schema schema = new JsonRootSchema(jsonRoot, null);
+    assertNotNull(schema);
+}

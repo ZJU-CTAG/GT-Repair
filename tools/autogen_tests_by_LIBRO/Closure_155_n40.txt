@@ -1,0 +1,16 @@
+public void testOptimiseArguments() throws IOException {
+    String source = "function d3_call(callback) {\n" +
+            "  var f = callback;\n" +
+            "  arguments[0] = this;\n" +
+            "  f.apply(this, arguments);\n" +
+            "  return this;\n" +
+            "}";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setLanguageVersion(Context.VERSION_1_8);
+    IRFactory factory = new IRFactory(env);
+    ScriptOrFnNode scriptOrFnNode = factory.parse(source, null, 1);
+    Main.main(new String[]{});
+    Node root = scriptOrFnNode.getLastChild();
+    assertEquals(4, root.getLineno());
+}

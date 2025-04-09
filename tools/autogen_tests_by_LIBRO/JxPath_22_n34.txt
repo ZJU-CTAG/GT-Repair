@@ -1,0 +1,10 @@
+public void testIssue78() {
+    Document doc = DocumentHelper.createDocument();
+    Element el = doc.addElement("foo");
+    el.addAttribute("xmlns", "test111");
+    el.addElement("bar");
+    doc.addNamespace("b", "bla");
+    el.addElement("test");
+    DOMNodePointer p = new DOMNodePointer(doc.getRootElement());
+    assertEquals("/foo[1]/test[1]", p.getValuePointer().asPath());
+}

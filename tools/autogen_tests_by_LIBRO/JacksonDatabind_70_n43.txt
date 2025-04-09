@@ -1,0 +1,15 @@
+public void testIssue13() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
+    mapper.disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+
+    Address address = new Address();
+    address.street = "some address";
+    Person person = new Person();
+    person.businessAddress = address;
+
+    String json = mapper.writeValueAsString(person);
+
+    Person person2 = mapper.readValue(json, Person.class);
+}

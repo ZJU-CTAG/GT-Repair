@@ -1,0 +1,21 @@
+public void testIssue114() {
+    // Test for a file with just LF line terminators
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(new StringReader("a\nb\nc"));
+    assertEquals("a", ebr.readLine());
+    assertEquals("b", ebr.readLine());
+    assertEquals("c", ebr.readLine());
+    assertNull(ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+    ebr.close();
+
+    // Test for a file with just CL line terminators
+    ebr = new ExtendedBufferedReader(new StringReader("a\rb\rc"));
+    assertEquals("a", ebr.readLine());
+    assertEquals("b", ebr.readLine());
+    assertEquals("c", ebr.readLine());
+    assertNull(ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+    ebr.close();
+
+    // Test for a file with just CRLF line terminators
+    ebr = new ExtendedBufferedReader(new

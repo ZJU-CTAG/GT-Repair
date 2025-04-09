@@ -1,0 +1,12 @@
+public void testTarUtils() throws IOException {
+    File file = new File("target/testTarUtils.tar");
+    TarOutputStream tos = new TarOutputStream(new FileOutputStream(file));
+    TarEntry entry = new TarEntry("0302-0601-3±±±F06±W220±ZB±LALALA±±±±±±±±±±CAN±±DC±±±04±060302±MOE.model");
+    tos.putNextEntry(entry);
+    tos.close();
+    tos.closeEntry();
+    TarInputStream tis = new TarInputStream(new FileInputStream(file));
+    TarEntry currentEntry = tis.getNextEntry();
+    assertEquals("0302-0601-3±±±F06±W220±ZB±LALALA±±±±±±±±±±CAN±±DC±±±04±060302±MOE.model", currentEntry.getName());
+    assertTrue(currentEntry.isDirectory());
+}

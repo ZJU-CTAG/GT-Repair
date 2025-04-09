@@ -1,0 +1,17 @@
+public void testMixinAnnotationsLost() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.disable(MapperFeature.ALLOW\_FINAL\_FIELDS\_AS\_MUTATORS)
+            .disable(MapperFeature.AUTO\_DETECT\_FIELDS)
+            .disable(MapperFeature.AUTO\_DETECT\_GETTERS)
+            .disable(MapperFeature.AUTO\_DETECT\_IS\_GETTERS)
+            .disable(MapperFeature.INFER\_PROPERTY\_MUTATORS);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    PersonImpl person = new PersonImpl();
+    person.setCity("London");
+
+    String json = mapper.writeValueAsString(person);
+    assertFalse(json.contains("city"));
+}

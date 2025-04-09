@@ -1,0 +1,14 @@
+public void testThisTypedef() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    test(options,
+         "/** @this {bug.Thing} */ bug.sharedMethod = function() {};" +
+         "/** @constructor */ bug.A = function() {};" +
+         "/** @constructor */ bug.B = function() {};" +
+         "/** @type {bug.A|bug.B} */ bug.Thing = goog.typedef;",
+         "bug.sharedMethod=function(){};bug.A=function(){};bug.B=function(){};",
+         DiagnosticType.warning("JSC_NON_STANDARD_JSDOC",
+             "@this type of a function must be an object.\n" +
+             "Actual type: (bug.A|

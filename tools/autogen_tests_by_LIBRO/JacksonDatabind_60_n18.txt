@@ -1,0 +1,32 @@
+public void testPolymorphicTypeLostWhenUsingJsonValue() throws IOException {
+    ObjectMapper m = new ObjectMapper();
+    m.enableDefaultTyping();
+    TestObject testObject = new TestObject(new TestSubObject("test"));
+    String json = m.writeValueAsString(testObject);
+    Object deserializedObject = m.readValue(json, TestObject.class);
+    assertTrue("Expected TestSubObject but found " + deserializedObject.getClass(),
+            deserializedObject instanceof TestSubObject);
+}
+
+static class TestObject {
+    private final Object object;
+    public TestObject(Object object) {
+        this.object = object;
+    }
+}
+
+static class TestSubObject extends TestObject {
+
+    private final String name;
+
+    @JsonCreator
+    public TestSubObject(@JsonProperty("name") String name) {
+        super(name);
+        this.name = name;
+    }
+
+    @JsonValue
+    public String getName() {
+        return name;
+    }
+}

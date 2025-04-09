@@ -1,0 +1,28 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    
+    // works ok
+    String json = mapper.writeValueAsString(new Base());
+    System.out.println("JSON = "+json);
+    assertEquals("{\"value\":42}", json);
+    
+    // works ok
+    Base b = mapper.readValue("{\"value\":42}", Base.class);
+    System.out.println("POJO = "+b);
+    assertEquals(42, b.value);
+    
+    // fails:
+    Sub sub = mapper.readValue("{\"value\":42}", Sub.class);
+    System.out.println("POJO = "+sub);
+    assertEquals(42, sub.value);
+}
+
+static class Base {
+    public int value = 42;
+}
+
+static class Sub extends Base {
+    public String name = "foobar";
+}

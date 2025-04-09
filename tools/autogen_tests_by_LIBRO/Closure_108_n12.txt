@@ -1,0 +1,16 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    String js = "var goog = {};\n"
+            + "goog.scope;\n\n"
+            + "var ns = {};\n"
+            + "ns.sub = {};\n"
+            + "/** @constructor */\n"
+            + "ns.sub.C = function() {};\n\n"
+            + "goog.scope(function() {\n"
+            + "  var sub = ns.sub;\n"
+            + "  /** @type {sub.C} */\n"
+            + "  var x = null;\n"
+            + "});";
+    compiler.compile(SourceFile.fromCode("test.js", js), options);
+}

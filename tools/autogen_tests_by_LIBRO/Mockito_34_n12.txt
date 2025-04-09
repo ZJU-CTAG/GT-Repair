@@ -1,0 +1,23 @@
+public void testSourceFiles() {
+    File file = new File("src/test/resources/mockito-core.jar");
+    assertTrue("mockito-core.jar does not exist", file.exists());
+    String[] sourceFiles = getSourceFiles(file);
+    assertTrue("mockito-core.jar contains source files, but it shouldn't", sourceFiles.length == 0);
+}
+
+private String[] getSourceFiles(File file) throws IOException {
+    List<String> result = new ArrayList<String>();
+    try {
+        JarFile jarFile = new JarFile(file);
+        Enumeration<JarEntry> entries = jarFile.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry jarEntry = entries.nextElement();
+            if (jarEntry.getName().endsWith(".java")) {
+                result.add(jarEntry.getName());
+            }
+        }
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    return result.toArray(new String[result.size()]);
+}

@@ -1,0 +1,28 @@
+public void testPolymorphicTypeLostWithJsonValue() {
+    ObjectMapper mapper = new ObjectMapper();
+
+    mapper.enableDefaultTyping();
+
+    mapper.addMixIn(CommandAPDU.class, MixIn.class);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    CommandAPDU expected = new CommandAPDU(new byte[]{});
+    String json = mapper.writeValueAsString(expected);
+
+    CommandAPDU actual = mapper.readValue(json, CommandAPDU.class);
+
+    assertEquals(expected, actual);
+}
+
+@JsonIgnoreProperties({ "nad", "p1", "p2", "p3", "data", "ins", "cla" })
+abstract class MixIn {
+    @JsonCreator
+    public MixIn(@JsonProperty(value = "bytes") byte[] apdu) {
+    }
+
+    @JsonValue
+    public byte[] getBytes() {
+        return null;
+    }
+}
+

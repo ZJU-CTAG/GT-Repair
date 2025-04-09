@@ -1,0 +1,23 @@
+public void testSkipTokenOnSwitch() throws IOException {
+    String json = "{\"key1\":\"value1\"}\n{\"key2\": \"value2\"}";
+    JsonParser jsonParser = createParser(json);
+
+    // Create and configure a parser for the first element
+    JsonParser firstElementParser = createParser(json);
+    firstElementParser.nextToken();
+    firstElementParser.nextToken();
+    firstElementParser.nextToken();
+
+    // Create and configure a parser for the second element
+    JsonParser secondElementParser = createParser(json);
+    secondElementParser.nextToken();
+    secondElementParser.nextToken();
+    secondElementParser.nextToken();
+    secondElementParser.nextToken();
+    secondElementParser.nextToken();
+
+    JsonParserSequence jsonParserSequence = new JsonParserSequence(firstElementParser, secondElementParser);
+
+    // The following line fails as the currentToken() is null, because JsonParserSequence called nextToken() on the second delegate.
+    assertEquals(JsonToken.START_OBJECT, jsonParserSequence.currentToken());
+

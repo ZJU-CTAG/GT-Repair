@@ -1,0 +1,16 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    String source = "var foo = function() {};"
+        + "foo.prototype = { bar: function() { this.$super(); } };";
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("input.js", source)
+        },
+        options);
+    assertEquals(
+        "var foo=function(){};foo.prototype={bar:function(){this.$super();}};",
+        compiler.toSource());
+}

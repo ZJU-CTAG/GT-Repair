@@ -1,0 +1,35 @@
+public void testIssue() {
+    AttributesImpl atts = new AttributesImpl();
+    atts.addAttribute("", "", "name", "", "val");
+    List<SAXParseException> result = validate(atts);
+    assertTrue(result.isEmpty());
+
+    atts.removeIgnoreCase("name");
+    result = validate(atts);
+    assertTrue(result.isEmpty());
+
+}
+
+private List<SAXParseException> validate(AttributesImpl atts) {
+    List<SAXParseException> result = new ArrayList<SAXParseException>();
+    atts.validate(new ValidatorHandler() {
+        @Override
+        public void setErrorHandler(ErrorHandler errorHandler) {
+        }
+
+        @Override
+        public void setContentHandler(ContentHandler contentHandler) {
+        }
+
+        @Override
+        public void setResourceResolver(LSResourceResolver resourceResolver) {
+        }
+
+        @Override
+        public void setResult(Result result) {
+        }
+
+        @Override
+        public void setFeature(String s, boolean b) {
+        }
+

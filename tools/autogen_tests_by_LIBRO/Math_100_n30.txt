@@ -1,0 +1,17 @@
+public void testIssue() {
+    double[] parameters = new double[]{1.0, 2.0, 3.0};
+    double[] start = new double[]{0.0, 0.0, 0.0};
+    double[][] covariances = new double[][]{{1.0, 2.0, 3.0}, {0.0, 4.0, 5.0}, {0.0, 0.0, 6.0}};
+
+    TestProblem problem = new TestProblem(parameters, start, covariances);
+    problem.setParameterBounds(0, 2.0, 2.0);
+    problem.setParameterBounds(2, 5.0, 5.0);
+
+    TestEstimator estimator = new TestEstimator();
+
+    estimator.estimate(problem);
+
+    double[][] cov = estimator.getCovariances();
+    // check that the covariances matrix is zero for the first parameter
+    assertEquals(0.0, cov[0][1], 1.0e-12);
+    assertEquals(0.0, cov[0][2

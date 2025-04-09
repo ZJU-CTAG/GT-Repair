@@ -1,0 +1,21 @@
+public void testGamma() throws IOException, ClassNotFoundException {
+    final double alpha = 3.3;
+    final double beta = 2.2;
+
+    final GammaDistribution g = new GammaDistribution(alpha, beta);
+
+    final FileOutputStream fos = new FileOutputStream("target/gamma.bin");
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+    oos.writeObject(g);
+
+    final FileInputStream fis = new FileInputStream("target/gamma.bin");
+    ObjectInputStream ois = new ObjectInputStream(fis);
+    final GammaDistribution g2 = (GammaDistribution) ois.readObject();
+
+    g.reseedRandomGenerator(1234);
+    g2.reseedRandomGenerator(1234);
+
+    assertEquals(g.sample(), g2.sample(), 0.0);
+    assertEquals(g.sample(), g2.sample(), 0.0);
+    assertEquals(g.sample(), g2.sample(), 0.0);
+}

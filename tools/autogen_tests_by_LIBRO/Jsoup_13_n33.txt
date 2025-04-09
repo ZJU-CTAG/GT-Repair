@@ -1,0 +1,11 @@
+public void testAttributePrefixes() {
+    Document doc = Jsoup.parse("<a href=\"http://example.com/\">\n" +
+            "  <link rel=\"feed\" href=\"http://feeds.feedburner.com/example\">\n" +
+            "  <link rel=\"foo\" href=\"http://example.com/\">\n" +
+            "</a>");
+
+    Element a = doc.select("a").first();
+    assertEquals("http://example.com/", a.absUrl("href"));
+    assertEquals("http://feeds.feedburner.com/example", a.absUrl("rel", "feed"));
+    assertEquals("", a.absUrl("rel", "foo"));
+}

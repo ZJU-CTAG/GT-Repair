@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    // create a test file
+    final File file = new File("target/testissue108.csv");
+    file.delete();
+    FileUtils.writeStringToFile(file, "Col1,Col2,Col2,Col3,Col4\n"
+            + "1,2,3,4,5\n"
+            + "4,5,6,7,8\n", "UTF-8");
+
+    // parse it
+    final Reader in = new FileReader(file);
+    final CSVParser parser = new CSVParser(in, CSVFormat.RFC4180.withDelimiter(',').withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+            .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true));
+    final List<CSVRecord> list = parser.getRecords();
+    final Map<String, Integer> headerMap = parser.getHeaderMap();
+    parser.close();
+
+    // check the results
+    assertEquals(2, list.size());
+    assertEquals(

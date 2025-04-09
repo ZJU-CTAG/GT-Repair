@@ -1,0 +1,16 @@
+public void testTruncatedArchive() throws Exception {
+    InputStream is = new FileInputStream("src/test/resources/test-zip.zip");
+    ZipArchiveInputStream zais = new ZipArchiveInputStream(is);
+    int count = 0;
+    while (zais.getNextZipEntry() != null) {
+        count++;
+        if (count > 1) {
+            fail("Should have reached end of archive");
+        }
+        byte[] buf = new byte[1024];
+        int read = 0;
+        while ((read = zais.read(buf, 0, 1024)) > 0) {
+        }
+    }
+    assertEquals(1, count);
+}

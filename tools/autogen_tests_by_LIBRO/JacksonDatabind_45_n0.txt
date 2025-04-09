@@ -1,0 +1,19 @@
+public void testIssue1154() throws Exception {
+    Bean1 bean1 = new Bean1();
+    bean1.setNumber1(new BigDecimal("1234.567"));
+
+    Bean2 bean2 = new Bean2();
+    bean2.setNumber2(new BigDecimal("9876.543"));
+
+    List<Bean1> bean1List = new ArrayList<>();
+    bean1List.add(bean1);
+    Bean3 bean3 = new Bean3();
+    bean3.setBean1List(bean1List);
+    bean3.setBean2(bean2);
+
+    String json = mapper.writeValueAsString(bean3);
+    assertEquals("{\"bean1List\":[{\"number1\":1234.567}],\"bean2\":{\"number2\":9876.543}}", json);
+
+    Bean3 result = mapper.readValue(json, Bean3.class);
+    assertEquals(new BigDecimal("1234.567"), result.getBean1List().get(0).getNumber1());
+    assertEquals

@@ -1,0 +1,14 @@
+public void testIssue7() {
+    String script = "if (e.onchange) {\n" +
+            "  e.onchange({\n" +
+            "    _extendedByPrototype: Prototype.emptyFunction,\n" +
+            "    target: e\n" +
+            "  });\n" +
+            "}";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, script, options);
+    assertTrue(result.success);
+    assertEquals(EXPECTED, compiler.toSource());
+}

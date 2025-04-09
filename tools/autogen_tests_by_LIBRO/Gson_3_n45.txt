@@ -1,0 +1,13 @@
+public void testConcurrentNavigableMap() {
+    Gson gson = new Gson();
+
+    List<Integer> list = Arrays.asList(1, 2, 3);
+    ConcurrentNavigableMap<String, List<Integer>> map = new ConcurrentSkipListMap<>();
+    map.put("test", list);
+
+    String s = gson.toJson(map);
+    assertEquals("{\"test\":[1,2,3]}", s);
+
+    Map<String, List<Integer>> result = gson.fromJson(s, map.getClass());
+    assertEquals(map, result);
+}

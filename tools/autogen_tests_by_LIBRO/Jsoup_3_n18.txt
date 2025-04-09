@@ -1,0 +1,20 @@
+public void testIssueJtidy59() throws IOException {
+    String input = "<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <table id=\"myTable\">\n" +
+            "  </table>\n" +
+            " </body>\n" +
+            "</html>";
+
+    Document doc = Jsoup.parse(input, "", Parser.xmlParser());
+    Element table = doc.getElementById("myTable");
+    table.append("<tr><td>Cell</td></tr>");
+    assertEquals("<table id=\"myTable\">\n" +
+            " <tbody>\n" +
+            "  <tr>\n" +
+            "   <td>Cell</td>\n" +
+            "  </tr>\n" +
+            " </tbody>\n" +
+            "</table>", doc.body().html());
+}

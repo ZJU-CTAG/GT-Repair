@@ -1,0 +1,18 @@
+public void testIssue114() {
+    DateTimeFormatterParser[] parsers = new DateTimeFormatterParser[] {
+        DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss").getPrinter().getParsers().get(0),
+        DateTimeFormat.forPattern("yyyy-MM-dd").getPrinter().getParsers().get(0),
+    };
+    String[] dates = {
+        "1970-01-01T00:00:00",
+        "1970-01-01",
+    };
+    for (int i = 0; i < parsers.length; i++) {
+        String date = dates[i];
+        DateTimeFormatterParser parser = parsers[i];
+        DateTimeParserInternalParser internalParser = (DateTimeParserInternalParser)parser;
+        for (int j = 0; j < date.length(); j++) {
+            InternalParserSettings settings = new InternalParserSettings();
+            settings.setCaseSensitive(false);
+            internalParser.parseInto(settings, date, 0, j);
+            if (j > 0) {

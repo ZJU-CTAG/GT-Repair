@@ -1,0 +1,15 @@
+public void testXmlSerializerProviderDoesNotUseWithRootNameConfigForNull() throws Exception {
+    final String rootNameForNull = "Null";
+    final String xml = new XmlMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .writer()
+            .withRootName(rootNameForNull)
+            .writeValueAsString(new TestClass());
+
+    final String expectedXml = String.format("<%s/>", rootNameForNull);
+    assertEquals(expectedXml, xml);
+}
+
+public class TestClass {
+
+}

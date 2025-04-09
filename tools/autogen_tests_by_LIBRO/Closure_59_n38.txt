@@ -1,0 +1,15 @@
+public void testIssue() {
+    String[] expected = {"Expected ';' at end of statement.", "Missing semicolon."};
+    for (String flag : new String[]{"--warning_level VERBOSE", "--jscomp_error globalThis", "--jscomp_error nonStandardJsDocs"}) {
+        Compiler.setLoggingLevel(Level.FINE);
+        Result result = (new ClosureCompiler(flag)).compile("this;");
+        assertEquals(flag, 2, result.warnings.length);
+        for (int i = 0; i < 2; i++) {
+            assertThat(result.warnings[i].toString(), containsString(expected[i]));
+        }
+    }
+    String flag = "--warning_level VERBOSE --jscomp_off globalThis --jscomp_off nonStandardJsDocs";
+    Compiler.setLoggingLevel(Level.FINE);
+    Result result = (new ClosureCompiler(flag)).compile("this;");
+    assertEquals(1, result.warnings.length);
+    assertThat(result.warnings[

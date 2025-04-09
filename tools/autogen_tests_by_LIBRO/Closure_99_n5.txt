@@ -1,0 +1,17 @@
+public void testPrototype() {
+    String js = "/** @constructor */ function MyClass() {}\n" +
+                "MyClass.prototype[\"MyMethod\"] = function(a) { this.a = a; }\n" +
+                "window[\"MyClass\"] = MyClass;\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    List<SourceFile> inputs = ImmutableList.of(
+        SourceFile.fromCode("input", js));
+    CompilerPass[] passes = {
+        new ProcessClosurePrimitives(
+            compiler, CheckLevel.WARNING, false, null, null)};
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,
+                            CheckLevel.WARNING);
+    compiler.compile(ImmutableList.<SourceFile>of(), inputs, options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarnings().length);
+}

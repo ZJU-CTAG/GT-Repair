@@ -1,0 +1,22 @@
+public void testIssue111() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+                CompilerOptions.builder()
+                .setOutputCharset(Charsets.UTF_8)
+                .setSourcemapIncludeSourcesContent(true)
+                .setPrettyPrint(true)
+                .setExterns(
+                            Lists.newArrayList(
+                                               Source.newBuilder("js", Resources.getResource("jquery.js"), "jquery.js").build()
+                                               )
+                            )
+                .setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS)
+                .addInput(
+                          Source.newBuilder("js", Resources.getResource("issue111.js"), "issue111.js").build()
+                          )
+                .build()
+                );
+    assertTrue(result.success);
+    String output = result.compiledSource;
+    assertTrue(output.contains("goog.require(\"goog.userAgent\");"));
+}

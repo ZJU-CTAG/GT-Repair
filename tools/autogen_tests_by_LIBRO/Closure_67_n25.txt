@@ -1,0 +1,10 @@
+public void testAdvancedCompilation() {
+    String code = " function A() { this._x = 1; } A.prototype['func1'] = // done to save public reference to func1 A.prototype.func1 = function() { this._x = 2; this.func2(); } A.prototype.func2 = function() { this._x = 3; this.func3(); } window['A'] = A;";
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.QUIET.setOptionsForWarningLevel(options);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(null, null, options, new Result(new PrintStream(new ByteArrayOutputStream())));
+    boolean result = compiler.compile(null, null, options, new Result(new PrintStream(new ByteArrayOutputStream())));
+    assertTrue(result);
+}

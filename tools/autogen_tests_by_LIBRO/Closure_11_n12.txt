@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(CheckLevel.WARNING);
+    options.setCheckSuspiciousCode(true);
+    options.setExtraAnnotationNames(Collections.singleton("jsdoc"));
+    compiler.compile(
+        SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode("repro.js",
+            LINE_JOINER.join(
+                "var makeClass = function(protoMethods) {",
+                " var clazz = function() {",
+                " this.initialize.apply(this, arguments);",
+                " }",
+                " for (var i in protoMethods) {",
+                " cl

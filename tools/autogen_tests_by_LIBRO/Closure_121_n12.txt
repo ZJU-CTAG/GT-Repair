@@ -1,0 +1,21 @@
+public void testIssue108() {
+    MutableDateTime now = new MutableDateTime();
+    now.setHourOfDay(0);
+    now.setMinuteOfHour(0);
+    now.setSecondOfMinute(0);
+    now.setMillisOfSecond(0);
+    MutableDateTime endOfYear = now.year().roundCeilingCopy();
+    endOfYear.addDays(-1);
+    HourOfDay mdt = new HourOfDay(now, endOfYear);
+    MutableDateTime copy = new MutableDateTime(now);
+    MutableDateTime copy2 = new MutableDateTime(now);
+    for (int i = 0; i < 24; i++) {
+        mdt.doIncrement();
+        now.addHours(1);
+        assertEquals(now, mdt.getDateTime());
+        mdt.doIncrement();
+        now.addHours(1);
+        assertEquals(now, mdt.getDateTime());
+        mdt.doIncrement();
+        now.addHours(1);
+        assertEquals(now

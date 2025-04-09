@@ -1,0 +1,15 @@
+public void testJsonParserSequence() throws Exception {
+        String json1 = "{\"test\":\"test\"}";
+        String json2 = "{\"test2\":\"test2\"}";
+
+        final JsonParser jp1 = MAPPER.getFactory().createJsonParser(json1);
+        final JsonParser jp2 = MAPPER.getFactory().createJsonParser(json2);
+
+        JsonParserSequence sequence = JsonParserSequence.createFlattened(jp1, jp2);
+        assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+        assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+        assertEquals(JsonToken.VALUE_STRING, sequence.nextToken());
+        assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+        assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+        assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+        assertEquals(JsonToken.VALUE_STRING, sequence.nextToken

@@ -1,0 +1,14 @@
+public void testNodeSet() {
+    String xml = "<root><a><b/></a><a><b/></a></root>";
+    JXPathContext context = JXPathContext.newContext(XMLUtils.stringToDOM(xml));
+    context.setLenient(true);
+    context.registerNamespace("ems", MyFunction.class);
+    context.registerNamespace("test", TestFunctions.class);
+    context.registerFunction("test:nodeSet", TestFunctions.class, "nodeSet");
+
+    // test:nodeSet()/name successfully iterates over the child nodes
+    assertXPathValueIterator(context, "test:nodeSet()/name", "b", "b");
+
+    // ems:observations() returns a NodeSet with no children
+    assertXPathValueIterator(context, "ems:observations()", "");
+}

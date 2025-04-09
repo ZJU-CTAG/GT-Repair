@@ -1,0 +1,12 @@
+public void testOptimization() {
+  CompilerOptions options = new CompilerOptions();
+  options.setPrettyPrint(true);
+  options.setOptimizationLevel(OptimizationLevel.ADVANCED_OPTIMIZATIONS);
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+      "var variable = confirm(\"value from user\");\n" +
+      "var array = [ \"constant\", variable ];\n" +
+      "alert( array.join(\",\") );",
+      options);
+  assertEquals("var a=[\"constant\",confirm(\"value from user\")];alert(a.join());\n", result.compiledCode);
+}

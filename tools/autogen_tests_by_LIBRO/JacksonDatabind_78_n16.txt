@@ -1,0 +1,7 @@
+public void testDeserializationOfPolymorphicType() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "class");
+    assertEquals(Integer.class, mapper.readValue("[\"org.joda.time.DateTime\",{\"zone\":{\"$id\":\"1\"},
+            \"chronology\":{\"$id\":\"2\"},\"iLocalMillis\":\"0\",\"iChronology\":{\"$ref\":\"2\"}}]",
+            TypeReference.of(Integer.class)).getClass());
+}

@@ -1,0 +1,23 @@
+public void testIssue081() {
+    ArgumentBuilder aBuilder = new ArgumentBuilder();
+    aBuilder.withName("num").withMinimum(1).withMaximum(1);
+    Argument numArg = aBuilder.create();
+
+    OptionBuilder oBuilder = new OptionBuilder();
+    oBuilder.withLongName("num").withArgument(numArg);
+    Option numOpt = oBuilder.create();
+
+    GroupBuilder gBuilder = new GroupBuilder();
+    gBuilder.withOption(numOpt);
+    Group options = gBuilder.create();
+
+    Parser parser = new Parser();
+    parser.setGroup(options);
+    try {
+        CommandLine commandLine = parser.parse(new String[]{"--num", "-0.1"});
+        assertEquals("-0.1", commandLine.getValue("num"));
+    } catch (CommandLineParserException e) {
+        e.printStackTrace();
+        fail("Unexpected exception");
+    }
+}

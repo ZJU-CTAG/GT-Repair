@@ -1,0 +1,19 @@
+public void testMixinAnnotations() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        private static final long serialVersionUID = 1L;
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS);
+            context.disable(MapperFeature.AUTO_DETECT_FIELDS);
+            context.disable(MapperFeature.AUTO_DETECT_GETTERS);
+            context.disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
+            context.disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+            context.setMixInAnnotation(ContactImpl.class, ContactMixin.class);
+        }
+    });
+    final PersonImpl person = new PersonImpl();
+    person.setCity("city");
+    final StringWriter writer = new StringWriter();
+    mapper.writeValue(writer,

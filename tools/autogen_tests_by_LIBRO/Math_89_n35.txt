@@ -1,0 +1,15 @@
+public void testComparable() {
+    final Object OBJ = new Object();
+    final Frequency f = new Frequency();
+    f.addValue(new Integer(1));
+    f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    assertEquals(1, f.getCount(OBJ));
+    assertEquals(0d, f.getPct(OBJ), 0.000001);
+    f.addValue(new Integer(1));
+    try {
+        f.addValue(OBJ); // This ought to succeed, following the first add
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+}

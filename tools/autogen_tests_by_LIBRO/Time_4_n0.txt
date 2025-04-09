@@ -1,0 +1,20 @@
+public void testIssue109() {
+    Partial a = new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(year(), 1).with(hourOfDay(), 1);
+    assertEquals(a, b);
+    
+    // This fails
+    try {
+        new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1}); // throws Types array must not contain duplicate
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+    
+    // This passes
+    Partial p = new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1);
+    assertEquals(1, p.getValue(clockhourOfDay()));
+    assertEquals(1, p.getValue(hourOfDay()));
+    
+    // This fails
+    Partial clock = new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1);
+    Partial hour = new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1);

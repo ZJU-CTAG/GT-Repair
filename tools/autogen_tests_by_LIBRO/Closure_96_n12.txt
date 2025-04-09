@@ -1,0 +1,28 @@
+public void testVarArgsMismatch() {
+    String source = lines(
+//-------------------------------------
+// ==ClosureCompiler==
+// @compilation\_level SIMPLE\_OPTIMIZATIONS
+// @warning\_level VERBOSE
+// @output\_file\_name default.js
+// @formatting pretty\_print
+// ==/ClosureCompiler==
+
+/\*\*
+\* @param {...string} var\_args
+\*/
+function foo(var\_args) {
+ return arguments.length;
+}
+
+foo('hello'); // no warning - ok
+foo(123); // warning - ok
+foo('hello', 123); // no warning! error.
+//-------------------------------------
+);
+    test(
+        source,
+        "function foo(var_args) {return arguments.length;} foo('hello'); foo(123); foo('hello', 123);",
+        null,
+        TypeCheck.WRONG_ARGUMENT_COUNT);
+}

@@ -1,0 +1,14 @@
+public void testTimeSeriesCreateCopy() {
+    TimeSeries s1 = new TimeSeries("Series 1", Day.class);
+    s1.add(new Day(1, 1, 2007), 1.0);
+    s1.add(new Day(2, 1, 2007), 2.0);
+    TimeSeries s2 = null;
+    try {
+        s2 = s1.createCopy(new Day(1, 1, 2007), new Day(2, 1, 2007));
+    } catch (CloneNotSupportedException e) {
+        e.printStackTrace();
+    }
+    assertEquals(s1.getItemCount(), s2.getItemCount());
+    assertEquals(s1.getValue(0), s2.getValue(0));
+    assertEquals(s1.getValue(1), s2.getValue(1));
+}

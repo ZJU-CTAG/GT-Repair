@@ -1,0 +1,17 @@
+public void testIssue107() {
+    // Test for valid maxResultSize for encodeBase64
+    String unencodedString = "Test string for base64 conversion";
+    byte[] unencoded = unencodedString.getBytes();
+    String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(unencoded);
+
+    int maxResultSize = 500;
+    byte[] encoded = org.apache.commons.codec.binary.Base64.encodeBase64(unencoded, false, false, maxResultSize);
+    assertEquals(encodedString, new String(encoded));
+
+    maxResultSize = 120;
+    encoded = org.apache.commons.codec.binary.Base64.encodeBase64(unencoded, false, false, maxResultSize);
+    assertEquals(encodedString, new String(encoded));
+
+    maxResultSize = encodedString.length();
+    encoded = org.apache.commons.codec.binary.Base64.encodeBase64(unencoded, false, false, maxResultSize);
+    assertEquals

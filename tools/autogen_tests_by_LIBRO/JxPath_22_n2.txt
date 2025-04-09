@@ -1,0 +1,14 @@
+public void testIssue141() throws Exception {
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    Element root = doc.createElement("element");
+    root.setAttribute("xmlns", "test111");
+    doc.appendChild(root);
+    root.appendChild(doc.createElement("test"));
+    DOMNodePointer pointer = new DOMNodePointer(root);
+    pointer.setNamespaceResolver(new DefaultNamespaceResolver());
+    pointer.getNamespaceResolver().registerNamespace("test111", "test111");
+    pointer.getNamespaceResolver().registerNamespace("bla", "bla");
+    pointer.getValuePointer().getPropertyValue("/test");
+    String path = pointer.getValuePointer().getPropertyValue("/test").asPath();
+    assertEquals("/element[1]/test[1]", path);
+}

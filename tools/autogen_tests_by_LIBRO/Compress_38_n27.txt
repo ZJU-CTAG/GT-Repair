@@ -1,0 +1,15 @@
+public void testPaxHeaderFails() throws Exception {
+    FileInputStream fin = null;
+    try {
+        fin = new FileInputStream("/path/to/docker-image-layer.tar");
+        TarArchiveInputStream tin = new TarArchiveInputStream(fin);
+
+        for (TarArchiveEntry entry; (entry = tin.getNextTarEntry()) != null; ) {
+            if (!entry.isDirectory()) {
+                System.out.println("Entry " + entry.getName() + " is not a directory");
+            }
+        }
+    } finally {
+        IOUtils.closeQuietly(fin);
+    }
+}

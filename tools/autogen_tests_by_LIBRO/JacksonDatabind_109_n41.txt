@@ -1,0 +1,9 @@
+public void testIssue107() {
+    JsonFactory jf = new JsonFactory();
+    jf.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    ObjectMapper om = new ObjectMapper(jf);
+    JavaType type = om.getTypeFactory().constructType(BigDecimal.class);
+    BigDecimal decimal = new BigDecimal("0.0000000005");
+    String json = om.writeValueAsString(decimal);
+    assertEquals(decimal, om.readValue(json, type));
+}

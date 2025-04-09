@@ -1,0 +1,16 @@
+public void testMixedContent() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    WindSpeed ws = new WindSpeed();
+    ws.setUnits("kt");
+    ws.setSource("xx");
+    ws.setValue(27);
+    WindSpeed.Radius r = new WindSpeed.Radius();
+    r.setSector("xx");
+    r.setUnits("xx");
+    r.setValue(20);
+    List<WindSpeed.Radius> rs = new ArrayList<>();
+    rs.add(r);
+    ws.setRadius(rs);
+    String result = mapper.writeValueAsString(ws);
+    assertEquals("{\"windSpeed\":{\"@units\":\"kt\",\"@source\":\"xx\",\"#text\":27,\"radius\":{\"@sector\":\"xx\",\"@units\":\"xx\",\"#text\":20}}}", result);
+}

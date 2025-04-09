@@ -1,0 +1,8 @@
+public void testBigDecimalMapping() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    mapper.addMixInAnnotations(Object.class, Mixin.class);
+    Wrapper w = mapper.readValue("{\"type\":\"BIG_DECIMAL\",\"objectValue\":-10000000000.0000000001}", Wrapper.class);
+    assertEquals(new BigDecimal("-10000000000.0000000001"), w.value);
+}

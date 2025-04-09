@@ -1,0 +1,11 @@
+public void testProblemWithObjectIdAndTypeId() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    final JsonSerializer<Object> serializer = mapper.getSerializerProviderInstance().findValueSerializer(String.class, null);
+    assertThat(serializer, instanceOf(ObjectIdSerializer.class));
+
+    final String json = mapper.writeValueAsString(new String("abc"));
+    assertEquals("{\"@id\":1,\"@type\":\"String\",\"value\":\"abc\"}", json);
+}

@@ -1,0 +1,20 @@
+public void testDelete() throws Exception {
+    String[] expected = {"test1.xml", "test2.xml"};
+    ArArchiveEntry[] entries = new ArArchiveEntry[expected.length];
+    for(int i=0; i<expected.length; i++) {
+        entries[i] = new ArArchiveEntry(expected[i]);
+        entries[i].setSize(expected[i].length());
+    }
+
+    File arFile = new File(getTestDirectory(), "bla.ar");
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(arFile));
+    for(int i=0; i<entries.length; i++) {
+        out.putArchiveEntry(entries[i]);
+        out.write(expected[i].getBytes());
+        out.closeArchiveEntry();
+    }
+    out.close();
+
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(arFile));
+    ArArchiveEntry entry = in.getNextEntry();
+    assertEquals(expected[0], new String(entry

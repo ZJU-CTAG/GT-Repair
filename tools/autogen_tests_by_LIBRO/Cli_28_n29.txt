@@ -1,0 +1,18 @@
+public void testDefaultOptions() {
+    Options options = new Options();
+    options.addOption("a", "alpha", false, "A is for Alpha");
+    options.addOption("b", "beta", true, "B is for Beta");
+    options.addOption("c", "charlie", false, "C is for Charlie");
+
+    Properties defaults = new Properties();
+    defaults.setProperty("a", "true");
+    defaults.setProperty("b", "b");
+    defaults.setProperty("c", "false");
+
+    Parser parser = new PosixParser();
+    CommandLine commandLine = parser.parse(options, defaults);
+
+    assertTrue(commandLine.hasOption("a"));
+    assertEquals("b", commandLine.getOptionValue("b"));
+    assertTrue(!commandLine.hasOption("c"));
+}

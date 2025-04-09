@@ -1,0 +1,21 @@
+public void testIssue91() {
+    DateTimeFieldType[] types = new DateTimeFieldType[] { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() };
+    int[] values = new int[] {1, 1};
+    try {
+        new Partial(types, values);
+    } catch (Exception ex) {
+        log.info("ok");
+        // this should throw an error
+    }
+
+    Partial a = new Partial(DateTimeFieldType.clockhourOfDay(), 1);
+    Partial b = new Partial(DateTimeFieldType.hourOfDay(), 1);
+    Partial c = a.with(b);
+    assertNotNull(c);
+    try {
+        assertTrue(c.equals(b.with(a)));
+    } catch (Exception ex) {
+        log.info("ok");
+        // this should throw an error
+    }
+}

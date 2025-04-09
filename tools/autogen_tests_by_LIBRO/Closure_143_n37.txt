@@ -1,0 +1,8 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.addAlias("VERSION", "1.0.0", true);
+    Compiler compiler = new Compiler(System.out);
+    compiler.compile(Collections.<SourceFile>emptyList(),
+            Collections.singletonList(SourceFile.fromCode("test.js", "var x = VERSION;")), options);
+    assertEquals("var x = 1.0.0;", compiler.toSource());
+}

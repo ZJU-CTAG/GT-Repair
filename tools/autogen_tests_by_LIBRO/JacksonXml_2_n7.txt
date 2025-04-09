@@ -1,0 +1,7 @@
+public void testMixedContent() throws IOException {
+    String s = "{\"windSpeed\":{\"@units\":\"kt\",\"$\":27,\"radius\":{\"@sector\":\"NE\",\"@units\":\"kt\",\"$\":20}}}";
+    WindSpeed ws = new ObjectMapper().readValue(s, WindSpeed.class);
+    assertEquals(27, ws.getValue());
+    assertEquals(20, ws.getRadius().get(0).getValue());
+    assertEquals("NE", ws.getRadius().get(0).getSector());
+}

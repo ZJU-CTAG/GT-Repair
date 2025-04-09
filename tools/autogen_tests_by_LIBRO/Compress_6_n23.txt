@@ -1,0 +1,20 @@
+public void testIssue120() {
+    File testFile = new File("test.zip");
+    FileOutputStream os = new FileOutputStream(testFile);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os);
+    zos.setEncoding(CharsetNames.ISO_8859_1);
+    zos.setMethod(ZipArchiveOutputStream.DEFLATED);
+
+    // set up 1000 files with a hash collision
+    for (int i = 0; i < 1000; i++) {
+        ZipArchiveEntry ze = new ZipArchiveEntry(String.format("a%04d", i));
+        zos.putArchiveEntry(ze);
+        zos.write(new byte[] { 'a' });
+        zos.closeArchiveEntry();
+    }
+
+    // add a different file - this should not be overwritten
+    ZipArchiveEntry ze = new ZipArchiveEntry(String.format("b%04d", 1));
+    zos.putArchiveEntry(ze);
+    zos.write(new byte[] { 'b' });
+    zos.closeArch

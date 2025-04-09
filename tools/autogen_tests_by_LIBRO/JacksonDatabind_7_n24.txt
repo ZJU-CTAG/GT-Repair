@@ -1,0 +1,26 @@
+public void testTokenBufferDelegateDeserialization() throws Exception {
+    String json = "{ \"a\":1, \"b\":null }";
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue(json, Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+
+static class Value {
+    Integer a;
+    Object b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value value = new Value();
+        JsonParser parser = buffer.asParser();
+        while (parser.nextToken() != JsonToken.END_OBJECT) {
+            parser.nextToken();
+            String name = parser.getCurrentName();
+            if (name.equals("a")) {
+                value.a = parser.getIntValue();
+            } else if (name.equals("b")) {
+                value.b = parser.readValueAs(Object.class);
+            }
+        }
+        if (parser.nextToken() != JsonToken.END_OBJECT

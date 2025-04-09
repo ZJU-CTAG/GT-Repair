@@ -1,0 +1,12 @@
+public void testIssue110() throws IOException {
+    String html = "<div class=\"a-row a-spacing-medium\"><span class=\"a-size-base\">I'll Ship & Pay</span>\n" +
+        "            <span class=\"a-color-price\">Varies</span>\n" +
+        "            <span class=\"a-size-base\">Time left:</span>\n" +
+        "            <span class=\"a-size-base\">1d 2h</span>\n" +
+        "            <span class=\"a-size-base\"></span></div>";
+    Document doc = Jsoup.parse(html);
+
+    Elements els = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)");
+    assertEquals(1, els.size());
+    assertEquals("I'll Ship & Pay", els.get(0).text());
+}

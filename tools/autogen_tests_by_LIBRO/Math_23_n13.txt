@@ -1,0 +1,15 @@
+public void testBug() {
+    UnivariateRealFunction function = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return Math.abs(x);
+        }
+    };
+    UnivariateRealPointValuePair result = new BrentOptimizer(1e-10, 1e-14).optimize(
+            new MaxEval(Integer.MAX_VALUE),
+            new UnivariateRealFunctionAdapter(function),
+            GoalType.MINIMIZE,
+            new SearchInterval(-1, 1));
+    Assert.assertEquals(0, result.getPoint(), 1e-14);
+    Assert.assertEquals(0, result.getValue(), 1e-14);
+}

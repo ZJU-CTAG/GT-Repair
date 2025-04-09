@@ -1,0 +1,20 @@
+public void testIssue111() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(getClass().getClassLoader(),
+        ImmutableList.<SourceFile>of(SourceFile.fromCode("test.js",
+            "/** @constructor */\n"
+            + "var myclass = function() {\n"
+            + "}\n"
+            + "/** @param {boolean} success */\n"
+            + "myclass.prototype.fn = function(success) {\n"
+            + "}\n"
+            + "myclass.prototype.test = function() {\n"
+            + "  this.fn();\n"
+            + "  this.fn = function() { };\n"
+            + "}\n"
+            + "var obj = new myclass();\n"
+            + "obj.test();\n"
+        )));
+    assertWithMessage("No errors expected").that(result.errors).isEmpty();
+    assertWithMessage("No warnings expected").that(result.warnings).isEmpty();
+}

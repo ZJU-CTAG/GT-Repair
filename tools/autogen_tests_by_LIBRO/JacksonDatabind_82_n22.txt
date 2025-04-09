@@ -1,0 +1,8 @@
+public void testIssue67() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonTest json = new JsonTest("user", "password");
+    String jsonString = mapper.writeValueAsString(json);
+    assertEquals("{\"username\":\"user\"}", jsonString);
+    json = mapper.readValue(jsonString, JsonTest.class);
+    assertEquals("password", json.getPassword());
+}

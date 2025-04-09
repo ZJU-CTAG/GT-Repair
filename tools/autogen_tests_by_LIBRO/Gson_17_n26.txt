@@ -1,0 +1,22 @@
+public void testDefaultDateTypeAdapter_nullability() {
+    final Gson gson = new Gson();
+
+    final DefaultDateTypeAdapter adapter = new DefaultDateTypeAdapter();
+    final JsonReader reader = new JsonReader(new StringReader("null"));
+    reader.setLenient(true);
+    assertNull(adapter.read(reader));
+    assertTrue(reader.peek() == JsonToken.END_DOCUMENT);
+
+    assertEquals("null", gson.toJson(null, java.util.Date.class));
+}
+
+public void testDefaultDateTypeAdapter_primitivesContract() {
+    final Gson gson = new Gson();
+
+    final DefaultDateTypeAdapter adapter = new DefaultDateTypeAdapter();
+    final JsonReader reader = new JsonReader(new StringReader("\"2018-11-12 14:29:16.160\""));
+    reader.setLenient(true);
+    final Date date = adapter.read(reader);
+    assertFalse(reader.peek() == JsonToken.END_DOCUMENT);
+
+    assertEquals("\"2018-11-

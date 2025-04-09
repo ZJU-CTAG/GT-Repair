@@ -1,0 +1,15 @@
+public void testOptimizer() {
+    OptimizationData[] data = new OptimizationData[] {new MaxEval(1000), new Target(new double[] {1}), new Weight(new double[] {1}), new InitialGuess(new double[] {3}), new ModelFunction(new MultivariateVectorFunction() {
+        public double[] value(double[] point) throws IllegalArgumentException {
+            return new double[] {FastMath.pow(point[0], 4)};
+        }
+    }), new ModelFunctionJacobian(new MultivariateMatrixFunction() {
+        public double[][] value(double[] point) throws IllegalArgumentException {
+            return new double[][] {{0.25 * FastMath.pow(point[0], 3)}};
+        }
+    })};
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    optimizer.optimize(data);
+    assertTrue(optimizer.getEvaluations() > 0);
+    assertTrue(optimizer.getIterations() > 0);
+}

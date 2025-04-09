@@ -1,0 +1,15 @@
+public void testIssue144() {
+    JSError[] warnings = lintGlobally("var NS = { "
+            + "read: function() { "
+            + "return this.foo; " // does not warn in 0514 release
+            + "}, "
+            + "write: function() { "
+            + "this.foo = 123; " // warns in 0514 release
+            + "} }; "
+            + "NS.write2 = function() { "
+            + "this.foo = 123; }; "
+            );
+
+    assertEquals(1, warnings.length);
+    assertEquals(JSDocInfo.Visibility.INHERITED, warnings[0].getDefaultVisibility());
+}

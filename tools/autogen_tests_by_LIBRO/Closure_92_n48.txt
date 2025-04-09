@@ -1,0 +1,15 @@
+public void testNamespaces() throws IOException {
+    final StringWriter writer = new StringWriter();
+    final CodeGenerator generator = new CodeGenerator(new CodeBuilder(writer));
+    final JsProgram program = new JsProgram();
+    final JsRootScope rootScope = program.getScope();
+    final JsModule moduleA = new JsModule(generator, "A");
+    rootScope.addName(new JsName(rootScope, "apps"), moduleA);
+    program.addModule(moduleA);
+    final JsModule moduleB = new JsModule(generator, "B");
+    rootScope.addName(new JsName(rootScope, "apps"), moduleB);
+    final JsName nameB = rootScope.declareName("apps.foo.bar.B");
+    program.addModule(moduleB);
+    final JsModule moduleC = new JsModule(generator, "C");
+    rootScope.addName(new JsName(rootScope, "apps"), moduleC);
+    final JsName nameC = rootScope.declareName("apps.foo.

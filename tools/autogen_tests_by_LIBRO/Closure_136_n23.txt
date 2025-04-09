@@ -1,0 +1,20 @@
+public void testSuper() {
+    String source = "" +
+    "var Foo = Class.create({\n" +
+    "    initialize: function (name) {\n" +
+    "        this.name = name;\n" +
+    "    },\n" +
+    "    speak: function () {\n" +
+    "        return 'my name is ' + this.name;\n" +
+    "    }\n" +
+    "});\n" +
+    "var Bar = Class.create(Foo, {\n" +
+    "    speak: function ($super) {\n" +
+    "        return $super() + ' and I come from bar class';\n" +
+    "    }\n" +
+    "});\n" +
+    "var b = new Bar('b');\n" +
+    "assertEquals('my name is b and I come from bar class', b.speak());\n";
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("test.js

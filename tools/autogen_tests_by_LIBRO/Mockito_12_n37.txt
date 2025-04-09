@@ -1,0 +1,11 @@
+public void testIssue() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    List<String> list = Arrays.asList("one");
+    service.doSomething(list.toArray(new String[list.size()]));
+    verify(service).doSomething(captor.capture());
+    assertEquals(captor.getValue(), new String[] {"one"});
+}
+
+public interface Service {
+    void doSomething(String... strings);
+}

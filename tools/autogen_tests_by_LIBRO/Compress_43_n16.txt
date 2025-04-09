@@ -1,0 +1,23 @@
+public void testVersionNeededToExtract() throws IOException {
+    final byte[] buf = new byte[1024];
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+    zaos.setUseLanguageEncodingFlag(true);
+    zaos.setMethod(ZipEntry.DEFLATED);
+    zaos.setEncoding("ISO-8859-1");
+
+    final ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("test.txt");
+    zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
+    zipArchiveEntry.setTime(0);
+    zaos.putArchiveEntry(zipArchiveEntry);
+
+    final String message = "test";
+    final byte[] bytes = message.getBytes("UTF-8");
+    zaos.write(bytes);
+    zaos.closeArchiveEntry();
+    zaos.close();
+
+    final byte[] zipBytes = baos.toByteArray();
+
+    final int cdOffset = findCentralDirectoryOffset(zipBytes);
+    final

@@ -1,0 +1,20 @@
+public void testFinish() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos = new TarArchiveOutputStream(baos);
+    aos.putArchiveEntry(new TarArchiveEntry("foo.txt"));
+    aos.write("foo".getBytes());
+    aos.closeArchiveEntry();
+    aos.putArchiveEntry(new TarArchiveEntry("bar.txt"));
+    aos.write("bar".getBytes());
+    aos.closeArchiveEntry();
+    aos.finish();
+    aos.close();
+    baos.flush();
+    baos.close();
+    final byte[] data = baos.toByteArray();
+    final ArchiveInputStream ais = new TarArchiveInputStream(new ByteArrayInputStream(data));
+    ArchiveEntry ae = ais.getNextEntry();
+    assertNotNull(ae);
+    assertEquals("foo.txt", ae.getName());
+    assertEquals(3, ae.getSize());
+    byte[] b = new byte[3

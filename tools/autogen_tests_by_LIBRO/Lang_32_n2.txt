@@ -1,0 +1,12 @@
+public void testMemoryLeak() throws InterruptedException, IOException {
+    Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+        @Override public void uncaughtException(Thread t, Throwable e) {
+            System.err.println("Exception in thread: " + t.getName());
+            e.printStackTrace();
+        }
+    });
+    for (int i = 0; i < 10; i++) {
+        System.gc();
+        Thread.sleep(20000);
+    }
+}

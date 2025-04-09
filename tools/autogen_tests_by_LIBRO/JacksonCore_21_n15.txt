@@ -1,0 +1,19 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"a\":123, \"array\":[1,2], \"ob\": { \"value0\":2, \"value\":3, \"value2\":4 }, \"b\":true}";
+    String expected = "{\"ob\":{\"value\":3}}";
+    StringReader sr = new StringReader(json);
+    JsonParser p0 = mapper.getJsonFactory().createJsonParser(sr);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+            );
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = mapper.getJsonFactory().createJsonGenerator(sw);
+    while (p.nextToken() != null) {
+        g.copyCurrentEvent(p);
+    }
+    String out = sw.toString();
+    assertEquals(expected, out);
+}

@@ -1,0 +1,11 @@
+public void testProperties() throws Exception {
+    Properties p = new Properties();
+    p.setProperty("a", "xyz");
+    p.setProperty("b", "abc");
+    String json = mapper.writeValueAsString(p);
+    assertEquals("{\"a\":\"xyz\",\"b\":\"abc\"}", json);
+    Map<?,?> map = mapper.readValue(json, Map.class);
+    assertEquals(2, map.size());
+    assertEquals("xyz", map.get("a"));
+    assertEquals("abc", map.get("b"));
+}

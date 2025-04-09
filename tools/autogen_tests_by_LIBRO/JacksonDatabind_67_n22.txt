@@ -1,0 +1,25 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addKeyDeserializers(new KeyDeserializers() {
+                @Override
+                public KeyDeserializer findKeyDeserializer(JavaType type, DeserializationConfig config, BeanDescription beanDesc) {
+                    return new KeyDeserializer() {
+                        @Override
+                        @SuppressWarnings("unchecked")
+                        public Object deserializeKey(String key, DeserializationContext ctxt)
+                                throws IOException, JsonProcessingException {
+                            Class rawClass = type.getRawClass();
+                            return Enum.valueOf(rawClass, key.toUpperCase());
+                        }
+                    };
+                }
+            });
+            super.setupModule(context);
+        }
+    });
+    Bean bean = mapper.readValue("{\"enum\":\"b\"}", Bean.class);
+    assertEquals(MyEnum.B, bean.

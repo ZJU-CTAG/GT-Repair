@@ -1,0 +1,16 @@
+public void testNonLinearLeastSquares() throws Exception {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            double[] y = getModel(x);
+            double sum = 0;
+            for (int i = 0; i < y.length; i++) {
+                sum += (y[i] - yMeasured[i]) * (y[i] - yMeasured[i]);
+            }
+            return sum;
+        }
+    };
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair result = optimizer.optimize(new MaxEval(100), new ObjectiveFunction(f), GoalType.MINIMIZE, new InitialGuess(new double[] { 0, 0 }), new Target(new double[] { 0, 0 }));
+    // Check result
+    assertTrue(result.getValue() != null); // fails
+    assertTrue(result.getResiduals() != null && result.getResiduals().length == yMeasured

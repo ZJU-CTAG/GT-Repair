@@ -1,0 +1,14 @@
+public void testIssue1101_2() {
+    String json = "{\n" +
+            "  \"inBig\": {\n" +
+            "    \"key\": [\n" +
+            "      { \"inSmall\": \"hello\" }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
+
+    Gson gson = new Gson();
+    BigClass obj = gson.fromJson(json, BigClass.class);
+    SmallClass small = obj.inBig.get("key").get(0);
+    assertEquals("hello", small.inSmall);
+}

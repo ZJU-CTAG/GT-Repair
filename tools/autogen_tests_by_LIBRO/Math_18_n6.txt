@@ -1,0 +1,13 @@
+public void testBounds() {
+    final double[] start = new double[] { 2.0 };
+    final double[][] bounds = new double[][] { { 1.0, 5.0 }};
+    final MultivariateFunction function = new MultivariateFunction() {
+        @Override
+        public double value(double[] parameters) {
+            return Math.sin(parameters[0]);
+        }
+    };
+    final CMAESOptimizer optimizer = new CMAESOptimizer();
+    final PointValuePair result = optimizer.optimize(new MaxEval(100), new ObjectiveFunction(function), GoalType.MAXIMIZE, new InitialGuess(start), new CMAESOptimizer.PopulationSize(3), new SimpleBounds(bounds));
+    assertEquals(Math.PI, result.getPoint()[0], 1e-14);
+}

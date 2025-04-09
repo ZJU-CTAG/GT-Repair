@@ -1,0 +1,12 @@
+public void testUnicodeExtraField() throws IOException {
+    File inputFile = getFile("/bla.zip");
+    ZipFile zipFile = new ZipFile(inputFile);
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        InputStream is = zipFile.getInputStream(entry);
+        assertNotNull(is);
+        is.close();
+    }
+    zipFile.close();
+}

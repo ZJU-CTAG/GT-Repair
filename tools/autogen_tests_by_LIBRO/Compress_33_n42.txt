@@ -1,0 +1,11 @@
+public void testDeflateZ() throws Exception {
+        InputStream is = getClass().getResourceAsStream("bla.tar.deflatez");
+        CompressorInputStream in = new CompressorStreamFactory().createCompressorInputStream(is);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        IOUtils.copy(in, out);
+        in.close();
+        is.close();
+        byte[] decompressed = out.toByteArray();
+        byte[] expected = IOUtils.toByteArray(getClass().getResourceAsStream("bla.tar"));
+        assertTrue(Arrays.equals(expected, decompressed));
+}

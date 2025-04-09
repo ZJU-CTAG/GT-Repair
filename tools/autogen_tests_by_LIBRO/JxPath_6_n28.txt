@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    String script = "$a = new String[] {'a', 'b'}; $b = 'a'; $c = 'b'; $d = $a; $a =~ 'a'; $b =~ 'a'; $c =~ 'b'; $d =~ 'a'; $d =~ 'b';";
+    Mockery mockery = new Mockery();
+    final VariableSpace space = mockery.mock(VariableSpace.class);
+    mockery.checking(new Expectations() {{
+            one(space).environmentSubstitute("${a}"); will(returnValue("[Ljava.lang.String;@1d0a3f3"));
+            one(space).environmentSubstitute("${b}"); will(returnValue("a"));
+            one(space).environmentSubstitute("${c}"); will(returnValue("b"));
+            one(space).environmentSubstitute("${d}"); will(returnValue("[Ljava.lang.String;@1d0a3f3"));
+    }});
+    Evaluator eval = new Evaluator(

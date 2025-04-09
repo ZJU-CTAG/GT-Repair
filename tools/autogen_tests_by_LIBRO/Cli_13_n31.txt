@@ -1,0 +1,20 @@
+public void testCLIWithDefaultOption() throws Exception {
+
+
+        CommandLineParser parser = new PosixParser();
+        Options options = new Options();
+        Option option = new Option("f", "foo", true, "foo");
+        option.setOptionalArg(true);
+        options.addOption(option);
+
+        Option option2 = new Option("b", "bar", true, "bar");
+        option2.setOptionalArg(true);
+        options.addOption(option2);
+
+        String[] args = new String[]{"-f defaultBar","-f","overrideBar"};
+        CommandLine cl = parser.parse( options, args );
+        assertEquals("overrideBar", cl.getOptionValue("f"));
+        args = new String[]{"-f","-b","overrideBar"};
+        cl = parser.parse( options, args );
+        assertEquals("-b", cl.getOptionValue("f"));
+    }

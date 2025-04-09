@@ -1,0 +1,25 @@
+public void test7zWriter() throws Exception {
+    final int fileCount = 7;
+    File folder = createFolderWithFiles(fileCount);
+    File zipFile = createTempFile();
+    SevenZOutputFile zipOutputFile = new SevenZOutputFile(zipFile);
+    try {
+        for (File file : folder.listFiles()) {
+            zipOutputFile.putArchiveEntry(new SevenZArchiveEntry(file.getName()));
+            zipOutputFile.write(new byte[0]);
+            zipOutputFile.closeArchiveEntry();
+        }
+    } finally {
+        zipOutputFile.close();
+    }
+}
+
+private File createFolderWithFiles(final int fileCount) throws IOException {
+    File folder = createTempFolder();
+    for (int i = 0; i < fileCount; i++) {
+        // create a new file
+        File file = File.createTempFile("file", ".txt", folder);
+        file.deleteOnExit();
+        // write some content
+        FileOutputStream outputStream = new FileOutputStream(file);
+        outputStream.write("test".getBytes());

@@ -1,0 +1,20 @@
+public void testSimplex() {
+  double[] costs = new double[]{0.12, 0.15, 0.18, 0.1};
+  double[][] constraints = new double[][]{
+      {1, 1, 0, 0}, 
+      {0, 0, 1, 1}, 
+      {1, 0, 1, 0}, 
+      {0, 1, 0, 1}, 
+      {1, 1, 1, 1}
+      };
+  double[] constraintsValues = new double[]{2000, 1500, 1000, 1000, 2500};
+  double[] result = optimize(costs, constraints, constraintsValues);
+  assertEquals(1250, result[0], 0.001);
+  assertEquals(750, result[1], 0.001);
+  assertEquals(500, result[2], 0.001);
+  assertEquals(500, result[3], 0.001);
+}
+
+private double[] optimize(double[] costs, double[][] constraints, double[] constraintsValues) {
+  SimplexSolver solver = new SimplexSolver();
+  SimplexTableau table

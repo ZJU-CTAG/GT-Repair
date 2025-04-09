@@ -1,0 +1,10 @@
+public void testKeyDeserializerForCharSequence() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.EAGER_SERIALIZER_FETCH, true);
+    mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
+    String json = "{ \"foo\": \"bar\" }";
+    Map<CharSequence, String> map;
+    map = mapper.readValue(json, new TypeReference<Map<CharSequence, String>>() {});
+    assertEquals(1, map.size());
+    assertEquals("bar", map.get("foo"));
+}

@@ -1,0 +1,20 @@
+public void testRepro() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+
+    // works fine
+    final ImmutableList<String> deserializedList =
+            mapper.readValue("[\"a\",\"b\"]", new TypeReference<ImmutableList<String>>() {
+            });
+    assertEquals("a", deserializedList.get(0));
+    assertEquals("b", deserializedList.get(1));
+
+    // works fine
+    final ImmutableList<Integer> deserializedList2 =
+            mapper.readValue("[\"a\"]", new TypeReference<ImmutableList<Integer>>() {
+            });
+    assertEquals(1, deserializedList2.size());
+    assertEquals(Integer.valueOf("a"), deserializedList2.get(0));
+

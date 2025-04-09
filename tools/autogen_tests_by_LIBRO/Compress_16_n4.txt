@@ -1,0 +1,13 @@
+public void testAiff() throws Exception {
+    InputStream is = null;
+    try {
+        is = getResource("/test-documents/testAIFF.aif");
+        ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        ArchiveInputStream ais = factory.createArchiveInputStream(is);
+        fail("Should have detected this is not a tar file");
+    } catch (ArchiveException ex) {
+        // expected
+    } finally {
+        IOUtils.closeQuietly(is);
+    }
+}

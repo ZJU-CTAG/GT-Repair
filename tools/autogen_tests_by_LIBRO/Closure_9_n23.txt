@@ -1,0 +1,16 @@
+public void testIssue804() throws Exception{
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        ImmutableList.of(
+            SourceFile.fromCode("somecode",
+                "/** @constructor */" +
+                    "function Bar(arg1) {}" +
+                    "Bar.prototype.foo = function() {};"),
+            SourceFile.fromCode("somecode",
+                "goog.require('Foo');" +
+                "new Foo();")),
+        new CompilerOptions());
+    assertTrue(result.success);
+}

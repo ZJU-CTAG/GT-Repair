@@ -1,0 +1,10 @@
+public void testTryFinallyBreak() {
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }");
+        fail("Should have thrown exception");
+    } catch (ScriptException ex) {
+        assertEquals("unhandled exception in script", ex.getMessage());
+        assertEquals("throw me", ex.getCause().getMessage());
+    }
+}

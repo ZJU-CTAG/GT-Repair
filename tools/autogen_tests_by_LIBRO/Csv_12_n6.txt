@@ -1,0 +1,13 @@
+public void testNullHeaderName() throws Exception {
+        final CSVFormat format = CSVFormat.EXCEL.withHeader();
+        final CSVParser parser = new CSVParser(new StringReader("a,b,c,,\na,b,c,d,e"), format);
+        final Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertTrue(headerMap.containsKey(""));
+        assertTrue(headerMap.containsKey("a"));
+        assertTrue(headerMap.containsKey("b"));
+        assertTrue(headerMap.containsKey("c"));
+        assertTrue(headerMap.containsKey("D"));
+        assertTrue(headerMap.containsKey("E"));
+        assertFalse(headerMap.containsKey("d"));
+
+    }

@@ -1,0 +1,16 @@
+public void testBigDecimal() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JsonSchemaModule());
+    JsonSchemaGenerator generator = new JsonSchemaGenerator(mapper);
+    JsonSchema jsonSchema = generator.generateSchema(DecimalBean.class);
+    String schemaStr = mapper.writeValueAsString(jsonSchema);
+    JsonNode root = mapper.readTree(schemaStr);
+    JsonNode props = root.path("properties");
+    assertTrue(props.isObject());
+    JsonNode type = props.path("number");
+    assertTrue(type.isObject());
+    JsonNode jtype = type.path("type");
+    assertTrue(jtype.isTextual());
+    assertEquals("number", jtype.asText());
+}

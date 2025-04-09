@@ -1,0 +1,19 @@
+public void testCMAESOptimizer() {
+    final double[] lowerBound = new double[]{-0.5, -0.5};
+    final double[] upperBound = new double[]{0.5, 0.5};
+    final double[] startPoint = new double[]{1e-4, 1e-4};
+    final double[] expectedOptimumPoint = new double[]{0.33333333333333, 0.33333333333333};
+    final double expectedOptimumValue = 0.33333333333333;
+
+    MultivariateRealFunction realFunction = new MultivariateRealFunction() {
+        public double value(double[] point) {
+            if (!Vectors.isInBounds(lowerBound, upperBound, point)) {
+                // System.out.println("Out of bounds");
+                return Double.MIN_VALUE;
+            }
+            return -Vectors.dotProduct(point, point);
+        }
+    };
+
+    MultivariateRealOptimizer optimizer = new CMAESOptimizer(100, 1e-9, true, 0, 0, new MersenneTwister(), false,
+            new

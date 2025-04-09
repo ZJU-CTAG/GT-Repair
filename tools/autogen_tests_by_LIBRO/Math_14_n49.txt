@@ -1,0 +1,25 @@
+public void testIssue108() {
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] x) {
+            // dummy function
+            return x;
+        }
+    };
+    MultivariateMatrixFunction j = new MultivariateMatrixFunction() {
+        public double[][] value(double[] x) {
+            // dummy function
+            return new double[][] {x};
+        }
+    };
+    int n = 10000;
+    double[] startPoint = new double[n];
+    double[] target = new double[n];
+    double[] weights = new double[n];
+    // create an optimizer that uses the Jacobian
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(true);
+    Weight optimizationData = new Weight(weights);
+    OptimizationData[] optData = new OptimizationData[2];
+    optData[0] = optimizationData;
+    optData[1] = new Target(target);
+    optimizer.optimize(f, j, optData, startPoint);
+}

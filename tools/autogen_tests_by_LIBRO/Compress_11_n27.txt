@@ -1,0 +1,22 @@
+public void testTar() throws IOException {
+  String input = "input";
+  String output = "output";
+  String compressedArchive = "compressedArchive";
+
+  FileUtils.writeStringToFile(new File(input), "test");
+  FileUtils.writeStringToFile(new File(compressedArchive), "test");
+
+  FileUtils.deleteDirectory(new File(output));
+  FileUtils.forceMkdir(new File(output));
+
+  ArchiveStreamFactory asf = new ArchiveStreamFactory();
+
+  ArchiveInputStream ais = asf.createArchiveInputStream(ArchiveStreamFactory.TAR, new FileInputStream(compressedArchive));
+  ArchiveOutputStream aos = asf.createArchiveOutputStream(ArchiveStreamFactory.TAR, new FileOutputStream(compressedArchive));
+
+  ArchiveEntry ae = null;
+  while ((ae = ais.getNextEntry()) != null) {
+    aos.putArchiveEntry(ae);
+    IOUtils.copy(ais, aos);
+    aos.closeArchiveEntry();
+  }

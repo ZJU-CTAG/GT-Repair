@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCodingConvention(new GoogleCodingConvention());
+    options.setPrettyPrint(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.LOCAL, PropertyRenamingPolicy.ALL_UNQUOTED);
+    options.setGeneratePseudoNames(true);
+    String originalJS = "function foo() { return function() { var args = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    String expectedJS = "function foo(){return function(){setTimeout(function(){alert(arguments)},0)}}";
+    test("Issue108", originalJS, expectedJS, options);
+}

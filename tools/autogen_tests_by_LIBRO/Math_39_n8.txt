@@ -1,0 +1,19 @@
+public void testIssueTooLargeFirstStep() {
+    double t0 = -0.1;
+    double t1 = 0.1;
+    AdaptiveStepsizeIntegrator integrator = new DormandPrince853Integrator(1.0e-15, 100.0, 1.0e-10, 1.0e-10);
+    double maxValueError = 0;
+    for (int i = 0; i < 1000; ++i) {
+        double t = t0 + i * (t1 - t0) / 1000.0;
+        double[] y = new double[] { t };
+        integrator.integrate(new MyStepHandler(), t0, y, t, y);
+        if (FastMath.abs(y[0] - t) > maxValueError) {
+            maxValueError = FastMath.abs(y[0] - t);
+        }
+    }
+    Assert.assertEquals(0.0, maxValueError, 1.0e-10);
+}
+
+private class MyStepHandler implements StepHandler {
+
+    public void init(double t0, double[] y0, double

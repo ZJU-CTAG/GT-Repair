@@ -1,0 +1,12 @@
+public void testZipFile() throws Exception {
+    File archive = getFile("/archive.zip");
+    ZipFile zf = new ZipFile(archive);
+    ZipArchiveEntry entry = zf.getEntry("\u0414\u0435\u0440\u0436\u0430\u0432\u043e.txt");
+    assertNotNull(entry);
+    assertEquals("\u0414\u0435\u0440\u0436\u0430\u0432\u043e.txt", entry.getName());
+    InputStream is = zf.getInputStream(entry);
+    assertNotNull(is);
+    assertEquals("Test text\n", IOUtils.toString(is, "UTF-8"));
+    IOUtils.closeQuietly(is);
+    zf.close();
+}

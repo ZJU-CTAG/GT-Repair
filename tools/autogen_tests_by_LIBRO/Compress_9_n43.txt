@@ -1,0 +1,15 @@
+public void testTarArchiveOutputStream() throws Exception {
+        FileOutputStream fos = new FileOutputStream("target/tartest.tar");
+        ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+        FileInputStream fis = new FileInputStream("src/test/resources/test1.xml");
+        ArchiveEntry ae = new TarArchiveEntry("test1.xml");
+        aos.putArchiveEntry(ae);
+        IOUtils.copy(fis, aos);
+        aos.closeArchiveEntry();
+        aos.close();
+        fos = new FileOutputStream("target/tartest.tar", true);
+        aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+        fis = new FileInputStream("src/test/resources/test2.xml");
+        ae = new TarArchiveEntry("test2.xml");
+        aos.putArchiveEntry(ae);
+        IOUtils.copy(fis, a

@@ -1,0 +1,18 @@
+public void testIssue1351()
+    throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final Foo foo = mapper.readValue("{\"a\":null,\"b\":null}", Foo.class);
+
+    assertNull(foo.a);
+    assertNull(foo.b);
+
+    final String json = mapper.writeValueAsString(foo);
+    assertEquals("{}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+static class Foo {
+    public String a = "xxx";
+    public String b;
+}

@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+   Document document = Jsoup.parse("<div><table class=\"x\"></table><table class=\"y\"></table><table class=\"z\"></table></div>");
+   Elements x = document.select("div > table[class~=x|y]");
+   assertEquals(2, x.size());
+   Elements y = document.select("div table[class~=x|y]");
+   assertEquals(2, y.size());
+   Elements z = document.select("div + table[class~=x|y]");
+   assertEquals(2, z.size());
+   Elements a = document.select("div ~ table[class~=x|y]");
+   assertEquals(2, a.size());
+}

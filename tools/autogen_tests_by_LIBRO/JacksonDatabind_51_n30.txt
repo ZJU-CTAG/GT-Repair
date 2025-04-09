@@ -1,0 +1,14 @@
+public void testGenericTypeResolver() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(Message.class, SimpleMessage.class)
+                                             .setMixInAnnotation(Message.class, MessageMixin.class)
+                                             .setMixInAnnotation(SimpleMessage.class, SimpleMessageMixin.class)
+                                             .setMixInAnnotation(DateTime.class, DateTimeMixin.class));
+
+    String json = "{\"date\":\"2016-08-18T21:45:41.000Z\"}";
+    Message<DateTime> message = mapper.readerFor(new TypeReference<Message<DateTime>>() {}).readValue(json);
+    System.out.println(message);
+
+    assertEquals(new DateTime(2016, 8, 18, 21, 45, 41, DateTimeZone.UTC), message.getData());
+}
+

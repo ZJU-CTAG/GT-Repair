@@ -1,0 +1,10 @@
+public void testAllowNullInObjectIdSerializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.addMixInAnnotations(ObjectId.class, NullObjectIdMixin.class);
+    ObjectId id = null;
+    assertEquals("null", mapper.writeValueAsString(id));
+}
+
+class NullObjectIdMixin { }

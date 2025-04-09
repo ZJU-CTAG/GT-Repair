@@ -1,0 +1,18 @@
+public void testIssue() {
+    @JacksonXmlRootElement(localName = "root")
+    class Root {
+        String name = "root";
+    }
+    String xml;
+    xml = getXml(Root.class, null);
+    assertEquals("<root>root</root>", xml);
+    xml = getXml(Root.class, null, new XmlFactory().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false));
+    assertEquals("<root>root</root>", xml);
+    xml = getXml(Root.class, null, new XmlFactory().configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false).withRootName(new QName("root1")));
+    assertEquals("<root1/>", xml);
+}
+
+private String getXml(Class<?> cls, Object o, XmlFactory... factories) {
+    try {
+        XmlMapper mapper = new XmlMapper(factories);
+        return mapper.writeValueAsString(

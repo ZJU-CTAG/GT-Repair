@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    // Expect overflow for long value
+    try {
+        long value = MAPPER.readValue("12345678901234567890123456789012345678901234567890", Long.class);
+        fail("Expected exception");
+    } catch (JsonParseException e) {
+        verifyException(e, "Numeric value");
+        verifyException(e, "out of range of");
+    }
+
+    // Then with coercion, which works now
+    long value = MAPPER.readerFor(Long.class)
+        .with(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
+        .readValue("12345678901234567890123456789012345678901234567890");
+    assertEquals(12345678901234567890123456789012345678901234567890L, value);
+}

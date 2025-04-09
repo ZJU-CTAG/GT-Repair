@@ -1,0 +1,17 @@
+public void testInput107() {
+    String input = "window['anchor'] = function (obj, modifiesProp) {\n" +
+            "    return (function (saved) {\n" +
+            "        return modifiesProp(obj) + saved;\n" +
+            "    })(obj['prop']);\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    SourceFile extern = SourceFile.fromCode("html5.js",
+            "var history = {};");
+    SourceFile inputFile = SourceFile.fromCode("input.js", input);
+    compiler.compile(extern, inputFile, options);
+    String output = compiler.toSource();
+    assertEquals("window.anchor=function(a,b){var c=a.prop;return b(a)+

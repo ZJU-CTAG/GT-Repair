@@ -1,0 +1,17 @@
+public void testInfiniteLoop() {
+    Options options = new Options();
+    Option option = new Option("h", "help", false, "This is a looooong description");
+    option.setRequired(true);
+    options.addOption(option);
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setWidth(5);
+    try {
+        formatter.printHelp("app", options); // hang & crash
+    } catch (StackOverflowError e) {
+        fail("Should have thrown HelpFormatter.PrintHelpException");
+    } catch (HelpFormatter.PrintHelpException e) {
+        e.printStackTrace();
+    }
+
+}

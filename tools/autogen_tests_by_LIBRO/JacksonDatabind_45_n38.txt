@@ -1,0 +1,8 @@
+public void testJackson() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    LimitedSerializationModule module = new LimitedSerializationModule();
+    module.addDeserializer(Duration.class, new DurationDeserializer());
+    mapper.registerModule(module);
+    Duration d = mapper.readValue("\"PT3H\"", Duration.class);
+    assertEquals(3, d.getStandardHours());
+}

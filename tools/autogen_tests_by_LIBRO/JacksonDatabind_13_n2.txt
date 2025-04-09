@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+    mapper.addMixInAnnotations(TestBean.class, ObjectIdMixIn.class);
+    mapper.registerModule(new Jdk8Module());
+    TestBean bean = mapper.reader(TestBean.class).readValue(
+            "{\"id\":null,\"name\":\"John Doe\",\"age\":42,\"b\":true,\"enumeration\":\"A\"}");
+    assertThat(bean.getName(), is("John Doe"));
+    assertThat(bean.getAge(), is(42));
+    assertThat(bean.isB(), is(true));
+    assertThat(bean.getEnumeration(), is(Enumeration.A));
+    // assertThat(bean.getId(), is(nullValue()));
+}

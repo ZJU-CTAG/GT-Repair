@@ -1,0 +1,13 @@
+public void testIsInUse() throws Exception {
+    testIsInUse(new ZipArchiveOutputStream(new ByteArrayOutputStream()));
+    testIsInUse(new TarArchiveOutputStream(new ByteArrayOutputStream()));
+    testIsInUse(new JarArchiveOutputStream(new ByteArrayOutputStream()));
+    testIsInUse(new ArArchiveOutputStream(new ByteArrayOutputStream()));
+}
+
+private void testIsInUse(ArchiveOutputStream aos) throws Exception {
+    aos.close();
+    assertFalse(aos.isInUse());
+    aos.write(0);
+    assertFalse(aos.isInUse());
+}

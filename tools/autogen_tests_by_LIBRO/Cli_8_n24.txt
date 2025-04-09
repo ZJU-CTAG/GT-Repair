@@ -1,0 +1,13 @@
+public void testIssue109() {
+    Option opt = new Option("f", "long-option-that-will-wrap", false, "a long description that will wrap many times it is so long");
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printWrapped(pw, 30, opt.getDescription());
+    String text = sw.toString();
+    String[] lines = text.split(System.getProperty("line.separator"));
+    assertTrue(lines[0].length() <= 30);
+    for(int i = 1; i < lines.length; i++) {
+        assertTrue(lines[i].length() <= 30);
+    }
+}

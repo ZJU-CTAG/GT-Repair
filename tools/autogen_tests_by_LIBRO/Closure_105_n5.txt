@@ -1,0 +1,8 @@
+public void testIssue() {
+    String original = "$.fn.hasClass = function(selector) {  return ( this.length > 0 ? !( ( ['', this[0].className, ''].join(' ') ).indexOf( ['', selector, ''].join(' ') ) == -1 ) : false );};";
+    String minified = "$.fn.hasClass=function(a){return this.length>0?\"\"+this[0].className).indexOf(\"\"+a)!=-1:false};";
+    JavaScriptErrorReporter reporter = new JavaScriptErrorReporter();
+    Compressor compressor = new Compressor(reporter);
+    compressor.compress(original, minified, -1, true, false, false);
+    assertEquals("", reporter.getErrors());
+}

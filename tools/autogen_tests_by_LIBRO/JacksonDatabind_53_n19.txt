@@ -1,0 +1,14 @@
+public void testIssue() {
+    Map<UUID, Map<String, Object>> myHashMap = new MyHashMap<UUID, Foo, Map<String, Object>>();
+    myHashMap.put(UUID.fromString("e9a38120-9bd1-11e3-b194-b8f6b1185143"), new Foo("foo"));
+    myHashMap.put(UUID.fromString("e9a38120-9bd1-11e3-b194-b8f6b1185143"), new Bar("bar", "foo"));
+
+    String json = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(myHashMap);
+    System.out.println(json);
+
+    Map<UUID, Map<String, Object>> myHashMap2 = MAPPER.readValue(json, new TypeReference<Map<UUID, Map<String, Object>>>() {
+    });
+
+    assertEquals(json, MAPPER.writeValueAsString(myHashMap2));
+}
+

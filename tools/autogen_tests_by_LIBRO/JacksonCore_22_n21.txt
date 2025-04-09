@@ -1,0 +1,7 @@
+public void testMatchCount() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setFilterProvider(new SimpleFilterProvider().addFilter("testFilter", SimpleBeanPropertyFilter.serializeAllExcept("property1")));
+    JsonNode root = mapper.readTree("{\"property1\": \"1\", \"property2\": \"2\"}");
+    assertEquals(1, root.get("property1").get("_matchCount").asInt());
+    assertEquals(0, root.get("property2").get("_matchCount").asInt());
+}

@@ -1,0 +1,11 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(
+        C.class, CD.class
+    ));
+    String json = mapper.writeValueAsString(new CD<>(new CH<>(new C<>())));
+    System.out.println(json);
+    CD<C<String>> result = mapper.readValue(json, CD.class);
+    System.out.println(result);
+}

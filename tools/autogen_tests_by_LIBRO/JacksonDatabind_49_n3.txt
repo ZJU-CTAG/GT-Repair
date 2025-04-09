@@ -1,0 +1,27 @@
+public void testIssueJsonIdentityInfo() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    // create structure to serialize
+    Foo mo = new Foo();
+    mo.bar1 = new Bar();
+    mo.bar2 = mo.bar1;
+
+    // serialize it
+    String expected = "{\"bar1\":1,\"bar2\":1}";
+    String actual = mapper.writeValueAsString(mo);
+    assertEquals(expected, actual);
+}
+
+static class Foo {
+
+    @JsonIdentityReference(alwaysAsId = true)
+    public Bar bar1;
+
+    @JsonIdentityReference()
+    public Bar bar2;
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+static class Bar {
+
+    }

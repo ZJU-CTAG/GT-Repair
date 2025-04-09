@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    String json = mapper.writeValueAsString(new BigDecimal("0.0000000005"));
+    assertEquals("0.0000000005", json);
+}
+
+public void testIssue108b() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    String json = mapper.writeValueAsString(new TestBigDecimal("0.0000000005"));
+    assertEquals("{\"value\":\"5.0E-10\"}", json);
+}
+
+static class TestBigDecimal {
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
+    public BigDecimal value;
+
+    TestBigDecimal(String value) {
+        this.value = new BigDecimal(value

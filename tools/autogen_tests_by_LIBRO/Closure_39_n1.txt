@@ -1,0 +1,19 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setDependencyOptions(new DependencyOptions()
+        .setDependencySorting(true)
+        .setDependencyPruning(true)
+        .setMoocherDropping(true)
+        .setEntryPoints(ImmutableList.of(
+            new ModuleIdentifier("com.google.common.html.types", "testing"))));
+    String externs = "/*\n"
+    + " * @externs\n"
+    + " */\n"
+    + "var com = {};\n"
+    + "com.google = {};\n"
+    + "com.google.common = {};\n"
+    + "com.google.common.html = {};\n"
+    + "com.google.common.html

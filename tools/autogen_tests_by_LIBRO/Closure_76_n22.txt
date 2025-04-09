@@ -1,0 +1,11 @@
+public void testIssue128() {
+    String js = "function test(a) { return false && (a = true); }";
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", "function echo(a) {}"));
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js", js));
+    Result result = compiler.compile(externs, inputs, new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("function test(a){return!1}", compiler.toSource());
+}

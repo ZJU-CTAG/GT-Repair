@@ -1,0 +1,11 @@
+public void testIssue_Gae_Throwable_1() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // This setting should prevent error, but does not
+    mapper.disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    // This annotation should prevent error, but does not
+    String json = "{\"errorCode\":\"MyError\"}";
+    JsonNode n = mapper.reader().readTree(json);
+    MyException exception = mapper.readerFor(MyException.class).readValue(n);
+    assertEquals("MyError", exception.getErrorCode());
+}

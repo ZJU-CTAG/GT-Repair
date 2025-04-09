@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String code = "/**\n" +
+            " * @returns {{prop1: (Object|undefined), prop2: (string|undefined), prop3: (string|undefined)}} \n" +
+            " */\n" +
+            "function func() {\n" +
+            "    var results;\n" +
+            "    results = {};\n" +
+            "    results.prop1 = {a: 3};\n" +
+            "    if (b) {\n" +
+            "        results.prop2 = 'prop2';\n" +
+            "    } else {\n" +
+            "        results.prop3 = 'prop3';\n" +
+            "    }\n" +
+            "    return results;\n" +
+            "}";
+    JSType type = getType(code, "func");
+    assertEquals("{prop1: (Object|undefined), prop2: (string|undefined), prop3: (string|undefined)}", type.toString());
+}

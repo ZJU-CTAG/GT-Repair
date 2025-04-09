@@ -1,0 +1,9 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    ClassWithObjectNodeField deserialized = mapper.readValue("{ \"id\": \"1\", \"json\": { \"foo\": \"bar\", \"baz\": \"bing\" } }", ClassWithObjectNodeField.class);
+    assertEquals("1", deserialized.id);
+    assertNotNull(deserialized.json);
+    assertEquals("bar", deserialized.json.get("foo").textValue());
+    assertEquals("bing", deserialized.json.get("baz").textValue());
+}

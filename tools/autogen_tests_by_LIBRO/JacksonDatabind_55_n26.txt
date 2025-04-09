@@ -1,0 +1,19 @@
+public void testEnumMap() throws JsonProcessingException {
+    EnumMap<Enumeration, String> enumMap = new EnumMap<>(Enumeration.class);
+    enumMap.put(Enumeration.A, "a");
+    enumMap.put(Enumeration.B, "b");
+    enumMap.put(Enumeration.C, "c");
+
+    String json = new ObjectMapper().writeValueAsString(enumMap);
+
+    assertTrue(json.contains("\"A\":\"a\""));
+}
+
+enum Enumeration {
+    @JsonProperty("A")
+    A,
+    @JsonProperty("B")
+    B,
+    @JsonProperty("C")
+    C
+}

@@ -1,0 +1,13 @@
+public void testIssue108Null() {
+    CsvPreference prefs = new CsvPreference.Builder('"', ',', "\n").build();
+    ICsvListReader listReader = new CsvListReader(new StringReader("\"\""), prefs);
+    listReader.read();
+    assertEquals(Collections.singletonList(""), listReader.getValues());
+}
+
+public void testIssue108Empty() {
+    CsvPreference prefs = new CsvPreference.Builder('"', ',', "\n").build();
+    ICsvListReader listReader = new CsvListReader(new StringReader(""), prefs);
+    listReader.read();
+    assertEquals(Collections.singletonList(""), listReader.getValues());
+}

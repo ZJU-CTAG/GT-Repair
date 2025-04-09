@@ -1,0 +1,10 @@
+public void testIssue107() {
+    Document doc = XmlUtils.newDocument();
+    Element root = doc.createElement("ns1:root");
+    root.setAttribute("ns2:attr", "value");
+    doc.appendChild(root);
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.registerNamespace("ns1", "urn:ns1");
+    context.registerNamespace("ns2", "urn:ns2");
+    assertEquals("value", context.getValue("//ns1:root/@ns2:attr"));
+}

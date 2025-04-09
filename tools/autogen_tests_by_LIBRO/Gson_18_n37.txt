@@ -1,0 +1,21 @@
+public void testIssue() {
+    Gson gson = new Gson();
+    String json = "{\n" +
+            "  \"inBig\": {\n" +
+            "    \"key\": [\n" +
+            "      { \"inSmall\": \"hello\" }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
+
+    BigClass small = gson.fromJson(json, BigClass.class);
+    assertEquals("hello", small.inBig.get("key").get(0).inSmall);
+}
+
+class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+}
+
+class SmallClass {
+    String inSmall;
+}

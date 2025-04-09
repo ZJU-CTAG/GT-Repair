@@ -1,0 +1,17 @@
+public void testZipLocalVersionNeededToExtractDoesNotMatchCentralDirectory() throws Exception {
+    File file = File.createTempFile("commons-compress-", ".zip");
+    try {
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+        zos.putArchiveEntry(new ZipArchiveEntry("test"));
+        zos.closeArchiveEntry();
+        zos.close();
+        try (ZipFile zipFile = new ZipFile(file)) {
+            ZipArchiveEntry entry = zipFile.getEntry("test");
+            assertEquals("test", entry.getName());
+            assertEquals(1, entry.getVersionNeededToExtract());
+            assertEquals(20, entry.getCentralDirectoryHeader().getVersionNeededToExtract());
+        }
+    } finally {
+        file.delete();
+    }
+}

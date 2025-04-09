@@ -1,0 +1,10 @@
+public void testMockitoWithJUnit() throws Exception {
+    File file = new File("D:\\foo.txt");
+    file.expect(once()).method("getParentFile").will(returnValue(new File("D:\\")));
+    file.expect(once()).method("getName").will(returnValue("foo.txt"));
+    file.expect(once()).method("exists").will(returnValue(false));
+    file.expect(once()).method("createNewFile").will(returnValue(true));
+
+    assertTrue(file.createNewFile());
+    file.verify();
+}

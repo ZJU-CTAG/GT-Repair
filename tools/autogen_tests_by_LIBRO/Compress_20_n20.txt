@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    @SuppressWarnings("resource")
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.CPIO, new FileInputStream(new File("src/test/resources/test2.cpio")));
+    ArchiveEntry ae = ais.getNextEntry();
+
+    assertNotNull(ae);
+    assertEquals("test1", ae.getName());
+    assertEquals(11, ae.getSize());
+    byte[] b = new byte[(int)ae.getSize()];
+    int offset = 0;
+    while (offset < ae.getSize()) {
+        int r = ais.read(b, offset, (int)ae.getSize() - offset);
+        if (r < 0) {
+            break;
+        }
+        offset += r;
+    }
+    assertEquals("hello world", new String(b, "UTF-8"));
+
+    ais.close();
+}

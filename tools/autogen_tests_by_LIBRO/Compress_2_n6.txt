@@ -1,0 +1,23 @@
+public void testArArchive() throws Exception {
+    String[] files = { "test1.xml", "test2.xml" };
+    File arch = new File(getTestDirectory(), "bla.ar");
+    ArArchiveOutputStream aos = new ArArchiveOutputStream(new FileOutputStream(arch));
+
+    for(int i = 0; i < files.length; i++) {
+        String name = files[i];
+        aos.putArchiveEntry(new ArArchiveEntry(name, name.length()));
+        aos.write(name.getBytes());
+        aos.closeArchiveEntry();
+    }
+    aos.close();
+
+    //
+    // Now delete test2.xml
+    //
+    ArArchiveInputStream ais = new ArArchiveInputStream(new FileInputStream(arch));
+    ArArchiveEntry entry = null;
+    while((entry = ais.getNextArEntry()) != null) {
+        if("test2.xml".equals(entry.getName())) {
+            ais.close();
+            ais = null;
+            aos

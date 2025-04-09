@@ -1,0 +1,13 @@
+public void testExcelFormatEmptyHeader() throws IOException {
+    final String str = "A,B,C,,";
+    final String str2 = "a,b,c,d,e";
+    final Reader in = new StringReader(str + "\n" + str2);
+    CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+    Iterator<CSVRecord> iter = parser.iterator();
+    CSVRecord record = iter.next();
+    assertEquals(3, record.size());
+    assertEquals("a", record.get(0));
+    assertEquals("b", record.get(1));
+    assertEquals("c", record.get(2));
+    assertFalse(iter.hasNext());
+}

@@ -1,0 +1,22 @@
+public void testZipExtra() throws Exception {
+    File output = new File("target/testZipExtra.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(output);
+    zos.setEncoding("UTF-8");
+    final byte[] bytes = "Hello".getBytes("UTF-8");
+    try {
+        for (int i = 0; i < 10; i++) {
+            ZipArchiveEntry zae = new ZipArchiveEntry(String.valueOf(i));
+            zae.setExtra(bytes);
+            zos.putArchiveEntry(zae);
+            zos.write(bytes);
+            zos.closeArchiveEntry();
+        }
+    } finally {
+        IOUtils.closeQuietly(zos);
+    }
+    // The following code is not needed - it's just to check that the
+    // archive is OK
+    try (ZipFile zf = new ZipFile(output)) {
+        Enumeration<ZipArchiveEntry> en = zf.getEntries();
+        while (en.hasMoreElements()) {
+            ZipArch

@@ -1,0 +1,8 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer(new FilteringGeneratorDelegate(null, "_matchCount")
+            .exclude("_matchCount"));
+    JsonNode node = writer.writeValueAsTree(new Object());
+    assertFalse(node.has("_matchCount"));
+    assertEquals(0, node.size());
+}

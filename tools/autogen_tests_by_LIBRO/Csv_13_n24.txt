@@ -1,0 +1,20 @@
+public void testIssue() {
+        final StringWriter out = new StringWriter();
+        final CsvPreference prefs = new CsvPreference.Builder(CsvPreference.STANDARD_PREFERENCE)
+            .nullString("\\N").build();
+        final StatefulBeanToCsv<TestBean> btcsv = new StatefulBeanToCsvBuilder<TestBean>(out)
+            .withQuotechar('\'').withSeparator(',').withEscape('\\')
+            .withCsvFormat(prefs).build();
+        final TestBean bean = new TestBean("foo", "bar");
+        try {
+            btcsv.write(bean);
+        } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException e) {
+            Assert.fail("Exception thrown: " + e.getMessage());
+        }
+        Assert.assertEquals("'foo','bar'\n", out.toString());
+    }
+    
+    public static class TestBean {
+
+        @CsvBindByName
+        private String field1

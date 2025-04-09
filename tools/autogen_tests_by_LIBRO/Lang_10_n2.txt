@@ -1,0 +1,14 @@
+public void testWhiteSpaceWithPattern() throws Exception {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM dd yyyy");
+    simpleDateFormat.setLenient(false);
+    FastDateParser fastDateParser = new FastDateParser("MM dd yyyy", TimeZone.getDefault(), Locale.getDefault());
+
+    assertEquals("Parsed date should match", simpleDateFormat.parse("12 31 2011"), fastDateParser.parse("12 31 2011"));
+    assertEquals("Parsed date should match", simpleDateFormat.parse("12 31 2011"), fastDateParser.parse("12   31   2011"));
+    assertEquals("Parsed date should match", simpleDateFormat.parse("12 31 2011"), fastDateParser.parse("12\t31\t2011"));
+    assertEquals("Parsed date should match", simpleDateFormat.parse("12 31 2011"), fastDateParser.parse("12\n31\n2011"));
+
+    try {
+        fastDateParser.parse("12 31    2011");
+        fail("Invalid date should fail");
+    } catch (ParseException e) {

@@ -1,0 +1,13 @@
+public void testIssue77() {
+    String original = "var foo = {};" +
+        "foo.bar = arg;" +
+        "console.log(foo.bar);" +
+        "delete foo.bar;" +
+        "console.log(foo.bar);";
+    
+    String expected = "(function(a){console.log(a);delete a;console.log(a)})();";
+    
+    String actual = compile(original, "arg");
+    
+    assertEquals(expected, actual);
+}

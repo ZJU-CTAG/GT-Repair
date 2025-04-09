@@ -1,0 +1,17 @@
+public void testGetNextZipEntry() throws Exception {
+    final File tmpDir = new File("target/compress/ZipArchiveEntryUnknownCompressedSize");
+    tmpDir.mkdirs();
+    final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new File(tmpDir, "unknowncompressedsize.zip"));
+    zos.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS);
+    zos.setEncoding("UTF-8");
+    zos.setLevel(Deflater.NO_COMPRESSION);
+
+    final ZipArchiveEntry ze = new ZipArchiveEntry("foo.txt");
+    ze.setCompressedSize(ZipArchiveEntry.SIZE_UNKNOWN);
+    //ze.setMethod(ZipArchiveOutputStream.STORED);
+    zos.putArchiveEntry(ze);
+    zos.write("hello world!\n".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInput

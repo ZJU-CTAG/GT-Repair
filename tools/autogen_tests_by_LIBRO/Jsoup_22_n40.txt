@@ -1,0 +1,17 @@
+public void testSiblingElements() {
+    Document doc = new Document();
+    Element e = new Element("e");
+    doc.appendContent(e);
+    for (int i = 0; i < 10; i++) {
+        Element c = new Element("child");
+        e.appendContent(c);
+    }
+    assertEquals(10, e.siblingElements().size());
+    try {
+        e.getDocument().removeContent();
+        e.siblingElements();
+        fail("Expecting null pointer exception");
+    } catch (NullPointerException npe) {
+        // expected
+    }
+}

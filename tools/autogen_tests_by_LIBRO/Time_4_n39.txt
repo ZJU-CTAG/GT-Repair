@@ -1,0 +1,10 @@
+public void testPartialTypes() {
+    Partial a = new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(year(), 1).with(hourOfDay(), 1);
+    assertEquals(a, b);
+    
+    try {
+        new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1}); // throws Types array must not contain duplicate
+        fail();
+    } catch (IllegalArgumentException ex) {}
+}

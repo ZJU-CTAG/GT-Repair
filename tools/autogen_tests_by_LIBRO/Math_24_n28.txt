@@ -1,0 +1,20 @@
+public void testBrentOptimizer() {
+
+    UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            if (x < 0) {
+                return Double.NaN;
+            }
+            return x * Math.log(x) + (1 - x) * Math.log(1 - x) - 0.1;
+        }
+    };
+
+    UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariatePointValuePair optimum = optimizer.optimize(
+      new MaxEval(100),
+      new UnivariateObjectiveFunction(f),
+      GoalType.MINIMIZE,
+      new SearchInterval(0, 1));
+
+    System.out.println("optimum: " + optimum);
+}

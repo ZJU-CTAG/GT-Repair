@@ -1,0 +1,28 @@
+public void testIssue108() throws Exception {
+    String json = "{\"encoded\":\"AQ==\"}";
+    StringNode node = (StringNode) new ObjectMapper().readTree(json);
+    assertEquals("AQ==", node.asText());
+    Base64Variant variant = Base64Variants.MODIFIED_FOR_URL;
+    byte[] decoded = new TreeTraversingParser(node, new ObjectCodec() {
+        @Override
+        public <T extends TreeNode> T readTree(JsonParser p) throws IOException {
+            return null;
+        }
+
+        @Override
+        public <T> T readValue(JsonParser p, Class<T> valueType) throws IOException {
+            return null;
+        }
+
+        @Override
+        public <T> T readValue(JsonParser p, TypeReference<?> valueTypeRef) throws IOException {
+            return null;
+        }
+
+        @Override
+        public <T> T readValue(JsonParser p, JavaType valueType) throws IOException {
+            return null;
+        }
+
+        @Override
+        public void

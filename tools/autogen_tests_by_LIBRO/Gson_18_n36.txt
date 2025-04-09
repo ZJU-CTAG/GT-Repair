@@ -1,0 +1,11 @@
+public void testIssue1103() {
+    Gson gson = new Gson();
+    String json = "{\"inBig\": {\"key\": [{\"inSmall\": \"hello\"}]}}";
+    SmallClass small = gson.fromJson(json, BigClass.class).inBig.get("inSmall").get(0);
+    assertEquals("hello", small.inSmall);
+}
+
+// ? extends causes the issue
+class BigClass { Map<String, ? extends List<SmallClass>> inBig; }
+
+class SmallClass { String inSmall; }

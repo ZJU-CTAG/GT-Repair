@@ -1,0 +1,15 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckSymbols(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.WARNING);
+    compiler.disableThreads();
+    String js = "var foo = {};\nfoo.bar = function(baz, arg) {\n};";
+    Result result = compiler.compile(js, options);
+    assertTrue(result.success);
+    String externs = "goog.exportSymbol('foo', {bar: function(baz, opt_arg) {}});";
+    String externExport = compiler.getExternExport(externs);
+    assertEquals("foo = {bar: function(baz, opt_arg) {}};", externExport);
+}

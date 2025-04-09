@@ -1,0 +1,28 @@
+public void testParseIssue() {
+
+    try {
+        Option option_a = OptionBuilder.withArgName("a").hasArg()
+                .withValueSeparator('=').withDescription("a").create("a");
+
+        option_a.setArgs(1);
+        option_a.setArgName("a");
+        option_a.setType(String.class);
+        option_a.setRequired(false);
+        option_a.setOptionalArg(false);
+        option_a.setLongOpt("a");
+        option_a.setValueSeparator('=');
+        option_a.setDefaultValue("defaultValue");
+
+        Options options = new Options();
+        options.addOption(option_a);
+
+        CommandLineParser parser = new PosixParser();
+        parser.parse(options, new String[] { "--a", "value" });
+    } catch (ParseException e) {
+        // ok
+    } catch (Exception e) {
+        e.printStackTrace();
+        fail();
+    }
+
+}

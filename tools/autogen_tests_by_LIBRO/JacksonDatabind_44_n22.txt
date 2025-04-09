@@ -1,0 +1,26 @@
+public void testIssuePolymorphicTypes() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    om.configure(SerializationFeature.INDENT_OUTPUT, true);
+    om.setSerializationInclusion(Include.NON_NULL);
+    om.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+    ObjectMapper om2 = om.copy();
+
+    om2.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    om2.addMixIn(Metric.class, MetricMixIn.class);
+    om2.addMixIn(Timer.class, TimerMixIn.class);
+
+
+    final Timer timer = new Timer();
+
+    timer.update(1L, TimeUnit.MILLISECONDS);
+
+    // This works:
+    System.out.println(om.writeValueAsString(timer));
+
+    // This doesn't:
+    System.out.println(om2.writeValueAsString(timer));
+}
+
+class MetricMixIn

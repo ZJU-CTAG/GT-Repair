@@ -1,0 +1,12 @@
+public void testInvalidFormatException() {
+    try {
+        // This works
+        mapper.readValue("[\"A\", \"B\"]",  new TypeReference<List<String>>() {});
+        // This fails
+        mapper.readValue("[\"A\", \"C\"]",  new TypeReference<List<String>>() {});
+    } catch(InvalidFormatException e){
+        if(e.getPath().size() == 1) {
+            assertEquals(1, e.getPath().get(0).getIndex());
+        }
+    }
+}

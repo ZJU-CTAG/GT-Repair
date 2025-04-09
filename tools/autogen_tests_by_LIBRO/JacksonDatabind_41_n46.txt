@@ -1,0 +1,15 @@
+public void testIssue1079() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first, should be ok:
+    java.lang.reflect.Type type = mapper.getTypeFactory().constructType(String.class);
+    assertEquals(String.class, type);
+
+    // but without context, fail (with NPE)
+    try {
+        mapper.getTypeFactory().constructType(String.class, (JavaType) null);
+        fail("Should not pass");
+    } catch (NullPointerException e) {
+        verifyException(e, "can not pass null JavaType");
+    }
+}

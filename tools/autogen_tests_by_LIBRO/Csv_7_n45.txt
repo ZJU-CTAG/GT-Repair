@@ -1,0 +1,11 @@
+public void testDuplicateNames() throws Exception {
+    Reader in = new StringReader("Col1,Col2,Col2,Col3,Col4\r\n1,2,3,4,5\r\n4,5,6,7,8");
+    CSVParser parser = new CSVParser(in, CSVFormat.RFC4180);
+    Map<String, Integer> header = parser.getHeaderMap();
+    assertNotNull(header);
+    assertEquals(4, header.size());
+    assertEquals(0, header.get("Col1").intValue());
+    assertEquals(1, header.get("Col2").intValue());
+    assertEquals(3, header.get("Col3").intValue());
+    assertEquals(4, header.get("Col4").intValue());
+}

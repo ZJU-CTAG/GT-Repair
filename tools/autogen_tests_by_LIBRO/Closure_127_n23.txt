@@ -1,0 +1,7 @@
+public void testFinallyBreak() {
+    String code = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    ScriptableObject scope = cx.initStandardObjects();
+    Object result = cx.evaluateString(scope, code, "<test>", 1, null);
+    assertNotNull(result);
+    assertEquals("ok then...", result);
+}

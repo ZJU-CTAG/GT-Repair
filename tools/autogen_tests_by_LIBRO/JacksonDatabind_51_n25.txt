@@ -1,0 +1,11 @@
+public void testCustomTypeId() throws IOException
+{
+    ObjectMapper om = new ObjectMapper();
+    om.setDefaultTyping(new TypeIdResolverTest.CustomTypeIdResolver(om.getTypeFactory()));
+    String json = om.writeValueAsString(new TypeIdResolverTest.TestContainer<Object>(new TypeIdResolverTest.TestItem<String>("test")));
+    assertEquals("{\"data\":{\"type\":\"TYPE_1\",\"arg\":\"test\"}}", json);
+    TypeIdResolverTest.TestContainer<Object> out = om.readValue(json, new TypeReference<TypeIdResolverTest.TestContainer<Object>>() {});
+    assertEquals(TypeIdResolverTest.TestItem.class, out.data.getClass());
+    assertEquals(String.class, ((TypeIdResolverTest.TestItem<?>) out.data).arg.getClass());
+    assertEquals("test", ((TypeIdResolverTest.TestItem<?>) out.data).arg);
+}

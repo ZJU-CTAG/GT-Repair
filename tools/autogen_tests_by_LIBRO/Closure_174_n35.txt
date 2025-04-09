@@ -1,0 +1,9 @@
+public void testIssue11() {
+    String js = "goog.provide(\"main\");" +
+        "goog.scope (function (){\n" +
+        " var a = foo, b, c = 1;\n" +
+        "});";
+    CompilationUnit unit = compile(js);
+    assertEquals(unit.getErrorCount(), 1);
+    assertEquals(unit.getErrors().get(0).toString(), "foo cannot be resolved");
+}

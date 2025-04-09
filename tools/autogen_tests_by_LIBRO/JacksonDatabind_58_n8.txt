@@ -1,0 +1,7 @@
+public void testIssue108() throws IOException {
+    String json = "{\"@class\": \"org.apache.commons.lang3.exception.ContextedRuntimeException\", \"cause\": null, \"message\": \"blah\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, true);
+    Exception e = mapper.readValue(json, Exception.class);
+    assertEquals(ContextedRuntimeException.class, e.getClass());
+}

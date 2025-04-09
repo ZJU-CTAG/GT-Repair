@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator generator = new JsonFactory().createJsonGenerator(bytes);
+    generator.writeStartObject();
+    generator.writeFieldName("name");
+    generator.writeString("value");
+    generator.writeEndObject();
+    generator.close();
+    String json = bytes.toString();
+    System.out.println(json);
+    Map<String,Object> value = mapper.readValue(json, Map.class);
+    assertEquals("value", value.get("name"));
+}

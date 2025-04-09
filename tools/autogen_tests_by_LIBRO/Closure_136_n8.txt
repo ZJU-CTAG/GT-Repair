@@ -1,0 +1,13 @@
+public void testIssueSuper() {
+    String[] inputs = new String[] {
+        "var a = { b: function() { this.$super(); } };",
+        "var a = { b: function() { this.$super.test(); } };",
+        "var a = { $super: function() { this.test(); } };",
+        "var a = { b: function() { } }; a.b.prototype.$super = function() {this.test()};",
+        "var a = { b: function() { var self = this; function $super() { self.test(); }; } };",
+        "var a = { $super: { test: function() { alert(this.name); } } }; var b = { $super: a.$super }; var c = { name: 'test', $super: b.$super }; c.$super.test();"
+    };
+    String[] expected = new String[] {
+        "var a = { b: function() { this.$super(); } };",
+        "var a = { b: function() { this.$super.test(); } };",
+        "var a = { $

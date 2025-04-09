@@ -1,0 +1,13 @@
+public void testElementWithAttribute() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream("<my:ElementA xmlns:my=\"http://example.com\" my:attr=\"Mytype\"><B:ElementB xmlns:B=\"http://example.com\">MY VALUE</B:ElementB></my:ElementA>".getBytes()));
+    NodePointer p = new DOMNodePointer(document);
+    p = p.getChild("ElementA");
+    assertNotNull("Element not found", p);
+    assertEquals("Attr value", "Mytype", p.getAttribute("attr"));
+    p = p.getChild("ElementB");
+    assertNotNull("Element not found", p);
+    assertEquals("B:ElementB", p.getName());
+}

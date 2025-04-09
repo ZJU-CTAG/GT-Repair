@@ -1,0 +1,17 @@
+public void testUnionOfVariableAndNode() {
+        JXPathContext context = JXPathContext.newContext(root);
+        context.setLenient(true);
+        context.setFactory(new Factory() {
+                public boolean createObject(JXPathContext context, Pointer pointer,
+                    Object parent, String name, int index) {
+                    return true;
+                }
+                public boolean declareVariable(JXPathContext context, String name) {
+                    return true;
+                }
+            });
+        context.getVariables().declareVariable("var", root.getA());
+
+        List list = context.selectNodes("$var | /MAIN/A");
+        assertEquals("Wrong size", 1, list.size());
+    }

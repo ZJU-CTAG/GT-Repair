@@ -1,0 +1,17 @@
+public void testPolymorphicDeserialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .addMixIn(State.class, StateMixin.class)
+            .addMixIn(Transition.class, TransitionMixin.class)
+            .addMixIn(Transitions.class, TransitionsMixin.class)
+            .addMixIn(Library.class, LibraryMixin.class)
+            .addMixIn(Region.class, RegionMixin.class)
+            .addMixIn(Object.class, ObjectMixin.class);
+
+    final String json = IOUtils.toString(getClass().getResourceAsStream("/test-polymorphic.json"), StandardCharsets.UTF_8);
+    Library library = mapper.readValue(json, Library.class);
+
+    assertNotNull(library);
+    assertEquals("test", library.getName());
+    assertEquals(2, library.getTransitions().size());
+    assertEquals(Transition.class, library.getTransitions().get(0).getClass());
+    assertEquals(Transition.

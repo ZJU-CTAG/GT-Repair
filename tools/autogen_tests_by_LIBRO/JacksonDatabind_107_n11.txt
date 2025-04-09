@@ -1,0 +1,14 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, @Nullable String failureMsg) throws IOException {
+            return super.handleUnknownTypeId(ctxt, baseType, subTypeId, idResolver, failureMsg);
+        }
+    });
+    final String json = "{\"id\":1, \"value\":{\"foo\":\"bar\"}}";
+    final MyObject myObject = objectMapper.readValue(json, MyObject.class);
+    Assert.assertThat(myObject.id, equalTo(1));
+    Assert.assertThat(myObject.value, not(nullValue()));
+
+}

@@ -1,0 +1,15 @@
+public void testEmptyInput() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    // First, some cases that should return null
+    assertEquals(null, om.readTree(""));
+    assertEquals(null, om.reader().with(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS).readTree(""));
+
+    // then cases that should NOT return null
+    assertNotNull(om.readTree(" "));
+    assertNotNull(om.readTree("null"));
+    assertNotNull(om.readTree("null "));
+    assertNotNull(om.readTree(" null"));
+    assertNotNull(om.readTree(" { } "));
+    assertNotNull(om.readTree(" [ ] "));
+}

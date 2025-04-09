@@ -1,0 +1,20 @@
+public void testVerifyNoMoreInteractionWithMockedObject() {
+    final String mock = mock(String.class);
+    mock(String.class, AnsweringDefaultInterfaces.class);
+    final TestClass testClass = new TestClass(mock);
+    testClass.callMethod();
+    verifyNoMoreInteractions(mock);
+}
+
+public static class TestClass {
+
+    private final String mock;
+
+    public TestClass(final String mock) {
+        this.mock = mock;
+    }
+
+    public void callMethod() {
+        mock.toString();
+    }
+}

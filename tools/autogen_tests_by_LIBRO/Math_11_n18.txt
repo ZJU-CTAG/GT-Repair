@@ -1,0 +1,13 @@
+public void testDensityZeroDimension() {
+    for (int n = 1; n < 100; n++) {
+        double[] mean = new double[n];
+        double[][] covariance = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            covariance[i][i] = 1;
+        }
+        MultivariateNormalDistribution mnd = new MultivariateNormalDistribution(mean, covariance);
+        double actual = mnd.density(mean);
+        double expected = FastMath.pow(2 * FastMath.PI, -0.5 * n) * FastMath.pow(mnd.getCovariance().getDeterminant(), -0.5);
+        Assert.assertEquals(expected, actual, 1.0e-15);
+    }
+}

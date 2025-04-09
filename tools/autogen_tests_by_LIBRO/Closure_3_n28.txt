@@ -1,0 +1,18 @@
+public void testIssue108() throws IOException {
+    new CompilerOptions().setLanguageIn(LanguageMode.ECMASCRIPT6_STRICT);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("source",
+            "function getStack() {" +
+            "  var getErrorObject = function() {" +
+            "    try {" +
+            "      throw Error(\"\");" +
+            "    } catch(err) {" +
+            "      return err;" +
+            "    }" +
+            "  };" +
+            "  return getErrorObject().stack;" +
+            "}" +
+            "window['getStackTrace']=getStack;"),
+            new CompilerOptions());
+    assertFalse(result.success);
+}

@@ -1,0 +1,13 @@
+public void testAttributeWithNamespace() throws Exception {
+  String xml =
+      "<ElementA xmlns:A=\"http://foo.bar.com\" A:myAttr=\"Mytype\">\n" +
+      " <B:ElementB xmlns:B=\"http://foo.bar.com\">MY VALUE</B:ElementB>\n" +
+      "</ElementA>";
+  DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+  DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+  Document doc = docBuilder.parse(new InputSource(new StringReader(xml)));
+  JXPathContext ctx = JXPathContext.newContext(doc);
+  ctx.registerNamespace("A", "http://foo.bar.com");
+  ctx.registerNamespace("B", "http://foo.bar.com");
+  ctx.getValue("/ElementA/B:ElementB");
+}

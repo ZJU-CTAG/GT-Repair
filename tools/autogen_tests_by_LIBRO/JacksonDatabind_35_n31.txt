@@ -1,0 +1,14 @@
+public void testObjectIdAndTypeIdAsWrapperObject() throws Exception
+{
+    ObjectMapper mapper = objectMapper();
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, false);
+
+    TestObjectWithObjectIdKey key = new TestObjectWithObjectIdKey("key");
+    TestObjectWithObjectId value = new TestObjectWithObjectId(key, "value");
+    TestObjectWithObjectIdKey key2 = new TestObjectWithObjectIdKey("key2");
+    TestObjectWithObjectId value2 = new TestObjectWithObjectId(key2, "value2");
+
+    TestObjectWithObjectIdAsWrapperObject test = new TestObjectWithObjectIdAsWrapperObject("test", value, value2);
+
+    String json = mapper.writeValueAsString(test);
+    assertEquals("{\"@id\":\"test\",\"@type\":\"TestObjectWithObjectIdAsWrapperObject\",\"_embedded\":{\"TestObjectWithObjectIdAsWrapperObject.TestObjectWithObjectIdAsWrapperObject\":{\"TestObjectWithObjectIdAsWrapper

@@ -1,0 +1,22 @@
+public void testBMP() {
+  PhoneticEngine engine = new PhoneticEngine(NameType.GENERIC, RuleType.APPROX, false);
+
+  String[] name1 = new String[] {"Smith"};
+  String[] name2 = new String[] {"Smythe"};
+  String[] name3 = new String[] {"Smyth"};
+
+  RuleSet ruleSet = new RuleSet("generic", new GenericRulesApplier());
+  assertTrue(ruleSet.isApplied(name1));
+  assertTrue(ruleSet.isApplied(name2));
+  assertTrue(ruleSet.isApplied(name3));
+
+  Encoder encoder = new Encoder(engine);
+
+  String[] encodings = encoder.encode(ruleSet, name1);
+  assertTrue(encodings.length == 2);
+  assertEquals("SM0", encodings[0]);
+  assertEquals("XMT", encodings[1]);
+
+  encodings = encoder.encode(ruleSet, name2);
+  assertTrue(encodings.length == 2);
+  assertEqu

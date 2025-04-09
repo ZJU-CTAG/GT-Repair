@@ -1,0 +1,11 @@
+public void testIssue108 () {
+    String url = "http://szshb.nxszs.gov.cn/";
+    String html = HttpClientUtils.get(url, null);
+    Document doc = Jsoup.parse(html, url);
+    // java.lang.StackOverflowError
+    Elements elementsWithUrl = doc.select("[href]");
+    for (Element item : elementsWithUrl) {
+        String urlString = item.absUrl("href");
+        System.out.println(urlString);
+    }
+}

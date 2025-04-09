@@ -1,0 +1,20 @@
+public void testCMAESOptimizer() {
+    double[] start = {0};
+    double[] lower = {0};
+    double[] upper = {1};
+
+    ParametricUnivariateFunction f = new ParametricUnivariateFunction() {
+        public double value(double x, double... parameters) {
+            return x;
+        }
+
+        public double[] gradient(double x, double... parameters) {
+            return new double[] {1};
+        }
+    };
+
+    for (int i=0; i<100; i++) {
+        double[] fit = new CMAESOptimizer().optimize(100, f, GoalType.MINIMIZE, start, lower, upper, new SimpleBounds(lower, upper)).getPoint();
+        System.out.println(fit[0]);
+    }
+}

@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+  ObjectMapper objectMapper = new ObjectMapper();
+  JsonParser jsonParser = objectMapper.createParser("{\"key\": \"value\"}");
+
+  JsonParser subParser1 = objectMapper.createParser("{\"key\": \"value\"}");
+  JsonParser subParser2 = objectMapper.createParser("{\"key\": \"value\"}");
+
+  jsonParser = JsonParserSequence.createFlattened(true, subParser1, subParser2);
+
+  assertNotNull(jsonParser.nextToken());
+  assertNotNull(jsonParser.nextToken());
+  assertNotNull(jsonParser.nextToken());
+  assertNotNull(jsonParser.nextToken());
+  assertNotNull(jsonParser.nextToken());
+
+  assertEquals(JsonToken.START_OBJECT, jsonParser.getCurrentToken());
+  assertNull(jsonParser.nextToken());
+
+  // We are on the second delegate, we expect the nextToken to be not null.
+  // But it is null because we have skipped it.
+
+  assertNull(jsonParser.next

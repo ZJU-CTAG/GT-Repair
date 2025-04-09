@@ -1,0 +1,13 @@
+public void testIssue() {
+    String input = "function A(a) { return a; }" +
+            "function B(a) { var b = a.pb(); return a; }";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(JSSourceFile.fromCode("input.js", input),
+            JSSourceFile.fromCode("externs.js", ""),
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("function A(a) { return a; }\n" +
+            "function B(a) { var b = a.pb(); return a; }\n",
+            result.compiledCode);
+}

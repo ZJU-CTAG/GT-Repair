@@ -1,0 +1,12 @@
+public void testIt() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Action.class, IAction.class);
+    objectMapper.registerModule(module);
+    objectMapper.registerModule(new SomeTypeIdResolverModule());
+    final Message<Action> message = new Message<>();
+    message.setAction(new Action1());
+    final String json = objectMapper.writeValueAsString(message);
+    final Message<? extends Action> read = objectMapper.readValue(json, message.getClass());
+    assertTrue(read.getAction() instanceof Action1);
+}

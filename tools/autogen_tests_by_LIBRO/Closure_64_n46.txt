@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckSymbols(false);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.NEW_CHECK_TYPES, CheckLevel.WARNING);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setSummaryDetailLevel(0);
+
+    Result result = compiler.compile(ImmutableList.<SourceFile>of(),
+            ImmutableList.of(SourceFile.fromCode("input1.js", "var getNum = function() { return 5; };")), options);
+    assertEquals("var getNum=function(){return 5};", compiler.toSource());
+    assertFalse(result.

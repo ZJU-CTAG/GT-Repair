@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    JsonParser[] parsers = new JsonParser[2];
+    parsers[0] = createParserUsingReader("{\"key\":\"value\"}");
+    parsers[1] = createParserUsingReader("{\"key\":[]}");
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(false, parsers);
+    sequence.nextToken(); // Object
+    sequence.nextToken(); // Field name
+    sequence.nextToken(); // Field value
+    sequence.nextToken(); // End Object
+    sequence.nextToken(); // Object - this one is missing
+    assertToken(JsonToken.START_OBJECT, sequence.nextToken());
+    assertToken(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertToken(JsonToken.START_ARRAY, sequence.nextToken());
+    assertToken(JsonToken.END_ARRAY, sequence.nextToken());
+    assertToken(JsonToken.END_OBJECT, sequence.nextToken());
+    assertNull(sequence.nextToken());
+}

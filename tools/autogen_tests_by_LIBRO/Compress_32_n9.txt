@@ -1,0 +1,11 @@
+public void testReadPosixUid() throws Exception {
+    File input = getFile("issue-107.tar");
+    TarArchiveInputStream i = new TarArchiveInputStream(new FileInputStream(input));
+    TarArchiveEntry e = i.getNextTarEntry();
+    assertEquals("dir/", e.getName());
+    assertEquals(4294967294l, e.getUserId());
+    e = i.getNextTarEntry();
+    assertEquals("dir/file", e.getName());
+    assertEquals(4294967294l, e.getUserId());
+    i.close();
+}

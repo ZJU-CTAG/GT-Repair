@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    ArgumentCaptor<String> ac = ArgumentCaptor.forClass(String.class);
+    String a = "A";
+    String b = "B";
+    String c = "C";
+    String d = "D";
+    String e = "E";
+    String f = "F";
+    String g = "G";
+
+    // this works in Mockito 1.9.5
+    tested.test(a, b, c, d, e, f, g);
+    verify(tested).test(ac.capture(), ac.capture(), ac.capture(), ac.capture(), ac.capture(), ac.capture(), ac.capture());
+    assertEquals(a, ac.getAllValues().get(0));
+    assertEquals(b, ac.getAllValues().get(1));
+    assertEquals(c, ac.getAllValues().get(2));
+    assertEquals(d, ac.getAllValues().get(3));
+    assertEquals(e, ac.getAllValues().get(4));
+    assertEquals(

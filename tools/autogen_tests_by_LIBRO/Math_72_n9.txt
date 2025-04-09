@@ -1,0 +1,13 @@
+public void testIssue108() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x*x-2;
+        }
+    };
+    double min = 0;
+    double max = FastMath.sqrt(2);
+    double initial = max/2;
+    BrentSolver solver = new BrentSolver(1e-3, 1e-3);
+    double result = solver.solve(f, min, max, initial);
+    assertEquals(max, result, 1e-3);
+}

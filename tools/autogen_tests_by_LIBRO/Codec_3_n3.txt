@@ -1,0 +1,18 @@
+public void testDoubleMetaphone_AlternativeEncoding() {
+    String[][] encodings = {
+        {"Angier", "ANJR", "ANKR"},
+        {"Rogier", "RJR", "RKR"},
+        {"Cabrillo", "KPR", "KPRL"},
+        {"Gallegos", "KLKS", "KKS"},
+    };
+    DoubleMetaphone dm = new DoubleMetaphone();
+    for (int i=0; i<encodings.length; i++) {
+        String name = encodings[i][0];
+        String primary = encodings[i][1];
+        String alternative = encodings[i][2];
+        assertEquals(primary, dm.encode(name));
+        dm.setMaxCodeLen(primary.length());
+        assertEquals(primary, dm.encode(name));
+        assertEquals(alternative, dm.doubleMetaphone(name, true));
+    }
+}

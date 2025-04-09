@@ -1,0 +1,15 @@
+public void testEmbeddedObject() throws Exception
+{
+    JsonFactory f = new JsonFactory();
+    assertFalse(f.canHandleBinaryNatively());
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator gen = f.createGenerator(out);
+    try {
+        // this works ok
+        gen.writeObject(new Object[1]);
+        // this is the problematic case
+        gen.writeEmbeddedObject(new Object[1]);
+    } finally {
+        gen.close();
+    }
+}

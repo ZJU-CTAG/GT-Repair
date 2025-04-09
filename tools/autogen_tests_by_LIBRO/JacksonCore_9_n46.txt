@@ -1,0 +1,14 @@
+public void testGetValueAsStringIssue() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    JsonParser jp = om.createParser("{\"a\":1}");
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("a", jp.getText());
+    assertEquals("a", jp.getCurrentName());
+    assertEquals("a", jp.getCurrentToken());
+    // and then:
+    assertEquals(1, jp.getIntValue());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, jp.getCurrentToken());
+    assertEquals("a", jp.getCurrentName());
+}

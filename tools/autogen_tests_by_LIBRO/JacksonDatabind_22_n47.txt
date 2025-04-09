@@ -1,0 +1,27 @@
+public void testJsonValueSerializer() {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    // Registering serializer for Foo.class.
+    mapper.setSerializerFactory(
+            mapper.getSerializerFactory()
+                .withSerializerModifier(new BeanSerializerModifier() {
+                    @Override
+                    public JsonSerializer<?> modifySerializer(final SerializationConfig config, final BeanDescription beanDescr, final JsonSerializer<?> serializer) {
+
+                        if(Foo.class.equals(beanDescr.getBeanClass())) {
+                            return new FooSerializer();
+                        }
+                        return serializer;
+                    }
+                }));
+
+    System.out.println(mapper.writeValueAsString(new Foo()));
+}
+
+static final class FooSerializer extends JsonSerializer<Foo> {
+
+    @Override
+    public void serialize(final Foo value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+        jgen.writeFieldName("foo");
+        j

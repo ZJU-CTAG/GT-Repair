@@ -1,0 +1,25 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+    final String json = "{\n" +
+            "  \"records\": [\n" +
+            "    {\n" +
+            "      \"fields\": [\n" +
+            "        {\n" +
+            "          \"name\": \"field1\",\n" +
+            "          \"value\": \"value1\"\n" +
+            "        }\n" +
+            "      ]\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"fields\": []\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}\n";
+
+    final Definition definition = mapper.readValue(json, Definition.class);
+
+    assertEquals(2, definition.records.size());
+    assertEquals(1,

@@ -1,0 +1,20 @@
+public void testZipArchiveInputStream() throws Exception {
+    File temp = File.createTempFile("test", ".zip");
+    temp.deleteOnExit();
+    FileOutputStream fout = new FileOutputStream(temp);
+    fout.write("foo".getBytes());
+    fout.close();
+    ZipFile zipFile = new ZipFile(temp);
+    ZipArchiveEntry entry = zipFile.getEntry("foo");
+    InputStream in = zipFile.getInputStream(entry);
+    int n = in.read();
+    assertEquals("foo".charAt(0), n);
+    n = in.read();
+    assertEquals("foo".charAt(1), n);
+    n = in.read();
+    assertEquals("foo".charAt(2), n);
+    n = in.read();
+    assertEquals("foo".charAt(3), n);
+    assertEquals(-1, n);
+    in.close();
+}

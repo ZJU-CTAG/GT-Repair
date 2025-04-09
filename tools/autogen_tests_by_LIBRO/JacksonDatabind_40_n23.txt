@@ -1,0 +1,10 @@
+public void testIntFail() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should throw exception");
+    } catch (JsonMappingException e) {
+        // Expected
+    }
+}

@@ -1,0 +1,16 @@
+public void testIssue128() {
+    final TypeChecker typeChecker = new TypeChecker(errorHandler);
+    final TypeChecker.Options options = typeChecker.getOptions();
+    options.setScopeChecking(true);
+
+    final TypeExpression proxyTypeExpression = new ProxyObjectType("test.typeChecker.testProxyObject");
+
+    final TypeExpression recordTypeExpression = new RecordType("test.typeChecker.testRecord", new TypeMember[0], new NamedType("test.typeChecker.testRecord2", new TypeMember[0]));
+
+    final TypeProxy testProxyObject = new TypeProxy("test.typeChecker.testProxyObject", new TypeMember[0], proxyTypeExpression);
+    testProxyObject.setTypeExpression(proxyTypeExpression);
+
+    final TypeRecord testRecord = new TypeRecord("test.typeChecker.testRecord", new TypeMember[0], recordTypeExpression);
+    testRecord.setTypeExpression(recordTypeExpression);
+
+    final TypeRecord testRecord2 = new TypeRecord("test.typeChecker.testRecord2", new TypeMember[0], recordType

@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final JavaType type = mapper.getTypeFactory().constructType(String.class);
+
+    final JsonMappingException ex = new JsonMappingException(null, "", type);
+    final String msg = ex.getMessage();
+
+    assertTrue(msg.indexOf(" at [Source: ") > 0);
+    assertTrue(msg.lastIndexOf(" at [Source: ") > 0);
+    assertEquals(msg.indexOf(" at [Source: "), msg.lastIndexOf(" at [Source: "));
+}

@@ -1,0 +1,12 @@
+public void testDeserializationWithDeserializationProblemHandler() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) {
+            return Void.class;
+        }
+    });
+    Object result = objectMapper.readValue("[\"java.util.ArrayList\",[1,2,3]]", Object.class);
+    Assert.assertEquals("Void.class", result.getClass().getCanonicalName());
+}

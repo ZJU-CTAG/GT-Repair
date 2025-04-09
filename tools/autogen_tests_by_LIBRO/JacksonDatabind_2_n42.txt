@@ -1,0 +1,15 @@
+public void testSerializeToTree() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.registerModule(new JsonSchemaModule());
+    mapper.addMixIn(ListAttribute.class, ListAttributeMixIn.class);
+    mapper.addMixIn(ListAttribute.Value.class, ListAttributeValueMixIn.class);
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.setSerializationInclusion(Include.NON_DEFAULT);
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+
+    ListAttribute listAttribute = new ListAttribute();
+    listAttribute.add(ListAttribute.Type.STRING, "a");
+    listAttribute.add(ListAttribute.Type.INTEGER, "1");
+    listAttribute.add(ListAttribute.Type.DATE_TIME, "2011-04-01T16:00:00Z");
+    listAttribute.add(ListAttribute.Type.DATE_TIME, "2011-04-

@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.withLongOpt("test").create());
+    group.addOption(OptionBuilder.withLongOpt("test2").create());
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"--test2"});
+
+    assertEquals(cmd.getOptionValue("test2"), "--test2");
+}

@@ -1,0 +1,11 @@
+public void testIssue183() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[0,1,9999999999999999999999999999]", int[].class);
+        fail("Should not pass");
+    } catch (JsonProcessingException e) {
+        assertTrue(e.getMessage().contains("9999999999999999999999999999"));
+        assertTrue(e.getMessage().contains("int"));
+    }
+}

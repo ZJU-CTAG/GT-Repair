@@ -1,0 +1,11 @@
+public void testUTF16Stream() throws Exception {
+    final String data = "content";
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes("UTF-16"));
+    ByteBuffer byteData = DataUtil.readToByteBuffer(bais, Integer.MAX_VALUE);
+
+    String charset = DataUtil.getCharsetFromContentType("text/html; charset=UTF-16");
+    String stringData = Charset.forName(charset).decode(byteData).toString();
+
+    assertEquals(data, stringData);
+}

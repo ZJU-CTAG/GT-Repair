@@ -1,0 +1,21 @@
+public void testIssue() {
+    String js = "/** @constructor */\n" +
+            "var ns = {};\n" +
+            "ns.sub = {};\n" +
+            "/** @constructor */\n" +
+            "ns.sub.C = function() {};\n" +
+            "\n" +
+            "var goog = {};\n" +
+            "goog.scope = function(callback) {\n" +
+            "    callback();\n" +
+            "};\n" +
+            "\n" +
+            "goog.scope(function() {\n" +
+            " var sub = ns.sub;\n" +
+            " /** @type {sub.C} */\n" +
+            " var x = null;\n" +
+            "});";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("js", js)});
+}

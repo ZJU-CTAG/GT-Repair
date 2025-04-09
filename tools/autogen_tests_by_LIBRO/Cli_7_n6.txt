@@ -1,0 +1,16 @@
+public void testRequiredOptions() {
+    ArgumentCollection arguments = new ArgumentCollection();
+    arguments.addArgument(new Switch("h", "help"));
+    arguments.addArgument(new Switch("c", "config"));
+    Group group = new Group();
+    group.addArgument(arguments.getArgument("h"), arguments.getArgument("c"));
+    group.setRequired(true);
+    CommandLine commandLine = new CommandLine();
+    commandLine.addOption(arguments.getOption("c"));
+    try {
+        group.process(commandLine);
+        fail("should have thrown an exception");
+    } catch (OptionException e) {
+        assertEquals("Missing required option(s) [-h]", e.getMessage());
+    }
+}

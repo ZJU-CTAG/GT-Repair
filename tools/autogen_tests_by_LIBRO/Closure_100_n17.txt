@@ -1,0 +1,38 @@
+public void testClosureCompiler() {
+
+    
+    
+// ==ClosureCompiler==
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// @output_file_name default.js
+// ==/ClosureCompiler==
+/** @constructor */
+function Foo()
+{
+ this._bar = null;
+};
+
+/** @this {Foo} */
+function writeMethodWithAnnotation()
+{
+ this._bar = 123; // no warning. ok
+}
+
+/** @this {Foo} */
+function readMethodWithAnnotation()
+{
+ return this._bar; // no warning. ok
+}
+
+//----
+
+function writeMethodWithoutAnnotation()
+{
+ this._bar = 123; // warning. ok.
+}
+
+function readMethodWithoutAnnotation()
+{
+ return this._bar; // <- No warning!
+}
+}

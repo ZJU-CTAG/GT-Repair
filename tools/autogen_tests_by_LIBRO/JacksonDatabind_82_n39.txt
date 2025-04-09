@@ -1,0 +1,8 @@
+public void testIgnoreProperties() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final JsonTest json = new JsonTest("user", "password");
+    final String jsonString = mapper.writeValueAsString(json);
+    assertEquals("{\"username\":\"user\",\"password\":\"password\"}", jsonString);
+    final JsonTest json2 = mapper.readValue(jsonString, JsonTest.class);
+    assertEquals("password", json2.getPassword());
+}

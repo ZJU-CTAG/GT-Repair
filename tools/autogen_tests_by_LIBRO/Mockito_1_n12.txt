@@ -1,0 +1,11 @@
+public void testIssue108 () throws Exception {
+    class C {
+        void doSomething (String... args)  {}
+    }
+    C target = mock(C.class);
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    target.doSomething("a");
+    verify(target).doSomething(captor.capture());
+    assertEquals(1, captor.getValue().length);
+    assertEquals("a", captor.getValue()[0]);
+}

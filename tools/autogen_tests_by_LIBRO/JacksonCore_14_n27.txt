@@ -1,0 +1,11 @@
+public void testBufferShrink() throws Exception {
+    File file = new File("test.txt");
+    FileOutputStream fos = new FileOutputStream(file);
+    fos.write("1234567890".getBytes());
+    fos.close();
+    FileInputStream fis = new FileInputStream(file);
+    FileChannel channel = fis.getChannel();
+    FileRegion region = new FileRegion(channel, 0, channel.size());
+    ByteBuf buf = Unpooled.buffer(8);
+    region.transferTo(buf, 0);
+}

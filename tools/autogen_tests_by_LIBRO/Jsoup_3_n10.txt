@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String html = "<table><tr><td>hello</td></tr></table>";
+    String fragment = "<tr><td>there</td></tr>";
+    Document doc = Jsoup.parse(html);
+    doc.select("table").first().append(fragment);
+    assertEquals(
+            "<table>\n" +
+            " <tbody>\n" +
+            "  <tr>\n" +
+            "   <td>hello</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "   <td>there</td>\n" +
+            "  </tr>\n" +
+            " </tbody>\n" +
+            "</table>",
+            doc.body().html());
+}

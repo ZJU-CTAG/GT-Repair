@@ -1,0 +1,21 @@
+public void test() {
+    double[] lower = { -1.2 };
+    double[] upper = { 1.2 };
+     
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(
+        new BrentOptimizer(1e-9, 1e-14),
+        10,
+        new SimpleUnivariateRealInterval(lower[0], upper[0]));
+ 
+    UnivariateRealPointValuePair result = optimizer.optimize(new MaxEval(100),
+        new UnivariateRealFunction() {
+            public double value(double x) {
+                return x;
+            }
+        },
+        GoalType.MINIMIZE,
+        new SearchInterval(lower[0], upper[0]));
+ 
+    assertEquals(0.0, result.getValue(), 1e-14);
+    assertEquals(0.0, optimizer.getResult(), 1e-14);
+}

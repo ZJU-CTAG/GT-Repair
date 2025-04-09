@@ -1,0 +1,23 @@
+public void testConvert() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    JsonNode node = mapper.convertValue(new Foo(), JsonNode.class);
+    // prints
+    // [0] type:  ARRAY, name: null
+    // [1] type:  OBJECT, name: null
+    // [2] type:  OBJECT, name: foo
+    JsonStreamContext context = mapper.getFactory().getGeneratorFactory()._createJsonGenerator(System.out, JsonEncoding.UTF8).getOutputContext();
+    System.out.println();
+    while (context != null) {
+        System.out.println("[level " + context.getCurrentIndex() + "] type:  " + context.getType() + ", name: " + context.getCurrentName());
+        context = context.getParent();
+    }
+}
+
+public static class Foo {
+    public Bar bar = new Bar();
+}
+
+public static class Bar {
+    public String foo = "foo";
+}

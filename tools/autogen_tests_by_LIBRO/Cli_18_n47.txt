@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption("a", false, "Option a");
+    
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cmd = parser.parse(options, new String[]{"-z", "-a", "foo"});
+        assertFalse(cmd.hasOption('z'));
+        assertTrue(cmd.hasOption('a'));
+    } catch (ParseException e) {
+        fail("Not expecting exception");
+    }
+}

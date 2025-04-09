@@ -1,0 +1,16 @@
+public void testIssue4() throws Exception
+{
+    JsonFactory jf = new JsonFactory();
+    jf.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    JsonParser jp = jf.createParser(ObjectReadContext.empty(), "[ NaN ]");
+    jp.nextToken();
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    // used to throw NPE
+    try {
+        jp.getDecimalValue();
+        fail("Should have failed");
+    } catch (NumberFormatException e) {
+        verifyException(e, "not a valid");
+    }
+    jp.close();
+}

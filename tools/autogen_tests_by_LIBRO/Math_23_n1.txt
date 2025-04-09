@@ -1,0 +1,30 @@
+public void testIssue104() {
+    // function values
+    final double[] xval = new double[] {-3, -2, -1, 0, 1, 2, 3};
+    final double[] yval = new double[] {9, 4, 1, 0, 1, 4, 9};
+
+    // interpolator
+    PolynomialSplineFunction interpolator = new
+    LinearInterpolator().interpolate(xval, yval);
+
+    // target function
+    MultivariateFunction f = new MultivariateFunction() {
+        public double value(double[] point) {
+            return interpolator.value(point[0]);
+        }
+    };
+
+    MultivariateDifferentiableFunction df = new MultivariateDifferentiableFunction() {
+        public double value(double[] point) {
+            return interpolator.value(point[0]);
+        }
+
+        public DerivativeStructure value(final DerivativeStructure t)
+        throws MathIllegalArgumentException {
+            return t.getPartialDerivative(1);
+        }
+    };
+
+    // optimizer
+    MultivariateDifferentiableOptimizer optimizer =
+   

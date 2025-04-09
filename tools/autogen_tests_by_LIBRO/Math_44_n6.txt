@@ -1,0 +1,29 @@
+public void testIssue108() {
+    EventManager manager = new EventManager("test issue #108");
+    manager.init();
+    manager.addHandler(new MyEvent1Handler());
+    manager.addHandler(new MyEvent2Handler());
+
+    // Schedule some events
+    manager.scheduleEvent(new MyEvent1(1), 1);
+    manager.scheduleEvent(new MyEvent2(1), 1);
+    manager.scheduleEvent(new MyEvent1(2), 1);
+    manager.scheduleEvent(new MyEvent2(2), 1);
+    manager.execute();
+    assertTrue(MyEvent1Handler.events.contains(1));
+}
+
+class MyEvent1Handler implements EventHandler {
+    static Set<Integer> events = new HashSet<Integer>();
+
+    @Override
+    public void handleEvent(Event e) {
+        if (e instanceof MyEvent1) {
+            MyEvent1 event = (MyEvent1) e;
+            events.add(event.id);
+        }
+    }
+}
+
+class MyEvent2Handler implements EventHandler {
+    static Set<Integer> events

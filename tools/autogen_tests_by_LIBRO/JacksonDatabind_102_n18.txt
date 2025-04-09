@@ -1,0 +1,19 @@
+public void testIssue_107() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    java.sql.Date date = new java.sql.Date(1560917200000L);
+
+    assertEquals("{\"date\":\"2019-06-17\"}", mapper.writer().writeValueAsString(new Issue107.Wrapper(date)));
+}
+
+public static class Wrapper {
+
+    @JsonProperty
+    public java.sql.Date date;
+
+    public Wrapper(java.sql.Date date) {
+        this.date = date;
+    }
+}

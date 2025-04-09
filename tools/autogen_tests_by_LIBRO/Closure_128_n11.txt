@@ -1,0 +1,19 @@
+public void testIssue107() {
+    compiler.compile(createSourceFile(
+            "test",
+            "alert({0:0, 1:1});"),
+        new ErrorManager() {
+          @Override
+          public void println(CheckLevel level, JSError error) {
+            assertEquals(CheckLevel.ERROR, level);
+            assertEquals(TypeValidator.TYPE_MISMATCH_WARNING, error.getType());
+            assertEquals(DiagnosticType.warning("JSC_TYPE_MISMATCH",
+                    "inconsistent return type",
+                    new String[] {"{number}", "'number'"}),
+                    error.getType());
+          }
+
+          @Override
+          public void printSummary() {}
+        });
+}

@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    // reads up to the end of the file
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    try (
+            InputStream is = getClass().getResourceAsStream("/commons-io-2.4-20100614.234440-1.noarch.rpm");
+            ArchiveInputStream in = asf.createArchiveInputStream("cpio", is)
+    ) {
+        ArchiveEntry entry;
+        while ((entry = in.getNextEntry()) != null) {
+            System.out.printf("Read entry %s%n", entry.getName());
+        }
+    }
+}

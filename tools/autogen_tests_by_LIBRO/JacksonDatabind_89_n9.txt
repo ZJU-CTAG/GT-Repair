@@ -1,0 +1,13 @@
+public void testIssue1599() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    // https://github.com/FasterXML/jackson-databind/issues/1599#issuecomment-340507638
+    mapper.enableDefaultTyping();
+    ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
+    Class<?> clazz = currentThreadClassLoader.loadClass("com.sun.rowset.JdbcRowSetImpl");
+    Constructor<?> ctor = clazz.getDeclaredConstructor();
+    ctor.setAccessible(true);
+    Object obj = ctor.newInstance();
+    String json = mapper.writeValueAsString(obj);
+    // should fail here
+    mapper.readValue(json, Object.class);
+}

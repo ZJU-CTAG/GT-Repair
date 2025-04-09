@@ -1,0 +1,10 @@
+public void testIssueWithNullTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectNode node = mapper.createObjectNode();
+    node.put("someString", "someValue");
+    final Object obj = mapper.treeToValue(node, Object.class);
+    final String json = mapper.writeValueAsString(obj);
+    final Object result = mapper.readValue(json, Object.class);
+    assertEquals(obj, result);
+}

@@ -1,0 +1,9 @@
+public void testIssue108() {
+    ThreadLocal t = ToStringStyle.DEFAULT_STYLE_FIELD_NAME_CACHE.get();
+    assertNull(t.get());
+    ToStringStyle.DEFAULT_STYLE_FIELD_NAME_CACHE.set(new ThreadLocal());
+    t = ToStringStyle.DEFAULT_STYLE_FIELD_NAME_CACHE.get();
+    assertNotNull(t.get());
+    t.set("test");
+    assertEquals(String.class, t.get().getClass());
+}

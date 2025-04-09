@@ -1,0 +1,21 @@
+public void testIssue() {
+    try {
+        Compiler compiler = new Compiler();
+        compiler.init(new CommandLineConfig());
+        compiler.compile(
+            SourceFile.fromCode("foo.js",
+                "goog.provide('foo.Foo');\n" +
+                "goog.provide('foo.Foo.Bar');\n" +
+                "goog.scope(function() {\n" +
+                " /**\n" +
+                "  * @param {Foo.Bar} bar\n" +
+                "  * @constructor\n" +
+                "  */\n" +
+                " foo.Foo = function(bar) {\n" +
+                "   this.bar = bar;\n" +
+                " };\n" +
+                " var Foo = foo.Foo;\n" +
+                " /** @type {Foo.Bar} */\n" +
+                " Foo.prototype.bar = null;\n" +
+                " /** @constructor */\n" +
+                " Foo.Bar = function() {};\

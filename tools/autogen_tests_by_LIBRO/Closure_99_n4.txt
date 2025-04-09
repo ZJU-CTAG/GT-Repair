@@ -1,0 +1,24 @@
+public void testPrototypes() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        Compiler.createSourceFile("test.js",
+            "/**\n" +
+            "* @constructor\n" +
+            "* @implements {MyParent}\n" +
+            "*/\n" +
+            "function MyClass() {}\n" +
+            "MyClass.prototype['MyMethod'] = function(a) {\n" +
+            " this.a2 = a;\n" +
+            "}\n" +
+            "window['MyClass'] = MyClass;\n" +
+            "var x = new MyClass();\n" +
+            "x.MyMethod(5);\n" +
+            ""),
+        Compiler.createSourceFile("externs.js",
+            "/**\n" +
+            "* @interface\n" +
+            "*/\n" +
+            "function MyParent() {}\n" +
+            "/** @param {*} a */\n" +
+           

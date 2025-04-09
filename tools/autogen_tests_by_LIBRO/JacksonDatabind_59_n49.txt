@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    String json = "{\"mapProperty\":[\"java.util.HashMap\",{\"Compound|Key\":\"Value\"}]}";
+    ObjectMapper mapper = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
+    TestClass testInstance = mapper.readValue(json, TestClass.class);
+    String testInstanceSerialized = mapper.writeValueAsString(testInstance);
+    assertEquals(json, testInstanceSerialized);
+}
+
+@JsonAutoDetect(fieldVisibility = ANY)
+public static final class TestClass {
+    @JsonProperty("mapProperty")
+    @JsonSerialize(keyUsing = CompoundKeySerializer.class)
+    private final Map<CompoundKey, String> mapProperty;
+
+    @JsonCreator
+    private TestClass(@JsonDeserialize(keyUsing = CompoundKeyDeserializer.class) @JsonProperty("mapProperty") Map<CompoundKey, String> mapProperty) {
+        this.mapProperty = mapProperty;
+    }
+}
+

@@ -1,0 +1,7 @@
+public void testIssue144() {
+    String code = "var NS = {read: function() {return this.foo; }, write: function() {this.foo = 123; }};";
+    List<Warning> warnings = compile(code);
+    // bug #144 - this should warn
+    assertEquals(1, warnings.size());
+    assertEquals(Warning.JSC_USED_GLOBAL_THIS, warnings.get(0).getType())
+}

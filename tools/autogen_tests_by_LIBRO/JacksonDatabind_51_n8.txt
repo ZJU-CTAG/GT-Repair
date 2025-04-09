@@ -1,0 +1,14 @@
+public void testTypeIdResolver() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.enableDefaultTyping();
+    om.setDefaultTyping(new TestTypeIdResolver(om));
+    om.registerModule(new TestModule());
+
+    TreeNode root = om.readTree(new File("src/test/resources/test.json"));
+    TestClass test = om.treeToValue(root, TestClass.class);
+    assertEquals(2, test.list.size());
+    assertEquals(1, test.list.get(0).id);
+    assertNull(test.list.get(0).name);
+    assertEquals(2, test.list.get(1).id);
+    assertEquals("Test", test.list.get(1).name);
+}

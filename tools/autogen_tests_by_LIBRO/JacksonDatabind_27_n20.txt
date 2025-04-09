@@ -1,0 +1,11 @@
+public void testExternalTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.configure(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY, true);
+    mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+
+    final String json = "{\"@type\":\"java.lang.String\",\"value\":\"foo\"}";
+    final String result = mapper.readValue(json, String.class);
+    assertEquals("foo", result);
+}

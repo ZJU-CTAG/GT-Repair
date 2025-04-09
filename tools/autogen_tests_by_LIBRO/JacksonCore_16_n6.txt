@@ -1,0 +1,14 @@
+public void testJsonParserSequence() throws IOException {
+    JsonFactory f = new JsonFactory();
+
+    String value = "{}";
+    StringReader reader = new StringReader(value);
+
+    JsonParser parser1 = f.createParser(reader);
+    JsonParser parser2 = f.createParser(reader);
+
+    JsonParserSequence jsonParserSequence = JsonParserSequence.createFlattened(parser1, parser2);
+    assertEquals(JsonToken.START_OBJECT, jsonParserSequence.nextToken());
+    assertEquals(JsonToken.END_OBJECT, jsonParserSequence.nextToken());
+    assertNull(jsonParserSequence.nextToken());
+}

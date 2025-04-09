@@ -1,0 +1,11 @@
+public void testScope() {
+    ClosureCompiler compiler = new ClosureCompiler().withExterns("externs/externs.js").withJs("testdata/goog.scope.js");
+    Result result = compiler.compile();
+    assertEquals("Error: testdata/goog.scope.js:8: WARNING - variable x declared more than once in a single scope\n" +
+    		"var x = function(){};\n" +
+    		"^\n" +
+    		"testdata/goog.scope.js:6: WARNING - variable x declared more than once in a single scope\n" +
+    		" function x() {}\n" +
+    		"^\n" +
+    		"2 error(s), 0 warning(s)", result.errors);
+}

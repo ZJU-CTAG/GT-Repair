@@ -1,0 +1,17 @@
+public void testIssue107() {
+    File file = File.createTempFile("testIssue107", ".zip");
+    FileOutputStream fos = new FileOutputStream(file);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+    ZipArchiveEntry ze = new ZipArchiveEntry("testIssue107");
+    ze.setSize(0);
+    zos.putArchiveEntry(ze);
+    zos.closeArchiveEntry();
+    zos.close();
+    fos.close();
+    ZipFile zipFile = new ZipFile(file);
+    ZipArchiveEntry zeFile = zipFile.getEntry("testIssue107");
+    ZipArchiveInputStream zipArchiveInputStream = new ZipArchiveInputStream(new FileInputStream(file));
+    ZipArchiveEntry zeStream = zipArchiveInputStream.getNextZipEntry();
+    assertEquals(zeFile, zeStream);
+}
+

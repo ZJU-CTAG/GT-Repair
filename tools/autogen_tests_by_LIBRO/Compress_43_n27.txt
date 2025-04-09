@@ -1,0 +1,16 @@
+public void testLocalVersionNeededToExtractDiffersFromCentralDirectory() throws IOException {
+    final File file = File.createTempFile("commons-compress", ".zip");
+    try {
+        final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+        final ZipArchiveEntry ze = new ZipArchiveEntry("foo");
+        zos.putArchiveEntry(ze);
+        zos.closeArchiveEntry();
+        ze.setMethod(ZipMethod.STORED.getCode());
+        zos.putArchiveEntry(ze);
+        zos.closeArchiveEntry();
+        zos.close();
+        checkCentralDirectoryVersionNeededToExtractMatchesLocalHeader(file);
+    } finally {
+        file.delete();
+    }
+}

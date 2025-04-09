@@ -1,0 +1,16 @@
+public void testRead() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    // This line is the fix
+    mapper.registerSubtypes(JsonMapSchema.class);
+    mapper.registerSubtypes(JsonCustomSchema.class);
+    JsonRoot root =
+        mapper.readValue(
+            Files.asCharSource(
+                new File(getClass().getResource("/model-foodmart.json").getFile()),
+                Charsets.UTF_8).openStream(),
+            JsonRoot.class);
+    assertEquals(1, root.schemas.size());
+    assertTrue(root.schemas.get(0) instanceof JsonMapSchema);
+    JsonMapSchema schema = (JsonMapSchema) root.schemas.get(0);
+    assertEquals("FoodMart", schema.name);
+  }

@@ -1,0 +1,17 @@
+public void testDateSerializerCustomFormat() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    assertEquals(
+            "{\"date\":\"2000-01-01\"}",
+            mapper.writeValueAsString(new DateHolder()));
+}
+
+public class DateHolder {
+
+    private final Date date = new java.sql.Date(new GregorianCalendar(2000, 0, 1).getTimeInMillis());
+
+    public Date getDate() {
+        return date;
+    }
+}

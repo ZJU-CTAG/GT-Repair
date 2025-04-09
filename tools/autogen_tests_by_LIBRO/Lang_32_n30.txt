@@ -1,0 +1,13 @@
+public void testToStringStyleThreadLocalMemoryLeak() throws Exception {
+    ClassLoader testClassLoader = new URLClassLoader(new URL[] {}, Thread.currentThread().getContextClassLoader());
+    ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(testClassLoader);
+    try {
+        Class.forName("org.apache.commons.lang3.builder.ToStringStyle");
+        assertFalse(ToStringStyle.isUseClassName());
+        ToStringStyle.setUseClassName(true);
+        assertTrue(ToStringStyle.isUseClassName());
+    } finally {
+        Thread.currentThread().setContextClassLoader(oldLoader);
+    }
+}

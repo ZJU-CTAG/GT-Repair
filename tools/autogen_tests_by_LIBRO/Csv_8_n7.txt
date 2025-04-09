@@ -1,0 +1,12 @@
+public void testCSVFormat() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader("a", "b", "c", "c");
+    assertTrue(format.getHeader().isPresent());
+    assertArrayEquals(new String[]{"a", "b", "c", "c"}, format.getHeader().get());
+    // should fail
+    try {
+        format.withHeader();
+        fail();
+    } catch (IllegalArgumentException e) {
+        assertEquals("Duplicate header name: c", e.getMessage());
+    }
+}

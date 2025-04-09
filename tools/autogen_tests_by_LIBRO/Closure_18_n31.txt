@@ -1,0 +1,19 @@
+public void testDependencySortingWithClosurePassSetToFalse() {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+
+    // turn dependency sorting on
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+
+    // set custom externs
+    compilerOptions.setDependencyOptions(dependencyOptions);
+
+    Result result = compiler.compile(
+            compiler.getDefaultExterns(),
+            Arrays.asList("goog.require('Foo'); alert('foo');"),
+            compilerOptions);
+    assertTrue(result.success);
+    assertEquals("alert(\"foo\");\n", compiler.toSource());
+}

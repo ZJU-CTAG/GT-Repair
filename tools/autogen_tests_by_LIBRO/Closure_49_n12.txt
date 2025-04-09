@@ -1,0 +1,18 @@
+public void testIssue10() {
+    String input = "var foo = function bar() {var bar; alert(bar);};";
+    String expected = "var foo = function() { alert(void 0);};";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    compiler.compile(
+            new JSSourceFile[]{
+                JSSourceFile.fromCode("foo", input)
+            },
+            new JSSourceFile[]{},
+            options
+    );
+    String output = compiler.toSource();
+    assertEquals(expected, output);
+}

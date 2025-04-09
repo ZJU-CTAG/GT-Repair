@@ -1,0 +1,24 @@
+public void testIssueFailsToSerializeDeserializeAClassWhereASuperClassHasATypeParameter() {
+    Foo foo = new Foo<Integer>(1);
+    String json = new Gson().toJson(foo);
+    assertEquals("{\"someField\":1}", json);
+    
+    Foo foo2 = new Gson().fromJson(json, Foo.class);
+    assertEquals(foo, foo2);
+}
+
+public class Foo<T> {
+    private final T someField;
+
+    public Foo(T value) {
+        this.someField = value;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Foo)) {
+            return false;
+        } else {
+            return someField.equals(((Foo)o).someField);
+        }
+    }
+}

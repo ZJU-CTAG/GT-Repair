@@ -1,0 +1,23 @@
+public void testContextPassing() throws Exception {
+    final String attrKey = "test";
+    final String attrValue = "HELLO!";
+    @JsonSerialize(using = ContextPassingSer.class)
+    class Dummy {
+        public String dummy;
+    }
+    class ContextPassingSer extends StdSerializer<Dummy> {
+        public ContextPassingSer() {
+            super(Dummy.class);
+        }
+
+        @Override
+        public void serialize(Dummy value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            assertEquals(attrValue, provider.getAttribute(attrKey));
+        }
+    }
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.writer()
+            .withAttribute(attrKey, attrValue)
+            .writeValueAsString(new Dummy());
+}

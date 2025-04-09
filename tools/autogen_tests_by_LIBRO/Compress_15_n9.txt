@@ -1,0 +1,12 @@
+public void testZipArchiveEntry() throws IOException {
+    File zip = new File("src/test/resources/test-zip.zip");
+
+    ZipFile zipFile = new ZipFile(zip);
+    ZipArchiveEntry entry = zipFile.getEntry("test1.xml");
+    assertNotNull(entry);
+
+    ZipArchiveInputStream zipArchiveInputStream = new ZipArchiveInputStream(new FileInputStream(zip));
+    ZipArchiveEntry zipArchiveEntry = zipArchiveInputStream.getNextZipEntry();
+    assertNotNull(zipArchiveEntry);
+    assertEquals(entry, zipArchiveEntry);
+}

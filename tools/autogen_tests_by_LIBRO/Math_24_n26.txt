@@ -1,0 +1,20 @@
+public void testBrentOptimizer() {
+    final double[] data = new double[32];
+    for (int i = 0; i < data.length; ++i) {
+        data[i] = 0.5 * i;
+    }
+    data[23] = 0.5;
+    data[24] = 0.4;
+
+    UnivariateFunction function = new UnivariateFunction() {
+            public double value(double x) {
+                return data[(int) (data.length * x / 2.0)];
+            }
+        };
+
+    UnivariateOptimizer optimizer = new BrentOptimizer(1.0e-12, 1.0e-8);
+    optimizer.optimize(new MaxEval(100),
+                       new UnivariateObjectiveFunction(function),
+                       GoalType.MINIMIZE,
+                       new SearchInterval(0.0, 1.0));
+}

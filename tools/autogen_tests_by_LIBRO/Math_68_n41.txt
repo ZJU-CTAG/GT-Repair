@@ -1,0 +1,27 @@
+public void testIssue108() {
+    VectorialPointValuePair p = new LevenbergMarquardtOptimizer().optimize(
+        new MaxEval(100),
+        new ObjectiveFunction(new MultivariateDifferentiableVectorFunction() {
+            @Override
+            public double[] value(double[] point) {
+                return null;
+            }
+
+            @Override
+            public DerivativeStructure[] value(DerivativeStructure[] point) {
+                return null;
+            }
+        }),
+        GoalType.MINIMIZE,
+        new VectorialPointValuePair(new double[0], new double[0]),
+        new VectorialConvergenceChecker() {
+            @Override
+            public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+                return true;
+            }
+        },
+        0,
+        new double[]{1},
+        new double[]{1});
+    Assert.assertEquals(0, p.getPoint().length);
+    Assert.assertEquals(0, p.getValue().

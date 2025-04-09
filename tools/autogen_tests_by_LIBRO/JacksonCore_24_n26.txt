@@ -1,0 +1,11 @@
+public void testCoerceInput() throws Exception
+{
+    final ObjectMapper mapper = newJsonMapper();
+    try {
+        mapper.readValue("123", Integer.class);
+        fail("Should not pass");
+    } catch (InputCoercionException e) {
+        assertEquals(JsonToken.VALUE_NUMBER_INT, e.getTokenType());
+        assertEquals(Integer.class, e.getTargetType());
+    }
+}

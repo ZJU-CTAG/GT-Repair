@@ -1,0 +1,17 @@
+public void testNumberShape() {
+    String notNumber = "notNumber";
+    assertTrue(NumberUtils.isCreatable(notNumber));
+    Number number = NumberUtils.createNumber(notNumber);
+    assertNull(number);
+    for (Locale locale : Locale.getAvailableLocales()) {
+        NumberFormat nf = NumberFormat.getInstance(locale);
+        nf.setParseIntegerOnly(false);
+        if (nf.format(notNumber).equals(notNumber)) {
+            // can't parse this one
+            continue;
+        }
+        assertTrue(NumberUtils.isCreatable(notNumber, locale));
+        number = NumberUtils.createNumber(notNumber, locale);
+        assertNull(number);
+    }
+}

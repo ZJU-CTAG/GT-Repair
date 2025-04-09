@@ -1,0 +1,21 @@
+public void test_jdk9() {
+    String ts = "11500012312300999997";
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMddHHmmssSSSSSS");
+    DateTime dt = dtf.parseDateTime(ts);
+    assertEquals(new DateTime(2007, 12, 7, 0, 30, 30, 999997, UTC), dt);
+}
+
+public void test_jdk9_2() {
+    String ts = "11500012312300999997";
+    DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+            .appendYear(4, 8)
+            .appendMonthOfYear(2)
+            .appendDayOfMonth(2)
+            .appendHourOfDay(2)
+            .appendMinuteOfHour(2)
+            .appendSecondOfMinute(2)
+            .appendMillisOfSecond(3)
+            .appendLiteral('S')
+            .toFormatter();
+    DateTime dt = dtf.parseDateTime(ts);
+    assertEquals(new Date

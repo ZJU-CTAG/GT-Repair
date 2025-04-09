@@ -1,0 +1,9 @@
+public void testTextAfterDataOnly() {
+    String html = "<html><head></head><body><script type=\"text/javascript\">var inside = true;</script>this should be outside.</body></html>";
+    String clean = Jsoup.clean(html, Whitelist.none());
+    Document dirty = Jsoup.parse(html);
+    Document cleanDoc = Jsoup.parse(clean);
+
+    assertEquals(normaliseWhitespace(clean), normaliseWhitespace(cleanDoc.body().html()));
+    assertEquals(normaliseWhitespace(clean), normaliseWhitespace(dirty.body().html()));
+}

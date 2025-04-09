@@ -1,0 +1,16 @@
+public void testIssue() throws Exception
+{
+    JsonFactory jf = new JsonFactory();
+    JsonParser jp = jf.createParser("{\"a\":1");
+
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    // here it should be "a"
+    assertEquals("a", jp.getCurrentName());
+    assertEquals("a", jp.getValueAsString());
+
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    // here it should be "a"
+    assertEquals("a", jp.getCurrentName());
+    // but it is null
+    assertEquals("a", jp.getValueAsString());
+}

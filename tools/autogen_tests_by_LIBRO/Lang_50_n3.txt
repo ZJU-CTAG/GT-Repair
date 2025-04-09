@@ -1,0 +1,15 @@
+public void testFastDateFormatGetDateTimeInstance() {
+    Locale originalLocale = Locale.getDefault();
+    try {
+        Locale.setDefault(Locale.GERMANY);
+        FastDateFormat germanDate = FastDateFormat.getDateInstance(DateFormat.SHORT);
+        String germanShortDate = germanDate.format(date);
+        Locale.setDefault(Locale.UK);
+        FastDateFormat ukDate = FastDateFormat.getDateInstance(DateFormat.SHORT);
+        String ukShortDate = ukDate.format(date);
+        // both dates should be different, but aren't
+        assertNotSame(germanShortDate, ukShortDate);
+    } finally {
+        Locale.setDefault(originalLocale);
+    }
+}

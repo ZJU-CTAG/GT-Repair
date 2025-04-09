@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String varArgsMethod(String... strings) { return ""; }
+    String varArgsMethod(String[] strings) { return ""; }
+    String varArgsMethod(String string) { return ""; }
+    String varArgsMethod(String string, String string2) { return ""; }
+    String varArgsMethod(String string, String string2, String string3) { return ""; }
+    String varArgsMethod(String string, String string2, String string3, String string4) { return ""; }
+    String varArgsMethod(String string, String string2, String string3, String string4, String string5) { return ""; }
+    String varArgsMethod(String string, String string2, String string3, String string4, String string5, String string6) { return ""; }
+
+    varArgsMethod("a", "b", "c");
+    verify(mock).varArgsMethod(captor.capture());
+    assertEquals("a", captor.getValue());

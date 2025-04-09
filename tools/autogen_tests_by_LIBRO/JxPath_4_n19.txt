@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    String xml = "<root><value> 12324 56</value></root>";
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));
+
+    JXPathContext context = JXPathContext.newContext(doc);
+
+    assertEquals(" 12324 56", context.getValue("/root/value"));
+}

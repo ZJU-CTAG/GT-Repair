@@ -1,0 +1,14 @@
+public void testTar() throws Exception {
+    File testFile = new File("target/test.tar");
+    testFile.delete();
+    FileOutputStream fos = new FileOutputStream(testFile);
+    fos.write(new byte[]{97, 98, 99, 100, 101, 102, 103, -1});
+    fos.close();
+    TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(testFile));
+    try {
+        tis.getNextTarEntry();
+        fail("Should throw IOException");
+    } catch (IOException e) {
+        assertTrue(e.getMessage().startsWith("Error detected parsing the header"));
+    }
+}

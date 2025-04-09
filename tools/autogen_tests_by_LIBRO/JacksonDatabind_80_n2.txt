@@ -1,0 +1,18 @@
+public void testSimpleTypeIdResolution() throws Exception
+{
+  ObjectMapper mapper = objectMapper();
+  SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+  module.addAbstractTypeMapping(Base.class, Child.class);
+  mapper.registerModule(module);
+  Child child = new Child();
+  child.name = "child";
+  Base base = mapper.readValue("{\"@type\":\"base\",\"name\":\"child\"}", Base.class);
+  assertTrue(base instanceof Child);
+}
+
+abstract class Base {
+  public String name;
+}
+
+class Child extends Base {
+}

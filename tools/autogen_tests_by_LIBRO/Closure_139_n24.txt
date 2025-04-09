@@ -1,0 +1,11 @@
+public void testIssue108() {
+	String code = "function assert(b) {if (!b) throw 'error';};" +
+				  "assert(f() === 1);" +
+				  "var f = function() {return 2;};" +
+				  "assert(f() === 2);" +
+				  "function f() {return 1;};";
+	Compiler compiler = new Compiler();
+	CompilerOptions options = new CompilerOptions();
+	options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+	compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", code)}, options);
+}

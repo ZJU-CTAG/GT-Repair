@@ -1,0 +1,14 @@
+public void testIssue106() throws Exception {
+    InputStream is = new FileInputStream(getFile("bla.tar.deflatez"));
+    try {
+        CompressorStreamFactory csf = new CompressorStreamFactory();
+        InputStream cs = csf.createCompressorInputStream(is);
+        try {
+            assertEquals("This is a test file.", toString(cs));
+        } finally {
+            cs.close();
+        }
+    } finally {
+        is.close();
+    }
+}

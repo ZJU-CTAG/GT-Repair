@@ -1,0 +1,13 @@
+public void testEncodeHexDecode() {
+    char[] chars = new char[1024];
+    for (int i = 0; i < chars.length; i++) {
+        chars[i] = (char) i;
+    }
+    byte[] bytes = toBytes(chars);
+    String result = Base32.encodeBase32(bytes, Base32.HEX_DECODE_TABLE);
+    byte[] decoded = Base32.decodeBase32(result, Base32.HEX_DECODE_TABLE);
+    assertEquals(bytes.length, decoded.length);
+    for (int i = 0; i < bytes.length; i++) {
+        assertEquals(bytes[i], decoded[i]);
+    }
+}

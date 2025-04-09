@@ -1,0 +1,8 @@
+public void testIssue() throws Exception {
+        String json = "{\"e\":[{\"e\":\"bar\"}]}";
+        String patch = "[{\"op\":\"add\",\"path\":\"/1e0/e\",\"value\":\"foo\"}]";
+        JsonNode node = JsonLoader.fromString(json);
+        JsonPatch patch1 = JsonPatch.fromJson(JsonLoader.fromString(patch));
+        JsonNode patched = patch1.apply(node);
+        assertEquals("{\"e\":[{\"e\":\"bar\"},{\"e\":\"foo\"}]}", patched.toString());
+    }

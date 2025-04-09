@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode("test.js",
+            "/** @define {string} */\ntest.VERSION = \"\";"), options);
+}

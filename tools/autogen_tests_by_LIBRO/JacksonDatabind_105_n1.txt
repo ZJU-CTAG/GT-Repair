@@ -1,0 +1,14 @@
+public void testJackson() {
+    final RestTemplate template = new RestTemplate();
+
+    final List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+    messageConverters.add(new MappingJackson2HttpMessageConverter());
+    template.setMessageConverters(messageConverters);
+
+    final ResponseEntity<Void> response = template.exchange(
+            "https://jsonplaceholder.typicode.com/posts/1",
+            HttpMethod.PATCH,
+            new HttpEntity<>(null, null),
+            Void.class
+    );
+}

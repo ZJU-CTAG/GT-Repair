@@ -1,0 +1,14 @@
+public void testIssue() {
+    String[] externs = { "window.js" };
+    String[] inputs = {
+        "window[\"foo\"] = function (obj, modifiesProp) {",
+        "  return (function (saved) {",
+        "    return modifiesProp(obj) + saved;",
+        "  })(obj[\"prop\"]);",
+        "};"
+    };
+    String[] outputs = {
+        "window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};"
+    };
+    test(externs, inputs, outputs);
+}

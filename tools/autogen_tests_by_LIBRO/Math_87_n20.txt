@@ -1,0 +1,8 @@
+public void testAddConstraint() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[]{0.0, 0.0}, 0.0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[]{1.0, 1.0}, Relationship.GEQ, 1.0));
+    SimplexTableau tableau = new SimplexTableau(f, constraints, GoalType.MAXIMIZE, true, 1.0);
+    tableau.addConstraint(new LinearConstraint(new double[]{-1.0, -1.0}, Relationship.LEQ, -1.0));
+    assertFalse(tableau.isOptimal());
+}

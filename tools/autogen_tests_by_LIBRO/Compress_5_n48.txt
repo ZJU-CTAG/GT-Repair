@@ -1,0 +1,14 @@
+public void testRead() throws Exception {
+        File file = new File("src/test/resources/truncated.zip");
+        ZipArchiveInputStream zais = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(file)));
+        ZipArchiveEntry ze;
+        while ((ze = zais.getNextZipEntry()) != null) {
+            byte[] buffer = new byte[4096];
+            int read = zais.read(buffer, 0, 4096);
+            if (read == -1) {
+                break;
+            }
+            assertTrue(read > 0);
+        }
+        assertNull(zais.getNextZipEntry());
+}

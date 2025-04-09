@@ -1,0 +1,11 @@
+public void testBrentOptimizer() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) { return 1 / (1 + x); }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-20, 1e-20);
+    double result = optimizer.optimize(f, GoalType.MINIMIZE, -1, -1 / e);
+    // result is not the best point
+    double betterResult = optimizer.optimize(f, GoalType.MINIMIZE, -1, 0);
+    // betterResult is the best point
+    assertEquals(0, betterResult, 0);
+}

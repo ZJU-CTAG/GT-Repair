@@ -1,0 +1,14 @@
+public void testThreadLocal() {
+    Class<?> c = ReflectionToStringBuilder.class;
+    Field field = null;
+    try {
+        field = c.getDeclaredField("style");
+        field.setAccessible(true);
+        assertTrue(Modifier.isStatic(field.getModifiers()));
+        assertTrue(Modifier.isFinal(field.getModifiers()));
+        assertEquals(ToStringStyle.class, field.getType());
+        assertEquals(ToStringStyle.class, field.get(null).getClass());
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,27 @@
+public void testEquals() {
+    // This is the "extension"
+    InvocationChunk chunk = new InvocationChunk() {
+        @Override
+        public void verify(VerificationData data) {
+            if (data.getAllInvocations().size() > 0) {
+                throw new VerificationError("Should never be called");
+            }
+        }
+    };
+    VerificationMode mode = new VerificationMode() {
+        @Override
+        public void verify(VerificationData data) {
+            // Fire off my chunk
+            chunk.verify(data);
+        }
+    };
+    
+    // Mock an object
+    Foo foo = mock(Foo.class);
+    
+    // Invoke it once
+    foo.bar();
+    
+    // Verify that it is the first invocation
+    verify(foo, mode).bar();
+}

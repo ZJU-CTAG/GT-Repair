@@ -1,0 +1,18 @@
+public void testMinimal() throws Exception {
+    SimplexSolver solver = new SimplexSolver();
+
+    Variable x1 = new Variable("x1");
+    Variable x2 = new Variable("x2");
+
+    Constraint c1 = new Constraint(new Expression(x1, x2, -2), OperatorType.GEQ, 0);
+
+    solver.addConstraint(c1);
+
+    solver.setObjective(x1, false);
+    solver.setObjective(x2, false);
+
+    solver.solve();
+
+    assertEquals(-1.0, x1.getValue());
+    assertEquals(0.0, x2.getValue());
+}

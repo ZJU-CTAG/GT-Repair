@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler.setLoggingLevel(Level.WARNING);
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(JSSourceFile.fromCode("test.js",
+            "/** @constructor */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { }\n" +
+
+            "myclass.prototype.test = function() {\n" +
+            "this.fn();\n" +
+            "this.fn = function() { };\n" +
+            "}")
+            , options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

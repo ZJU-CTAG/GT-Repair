@@ -1,0 +1,17 @@
+public void testConvergenceChecker() {
+        final double[] params = new double[] { -3.0, 4.0, -1.0 };
+
+        final double[][] points = new double[][] { { 2.0, 2.0 }, { 4.0, 3.0 }, { 6.0, 4.0 }, { 8.0, 5.0 },
+                { 10.0, 6.0 } };
+        final UnivariateFunction f = new QuadraticFunction(params);
+        final ConvergenceChecker<PointVectorValuePair> checker = new ConvergenceChecker<PointVectorValuePair>() {
+
+            @Override
+            public boolean converged(int iteration, PointVectorValuePair previous, PointVectorValuePair current) {
+                return previous.getValue()[0] - current.getValue()[0] < 1e-10;
+            }
+        };
+
+        final VectorialPointValuePair solution = new LevenbergMarquardtOptimizer()
+                .optimize(new MaxEval(1000),
+                        new ObjectiveFunction(new MultivariateJacobianFunction() {

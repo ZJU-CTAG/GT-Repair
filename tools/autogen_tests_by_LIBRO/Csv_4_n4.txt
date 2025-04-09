@@ -1,0 +1,11 @@
+public void testGetHeaderMap() throws IOException {
+    String[] header = null;
+    String[] data1 = { "a1", "b1" };
+    Reader in = new StringReader("a1,b1\na1,b1");
+    CSVParser parser = new CSVParser(in, CSVFormat.RFC4180.withHeader(header));
+    Iterator<CSVRecord> iterator = parser.iterator();
+    assertTrue(iterator.hasNext());
+    CSVRecord record = iterator.next();
+    assertArrayEquals(data1, record.values());
+    assertNull(parser.getHeaderMap());
+}

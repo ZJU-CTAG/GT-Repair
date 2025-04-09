@@ -1,0 +1,11 @@
+public void testCaptureVarargs() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    List<String> list = new ArrayList<>();
+    list.add("a");
+    list.add("b");
+    list.add("c");
+    String[] strings = list.toArray(new String[list.size()]);
+    String[] captured = captor.capture(strings);
+    assertThat(captured).contains("b");
+    assertThat(captured).containsOnly("a", "b", "c");
+}

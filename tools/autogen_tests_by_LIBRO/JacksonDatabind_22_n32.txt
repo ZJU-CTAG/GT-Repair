@@ -1,0 +1,12 @@
+public void testSerializerPriority() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addSerializer(TestClass.class, new TestClassSerializer());
+    objectMapper.registerModule(module);
+
+    final ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
+    final TestClass testObject = new TestClass("testValue");
+    final JsonNode json = objectWriter.writeValueAsTree(testObject);
+
+    assertEquals("testValue", json.get("testField").asText());
+}

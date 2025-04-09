@@ -1,0 +1,24 @@
+public void testIssue() {
+    DateTime dt = new DateTime(2016, 3, 26, 18, 0);
+    DateTime start = dt;
+    DateTime end = dt.plusMinutes(60);
+
+    DateTimeFormatter isoFormatter = ISODateTimeFormat.dateTime();
+    String startStr = isoFormatter.print(start);
+    String endStr = isoFormatter.print(end);
+
+    Event ev1 = new Event(startStr, endStr, "Event 1");
+    Event ev2 = new Event(startStr, endStr, "Event 2");
+
+    ConstraintContext cc = new ConstraintContext();
+    cc.setStartingState(cc.getState());
+
+    Rule r = new Rule("R1");
+    r.addEvent(ev1);
+    r.addEvent(ev2);
+    cc.addRule(r);
+
+    // Accept event 1
+    cc.getState().setCurrentRule(r);
+    cc.getState().setCurrentEvent(ev1);
+    cc.getState().setCurrentState(cc.getState().getCurrentState().getNext

@@ -1,0 +1,12 @@
+public void test() throws Exception {
+    XMLOutputFactory factory = XMLOutputFactory.newFactory();
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator gen = new ToXmlGenerator(factory.createXMLStreamWriter(sw));
+    gen.writeStartObject();
+    gen.writeStartObject("name");
+    gen.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("hello".getBytes("utf-8")), 5);
+    gen.writeEndObject();
+    gen.writeEndObject();
+    gen.flush();
+    System.out.println(sw.toString());
+}

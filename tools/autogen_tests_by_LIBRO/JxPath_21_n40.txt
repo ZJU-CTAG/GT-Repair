@@ -1,0 +1,13 @@
+public void testIssueNone() {
+    Map<String, Integer> m = new HashMap<String, Integer>();
+    m.put("a", 1);
+    m.put("b", null);
+    m.put("c", 1);
+    JXPathContext c = JXPathContext.newContext(m);
+    assertTrue(c.getValue("a != b").toString().equals("true"));
+    assertTrue(c.getValue("a != c").toString().equals("false"));
+    assertTrue(c.getValue("a = b").toString().equals("false"));
+    assertTrue(c.getValue("a = c").toString().equals("true"));
+    assertTrue(c.getValue("not(a = b)").toString().equals("true"));
+    assertTrue(c.getValue("not(a = c)").toString().equals("false"));
+}

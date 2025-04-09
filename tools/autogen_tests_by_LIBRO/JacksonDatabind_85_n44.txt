@@ -1,0 +1,10 @@
+public void testCustomDateFormat() throws IOException {
+		DateTime dateTime = new DateTime(2012, 1, 1, 0, 0, 0, 0, DateTimeZone.UTC);
+		CustomFormatBean bean = new CustomFormatBean(dateTime);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JodaModule());
+		mapper.setDateFormat(simpleDateFormat);
+		String value = mapper.writeValueAsString(bean);
+		assertEquals("{\"date\":\"2012/01/01\"}", value);
+	}

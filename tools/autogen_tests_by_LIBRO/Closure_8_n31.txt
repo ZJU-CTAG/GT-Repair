@@ -1,0 +1,18 @@
+public void testIssue108() {
+    // The following code is a bit hard to reproduce because it requires
+    // that the argument is used only in the very first statement in the
+    // function, and not used anywhere else. It is possible to construct
+    // an example with the same effect, but that would be more complex.
+    Function<Integer, Integer> function = new Function<Integer, Integer>() {
+        public Integer apply(Integer argument) {
+            return argument + 1;
+            // The following line is needed to make the test case pass
+            // because the compiler optimizes the code such that
+            // the argument is not used at all.
+            // Without the following line the compiled function
+            // does not take any argument.
+            if (argument != null) return null;
+        }
+    };
+    assertEquals(Integer.valueOf(4), function.apply(3));
+}

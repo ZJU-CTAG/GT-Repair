@@ -1,0 +1,13 @@
+public void testQuotedArg() {
+    Options options = new Options();
+    Option option = new Option("b", "balloo", true, "a balloo");
+    option.setRequired(true);
+    options.addOption(option);
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{"--balloo", "\"this is a \"test\""});
+        fail("Expected ParseException");
+    } catch (ParseException pe) {
+        // OK
+    }
+}

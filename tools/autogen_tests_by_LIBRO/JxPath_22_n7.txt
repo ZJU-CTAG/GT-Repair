@@ -1,0 +1,20 @@
+public void testIssue108() {
+    try {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element rootElement = doc.createElement("root");
+        doc.appendChild(rootElement);
+        rootElement.setAttribute("xmlns:b", "bla");
+        rootElement.setAttribute("xmlns", "test111"); // just to illustrate the ns
+        Element foo = doc.createElement("b:foo");
+        rootElement.appendChild(foo);
+        Element bar = doc.createElement("b:bar");
+        foo.appendChild(bar);
+        bar.setTextContent("a");
+        Element test = doc.createElement("test");
+        foo.appendChild(test);
+        JXPathContext context = JXPathContext.newContext(doc);
+        NodePointer pointer = (NodePointer)context.getPointer("/root/b:foo/test");
+        String path = pointer.asPath();
+        assertEquals("/root/b:foo/

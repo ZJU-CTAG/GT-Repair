@@ -1,0 +1,22 @@
+public void testIssue() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.registerModule(new Jdk8Module());
+
+    ObjectWriter ow = mapper.writerWithView(Views.Serialize.class);
+
+    String json = ow.writeValueAsString(getTestObject());
+    System.out.println("JSON: " + json);
+
+    SampleObject o = mapper.readValue(json, SampleObject.class);
+    System.out.println("Object: " + o.toString());
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonDeserialize(as = SampleObject.class)
+static class SampleObject {
+    private final SampleObject parent;
+
+    @JsonCreator
+    public SampleObject(@JsonProperty

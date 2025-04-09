@@ -1,0 +1,18 @@
+public void testCustomPrettyPrinter() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    Foo foo = new Foo();
+    foo.setName("aName");
+    foo.setAge(42);
+    String json = mapper.writer(new CustomPrettyPrinter()).writeValueAsString(foo);
+    assertEquals("{\"name\":\"aName\",\"age\":42}", json);
+}
+
+public static class CustomPrettyPrinter extends DefaultPrettyPrinter {
+
+    @Override
+    public DefaultPrettyPrinter createInstance() {
+        return new CustomPrettyPrinter();
+    }
+}

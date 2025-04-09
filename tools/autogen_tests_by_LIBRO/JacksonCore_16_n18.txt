@@ -1,0 +1,16 @@
+public void testIssue107() {
+    String json = "{\"a\":[1,2,3,4],\"b\":[{\"b1\":{\"b11\":11}}]}";
+    JsonFactory f = new JsonFactory();
+    JsonParser p1 = f.createParser(json);
+    p1.nextToken();
+    JsonParser p2 = f.createParser(json);
+    p2.nextToken();
+    JsonParserSequence p = JsonParserSequence.createFlattened(p1, p2);
+
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals(JsonToken.START_ARRAY, p.nextToken());
+    assertEquals(4, p.nextIntValue(-1));
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals(JsonToken.START_ARRAY, p.nextToken());
+    assertEquals(JsonToken.START_OB

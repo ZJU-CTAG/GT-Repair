@@ -1,0 +1,10 @@
+public void test_JsonParserSequence_bug() throws Exception {
+    // Creating a JsonParserSequence with 2 parsers
+    JsonParserSequence parserSequence = new JsonParserSequence(JsonNodeFactory.instance, new JsonParser[] { createParser("[1, 2]"), createParser("{\"foo\":\"bar\"}") });
+
+    // Parsing the second token (JsonToken.START_OBJECT)
+    JsonToken token = parserSequence.nextToken();
+    assertEquals(JsonToken.START_OBJECT, token);
+    assertEquals("foo", parserSequence.getCurrentName());
+    assertEquals("bar", parserSequence.getText());
+}

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    View view = new View(null);
+    TextView txtGateView = new TextView(null);
+    TextView txtNextView = new TextView(null);
+    TextView txtGateLabel = new TextView(null);
+
+    TextView txtNextViewMock = mock(TextView.class);
+
+    GateViewHolder gateViewHolder = new GateViewHolder(view);
+    gateViewHolder.txtGateView = txtGateView;
+    gateViewHolder.txtNextView = txtNextView;
+    gateViewHolder.txtGateLabel = txtGateLabel;
+
+    InjectMocksRule rule = new InjectMocksRule(gateViewHolder);
+    rule.addObjectToInject(txtNextViewMock);
+
+    assertNotNull(gateViewHolder.txtNextView);
+    assertEquals(txtNextViewMock, gateViewHolder.txtNextView);
+}

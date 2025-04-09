@@ -1,0 +1,18 @@
+public void testUnionOfVariableAndNode() {
+        DocumentBuilder builder;
+        try {
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        Document doc = builder.newDocument();
+        Element root = doc.createElement("root");
+        doc.appendChild(root);
+        Element a = doc.createElement("A");
+        root.appendChild(a);
+        JXPathContext context = JXPathContext.newContext(doc);
+        context.getVariables().declareVariable("var", a);
+        List l = context.selectNodes("$var | /MAIN/A");
+        assertEquals(1, l.size());
+        assertEquals(a, l.get(0));
+    }

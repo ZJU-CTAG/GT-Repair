@@ -1,0 +1,11 @@
+public void testCharSequenceConstructor() {
+    BeanUtilsBean bub = new BeanUtilsBean();
+    bub.getConvertUtils().register(new StringConverter(null), String.class);
+    bub.getConvertUtils().register(new StringConverter(null), CharSequence.class);
+    try {
+        bub.setProperty(new StringBuilder(), "toString", new StringReader("hello"));
+        fail("Expected ConversionException");
+    } catch (final ConversionException e) {
+        // expected
+    }
+}

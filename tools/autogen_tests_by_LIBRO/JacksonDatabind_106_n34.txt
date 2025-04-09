@@ -1,0 +1,21 @@
+public void testTreeTraversingParser() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    JsonNode tree = mapper.readTree("{\"x\": 2147483648}");
+    String fromTree;
+    try {
+      fromTree = mapper.readerFor(IntClass.class).readValue(tree).toString();
+    } catch (IOException e) {
+      fromTree = e.getClass().getSimpleName();
+    }
+
+    String fromString;
+    try {
+      fromString = mapper.readerFor(IntClass.class).readValue("{\"x\": 2147483648}").toString();
+    } catch (IOException e) {
+      fromString = e.getClass().getSimpleName();
+    }
+
+    System.out.printf("|%30s | %30s | %-30s|\n", "json input", "read from tree", "read from string");
+    System.out.println("|-------------------------------|--------------------------------|-------------------------------|");
+    System.out.printf("|%30s | %30s | %-30

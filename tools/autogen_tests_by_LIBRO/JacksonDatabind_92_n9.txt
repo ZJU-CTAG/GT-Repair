@@ -1,0 +1,18 @@
+public void testCVE2017_15095() throws Exception
+{
+    JsonFactory f = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(f);
+    // with this test should pass if "if" is commented out,
+    // but fail with exception
+    if (false) {
+        mapper.enableDefaultTyping();
+    }
+    // and this should work no matter what:
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    Map<String,Object> result = mapper.readValue(new StringReader("[\""+AtomicBoolean.class.getName()+"\",true]"), Map.class);
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    Object ob = result.get("a");
+    assertNotNull(ob);
+    assertSame(AtomicBoolean.class, ob.getClass());
+}

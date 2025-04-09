@@ -1,0 +1,13 @@
+public void testIssue1() {
+    // SOURCE CODE
+    String code = "var ie=!+\"\v1\"";
+
+    // CLOSURE COMPILER
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("code.js", code) });
+    compiler.toSource();
+
+    // Test
+    assertEquals("var ie=!+\"\\x01\";", compiler.toSource());
+}

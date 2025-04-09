@@ -1,0 +1,13 @@
+public void testIssue126() {
+    DateTimeZone.setProvider(null);
+    for (String id : DateTimeZone.getAvailableIDs()) {
+        DateTimeZone zone = DateTimeZone.forID(id);
+        if (zone.equals(DateTimeZone.UTC)) {
+            continue;
+        }
+        DateTime dt = new DateTime(2011, 6, 30, 12, 0, 0, 0, zone);
+        String str = dt.toString();
+        DateTime parsed = ISODateTimeFormat.dateTimeParser().withZone(zone).parseDateTime(str);
+        assertEquals(dt, parsed);
+    }
+}

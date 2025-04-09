@@ -1,0 +1,10 @@
+public void testNoWarnings() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            newJSSource("Foo", "/** @constructor */ function Foo() {" +
+                                    "/** @private */ this.x_ = 3; }"),
+            newJSSource("SubFoo", "/** @constructor @extends {Foo} */" +
+                                    " function SubFoo() {" +
+                                    "/** @private */ this.x_ = 3; }"));
+    assertEquals(0, result.errors.length);
+}

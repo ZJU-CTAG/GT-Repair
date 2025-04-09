@@ -1,0 +1,13 @@
+public void testZipArchiveInputStream() throws Exception {
+    try (ZipArchiveInputStream zip = new ZipArchiveInputStream(new FileInputStream(new File("src/test/resources/test-zip.zip")))) {
+        ZipArchiveEntry ze = zip.getNextZipEntry();
+        assertNotNull(ze);
+        assertEquals("test1.xml", ze.getName());
+        try {
+            zip.getNextZipEntry();
+            fail("IOException should have been thrown");
+        } catch (IOException e) {
+            assertEquals("Invalid entry in zip file", e.getMessage());
+        }
+    }
+}

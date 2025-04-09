@@ -1,0 +1,21 @@
+public void testRenamedImplicitConstructorProperties() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    final AtomicReference<String> readName = new AtomicReference<>();
+    final AtomicReference<String> readValue = new AtomicReference<>();
+    mapper.readerFor(new TypeReference<Map<String, Object>>() {})
+            .readValue(new Object(){}.getClass().getEnclosingMethod().getName() + ": {\"name\": \"foo\", \"value\": \"bar\"}");
+    assertEquals("foo", readName.get());
+    assertEquals("bar", readValue.get());
+}
+
+static class ImplicitConstructorProperties {
+    final String name;
+    final String value;
+
+    @JsonCreator
+    ImplicitConstructorProperties(@JsonProperty("name") String name, @JsonProperty("value") String value) {
+        this.name = name;
+        this.value = value;
+    }
+}

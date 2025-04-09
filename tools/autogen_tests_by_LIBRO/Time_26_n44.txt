@@ -1,0 +1,9 @@
+public void test60() {
+    DateTimeZone australiaNSW = DateTimeZone.forID("Australia/NSW");
+    DateTimeZone.setDefault(australiaNSW);
+    Assert.assertFalse("Should be daylight time", australiaNSW.isStandardOffset(new DateTime(2008, 4, 5, 15, 0, 0, 0, DateTimeZone.UTC).getMillis()));
+    DateTime australiaNSWStandard = new DateTime(2008, 4, 5, 16, 0, 0, 0, DateTimeZone.UTC).toDateTime(australiaNSW);
+    DateTime australiaNSWDaylight = new DateTime(2008, 4, 5, 15, 0, 0, 0, DateTimeZone.UTC).toDateTime(australiaNSW);
+    assertEquals(australiaNSWStandard.getMillis(), australiaNSWDaylight.getMillis());
+    assertEquals(2, australiaNSWStandard.getHourOfDay());
+    assertEquals(australiaNSWStandard.getHourOfDay

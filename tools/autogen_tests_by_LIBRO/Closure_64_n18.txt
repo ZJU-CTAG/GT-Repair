@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.disableThreads();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    compiler.setWarningLevel(DiagnosticGroups.VERBOSE);
+    compiler.setPrintWarnings(true);
+    compiler.setErrorHandler(new BasicErrorManager() {
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            System.err.println(error.toString());
+        }
+    });
+
+    Result result = compiler.compile(
+            newSourceFile("get_num.js", "var getNum = function() { return 5; };"),
+            newSourceFile("alert.js", "alert(getNum());")
+    );
+    assertTrue(result.success);
+    assertEquals("'use strict';alert(5);", compiler.toSource());
+}

@@ -1,0 +1,13 @@
+public void testSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(writer);
+    oos.close();
+    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(in);
+    ObjectReader reader = (ObjectReader) ois.readObject();
+    ois.close();
+    assertNotNull(reader);
+}

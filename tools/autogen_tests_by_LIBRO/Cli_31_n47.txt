@@ -1,0 +1,9 @@
+public void testArgName() {
+    HelpFormatter helpFormatter = new HelpFormatter();
+    helpFormatter.setArgName("argName");
+    Option option = OptionBuilder.withArgName("argName").hasArg().create("opt");
+    StringWriter sw = new StringWriter();
+    helpFormatter.printHelp(new PrintWriter(sw), HelpFormatter.DEFAULT_WIDTH, "cmd", "", Collections.singletonList(option),
+            HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, "");
+    assertEquals("usage: cmd [-opt <argName>]", sw.toString().trim());
+}

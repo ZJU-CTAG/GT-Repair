@@ -1,0 +1,16 @@
+public void testIssueNewlineAfterPreTextArea() {
+    Document doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    Element pre = doc.select("pre").get(0);
+    TextNode textNode = (TextNode) pre.childNodes().get(0);
+    assertEquals("\nabc  def", textNode.getWholeText());
+    assertEquals(" abc def", textNode.text());
+    assertEquals("\nabc  def", textNode.toString());
+}
+
+public void testIssueNewlineAfterPreTextArea2() {
+    Document doc = Jsoup.parse("<pre>\n\nabc  def</pre>");
+    Element pre = doc.select("pre").get(0);
+    TextNode textNode = (TextNode) pre.childNodes().get(0);
+    assertEquals("\n\nabc  def", textNode.getWholeText());
+    assertEquals("\n abc def", textNode.text());
+    assertEquals("\n\nabc  def", textNode.

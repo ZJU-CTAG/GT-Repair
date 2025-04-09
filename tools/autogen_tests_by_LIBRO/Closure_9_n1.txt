@@ -1,0 +1,15 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            ImmutableList.<SourceFile>of(
+                    SourceFile.fromCode("Foo.js", "goog.provide('module.lib.Foo');\n" +
+                            "goog.require('module.lib.Bar');\n" +
+                            "module.lib.Foo = {'name': 'foo', 'bar': module.lib.Bar};"),
+                    SourceFile.fromCode("Bar.js", "goog.provide('module.lib.Bar');\n" +
+                            "module.lib.Bar = {'name': 'bar'};")),
+            ImmutableList.<SourceFile>of(),
+            new CompilerOptions());
+
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

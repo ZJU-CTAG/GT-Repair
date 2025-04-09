@@ -1,0 +1,15 @@
+public void testUnusedClassRemoval() {
+    String js = "goog.provide('foo');var foo = function() { this.values = []; };goog.addSingletonGetter(foo);foo.prototype.add = function(value) {this.values.push(value)};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(false);
+    options.setRemoveDeadCode(true);
+    options.setRemoveUnusedClassProperties(true);
+    options.setRemoveUnusedClasses(true);
+    Result result = compiler.compile(
+            SourceFile.fromCode("[testcode]", js), options);
+    assertTrue(result.success);
+    assertEquals("", result.errors.toString());
+    System.out.println("output: " + result.compiledCode);
+    assertEquals("", result.compiledCode);
+}

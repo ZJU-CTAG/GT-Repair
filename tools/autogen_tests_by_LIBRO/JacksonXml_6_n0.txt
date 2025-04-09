@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    StringWriter stringWriter = new StringWriter();
+    ToXmlGenerator xmlGenerator = new ToXmlGenerator(new JsonFactory(), stringWriter);
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeFieldName("foo");
+    xmlGenerator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[]{0x01, 0x02, 0x03}), 3);
+    xmlGenerator.writeEndObject();
+    xmlGenerator.close();
+    String expectedXml = "<?xml version='1.0' encoding='UTF-8'?><object><foo>AQID</foo></object>";
+    assertThat(stringWriter.toString(), is(expectedXml));
+}

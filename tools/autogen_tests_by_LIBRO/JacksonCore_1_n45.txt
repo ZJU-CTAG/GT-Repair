@@ -1,0 +1,14 @@
+public void testNullPointerException() throws Exception {
+    JsonParser parser = createParserUsingReader("123.4");
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, parser.nextToken());
+    parser.getDecimalValue();
+    if (parser.isNaN()) {
+        try {
+            BigDecimal bd = parser.getDecimalValue();
+            fail("should throw exception, instead got: "+bd);
+        } catch (NumberFormatException e) {
+            verifyException(e, "not a valid");
+        }
+    }
+    parser.close();
+}

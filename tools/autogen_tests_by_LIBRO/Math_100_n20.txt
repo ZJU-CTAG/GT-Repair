@@ -1,0 +1,26 @@
+public void testJakobian() {
+
+    try {
+        ParameterGuesser guesser = new ParameterGuesser(data);
+
+        System.out.println(guesser.guess(new MaxLikelihoodFunction()));
+
+        EstimationProblem ep = new EstimationProblem();
+        ep.addMeasurement(new TestMeasurement());
+
+        // Test with all parameters
+        Parameter p1 = new Parameter("p1", 10, 0.001);
+        Parameter p2 = new Parameter("p2", 20, 0.001);
+        ep.addParameter(p1);
+        ep.addParameter(p2);
+
+        LevenbergMarquardtEstimator estimator = new LevenbergMarquardtEstimator();
+        estimator.estimate(ep);
+
+        double[][] cov = estimator.getCovariances(ep);
+
+        Assert.assertEquals(2, cov.length);
+        Assert.assertEquals(2, cov[0].length);
+        Assert.assertEquals(2, cov[1].length);
+
+        Assert.assertTrue

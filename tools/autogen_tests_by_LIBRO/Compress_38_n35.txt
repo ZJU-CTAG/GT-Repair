@@ -1,0 +1,10 @@
+public void testPaxRoot() throws IOException {
+    try (final InputStream is = getClass().getResourceAsStream("/paxroot.tar")) {
+        final ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+        TarArchiveEntry entry = (TarArchiveEntry) ais.getNextEntry();
+        while (entry != null) {
+            System.out.println(entry.getName());
+            entry = (TarArchiveEntry) ais.getNextEntry();
+        }
+    }
+}

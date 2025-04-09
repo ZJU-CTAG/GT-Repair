@@ -1,0 +1,19 @@
+public void testPointerIndex() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode root = mapper.readTree(new StringReader("{\"foo\":{\"bar\":{\"baz\":[1,2,3]}}}"));
+    assertEquals(2, root.at("/foo/bar/baz/1").intValue());
+    assertEquals(3, root.at("/foo/bar/baz/02").intValue());
+    try {
+        root.at("/foo/bar/baz/00");
+        fail("Should not pass");
+    } catch (InvalidFormatException e) {
+        verifyException(e, "Invalid numeric index value: 00");
+    }
+    try {
+        root.at("/foo/bar/baz/000");
+        fail("Should not pass");
+    } catch (InvalidFormatException e) {
+        verifyException(e, "Invalid numeric index value: 000");
+    }
+}

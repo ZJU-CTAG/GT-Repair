@@ -1,0 +1,24 @@
+public void testIssue() throws Exception {
+    Document document = createDocument();
+    // Create a JXPathContext via the DOMFactory
+    DOMFactory factory = new DOMFactory();
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setFactory(factory);
+    // Get all elements in namespace "ns"
+    Pointer pointer = context.getPointer("/a:doc/ *");
+    // Iterate over all elements
+    int count = 0;
+    for (Iterator it = context.iteratePointers(pointer); it.hasNext();) {
+        Pointer p = (Pointer) it.next();
+        count++;
+        System.out.println("Element: " + p.getNode().getNodeName());
+    }
+    System.out.println("Number of elements: " + count);
+    assertEquals("Number of elements must be 2!", 2, count);
+}
+
+protected Document createDocument() throws Exception {
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+            .newInstance();
+    documentBuilderFactory.setNamespaceAware(true);
+    DocumentBuilder

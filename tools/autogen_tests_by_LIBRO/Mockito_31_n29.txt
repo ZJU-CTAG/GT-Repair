@@ -1,0 +1,20 @@
+public void testRepeatedInvocations() throws Exception {
+    //given
+    long sleepTime = 20;
+
+    Callable<String> callable = mock(Callable.class);
+    given(callable.call()).willReturn("1", "2", "3", "4", "5");
+
+    //when
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+    System.out.println(callable.call());
+
+    //then
+    verify(callable, times(7)).call();
+    verify(callable, atLeastOnce()).call();
+}

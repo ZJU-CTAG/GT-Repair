@@ -1,0 +1,14 @@
+public void testIssue109() {
+    Partial a = new Partial(new DateTimeFieldType[] { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(DateTimeFieldType.clockhourOfDay(), 1).with(DateTimeFieldType.hourOfDay(), 1);
+    assertEquals(a, b);
+    assertEquals(1, a.getValue(DateTimeFieldType.clockhourOfDay()).intValue());
+    assertEquals(1, a.getValue(DateTimeFieldType.hourOfDay()).intValue());
+    
+    try {
+        new Partial(new DateTimeFieldType[] { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() }, new int[] { 1, 1});
+        fail();
+    } catch (IllegalArgumentException e) {
+        // ok
+    }
+}

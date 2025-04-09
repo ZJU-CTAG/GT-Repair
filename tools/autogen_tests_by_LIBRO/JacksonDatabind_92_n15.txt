@@ -1,0 +1,13 @@
+public void testForCVE2017_7525() throws IOException {
+    // first: a class that is invalid to deserialize from
+    final String json = "{\"@class\":\"com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\",\"_bytecodes\":[],\"_name\":\"a.b\",\"_tfactory\":{},\"_outputProperties\":{},\"_version\":\"1.0\",\"_attributes\":[],\"_indentNumber\":0}";
+    ObjectMapper mapper = new ObjectMapper();
+    assertNotNull(mapper.readValue(json, Object.class));
+    // and then verify that we can not deserialize it:
+    try {
+        mapper.readValue(json, TemplatesImpl.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "known JAXB issue");
+    }
+}

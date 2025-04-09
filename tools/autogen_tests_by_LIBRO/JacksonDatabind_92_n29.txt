@@ -1,0 +1,10 @@
+public void testCVE2017_15095() {
+    try {
+        final ObjectMapper mapper = new ObjectMapper();
+        final Object value = mapper.readValue("{\"@type\":\"[Lorg.apache.commons.configuration2.PropertiesConfiguration$Interpolator;\",\"parent\":null,\"prefixLookups\":null,\"suffixLookups\":null,\"cycleMap\":null,\"cycleCount\":0}", Object.class);
+        fail("Should not get here: " + value);
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "Could not resolve");
+        verifyException(e, "Interpolator");
+    }
+}

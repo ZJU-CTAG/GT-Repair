@@ -1,0 +1,20 @@
+public void testInjectMocks() {
+    class A {
+        final B b;
+        A(final B b) {
+            this.b = b;
+        }
+    }
+    class B {
+        C c;
+    }
+    class C {
+    }
+    final B b = mock(B.class);
+    final C c = new C();
+    when(b.c).thenReturn(c);
+    final A a = new A(b);
+    assertNull(a.b.c);
+    MockitoAnnotations.initMocks(a);
+    assertNotNull(a.b.c);
+}

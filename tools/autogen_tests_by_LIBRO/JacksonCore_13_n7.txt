@@ -1,0 +1,14 @@
+public void testIssue128() throws Exception {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = new JsonFactory().createJsonGenerator(bytes);
+    gen.writeStartArray();
+    gen.writeStartObject();
+    gen.writeFieldName("B");
+    gen.writeString("b");
+    gen.writeEndObject();
+    gen.writeEndArray();
+    gen.flush();
+    gen.close();
+    String json = bytes.toString("UTF-8");
+    assertEquals("[{\"B\":\"b\"}]", json);
+}

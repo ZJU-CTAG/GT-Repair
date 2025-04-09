@@ -1,0 +1,13 @@
+public void testUnicodeExtraFields() throws Exception {
+        ZipFile zipFile = new ZipFile("src/test/resources/unicodeExtraFields.zip");
+        assertEquals(1, zipFile.size());
+        Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+        ZipArchiveEntry entry = entries.nextElement();
+        ZipArchiveEntry entry2 = zipFile.getEntry(entry.getName());
+        assertEquals(entry, entry2);
+        ZipInputStream zis = new ZipInputStream(zipFile.getInputStream(entry));
+        ZipArchiveEntry entry3 = zis.getNextEntry();
+        assertEquals(entry, entry3);
+        zis.close();
+        zipFile.close();
+}

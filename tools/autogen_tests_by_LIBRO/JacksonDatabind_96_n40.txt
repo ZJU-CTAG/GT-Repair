@@ -1,0 +1,21 @@
+public void testImplicitName() throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{\"data\":\"foo\"}";
+
+    TestClass value = objectMapper.readValue(json, TestClass.class);
+    assertEquals("foo", value.data);
+}
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+static class TestClass {
+    private final String data;
+
+    @JsonCreator
+    TestClass(@JsonProperty("data") String data) {
+        this.data = data;
+    }
+}

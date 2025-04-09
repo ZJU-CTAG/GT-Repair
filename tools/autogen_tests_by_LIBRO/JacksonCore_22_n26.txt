@@ -1,0 +1,24 @@
+public void testFilteringParserDelegate() throws IOException {
+    String json =
+        "{" +
+            "\"a\": 1, " +
+            "\"b\": 2, " +
+            "\"c\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], " +
+            "\"d\": 3, " +
+            "\"e\": 4, " +
+            "\"f\": 5, " +
+            "\"g\": 6" +
+            "}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer(new FilteringGeneratorDelegate() {
+        @Override
+        public void processValue(JsonParser jp, JsonGenerator jg, Object valueToWrite, Class<?> valueType, String typeId) throws IOException {
+            if (getMatchCount() == 1) {
+                jg.writeObject(valueToWrite);
+            }
+        }
+    });
+
+    JsonNode tree = mapper.readTree(json);
+    String newJson = writer.writeValueAsString(

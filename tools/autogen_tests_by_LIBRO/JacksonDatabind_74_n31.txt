@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+        .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    JavaType type = typeFactory.constructType(MyType.class);
+
+    Object object = mapper.readValue("\"\"", type);
+    assertNull(object);
+}
+
+class MyType {
+    String value;
+
+    @JsonCreator
+    public MyType(@JsonProperty("value") String value) {
+        this.value = value;
+    }
+}

@@ -1,0 +1,10 @@
+public void testIssue_107() {
+    String html = "<form id=f><input name=alpha value=one></form>";
+    Document doc = Jsoup.parse(html);
+
+    Element form = doc.select("form").first();
+    form.select("input").first().remove();
+
+    assertEquals("<form id=\"f\"></form>", form.outerHtml());
+    assertEquals("", form.formData().toString());
+}

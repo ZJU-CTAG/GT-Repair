@@ -1,0 +1,13 @@
+public void testCMAESOptimization() {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            return 0;
+        }
+    };
+
+    CMAESOptimizer optimizer = new CMAESOptimizer(true, 0, false, 0, 0, new MersenneTwister(), false, new SimplePointChecker<PointValuePair>(1e-10, 1e-10), null);
+
+    double[] lower = {-Double.MAX_VALUE};
+    double[] upper = {Double.MAX_VALUE};
+    optimizer.optimize(new MaxEval(100), f, GoalType.MINIMIZE, lower, upper);
+}

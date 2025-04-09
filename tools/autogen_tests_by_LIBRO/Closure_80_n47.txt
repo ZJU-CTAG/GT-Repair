@@ -1,0 +1,12 @@
+public void testDelprop() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setInlineVariables(Reach.ALL);
+    options.setClosurePass(true);
+    String code = "function x() { return delete a; }";
+    compiler.compile(TEST_EXTERNS,
+                     ImmutableList.of(SourceFile.fromCode("foo.js", code)),
+                     options);
+}

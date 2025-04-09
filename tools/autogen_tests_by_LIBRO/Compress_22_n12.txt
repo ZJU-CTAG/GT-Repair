@@ -1,0 +1,17 @@
+public void testTruncatedFile() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    BZip2CompressorOutputStream bzos = new BZip2CompressorOutputStream(baos);
+    bzos.write("Hello World!".getBytes());
+    bzos.close();
+    byte[] input = baos.toByteArray();
+    assertEquals(27, input.length);
+
+    byte[] truncated = Arrays.copyOf(input, input.length - 1);
+    assertEquals(26, truncated.length);
+
+    BZip2CompressorInputStream bzis = new BZip2CompressorInputStream(
+            new ByteArrayInputStream(truncated));
+    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+    IOUtils.copy(bzis, baos2);
+    assertEquals(769, baos2.size());
+}

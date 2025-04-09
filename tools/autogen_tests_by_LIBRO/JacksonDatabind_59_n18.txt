@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    final SimpleModule module = new SimpleModule();
+    module.addKeyDeserializer(CompoundKey.class, new CompoundKeyDeserializer());
+    final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(module)
+            .enableDefaultTyping(DefaultTyping.NON_FINAL);
+
+    String json = "{\"mapProperty\":[\"java.util.HashMap\",{\"Compound|Key\":\"Value\"}]}";
+    TestClass testClass = mapper.readValue(json, TestClass.class);
+
+    assertNotNull(testClass);
+    assertEquals(1, testClass.getMapProperty().size());
+
+    CompoundKey compoundKey = new CompoundKey("Compound", "Key");
+    assertTrue(testClass.getMapProperty().containsKey(compoundKey));
+    assertEquals("Value", testClass.getMapProperty().get(compoundKey));
+}
+
+private static class TestClass {
+    @JsonProperty
+    @JsonSerialize(keyUsing = CompoundKeySerializer.class)
+   

@@ -1,0 +1,34 @@
+public void testOptimizer() {
+    // Create a model function, which is a sine wave with a varying amplitude.
+    ModelFunction f = new ModelFunction() {
+
+        public double value(double[] p, double x) {
+            return p[0] * Math.sin(x);
+        }
+
+        public int getNParam() {
+            return 1;
+        }
+
+        public double getLowerBound(int n) {
+            return 0.1;
+        }
+
+        public double getUpperBound(int n) {
+            return 100.0;
+        }
+
+        public double getStartValue(int n) {
+            return 0.0;
+        }
+    };
+
+    // Create a set of points along the x-axis, equally spaced by pi/4.
+    Random rng = new Random();
+    double[] x = new double[8];
+    for (int i = 0; i < x.length; i++) {
+        x[i] = i * Math.PI / 4.0;
+    }
+
+    // Create a set of y values for the model function.
+    double[] y = new double[

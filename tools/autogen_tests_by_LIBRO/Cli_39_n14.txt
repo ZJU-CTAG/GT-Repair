@@ -1,0 +1,9 @@
+public void testOptionParser() throws Exception {
+    String[] args = new String[] { "-f", "src/test/resources/test.txt" };
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    CommandLine cline = new DefaultParser().parse(options, args);
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    assertEquals(file.read(), '0');
+    file.close();
+}

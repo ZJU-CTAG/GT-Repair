@@ -1,0 +1,11 @@
+public void testIssue() {
+    CsvFormat format = CsvFormat.newFormat('\'').withNullString("\\N");
+    StringWriter sw = new StringWriter();
+    CsvPrinter printer = new CsvPrinter(sw, format);
+    printer.print("\\N");
+    printer.println();
+    printer.print("\\N");
+    printer.flush();
+    String s = sw.toString();
+    assertEquals("'\\N'\r\n'\\N'\r\n", s);
+}

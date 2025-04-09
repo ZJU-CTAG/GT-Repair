@@ -1,0 +1,19 @@
+public void testEmbed() throws Exception
+{
+    final String EXP = "abc";
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator gen = MAPPER.getJsonFactory().createGenerator(out, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeFieldName("a");
+    gen.writeEmbeddedObject(EXP.getBytes(StandardCharsets.UTF_8));
+    gen.writeEndObject();
+    gen.close();
+    String json = out.toString("UTF-8");
+    assertEquals(aposToQuotes("{'a':'abc'}"), json);
+
+    JsonNode result = MAPPER.readTree(json);
+    JsonNode n = result.get("a");
+    assertNotNull(n);
+    assertEquals(TextNode.class, n.getClass());
+    assertEquals(EXP, n.asText());
+}

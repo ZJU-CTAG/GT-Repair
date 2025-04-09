@@ -1,0 +1,18 @@
+public void testImplicitConstructorWithNamingStrategy() throws Exception {
+    final ObjectMapper mapper = newObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    final String json = "{\"named_field\":\"foo\"}";
+
+    final ImplicitConstructorType value = mapper.readValue(json, ImplicitConstructorType.class);
+
+    assertEquals("foo", value.namedField);
+}
+
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
+public static class ImplicitConstructorType {
+    private final String namedField;
+
+    public ImplicitConstructorType(@JsonProperty("namedField") final String namedField) {
+        this.namedField = namedField;
+    }
+}

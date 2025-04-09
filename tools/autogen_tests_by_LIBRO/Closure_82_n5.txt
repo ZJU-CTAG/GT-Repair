@@ -1,0 +1,18 @@
+public void testIssue108() {
+  CompilerEnvirons compilerEnv = new CompilerEnvirons();
+  compilerEnv.setWarnings(true);
+  compilerEnv.setErrorReporter(new ErrorReporter() {
+    public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+      System.out.println("warning: " + message);
+    }
+    public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+      System.out.println("error: " + message);
+    }
+    public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+      System.out.println("runtime error: " + message);
+      return null;
+    }
+  });
+  Parser p = new Parser(compilerEnv, new CompilerEnvirons());
+  try {
+    p.parse("var s = new String(\"hello\"); alert(s.toLowerCase.indexOf(\"l\"));", null, 0);

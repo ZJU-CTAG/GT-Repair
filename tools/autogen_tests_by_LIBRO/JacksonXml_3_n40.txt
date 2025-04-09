@@ -1,0 +1,11 @@
+public void testAttribute() throws JsonProcessingException {
+    ObjectMapper mapper = new XmlMapper();
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            + "<SomeClassXmlAttribute xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+            + "<SomeClassXmlAttributeString xsi:type=\"xsd:string\">SomeClassXmlAttributeStringValue</SomeClassXmlAttributeString>"
+            + "</SomeClassXmlAttribute>";
+    XmlParser xmlParser = mapper.getFactory().createParser(xml);
+    xmlParser.nextFieldName();
+    assertEquals("SomeClassXmlAttributeString", xmlParser.nextFieldName());
+    assertEquals("SomeClassXmlAttributeStringValue", xmlParser.nextTextValue());
+}

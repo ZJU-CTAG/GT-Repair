@@ -1,0 +1,9 @@
+public void testCompileIssue() {
+    CompilerEnvirons compilerEnvirons = new CompilerEnvirons();
+    compilerEnvirons.setOptimizationLevel(9);
+    ErrorReporter errorReporter = compilerEnvirons.getErrorReporter();
+    Parser p = new Parser(compilerEnvirons, errorReporter);
+
+    // Note that there may be other issues with this code that are not related to this bug.
+    String source = "x = a % b / b * c * 2;";
+    ScriptOrFnNode tree = p.parse(source, null, 0);

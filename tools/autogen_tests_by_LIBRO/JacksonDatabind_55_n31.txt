@@ -1,0 +1,21 @@
+public void testEnumMap() throws Exception {
+    EnumMap<Animal, String> map = new EnumMap<Animal, String>(Animal.class);
+    map.put(Animal.CAT, "bob");
+    map.put(Animal.DOG, "josh");
+    map.put(Animal.PIG, "jane");
+    String json = objectMapper.writeValueAsString(map);
+    assertEquals("{\"CAT\":\"bob\",\"DOG\":\"josh\",\"PIG\":\"jane\"}", json);
+}
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum Animal {
+    @JsonProperty("cat")
+    CAT("cat"),
+    @JsonProperty("dog")
+    DOG("dog"),
+    @JsonProperty("pig")
+    PIG("pig");
+    private final String value;
+    public String getValue() { return value; }
+    Animal(String value) { this.value = value; }
+}

@@ -1,0 +1,26 @@
+public void testIssue() {
+    Object.prototype.extend = function(obj) {
+        for (var i in obj) {
+            this[i] = obj[i];
+        }
+    };
+    function makeClass(obj) {
+        return function() {
+            if (this.initialize) {
+                this.initialize.apply(this, arguments);
+            }
+        }.extend(obj);
+    }
+
+    var Person = makeClass( /** @lends Person# */ {
+        /**
+         * @param {String} name
+         */
+        initialize: function(name) {
+            this.name = name;
+        },
+        toString: function() {
+            return this.name;
+        }
+    });
+}

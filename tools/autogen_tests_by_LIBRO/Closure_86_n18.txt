@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String source = "var x ={};\n" +
+            "var Foo = function() {\n" +
+            "    this.location = '';\n" +
+            "    var self = this;\n" +
+            "    window.setTimeout(function() {\n" +
+            "        window.location = self.location;\n" +
+            "    }, 0);\n" +
+            "};\n" +
+            "Foo.prototype.setLocation = function(loc) {\n" +
+            "    this.location = loc;\n" +
+            "};\n" +
+            "new Foo().setLocation('http://www.google.com/');";
+    String expected = "window.location='http://www.google.com/';";
+    String result = new CompilerOptions().getAdvancedOptimizations().compile(source, false);
+    assertEquals(expected, result);
+}

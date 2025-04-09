@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String script = "var lit = {\"0102\":\"Zero One Zero Two\"};" +
+                    "alert(lit[\"0102\"]);";
+    String expected = "var lit={\"0102\":\"Zero One Zero Two\"};alert(lit[\"0102\"]);";
+    String actual = new JavaScriptCompressor(new StringReader(script), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+            int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+            
+        public void error(String message, String sourceName,
+            int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[

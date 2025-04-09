@@ -1,0 +1,10 @@
+public void testBase64Variant() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final Base64Variant variant = Base64Variants.MODIFIED_FOR_URL;
+    final JsonNode node = new ObjectMapper().readTree("\"Zm9v\"");
+    final TreeTraversingParser parser = new TreeTraversingParser(node, mapper.getFactory());
+    parser.setBase64Variant(variant);
+    final byte[] expected = variant.decode("Zm9v");
+    final byte[] actual = parser.getBinaryValue();
+    assertArrayEquals(expected, actual);
+}

@@ -1,0 +1,23 @@
+public void testIssue() {
+    String s = "function name() { var arguments = Array.prototype.slice.call(arguments, 0); }";
+    CompilerEnvirons ce = new CompilerEnvirons();
+    ce.setRecoverFromErrors(true);
+    ce.setErrorReporter(new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    });
+    Parser p = new Parser(ce, new CompilerErrorReporter() {
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message);
+        }
+
+        public void warning(

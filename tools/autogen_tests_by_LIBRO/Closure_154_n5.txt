@@ -1,0 +1,16 @@
+public void testIssue296() throws Exception {
+  // TODO(user): file a bug with the JSCompiler team to add support for
+  // data members on interfaces.
+  Compiler compiler = compile("/** @interface */ function I() {};\n" +
+                              "/** @type {string} */ I.prototype.foobar;\n" +
+                              "/**\n" +
+                              " * @constructor\n" +
+                              " * @implements {I}\n" +
+                              " */ function C() { this.foobar = 2; };\n" +
+                              "/** @type {I} */ var test = new C();");
+  assertEquals(compiler.getWarnings().toString(),
+      "[JSC_TYPE_MISMATCH: actual parameter 1 of foobar does not match " +
+      "formal parameter\n" +
+      "found   : (Number|string)\n" +
+      "required: string]");
+}

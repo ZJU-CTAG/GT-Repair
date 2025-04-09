@@ -1,0 +1,9 @@
+public void testIssue158() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE);
+    final String json = "{ \"id\": \"1\", \"json\": { \"foo\": \"bar\", \"baz\": \"bing\" } }";
+    final ClassWithObjectNodeField deserialized = mapper.readValue(json, ClassWithObjectNodeField.class);
+    assertEquals("1", deserialized.id);
+    assertEquals("bar", deserialized.json.get("foo").asText());
+    assertEquals("bing", deserialized.json.get("baz").asText());
+}

@@ -1,0 +1,13 @@
+public void testIssue113() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setSummaryDetailLevel(SummaryDetailLevel.ALL);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new DiagnosticGroups(), options, getExterns(), ImmutableList.of(
+                    SourceFile.fromCode("in", "/** @type {function(new:?)} */ var foo = function() {};\n" +
+                            "/** @type {function(new:*)} */ var bar = function() {};")),
+            new Compiler.DefaultJsSourceMap(SourceMap.Format.DEFAULT));
+    assertTrue(result.success);
+}

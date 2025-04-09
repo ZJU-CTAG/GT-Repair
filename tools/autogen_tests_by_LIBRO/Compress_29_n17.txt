@@ -1,0 +1,17 @@
+public void testArchiveStreamFactory() throws Exception {
+    final byte[] data = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = factory.createArchiveOutputStream("tar", bos);
+    aos.putArchiveEntry(new TarArchiveEntry("test.txt"));
+    aos.write(data);
+    aos.closeArchiveEntry();
+    aos.close();
+    byte[] tarData = bos.toByteArray();
+    TarArchiveInputStream tis = (TarArchiveInputStream) factory.createArchiveInputStream("tar",
+        new ByteArrayInputStream(tarData));
+    TarArchiveEntry entry = tis.getNextTarEntry();
+    assertNotNull(entry);
+    assertEquals("test.txt", entry.getName());
+    byte[] extractedData = IOUtils.toByteArray(tis);
+    assertTrue(Arrays.equals(data, extractedData

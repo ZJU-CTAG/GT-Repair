@@ -1,0 +1,8 @@
+public void testIssue108() {
+    String js = "function closureCompilerTest(someNode) { var nodeId; return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); }";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(js, false);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    assertEquals("function closureCompilerTest(a){var b;return a.id&&(b=parseInt(a.substr(1)))&&b>0}", result.compiledSource);
+}

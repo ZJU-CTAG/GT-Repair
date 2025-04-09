@@ -1,0 +1,17 @@
+public void testIssue_InternetExplorerRuntimeError() {
+    int threshold = 200;
+    List<List<Integer>> container = new ArrayList<>();
+    while (container.size() < threshold) {
+        container.add(new ArrayList<>(Collections.nCopies(10, 0)));
+    }
+    container.get(0).set(0, 100);
+    container.sort((a, b) -> {
+        if (a.get(0) != 100) {
+            a.set(0, 100);
+        }
+        return a.get(0);
+    });
+    for (List<Integer> inner : container) {
+        assertEquals(inner.get(0).intValue(), 100);
+    }
+}

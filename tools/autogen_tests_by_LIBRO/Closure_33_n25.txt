@@ -1,0 +1,16 @@
+public void testIssue104() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, new JSSourceFile[] { JSSourceFile.fromCode("repro.js", linesJoiner.join(
+            new String[]{
+                    "(function() {",
+                    "    /**",
+                    "     * @param {{text: string}} opt_data",
+                    "     * @return {string}",
+                    "     */",
+                    "    function temp1(opt_data

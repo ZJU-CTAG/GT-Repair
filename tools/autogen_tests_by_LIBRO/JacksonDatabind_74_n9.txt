@@ -1,0 +1,14 @@
+public void testAsPropertyTypeDeserializer() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector());
+
+    JavaType javaType = mapper.getTypeFactory().constructType(new TypeReference<List<List<String>>>() {});
+    JavaType contextType = mapper.getTypeFactory().constructType(new TypeReference<List<String>>() {});
+
+    final String json = "[\"\"]";
+    final AsPropertyTypeDeserializer deserializer = new AsPropertyTypeDeserializer(javaType, contextType, null, javaType, JsonFormat.Value.empty(), null, null);
+    JsonParser parser = mapper.getFactory().createParser(json);
+    parser.nextToken();
+    final List<List<String>> list = deserializer.deserialize(parser, mapper.getDeserializationContext());
+    final List<List<

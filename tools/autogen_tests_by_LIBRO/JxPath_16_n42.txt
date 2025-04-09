@@ -1,0 +1,11 @@
+public void testNodeType() throws Exception {
+    XPath xpath = new DOMXPath("/a");
+    xpath.addNamespace("foo", "http://www.foo.org/");
+
+    DefaultDocumentBuilder builder = new DefaultDocumentBuilder();
+    Document doc = builder.build(new StringReader("<a xmlns=\"http://www.foo.org/\"><b/><c/></a>"));
+
+    List list = xpath.selectNodes(doc);
+    assertEquals(1, list.size());
+    assertEquals(doc.getRootElement(), list.get(0));
+}

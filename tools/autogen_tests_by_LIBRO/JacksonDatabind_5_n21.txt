@@ -1,0 +1,27 @@
+public void testMixinHierarchy() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    mapper.registerModule(module);
+
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.AUTO_DETECT_FIELDS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+            .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    PersonImpl p = new PersonImpl();
+    p.setCity("New York");
+
+    String json = mapper.writeValueAsString(p);
+    // json is {"city":"New York"} but should be {}
+}
+
+public interface Contact {
+    String getCity();
+}
+
+public class ContactImpl implements Contact {
+    private String city;
+
+    public String

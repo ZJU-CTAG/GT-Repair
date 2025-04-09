@@ -1,0 +1,22 @@
+public void testBug_ExtendedBufferedReader_LineEnding() throws IOException {
+    StringBuilder sb = new StringBuilder();
+    sb.append("line1\n");
+    sb.append("line2\n");
+    //sb.append("line3\n");
+    sb.append("line3\r\n");
+    sb.append("line4\r");
+
+    Reader r = new StringReader(sb.toString());
+    ExtendedBufferedReader br = new ExtendedBufferedReader(r);
+
+    String line;
+    List<String> lines = new ArrayList<String>();
+    while ((line = br.readLine()) != null) {
+        lines.add(line);
+    }
+    assertEquals(lines.get(0), "line1");
+    assertEquals(lines.get(1), "line2");
+    assertEquals(lines.get(2), "line3");
+    assertEquals(lines.get(3), "line4");
+    assertEquals(lines.size(), 4);
+}

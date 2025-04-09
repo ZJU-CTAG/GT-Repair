@@ -1,0 +1,12 @@
+public void testWindSpeed() {
+    XmlMapper mapper = new XmlMapper();
+    //mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    try {
+        String xmlString = "<windSpeed units=\"kt\">27<radius sector=\"SE\" units=\"NM\" >20</radius></windSpeed>";
+        WindSpeed windSpeed = mapper.readValue(xmlString, WindSpeed.class);
+        Assert.assertNotNull(windSpeed);
+        Assert.assertEquals(1, windSpeed.getRadius().size());
+        Assert.assertEquals("SE", windSpeed.getRadius().get(0).getSector

@@ -1,0 +1,15 @@
+public void testIssue624() {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("KEY", "VALUE");
+    MapHolder holder = new MapHolder();
+    holder.map = map;
+
+    Gson gson = new Gson();
+    String json = gson.toJson(holder);
+    holder = gson.fromJson(json, MapHolder.class);
+    assertNotNull(holder.map);
+}
+
+class MapHolder {
+    ConcurrentNavigableMap<String, String> map;
+}

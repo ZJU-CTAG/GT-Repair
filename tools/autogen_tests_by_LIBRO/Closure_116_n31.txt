@@ -1,0 +1,18 @@
+public void test() throws Exception {
+    String input = "window[\"foo\"] = function (obj, modifiesProp) {\n"
+        + "  return (function (saved) {\n"
+        + "    return modifiesProp(obj) + saved;\n"
+        + "  })(obj[\"prop\"]);\n"
+        + "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setClosurePass(true);
+    options.setOptimizeCalls(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.LOCAL,
+        PropertyRenamingPolicy.OFF);
+    options.setPrettyPrint(true);
+    options.setGenerateExports(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> externs = Arrays.asList(
+        SourceFile.fromCode("externs", "var window = {};\n"),

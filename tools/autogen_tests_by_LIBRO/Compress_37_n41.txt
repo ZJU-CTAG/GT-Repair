@@ -1,0 +1,11 @@
+public void testIssue_TU_TAR_3() throws Exception {
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new BufferedInputStream(getStream("TU_TAR_3.tar")));
+    TarArchiveEntry entry = null;
+    while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+        byte[] content = new byte[(int) entry.getSize()];
+        int count = tarIn.read(content, 0, content.length);
+        assertEquals(content.length, count);
+    }
+    tarIn.close();
+}

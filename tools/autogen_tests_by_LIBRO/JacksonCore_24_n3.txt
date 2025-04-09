@@ -1,0 +1,20 @@
+public void testNumericOverflow() throws Exception
+{
+    // Ok as is
+    _convert(Long.TYPE, "1");
+    _convert(Long.TYPE, String.valueOf(Long.MIN_VALUE));
+    _convert(Long.TYPE, String.valueOf(Long.MAX_VALUE));
+    _convert(Long.class, "1");
+    _convert(Long.class, String.valueOf(Long.MIN_VALUE));
+    _convert(Long.class, String.valueOf(Long.MAX_VALUE));
+
+    // Not ok
+    _convertFail(Integer.TYPE, String.valueOf(Integer.MIN_VALUE - 1L));
+    _convertFail(Integer.TYPE, String.valueOf(Integer.MAX_VALUE + 1L));
+    _convertFail(Integer.class, String.valueOf(Integer.MIN_VALUE - 1L));
+    _convertFail(Integer.class, String.valueOf(Integer.MAX_VALUE + 1L));
+}
+
+private void _convert(Class<?> targetType, String value) throws Exception
+{
+   

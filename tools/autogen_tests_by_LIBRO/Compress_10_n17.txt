@@ -1,0 +1,12 @@
+public void testExtractWinZipWithUnicodeExtraFields() throws Exception {
+    File src = getFile("/test-archive.zip");
+    ZipFile zipFile = new ZipFile(src);
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        System.out.println(entry.getName());
+        InputStream stream = zipFile.getInputStream(entry);
+        assertNotNull("Stream is null for " + entry.getName(), stream);
+        stream.close();
+    }
+}

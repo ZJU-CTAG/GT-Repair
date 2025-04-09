@@ -1,0 +1,14 @@
+public void testGammaDistribution() throws IOException, ClassNotFoundException {
+    GammaDistribution dist = new GammaDistribution(1.0, 2.0);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream out = new ObjectOutputStream(baos);
+    out.writeObject(dist);
+    out.close();
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream in = new ObjectInputStream(bais);
+    Object dist2 = in.readObject();
+    in.close();
+    for (int i=0; i<100; i++) {
+        assertEquals(dist.sample(), ((GammaDistribution) dist2).sample(), 1e-14);
+    }
+}

@@ -1,0 +1,12 @@
+public void testLongLat() throws Exception {
+    StringWriter sw = new StringWriter();
+    CSVFormat csvFormat = CSVFormat.DEFAULT
+            .withRecordSeparator("\n")
+            .withHeader("long","lat","data")
+            .withQuoteMode(QuoteMode.MINIMAL);
+    CSVPrinter csvPrinter = new CSVPrinter(sw, csvFormat);
+    csvPrinter.printRecord(new Object[] {-92.222,43.333,3});
+    csvPrinter.flush();
+    String expected = "\"long\",\"lat\",\"data\"\n-92.222,43.333,3\n";
+    assertEquals(expected, sw.toString());
+}

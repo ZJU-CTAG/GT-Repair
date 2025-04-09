@@ -1,0 +1,8 @@
+public void testWithNull() throws IOException {
+    final StringWriter sw = new StringWriter();
+    ObjectMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    mapper.writer(mapper.getSerializationConfig().withRootName("root"))
+            .writeValue(sw, null);
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>", sw.toString());
+}

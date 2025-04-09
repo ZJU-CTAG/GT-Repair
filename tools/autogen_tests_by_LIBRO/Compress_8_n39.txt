@@ -1,0 +1,7 @@
+public void testIssue() throws IOException {
+    final byte[] data = new byte[512];
+    System.arraycopy("0000777 ".getBytes(StandardCharsets.US_ASCII), 0, data, 0, 8);
+    final TarArchiveEntry tarEntry = new TarArchiveEntry();
+    tarEntry.parseTarHeader(data);
+    assertEquals(511, tarEntry.getSize());
+}

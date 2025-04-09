@@ -1,0 +1,16 @@
+public void testIssue107() throws IOException {
+    File zipFile = File.createTempFile("testIssue107", ".zip");
+    ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(new FileOutputStream(zipFile));
+
+    ZipArchiveEntry zipEntry = new ZipArchiveEntry("testIssue107.txt");
+    zipOut.putArchiveEntry(zipEntry);
+    zipOut.closeArchiveEntry();
+
+    zipOut.close();
+
+    ZipFile zipFile2 = new ZipFile(zipFile);
+    ZipArchiveEntry zipEntry2 = zipFile2.getEntry("testIssue107.txt");
+    assertEquals(zipEntry, zipEntry2);
+
+    zipFile2.close();
+}

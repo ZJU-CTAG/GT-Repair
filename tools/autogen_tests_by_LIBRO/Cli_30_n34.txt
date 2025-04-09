@@ -1,0 +1,13 @@
+public void testIssue110() throws Exception {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.withLongOpt("a").create());
+    group.addOption(OptionBuilder.withLongOpt("b").create());
+    options.addOptionGroup(group);
+    Properties properties = new Properties();
+    properties.setProperty("a", "true");
+    CommandLineParser parser = new DefaultParser();
+    CommandLine commandLine = parser.parse(options, new String[]{"--b"}, properties);
+    assertTrue("Option 'a' should be present", commandLine.hasOption("a"));
+    assertTrue("Option 'b' should be present", commandLine.hasOption("b"));
+}

@@ -1,0 +1,13 @@
+public void testTarArchiveInputStream() throws Exception {
+    File tmpFile = File.createTempFile("test", ".tar");
+    OutputStream os = new FileOutputStream(tmpFile);
+    os.write("test".getBytes());
+    os.flush();
+    os.close();
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(tmpFile));
+    try {
+        tais.getNextTarEntry();
+        fail("should have thrown IOException");
+    } catch (IOException expected) {
+    }
+}

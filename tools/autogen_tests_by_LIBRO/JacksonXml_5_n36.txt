@@ -1,0 +1,11 @@
+public void testIssue172 () {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    String str1 = noAnnotationsXmlMapper.writeValueAsString(new Issue172Bean());
+    String str2 = xmlMapper.writeValueAsString(new Issue172Bean());
+    assertEquals("<Issue172Bean/>", str1);
+    assertEquals("<myname/>", str2);
+}

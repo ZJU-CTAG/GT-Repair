@@ -1,0 +1,22 @@
+public void testIssue108() throws IOException, SAXException {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<feed xmlns=\"http://www.w3.org/2005/Atom\">" +
+            "<entry>" +
+            "<title>Foo</title>" +
+            "</entry>" +
+            "<entry>" +
+            "<title>Foo</title>" +
+            "</entry>" +
+            "</feed>";
+
+    W3CDom w3cDom = new W3CDom();
+    Document w3cDoc = w3cDom.fromJsoup(Jsoup.parse(xml));
+
+    Element feed = w3cDoc.getDocumentElement();
+    NodeList entries = feed.getElementsByTagName("entry");
+
+    Element firstEntry = (Element) entries.item(0);
+    Element secondEntry = (Element) entries.item(1);
+
+    // Assert that both elements have defined namespace and it is the same
+    assertEquals("http://www.w3.org/2005/Atom", firstEntry.getNames

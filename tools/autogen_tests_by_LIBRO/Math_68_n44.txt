@@ -1,0 +1,14 @@
+public void testConvergenceCheckerPassedToOptimizer() {
+    final VectorialConvergenceChecker convergenceChecker = new VectorialConvergenceChecker() {
+        @Override
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            return false;
+        }
+    };
+
+    // The checker is not actually passed on to the optimizer!
+    final LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(convergenceChecker);
+
+    final VectorialConvergenceChecker realConvergenceChecker = optimizer.getConvergenceChecker();
+    assertFalse(realConvergenceChecker == convergenceChecker);
+}

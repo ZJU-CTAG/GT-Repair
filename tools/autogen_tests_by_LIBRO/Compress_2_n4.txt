@@ -1,0 +1,20 @@
+public void testAr() throws Exception {
+    File f = new File("target/test.ar");
+    f.delete();
+
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(
+            ArchiveStreamFactory.AR, new FileOutputStream(f));
+    aos.putArchiveEntry(new ArArchiveEntry("test1.xml", 10));
+    aos.write("AAAAAAAAAA".getBytes());
+    aos.closeArchiveEntry();
+    aos.putArchiveEntry(new ArArchiveEntry("test2.xml", 10));
+    aos.write("BBBBBBBBBB".getBytes());
+    aos.closeArchiveEntry();
+    aos.close();
+
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(
+            ArchiveStreamFactory.AR, new FileInputStream(f));
+    ArArchiveEntry entry = (ArArchiveEntry) ais.getNextEntry();
+    assertEquals("test1.xml", entry.getName());
+    assertEquals(10, entry.getSize());
+    entry = (ArArchiveEntry)

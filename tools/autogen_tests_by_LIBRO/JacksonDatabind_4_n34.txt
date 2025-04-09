@@ -1,0 +1,16 @@
+public void testIndex() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    List<String> list = new ArrayList<String>();
+    list.add("So long");
+    list.add("and thanks");
+    list.add("for all");
+    String json = mapper.writeValueAsString(list);
+    json = json.substring(2, json.length() - 2);
+    try {
+        mapper.readValue("[" + json + "]", List.class);
+    } catch (JsonMappingException e) {
+        assertEquals(2, e.getLocation().getIndex());
+        assertEquals(2, e.getLocation().getLineNr());
+        assertEquals(1, e.getLocation().getColumnNr());
+    }
+}

@@ -1,0 +1,12 @@
+public void testUnmodifiableNonRandomAccessList() throws Exception {
+    // Create a Collection instance with a non RandomAccess list
+    Collection<?> exp = Collections.unmodifiableList(new LinkedList<>(Arrays.asList("first", "second")));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    String json = mapper.writeValueAsString(exp);
+    Collection<?> act = mapper.readValue(json, Collection.class);
+
+    // Check that the Collection was deserialized correctly
+    assertEquals(exp, act);
+    assertEquals(exp.getClass(), act.getClass());
+}

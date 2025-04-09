@@ -1,0 +1,18 @@
+public void testIssue105() {
+    String code = "window['anchor'] = function (obj, modifiesProp) { return (function (saved) { return modifiesProp(obj) + saved; })(obj['prop']); }";
+    String expected = "window.foo=function(a,b){var HOLD$0=a.prop;return b(a)+HOLD$0};";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.init(
+            ImmutableList.<SourceFile>of(),
+            ImmutableList.of(SourceFile.fromCode("window.js", "")),
+            options);
+    Result result = compiler.compile(
+            ImmutableList.<SourceFile>of(),
+            ImmutableList.of(SourceFile.fromCode("input.js", code)),
+            options);
+    assertTrue(result.success);
+    assertEquals(expected, compiler

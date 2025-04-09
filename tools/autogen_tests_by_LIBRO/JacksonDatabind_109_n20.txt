@@ -1,0 +1,13 @@
+public void testIssueWriteBigDecimalAsPlain() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    mapper.addMixIn(BigDecimal.class, MixInForBigDecimal.class);
+
+    BigDecimal bd = new BigDecimal("0.0000000005");
+    assertEquals("{\"value\":\"5.0E-10\"}", mapper.writeValueAsString(bd));
+}
+
+public static class MixInForBigDecimal {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal value;
+}

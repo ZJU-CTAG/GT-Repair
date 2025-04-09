@@ -1,0 +1,13 @@
+public void testIssue108() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        objectMapper.readValue("[\"abc\"]", new TypeReference<List<Long>>() {});
+        fail("Excepted JsonMappingException");
+    } catch (JsonMappingException e) {
+        Collection<Reference> references = e.getPath();
+        assertEquals(1, references.size());
+        Reference ref = references.iterator().next();
+        assertEquals(0, ref.getIndex());
+        assertEquals("/0", ref.getFieldName());
+    }
+}

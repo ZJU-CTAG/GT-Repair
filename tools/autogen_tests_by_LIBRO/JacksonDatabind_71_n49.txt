@@ -1,0 +1,8 @@
+public void testIssue122() throws IOException {
+    String json = "{\"MyKey\":\"MyValue\"}";
+    ObjectMapper m = new ObjectMapper();
+    m.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    Map<CharSequence, String> map = m.readValue(json, new TypeReference<Map<CharSequence, String>>() { });
+    assertEquals("MyValue", map.get("MyKey"));
+}

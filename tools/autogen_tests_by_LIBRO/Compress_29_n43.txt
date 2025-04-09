@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    String encoding = "ISO-8859-1";
+    ArchiveStreamFactory factory = ArchiveStreamFactory.DEFAULT;
+    try {
+        factory.createArchiveInputStream(ArchiveStreamFactory.ARJ, new ByteArrayInputStream(new byte[0]));
+        fail("Expected an exception");
+    } catch (ArchiveException ae) {
+        assertTrue(ae.getMessage().contains(encoding));
+    }
+    try {
+        factory.createArchiveInputStream(ArchiveStreamFactory.CPIO, new ByteArrayInputStream(new byte[0]));
+        fail("Expected an exception");
+    } catch (ArchiveException ae) {
+        assertTrue(ae.getMessage().contains(encoding));
+    }
+    try {
+        factory.createArchiveInputStream(ArchiveStreamFactory.DUMP, new ByteArrayInputStream(new byte[0]));
+        fail("Expected an exception");
+    } catch (ArchiveException ae) {
+        assertTrue(ae.getMessage().contains(encoding));
+    }

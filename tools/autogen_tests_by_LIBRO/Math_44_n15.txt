@@ -1,0 +1,35 @@
+public void testIssue() {
+    EventManager em = new EventManager();
+    em.addListener(new MyEventListener());
+    em.processEvent(new MyEvent("B"));
+    em.step(1);
+    em.step(1);
+}
+
+class MyEventListener implements EventListener {
+    private MyState myState = new MyState();
+
+    public void eventOccurred(Event e) {
+        MyEvent myEvent = (MyEvent) e;
+        myState.eventOccurred(myEvent);
+    }
+
+    public void resetState() {
+        myState.reset();
+    }
+}
+
+class MyState {
+    private List<String> list = new ArrayList<String>();
+    private boolean firstEventHasBeenHandled = false;
+
+    public void eventOccurred(MyEvent e) {
+        list.add(e.getId());
+        if (e.getId().equals("A")) {
+            firstEventHasBeenHandled = true;
+        }
+    }
+
+    public void reset() {
+        list.clear();
+        firstEventHasBeenHandled =

@@ -1,0 +1,12 @@
+public void testNode() {
+    final String xml = "<a><b><node/></b></a>";
+    final String xpath = "/a/b/node()";
+    final String expected = "<node/>";
+
+    XPathEvaluator eval = new XPathEvaluator();
+    Collection results = eval.evaluate(xpath, xml, null, XPathResult.ANY_TYPE, null);
+    assertEquals(1, results.getLength());
+
+    Node result = ((NodeSet) results).item(0);
+    assertEquals(expected, DOMUtils.getInnerXML((Element) result));
+}

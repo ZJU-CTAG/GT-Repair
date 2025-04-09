@@ -1,0 +1,18 @@
+public void testOptionGroupLong() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option l1 = Option.builder("l1").longOpt("long1").build();
+    Option l2 = Option.builder("l2").longOpt("long2").build();
+    Option l3 = Option.builder("l3").longOpt("long3").build();
+    options.addOptionGroup(group);
+    group.addOption(l1);
+    group.addOption(l2);
+    group.addOption(l3);
+    group.setSelected(l3);
+    CommandLineParser parser = new DefaultParser();
+    String[] args = {"-l1"};
+    CommandLine cmd = parser.parse(options, args);
+    assertTrue(cmd.hasOption("l1"));
+    assertFalse(cmd.hasOption("l2"));
+    assertFalse(cmd.hasOption("l3"));
+}

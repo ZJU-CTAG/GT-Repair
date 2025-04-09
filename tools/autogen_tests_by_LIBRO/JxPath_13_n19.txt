@@ -1,0 +1,8 @@
+public void testIssue() throws Exception {
+    String xml = "<ElementA A:myAttr='Mytype'><B:ElementB>MY VALUE</B:ElementB></ElementA>";
+    JXPathContext nc = JXPathContext.newContext(new StringReader(xml));
+    nc.registerNamespace("A", "http://www.mytest.com");
+    nc.registerNamespace("B", "http://www.mytest.com");
+    assertEquals("Mytype", nc.getValue("//A:ElementA/@A:myAttr"));
+    assertEquals("MY VALUE", nc.getValue("//B:ElementB"));
+}

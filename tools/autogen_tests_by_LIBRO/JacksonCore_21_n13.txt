@@ -1,0 +1,14 @@
+public void testFilteringParserDelegate() throws Exception {
+    FilteringParserDelegate parser = new FilteringParserDelegate(createParser(
+            "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}"),
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, parser.nextToken());
+    assertEquals(3, parser.getIntValue());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+}

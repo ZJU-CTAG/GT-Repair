@@ -1,0 +1,18 @@
+public void testAcceptCaseInsensitive() throws Exception
+{
+    final String JSON = "{\n" +
+            "    \"businessAddress.street\": \"street\",\n" +
+            "    \"businessAddress.addon\": \"addon\",\n" +
+            "    \"businessAddress.zip\": \"zip\",\n" +
+            "    \"businessAddress.town\": \"town\",\n" +
+            "    \"businessAddress.country\": \"country\"\n" +
+            "}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+    mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+    mapper.registerModule(new SimpleModule());
+    Person person = mapper.readValue(JSON, Person.class);
+    assertEquals("street", person.businessAddress.street);
+}
+``

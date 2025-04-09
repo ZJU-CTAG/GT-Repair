@@ -1,0 +1,19 @@
+public void testPrimitiveWrapperOverride() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.readerWithView(WithView.class);
+    ObjectWriter writer = mapper.writerWithView(WithView.class);
+
+    // will fail with original version of AnnotationIntrospector
+    // since it would find "int property" and return it to Jackson,
+    // which would have no way to know it's not a good match
+    PropertyDescriptor prop = reader.getConfig().introspect(mapper.constructType(WrapperBean.class)).findProperty("number");
+    assertNotNull(prop);
+    assertNotNull(prop.getReadMethod());
+    assertNotNull(prop.getWriteMethod());
+    assertEquals(Integer.class, prop.getReadMethod().getReturnType());
+
+    WrapperBean input = new WrapperBean();
+    input.number = 13;
+    WrapperBean output = writer.forType(WrapperBean.class)
+            .readValue(writer.forType(WrapperBean.class).write

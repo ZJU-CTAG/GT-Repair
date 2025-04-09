@@ -1,0 +1,14 @@
+public void testThisRefining() {
+    Function<Node, Void> function = new AbstractNodeTypeRestriction() {
+        @Override
+        public Void caseName(NodeTraversal t, Node n, Node parent) {
+            if (n.getString().equals("this")) {
+                n.setTypeI(JSType.TOP_OBJECT);
+                n.getTypeI().restrictByNotNullOrUndefined();
+            }
+            return null;
+        }
+    };
+
+    test("goog.isNull(this);", "goog.isNull(this);", null, function);
+}

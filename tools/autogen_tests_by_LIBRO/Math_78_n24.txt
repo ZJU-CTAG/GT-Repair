@@ -1,0 +1,13 @@
+public void testIssue106() {
+    double[] x = {30, 60, 90, 120, 150, 180};
+    double[] y = {0, 1, 0, 1, 0, 1};
+    PolynomialSplineFunction f = new PolynomialSplineFunction(x, y);
+    UnivariateIntegrator integ = new UnivariateIntegratorImpl(1.0e-14, 1.0e-14);
+    integ.addListener(new EventListener() {
+        public void triggered(double x) {
+            System.out.println("event at " + x);
+        }
+    });
+    integ.integrate(f, 67.5, 112.5);
+    integ.integrate(f, 90.0, 153.0);
+}

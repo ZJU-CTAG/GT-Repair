@@ -1,0 +1,11 @@
+public void testProcessLongOptionToken() throws Exception {
+    final Options options = new Options();
+    options.addOption("a", false, "a");
+    options.addOption("b", true, "b");
+    final PosixParser parser = new PosixParser();
+    final CommandLine cmd = parser.parse(options, new String[] { "--zop", "-abfoo" });
+    assertEquals("--zop", cmd.getArgList().get(0));
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+    assertEquals("foo", cmd.getOptionValue("b"));
+}

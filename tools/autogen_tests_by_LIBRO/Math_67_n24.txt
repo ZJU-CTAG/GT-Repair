@@ -1,0 +1,10 @@
+public void testMultiStartUnivariateRealOptimizer() {
+    double min = -100;
+    double max = 100;
+    double startValue = 0;
+    UnivariateRealFunction f = new SinFunction();
+    UnivariateRealOptimizer opt = new BrentOptimizer(1e-12, 1e-8);
+    MultiStartUnivariateRealOptimizer multiOpt = new MultiStartUnivariateRealOptimizer(opt, 10, new BrentOptimizer(1e-12, 1e-8));
+    double result = multiOpt.optimize(f, GoalType.MINIMIZE, min, max, startValue);
+    assertEquals(result, multiOpt.getResult(), 1e-8);
+}

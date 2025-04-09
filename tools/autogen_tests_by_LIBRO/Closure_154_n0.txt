@@ -1,0 +1,16 @@
+public void testInterfaceDefinition() {
+    JsTestDriverFileParser parser = new JsTestDriverFileParser(new File("test/data/interfaces.js"));
+    List<FileInfo> fileInfos = parser.parse();
+    assertEquals(1, fileInfos.size());
+
+    FileInfo fileInfo = fileInfos.get(0);
+    assertEquals("test/data/interfaces.js", fileInfo.getFilePath());
+    List<JsFunction> functions = fileInfo.getFunctions();
+    assertEquals(1, functions.size());
+
+    JsFunction function = functions.get(0);
+    assertEquals("testInterfaceDefinition", function.getName());
+    assertEquals(1, function.getParameters().size());
+    assertEquals("test", function.getParameters().get(0).getName());
+    assertEquals("I", function.getParameters().get(0).getType());
+}

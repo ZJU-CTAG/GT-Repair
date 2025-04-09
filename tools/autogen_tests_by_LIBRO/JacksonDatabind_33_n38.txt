@@ -1,0 +1,16 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    A a = new A();
+    a.b = new B();
+    a.b.value = 1;
+    assertEquals("{\"value\":1}", mapper.writeValueAsString(a));
+}
+
+class A {
+    @JsonUnwrapped
+    B b;
+}
+
+class B {
+    int value;
+}

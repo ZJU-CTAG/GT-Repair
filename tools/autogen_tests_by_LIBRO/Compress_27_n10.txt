@@ -1,0 +1,13 @@
+public void testIssue110() throws Exception {
+    File f = new File("src/test/resources/COMPRESS-262.tar.gz");
+    try (TarArchiveInputStream tais =
+             new TarArchiveInputStream(
+                     new GzipCompressorInputStream(
+                             new FileInputStream(f)))) {
+        TarArchiveEntry te = tais.getNextTarEntry();
+        assertNotNull(te);
+        assertNotNull(te.getName());
+        assertEquals("COMPRESS-262/", te.getName());
+        assertEquals("", te.getUserName());
+    }
+}

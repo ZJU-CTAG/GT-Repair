@@ -1,0 +1,15 @@
+public void testIssue127() throws Exception {
+    try (ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(new FileOutputStream(new File("target/testIssue127.zip")))) {
+        zaos.putArchiveEntry(new ZipArchiveEntry("test"));
+        zaos.closeArchiveEntry();
+        zaos.flush();
+        zaos.close();
+    }
+    try (ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(new File("target/testIssue127.zip")))) {
+        ZipArchiveEntry entry = zais.getNextZipEntry();
+        assertNotNull(entry);
+        try (ZipFile zf = new ZipFile(new File("target/testIssue127.zip"))) {
+            assertTrue(zf.getEntries().nextElement().equals(entry));
+        }
+    }
+}

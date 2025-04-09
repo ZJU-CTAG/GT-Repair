@@ -1,0 +1,18 @@
+public void testIssue108() {
+    // test that there's an error
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("in1.js", "goog.provide(\"main\"); goog.scope (function (){ var a = foo, b, c = 1; });"));
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", "var foo;"));
+    Result result = compiler.compile(externs, inputs,
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals(2, result.warnings.length);
+
+    // test that the compiler doesn't crash
+    compiler = new Compiler();
+    inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("in1.js", "var x = 3;"));
+    externs = new ArrayList<SourceFile>

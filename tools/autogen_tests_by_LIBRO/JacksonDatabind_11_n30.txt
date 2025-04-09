@@ -1,0 +1,25 @@
+public void testGenericBean() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    String jsonString = "{\"entity\":{\"className\":\"com.somedomain.somerepo.model.Project\",\"id\":1}}";
+
+    Something obj = mapper.readValue(jsonString, Something.class);
+    assertEquals("com.somedomain.somerepo.model.Project", obj.getEntity().getClass().getName());
+}
+
+class Something {
+    private Ruleform entity;
+
+    public <T extends Ruleform> T getEntity() {
+        return (T) entity;
+    }
+
+    public <T extends Ruleform> void setEntity(T entity) {
+        this.entity = entity;
+    }
+}
+
+abstract class Ruleform {
+}
+
+class Project extends Ruleform {
+}

@@ -1,0 +1,10 @@
+public void testFileNotExist() throws Exception {
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().longOpt("file").type(FileInputStream.class).build());
+
+    CommandLineParser parser = new DefaultParser();
+    CommandLine cmd = parser.parse(options, new String[] { "--file", "noexists.txt" });
+
+    FileInputStream file = (FileInputStream) cmd.getParsedOptionValue("f");
+    assertNull(file);
+}

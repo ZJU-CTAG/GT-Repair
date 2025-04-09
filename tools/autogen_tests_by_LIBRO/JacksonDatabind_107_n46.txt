@@ -1,0 +1,19 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+	final ObjectMapper mapper = new ObjectMapper();
+	mapper.registerModule(new SimpleModule().addDeserializer(Telephone.class, new TelephoneDeserializer()));
+
+    DeserializationProblemHandler problemHandler = new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.defaultInstance().constructSimpleType(Void.class, null);
+        }
+    };
+
+    mapper.addHandler(problemHandler);
+
+    mapper.enableDefaultTyping();
+
+    String json = "{\"@class\": \"org.joda.time.DateTime\", \"value\": \"2018-03-13T16:09:06.547Z\"}";
+    DateTime deserialized = mapper.readValue(json, DateTime.class);
+    assertNotNull(deserialized);
+}

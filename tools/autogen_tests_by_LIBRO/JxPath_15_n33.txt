@@ -1,0 +1,11 @@
+public void testUnionOperator() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream(
+            "<MAIN><A>avalue</A><B>bvalue</B></MAIN>".getBytes()));
+
+    XPath xpath = new DOMXPath("string(/MAIN/B | /MAIN/A)");
+    String value = xpath.stringValueOf(document);
+    assertEquals("avalue", value);
+}

@@ -1,0 +1,18 @@
+public void testPolymorphicTypesWithDefaultImpl() throws Exception
+{
+    // NOTE: we need to use 'new ObjectMapper()' to ensure we do NOT have
+    // any module registration
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    mapper.addMixIn(DomainObject.class, DomainObjectMixin.class);
+    mapper.addMixIn(Node.class, NodeMixin.class);
+    mapper.addMixIn(Root.class, RootMixin.class);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{\"type\": \"node\", \"id\" : 1,\"extra\":\"foo\"}";
+
+    Root root = mapper.readValue(json, Root.class);
+    assertNotNull(root.getObject());
+    assertTrue(root.getObject() instanceof Node);
+    assertEquals("

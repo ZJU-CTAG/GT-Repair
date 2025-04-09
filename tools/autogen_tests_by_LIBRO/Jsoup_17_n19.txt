@@ -1,0 +1,24 @@
+public void testIssue_220() throws IOException {
+    String h = "<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "    <title>Test</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div>0</div>\n" +
+            "    <p>0</p>\n" +
+            "    <div>0<p>0</p>0</div>\n" +
+            "</body>\n" +
+            "</html>";
+
+    Document doc = Jsoup.parse(h);
+    doc.outputSettings().prettyPrint(false);
+    Element el = doc.body();
+
+    assertEquals("0\n0\n0\n0\n0", el.text());
+
+    Element div = doc.select("div").first();
+    Element p = div.select("p").first();
+
+    assertEquals("0", div.text());
+    assertEquals("0", p.text());

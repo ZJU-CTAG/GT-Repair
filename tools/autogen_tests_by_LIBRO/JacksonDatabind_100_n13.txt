@@ -1,0 +1,28 @@
+public void testBase64Variant() throws Exception {
+    // note base64 variant being used here for generating the bytes
+    final String original = Base64.encodeBase64URLSafeString(new byte[] { 0 });
+
+    // the default is base64
+    TextNode textNode = new TextNode(original);
+    assertEquals(original, textNode.asText());
+    assertArrayEquals(new byte[] { 0 }, textNode.binaryValue());
+
+    // read back using base64 variant
+    JsonParser jsonParser = new TreeTraversingParser(textNode, new ObjectCodec() {
+        public JsonParser treeAsTokens(JsonNode n) {
+            throw new UnsupportedOperationException();
+        }
+
+        public ObjectCodec copy() {
+            return this;
+        }
+
+        public JsonParser createParser(InputStream in) throws IOException, JsonParseException {
+            throw new UnsupportedOperationException();
+        }
+
+        public JsonParser createParser(Reader r) throws IOException, JsonParseException {
+            throw new UnsupportedOperationException();
+        }
+
+        public JsonParser createParser

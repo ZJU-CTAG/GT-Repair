@@ -1,0 +1,11 @@
+public void testEnumMap() throws JsonProcessingException {
+    // This works as expected
+    Foo foo = new Foo(FooType.BAR);
+    String json = mapper.writeValueAsString(foo);
+    assertEquals("{\"type\":\"b\"}", json);
+    // This does not
+    Map<FooType, Foo> map = new EnumMap<>(FooType.class);
+    map.put(FooType.BAR, foo);
+    json = mapper.writeValueAsString(map);
+    assertEquals("{\"BAR\":{\"type\":\"b\"}}", json);
+}

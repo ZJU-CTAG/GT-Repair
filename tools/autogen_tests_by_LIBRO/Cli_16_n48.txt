@@ -1,0 +1,23 @@
+public void testIssue() {
+    Options options = new Options();
+
+    Group optionGroup = GroupBuilder.withName("option-group")
+                                                    .withOption(OptionBuilder.withLongOpt("option").create("o"))
+                                                    .create();
+    options.addOptionGroup(optionGroup);
+
+    Option requiredGroupOption = OptionBuilder.hasArg().create("r");
+    OptionGroup requiredOptionGroup = GroupBuilder.withName("required-group")
+                                                                                    .withOption(requiredGroupOption)
+                                                                                    .isRequired()
+                                                                                    .create();
+    options.addOptionGroup(requiredOptionGroup);
+
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[0]);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        assertEquals("Missing required option: r", e.getMessage());
+    }
+}

@@ -1,0 +1,8 @@
+public void testJavaType() throws Exception {
+    String json = "{\"java_type\":\"java.lang.String\",\"@class\":\"org.apache.openjpa.jdbc.meta.strats.ValueMapValueHandler$ValueMapState\",\"state\":{\"value\":\"test\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    ClassWithJavaType cwjt = mapper.readValue(json, ClassWithJavaType.class);
+    assertEquals(cwjt.java_type, String.class.getName());
+    assertEquals(cwjt.getValue(), "test");
+}

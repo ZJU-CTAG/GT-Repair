@@ -1,0 +1,18 @@
+public void testCommaRemoval() {
+    String code = "function Test(n) { var i = 0; return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i } var dummy = \"6chars\"; console && console.log( Test(dummy) );";
+
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingLocalJsDocComments(true);
+    env.setAllowSharpComments(true);
+    env.setIdeMode(true);
+    env.setRecoverFromErrors(true);
+    env.setGenerateDebugInfo(true);
+    env.setStrictMode(true);
+    env.setWarningAsError(true);
+    env.setLanguageVersion(Context.VERSION_1_8);
+
+    Parser p = new Parser(env, new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING

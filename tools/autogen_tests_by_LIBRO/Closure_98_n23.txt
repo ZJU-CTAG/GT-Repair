@@ -1,0 +1,11 @@
+public void testIssue108() {
+    File tmp = File.createTempFile("test", ".js");
+    tmp.deleteOnExit();
+    FileUtils.writeStringToFile(tmp, "function foo() {var arr = [1, 2, 3, 4, 5];for (var i = 0, l = arr.length; i < l; i++) {var j = arr[i];(function() {var k = j;setTimeout(function() {console.log(k);}, 0);})();}}foo();");
+    UglifyJs uglifyJs = new UglifyJs();
+    uglifyJs.setInputFile(tmp);
+    uglifyJs.setOutputFile(File.createTempFile("test", ".js"));
+    uglifyJs.setCompress(true);
+    uglifyJs.setMangle(false);
+    uglifyJs.run();
+}

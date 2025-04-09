@@ -1,0 +1,21 @@
+public void testOptionWithDefaultAndArgument()
+    {
+        Option longOption = new Option( "long", "long option", true, "long option description");
+        longOption.setArgName( "long option argument" );
+        longOption.setArgs(1);
+        longOption.setOptionalArg(false);
+        longOption.setArgName( "long option argument" );
+        longOption.setDefaultValue("foo");
+        OptionGroup optionGroup = new OptionGroup();
+        optionGroup.addOption(longOption);
+        CommandLineParser parser = new PosixParser();
+        try
+        {
+            CommandLine cli = parser.parse(optionGroup, new String[]{"--long=bar"});
+            assertEquals( "bar", cli.getValue(longOption) );
+        }
+        catch (ParseException e)
+        {
+            fail("unexpected exception");
+        }
+    }

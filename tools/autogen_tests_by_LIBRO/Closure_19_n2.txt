@@ -1,0 +1,12 @@
+public void testThisVariable() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setPrettyPrint(false);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    SourceFile[] externs = new SourceFile[] {
+        SourceFile.fromCode("externs.js", "function alert(x) {}\n")};
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, new SourceFile[] {SourceFile.fromCode("input.js", "goog.isNull(this)")}, options);
+}

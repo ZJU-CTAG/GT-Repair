@@ -1,0 +1,11 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { -10.0, -10.0 }, 0.0);
+    List<LinearConstraint> constraints = Arrays.asList(new LinearConstraint[] {
+            new LinearConstraint(new double[] { 1.0, 1.0 }, Relationship.LEQ, 1.0),
+            new LinearConstraint(new double[] { 1.0, 0.0 }, Relationship.LEQ, 1.0),
+            new LinearConstraint(new double[] { 0.0, 1.0 }, Relationship.LEQ, 1.0)
+    });
+    PointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE, false);
+    assertEquals(0, solution.getValue(), 0.01);
+}

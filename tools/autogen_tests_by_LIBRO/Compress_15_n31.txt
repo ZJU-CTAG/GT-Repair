@@ -1,0 +1,17 @@
+public void testZip() throws Exception {
+    File src = new File(getClass().getResource("/org/apache/commons/io/compress/zipcompress.zip").toURI());
+    File dest = File.createTempFile("zipcompress", ".zip");
+    FileUtils.copyFile(src, dest);
+    try  {
+        ZipFile zf = new ZipFile(dest);
+        ZipArchiveEntry zae = zf.getEntry("test.txt");
+        ZipArchiveInputStream zais = new ZipArchiveInputStream(new ByteArrayInputStream(FileUtils.readFileToByteArray(dest)));
+        ZipArchiveEntry zae2 = zais.getNextZipEntry();
+        assertEquals(zae, zae2);
+        assertTrue(zae.equals(zae2));
+        assertTrue(zae2.equals(zae));
+        assertEquals(zae.hashCode(), zae2.hashCode());
+    } finally {
+        dest.delete();
+    }
+}

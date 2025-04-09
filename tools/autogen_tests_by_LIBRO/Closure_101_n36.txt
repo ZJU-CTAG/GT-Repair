@@ -1,0 +1,16 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.processClosurePrimitives = false;
+    Compiler compiler = new Compiler(new PrintStream(System.out));
+    Result result = compiler.compile(
+            JSSourceFile.fromCode("test.js",
+                    "goog.provide('my.A');" +
+                    "goog.require('my.B');"
+                    ),
+            JSSourceFile.fromCode("test.js",
+                    "goog.provide('my.B');" +
+                    "goog.require('my.A');"
+                    )
+            , options);
+    assertEquals("my.A\nmy.B\n", compiler.toSource());
+}

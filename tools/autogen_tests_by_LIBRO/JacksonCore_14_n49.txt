@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    for (final int oldSize : new int[] {1, 10, 100, 1000, 10000, 100000}) {
+        for (final int factor : new int[] {2, 3, 4, 5}) {
+            final int newSize = oldSize * factor;
+            final byte[] oldBuffer = new byte[oldSize];
+            final byte[] newBuffer = new byte[newSize];
+            new IOContext(newBuffer, true, null) {
+                @Override
+                public void releaseReadIOBuffer(byte[] buf) {
+                    assertArrayEquals(newBuffer, buf);
+                }
+            }.releaseReadIOBuffer(oldBuffer);
+        }
+    }
+}

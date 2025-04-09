@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    compiler.compile(SourceFile.fromCode("file",
+        "/** @constructor */\n" +
+        "var myclass = function() { };\n" +
+        "/** @param {boolean} success */\n" +
+        "myclass.prototype.fn = function(success) { };\n" +
+        "myclass.prototype.test = function() { this.fn(); this.fn = function() { }; }"), options);
+    assertEquals(1, compiler.getResult().errors.length);
+}

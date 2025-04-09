@@ -1,0 +1,11 @@
+public void testInvalidJsonPointerIndex() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = mapper.readTree("{\"00\":\"some_value\"}");
+    assertNotNull(jsonNode.at("/00"));
+
+    // test that JsonPointer does not allow invalid array index
+    assertNull(jsonNode.at("/0"));
+    assertNull(jsonNode.at("/0/0"));
+    assertNull(jsonNode.at("/0/0/0/0"));
+}

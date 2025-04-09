@@ -1,0 +1,10 @@
+public void testUnicodeExtraFields() throws Exception {
+    ZipFile zf = new ZipFile(getFile("unicode-extra-fields.zip"));
+    List<ZipArchiveEntry> entries = Collections.list(zf.getEntries());
+    assertEquals(1, entries.size());
+    ZipArchiveEntry zae = entries.get(0);
+    assertEquals("\u00e2\u0089\u00a2", zae.getName());
+    assertEquals(ZipArchiveEntry.DEFLATED, zae.getMethod());
+    assertEquals(1024, zae.getSize());
+    assertEquals(0, zae.getCompressedSize());
+}

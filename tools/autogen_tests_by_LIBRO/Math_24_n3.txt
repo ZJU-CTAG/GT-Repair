@@ -1,0 +1,16 @@
+public void testIssue108() {
+
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x * x + 1.0 / x - 4.0;
+        }
+    };
+
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-8, 1e-8);
+    UnivariateRealPointValuePair res = optimizer.optimize(100, f, GoalType.MINIMIZE, 2.0, 4.0);
+    double min = res.getValue(); // The value of the function at the optimum
+
+    System.out.println("Minimum: " + min);
+    System.out.println("Position: " + res.getPoint());
+
+}

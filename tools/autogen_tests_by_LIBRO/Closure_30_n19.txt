@@ -1,0 +1,10 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setOptimizationLevel(OptimizationLevel.ADVANCED_OPTIMIZATIONS);
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("x", "function test() { var str; return str + str + str + str; }") }, options);
+    assertTrue(result.success);
+    assertTrue(result.compiledSource.contains("str"));
+}

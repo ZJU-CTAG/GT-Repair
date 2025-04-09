@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CMAESOptimizer optim = new CMAESOptimizer(true, 0, false, 0, 0, new MersenneTwister(), false, new SimplePointChecker<RealPointValuePair>(1e-6, 1e-6));
+
+    double lower = 1.0e-6;
+    double upper = 1.0;
+
+    MultivariateFunction f = new MultivariateFunction() {
+        public double value(double[] x) {
+            return x[0];
+        }
+    };
+
+    double[] fit = optim.optimize(new MaxEval(1000),
+                                  new ObjectiveFunction(f),
+                                  GoalType.MINIMIZE,
+                                  new InitialGuess(new double[] {lower}),
+                                  new SimpleBounds(new double[]{lower},new double[]{upper})).getPoint();
+
+    assertEquals(upper, fit[0], 1e-6); // fails!
+}

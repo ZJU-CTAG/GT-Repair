@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String contents = "function f() {\n}\n\nf();";
+    Config config = ConfigFactory.empty();
+    ESLint eslint = new ESLint(config);
+    ESLint.Result result = eslint.verify(contents, config);
+    assertEquals(1, result.getMessages().size());
+    ESLint.Message message = result.getMessages().get(0);
+    assertEquals("Expected a return value.", message.getMessage());
+    assertEquals("error", message.getSeverity());
+    assertEquals(4, message.getLine());
+}

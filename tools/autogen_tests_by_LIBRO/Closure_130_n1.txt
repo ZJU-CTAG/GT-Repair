@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String source = "function f() {\n"
+        + "  var arg = arguments;\n"
+        + "  setTimeout(function() { alert(arg); }, 0);\n"
+        + "}\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("input", source),
+        new SourceFile[] {
+            SourceFile.fromCode(
+                "externs",
+                "function setTimeout(a,b) {}\n"
+                + "function alert(a) {}\n"),
+        },
+        options);
+    assertFalse(result.success);
+}

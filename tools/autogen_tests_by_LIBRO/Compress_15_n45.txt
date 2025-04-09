@@ -1,0 +1,17 @@
+public void testZipArchiveEntryEquality() throws Exception {
+    File zipFile = new File("d:\\temp\\test.zip");
+    ZipFile zip = new ZipFile(zipFile);
+    ZipArchiveEntry entry = zip.getEntry("test.txt");
+    ZipArchiveInputStream zipInput = new ZipArchiveInputStream(new FileInputStream(zipFile));
+    ZipArchiveEntry entry2 = zipInput.getNextZipEntry();
+    assertEquals(entry, entry2);
+    assertEquals(entry2, entry);
+}
+
+private static void assertEquals(ZipArchiveEntry entry, ZipArchiveEntry entry2) {
+    assertEquals(entry.getName(), entry2.getName());
+    assertEquals(entry.getMethod(), entry2.getMethod());
+    assertEquals(entry.getTime(), entry2.getTime());
+    assertEquals(entry.getSize(), entry2.getSize());
+    assertEquals(entry.getCrc(), entry2.getCrc());
+    assertEquals(entry.getCompressedSize(), entry2.getCompressedSize());

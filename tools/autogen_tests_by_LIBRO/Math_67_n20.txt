@@ -1,0 +1,12 @@
+public void testMultiStartUnivariateRealOptimizer() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x - 10;
+        }
+    };
+    UnivariateRealOptimizer optim = new BrentOptimizer();
+    MultiStartUnivariateRealOptimizer multi = new MultiStartUnivariateRealOptimizer(optim, 10, optim.getTolerance());
+    double result = multi.optimize(f, GoalType.MAXIMIZE, -Double.MAX_VALUE, Double.MAX_VALUE);
+    assertEquals(result, 10, 1e-10);
+    assertEquals(multi.getResult(), 10, 1e-10);
+}

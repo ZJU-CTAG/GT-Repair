@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setCheckTypes(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    compiler.compile(SourceFile.fromCode("[entry]", ""),
+                     SourceFile.fromCode("echo.js", "define(function() { return { echo: function(val) { window.console.log(val); }}});"),
+                     options);
+}

@@ -1,0 +1,16 @@
+public void testInvalidFormatException() throws Exception {
+    String json = "{\"array\":[2,true,\"1\"]}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, InvalidFormatExceptionTestPojo.class);
+    } catch (InvalidFormatException e) {
+        assertEquals(1, e.getPath().size());
+        assertEquals("array", e.getPath().get(0).getFieldName());
+        assertEquals(1, e.getPath().get(0).getIndex());
+    }
+}
+
+public static class InvalidFormatExceptionTestPojo {
+    @JsonProperty("array")
+    public List<Integer> array;
+}

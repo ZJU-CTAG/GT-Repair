@@ -1,0 +1,11 @@
+public void testXPath() throws Exception {
+    Document doc = readDocument();
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("1234", context.selectSingleNode("//root/@id/text()"));
+}
+
+private Document readDocument() throws Exception {
+    String xml = "<root id=\"1234\"/>";
+    SAXBuilder builder = new SAXBuilder();
+    return builder.build(new ByteArrayInputStream(xml.getBytes()));
+}

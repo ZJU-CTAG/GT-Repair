@@ -1,0 +1,32 @@
+public void testIssue108() throws Exception {
+  DateTimeSerializerBase serializer = new DateTimeSerializerBase(DateTime.class){
+    protected long _timestamp(DateTime value) { return 0; }
+  };
+
+  ObjectMapper mapper = new ObjectMapper();
+  SimpleModule module = new SimpleModule();
+  module.addSerializer(DateTime.class, serializer);
+  mapper.registerModule(module);
+
+  final String dateTimePattern = "yyyy-MM-dd";
+  final DateTime dateTime = new DateTime();
+
+  JsonFormat dateTimeFormat = new JsonFormat() {
+    @Override
+    public String pattern() {
+      return dateTimePattern;
+    }
+
+    @Override
+    public String timezone() {
+      return null;
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+      return null;
+    }
+  };
+
+  JsonSerializer<DateTime> contextual = serializer.createContextual(SerializerProvider.Impl.createDefault(mapper.getFactory()),
+      new BeanProperty.Std(null,

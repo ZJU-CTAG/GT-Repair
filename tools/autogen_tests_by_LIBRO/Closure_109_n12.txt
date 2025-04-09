@@ -1,0 +1,7 @@
+public void testIssue108() {
+    JsDocInfo info = parseInfo("/** @type {function(new:?)} */ var foo = function() {};");
+    assertEquals(1, info.getType().getTypeVarInfos().size());
+
+    JSTypeExpression typeExpr = info.getType().getTypeVarInfos().get(0).getTypeExpr();
+    assertEquals("function(new:?)", typeExpr.toString());
+}

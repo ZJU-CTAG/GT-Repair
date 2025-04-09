@@ -1,0 +1,26 @@
+public void testWrongWeights() {
+    double[] observations = new double[] { 11.0, 12.0, 13.0, 14.0, 15.0 };
+    double[] weights = new double[] { 1.0, 2.0, 3.0, 4.0, 5.0 };
+    double[] residuals = new double[] { -3.0, -2.0, -1.0, 0.0, 1.0 };
+    MismatchedDataException me = null;
+    try {
+        AbstractLeastSquares.evaluteWeightedResiduals(residuals, weights);
+    } catch (MismatchedDataException e) {
+        me = e;
+    }
+    assertNotNull(me);
+    AbstractLeastSquares ls = new AbstractLeastSquares() {
+
+        public RealMatrix calculateWeightedJacobian(double[] point) {
+            return null;
+        }
+
+        public int getColumnDimension() {
+            return 1;
+        }
+
+        public double[] guessParametersErrors() {
+            return null;
+        }
+
+        public double[][] get

@@ -1,0 +1,10 @@
+public void testIssue257() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should have thrown exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Cannot coerce empty string");
+    }
+}

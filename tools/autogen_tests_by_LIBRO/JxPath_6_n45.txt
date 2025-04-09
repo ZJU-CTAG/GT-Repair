@@ -1,0 +1,20 @@
+public void testEqualityTestForMultiValuedVariables() throws Exception {
+    ExpectationServer server = new ExpectationServer();
+
+    server.expect(once(), request("/foo"))
+        .andExpect(header("multi-valued", equalTo("a")));
+
+    server.expect(once(), request("/foo"))
+        .andExpect(header("multi-valued", equalTo("b")));
+
+    HttpClient client = new HttpClient();
+
+    PostMethod post = new PostMethod("http://localhost:" + server.getPort() + "/foo");
+    post.setRequestHeader("multi-valued", "a");
+    post.setRequestHeader("multi-valued", "b");
+
+    client.executeMethod(post);
+    client.executeMethod(post);
+
+    server.verify();
+}

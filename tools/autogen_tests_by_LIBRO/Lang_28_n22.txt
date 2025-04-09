@@ -1,0 +1,18 @@
+public void testEscapeXML() {
+    // Supplementary characters in UTF-16 are those whose code points are above 0xffff,
+    // that is, require more than 1 Java char to be encoded, as explained here:
+    // http://java.sun.com/developer/technicalArticles/Intl/Supplementary/
+    //
+    // Currently, StringEscapeUtils.escapeXML() isn't aware of this coding scheme and
+    // treats each char as one character, which is not always right.
+    // 
+    // A possible solution in class Entities would be:
+    //
+    // public void escape(Writer writer, String str) throws IOException {   
+    //   int len = str.length();   
+    //   for (int i = 0; i < len; i++) {   
+    //     int code = str.codePointAt![](/jira/images/icons/emoticons/information.png);   
+    //     String entityName = this.entityName(code);
+    //     if (entityName != null) {
+    //         writer.write('&');
+    //         writer

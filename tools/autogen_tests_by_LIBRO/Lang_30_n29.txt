@@ -1,0 +1,11 @@
+public void testContainsAny() {
+    // Valid surrogate pairs
+    assertEquals(false, StringUtils.containsAny("abc", "abc\uD840\uDC00"));
+    assertEquals(false, StringUtils.containsAny("abc\uD840\uDC00", "abc"));
+    assertEquals(true, StringUtils.containsAny("abc\uD840\uDC00", "abc\uD840\uDC00"));
+    assertEquals(true, StringUtils.containsAny("\uD840\uDC00", "\uD840\uDC00"));
+    assertEquals(true, StringUtils.containsAny("abc\uD840\uDC00abc", "abc"));
+    // Broken surrogate pairs
+    assertEquals(true, StringUtils.containsAny("abc\uD840abc", "\uDC00"));
+    assertEquals(true, StringUtils.containsAny("abc\uDC00abc", "\uD840"));
+}

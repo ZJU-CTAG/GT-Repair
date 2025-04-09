@@ -1,0 +1,9 @@
+public void testFormInputImage() {
+    // https://github.com/jhy/jsoup/issues/107
+    Document doc = Jsoup.parse("<form id=f><input type=image name=x></form>");
+    FormElement form = doc.getElementById("f");
+    Map<String, String> data = form.formData();
+    assertEquals(1, data.size());
+    assertTrue(data.containsKey("x"));
+    assertEquals("", data.get("x"));
+}

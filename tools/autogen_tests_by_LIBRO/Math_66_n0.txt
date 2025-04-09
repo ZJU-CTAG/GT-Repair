@@ -1,0 +1,21 @@
+public void testMath865() {
+    try {
+        //Test that the correct exception is thrown when
+        //the lower bound is not smaller than the initial guess
+        final double lowerBound = 0.0;
+        final double upperBound = 10.0;
+        final UnivariateFunction function = new SinFunction();
+        final double relativeThreshold = 1E-10;
+        final double absoluteThreshold = 1E-6;
+        final int maxOrder = 5;
+        final double expected = FastMath.PI;
+        final double initialGuess = 0.0;
+        final UnivariateSolver solver = new BrentOptimizer(
+                relativeThreshold, absoluteThreshold);
+        solver.optimize(maxOrder, function, GoalType.MINIMIZE, lowerBound,
+                upperBound, initialGuess);
+        Assert.fail("Expecting IllegalArgumentException - bad initial guess");
+    } catch (MathIllegalArgumentException ex) {
+        // expected
+    }
+}

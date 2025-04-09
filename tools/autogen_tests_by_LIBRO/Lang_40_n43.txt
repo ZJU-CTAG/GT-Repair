@@ -1,0 +1,20 @@
+public void testCaseInsensitive(){
+    String s="Götz";
+    String t="GOTZ";
+    String u="götz";
+    String v="gotz";
+    assertFalse(s.equalsIgnoreCase(t));
+    assertFalse(v.equalsIgnoreCase(u));
+    assertFalse(s.toUpperCase().equals(t));
+    assertFalse(v.toLowerCase().equals(u));
+    Locale locale=Locale.getDefault();
+    try{
+        Locale.setDefault(new Locale("tr","TR"));
+        assertFalse(s.equalsIgnoreCase(t));
+        assertFalse(v.equalsIgnoreCase(u));
+        assertFalse(s.toUpperCase().equals(t));
+        assertFalse(v.toLowerCase().equals(u));
+    } finally {
+        Locale.setDefault(locale);
+    }
+}

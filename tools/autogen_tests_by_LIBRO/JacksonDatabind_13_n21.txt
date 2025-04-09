@@ -1,0 +1,21 @@
+public void testIdAnnotation() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    SimpleValue value = mapper.readValue("{\"@id\":null}", SimpleValue.class);
+    assertNull(value.getId());
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
+public static class SimpleValue {
+    private Object id;
+
+    @JsonProperty("@id")
+    public Object getId() {
+        return id;
+    }
+
+    public void setId(Object id) {
+        this.id = id;
+    }
+}

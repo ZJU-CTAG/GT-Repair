@@ -1,0 +1,23 @@
+public void testIntId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public Object findFilterId(AnnotatedClass ac) {
+            return "Test";
+        }
+
+        @Override
+        public Object findTypeResolver(MapperConfig<?> config, AnnotatedClass ac, JavaType baseType) {
+            return new MyTypeResolverBuilder();
+        }
+    });
+
+    String json = mapper.writeValueAsString(new MyType());
+    System.out.println(json);
+
+    MyType t = mapper.readValue(json, MyType.class

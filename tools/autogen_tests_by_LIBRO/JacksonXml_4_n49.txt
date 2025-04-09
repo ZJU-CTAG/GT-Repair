@@ -1,0 +1,16 @@
+public void testWithRootName() throws Exception {
+    final ObjectMapper mapper = new XmlMapper();
+    final SimpleModule module = new SimpleModule();
+    module.addSerializer(String.class, new XmlSerializer<String>() {
+        @Override
+        public void serialize(final String value, final JsonGenerator jgen, final SerializerProvider provider)
+            throws IOException, JsonProcessingException {
+            jgen.writeObject(null);
+        }
+    });
+    mapper.registerModule(module);
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    final ObjectWriter writer = mapper.writer().withRootName("foo");
+    final String xml = writer.writeValueAsString(new Foo("bar"));
+    assertEquals("<foo><val>bar</val></foo>", xml);
+}

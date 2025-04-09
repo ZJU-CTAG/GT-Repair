@@ -1,0 +1,19 @@
+public void testIssue111() {
+    String source = "var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};\n";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setOutputCharset("UTF-8");
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setEmitUseStrict(false);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("[test]", source),
+            SourceFile.fromCode("[externs]", ""), options);
+    assertTrue(result.success);
+    assertEquals(

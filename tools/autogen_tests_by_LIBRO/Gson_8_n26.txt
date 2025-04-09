@@ -1,0 +1,13 @@
+public void testLock() {
+    Gson gson = new Gson();
+    String json = "{\"taskQueue\":{\"lock\":{\"sync\":{\"state\":0}}}}";
+    Foo foo = gson.fromJson(json, Foo.class);
+}
+
+private static class Foo {
+    Lock lock = new ReentrantLock();
+    class Lock {
+        Sync sync = new Sync();
+        class Sync {}
+    }
+}

@@ -1,0 +1,33 @@
+public void testIssue() {
+    Gson gson = new Gson();
+    Bar bar1 = new Bar(1);
+    String json = gson.toJson(bar1);
+    Bar bar2 = gson.fromJson("{\"someField\":1}", Bar.class);
+    assertEquals(bar1, bar2);
+}
+
+public static class Foo<T> {
+    private final T someField;
+
+    public Foo(T value) {
+        this.someField = value;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Foo)) {
+            return false;
+        } else {
+            return someField.equals(((Foo)o).someField);
+        }
+    }
+
+    public String toString() {
+        return "Foo(" + someField + ")";
+    }
+}
+
+public static class Bar extends Foo<Integer> {
+    public Bar(Integer i) {
+        super(i);
+    }
+}

@@ -1,0 +1,12 @@
+public void testCID() {
+    String cid = "![](cid:01CE88C6.A7A5D170@example.com)";
+    Whitelist whitelist = Whitelist.basicWithImages();
+    whitelist.addAttributes(":all", "style");
+    whitelist.addTags("img");
+    whitelist.addAttributes("img", "cid");
+
+    Cleaner cleaner = new Cleaner(whitelist);
+    Document doc = cleaner.clean(Jsoup.parse(cid));
+
+    System.out.println(doc.html());
+}

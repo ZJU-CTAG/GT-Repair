@@ -1,0 +1,20 @@
+public void testDefaultDeserialization() throws Exception
+{
+    final String CLASSNAME_ATTR = "class";
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+
+    final String json = "[\"java.lang.ProcessBuilder\", {\"command\":\"calc\"}]";
+    Map<String, Object> result = mapper.readValue(json, Map.class);
+
+    assertNotNull(result);
+    assertEquals(2, result.size());
+    assertEquals("java.lang.ProcessBuilder", result.get(CLASSNAME_ATTR));
+
+    Map<String, Object> value = (Map<String, Object>) result.get("value");
+    assertNotNull(value);
+    assertTrue(value.containsKey("command"));
+    assertEquals("calc", value.get("command"));
+}

@@ -1,0 +1,17 @@
+public void testIssue() {
+    String test = " /*! @preserve Foo License */\n" +
+            "alert(\"foo\");\n";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(false);
+    options.setPrintInputDelimiter(true);
+    options.setOutputCharset("UTF-8");
+    Compiler.setLoggingLevel(Level.INFO);
+    Compiler.setLoggingLevel(Level.WARNING);
+    Compiler.setLoggingLevel(Level.SEVERE);
+    JsSource file = new JsSource(SourceFile.fromFile(new File("in.js")), test);
+    Result result = compiler.compile(ImmutableList.<SourceFile>of(), ImmutableList.of(file), options);
+    assertTrue(result.success);

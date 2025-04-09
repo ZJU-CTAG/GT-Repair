@@ -1,0 +1,9 @@
+public void testIssue() {
+    double[] coefficients = new double[] { 1, 1, 0 };
+    LinearObjectiveFunction f = new LinearObjectiveFunction(coefficients, 0);
+    Collection constraints = new ArrayList();
+    constraints.add(new LinearConstraint(coefficients, Relationship.EQ, 1));
+    SimplexSolver solver = new SimplexSolver();
+    RealPointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE, true);
+    assertTrue(solution.getPoint()[2] > -0.001d);
+}

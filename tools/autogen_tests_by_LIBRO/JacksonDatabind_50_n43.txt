@@ -1,0 +1,18 @@
+public void testIdentityInfoWithCreator() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{\"id\":\"1\", \"entries\":[{\"id\":\"2\", \"value\":\"2\"}], \"list\":[\"2\"]}";
+    String json1 = "{\"id\":\"1\", \"entries\":{\"2\":{\"id\":\"2\", \"value\":\"2\"}}, \"list\":[{\"id\":\"2\"}]}";
+
+    // deserialize with a collection of entries
+    System.out.println("Collection of entries");
+    System.out.println(mapper.readValue(json, Entity.class));
+    System.out.println("=====================");
+
+    // deserialize with a map of entries
+    System.out.println("Map of entries");
+    System.out.println(mapper.readValue(json1, Entity.class));
+    System

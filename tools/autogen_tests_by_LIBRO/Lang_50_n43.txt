@@ -1,0 +1,15 @@
+public void testGetDateInstance() {
+    Locale.setDefault(Locale.ENGLISH);
+    FastDateFormat fdf1 = FastDateFormat.getDateInstance(DateFormat.SHORT);
+    assertEquals("1/1/70", fdf1.format(new Date(1_000_000)));
+
+    Locale.setDefault(Locale.FRANCE);
+    FastDateFormat fdf2 = FastDateFormat.getDateInstance(DateFormat.SHORT);
+    assertEquals("01/01/70", fdf2.format(new Date(1_000_000)));
+
+    // Should be "01/01/70" but is "1/1/70"
+    assertEquals("01/01/70", fdf1.format(new Date(1_000_000)));
+
+    // Should be "1/1/70" but is "01/01/70"
+    assertEquals("1/1/70", fdf2.format(new Date(1_000_000)));
+}

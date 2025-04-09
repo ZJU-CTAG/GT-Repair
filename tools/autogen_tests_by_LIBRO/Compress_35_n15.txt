@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    TarArchiveInputStream tarIn = null;
+    TarArchiveEntry entry = null;
+    try {
+        tarIn = new TarArchiveInputStream(new FileInputStream(
+                "src/test/resources/test-issue-compress107.tar"));
+        entry = tarIn.getNextTarEntry();
+        assertEquals("test1.xml", entry.getName());
+        assertEquals(30L, entry.getSize());
+    } finally {
+        CompressUtils.closeQuietly(tarIn);
+    }
+}

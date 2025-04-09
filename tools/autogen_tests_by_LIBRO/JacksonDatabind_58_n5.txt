@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{}", MyException.class);
+        fail();
+    } catch (Exception e) {
+        assertTrue(e.getCause().getMessage().contains("failed to set access"));
+    }
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+    private static final long serialVersionUID = -3886265276092657223L;
+}

@@ -1,0 +1,21 @@
+public void testUsingNamingStrategy() throws Exception {
+    SimpleModule module = new SimpleModule();
+    module.setNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+    JavaTimeModule javaTimeModule = new JavaTimeModule();
+    mapper.registerModule(javaTimeModule);
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new ParameterNamesModule());
+
+    assertThat(mapper.writeValueAsString(new MyBean(LocalDate.ofEpochDay(0L))))
+        .isEqualTo("{\"my_bean_date\":\"1970-01-01\"}");
+}
+
+public static class MyBean {
+    public final LocalDate date;
+
+    public MyBean(LocalDate date) {
+        this.date = date;
+    }
+}

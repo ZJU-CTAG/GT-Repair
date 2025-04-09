@@ -1,0 +1,16 @@
+public void testIssue() {
+    String source = "window[\"foo\"] = function (obj, modifiesProp) {\n" +
+        "  return (function (saved) {\n" +
+        "    return modifiesProp(obj) + saved;\n" +
+        "  })(obj[\"prop\"]);\n" +
+        "}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    SourceFile input = SourceFile.fromCode("input.js", source);
+    SourceFile externs = SourceFile.fromCode("externs.js", "window;");
+    compiler.compile(externs, input, options);
+    assertEquals("window[\"foo\"]=function(a,b){var c=a.prop;return b(a)+c}", compiler.toSource());
+}

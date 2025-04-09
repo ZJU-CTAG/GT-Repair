@@ -1,0 +1,14 @@
+public void testIssue108() {
+    // given
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String.class);
+    logService.log(any(), captor.capture());
+
+    // when
+    logService.log("", "a", "b", "c");
+
+    // then
+    assertEquals(3, captor.getValue().length);
+    assertEquals("a", captor.getValue()[0]);
+    assertEquals("b", captor.getValue()[1]);
+    assertEquals("c", captor.getValue()[2]);
+}

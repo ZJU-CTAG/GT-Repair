@@ -1,0 +1,17 @@
+public void testIssue142() {
+    final AtomicInteger counter = new AtomicInteger();
+    final DateTime dt = new DateTime(2000, DateTimeConstants.JANUARY, 1, 0, 0, 0, 0);
+    final Interval interval = new Interval(dt, dt.plusHours(1));
+    final Chronology chrono = new MockChronology() {
+        @Override
+        public long add(long instant, int value, DateTimeField field) {
+            counter.incrementAndGet();
+            return super.add(instant, value, field);
+        }
+    };
+    final Period period = new Period(0, 0, 0, 2);
+    interval.toPeriod(period);
+    assertEquals(2, counter.get());
+    interval.toPeriod(period, chrono);
+    assertEquals(4, counter.get());
+}

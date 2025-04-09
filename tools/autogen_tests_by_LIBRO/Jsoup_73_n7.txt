@@ -1,0 +1,15 @@
+public void testNsInherit() throws Exception {
+    String html = "<html><body><span>Foo</span></body></html>";
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    Element body = doc.body();
+    Element span = body.child(0);
+    assertNull(span.namespace());
+
+    span.attr("xml:lang", "en");
+    Element next = span.nextElementSibling();
+    assertEquals("en", next.attr("lang"));
+
+    // should not have inherited the xml namespace
+    assertNull(next.namespace());
+    assertNull(next.attr("xml:lang"));
+}

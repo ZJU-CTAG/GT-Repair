@@ -1,0 +1,14 @@
+public void test_issue_118() {
+    ResponseEntity<Void> response = getRestTemplate().exchange(
+            "http://nonexisting.server",
+            HttpMethod.GET,
+            new HttpEntity<>(null, null),
+            Void.class
+    );
+}
+
+public RestTemplate getRestTemplate() {
+    SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+    requestFactory.setConnectTimeout(1);
+    return new RestTemplate(requestFactory);
+}

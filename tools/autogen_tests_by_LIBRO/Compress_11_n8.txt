@@ -1,0 +1,23 @@
+public void testShortTextFile() throws Exception {
+    String textFileContent = "This is a text file";
+    String[] fileNames = { "short.txt" };
+    String[] extensions = { "txt" };
+    for (String extension : extensions) {
+        for (String fileName : fileNames) {
+            File file = File.createTempFile(fileName, extension);
+            file.deleteOnExit();
+            FileUtils.writeStringToFile(file, textFileContent);
+            InputStream input = new FileInputStream(file);
+
+            try {
+                ArchiveStreamFactory factory = new ArchiveStreamFactory();
+                ArchiveInputStream in = factory.createArchiveInputStream(input);
+                fail("Expected " + IOException.class.getName());
+            } catch (ArchiveException e) {
+                // expected
+            } finally {
+                IOUtils.closeQuietly(input);
+            }
+        }
+    }
+}

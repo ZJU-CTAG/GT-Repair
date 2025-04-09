@@ -1,0 +1,17 @@
+public void testWeekyearWithWhitespaceParsing() {
+    String pattern = "yyyy ww";
+    String text = "2011  01";
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    DateTimeParser fdp = DateTimeFormat.forPattern(pattern).getParser();
+    Calendar cal = Calendar.getInstance();
+    Date date = null;
+    try {
+        date = sdf.parse(text);
+        cal.setTime(date);
+    } catch (ParseException e) {
+        fail("This should parse ok");
+    }
+    DateTime dt = fdp.parseDateTime(text);
+    assertEquals(cal.get(Calendar.YEAR), dt.getYear());
+    assertEquals(cal.get(Calendar.WEEK_OF_YEAR), dt.getWeekOfWeekyear());
+}

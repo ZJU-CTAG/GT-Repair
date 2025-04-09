@@ -1,0 +1,14 @@
+public void testBase64InputStream() throws Exception {
+    Base64.Decoder decoder = Base64.getDecoder();
+    String data = "ABC";
+    ByteArrayInputStream in = new ByteArrayInputStream(data.getBytes());
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    Base64.Encoder encoder = Base64.getEncoder();
+    encoder.encode(in, out);
+    String encoded = out.toString();
+    in = new ByteArrayInputStream(encoded.getBytes());
+    out = new ByteArrayOutputStream();
+    decoder.decode(in, out);
+    String decoded = out.toString();
+    assertEquals(data, decoded);
+}

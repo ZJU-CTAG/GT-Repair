@@ -1,0 +1,16 @@
+public void testZipArchiveInputStream() throws Exception {
+    File tmpFile = File.createTempFile("commons-compress", ".zip");
+    tmpFile.deleteOnExit();
+    try (ZipArchiveOutputStream out = new ZipArchiveOutputStream(tmpFile)) {
+        out.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+        out.write("Hello, World".getBytes("UTF-8"));
+        out.closeArchiveEntry();
+        out.putArchiveEntry(new ZipArchiveEntry("bar.txt"));
+        out.write("Hello, World".getBytes("UTF-8"));
+        out.closeArchiveEntry();
+        // The following entry is invalid, because it doesn't have a name
+        out.putArchiveEntry(new ZipArchiveEntry(""));
+        out.write("Hello, World".getBytes("UTF-8"));
+        out.closeArchiveEntry();
+        out.putArchiveEntry(new ZipArchiveEntry("baz.txt"));
+        out.write("Hello, World".getBytes("UTF-8"));

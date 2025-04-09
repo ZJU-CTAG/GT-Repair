@@ -1,0 +1,18 @@
+public void testEventStateReset() {
+    TestProblem1 pb = new TestProblem1();
+    double minStep = 0;
+    double maxStep = pb.getFinalTime() - pb.getInitialTime();
+    double scalAbsoluteTolerance = 1.0e-8;
+    double scalRelativeTolerance = 0.01 * scalAbsoluteTolerance;
+
+    FirstOrderIntegrator integ = new DormandPrince853Integrator(minStep, maxStep,
+                                                                scalAbsoluteTolerance,
+                                                                scalRelativeTolerance);
+    integ.addEventHandler(pb.getEventsHandlers()[0].reset(integ),
+                          Double.POSITIVE_INFINITY,
+                          1.0e-8 * maxStep, 1000);
+    integ.addEventHandler(pb.getEventsHandlers()[1].reset(integ),
+                          Double.POSITIVE_INFINITY,
+                          1.0e-8 * maxStep, 1000);
+    double stopTime = integ.integrate(pb,
+                                      pb.getInitialTime(), pb.

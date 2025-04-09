@@ -1,0 +1,20 @@
+public void testIssue108() {
+    double minimum = Double.NaN;
+    for (int seed = 0; seed < 100; ++seed) {
+        final UnivariateRealFunction f = new UnivariateRealFunction() {
+            RandomGenerator rng = new Well19937c(seed);
+            @Override
+            public double value(double x) {
+                return FastMath.pow(x, 2) + rng.nextDouble();
+            }
+        };
+        final double actual = new BrentOptimizer(1e-10, 1e-14).optimize(new MaxEval(1000),
+                                                                         new UnivariateObjectiveFunction(f),
+                                                                         GoalType.MINIMIZE,
+                                                                         new SearchInterval(-100, 100)).getPoint();
+        if (seed == 0) {
+            minimum = actual;
+        }
+        assertEquals(0.0, f.value(actual), 1e-14);
+        assertEquals(0.0, f.value(minimum), 1e-14);
+        assertTrue(FastMath.abs(actual) <= FastMath.abs

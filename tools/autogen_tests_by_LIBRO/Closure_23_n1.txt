@@ -1,0 +1,9 @@
+public void testFoldArrayAccess() {
+    final Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    final Node parse = JsTestBase.parse("console.log([console.log('hello, '), 'world!'][1]);");
+    final Node script = parse.getFirstChild();
+    final Node expr = script.getFirstChild();
+    new PeepholeFoldConstants(compiler).tryFoldArrayAccess(expr.getFirstChild());
+    assertEquals("console.log(console.log('hello,'),'world!');", new CodePrinter.Builder(parse).build());
+}

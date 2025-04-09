@@ -1,0 +1,23 @@
+public void testIssue983() {
+    final CategoryPlot plot = new CategoryPlot();
+    final CategoryDataset dataset = new DefaultCategoryDataset();
+    plot.setDataset(dataset);
+    final AbstractCategoryItemRenderer renderer = new AbstractCategoryItemRenderer() {
+        private static final long serialVersionUID = 1L;
+        @Override
+        public LegendItemCollection getLegendItems() {
+            final LegendItemCollection result = new LegendItemCollection();
+            if (this.plot == null) {
+                return result;
+            }
+            final int index = this.plot.getIndexOf(this);
+            final CategoryDataset dataset = this.plot.getDataset(index);
+            if (dataset != null) {
+                return result;
+            }
+            final int seriesCount = dataset.getRowCount();
+            return result;
+        }
+    };
+    plot.setRenderer(renderer);
+}

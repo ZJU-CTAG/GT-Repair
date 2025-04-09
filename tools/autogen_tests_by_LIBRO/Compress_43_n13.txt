@@ -1,0 +1,16 @@
+public void testLocalVersionNeededToExtract() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(baos)) {
+        ZipArchiveEntry zae = new ZipArchiveEntry("entry");
+        zos.putArchiveEntry(zae);
+        zos.write("contents".getBytes("UTF-8"));
+        zos.closeArchiveEntry();
+    }
+
+    byte[] zip = baos.toByteArray();
+    // From <https://en.wikipedia.org/wiki/Zip_\(file\_format\):
+    // 4.4.0: version needed to extract
+    int localVersionNeededToExtract = (zip[4] & 0xff) | ((zip[5] & 0xff) << 8);
+    // 4.4.2: version needed to extract
+    int centralVersionNeededToExtract = (zip[8] & 0xff) | ((zip[9] & 0xff) << 8);
+    // Assertions are reversed because values are wrong.

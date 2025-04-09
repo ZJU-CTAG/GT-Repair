@@ -1,0 +1,14 @@
+public void testTypeFactory() throws Exception
+{
+    // first, with null context
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType t = TypeFactory.defaultInstance().constructType(String.class, null);
+    assertNotNull(t);
+    assertEquals(String.class, t.getRawClass());
+
+    // and then with non-null
+    t = TypeFactory.defaultInstance().constructType(String.class, mapper.getTypeFactory().constructType(String.class));
+    assertNotNull(t);
+    assertEquals(String.class, t.getRawClass());
+
+}

@@ -1,0 +1,9 @@
+public void testStopAtNonOption() throws Exception {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    options.addOption("b", false, "toggle -b");
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-azb"}, true);
+    assertTrue(cmd.hasOption("a"));
+    assertFalse(cmd.hasOption("b"));
+}

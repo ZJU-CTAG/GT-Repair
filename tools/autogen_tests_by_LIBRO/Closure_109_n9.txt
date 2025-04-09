@@ -1,0 +1,13 @@
+public void testIssue108() {
+    VariableTypeInference vti = new VariableTypeInference(new ParserConfig());
+    vti.inferTypesFromComments("/**\n" +
+            " * @type {function(new:?)}\n" +
+            " */\n" +
+            "var foo = function() {};\n" +
+            "\n" +
+            "/**\n" +
+            " * @type {function(new:*)}\n" +
+            " */\n" +
+            "var bar = function() {};");
+    assertEquals(2, vti.getErrors().size());
+}

@@ -1,0 +1,25 @@
+public void testPValues() {
+    int numTreatments = 20;
+    int numSubjects = 10;
+    double[] treatments = new double[numTreatments];
+    double[][] results = new double[numTreatments][numSubjects];
+
+    for (int i = 0; i < numTreatments; i++) {
+        treatments[i] = i + 1;
+    }
+    TDistribution tDistribution = new TDistributionImpl(numSubjects - 2);
+
+    Random random = new Random(0xfeedface);
+
+    for (int i = 0; i < numTreatments; i++) {
+        for (int j = 0; j < numSubjects; j++) {
+            results[i][j] = random.nextDouble();
+        }
+    }
+
+    PearsonsCorrelation pearsonsCorrelation = new PearsonsCorrelation();
+    for (double r : pearsonsCorrelation.getCorrelationPValues(treatments, results)) {
+        System.out.printf("%.16e%n", r);
+    }
+    System.out.println();
+

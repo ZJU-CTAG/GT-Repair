@@ -1,0 +1,10 @@
+public void testArrayIndex() {
+    String weekyear = "2014";
+    String s = "2014-W01-1";
+    DateTimeFormatter formatter = ISODateTimeFormat.weekyearWeekDay();
+    DateTimeParser[] parsers = { formatter.getParser() };
+    DateTimeParser parser = new DateTimeFormatterBuilder().append(null, parsers).toParser();
+    DateTimeParserBucket bucket = new DateTimeParserBucket(1970, 1, 1, null, null);
+    int newPos = parser.parseInto(bucket, s, 0);
+    assertEquals(s.length(), newPos);
+}

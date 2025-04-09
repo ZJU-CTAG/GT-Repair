@@ -1,0 +1,16 @@
+public void testCharSequenceMapKey() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    mapper.enableDefaultTyping();
+
+    final Map<CharSequence, Object> map = new LinkedHashMap<>();
+    map.put("a", "b");
+    map.put("c", Integer.valueOf(123));
+    map.put("d", new TreeMap<>(Collections.singletonMap("e", "f")));
+    final String json = mapper.writeValueAsString(map);
+    System.out.println(json);
+    final Map<CharSequence, Object> result = mapper.readValue(json,
+        new TypeReference<LinkedHashMap<CharSequence, Object>>() {
+        });
+    assertEquals(map, result);
+}

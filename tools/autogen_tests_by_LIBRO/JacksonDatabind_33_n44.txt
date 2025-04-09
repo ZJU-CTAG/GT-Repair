@@ -1,0 +1,32 @@
+public void testIssue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String fieldName = "c";
+    final String fieldValue = "d";
+    final String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(new WithJsonUnwrapped(fieldValue));
+    assertThat(json).contains(fieldName);
+    assertThat(json).doesNotContain(fieldValue);
+    assertThat(json).contains(fieldValue);
+}
+
+static class WithJsonUnwrapped {
+    @JsonUnwrapped
+    private final WithJsonProperty field = new WithJsonProperty(FIELD_VALUE);
+
+    public WithJsonUnwrapped(final String fieldValue) {
+        field.setValue(fieldValue);
+    }
+}
+
+static class WithJsonProperty {
+    @JsonProperty
+    private String value;
+
+    public WithJsonProperty(final String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(final String

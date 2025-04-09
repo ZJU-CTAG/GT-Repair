@@ -1,0 +1,20 @@
+public void testIssue() {
+    String str = "var getNum = function() { return 5; };";
+    String str2 = "alert(getNum());";
+    assertEquals("'use strict';alert(5);", compile(str, str2));
+}
+
+private String compile(String str, String str2) {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROVIDE, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_REQUIRE, CheckLevel.WARNING);
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("test1.js", str)),
+            ImmutableList.of(SourceFile.fromCode("test2.js", str2)),
+            options);
+    return compiler.toSource();
+}

@@ -1,0 +1,13 @@
+public void testVarargs() {
+    final Foo foo = mock(Foo.class);
+    final ArgumentCaptor<Bar[]> captor = ArgumentCaptor.forClass(Bar[].class);
+    foo.bar(new Bar());
+    verify(foo).bar(captor.capture());
+    assertEquals(1, captor.getValue().length);
+    }
+
+interface Foo {
+    void bar(Bar... bar);
+}
+
+class Bar {}

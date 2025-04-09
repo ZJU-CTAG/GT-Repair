@@ -1,0 +1,26 @@
+public void testBufferReuseWithSameSize() throws Exception
+{
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    JsonGenerator generator = new JsonFactory().createGenerator(stream);
+
+    generator.writeStartArray();
+    generator.writeString("some string");
+    generator.flush();
+
+    IOContext context = generator.getOutputContext();
+    generator.close();
+    generator = new JsonFactory().createGenerator(stream);
+    context = generator.getOutputContext();
+
+    generator.writeEndArray();
+    generator.flush();
+
+    context = generator.getOutputContext();
+    generator.close();
+    generator = new JsonFactory().createGenerator(stream);
+    context = generator.getOutputContext();
+
+    generator.close();
+
+    stream.close();
+}

@@ -1,0 +1,12 @@
+public void testIssue114() {
+
+    Document doc = Jsoup.parse("<table><tr><td>Cell1</td><td>Cell2</td></tr><tr><td>Cell3</td><td>Cell4</td></tr><tr><td>Cell5</td><td>Cell6</td></tr></table>");
+    Element row1 = doc.select("tr").get(1);
+    Element row2 = doc.select("tr").get(2);
+
+    assertTrue(row1.equals(row2));
+    assertTrue(row1.elementSiblingIndex() == row2.elementSiblingIndex());
+    assertTrue(row1.parent().children().get(row1.elementSiblingIndex()).equals(row1));
+    assertTrue(row2.parent().children().get(row2.elementSiblingIndex()).equals(row2));
+    assertFalse(row1.parent().children().get(row1.elementSiblingIndex()).equals(row2));
+    assertFalse(row2.parent().children().get(row2.elementSiblingIndex()).equals

@@ -1,0 +1,39 @@
+public void testMockitoJunitRule() {
+    class TestClass {
+        @Mock
+        private Dependency dependency;
+
+        @InjectMocks
+        private SUT sut;
+
+        @Test
+        public void testInjection() {
+            assertNotNull(sut);
+            assertNotNull(sut.getDependency());
+        }
+
+        public class SUT {
+            private final Dependency dependency;
+
+            public SUT(Dependency dependency) {
+                this.dependency = dependency;
+            }
+
+            public Dependency getDependency() {
+                return dependency;
+            }
+        }
+
+        public interface Dependency {
+        }
+    }
+
+    TestClass testClass = new TestClass();
+    MockitoRule rule = new MockitoRule(testClass);
+    rule.apply(new Statement() {
+        @Override
+        public void evaluate() throws Throwable {
+            TestClass.this.testInjection();
+        }
+    }, Description.EMPTY).evaluate();
+}

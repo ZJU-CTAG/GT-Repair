@@ -1,0 +1,13 @@
+public void testToXmlGenerator_writeBinary() throws IOException {
+    final DateTimeFormatter FORMATTER = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC);
+    final DateTime dt = new DateTime(2012, 11, 10, 16, 18, 19, 342, DateTimeZone.forID("+02:00"));
+
+    final StringWriter stringWriter = new StringWriter();
+    final ToXmlGenerator generator = new ToXmlGenerator(stringWriter, JsonEncoding.UTF8, true);
+    generator.writeStartArray();
+    generator.writeStartObject();
+    generator.writeStringField("@timestamp", FORMATTER.print(dt));
+    generator.writeEndObject();
+    generator.writeEndArray();
+    generator.close();
+}

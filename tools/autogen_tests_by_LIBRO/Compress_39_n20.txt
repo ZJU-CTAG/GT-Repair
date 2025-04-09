@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    try {
+        File tempFile = File.createTempFile("temp", ".zip");
+
+        ZipOutputStream zos = new ZipOutputStream(
+                new BufferedOutputStream(new FileOutputStream(tempFile)));
+        zos.putNextEntry(new ZipEntry("test"));
+        zos.write(new byte[0]);
+        zos.close();
+        zos.write(new byte[0]);
+        fail("Should have thrown an IOException");
+    } catch (IOException ioe) {
+        // Expected
+        assertTrue(ioe.getMessage().length() < 1000);
+    }
+}

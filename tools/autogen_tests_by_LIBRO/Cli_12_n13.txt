@@ -1,0 +1,18 @@
+public void testOptionInterrupt() {
+    Options cmdLineOpts = new Options();
+    final String OPTION_TARGET = "t";
+    final String OPTION_TARGET_LONG = "target";
+    Option generateTarget = new Option(OPTION_TARGET, OPTION_TARGET_LONG, true, "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+
+    String[] args = new String[] { "-target", "foobar.com" };
+    PosixParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    try {
+        parsedLine = parser.parse(cmdLineOpts, args);
+    } catch (ParseException pe) {
+        fail("Should not throw exception");
+    }
+    assertTrue(parsedLine.hasOption(OPTION_TARGET));
+    assertEquals("foobar.com", parsedLine.getOptionValue(OPTION_TARGET));
+}

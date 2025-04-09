@@ -1,0 +1,8 @@
+public void testTraversingParser() throws Exception {
+    final Base64Variant variant = Base64Variants.MIME_NO_LINEFEEDS;
+    final BinaryNode bn = new BinaryNode(variant.encode("Foobar".getBytes()));
+    final ObjectMapper m = new ObjectMapper();
+    final JsonParser jp = new TreeTraversingParser(bn, m);
+    assertEquals(bn.asToken(), jp.nextToken());
+    assertEquals(bn.getBinaryValue(), jp.getBinaryValue(variant));
+}

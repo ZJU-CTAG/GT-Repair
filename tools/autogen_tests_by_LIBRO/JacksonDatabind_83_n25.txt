@@ -1,0 +1,27 @@
+public void testIssueFromStringDeserializer() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    // 02-Jan-2018, tatu: Need to use custom module for "full" testing
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context)
+        {
+            super.setupModule(context);
+            context.addDeserializers(new Deserializers.Base() {
+                @Override
+                public JsonDeserializer<?> findBeanDeserializer(final JavaType type,
+                        DeserializationConfig config, BeanDescription beanDesc)
+                {
+                    @SuppressWarnings("unchecked")
+                    final Class<? extends Object> raw = (Class<? extends Object>) type.getRawClass();
+                    if (raw == Foo.class) {
+                        return new FooDeserializer();
+                    }
+                    return super.findBeanDeserializer(type, config, beanDesc);
+                }
+            });
+        }
+    });
+    String json = aposToQuotes("{'bar':'b'}");
+    Foo

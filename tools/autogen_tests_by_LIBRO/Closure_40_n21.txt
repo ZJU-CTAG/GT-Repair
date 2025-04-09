@@ -1,0 +1,18 @@
+public void testSmartNameRemoval() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.OFF);
+    options.setSmartNameRemoval(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            SourceFile.fromCode("externs.js",
+                    "var goog = {};"
+                            + "goog.inherits = function(x, y) {};"),
+            SourceFile.fromCode("input.js",
+                    "var ns = {};"
+                            + "/** @constructor */ ns.PageSelectionModel = function(){};"
+                           

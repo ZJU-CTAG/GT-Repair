@@ -1,0 +1,20 @@
+public void testGammaDistributionClone() {
+    GammaDistribution distribution = new GammaDistribution(5, 2);
+    GammaDistribution clone =  serializeAndDeserialize(distribution);
+    assertEquals(distribution.sample(), clone.sample(), 0.0001);
+}
+
+public <T> T serializeAndDeserialize(T object) {
+    try {
+        String filename = "tmp";
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
+        out.writeObject(object);
+        out.close();
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
+        Object result = in.readObject();
+        in.close();
+        return (T) result;
+    } catch (Exception e) {
+        throw new IllegalStateException("Unable to serialize/deserialize object", e);
+    }
+}

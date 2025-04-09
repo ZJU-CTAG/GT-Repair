@@ -1,0 +1,15 @@
+public void testPosixParserStopAtNonOption() {
+    Options options = new Options();
+    options.addOption("a", false, "first option");
+    options.addOption("b", false, "second option");
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cmd = parser.parse(options, new String[]{"-azb"}, true);
+        assertTrue(cmd.hasOption("a"));
+        assertTrue(!cmd.hasOption("b"));
+        assertEquals(1, cmd.getArgList().size());
+        assertEquals("zb", (String) cmd.getArgList().get(0));
+    } catch (ParseException e) {
+        fail("unexpected exception");
+    }
+}

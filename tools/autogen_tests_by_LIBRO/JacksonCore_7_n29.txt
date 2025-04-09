@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonFactory jsonFactory = mapper.getJsonFactory();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(out, JsonEncoding.UTF8);
+    jsonGenerator.writeStartObject();
+
+    // This is invalid, but doesn't throw an exception
+    jsonGenerator.writeString("name");
+
+    jsonGenerator.close();
+    assertEquals("{\"name\":\"name\"}", out.toString("UTF8"));
+}

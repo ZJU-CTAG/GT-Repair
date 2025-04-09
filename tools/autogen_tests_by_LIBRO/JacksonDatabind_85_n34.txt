@@ -1,0 +1,28 @@
+public void testSerializeWithFormat() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(DateTime.class, new DateTimeSerializer());
+    module.addDeserializer(DateTime.class, new DateTimeDeserializer());
+    mapper.registerModule(module);
+    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+    String json = mapper.writeValueAsString(new Bean());
+    Bean bean = mapper.readValue(json, Bean.class);
+    assertEquals(new Bean(), bean);
+}
+
+public static class Bean {
+
+    @JsonFormat(shape = Shape.STRING)
+    private DateTime dt = new DateTime();
+
+    public DateTime getDt() {
+        return dt;
+    }
+
+    public void setDt(DateTime dt) {
+        this.dt = dt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if

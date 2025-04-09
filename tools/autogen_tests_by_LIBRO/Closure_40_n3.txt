@@ -1,0 +1,15 @@
+public void testBug() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("externs", ""),
+            SourceFile.fromCode("input",
+                    "/** @constructor */ var ns = {};\n" +
+                    "/** @constructor */ ns.PageSelectionModel = function(){};\n" +
+                    "/** @constructor */ ns.PageSelectionModel.FooEvent = function() {};\n" +
+                    "/** @constructor */ ns.PageSelectionModel.SelectEvent = function() {};\n" +
+                    "goog.inherits(ns.PageSelectionModel.ChangeEvent," +
+                        " ns.PageSelectionModel.FooEvent);\n"),
+            new CompilerOptions());
+    assertTrue(result.success);
+}

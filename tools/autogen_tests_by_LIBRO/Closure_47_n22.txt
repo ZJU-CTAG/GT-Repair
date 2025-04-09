@@ -1,0 +1,19 @@
+public void testSourceMapLineNumber() throws Exception {
+    String code = "function test(arg) { return arg; }";
+    String source = "function test(arg) {\nreturn arg;\n}";
+    String sourceMap = SourceMap.generate(code, source, "test.js", "test.js");
+
+    SourceMapConsumerV3 consumer = new SourceMapConsumerV3();
+    consumer.parse(sourceMap);
+
+    // generated line numbers are zero-based
+    assertEquals(0, consumer.getMappingForLine(0, 0).originalLine);
+    assertEquals(1, consumer.getMappingForLine(1, 0).originalLine);
+    assertEquals(1, consumer.getMappingForLine(2, 0).originalLine);
+
+    // generated column numbers are zero-based
+    assertEquals(0, consumer.getMappingForLine(2, 0).originalColumn);
+    assertEquals(1, consumer.getMappingForLine(2, 1).originalColumn);
+
+    // original line numbers are one-based
+    assertEquals(1, consumer.getMappingFor

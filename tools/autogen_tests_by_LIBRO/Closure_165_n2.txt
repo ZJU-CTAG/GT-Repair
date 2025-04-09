@@ -1,0 +1,19 @@
+public void testRecordTypes() {
+    String js = LINE_JOINER.join(
+        "/** @typedef {{name: string, id: number}} */",
+        "var RecordType1;",
+        "/**",
+        " * @param {RecordType1} rec",
+        " */",
+        "var func = function(rec) {",
+        " alert(rec.name2);",
+        "};",
+        "func({name: 'jim', id: 0});");
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("test", js)}, options);
+    assertThat(compiler.getErrors()).isEmpty();
+}

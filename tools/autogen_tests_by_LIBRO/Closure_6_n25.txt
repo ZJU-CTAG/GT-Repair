@@ -1,0 +1,8 @@
+public void testThisTypeChecking() {
+    JsDoc jsDoc = JsDoc.parse("/** @constructor */ function F() {}\n" +
+                              "F.prototype.bar = function() { this.baz(); };\n" +
+                              "F.prototype.baz = function() { };\n" +
+                              "/** @constructor */ function G() {}\n" +
+                              "G.prototype.bar = F.prototype.bar;\n");
+    assertEquals(5, jsDoc.getAnnotations().size());  // there should be an error
+}

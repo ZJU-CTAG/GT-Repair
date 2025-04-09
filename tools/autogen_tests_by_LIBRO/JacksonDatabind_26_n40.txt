@@ -1,0 +1,11 @@
+public void testObjectReaderSerializable() {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(reader);
+    oos.close();
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    ObjectReader reader2 = (ObjectReader) ois.readObject();
+    assertEquals(reader, reader2);
+}

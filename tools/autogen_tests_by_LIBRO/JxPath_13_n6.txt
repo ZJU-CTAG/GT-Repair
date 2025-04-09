@@ -1,0 +1,21 @@
+public void testIssue() throws JXPathException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder;
+    try {
+        builder = factory.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+        throw new JXPathException(e);
+    }
+    Document doc = builder.newDocument();
+    Element e = doc.createElementNS(
+            "http://www.example.com/A", "ElementA");
+    e.setAttributeNS(
+            "http://www.example.com/A", "A:myAttr", "Mytype");
+    Element e2 = doc.createElementNS(
+            "http://www.example.com/B", "ElementB");
+    e2.setTextContent("MY VALUE");
+    e.appendChild(e2);
+    DOMNodePointer pointer = new DOMNodePointer(e);
+    pointer.registerNamespace("A", "http://www.example.com/A");
+    pointer.registerNamespace("B", "http://www.example.com/B");
+    assertEquals("Mytype

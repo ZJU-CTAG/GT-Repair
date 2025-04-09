@@ -1,0 +1,16 @@
+public void testNaNBug() {
+    double[] lowerBounds = {-1000000000000D,-1000000000000D};
+    double[] upperBounds = {1000000000000D,1000000000000D};
+    SimpleBounds bounds = new SimpleBounds(lowerBounds,upperBounds);
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.optimize(new MaxEval(2000),new ObjectiveFunction(new DummyFitnessFunction()),GoalType.MAXIMIZE,new InitialGuess(new double[]{0,0}),bounds);
+}
+
+private static class DummyFitnessFunction implements MultivariateFunction {
+    public double value(double[] x) {
+        if (Double.isNaN(x[0]) || Double.isNaN(x[1])) {
+            throw new RuntimeException("NaN parameter");
+        }
+        return 0;
+    }
+}

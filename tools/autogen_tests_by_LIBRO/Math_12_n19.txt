@@ -1,0 +1,14 @@
+public void testCloning() throws IOException, ClassNotFoundException {
+    GammaDistribution d = new GammaDistribution(2.0, 3.0);
+    // Serialize / deserialize
+    byte[] byteArray = SerializationUtils.serialize(d);
+    GammaDistribution d2 = SerializationUtils.deserialize(byteArray);
+    // Serialize / deserialize
+    byte[] byteArray2 = SerializationUtils.serialize(d2);
+    GammaDistribution d3 = SerializationUtils.deserialize(byteArray2);
+    System.out.println(Arrays.toString(d.sample(100)));
+    System.out.println(Arrays.toString(d2.sample(100)));
+    System.out.println(Arrays.toString(d3.sample(100)));
+    assertArrayEquals(d.sample(100), d2.sample(100), 0);
+    assertArrayEquals(d.sample(100), d3.sample(100), 0);
+}

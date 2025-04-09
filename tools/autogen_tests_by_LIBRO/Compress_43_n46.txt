@@ -1,0 +1,18 @@
+public void testZipVersionNeededToExtract() throws Exception {
+    File f = File.createTempFile("commons-compress", ".zip");
+    ZipFile zip = null;
+    try {
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(f);
+        ZipArchiveEntry ze = new ZipArchiveEntry("name");
+        zos.putArchiveEntry(ze);
+        zos.closeArchiveEntry();
+        zos.close();
+        zip = new ZipFile(f);
+        ZipArchiveEntry ze2 = zip.getEntry("name");
+        assertEquals(ze2.getMethod(), ze.getMethod());
+    } finally {
+        if (zip != null) {
+            zip.close();
+        }
+    }
+}

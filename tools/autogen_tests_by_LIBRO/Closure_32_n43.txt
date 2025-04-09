@@ -1,0 +1,21 @@
+public void testPreserve() throws Exception {
+    String js = "/**\n" +
+            " * @preserve\n" +
+            " *\n" +
+            " * This\n" +
+            " * was\n" +
+            " * ASCII\n" +
+            " * Art\n" +
+            " */";
+    String expected = "/**\n" +
+            "This\n" +
+            "was\n" +
+            "ASCII\n" +
+            "Art\n" +
+            "*/";
+
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(js), null);
+    StringWriter out = new StringWriter();
+    compressor.compress(out, -1, true, false, false, false);
+    assertEquals(expected, out.toString());
+}

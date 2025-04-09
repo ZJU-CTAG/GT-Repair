@@ -1,0 +1,19 @@
+public void testIssue128() {
+    String js = "/**\n"
+            + " * @interface\n"
+            + " */\n"
+            + "var OtherType = function() {}\n"
+            + "/**\n"
+            + " * @implements {MyType}\n"
+            + " * @constructor\n"
+            + " */\n"
+            + "var MyType = function() {}\n"
+            + "/**\n"
+            + " * @type {MyType}\n"
+            + " */\n"
+            + "var x = /** @type {!OtherType} */ (new Object());";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(SourceFile.fromCode("[externs]", ""),
+            SourceFile.fromCode("[testcode]", js));
+}

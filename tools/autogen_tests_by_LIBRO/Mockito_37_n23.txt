@@ -1,0 +1,16 @@
+public void testMockito() {
+    new MockitoRule().test(() -> {
+        final A a = mock(A.class);
+        when(a.get()).thenReturn(1);
+        assertEquals(1, a.get());
+    });
+}
+
+public class MockitoRule extends ExternalResource {
+    @Override
+    protected void before() throws Throwable {
+        MockitoAnnotations.initMocks(testInstance);
+    }
+
+    private final Object testInstance = new Object();
+}

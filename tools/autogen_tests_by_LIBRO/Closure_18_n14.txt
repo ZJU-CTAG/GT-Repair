@@ -1,0 +1,26 @@
+public void testDependencySortingWithClosurePassFalse() {
+    String baseDir = "test/testdata/dependencySorting/";
+    String[] files = new String[]{
+            "file1.js",
+            "file2.js",
+            "file3.js",
+            "file4.js"
+    };
+    String outputFilename = "file-min.js";
+    String outputFile = "test/testdata/dependencySorting/file-min.js";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setCheckDependencies(true);
+    compilerOptions.setClosurePass(false);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+
+    compiler.initOptions(compilerOptions);
+
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+
+   

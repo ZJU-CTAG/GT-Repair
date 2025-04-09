@@ -1,0 +1,12 @@
+public void testIssue106() throws Exception {
+    String[] header = new String[] {"a", "b", "c"};
+    String[] record = new String[] {"あ", "い", "う"};
+    StringWriter sw = new StringWriter();
+    CSVFormat format = CSVFormat.EXCEL;
+    try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+        printer.printRecord(header);
+        printer.printRecord(record);
+    }
+    String expected = "a,b,c\r\n\"あ\",い,う\r\n";
+    assertEquals(expected, sw.toString());
+}

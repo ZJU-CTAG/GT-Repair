@@ -1,0 +1,14 @@
+public void testIssue106() {
+    final String expected = "あ,い,う";
+    final String[] data = new String[] {"あ", "い", "う"};
+    final StringWriter writer = new StringWriter();
+    try {
+        final CSVPrinter printer = new CSVPrinter(writer, CSVFormat.EXCEL);
+        printer.printRecord(data);
+        printer.close();
+        assertEquals(expected, writer.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+        fail("Exception thrown: " + e.getMessage());
+    }
+}

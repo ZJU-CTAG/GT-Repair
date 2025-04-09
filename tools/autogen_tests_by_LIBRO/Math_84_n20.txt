@@ -1,0 +1,12 @@
+public void testMultiDirectionalCorrectStart() throws Exception {
+    SimplexSolver solver = new SimplexSolver();
+
+    final double[] array = new double[1];
+    solver.addConstraint(new LinearConstraint(new double[]{1.0}, Relationship.LEQ, 10.0));
+    solver.addConstraint(new LinearConstraint(new double[]{1.0}, Relationship.GEQ, 5.0));
+    solver.addConstraint(new LinearConstraint(new double[]{1.0}, Relationship.EQ, 7.5));
+    solver.addConstraint(new LinearConstraint(new double[]{1.0}, Relationship.EQ, 7.5));
+    solver.addVariable(null, 1.0, 7.5);
+
+    RealPointValuePair solution = solver.optimize(OptimizationData.MAXIMIZE, new ObjectiveFunction(array), GoalType.MAXIMIZE, new NonNegativeConstraint(true), new LinearConstraintSet());
+    Assert.assertEquals(7.5, array

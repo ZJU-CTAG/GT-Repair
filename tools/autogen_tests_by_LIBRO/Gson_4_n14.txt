@@ -1,0 +1,16 @@
+public void testIssue108() {
+    JsonFactory jsonFactory = new JsonFactory();
+    StringWriter writer = new StringWriter();
+    JsonGenerator generator = jsonFactory.createGenerator(writer);
+    generator.writeNumber("42");
+    generator.writeString("foo");
+    generator.close();
+
+    String json = writer.toString();
+    JsonParser parser = jsonFactory.createParser(json);
+    assertEquals("42", parser.getValueAsString());
+    parser.nextToken();
+    assertEquals("foo", parser.getValueAsString());
+    parser.nextToken();
+    assertEquals(null, parser.getCurrentToken());
+}

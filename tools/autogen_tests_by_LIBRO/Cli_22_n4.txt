@@ -1,0 +1,14 @@
+public void testPosixParser() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("t").hasArg().withDescription("Generate files for the specified target machine").create("target"));
+    String[] args = new String[]{"-target","foobar.com"};
+    PosixParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    try {
+        parsedLine = parser.parse(options, args);
+    } catch (ParseException pe) {
+        pe.printStackTrace();
+    }
+    assertTrue(parsedLine.hasOption("target"));
+    assertEquals("foobar.com",parsedLine.getOptionValue("target"));
+}

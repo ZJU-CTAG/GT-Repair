@@ -1,0 +1,14 @@
+public void testIssue2141() {
+    ObjectMapper mapper = new ObjectMapper();
+    // Issue was that 'default typing' is enabled
+    mapper.enableDefaultTyping();
+    // and that there are specific classes that can be used to trick
+    // deserializer into using wrong mode, default typing instead of dynamic typing
+    // and as a result cause all sorts of problems
+    // See [#1737](https://github.com/FasterXML/jackson-databind/issues/1737),
+    // related to c3p0
+    String json = mapper.writeValueAsString(new ComboPooledDataSource());
+
+    // Here we should get an exception
+    mapper.readValue(json, Object.class);
+}

@@ -1,0 +1,18 @@
+public void testExclusion() throws Exception
+{
+    // let's actually try with a more "real" POJO...
+    final ObjectMapper MAPPER = new ObjectMapper();
+    MAPPER.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    TestPOJO p = new TestPOJO();
+    p.values.put("bar", "baz");
+    p.values.put("error", "foo");
+    p.values.put("int", Integer.valueOf(3));
+    String json = MAPPER.writeValueAsString(p);
+    assertEquals("{\"values\":{\"bar\":\"baz\",\"error\":\"foo\",\"int\":3}}", json);
+
+    // but how about with Afterburner?
+    final ObjectMapper MAPPER2 = new ObjectMapper();
+    MAPPER2.registerModule(new AfterburnerModule());
+    MAPPER2.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    String json2 = MAPPER2.writeValueAsString(p);
+    assertEquals("{\"

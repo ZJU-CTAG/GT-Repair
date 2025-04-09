@@ -1,0 +1,15 @@
+public void testWithHeader() throws IOException {
+    File f = new File("test.csv");
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+        CSVPrinter printer = CSVFormat.TDF.withHeader("x").print(bw);
+        printer.printRecord(42);
+        printer.close();
+    }
+
+    try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+        String line = br.readLine();
+        assertEquals("x", line);
+        line = br.readLine();
+        assertEquals("42", line);
+    }
+}

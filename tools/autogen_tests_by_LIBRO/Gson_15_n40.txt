@@ -1,0 +1,23 @@
+public void testWriteNumber() {
+  assertEquals("1.0", new Gson().toJson(Double.valueOf(1)));
+  assertEquals("\"NaN\"", new GsonBuilder().setLenient().create().toJson(Double.NaN));
+  assertEquals("\"NaN\"", new GsonBuilder().setLenient().create().toJson((Number) Double.NaN));
+  assertEquals("\"NaN\"", new GsonBuilder().setLenient().create().toJson(new Number() {
+    @Override
+    public int intValue() {
+      return 0;
+    }
+    @Override
+    public long longValue() {
+      return 0;
+    }
+    @Override
+    public float floatValue() {
+      return 0;
+    }
+    @Override
+    public double doubleValue() {
+      return Double.NaN;
+    }
+  }));
+}

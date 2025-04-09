@@ -1,0 +1,17 @@
+public void testNestedTypedef() {
+  String js = "goog.provide('a.b.c');"
+      + "goog.scope(function() {"
+      + "var b = a.b;"
+      + "var c = b.c;"
+      + "/* @typedef {string} */"
+      + "c.MyType;"
+      + "/* @param {c.MyType} x The variable. */"
+      + "c.myFunc = function(x) {};"
+      + "});";
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+      ImmutableList.of(SourceFile.fromCode("testcode", js)),
+      ImmutableList.<SourceFile>of(),
+      new CompilerOptions());
+  assertEquals("", result.errors.toString());
+}

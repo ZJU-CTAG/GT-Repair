@@ -1,0 +1,16 @@
+public void testPolymorphicNoDefaultImpl() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(TestClass.class);
+    final String json = "{\"@type\":\"TestClass\",\"foo\":\"bar\"}";
+    final TestInterface result = mapper.readValue(json, TestInterface.class);
+    System.out.println(result);
+}
+
+public void testPolymorphicWithDefaultImpl() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(TestClass.class);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final String json = "{\"@type\":\"TestClass\",\"foo\":\"bar\"}";
+    final TestInterface result = mapper.readValue(json, TestInterface.class);
+    System.out.println(result);
+}

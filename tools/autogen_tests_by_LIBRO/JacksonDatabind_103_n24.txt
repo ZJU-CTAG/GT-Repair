@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    // Simple POJO, with single field of type Long
+    class Bean {
+        public Long value;
+        protected Bean() { }
+        public Bean(long l) { value = Long.valueOf(l); }
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"value\":22}", Bean.class);
+    } catch (JsonMappingException e) {
+        fail("Should not fail: had: "+e.getMessage());
+    }
+    try {
+        mapper.readValue("{\"value\":\"abc\"}", Bean.class);
+    } catch (JsonMappingException e) {
+        assertFalse("Should not contain ' at [source]' twice: had: "+e.getMessage(),
+                e.getMessage().contains(" at [source]"));
+    }
+}

@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception
+{
+    int matchCount = 0;
+    final String json = "{\"tags\":[{\"name\":\"tag1\"},{\"name\":\"tag2\"},{\"name\":\"tag3\"}]}";
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonParser jsonParser = jsonFactory.createParser(json);
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonParser, new MatchingPathFilter() {
+        @Override
+        public boolean matches(String path) {
+            return "tags".equals(path);
+        }
+    },new MatchCountingFilter() {
+        @Override
+        public void filterMatch(JsonParser jsonParser) throws IOException {
+            matchCount++;
+        }
+    });
+
+    JsonToken jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.START_OBJECT, jsonToken);
+    jsonToken = filteringParserDelegate.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, jsonToken);
+    assertEquals("tags

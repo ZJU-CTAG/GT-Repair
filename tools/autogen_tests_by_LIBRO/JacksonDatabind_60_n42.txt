@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+
+    byte[] bytes = new byte[] { 0x01, 0x02, 0x03 };
+    byte[] bytes2 = new byte[] { 0x04, 0x05, 0x06 };
+    Message message = new Message(bytes, new Message(bytes2));
+    String json = mapper.writeValueAsString(message);
+    System.out.println(json);
+    Message message2 = mapper.readValue(json, Message.class);
+    assertArrayEquals(bytes, message2.getBytes());
+    assertArrayEquals(bytes2, message2.getMessage().getBytes());
+}

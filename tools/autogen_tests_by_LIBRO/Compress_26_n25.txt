@@ -1,0 +1,27 @@
+public void testSkip() throws IOException {
+    ByteArrayInputStream bais = new ByteArrayInputStream(new byte[100]);
+    CipherInputStream cis = new CipherInputStream(bais, new MockCipher());
+
+    try {
+        IOUtils.skip(cis, 100);
+        fail("IOException expected");
+    } catch (IOException e) {
+        // expected
+    }
+
+    cis.close();
+}
+
+static class MockCipher extends Cipher {
+    public MockCipher() {
+        super(new MockCipherSpi(), new MockProvider(), "Mock");
+    }
+
+    static class MockCipherSpi extends CipherSpi { }
+    static class MockProvider extends Provider {
+        MockProvider() {
+            super("MockProvider", 1.0, "MockProvider for testing");
+            put("Cipher.Mock", MockCipherSpi.class.getName());
+        }
+    }
+}

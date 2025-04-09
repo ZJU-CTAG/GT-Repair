@@ -1,0 +1,14 @@
+public void testWriteBinaryInputStream() throws Exception {
+    final StringWriter sw = new StringWriter();
+    final XMLStreamWriter xmlsw = XMLOutputFactory.newInstance().createXMLStreamWriter(sw);
+    final ToXmlGenerator gen = new ToXmlGenerator(xmlsw, JsonWriteContext.createRootContext(null));
+    gen.writeStartObject();
+    gen.writeFieldName("binary");
+    byte[] bytes = new byte[5];
+    Arrays.fill(bytes, (byte) 42);
+    gen.writeBinary(Base64Variants.getDefaultVariant(), new ByteArrayInputStream(bytes), 5);
+    gen.writeEndObject();
+    gen.close();
+    final String xml = sw.toString();
+    assertThat(xml, is(equalTo("<?xml version='1.0' encoding='UTF-8'?><object><binary>KioqKioqKg==</binary></object>")));
+}

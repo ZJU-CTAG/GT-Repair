@@ -1,0 +1,14 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String input = "window[\"anchor\"] = function (obj, modifiesProp) { return (function (saved) { return modifiesProp(obj) + saved; })(obj[\"prop\"]); }";
+    Result result = compiler.compile(externs, Arrays.asList(SourceFile.fromCode("input.js", input)), options);
+    String output = compiler.toSource();
+    System.out.println(output);
+    assertFalse(output.contains("var HOLD"));
+}
+
+private static final JSSourceFile[] externs = new JSSourceFile[] {
+    JSSourceFile.fromCode("externs.js", "function window(x) {}")
+};

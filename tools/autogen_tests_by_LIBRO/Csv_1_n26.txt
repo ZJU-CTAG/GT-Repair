@@ -1,0 +1,10 @@
+public void testInconsistentLineEndHandling() throws Exception {
+    String input = "Some\ntext\nwith\nline\nendings\n";
+    ExtendedBufferedReader reader = new ExtendedBufferedReader(new StringReader(input));
+    for (int i = 0; i < 5; i++) {
+        String line = reader.readLine();
+        assertEquals(i, reader.getLineNumber());
+    }
+    assertEquals(-1, reader.read());
+    assertEquals(-1, reader.getLineNumber());
+}

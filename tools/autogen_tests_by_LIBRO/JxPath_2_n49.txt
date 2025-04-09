@@ -1,0 +1,18 @@
+public void testExtensionFunctionNodeSet() {
+    final String xml = "<a><b/><c/><d/></a>";
+    final String expr = "/*/*[position() = 1]";
+    final String nodeSetExpr = XPathConstants.NODESET.toString();
+    final String resultXML = "<a><b/></a>";
+
+    // test that JXPath can handle a NodeSet extension function
+    Document doc = JXPathTestHelper.newDocument(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    context.registerNamespace("test", JXPathTestHelper.NS_TEST);
+    context.registerExpressionLanguageFunction(NS_TEST, "nodeSet",
+            new JXPathNodeSetExtensionFunction());
+
+    Object result = context.getValue(expr, nodeSetExpr);
+    assertTrue(result instanceof NodeSet);
+    assertEquals(resultXML, JXPathTestHelper.toString(result));
+}

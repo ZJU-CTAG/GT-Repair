@@ -1,0 +1,20 @@
+public void testIssue117() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("/**\n");
+    sb.append(" * @interface\n");
+    sb.append(" */\n");
+    sb.append("var OtherType = function() {};\n");
+    sb.append("/**\n");
+    sb.append(" * @implements {MyType}\n");
+    sb.append(" * @constructor\n");
+    sb.append(" */\n");
+    sb.append("var MyType = function() {};\n");
+    sb.append("/**\n");
+    sb.append(" * @type {MyType}\n");
+    sb.append(" */\n");
+    sb.append("var x = /** @type {!OtherType} */ (new Object());\n");
+    
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    Compiler compiler = new Compiler();

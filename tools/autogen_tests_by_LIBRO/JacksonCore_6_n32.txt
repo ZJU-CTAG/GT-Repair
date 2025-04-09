@@ -1,0 +1,6 @@
+public void testJsonPointer() {
+    JsonNode root = JsonNodeFactory.instance.objectNode()
+            .put("00", "not-an-index");
+    assertEquals("not-an-index", JsonPointer.compile("/00").get(root).asText());
+    assertEquals(JsonNodeType.MISSING, JsonPointer.compile("/0").get(root).getNodeType());
+}

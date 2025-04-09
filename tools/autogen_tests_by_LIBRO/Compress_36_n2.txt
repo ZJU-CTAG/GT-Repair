@@ -1,0 +1,10 @@
+public void testSevenZFile() throws IOException {
+    SevenZFile sevenZFile = new SevenZFile(new File("target/test-classes/empty-archive-entry.7z"));
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertEquals(7, entry.getCompressedSize());
+    assertEquals(0, entry.getSize());
+    byte[] content = new byte[7];
+    int read = entry.read(content);
+    assertEquals(-1, read);
+    sevenZFile.close();
+}

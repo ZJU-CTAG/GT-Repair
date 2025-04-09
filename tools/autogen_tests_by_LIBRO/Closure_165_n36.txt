@@ -1,0 +1,23 @@
+public void testIssue106() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    compiler.compile(new JSSourceFile[] {
+      JSSourceFile.fromCode("recordTypes.js",
+          "/**\n" +
+          " * @typedef {{name: string, id: number}}\n" +
+          " */\n" +
+          "var RecordType1;\n" +
+          "\n" +
+          "/**\n" +
+          " * @typedef {{name2: string}}\n" +
+          " */\n" +
+          "var RecordType2;\n" +
+          "\n" +
+          "/**\n" +
+          " * @param {RecordType1} rec\n" +
+          " */\n" +
+          "var func = function(rec) {\n" +
+          " alert(rec.name2);\n" +
+          "};\n" +
+          "func({name: 'jim', id: 0});

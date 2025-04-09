@@ -1,0 +1,21 @@
+public void testManageClosureDependenciesAndCompilationLevelWhitespaceOnly()
+        throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.manageClosureDependencies = true;
+    options.setOutputCharset("UTF-8");
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(
+            DiagnosticGroups.MISSING_PROVIDE, CheckLevel.ERROR);
+    options.setWarningLevel(
+            DiagnosticGroups.MISSING_REQUIRE, CheckLevel.ERROR);
+    options.setWarningLevel(
+            DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+
+    CompilationLevel level = CompilationLevel.WHITESPACE_ONLY;
+    level.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    compiler.init(
+            FileUtil.createDummyInputFile(new File("/tmp"), "foo.js"),
+            new PrintStream

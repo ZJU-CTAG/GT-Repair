@@ -1,0 +1,8 @@
+public void testSimple() {
+    SimpleScalarFunction f = new SimpleScalarFunction(new double[] {1d, 1d});
+    LinearConstraint c = new LinearConstraint(new double[] {1d, -2d}, Relationship.EQ, 0);
+    SimplexSolver solver = new SimplexSolver();
+    double[] result = solver.optimize(f, new LinearConstraintSet(c), GoalType.MINIMIZE, false).getPoint();
+    assertEquals(0, result[0], 0.000001);
+    assertEquals(0, result[1], 0.000001);
+}

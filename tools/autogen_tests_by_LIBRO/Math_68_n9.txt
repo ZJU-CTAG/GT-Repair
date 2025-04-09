@@ -1,0 +1,15 @@
+public void testConvergenceChecker() {
+    final double[] initial = { 0, 0 };
+    final double[][] parameters = { { 1, -1 }, { 1, 1 } };
+    final double[] target = { 1, 1 };
+    final double[] weights = { 1, 1 };
+    final Vector<RealVector> observations = new Vector<RealVector>();
+    final Vector<WeightedObservedPoint> points = new Vector<WeightedObservedPoint>();
+    for (int i = 0; i < parameters.length; ++i) {
+        observations.add(new ArrayRealVector(parameters[i]));
+        points.add(new WeightedObservedPoint(1, parameters[i], target[i]));
+    }
+    final LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    final ConvergenceChecker<VectorialPointValuePair> checker = new VectorialConvergenceChecker(1E-6, 1E-6);
+    try {
+        optimizer.optimize(new LeastSquaresAdapter(new

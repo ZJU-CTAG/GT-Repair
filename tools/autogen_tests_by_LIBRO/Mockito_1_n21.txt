@@ -1,0 +1,14 @@
+public void testMockitoArgumentCaptor() {
+    Foo foo = mock(Foo.class);
+    foo.bar("Hello", "World");
+
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    verify(foo, times(1)).bar(captor.capture());
+
+    assertEquals("Hello", captor.getValue()[0]);
+    assertEquals("World", captor.getValue()[1]);
+}
+
+public interface Foo {
+    void bar(String... args);
+}

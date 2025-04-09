@@ -1,0 +1,17 @@
+public void testGetTypeArguments2() {
+    TypeVariable<?>[] typeParameters = Other.class.getTypeParameters();
+    assertEquals(1, typeParameters.length);
+    assertEquals("T", typeParameters[0].getName());
+    assertEquals(Object.class, typeParameters[0].getGenericDeclaration());
+
+    Map<TypeVariable<?>, Type> typeVarAssigns = TypeUtils.getTypeArguments(Other.class, This.class);
+    assertEquals(2, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(This.class.getTypeParameters()[0]));
+    assertEquals(typeParameters[0], typeVarAssigns.get(This.class.getTypeParameters()[1]));
+}
+
+public static class Other<T> implements This<String, T> {
+}
+
+public static interface This<K, V> {
+}

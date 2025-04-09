@@ -1,0 +1,26 @@
+public void testIssue101() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+    object.put("k", "v");
+
+    String json = om.writeValueAsString(object);
+    System.out.println("json: "+json);
+    assertEquals("{\"k\":\"v\"}", json);
+
+    ObjectNode de1 = om.readValue(json, ObjectNode.class);  // this works
+    System.out.println("Deserialized to ObjectNode: "+de1);
+    assertEquals("v", de1.get("k").asText());
+
+    MyValue de2 = om.readValue(json, MyValue.class);  // but this throws exception
+    System.out.println("Deserialized to MyValue: "+de2);
+    assertEquals("v", de2.getObject().get("k").asText());
+}
+
+public static class MyValue
+{
+    private final ObjectNode object;
+
+    @JsonCreator
+    public MyValue(ObjectNode object) { this.

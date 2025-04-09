@@ -1,0 +1,24 @@
+public void testEquals() {
+    Invocation invocation = new Invocation("a", "b", "c", null);
+    EqualsVerificationMode mode = new EqualsVerificationMode(invocation);
+    assertTrue(mode.matches(invocation));
+}
+
+private static class EqualsVerificationMode implements VerificationMode {
+
+    private final Invocation invocation;
+
+    public EqualsVerificationMode(Invocation invocation) {
+        this.invocation = invocation;
+    }
+
+    @Override
+    public boolean matches(Invocation invocation) {
+        return this.invocation.equals(invocation);
+    }
+
+    @Override
+    public void verify(VerificationData data) {
+        // nothing to do
+    }
+}

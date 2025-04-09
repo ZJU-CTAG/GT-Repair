@@ -1,0 +1,23 @@
+public void testTarArchiveEntry() throws Exception {
+    String name = "123456789012";
+    Date modTime = new Date();
+    int mode = 0644;
+    int userId = 0;
+    int groupId = 0;
+    int size = 0;
+    byte linkFlag = TarArchiveEntry.LF_NORMAL;
+    String linkName = "";
+    String magic = TarArchiveEntry.MAGIC_POSIX;
+    String version = "00";
+    String userName = "";
+    String groupName = "";
+    String devMajor = "";
+    String devMinor = "";
+    byte[] buffer = new byte[512];
+    TarUtils.formatBuffer(buffer, name, name, modTime, mode, userId, groupId, size, linkFlag, linkName, magic, version, userName, groupName, devMajor, devMinor);
+
+    TarArchiveEntry entry = new TarArchiveEntry(buffer);
+    assertEquals("12345678901", entry.getName());
+    assertEquals(12, entry.getLongName().length());
+}
+``

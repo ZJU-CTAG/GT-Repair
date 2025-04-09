@@ -1,0 +1,13 @@
+public void testPolymorphicWithExternalTypeId() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(new MyClass());
+    System.out.println(json);
+    MyClass myClass = mapper.readValue(json, MyClass.class);
+    Assert.assertEquals(MyClass.class, myClass.getClass());
+}
+public static class MyClass
+{
+    public String name = "Hello";
+}

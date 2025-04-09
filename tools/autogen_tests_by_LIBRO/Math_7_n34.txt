@@ -1,0 +1,24 @@
+public void testEventGroup() {
+        final EventHandler[] events = new EventHandler[5];
+        final double[] state = new double[] { 1, 0, 0, 0, 0 };
+        final double[] params = new double[] { 1 };
+        final double tStart = 0.0;
+        final double tStop = 1.0;
+
+        // This is the g function for event 1
+        final EventHandler event1 = new EventHandler() {
+            public void resetState(double t, double[] y) {
+                // do nothing
+            }
+            public double g(double t, double[] y) {
+                return (t - 0.5) * (t - 0.5) - 4.0;
+            }
+            public Action eventOccurred(double t, double[] y, boolean increasing) {
+                System.out.println("Event1 occurred at t = " + t);
+                System.out.println("y = " + Arrays.toString(y));
+                return Action.RESET_STATE;
+            }
+        };
+
+        // This is the g function for event 2
+        final EventHandler event2 = new Event

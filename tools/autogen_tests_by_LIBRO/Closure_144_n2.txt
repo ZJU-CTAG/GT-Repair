@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Global g = new Global();
+    ScriptContext context = new SimpleScriptContext();
+    context.setAttribute(ScriptEngine.FILENAME, "test.js", ScriptContext.ENGINE_SCOPE);
+    g.getContextFactory().call(g.getContextFactory().enterContext(context));
+    try {
+        Reader reader = new StringReader("function f() {}\n" +
+                                         "alert(f());");
+        ScriptEngine engine = g.getEngineByName("JavaScript");
+        engine.eval(reader);
+    } finally {
+        Context.exit();
+    }
+}

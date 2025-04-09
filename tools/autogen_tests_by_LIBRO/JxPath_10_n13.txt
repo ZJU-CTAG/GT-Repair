@@ -1,0 +1,17 @@
+public void testGreaterThan() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    Document doc = factory.newDocumentBuilder().newDocument();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    Element child1 = doc.createElement("child1");
+    child1.appendChild(doc.createTextNode("abcd"));
+    root.appendChild(child1);
+
+    Element child2 = doc.createElement("child2");
+    child2.appendChild(doc.createTextNode("2"));
+    root.appendChild(child2);
+
+    JXPathContext pathContext = JXPathContext.newContext(doc);
+    Boolean result = (Boolean) pathContext.getValue("2.0 > child1", Boolean.class);
+    assertFalse(result.booleanValue());
+}

@@ -1,0 +1,28 @@
+public void testOverflow() throws IOException {
+    JsonNode tree = new ObjectMapper().readTree("{\"x\":1e10}");
+    IntClass fromTree;
+    try {
+        fromTree = new ObjectMapper().readerFor(IntClass.class).readValue(tree);
+    } catch (IOException _e) {
+        fromTree = new IntClass();
+        fromTree.x = -1;
+    }
+    IntClass fromString;
+    try {
+        fromString = new ObjectMapper().readerFor(IntClass.class).readValue("{\"x\":1e10}");
+    } catch (IOException _e) {
+        fromString = new IntClass();
+        fromString.x = -1;
+    }
+    System.out.println(fromTree);
+    System.out.println(fromString);
+}
+
+public static class IntClass {
+    public int x;
+
+    @Override
+    public String toString() {
+        return String.valueOf(x);
+    }
+}

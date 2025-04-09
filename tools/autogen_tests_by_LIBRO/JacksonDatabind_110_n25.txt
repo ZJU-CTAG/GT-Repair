@@ -1,0 +1,25 @@
+public void testIssue1868() throws Exception {
+    // Test for issue #1880
+
+    // Test for issue #1868
+
+    String json = objectMapper.writeValueAsString(Collections.EMPTY_LIST);
+    assertEquals("[]", json);
+
+    json = objectMapper.writeValueAsString(Collections.EMPTY_SET);
+    assertEquals("[]", json);
+
+    // and then other unmodifiable types
+
+    json = objectMapper.writeValueAsString(Collections.singletonList("test"));
+    assertEquals("[\"test\"]", json);
+
+    json = objectMapper.writeValueAsString(Collections.singleton("test"));
+    assertEquals("[\"test\"]", json);
+
+    json = objectMapper.writeValueAsString(Collections.unmodifiableList(Arrays.asList("first", "second")));
+    assertEquals("[\"first\",\"second\"]", json);
+
+    // Test for issue #1868
+
+    json = objectMapper.writeValueAsString(Collections.unmodifiableList(new LinkedList

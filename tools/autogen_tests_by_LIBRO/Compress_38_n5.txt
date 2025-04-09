@@ -1,0 +1,15 @@
+public void testIssue() {
+    String filename = "target/test-classes/test_raw.tar";
+    try (TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(new File(filename)))) {
+        ArchiveEntry entry;
+        while ((entry = tis.getNextEntry()) != null) {
+            System.out.println("Entry " + entry.getName() + " has size " + entry.getSize());
+            for (int i = 0; i < entry.getSize(); i++) {
+                assertNotEquals(-1, tis.read());
+            }
+            assertEquals(-1, tis.read());
+        }
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+}

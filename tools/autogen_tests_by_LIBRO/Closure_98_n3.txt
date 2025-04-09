@@ -1,0 +1,12 @@
+public void testClosure() throws Exception {
+    final List<String> log = new ArrayList<String>();
+    try {
+        File file = new File("target/closure.js");
+        FileUtils.write(file, IOUtils.toString(getClass().getResourceAsStream("ClosureCompiler.js")));
+        CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+        CompilerOptions options = new CompilerOptions();
+        level.setOptionsForCompilationLevel(options);
+        List<SourceFile> externs = CommandLineRunner.getDefaultExterns();
+        List<SourceFile> sources = new ArrayList<SourceFile>();
+        sources.add(SourceFile.fromCode("input.js", "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } } foo();"));
+        Result result = com.google.

@@ -1,0 +1,28 @@
+public void testConvert() throws Exception {
+    final AntPathFilterProvider writeFilter = new AntPathFilterProvider()
+        .addPath("$");
+    final AntPathFilterProvider serializationFilter = new AntPathFilterProvider()
+        .addPath("$.['@class']");
+
+    final ObjectMapper mapper = new ObjectMapper()
+        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false)
+        .setDefaultPrettyPrinter(new DefaultPrettyPrinter())
+        .setFilterProvider(serializationFilter);
+
+    final ObjectWriter writer = mapper.writer(writeFilter);
+
+    final JsonGenerator gen = writer.getFactory().createGenerator(System.out);
+
+    final Object object = ImmutableMap.builder()
+        .put("prop", "value")
+        .build();
+
+    gen.writeStartObject();
+    gen.writeFieldName("@class");
+    gen.writeString(object.getClass().getName());
+
+    gen.writeFieldName("object");
+    gen.writeObject(object);
+    gen.writeEndObject();
+    gen.flush();
+}

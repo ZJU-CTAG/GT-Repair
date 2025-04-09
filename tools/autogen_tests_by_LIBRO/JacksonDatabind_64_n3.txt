@@ -1,0 +1,10 @@
+public void testIssue1351() throws Exception {
+    String json = mapper.writeValueAsString(new Pojo());
+    // Fails: {"name":null}
+    assertEquals("{}", json);
+}
+
+static class Pojo {
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    public String name = null;
+}

@@ -1,0 +1,15 @@
+public void testIssue() {
+  String code = "function callz(parry) {\n" +
+                "  if (parry.prop2 && parry.prop2 < 5) alert('alright!');\n" +
+                "  alert(parry.prop1);\n" +
+                "}\n" +
+                "\n" +
+                "new callz({prop1: 'hi'});";
+
+  JSError[] warnings = runTypeCheck(code);
+  assertEquals(1, warnings.length);
+  assertEquals("actual parameter 1 of callz does not match formal parameter\n" +
+               "found   : {prop1: string}\n" +
+               "required: {prop1: string, prop2: (number|undefined)}",
+               warnings[0].description);
+}

@@ -1,0 +1,17 @@
+public void testEOL() throws IOException {
+    {
+        byte[] data = "this is the first line\nthis is the second line\n".getBytes("ISO-8859-1");
+        ExtendedByteArrayInputStream eis = new ExtendedByteArrayInputStream(data);
+        ExtendedBufferedReader ebr = new ExtendedBufferedReader(new InputStreamReader(eis));
+        ebr.readLine();
+        assertEquals(2, ebr.getCurrentLineNumber());
+    }
+    {
+        byte[] data = "this is the first line\rthis is the second line\r".getBytes("ISO-8859-1");
+        ExtendedByteArrayInputStream eis = new ExtendedByteArrayInputStream(data);
+        ExtendedBufferedReader ebr = new ExtendedBufferedReader(new InputStreamReader(eis));
+        ebr.readLine();
+        assertEquals(2, ebr.getCurrentLineNumber());
+    }
+    {
+        byte[] data = "this is the first line\r\nthis is the second line\r\n".getBytes("ISO-8859-1");

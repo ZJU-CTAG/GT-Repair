@@ -1,0 +1,18 @@
+public void testIsSupportXxxInclusive() {
+    final UniformRealDistribution urd = new UniformRealDistribution();
+    assertTrue(urd.isSupportConnected());
+    assertTrue(urd.isSupportLowerBoundInclusive());
+    assertTrue(urd.isSupportUpperBoundInclusive());
+    assertEquals(0.0, urd.density(urd.getSupportLowerBound()), 0.0);
+    assertEquals(0.0, urd.density(urd.getSupportUpperBound()), 0.0);
+
+    final int n = 10;
+    final double[] p = new double[n + 1];
+    for (int i = 0; i < n; i++) {
+        p[i] = urd.cumulativeProbability(i);
+    }
+    p[n] = 1.0;
+    final EnumeratedRealDistribution erd = new EnumeratedRealDistribution(p, 0.0, n);
+    assertTrue(erd.isSupportConnected());
+    assertTrue(erd.isSupportLowerBoundInclusive());
+    assertFalse(erd.isSupportUpper

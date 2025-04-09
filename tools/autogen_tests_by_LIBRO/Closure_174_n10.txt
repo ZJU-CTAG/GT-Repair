@@ -1,0 +1,12 @@
+public void testIssue114() {
+    String js = "goog.provide(\"main\");\n" +
+            "goog.scope (function (){\n" +
+            "var a = foo, b, c = 1;\n" +
+            "});";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setVariableRenaming(VariableRenamingPolicy.ALL);
+    Result result = compiler.compile(Collections.EMPTY_LIST, Collections.singletonList(SourceFile.fromCode("test.js", js)), options);
+    assertFalse(result.success);
+}

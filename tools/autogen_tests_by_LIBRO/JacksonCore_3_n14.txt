@@ -1,0 +1,13 @@
+public void testIssue_currInputRowStart() throws Exception {
+    String jsonStr = "{\"a\":1}";
+    UTF8StreamJsonParser jsonParser = new UTF8StreamJsonParser(new IOContext(new BufferRecycler(), null, false),
+            JsonParser.Feature.collectDefaults(),
+            new ByteArrayInputStream(jsonStr.getBytes()), null,
+            UTF8StreamJsonParser.DEFAULT_BYTE_BUFFER_SIZE, new byte[UTF8StreamJsonParser.DEFAULT_BYTE_BUFFER_SIZE],
+            0, jsonStr.length(), true);
+    jsonParser.nextToken();
+    jsonParser.nextToken();
+    try {
+        jsonParser.nextToken();
+    } catch (Exception e) {
+        Assert.assertEquals(e.getMessage(), "Unexpected end-of-input: expected close marker for Object (start marker at [Source: java.io.ByteArrayInputStream@2a139a55; line: 1, column: 0])\n at [Source: java.io.ByteArrayInputStream@2a139a55; line

@@ -1,0 +1,10 @@
+public void testGetTypeArguments2() {
+    TypeVariable<Class<Other>>[] otv = Other.class.getTypeParameters();
+    TypeVariable<Class<This>>[] ttv = This.class.getTypeParameters();
+    Assert.assertEquals(1, otv.length);
+    Assert.assertEquals(2, ttv.length);
+    Map<TypeVariable<?>, Type> typeVarAssigns = TypeUtils.getTypeArguments(Other.class, This.class);
+    Assert.assertEquals(2, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(ttv[0]));
+    Assert.assertEquals(otv[0], typeVarAssigns.get(ttv[1]));
+}

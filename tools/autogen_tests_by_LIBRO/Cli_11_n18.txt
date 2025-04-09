@@ -1,0 +1,25 @@
+public void testPosixParser() throws Exception
+{
+    final String OPTION_TARGET = "t";
+    final String OPTION_TARGET_LONG = "target";
+    final String OPTION_TARGET_VALUE = "foobar";
+
+    String[] args = { "-" + OPTION_TARGET, OPTION_TARGET_VALUE };
+
+    Options cmdLineOpts = new Options();
+
+    Option generateTarget = new Option(OPTION_TARGET, OPTION_TARGET_LONG, true, "Generate files for the specified target machine");
+
+    cmdLineOpts.addOption(generateTarget);
+
+    PosixParser parser = new PosixParser();
+
+    CommandLine parsedLine = parser.parse(cmdLineOpts, args);
+
+    assertTrue(parsedLine.hasOption(OPTION_TARGET));
+    assertEquals(OPTION_TARGET_VALUE, parsedLine.getOptionValue(OPTION_TARGET));
+}
+public void testPosixParserLong() throws Exception
+{
+    final String OPTION_TARGET = "t";
+    final String OPTION_TARGET_LONG =

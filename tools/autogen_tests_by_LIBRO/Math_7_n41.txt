@@ -1,0 +1,29 @@
+public void testIssue108() {
+    final double t0 = 5.0;
+    final double t1 = 10.0;
+    final double t2 = 20.0;
+    final double deltaMax = 0.00001;
+    final double y0 = 2.0;
+
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+
+        public int getDimension() {
+            return 1;
+        }
+
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            // the ODE to integrate
+            yDot[0] = -y[0];
+        }
+
+    };
+
+    FirstOrderIntegrator integrator = new DormandPrince54Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addEventHandler(new EventHandler() {
+
+        public void resetState(double t, double[] y) {
+            // do not change the state
+        }
+
+        public double g(double t, double[] y) {
+            if (t < t1) {

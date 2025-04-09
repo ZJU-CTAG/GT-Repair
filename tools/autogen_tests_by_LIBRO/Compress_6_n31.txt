@@ -1,0 +1,21 @@
+public void testZipArchiveEntryEqualsAndHashCode() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+
+    ZipArchiveEntry entry1 = new ZipArchiveEntry("entry1.txt");
+    zaos.putArchiveEntry(entry1);
+    zaos.write("entry1".getBytes());
+    zaos.closeArchiveEntry();
+
+    ZipArchiveEntry entry2 = new ZipArchiveEntry("entry2.txt");
+    zaos.putArchiveEntry(entry2);
+    zaos.write("entry2".getBytes());
+    zaos.closeArchiveEntry();
+
+    ZipArchiveEntry entry3 = new ZipArchiveEntry("entry3.txt");
+    entry3.setName("entry2.txt"); // Causes equality bug
+    zaos.putArchiveEntry(entry3);
+    zaos.write("entry3".getBytes());
+    zaos.closeArchiveEntry();
+
+    ZipArchiveEntry entry4 = new ZipArchiveEntry("entry4.txt");

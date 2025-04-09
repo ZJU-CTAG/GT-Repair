@@ -1,0 +1,11 @@
+public void testOverflowNumber() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+    try {
+        mapper.readValue("{\"test\" : 999999}", TestEnum.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "out of range of int");
+    }
+}

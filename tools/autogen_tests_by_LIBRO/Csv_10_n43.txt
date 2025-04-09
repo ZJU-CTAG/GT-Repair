@@ -1,0 +1,9 @@
+public void testWithHeaderOnCSVPrinter() throws Exception {
+    CSVPrinter csvPrinter
+            = CSVFormat.TDF
+            .withHeader("x")
+            .print(Files.newBufferedWriter(Paths.get("data.csv")));
+    csvPrinter.printRecord(42);
+    csvPrinter.close();
+    assertEquals("x\r\n42\r\n", Files.readAllLines(Paths.get("data.csv")).stream().collect(Collectors.joining("\r\n")));
+}

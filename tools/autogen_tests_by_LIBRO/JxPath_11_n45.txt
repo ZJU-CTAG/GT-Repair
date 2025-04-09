@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final JXPathContext context = JXPathContext.newContext(new TestBean());
+    context.setLenient(true);
+    context.registerNamespace("A", "http://www.w3.org/2001/XMLSchema-instance");
+    context.registerNamespace("B", "http://www.w3.org/2001/XMLSchema");
+    assertEquals(new Integer(0), context.getValue("/A:myAttr"));
+    assertEquals("MY VALUE", context.getValue("/B:ElementB"));
+}
+public static class TestBean {
+    private int myAttr;
+    private String ElementB;
+    public int getMyAttr() {
+        return myAttr;
+    }
+    public String getElementB() {
+        return ElementB;
+    }
+}

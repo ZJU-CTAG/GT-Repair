@@ -1,0 +1,17 @@
+public void testPrettyPrint() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    MyPrettyPrinter pp = new MyPrettyPrinter();
+    SimpleModule module = new SimpleModule();
+    module.setPrettyPrinter(pp);
+    mapper.registerModule(module);
+
+    TestJson testObj = new TestJson();
+    testObj.name = "foo";
+    testObj.id = 13;
+    testObj.address = "blah";
+
+    StringWriter sw = new StringWriter();
+    ObjectWriter writer = mapper.writer(pp);
+    writer.writeValue(sw, testObj);
+    assertEquals(sw.toString(), EXP_PRETTY);
+}

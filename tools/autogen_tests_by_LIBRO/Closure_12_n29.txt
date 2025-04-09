@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    String original = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += \"2\"; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("original.js", original) },
+            new CompilerOptions());
+    assertTrue(result.success);
+    String compiled = compiler.toSource();
+    System.out.println(compiled);
+    assertTrue(compiled.contains("try { a = \"1\" + somefunction() }catch(c) { }"));
+}

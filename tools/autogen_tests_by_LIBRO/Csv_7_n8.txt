@@ -1,0 +1,15 @@
+public void testIssueReproduction() throws IOException, URISyntaxException {
+		CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+				.withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+
+		File file = new File(ClassLoader.getSystemResource("duplicate.csv").toURI());
+
+		CSVParser parser = CSVParser.parse(file, StandardCharsets.UTF_8, myFormat);
+		Map<String, Integer> headerMap = parser.getHeaderMap();
+
+		assertEquals(4, headerMap.size()); // FAILS
+		assertEquals((Integer) 0, headerMap.get("Col1"));
+		assertEquals((Integer) 1, headerMap.get("Col2"));
+		assertEquals((Integer) 3, headerMap.get("Col3"));
+		assertEquals((Integer) 4, headerMap.get("Col4"));
+}

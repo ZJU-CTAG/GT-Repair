@@ -1,0 +1,8 @@
+public void test() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.initOptions(options);
+    options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    Result result = compiler.compile(SourceFile.fromCode("x.js", "function callee() { var output = temp3({ n: 0, text: 'a string', b: true }) alert(output); } callee(); /** @param {{text: string}} opt_data */ function temp1(opt_data) { return opt_data.text; } /** @param {{activity: (boolean|number|string|null|Object)}} opt_data */ function temp2(opt_data) { /** @notypecheck */ function __inner() { return temp1(opt_data.activity); } return __inner(); }

@@ -1,0 +1,14 @@
+public void testCreateSevenZipArchive() throws Exception {
+     File testDir = getTestDirectory();
+     String arcName = new File(testDir, "test.7z").getAbsolutePath();
+
+     SevenZOutputFile output = new SevenZOutputFile(new File(arcName));
+     SevenZArchiveEntry entry = output.createArchiveEntry(new File(testDir, "test.xml"), "test.xml");
+     output.putArchiveEntry(entry);
+     FileInputStream fis = new FileInputStream(new File(testDir, "test.xml"));
+     IOUtils.copy(fis, output);
+     output.closeArchiveEntry();
+     output.close();
+
+     SevenZFile input = new SevenZFile(new File(arcName));
+}

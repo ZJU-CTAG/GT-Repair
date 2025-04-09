@@ -1,0 +1,15 @@
+public void testJsonWriterValue(boolean lenient) {
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    writer.setLenient(lenient);
+    try {
+        writer.value(Double.NaN);
+        fail("JsonWriter#value(double) should not be lenient");
+    } catch (Exception e) {
+        // ok
+    }
+    try {
+        writer.value((Number) Double.NaN);
+    } catch (Exception e) {
+        fail("JsonWriter#value(Number) should be lenient");
+    }
+}

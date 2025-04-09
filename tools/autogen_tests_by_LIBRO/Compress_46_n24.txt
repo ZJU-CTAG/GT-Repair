@@ -1,0 +1,14 @@
+public void testExtendedTimestamp() {
+    Calendar cal = Calendar.getInstance();
+    cal.set(2008, 1, 2, 3, 4, 5);
+    cal.set(Calendar.MILLISECOND, 678);
+    File entry = new File("src/test/java/org/apache/commons/io/filefilter/X5455_ExtendedTimestampTest.java");
+    long expected = cal.getTime().getTime();
+    long actual = entry.lastModified();
+
+    // JDK 8 :
+    //assertEquals("Timestamp mismatch", expected, actual);
+
+    // JDK 9 :
+    assertEquals("Timestamp mismatch", expected, actual, 678 * 10);
+}

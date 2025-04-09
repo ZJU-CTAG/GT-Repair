@@ -1,0 +1,18 @@
+public void testRootNode() {
+    String xml = "<root id=\"1234\"/>";
+    Document doc = getDocument(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("1234", context.getValue("//root/@id/text()"));
+}
+
+private Document getDocument(String xml) {
+    try {
+        DocumentBuilderFactory factory =
+            DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+        return doc;
+    } catch (Exception ex) {
+        throw new IllegalArgumentException("Could not parse XML.", ex);
+    }
+}

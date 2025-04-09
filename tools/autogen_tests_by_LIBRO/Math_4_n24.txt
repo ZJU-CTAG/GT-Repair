@@ -1,0 +1,16 @@
+public void testIntersection_NoIntersection() {
+    Region<Euclidean2D> region = new RegionFactory<Euclidean2D>().buildConvex();
+
+    // vertical segment
+    Segment s1 = new Segment(new Vector2D(0.0, 0.0), new Vector2D(0.0, 1.0));
+    SubLine<Euclidean2D> sub1 = new SubLine<Euclidean2D>(s1, region);
+
+    // horizontal segment
+    Segment s2 = new Segment(new Vector2D(0.0, 1.0), new Vector2D(1.0, 1.0));
+    SubLine<Euclidean2D> sub2 = new SubLine<Euclidean2D>(s2, region);
+
+    // they do not intersect
+    Assert.assertFalse(sub1.intersects(sub2));
+    Line<Euclidean2D> line = sub1.intersection(sub2);
+    Assert.assertNull(line);
+}

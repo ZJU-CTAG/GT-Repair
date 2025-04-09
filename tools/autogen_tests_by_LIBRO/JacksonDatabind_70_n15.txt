@@ -1,0 +1,23 @@
+public void testIssue8() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Address address = new Address();
+    address.street = "street";
+    address.addon = "addon";
+    address.zip = "zip";
+    address.town = "town";
+    address.country = "country";
+
+    Person person = new Person();
+    person.businessAddress = address;
+
+    String json = mapper.writeValueAsString(person);
+    assertEquals("{\"businessAddress.street\":\"street\",\"businessAddress.addon\":\"addon\",\"businessAddress.zip\":\"zip\",\"businessAddress.town\":\"town\",\"businessAddress.country\":\"country\"}", json);
+
+    person = mapper.readValue(json, Person.class);
+    assertNotNull(person);
+    assertNotNull(person.businessAddress);
+    assertEquals("street", person.businessAddress.street);
+    assertEquals("addon", person.businessAddress.addon);
+   

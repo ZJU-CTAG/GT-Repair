@@ -1,0 +1,26 @@
+public void testTreeTraversingParser() throws Exception {
+    final String json = "{\"x\": 1e10}";
+    final JsonNode tree = new ObjectMapper().readTree(json);
+    final IntClass fromTree;
+    try {
+        fromTree = new ObjectMapper()
+                .readerFor(IntClass.class)
+                .readValue(tree);
+    } catch (IOException \_e) {
+        fromTree = new IntClass();
+        fromTree.x = -1;
+    }
+
+    final IntClass fromString;
+    try {
+        fromString = new ObjectMapper()
+                .readerFor(IntClass.class)
+                .readValue(json);
+    } catch (IOException \_e) {
+        fromString = new IntClass();
+        fromString.x = -2;
+    }
+
+    assertEquals(-1, fromTree.x);
+    assertEquals(-2, fromString.x);
+}

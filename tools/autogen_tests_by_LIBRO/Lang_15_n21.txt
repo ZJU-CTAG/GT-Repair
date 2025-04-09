@@ -1,0 +1,16 @@
+public void testGetTypeArguments() {
+    // raw class
+    Assert.assertNull(TypeUtils.getTypeArguments(List.class));
+    // raw class with TypeVariable
+    Assert.assertNull(TypeUtils.getTypeArguments(List.class, List.class.getTypeParameters()));
+    // regular parameterized type
+    Assert.assertNull(TypeUtils.getTypeArguments(new TypeReference<List<String>>(){}.getType(), List.class));
+    // bounds of TypeVariable
+    Assert.assertNull(TypeUtils.getTypeArguments(new TypeReference<List<String>>(){}.getType(), List.class.getTypeParameters()[0]));
+
+    // typeVariable class
+    Assert.assertNull(TypeUtils.getTypeArguments(List.class.getTypeParameters()[0]));
+    // typeVariable class with TypeVariable
+    Assert.assertNull(TypeUtils.getTypeArguments(List.class.getTypeParameters()[0], List.class.getTypeParameters()));
+    // typeVariable class with ParameterizedType
+    Ass

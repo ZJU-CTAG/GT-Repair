@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Options options = new Options().addOption(Option.builder("a").build())
+            .addOption(Option.builder("b").hasArg().build())
+            .addOption(Option.builder("c").build())
+            .addOption(Option.builder("d").build());
+    DefaultParser parser = new DefaultParser();
+    parser.parse(options, new String[]{"-a", "-b", "test", "-c"});
+    assertEquals(1, options.getOption("a").getArgs());
+    assertEquals(1, options.getOption("b").getArgs());
+    assertEquals(1, options.getOption("c").getArgs());
+    assertEquals(0, options.getOption("d").getArgs());
+}

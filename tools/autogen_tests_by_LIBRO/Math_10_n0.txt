@@ -1,0 +1,13 @@
+public void testSpecialCases() {
+    double[] x = { -0.0, +0.0, -0.0, +0.0 };
+    double[] y = { -0.0, -0.0, +0.0, +0.0 };
+    double[] expectedAtan2 = { Math.PI, Math.PI, 0.0, 0.0 };
+    double[] expectedFastAtan2 = { -3.141592653589793, 3.141592653589793, 0.0, 0.0 };
+    for (int i = 0; i < x.length; i++) {
+        DerivativeStructure ds = new DerivativeStructure(1, 1, 0, x[i]);
+        double actual = ds.atan2(y[i]).getValue();
+        double expected = expectedAtan2[i];
+        Assert.assertEquals(expected, actual, 1.0e-15);
+        expected = expectedFastAtan2[i];
+        actual = ds.atan2(y[i]).getValue();
+        Assert.assertEquals

@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    String source =
+            "function d3_call(callback) {\n" +
+            " var f = callback;\n" +
+            " arguments[0] = this;\n" +
+            " f.apply(this, arguments);\n" +
+            " return this;\n" +
+            "}";
+    
+    String expected =
+            "function d3_call(a){arguments[0]=this;a.apply(this,arguments);return this};";
+    
+    String result = compile(source);
+    assertEquals(expected, result);
+}

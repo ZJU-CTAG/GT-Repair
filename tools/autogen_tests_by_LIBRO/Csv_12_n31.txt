@@ -1,0 +1,21 @@
+public void testExcelFormatWithEmptyHeader() throws Exception {
+    final String csv = "A,B,C,,\na,b,c,d,e\n";
+    final Reader in = new StringReader(csv);
+    final CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+
+    final List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+
+    final CSVRecord header = records.get(0);
+    assertEquals(4, header.size());
+    assertEquals("A", header.get(0));
+    assertEquals("B", header.get(1));
+    assertEquals("C", header.get(2));
+    assertEquals("", header.get(3));
+
+    final CSVRecord record = records.get(1);
+    assertEquals(5, record.size());
+    assertEquals("a", record.get(0));
+    assertEquals("b", record.get(1));
+    assertEquals("c", record.get(2));
+    assertEquals("d",

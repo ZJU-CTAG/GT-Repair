@@ -1,0 +1,27 @@
+public void testIssue1379() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector()
+    {
+        @Override
+        public Object findSerializer(Annotated am) {
+            if (am instanceof AnnotatedMethod) {
+                final AnnotatedMethod m = (AnnotatedMethod) am;
+                final String name = m.getName();
+                if ("getBar".equals(name)) {
+                    return StringSerializer.instance;
+                }
+            }
+            return super.findSerializer(am);
+        }
+    });
+    String json = mapper.writeValueAsString(new Foo());
+    assertEquals("{\"bar\":\"\"}", json);
+}
+
+class Foo {
+    public String getBar() {
+        return null;
+    }
+}

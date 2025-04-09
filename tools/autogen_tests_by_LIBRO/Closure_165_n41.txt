@@ -1,0 +1,13 @@
+public void testPropertiesDefinedOnAnyRecordTypeApplyingToUnrelatedRecordTypes() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        "/** @typedef {{name: string, id: number}} */" +
+        "var RecordType1;" +
+        "/** @typedef {{name2: string}} */" +
+        "var RecordType2;" +
+        "/** @param {RecordType1} rec */" +
+        "var func = function(rec) { alert(rec.name2); };" +
+        "func({name: 'jim', id: 0});",
+        Collections.singletonList(SourceFile.fromCode("code", "")));
+    assertTrue(result.success);
+}

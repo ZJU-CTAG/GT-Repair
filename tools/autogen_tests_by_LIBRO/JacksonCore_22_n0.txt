@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    JsonGenerator jgen = new JsonFactory().createGenerator(new ByteArrayOutputStream());
+    FilteringGeneratorDelegate gen = new FilteringGeneratorDelegate(jgen, new SimpleBeanPropertyFilter(), new SimpleFilterProvider());
+    assertEquals(0, gen._matchCount);
+    gen.writeStartObject();
+    assertEquals(0, gen._matchCount);
+    gen.writeStringField("foo", "bar");
+    assertEquals(0, gen._matchCount);
+    gen.writeStringField("foo2", "bar2");
+    assertEquals(0, gen._matchCount);
+    gen.writeEndObject();
+    assertEquals(0, gen._matchCount);
+    jgen.close();
+}

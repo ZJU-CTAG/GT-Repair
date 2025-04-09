@@ -1,0 +1,12 @@
+public void testBinaryValue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    JsonNode input = mapper.readTree("{foo:!}");
+    JsonParser parser = new TreeTraversingParser(input, mapper.getFactory());
+    JsonToken token = parser.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, token);
+    assertEquals("foo", parser.getCurrentName());
+    byte[] expected = "!".getBytes(ISO_8859_1);
+    byte[] actual = parser.getBinaryValue(Base64Variants.MIME_NO_LINEFEEDS);
+    assertArrayEquals(expected, actual);
+}

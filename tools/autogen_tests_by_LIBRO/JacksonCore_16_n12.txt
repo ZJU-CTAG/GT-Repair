@@ -1,0 +1,15 @@
+public void testJsonParserSequence() throws Exception {
+    JsonParser firstParser = createParserUsingReader("{\"f1\":\"v1\"}");
+    JsonParser secondParser = createParserUsingReader("{\"f2\":\"v2\"}");
+
+    JsonParser sequence = JsonParserSequence.createFlattened(firstParser, secondParser);
+    assertToken(JsonToken.START_OBJECT, sequence.nextToken());
+    assertToken(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertToken(JsonToken.VALUE_STRING, sequence.nextToken());
+    assertToken(JsonToken.END_OBJECT, sequence.nextToken());
+    assertToken(JsonToken.START_OBJECT, sequence.nextToken());
+    assertToken(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertToken(JsonToken.VALUE_STRING, sequence.nextToken());
+    assertToken(JsonToken.END_OBJECT, sequence.nextToken());
+    assertNull(sequence.nextToken());
+}

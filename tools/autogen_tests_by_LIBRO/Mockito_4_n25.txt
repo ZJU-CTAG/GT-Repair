@@ -1,0 +1,15 @@
+public void testException() {
+    final FooBar fooBar = mock(FooBar.class);
+    // mock(FooBar.class, new ReturnsDeepStubs()); // ok, but too slow
+    final Foo foo = mock(Foo.class);
+    when(fooBar.getFoo()).thenReturn(foo);
+    fooBar.getFoo();
+    verifyZeroInteractions(foo);
+}
+
+interface FooBar {
+    Foo getFoo();
+}
+
+interface Foo {
+}

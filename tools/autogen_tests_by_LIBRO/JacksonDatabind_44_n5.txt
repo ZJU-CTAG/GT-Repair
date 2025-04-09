@@ -1,0 +1,27 @@
+public void testName() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    String json = "{\"type\": \"a\", \"value\": \"foo\"}";
+    Container result = mapper.readValue(json, Container.class);
+    assertEquals("foo", result.value);
+}
+
+public static class Container {
+    public String value;
+}
+
+public static class A extends Container {
+    public String type;
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type",
+        defaultImpl = A.class)
+@JsonSubTypes({@JsonSubTypes.Type(value = A.class, name = "a")})
+public static class Container {
+    public String value;
+}
+
+public static class A extends Container {
+    public String type;
+}

@@ -1,0 +1,18 @@
+public void testStepSizeTooLarge() {
+    final double mu = 3, n = 4;
+    final double t0 = 0, t1 = 1e-10;
+    final double y0 = 2;
+    final double tol = 1e-30;
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public int getDimension() {
+            return 1;
+        }
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            double tau = t / (t1 - t0);
+            yDot[0] = (1 - tau) * mu * y[0] - tau * n * y[0] * y[0];
+        }
+    };
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(t0, t1, tol, tol);
+    integrator.addStepHandler(new StepHandler() {
+        public void handleStep(StepInterpolator interpolator, boolean isLast) {
+            //System.out.println(interpolator.getCurrentTime());

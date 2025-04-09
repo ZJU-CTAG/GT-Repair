@@ -1,0 +1,12 @@
+public void testIssue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final String json = "{\"id\":\"type_1_id\",\"data\":{\"type\":\"type_1\",\"value\":1}}";
+
+    final DefaultContext context = mapper.readValue(json, DefaultContext.class);
+
+    assertNotNull(context);
+    assertNotNull(context.getData());
+    assertNull(context.getData().getExternalId());
+    assertFalse(context.getData() instanceof Type2Data);
+}

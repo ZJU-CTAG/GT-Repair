@@ -1,0 +1,22 @@
+public void testIssue115() {
+    String html = "<html><head><title>foo</title><head><body>صباح الخير</body></html>";
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    OutputStreamWriter osw = new OutputStreamWriter(baos, "UTF-16");
+    try {
+        osw.write(html);
+        osw.close();
+    } catch (IOException e) {
+        fail("Unable to create test input");
+    }
+    String result = "";
+    try {
+        result = new String(baos.toByteArray(), "UTF-16");
+    } catch (UnsupportedEncodingException e) {
+        fail("Unable to create test input");
+    }
+    if (!result.equals(html)) {
+        fail("Input does not match expected");
+    }
+    Document doc = Jsoup.parse(new ByteArrayInputStream(baos.toByteArray()), null, "");
+    assertEquals("foo", doc.title());
+    assertEquals("صباح ال

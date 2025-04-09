@@ -1,0 +1,21 @@
+public void testPolymorphicIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "type");
+    mapper.configure(MapperFeature.AUTO_DETECT_GETTERS, true);
+    mapper.configure(MapperFeature.AUTO_DETECT_IS_GETTERS, true);
+    mapper.configure(MapperFeature.AUTO_DETECT_SETTERS, true);
+    mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+
+    String json = mapper.writeValueAsString(new You());
+    You you = mapper.readValue(json, You.class);
+
+    assertNotNull(you);
+    assertEquals("foo", you.getX());
+    assertEquals("bar", you.getY());
+}
+
+public static class Me {
+    @JsonProperty("x") private String x;
+
+    @JsonProperty("x")
+    public String getX() {

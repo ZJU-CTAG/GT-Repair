@@ -1,0 +1,10 @@
+public void testLocaleDeserialization() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new Jdk8Module());
+    String json = om.writeValueAsString(Locale.ENGLISH);
+    System.out.println(json);
+
+    Locale locale = om.readValue("\"en-US\"", Locale.class);
+    assertEquals("en-US", locale.toString());
+}
+

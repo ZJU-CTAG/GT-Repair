@@ -1,0 +1,32 @@
+public void testInjectMocks() {
+    final SomeClass someClass = new SomeClass();
+    final SomeOtherClass someOtherClass = new SomeOtherClass(someClass);
+
+    MockitoAnnotations.initMocks(this);
+
+    assertSame(someClass, someOtherClass.getSomeClass());
+    assertSame(someOtherClass, someClass.getSomeOtherClass());
+}
+
+@Test
+public static class SomeOtherClass {
+    private final SomeClass someClass;
+
+    @InjectMocks
+    public SomeOtherClass(final SomeClass someClass) {
+        this.someClass = someClass;
+    }
+
+    public SomeClass getSomeClass() {
+        return someClass;
+    }
+}
+
+public static class SomeClass {
+    @InjectMocks
+    private SomeOtherClass someOtherClass;
+
+    public SomeOtherClass getSomeOtherClass() {
+        return someOtherClass;
+    }
+}

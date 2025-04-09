@@ -1,0 +1,18 @@
+public void testNamespaces() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.sourceMapFormat = SourceMap.Format.V3;
+    options.prettyPrint = true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        SourceFile.fromCode("a.js", "goog.provide('apps');"),
+        SourceFile.fromCode("b.js", "goog.provide('apps.foo.bar.B');"),
+        SourceFile.fromCode("c.js", "goog.provide('apps.foo.bar.C');"),
+        options);
+    assertTrue(result.success);
+    assertEquals("var apps={};apps.foo.bar={};apps.foo={};", result.compiledCode);
+}

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    File testDir = new File("testdata/commons-compress-108");
+    File zip = new File(testDir, "test.zip");
+    File file = new File(testDir, "unzip/a/problem.txt");
+    assertTrue(file.exists());
+    try (ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", new FileInputStream(zip))) {
+        ArchiveEntry entry;
+        while ((entry = in.getNextEntry()) != null) {
+            if (entry.getName().equals("unzip\\a\\problem.txt")) {
+                assertFalse(entry.isDirectory());
+                assertEquals(file.length(), entry.getSize());
+                return;
+            }
+        }
+        fail("Entry not found");
+    }
+}

@@ -1,0 +1,13 @@
+public void testBrentOptimizer() {
+    // this is a non-convex function
+    UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            return -x*x*x + x*x - x + 1.5;
+        }
+    };
+    // the function has a minimum at 1.0, but BrentOptimizer is not
+    // smart enough to find it
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariatePointValuePair optimum = optimizer.optimize(100, f, GoalType.MINIMIZE, 0, 2);
+    assertEquals(1.0, optimum.getPoint(), 1e-5);
+}

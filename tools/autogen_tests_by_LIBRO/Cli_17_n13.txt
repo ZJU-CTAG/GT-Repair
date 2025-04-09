@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    Options options = new Options();
+    options.addOption(new Option("a", false, "toggle -a"));
+    options.addOption(new Option("b", false, "toggle -b"));
+    String[] args = {"-azb"};
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args);
+    assertEquals(false, cmd.hasOption("a"));
+    assertEquals(false, cmd.hasOption("b"));
+    assertEquals(1, cmd.getArgs().length);
+    assertEquals("zb", cmd.getArgs()[0]);
+}

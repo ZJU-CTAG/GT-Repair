@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final int n = 2;
+    final RungeKuttaIntegrator rk = new DormandPrince853Integrator(0, 100, 1.0e-10, 1.0e-10);
+    final double[] y = new double[n];
+    final double[] yDot = new double[n];
+    final FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            for (int i = 0; i < n; ++i) {
+                yDot[i] = 1;
+            }
+        }
+        public int getDimension() {
+            return n;
+        }
+    };
+    rk.integrate(ode, 0, y, 100, y);
+    double error = 0;
+    for (int i = 0; i < n; ++i) {
+        error += Math.abs(y[i] - 100);
+    }
+    Assert.assertEquals(0, error, 1.0e-

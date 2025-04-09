@@ -1,0 +1,18 @@
+public void testIssue101() throws Exception {
+    DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+    f.setNamespaceAware(true);
+    DocumentBuilder b = f.newDocumentBuilder();
+    Document doc = b.parse(new InputSource(new StringReader(DOCUMENT)));
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.registerNamespace("a", "ns");
+    context.registerNamespace("b", "ns");
+    Pointer pointer;
+    Iterator<?> iter = context.iteratePointers("/a:doc/a:elem");
+    int count = 0;
+    while (iter.hasNext()) {
+        count++;
+        pointer = (Pointer) iter.next();
+        System.out.println("XPath: " + pointer.asPath());
+    }
+    assertEquals(2, count);
+}

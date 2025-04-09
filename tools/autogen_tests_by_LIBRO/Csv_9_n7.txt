@@ -1,0 +1,20 @@
+public void testIssue104() {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    StringReader reader = new StringReader("a,b,c");
+    CSVParser parser = new CSVParser(reader, format);
+    List<CSVRecord> records = parser.getRecords();
+    
+    Map<String, String> map = records.get(0).toMap();
+    assertEquals("a", map.get("a"));
+    assertEquals("b", map.get("b"));
+    assertEquals("c", map.get("c"));
+    assertEquals(3, map.size());
+    
+    format = CSVFormat.DEFAULT;
+    reader = new StringReader("a,b,c");
+    parser = new CSVParser(reader, format);
+    records = parser.getRecords();
+    
+    map = records.get(0).toMap();
+    assertEquals(null, map);
+}

@@ -1,0 +1,32 @@
+public void testEnumSerializationUsingJsonProperty() {
+    ObjectMapper mapper = new ObjectMapper();
+    TestEnum value = TestEnum.VALUE_ONE;
+    assertEquals("{\"value\":\"value1\"}", mapper.writeValueAsString(new TestClass(value)));
+}
+
+@JsonSerialize(using=TestEnumSerializer.class)
+public enum TestEnum {
+    VALUE_ONE("value1");
+
+    private String valueInJson;
+
+    private TestEnum(String valueInJson) {
+        this.valueInJson = valueInJson;
+    }
+}
+
+public class TestClass {
+    private TestEnum value;
+
+    public TestClass(TestEnum value) {
+        this.value = value;
+    }
+
+    public TestEnum getValue() {
+        return value;
+    }
+
+    @JsonCreator
+    public static TestEnum getEnumFromValue(String value) {
+        for (TestEnum testEnum : TestEnum.values()) {
+            if (testEnum.value

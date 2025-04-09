@@ -1,0 +1,14 @@
+public void testGroupConstraints() throws Exception {
+    Option optionA = OptionBuilder.withLongOpt("option-a")
+            .create();
+    Option optionB = OptionBuilder.withLongOpt("option-b")
+            .create();
+    Group group = new GroupBuilder()
+            .withName("group")
+            .withOption(optionA)
+            .withOption(optionB)
+            .create();
+    group.setMax(1);
+    CommandLine commandLine = new PosixParser().parse(new Options().addOption(optionA).addOption(optionB), new String[]{ "--option-a", "--option-b" });
+    assertTrue(group.getMax() > group.getRequiredCount(commandLine));
+}

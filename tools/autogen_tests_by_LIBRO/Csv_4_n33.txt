@@ -1,0 +1,12 @@
+public void testIssue() {
+    final StringReader reader = new StringReader("a,b,c\n1,2,3");
+    try {
+        final CSVParser parser = new CSVParser(reader, CSVFormat.RFC4180);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNotNull(headerMap);
+        assertEquals("a", headerMap.keySet().iterator().next());
+        assertEquals(new Integer(0), headerMap.values().iterator().next());
+    } catch (IOException e) {
+        fail("should not throw any exception");
+    }
+}

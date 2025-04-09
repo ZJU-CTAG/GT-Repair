@@ -1,0 +1,16 @@
+public void testClassAnnotationNON_DEFAULT() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    AnnotatedDefaultStringValueStringClass input = new AnnotatedDefaultStringValueStringClass("foobar");
+    String json = mapper.writeValueAsString(input);
+    assertEquals("{\"foo\":\"foobar\"}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+static class AnnotatedDefaultStringValueStringClass {
+    public String foo;
+
+    public AnnotatedDefaultStringValueStringClass(String v) {
+        foo = v;
+    }
+}

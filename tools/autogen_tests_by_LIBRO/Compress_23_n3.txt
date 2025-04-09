@@ -1,0 +1,15 @@
+public void testSevenZipError() throws Exception {
+    File file = File.createTempFile("7z", ".7z");
+    SevenZOutputFile out = new SevenZOutputFile(file);
+    out.setContentCompression(SevenZMethod.LZMA2);
+    out.setDictionarySize(16777216);
+    out.setSolid(true);
+    out.putArchiveEntry(new SevenZArchiveEntry("foo"));
+    out.write(new byte[1024*1024]);
+    out.closeArchiveEntry();
+    out.close();
+    SevenZFile in = new SevenZFile(file);
+    SevenZArchiveEntry entry = in.getNextEntry();
+    assertEquals("foo", entry.getName());
+    in.close();
+}

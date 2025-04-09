@@ -1,0 +1,10 @@
+public void testIssue136() throws Exception {
+  final String js = "var x = globalThis;";
+  final Compiler compiler = new Compiler();
+  final Result result = compiler.compile(
+    null,
+    SourceFile.fromCode("foo.js", js),
+    new CompilerOptions()
+      .setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF));
+  assertTrue("has errors", result.success);
+}

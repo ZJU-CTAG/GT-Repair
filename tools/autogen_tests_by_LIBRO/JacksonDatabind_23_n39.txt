@@ -1,0 +1,19 @@
+public void testBean() throws Exception
+{
+    String json = "{\"b\":{\"e\":1,\"f\":\"2\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    mapper.readValue(json, B.class);
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public static class B {
+    @JsonInclude(Include.NON_EMPTY)
+    public C b;
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public static class C {
+    public long e;
+    public String f;
+}

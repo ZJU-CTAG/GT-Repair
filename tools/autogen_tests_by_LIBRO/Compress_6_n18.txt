@@ -1,0 +1,18 @@
+public void testZipOutputStream() throws Exception {
+    File file = new File("target/test/test.zip");
+    file.delete();
+    file.getParentFile().mkdirs();
+    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(file));
+    ZipArchiveEntry e1 = new ZipArchiveEntry("test1");
+    out.putArchiveEntry(e1);
+    out.write(new byte[]{'h', 'e', 'l', 'l', 'o'});
+    out.closeArchiveEntry();
+    ZipArchiveEntry e2 = new ZipArchiveEntry("test2");
+    out.putArchiveEntry(e2);
+    out.write(new byte[]{'b', 'y', 'e'});
+    out.closeArchiveEntry();
+    ZipArchiveEntry e3 = new ZipArchiveEntry("test1");
+    out.putArchiveEntry(e3);
+    out.write(new byte[]{'h', 'e', 'l', 'l', 'o'});
+    out.closeArchiveEntry();
+    out.close();

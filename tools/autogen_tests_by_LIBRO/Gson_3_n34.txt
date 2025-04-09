@@ -1,0 +1,11 @@
+public void testIssue624() {
+    ConcurrentNavigableMap<String, Integer> concurrentNavigableMap = new ConcurrentSkipListMap<>();
+    concurrentNavigableMap.put("a", 100);
+    concurrentNavigableMap.put("b", 200);
+
+    Gson gson = new Gson();
+    String json = gson.toJson(concurrentNavigableMap);
+    Type type = new TypeToken<ConcurrentNavigableMap<String, Integer>>() {}.getType();
+    ConcurrentNavigableMap<String, Integer> jsonObject = gson.fromJson(json, type);
+    assertEquals(concurrentNavigableMap, jsonObject);
+}

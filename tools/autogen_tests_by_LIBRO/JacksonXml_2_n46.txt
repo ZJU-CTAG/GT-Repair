@@ -1,0 +1,8 @@
+public void testIssue_Mixed_Content() throws IOException {
+    ObjectMapper xmlMapper = new XmlMapper();
+    String xml = "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+    WindSpeed windSpeed = xmlMapper.readValue(xml, WindSpeed.class);
+    assertEquals("kt", windSpeed.getUnits());
+    assertEquals(27, windSpeed.getValue());
+    assertEquals(20, windSpeed.getRadius().get(0).getValue());
+}

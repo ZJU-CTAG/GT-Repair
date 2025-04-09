@@ -1,0 +1,19 @@
+public void testIssue107() {
+    String html = "<form id=\"postForm\" action=\"/test\" method=\"POST\">" +
+            "   <input type=\"hidden\" name=\"alpha\" value=\"beta\" />" +
+            "</form>";
+    org.jsoup.nodes.Document doc = Jsoup.parse(html);
+    
+    org.jsoup.nodes.Element form = doc.select("form").first();
+    
+    // remove the alpha node from the form
+    org.jsoup.nodes.Element alpha = form.select("input[name=alpha]").first();
+    alpha.remove();
+    
+    // the form node itself doesn't contain 'alpha'
+    assertFalse(form.html().contains("alpha"));
+    
+    // but the form data still contains 'alpha'
+    List<org.jsoup.Connection.KeyVal> formData = form.formData();
+    assertTrue(formData.get(0).toString().contains("alpha"));
+}

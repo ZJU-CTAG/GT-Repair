@@ -1,0 +1,7 @@
+public void testRequireCall() {
+    String code = "var x = goog.require('y');";
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("test", code));
+    Result result = compiler.compile(AbstractCommandLineRunner.getDefaultExterns(), inputs, new CompilerOptions());
+    assertEquals("test:1: ERROR - required symbol 'y' is not provided\n", result.errors[0].toString());
+}

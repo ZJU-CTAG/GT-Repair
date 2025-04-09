@@ -1,0 +1,14 @@
+public void testOptimize() {
+    double[] min = new double[] {0.1};
+    double[] max = new double[] {0.5};
+    double[] start = new double[] {0.1};
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    PointValuePair result = optimizer.optimize(new MaxEval(100),
+                                               new ObjectiveFunction(new ObjectiveFunctionTest()),
+                                               GoalType.MINIMIZE,
+                                               new InitialGuess(start),
+                                               new SimpleBounds(min, max));
+    System.out.println("result=" + result.getValue() + " point=" + result.getPoint()[0]);
+    assertTrue(result.getPoint()[0] >= min[0]);
+    assertTrue(result.getPoint()[0] <= max[0]);
+}

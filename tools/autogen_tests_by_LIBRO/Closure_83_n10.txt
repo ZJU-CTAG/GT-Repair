@@ -1,0 +1,13 @@
+public void testClosureCompilerVersion() {
+    CommandLineRunner runner = new CommandLineRunner(new String[] {"--version"});
+    assertTrue(runner.shouldRunCompiler());
+    runner.run();
+    assertEquals(0, runner.getResult());
+    String expectedVersion = CommandLineRunner.getCompilerVersion();
+    String expectedBuiltOn = CommandLineRunner.getCompilerBuildDate();
+    String expectedLine =
+        "Closure Compiler (http://code.google.com/closure/compiler)\n" +
+        "Version: " + expectedVersion + "\n" +
+        "Built on: " + expectedBuiltOn;
+    assertEquals(expectedLine, runner.getStdout().toString().trim());
+}

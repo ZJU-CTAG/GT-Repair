@@ -1,0 +1,9 @@
+public void testIssue108() {
+    String js = "var test = globalThis;";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("test.js", js), options);
+    assertTrue(result.success);
+}

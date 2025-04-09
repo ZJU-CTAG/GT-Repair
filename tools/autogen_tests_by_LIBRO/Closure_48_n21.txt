@@ -1,0 +1,17 @@
+public void testIssue114 () {
+    String js = "/** @constructor*/ var myclass = function () {};"
+        + "/** @param {boolean} success */ myclass.prototype.fn = function (success) { };"
+        + "myclass.prototype.test = function () {"
+        + "  this.fn();"
+        + "  this.fn = function () { };"
+        + "};";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[0],
+        new JSSourceFile[] { JSSourceFile.fromCode("testcode", js) }, options);
+    JSError[] errors = compiler.getErrors();
+    assertEquals(1, errors.length);
+    assertEquals(0, errors[0].lineNumber);
+    assertEquals(DiagnosticType.

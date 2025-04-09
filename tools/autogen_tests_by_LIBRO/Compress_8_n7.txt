@@ -1,0 +1,14 @@
+public void testTrailingCharInSize() throws Exception {
+    byte[] header = new byte[512];
+    System.arraycopy("0000000000        ".getBytes("ISO-8859-1"), 0, header, 0, 12);
+    TarArchiveEntry entry = new TarArchiveEntry(header, 0);
+    assertEquals(0, entry.getSize());
+    System.arraycopy("0000000000\0".getBytes("ISO-8859-1"), 0, header, 0, 12);
+    entry = new TarArchiveEntry(header, 0);
+    assertEquals(0, entry.getSize());
+    System.arraycopy("10000000000       ".getBytes("ISO-8859-1"), 0, header, 0, 12);
+    entry = new TarArchiveEntry(header, 0);
+    assertEquals(1024, entry.getSize());
+    System.arraycopy("017777777777      ".getBytes("ISO-8859-1"), 0, header, 0, 12);
+    entry = new TarArchiveEntry(header, 0);
+    assertEquals(077777777777L,

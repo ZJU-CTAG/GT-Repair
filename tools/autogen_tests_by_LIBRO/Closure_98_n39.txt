@@ -1,0 +1,10 @@
+public void testIssue() {
+    String js = "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } } foo();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    compiler.compile(SourceFile.fromCode("test.js", js), options);
+}

@@ -1,0 +1,13 @@
+public void testWriteEmbeddedByteArray() throws Exception
+{
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    JsonGenerator gen = MAPPER.createGenerator(bout);
+    gen.writeStartObject();
+    gen.writeFieldName("data");
+    gen.writeEmbeddedObject(new byte[0]);
+    gen.writeEndObject();
+    gen.close();
+
+    String json = bout.toString("UTF-8");
+    assertEquals("{\"data\":{}}", json);
+}

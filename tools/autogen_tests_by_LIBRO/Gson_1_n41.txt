@@ -1,0 +1,37 @@
+public void testFailsToSerializeOrDeserializeAClassWhereASuperClassHasATypeParameter() {
+    Bar bar1 = new Bar(1);
+    assertEquals(1, bar1.getValue());
+
+    Gson gson = new Gson();
+    String json = gson.toJson(bar1);
+
+    Bar bar2 = gson.fromJson(json, Bar.class);
+    assertEquals(bar1, bar2);
+}
+
+public class Foo<T> {
+    private final T value;
+
+    public Foo(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Foo)) {
+            return false;
+        } else {
+            return getValue().equals(((Foo)o).getValue());
+        }
+    }
+}
+
+public class Bar extends Foo<Integer> {
+    public Bar(Integer i) {
+        super(i);
+    }
+}

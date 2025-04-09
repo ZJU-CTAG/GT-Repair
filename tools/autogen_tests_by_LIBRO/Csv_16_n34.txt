@@ -1,0 +1,16 @@
+public void testIssue112() throws IOException {
+    String fiveRows = "1\n2\n3\n4\n5\n";
+    CSVParser parser = new CSVParser(new BufferedReader(new StringReader(fiveRows)), CSVFormat.DEFAULT);
+    int recordNumber = 0;
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        if (recordNumber >= 2) {
+            break;
+        }
+    }
+    System.out.println("hasNext(): " + parser.iterator().hasNext());
+    for (CSVRecord record : parser) {
+        recordNumber++;
+    }
+    assertEquals(5, recordNumber);
+}

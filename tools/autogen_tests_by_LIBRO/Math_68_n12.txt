@@ -1,0 +1,15 @@
+public void testLevenbergMarquardtOptimizer() {
+    VectorialPointValuePair optimum = new LevenbergMarquardtOptimizer().optimize(100, new MultivariateDifferentiableVectorFunction() {
+        public GradientVectorFunction value(double[] point) {
+            return new GradientVectorFunction() {
+                public double[] value(double[] point) throws IllegalArgumentException {
+                    return new double[0];
+                }
+            };
+        }
+    }, new double[0], new double[0], new double[0], new double[0], new VectorialConvergenceChecker() {
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            return true;
+        }
+    });
+}

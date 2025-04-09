@@ -1,0 +1,18 @@
+public void testIssue110() {
+    GenericMetadataSupport genericMetadata = inferFrom(GenericsSelfReference.class).resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReference.class));
+
+    assertThat(genericMetadata.rawType()).isEqualTo(GenericsSelfReference.class);
+}
+
+public static <T extends GenericsSelfReference<T>> GenericsSelfReference<T> self() {
+    return null;
+}
+
+private static Method firstNamedMethod(String name, Class<?> c) {
+    for (Method m : c.getDeclaredMethods()) {
+        if (m.getName().equals(name)) {
+            return m;
+        }
+    }
+    throw new IllegalArgumentException("No method called " + name + " in " + c);
+}

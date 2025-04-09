@@ -1,0 +1,9 @@
+public void testIssue107() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+    String json = "{\"businessAddress.town\":\"London\",\"businessAddress.street\":\"Downing Street\",\"businessAddress.country\":\"GB\",\"businessAddress.addon\":\"10\"}";
+    Person person = mapper.readValue(json, Person.class);
+    assertEquals("London", person.businessAddress.getTown());
+}

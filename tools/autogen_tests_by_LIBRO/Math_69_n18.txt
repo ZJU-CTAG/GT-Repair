@@ -1,0 +1,15 @@
+public void testCorrelationPValuePrecision() {
+    final int numTreatments = 5000;
+    final int numSamples = 100;
+    final double mean = 0.0;
+    final double standardDeviation = 1.0;
+    final List<Double> treatmentAVals = new ArrayList<Double>();
+    final List<Double> treatmentBVals = new ArrayList<Double>();
+    final RandomDataGenerator rng = new RandomDataGenerator();
+    for (int i = 0; i < numTreatments; i++) {
+        final RealDistribution dist = new NormalDistribution(rng.getRandomGenerator(), mean, standardDeviation);
+        treatmentAVals.add(dist.sample());
+        treatmentBVals.add(dist.sample());
+    }
+    final PearsonsCorrelation pearsonsCorrelation = new PearsonsCorrelation();
+    final double[][] corrMatrix = pearsonsCorrelation.computeCorrelationMatrix(new double[][] {ArrayUtils.toPrimitive(treatmentAVals.toArray(new Double[treatmentAVals.size()])), Array

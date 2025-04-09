@@ -1,0 +1,12 @@
+public void test() {
+    final InvocationHandler invocationHandler = mock(InvocationHandler.class);
+    final Answer myAnswer = new Answer() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return invocationHandler;
+        }
+    };
+    final Class<?> proxyClass = (Class<?>) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[] { Class.class }, myAnswer);
+
+    verifyZeroInteractions(myAnswer);
+}

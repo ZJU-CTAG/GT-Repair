@@ -1,0 +1,9 @@
+public void testRead() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL)
+        .init(JsonTypeInfo.Id.CLASS, JsonTypeInfo.As.PROPERTY));
+    final JsonRoot root = mapper.readValue(getFoodMartModel(), JsonRoot.class);
+    assertEquals("1.0", root.version);
+}

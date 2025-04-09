@@ -1,0 +1,17 @@
+public void testIssue() throws Exception {
+    Document doc = XMLUnit.buildControlDocument(
+      "<a:doc xmlns:a=\"ns\">" +
+      "  <a:elem />" +
+      "  <b:elem xmlns:b=\"ns\" />" +
+      "</a:doc>");
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.registerNamespace("a", "ns");
+    context.registerNamespace("b", "ns");
+
+    Iterator iter = context.iteratePointers("//a:elem");
+    assertTrue(iter.hasNext());
+    assertNotNull(iter.next());
+    assertTrue(iter.hasNext());
+    assertNotNull(iter.next());
+    assertFalse(iter.hasNext());
+}

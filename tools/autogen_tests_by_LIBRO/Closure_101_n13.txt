@@ -1,0 +1,16 @@
+public void testProcessPrimitives () {
+    Compiler compiler = new Compiler();
+    compiler.setProcessClosurePrimitives(true);
+    compiler.setProcessJqueryPrimitives(true);
+    compiler.process(ImmutableList.of(
+            SourceFile.fromCode("testPrimitive.js",
+                    "goog.provide('goog.test1');\n" +
+                    "goog.require('goog.test2');\n" +
+                    "goog.test2.foo = function() {};\n" +
+                    "/** @constructor */ goog.test1 = function() {};\n" +
+                    "goog.test1.prototype.bar = function() {};"))
+            , ImmutableList.<SourceFile>of());
+    assertEquals("goog.provide('goog.test1');\n" +
+            "goog.require('goog.test2');\n\n" +
+            "/** @constructor */ goog.test1 = function() {};\n" +
+            "goog.test1.prototype.bar = function() {};\

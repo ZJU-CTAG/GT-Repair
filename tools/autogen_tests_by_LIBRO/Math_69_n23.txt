@@ -1,0 +1,24 @@
+public void testCorrelationPValuePrecision() {
+    // number of treatments to use for the test
+    final int numTreatments = 100;
+
+    // initialize the correlation matrix
+    final double[][] data = new double[numTreatments][numTreatments];
+    for (int i = 0; i < data.length; i++) {
+        for (int j = 0; j < i; j++) {
+            data[i][j] = 1;
+            data[j][i] = 1;
+        }
+    }
+
+    // calculate p-values
+    final PearsonsCorrelation pc = new PearsonsCorrelation();
+    final double[] pValues = pc.getCorrelationPValues(data);
+
+    // p-values should be continuous down to 2.2e-16, but are zero beyond that
+    double previousValue = pValues[0];
+    for (int i = 1; i < pValues.length; i++) {
+        assertTrue(pValues[i] > previousValue);
+        previousValue = pValues[i];
+    }
+}

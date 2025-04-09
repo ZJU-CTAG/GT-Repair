@@ -1,0 +1,25 @@
+public void testIssue109() {
+    String js = "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function C2() {}\n" +
+            "\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function C3(c2) {\n" +
+            "  /**\n" +
+            "   * @type {C2}\n" +
+            "   * @private\n" +
+            "   */\n" +
+            "  this.c2_;\n" +
+            "\n" +
+            "  use(this.c2_.prop);\n" +
+            "}";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(js, new ErrorManager() {
+        @Override
+        public void report(CheckLevel level, JSError error) {
+            if (error.sourceName.contains("Issue109.java")) {
+                assertEquals("Property prop never defined on

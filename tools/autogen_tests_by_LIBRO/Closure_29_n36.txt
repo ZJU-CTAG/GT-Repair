@@ -1,0 +1,9 @@
+public void testClosure() {
+    JavaScriptCompiler c = new JavaScriptCompiler();
+    String code = "function(functionToCheck) {" +
+            " var getType; getType = {};" +
+            " return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]';" +
+            " }";
+    String compiled = c.compile(code, new CompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS));
+    assertTrue(compiled.contains("\"[object Function]\" === (void 0).apply(a)"));
+}

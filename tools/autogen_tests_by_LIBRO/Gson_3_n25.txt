@@ -1,0 +1,11 @@
+public void testConcurrentMapDeserialization() {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("k1", "v1");
+    map.put("k2", "v2");
+    TestClass obj = new TestClass();
+    obj.setMap(map);
+    Gson gson = new Gson();
+    String json = gson.toJson(obj);
+    TestClass obj2 = gson.fromJson(json, TestClass.class);
+    assertEquals(map, obj2.getMap());
+}

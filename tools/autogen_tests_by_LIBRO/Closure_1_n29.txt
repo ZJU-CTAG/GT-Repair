@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    StringWriter sw = new StringWriter();
+    Script script = ScriptCompiler.compile(new InputStreamReader(new FileInputStream("src/test/resources/issue108.js")), null, 1);
+    ScriptRuntime.apply(script, null, new PrintWriter(sw));
+    String result = sw.toString();
+    assertTrue(result.contains("function foo(a,b){return a}alert(foo.length);"));
+    assertTrue(result.contains("function foo(a){return a}alert(foo.length);"));
+}

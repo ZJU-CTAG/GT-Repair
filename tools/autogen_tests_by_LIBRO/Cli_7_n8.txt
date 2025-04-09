@@ -1,0 +1,27 @@
+public void testRequiredOptions() {
+    Group required = new GroupBuilder()
+        .withName("required")
+        .withOption(OptionBuilder.withShortName("h")
+                    .withDescription("usage")
+                    .isRequired()
+                    .create())
+        .withOption(OptionBuilder.withShortName("c")
+                    .withDescription("context")
+                    .withArgument(new ArgumentBuilder()
+                                  .withName("arg")
+                                  .create())
+                    .isRequired()
+                    .create())
+        .create();
+    try {
+        CommandLine commandLine = new CommandLine();
+        commandLine.addOption(OptionBuilder.withShortName("h")
+                              .withDescription("usage")
+                              .create());
+        required.process(commandLine);
+        fail("should have failed");
+    } catch (OptionException e) {
+        assertEquals("Missing required options: " +
+                     "[-h]", e.getMessage());
+    }
+}

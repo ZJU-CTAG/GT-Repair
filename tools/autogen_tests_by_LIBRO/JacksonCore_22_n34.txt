@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    String json = "{\"objects\": [{\"foo\": 1}, {\"foo\": 2}]}";
+    FilterProvider fp = new SimpleFilterProvider().addFilter(
+            "filter", SimpleBeanPropertyFilter.filterOutAllExcept("foo"));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    mapper.writer(fp).writeValue(System.out, mapper.readValue(json, Object.class));
+}

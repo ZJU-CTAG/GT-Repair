@@ -1,0 +1,11 @@
+public void testMaximumKeyLength() {
+    String key = RandomStringUtils.randomAlphanumeric(262000);
+    String json = "{\"" + key + "\":\"test\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readTree(json);
+        fail("Expected JsonParseException");
+    } catch(JsonParseException ex) {
+        // expected
+    }
+}

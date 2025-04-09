@@ -1,0 +1,7 @@
+public void testIssue123() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"foo\":[{\"bar\":1},{\"bar\":2},{\"bar\":3}]}";
+    final JsonNode jsonNode = mapper.readTree(json);
+    final FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonNode, new MatchingNodeFilter("bar"), true, true);
+    assertEquals(3, filteringParserDelegate.getMatchCount());
+}

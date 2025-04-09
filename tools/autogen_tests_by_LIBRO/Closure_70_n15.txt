@@ -1,0 +1,23 @@
+public void testIssue108() {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setSummaryDetailLevel(3);
+
+    Compiler compiler = new Compiler();
+    SourceFile input = SourceFile.fromCode("v.js",
+            "/*global window*/"
+            + "/*jslint sub: true*/"
+            + "/**"
+            + " * @constructor"
+            + " * @param {!Element} element"
+            + " */"
+            + "function Example(element) {"
+            + "  /**"
+            + "   * @param {!string} ns"
+            + "   * @param {!string} name"
+            + "   * @return {undefined}"
+            + "   */"
+            + "  this.appendElement = function appendElement(ns, name) {"
+            + "   

@@ -1,0 +1,16 @@
+public void testCsv() throws IOException {
+    String[] header = new String[]{"col1", "col2", "col3"};
+    String[] content = new String[]{"あ", "い", "う"};
+    CSVFormat format = CSVFormat.EXCEL.withHeader(header).withQuote('\'').withDelimiter('|');
+    StringWriter writer = new StringWriter();
+    CSVParser parser = CSVParser.parse(new StringReader("あ|い|う"), format);
+    List<CSVRecord> records = parser.getRecords();
+    for (CSVRecord record : records) {
+        System.out.println(record.get("col1"));
+        System.out.println(record.get("col2"));
+        System.out.println(record.get("col3"));
+        assertEquals("あ", record.get("col1"));
+        assertEquals("い", record.get("col2"));
+        assertEquals("う", record.get("col3"));
+    }
+    CSVPrinter printer = new CSVPrinter(writer,

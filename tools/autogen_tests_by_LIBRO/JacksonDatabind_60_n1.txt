@@ -1,0 +1,10 @@
+public void testPolymorphicTypeLostWhenUsingJsonValue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+
+    CommandAPDU apdu = new CommandAPDU(new byte[]{1, 2, 3});
+    byte[] bytes = mapper.writeValueAsBytes(apdu);
+    CommandAPDU deserialized = mapper.readValue(bytes, CommandAPDU.class);
+    assertEquals(new byte[]{1, 2, 3}, deserialized.getBytes());
+}

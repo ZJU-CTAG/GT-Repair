@@ -1,0 +1,25 @@
+public void testErrorRecovery() throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectReader r = mapper.readerFor(Simple.class);
+    ObjectReader r2 = r.with(StreamReadFeature.STRICT_DUPLICATE_DETECTION);
+
+    // First try: works, no exception
+    MappingIterator<Simple> iter = r2.readValues("{\"a\":1, \"a\":2}");
+    assertNotNull(iter.next());
+    assertFalse(iter.hasNext());
+
+    // Second try: should fail with error
+    iter = r2.readValues("{\"b\":1, \"a\":1, \"a\":2, \"c\":3}");
+    assertNotNull(iter.next());
+
+    try {
+        // should fail with exception
+        iter.next();
+        fail("Expected an exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "duplicate field 'a'");
+    }
+
+    // But: should be able to continue parsing
+    assertNotNull(iter.next

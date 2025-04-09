@@ -1,0 +1,21 @@
+public void testIssue108() {
+    String externs =
+            "\nns.Thing = function(){};\n" +
+                    "ns.Thing.prototype.subthing = {};\n" +
+                    "ns.Thing.prototype.subthing.prop = 3;\n" +
+                    "var thing = {};\n" +
+                    "thing.subthing = {};\n" +
+                    "thing.subthing.prop = 3;\n";
+
+    String js =
+            "\nns.MyClass = function(thing){\n"+
+                    "this.thing_ = thing;\n"+
+                    "}\n"+
+                    "ns.MyClass.prototype.doIt = function() {\n"+
+                    "var subthing = this.thing_.subthing;\n"+
+                    "  for (var i = 0; i < subthing.noprop; i++) {"+
+                    "window.console.log(i);"+
+                    "}\n"+
+                    "};\n"+
+                    "var thing = {};\n"+
+                    "

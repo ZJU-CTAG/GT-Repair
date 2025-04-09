@@ -1,0 +1,16 @@
+public void testIssue83() throws Exception {
+    String content = "{ \"a\":123, \"array\":[1,2], \"ob\": { \"value0\":2, \"value\":3, \"value2\":4 }, \"b\":true }";
+    JsonParser p0 = JSON_F.createParser(com.fasterxml.jackson.VPackUtils.toBytes(content));
+    JsonParser p = new FilteringParserDelegate(p0,
+           new NameMatchFilter("value"),
+               true, // includePath
+               false // multipleMatches
+            );
+
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    assertToken(JsonToken.END

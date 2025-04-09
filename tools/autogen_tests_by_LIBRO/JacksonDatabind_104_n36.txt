@@ -1,0 +1,9 @@
+public void testIssue119() throws JsonProcessingException, ParseException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    assertEquals("\"-292,277,026,596-12-04T15:30:07.655Z\"", mapper.writeValueAsString(new Date(Long.MIN_VALUE)));
+    assertEquals("\"292,277,026,596-09-23T08:29:52.345Z\"", mapper.writeValueAsString(new Date(Long.MAX_VALUE)));
+    assertEquals(Long.MIN_VALUE, mapper.readValue("\"-292,277,026,596-12-04T15:30:07.655Z\"", Date.class).getTime());
+    assertEquals(Long.MAX_VALUE, mapper.readValue("\"292,277,026,596-09-23T08:29:52.345Z\"", Date.class).getTime());
+}
+

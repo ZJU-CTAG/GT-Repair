@@ -1,0 +1,13 @@
+public void testIssue109() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    Document document = factory.newDocumentBuilder().parse(
+            new InputSource(new StringReader(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+                + "<doc/>")));
+    ListNodePointer root = new ListNodePointer(null, document);
+    root.setValue(document);
+    NodeSetContext context = new NodeSetContext(root);
+    context.getVariables().declareVariable("child1", null);
+    assertExprTrue(context, "2.0 > child1");
+    assertExprFalse(context, "child1 > 2.0");
+}

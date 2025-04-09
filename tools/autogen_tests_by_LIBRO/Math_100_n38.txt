@@ -1,0 +1,11 @@
+public void testCovariance() {
+    final double[] init = new double[] { 0.8, 1.2, 1.0, 0.4 };
+    final LinearProblem problem = new LinearProblem(new double[][] { { -1.0, 1.0, 0, 0 },
+            { 0.0, 0.0, -2.0, 2.0 }, { 0.0, 0.0, 2.0, -2.0 }, { 1.0, 1.0, 0, 0 }, { 1.0, -1.0, 0, 0 } },
+            new double[] { 0.5, -2, 2, 1.5, -1.5 });
+    problem.setUnboundParameters(new int[] { 0, 1, 2, 3 });
+    final LevenbergMarquardtEstimator lm = new LevenbergMarquardtEstimator();
+    lm.estimate(problem, init);
+    final double[][] cov = lm.guessCovariances();
+    final double[] errors = lm.guessParametersErrors();
+    for (int

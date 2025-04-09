@@ -1,0 +1,15 @@
+public void testModelObjects() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    Foo foo = new Foo(new BaseAccessionIdentifier("test"));
+    String json = mapper.writeValueAsString(foo);
+    System.out.println(json);
+
+    Collection<Foo> foos = Collections.singletonList(foo);
+    String json2 = mapper.writeValueAsString(foos);
+    System.out.println(json2);
+}
+

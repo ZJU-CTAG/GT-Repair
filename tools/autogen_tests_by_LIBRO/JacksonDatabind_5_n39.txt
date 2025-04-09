@@ -1,0 +1,14 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("MyModule", new Version(1, 0, 0, null, "com.mycompany", "my-project"));
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+          .disable(MapperFeature.AUTO_DETECT_FIELDS)
+          .disable(MapperFeature.AUTO_DETECT_GETTERS)
+          .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+          .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    // this line fixes the issue, but it shouldn't be necessary
+    // module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    mapper.registerModule(module);
+    Person person = new PersonImpl("John", "Doe", "New York");
+    String result = mapper

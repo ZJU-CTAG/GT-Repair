@@ -1,0 +1,12 @@
+public void testIssue112() throws Exception {
+    final String html = "<html><head><title>First parse</title></head>"
+        + "<body><table><tr><td>One</td></tr></table></body></html>";
+    final String fragment = "<tr><td>Two</td></tr>";
+    final HtmlPage page = loadPage(html);
+    final List<?> ps = page.getByXPath("//table");
+    final HtmlElement p = (HtmlElement) ps.get(0);
+    final HtmlTableRow row = (HtmlTableRow) HtmlUnit.getWebClient().getPageCreator().
+        getHtmlParser().parseFragment(fragment, (DomElement) p, "New Row");
+    p.appendChild(row);
+    assertEquals("<table><tr><td>One</td></tr><tr><td>Two</td></tr></table>", p.asXml());
+}

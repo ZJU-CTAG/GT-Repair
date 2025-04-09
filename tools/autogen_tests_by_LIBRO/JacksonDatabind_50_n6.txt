@@ -1,0 +1,17 @@
+public void testIssue869() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+
+    om.setMixInAnnotations(Container.class, ContainerMixin.class);
+    om.setMixInAnnotations(ReferencingObject.class, ReferencingObjectMixin.class);
+    om.setMixInAnnotations(ReferencedObject.class, ReferencedObjectMixin.class);
+
+    Container c = new Container();
+    ReferencedObject ref1 = new ReferencedObject();
+    ReferencedObject ref2 = new ReferencedObject();
+    ReferencedObject ref3 = new ReferencedObject();
+
+    c.setReferencingObjects(Arrays.asList(new ReferencingObject(1, ref1),
+            new ReferencingObject(2, ref2)));
+    ref1.setReferencingObjects(Arrays.asList(new ReferencingObject(3, ref3)));
+    ref2.setReferencingObjects(Arrays.asList(new ReferencingObject(4, ref3)));
+    ref3.setReferencing

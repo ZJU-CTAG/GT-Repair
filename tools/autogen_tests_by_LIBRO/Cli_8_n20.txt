@@ -1,0 +1,18 @@
+public void testOptionHelpFormatter() {
+    Options options = new Options();
+    Option option = new Option("o", "option", false, "this is a long description, which should be wrapped correctly");
+    options.addOption(option);
+
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter out = new StringWriter();
+    formatter.printHelp(new PrintWriter(out), 80, "MyApp", null, options, 0, 2, null);
+
+    String help = out.toString();
+    assertTrue(help.startsWith("usage: MyApp [-o]"));
+    assertTrue(help.contains("-o"));
+    assertTrue(help.contains("this is a long desc"));
+    assertTrue(help.contains("tion, which should be wrapped"));
+    assertTrue(help.contains("correctly"));
+    // this will fail, because of the bug
+    assertFalse(help.contains(" correctly"));
+}

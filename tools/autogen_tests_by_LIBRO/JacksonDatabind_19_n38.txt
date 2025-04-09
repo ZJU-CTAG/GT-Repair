@@ -1,0 +1,10 @@
+public void testPropertiesCoercion() throws Exception {
+    Properties props = new Properties();
+    props.setProperty("foo", Boolean.TRUE.toString());
+    String json = mapper.writeValueAsString(props);
+    assertNotNull(json);
+    Properties props2 = mapper.readValue(json, Properties.class);
+    assertNotNull(props2);
+    assertEquals(1, props2.size());
+    assertEquals("true", props2.get("foo"));
+}

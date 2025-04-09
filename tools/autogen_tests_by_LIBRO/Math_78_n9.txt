@@ -1,0 +1,19 @@
+public void testEventsCloseTogether() throws Exception {
+    // set up the integrator
+    FirstOrderConverter converter = new FirstOrderConverter(1.0e-12, 1.0e-12);
+    FirstOrderIntegrator integrator = new DormandPrince54Integrator(1.0e-6, 1.0e-6, 1.0e-6, 1.0e-6);
+    integrator.addEventHandler(converter.convert(new SwitchingFunction(),
+                                                 1.0e-6, 1.0e-6),
+                               0.1, 1.0e-6, 100);
+    integrator.setInitialStep(0.01);
+
+    // set up the function to integrate
+    ParameterState state = new ParameterState();
+    state.setParameter("t", 0.0);
+    ParameterFunction function = new ParameterFunction(state,
+                                                       new String[] { "t" },
+                                                       new String[] { "x" });
+
+    double lastX = Double.NaN;
+    double t = 0;
+    while (lastX

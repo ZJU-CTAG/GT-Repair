@@ -1,0 +1,27 @@
+public void testIssue() {
+    MultivariateDifferentiableVectorFunction f = new MultivariateDifferentiableVectorFunction() {
+        public double[] value(double[] x) {
+            return x;
+        }
+        public MultivariateMatrixFunction jacobian() {
+            return new MultivariateMatrixFunction() {
+                public double[][] value(double[] x) {
+                    double[][] j = new double[x.length][x.length];
+                    for (int i = 0; i < x.length; ++i) {
+                        for (int j = 0; j < x.length; ++j) {
+                            if (i == j) {
+                                j[i][j] = 1;
+                            } else {
+                                j[i][j] = 0;
+                            }
+                        }
+                    }
+                    return j;
+                }
+            };
+        }
+    };
+    double[] initialGuess = new double[41200];
+    Weight weight = new Weight(initialGuess);
+    CurveFitter fitter = new CurveFitter(weight);
+    fitter.fit(f, initialGu

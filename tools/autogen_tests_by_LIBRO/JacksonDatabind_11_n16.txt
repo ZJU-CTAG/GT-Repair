@@ -1,0 +1,19 @@
+public void testBean() throws Exception {
+    final String json = "{\"entity\":{\"name\":\"foo\"}}";
+    Something something = mapper.readValue(json, Something.class);
+    assertEquals("foo", something.getEntity().getName());
+}
+
+public static class Something <T extends Ruleform> {
+    private T entity;
+    
+    public <T extends Ruleform> T getEntity() { return entity;}
+    public <T extends Ruleform> void setEntity(T entity) { this.entity = entity;}
+}
+
+public static class Ruleform {
+    private String name;
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}

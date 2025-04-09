@@ -1,0 +1,10 @@
+public void testIssue108() {
+    StringWriter sw = new StringWriter();
+    try {
+        ScriptCompiler.commandLineCompile(new StringReader("var a=[\"constant\",confirm(\"value from user\")];alert(a.join(\",\"));"), sw);
+        String script = sw.toString();
+        assertTrue(script.contains("alert(a.join(\",\"))"));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

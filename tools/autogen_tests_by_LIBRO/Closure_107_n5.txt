@@ -1,0 +1,11 @@
+public void testIssue106() throws Exception {
+    StringWriter writer = new StringWriter();
+    OutputStream out = new WriterOutputStream(writer);
+    AbstractCommandLineRunner runner = new Compiler();
+    runner.setOutput(out);
+    runner.setInput(new String[] {"--compilation_level", "ADVANCED_OPTIMIZATIONS", "--js", "var MSG_foo = 'bar'"});
+    runner.run();
+    String output = writer.toString();
+    int pos = output.indexOf("ERROR - message not initialized using goog.getMsg\nvar MSG_foo = \'bar\'");
+    assertTrue(pos > 0);
+}

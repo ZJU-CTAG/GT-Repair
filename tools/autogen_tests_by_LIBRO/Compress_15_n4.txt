@@ -1,0 +1,11 @@
+public void testZipFileVsZipArchiveInputStream() throws IOException {
+    File file = File.createTempFile("test", "zip");
+    ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(file));
+    zipOut.putNextEntry(new ZipEntry("name"));
+    zipOut.write("content".getBytes());
+    zipOut.close();
+    ZipFile zipFile = new ZipFile(file);
+    ZipArchiveInputStream zipInput = new ZipArchiveInputStream(new FileInputStream(file));
+    ZipArchiveEntry zipEntry = zipInput.getNextZipEntry();
+    assertEquals(zipFile.getEntry("name"), zipEntry);
+}

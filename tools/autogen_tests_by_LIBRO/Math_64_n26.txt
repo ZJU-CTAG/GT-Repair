@@ -1,0 +1,22 @@
+public void testInconsistency() {
+    double[] init1 = {1,1};
+    double[] init2 = {0.5,0.5};
+    double[] init3 = {1,0};
+    double[] init4 = {0,1};
+    
+    double[][] data = {
+            {0, 0},
+            {1, 0},
+            {0, 1},
+            {1, 1}
+    };
+    double[] weights = {1, 1, 1, 1};
+    
+    final SumSquaresProblem problem = new SumSquaresProblem();
+    
+    // test with sample 1
+    LevenbergMarquardtOptimizer optim1 = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair result1 = optim1.optimize(problem, init1, data, weights);
+    double[][] jacobian1 = optim1.computeJacobian(problem, result1.getPoint(), data, weights);
+    double[] f1 = problem.computeValue(result1.getPoint(), data);
+    double cost1 = Linear

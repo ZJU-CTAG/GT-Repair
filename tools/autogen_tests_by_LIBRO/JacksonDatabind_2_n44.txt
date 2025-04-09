@@ -1,0 +1,19 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.getSerializationConfig().addMixInAnnotations(ArrayList.class, ArrayListMixIn.class);
+    final X<String> x = new X<String>();
+    x.s = "test";
+    x.items = new ArrayList<String>();
+    x.items.add("one");
+    x.items.add("two");
+    objectMapper.writeValueAsString(x);
+    final JsonNode tree = objectMapper.valueToTree(x);
+    Assert.assertTrue(tree.isObject());
+    Assert.assertTrue(tree.has("s"));
+    Assert.assertTrue(tree.get("s").isTextual());
+    Assert.assertEquals("test", tree.get("s").getTextValue());
+    Assert.assertTrue(tree.has("items"));
+    final JsonNode items = tree.get("items");
+    Assert.assertTrue(items.isArray());
+    Assert.assertTrue(

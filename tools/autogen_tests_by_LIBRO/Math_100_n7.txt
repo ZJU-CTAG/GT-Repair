@@ -1,0 +1,15 @@
+public void testEstimateCovariance() {
+        PointVectorValuePair start = new PointVectorValuePair(new double[] { 2.0, 3.0 }, new double[] { 1.0, 2.0 });
+        WeightedJacobianFunction f =
+            new WeightedJacobianFunction(new sinCos(),
+                                         new double[] { 1.0, 1.0, 0.0, 0.0 },
+                                         new double[] { 1.0, 1.0, 0.5, 0.5 });
+        AbstractEstimator estimator = new GaussNewtonEstimator(true) {
+            public double[] guessParametersErrors(DifferentiableMultivariateVectorialFunction f, double[] targetValues, double[] weights, double[] startPoint)
+                throws EstimationException {
+                System.out.println("Guess parameters error");
+                return null;
+            }
+        };
+        estimator.estimate(f, start, new double[] { 0.0, 0.0 });
+    }

@@ -1,0 +1,10 @@
+public void testRequiredOptions() {
+    final OptionBuilder ob = new OptionBuilder();
+    Option option1 = ob.withShortName("h").withDescription("help").create();
+    Option option2 = ob.withShortName("c").withDescription("config file").create();
+    
+    Group g = new GroupBuilder().withOption(option1).withOption(option2).withRequired(true).create();
+    List<String> requiredOptions = g.requiredOptions();
+    assertEquals(1, requiredOptions.size());
+    assertEquals("[-h]", requiredOptions.toString());
+}

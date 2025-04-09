@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
+    mapper.addMixIn(JsonNode.class, Object.class);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    mapper.registerModule(new Jdk8Module());
+    mapper.readValue("{\"booleanValue\":true}", JsonNode.class);
+}

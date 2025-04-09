@@ -1,0 +1,30 @@
+public void testIssue163() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enableDefaultTyping();
+
+    String json = "{\"id\":null,\"name\":\"test\"}";
+    TestObject testObject = mapper.readValue(json, TestObject.class);
+    System.out.println(testObject.getName());
+}
+
+class TestObject {
+    private String id;
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

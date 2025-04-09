@@ -1,0 +1,22 @@
+public void testZipArchiveInputStream() throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zout = new ZipArchiveOutputStream(out);
+    zout.setEncoding("UTF-8");
+    for (int i = 0; i < 100; i++) {
+        zout.putArchiveEntry(new ZipArchiveEntry("entry"+i));
+        zout.flush();
+        zout.closeArchiveEntry();
+    }
+    zout.close();
+
+    byte[] data = out.toByteArray();
+    data[data.length/2] = 0;
+    data[data.length/2+1] = 0;
+
+    ZipArchiveInputStream zin = new ZipArchiveInputStream(new ByteArrayInputStream(data));
+    for (int i = 0; i < 100; i++) {
+        zin.getNextZipEntry();
+    }
+
+    assertNull(zin.getNextZipEntry());
+}

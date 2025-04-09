@@ -1,0 +1,20 @@
+public void testHandleNullTypeId() throws Exception
+{
+    // First, with no type id:
+    PolymorphicType pojo = new PolymorphicType();
+    pojo.setValue(new PolymorphicType.SubTypeA());
+    // will fail, as type id is required
+    try {
+        MAPPER.writeValueAsString(pojo);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "no type id");
+    }
+    // and then with type id:
+    pojo = MAPPER.readValue(aposToQuotes("{'type':'A','value':{'a':3}}"),
+            PolymorphicType.class);
+    assertNotNull(pojo);
+    assertNotNull(pojo.value);
+    assertTrue(pojo.value instanceof PolymorphicType.SubTypeA);
+    assertEquals(3, ((PolymorphicType.SubTypeA) pojo.value).a);
+}

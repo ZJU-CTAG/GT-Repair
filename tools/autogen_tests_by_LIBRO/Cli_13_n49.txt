@@ -1,0 +1,9 @@
+public void testIssue() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("name").hasArg().create("n"));
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[] { "-n", "fred", "-n", "george" });
+    WritableCommandLine wcl = (WritableCommandLine) cmd;
+    assertEquals("fred", wcl.getUndefaultedValue("n"));
+    assertEquals("george", wcl.getValue("n"));
+}

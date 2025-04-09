@@ -1,0 +1,17 @@
+public void test() throws Exception {
+    Value value = new ObjectMapper().reader(Value.class).readValue("{\"a\":1,\"b\":null}");
+    assertEquals(1, value.a);
+    assertEquals(null, value.b);
+}
+
+class Value {
+    public int a;
+    public String b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Value value = mapper.readValue(buffer.asParser(), Value.class);
+        return value;
+    }
+}

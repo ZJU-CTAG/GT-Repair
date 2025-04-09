@@ -1,0 +1,16 @@
+public void testIssue() throws JAXBException, XPathExpressionException {
+    final JAXBContext ctx = JAXBContext.newInstance(ObjectFactory.class);
+    final Unmarshaller u = ctx.createUnmarshaller();
+    final Marshaller m = ctx.createMarshaller();
+    final ObjectMapper mapper = new ObjectMapper();
+    final ElementA elementA = new ElementA();
+    elementA.setMyAttr("Mytype");
+    final ElementB elementB = new ElementB();
+    elementB.setValue("MY VALUE");
+    elementA.setElementB(elementB);
+    final ObjectToXMLConverter converter = new ObjectToXMLConverter(mapper, m, u);
+    final JAXBElement<ElementA> el = new ObjectFactory().createElementA(elementA);
+    final Document doc = converter.convert(el);
+    final String xml = new XMLDocumentToStringConverter().convert(doc);
+    System.out.println("XML: " + xml);
+    final Document doc2

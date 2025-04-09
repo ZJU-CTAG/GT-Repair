@@ -1,0 +1,23 @@
+public void testNewLines() {
+    Document doc;
+    Element pre;
+    TextNode node;
+
+
+    // newline directly after pre
+    doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    pre = doc.select("pre").get(0);
+    node = (TextNode)pre.childNodes().get(0);
+    assertEquals("abc def", node.getWholeText());
+    assertEquals("abc def", node.text());
+
+    // newline directly after textarea
+    doc = Jsoup.parse("<textarea>\nabc  def</textarea>");
+    pre = doc.select("textarea").get(0);
+    node = (TextNode)pre.childNodes().get(0);
+    assertEquals("abc def", node.getWholeText());
+    assertEquals("abc def", node.text());
+
+    // newline directly after pre
+    doc = Jsoup.parse("<pre>\n\nabc  def</pre>");
+    pre = doc.select("pre").get(0);

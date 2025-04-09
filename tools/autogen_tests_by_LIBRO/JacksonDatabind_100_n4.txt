@@ -1,0 +1,19 @@
+public void testIssue107() {
+    // I suspect this is not a valid test:
+    // The Base64Variant used by `getBytes` is the default one
+    final byte[] expected = "bXkgc3RyaW5n".getBytes(Base64Variants.MIME);
+    final byte[] actual = parse(
+            "{\"foo\":\"bXkgc3RyaW5n\"}",
+            "{\"foo\":\"bXkgc3RyaW5n\"}",
+            Base64Variants.MIME
+    );
+    assertArrayEquals(expected, actual);
+}
+
+private byte[] parse(String src, String field, Base64Variant variant) throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final TreeNode t = mapper.readTree(src);
+    final JsonParser p = new TreeTraversingParser(t, mapper);
+    final byte[] actual = p.nextTextValue().getBytes(variant);
+    assertEquals(field, p.getCurrentName());
+    assertNull(p.nextFieldName());

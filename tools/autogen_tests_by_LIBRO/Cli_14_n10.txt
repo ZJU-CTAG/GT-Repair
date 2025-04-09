@@ -1,0 +1,20 @@
+public void testIssue11() {
+    Argument fileNameArg = new ArgumentBuilder()
+            .withValidator(new FileValidator(true))
+            .create();
+
+    Option fileNameOption = new DefaultOptionBuilder()
+            .withLongName("file-name")
+            .withDescription("name of an existing file")
+            .withArgument(fileNameArg)
+            .create();
+
+    Group options = new GroupBuilder()
+            .withOption(fileNameOption)
+            .create();
+
+    Parser parser = new Parser();
+    parser.setHelpTrigger("--help");
+    parser.setGroup(options);
+    CommandLine cl = parser.parseAndHelp(args);
+}

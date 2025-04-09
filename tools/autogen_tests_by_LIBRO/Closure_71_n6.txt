@@ -1,0 +1,11 @@
+public void testIssue123() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.compile(
+        SourceFile.fromCode("input1.js", "function Foo() { this.x_ = 3; }"),
+        SourceFile.fromCode("input2.js", "function SubFoo() { this.x_ = 3; }"),
+        options);
+    // TODO: if we ever support visibility, this will fail.
+}

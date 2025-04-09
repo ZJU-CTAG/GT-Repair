@@ -1,0 +1,12 @@
+public void testPolymorphicNoTypeId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Foo.class);
+    mapper.disableDefaultTyping();
+    String json = mapper.writeValueAsString(new Foo());
+    assertEquals("{\"@type\":\"Foo\",\"x\":\"x\"}", json);
+
+    ObjectReader r = mapper.reader(Object.class);
+    Object value = r.readValue(json);
+    assertNotNull(value);
+    assertTrue(value instanceof Foo);
+}

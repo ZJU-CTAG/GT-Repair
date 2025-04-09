@@ -1,0 +1,15 @@
+public void testIssue84() {
+    LinearProblem problem = new LinearProblem(new double[][] {
+            { 1.0, 1.0, 1.0 }, { 0.0, 1.0, 1.0 }, { 1.0, -1.0, 2.0 } }, new double[] {
+            3.0, 1.0, 4.0 });
+
+    BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * problem.getN() + 1);
+    // BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * problem.getN() + 2);
+
+    RealPointValuePair solution = optim.optimize(problem.getObjectiveFunction(),
+            problem.getObjectiveFunctionGradient(), GoalType.MINIMIZE,
+            problem.getStartPoint());
+
+    assertTrue(problem.checkFeasibility(solution.getPoint()));
+    assertEquals(0.0, problem.getObjectiveFunction().value(solution.getPoint()), 1.0e-11);
+}

@@ -1,0 +1,13 @@
+public void testGroupMinMax() {
+    Group groupA = new GroupBuilder().withName("A").withOption(OptionBuilder.create("a")).create();
+    Group groupB = new GroupBuilder().withName("B").withOption(OptionBuilder.create("b")).withOption(groupA).create();
+    CommandLine cmd = new PosixParser().parse(new Options().addOption(groupB), new String[]{});
+    assertFalse(cmd.hasOption("a"));
+    // there should be a way to check the cardinality of a Group
+    assertFalse(cmd.hasOption("b"));
+
+    cmd = new PosixParser().parse(new Options().addOption(groupB), new String[]{"-a"});
+    assertTrue(cmd.hasOption("a"));
+    // there should be a way to check the cardinality of a Group
+    assertTrue(cmd.hasOption("b"));
+}

@@ -1,0 +1,18 @@
+public void testQuinticMin() throws Exception {
+    // The following minimization should return zero, but it doesn't.
+    // The problem is that the "computeObjectiveValue" method returns
+    // "-1.0E-20" instead of "0". The default relative threshold for
+    // "isConverged" is then insufficient to detect the convergence,
+    // and the optimization loop is repeated a number of times.
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x * x * x * x + x * x * x * x - x * x * x + x * x + x + 1;
+        }
+    };
+    double min = -0.11778303565638346;
+    double expectedMin = 0;
+    double startValue = -1.0;
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    optimizer.setMaximalIterationCount(100);
+    optimizer.setRelativeThreshold(1e-20);
+    optimizer.set

@@ -1,0 +1,23 @@
+public void testBinaryOperatorsNodeSet() throws Exception {
+    JXPathContext context = JXPathContext.newContext(new Object());
+    context.setLenient(true);
+    context.setFactory(new JXPathContextFactory() {
+        public JXPathContext newContext(Object contextBean, PointerFactory pointerFactory,
+                                        JXPathContext parentContext, boolean lenient) {
+            return new MockContext(contextBean, pointerFactory, parentContext, lenient);
+        }
+    });
+    context.setLenient(false);
+    assertFalse(((Boolean) context.getValue("1 > child1", Boolean.class)).booleanValue());
+}
+
+private class MockContext extends JXPathContext {
+    public MockContext(Object contextBean, PointerFactory pointerFactory, JXPathContext parentContext,
+                       boolean lenient) {
+        super(contextBean, pointerFactory, parentContext, lenient);
+    }
+
+    public boolean isElement(Object object) {
+        return true;
+    }
+}

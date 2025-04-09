@@ -1,0 +1,13 @@
+public void testFinish() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream os = new ZipArchiveOutputStream(baos);
+    os.write(new byte[]{1, 2, 3});
+    os.close();
+    ArchiveInputStream is = new ZipArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    byte[] b = new byte[3];
+    is.read(b);
+    assertEquals(1, b[0]);
+    assertEquals(2, b[1]);
+    assertEquals(3, b[2]);
+    is.close();
+}

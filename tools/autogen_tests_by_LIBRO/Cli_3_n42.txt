@@ -1,0 +1,20 @@
+public void testOption() throws Exception {
+    Option generateTarget = new Option("t", "target", true, "Generate files for the specified target machine");
+    Options cmdLineOpts = new Options();
+    cmdLineOpts.addOption(generateTarget);
+    PosixParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    String[] args = new String[] { "-target", "foobar.com" };
+    try {
+        parsedLine = parser.parse(cmdLineOpts, args);
+    } catch (ParseException pe) {
+        System.out.println("Invalid command: " + pe.getMessage() +
+                "\n");
+        HelpFormatter hf = new HelpFormatter();
+        hf.printHelp(USAGE, cmdLineOpts);
+        System.exit(-1);
+    }
+    if (parsedLine.hasOption("target")) {
+        System.out.println("processing selected target: " +
+                parsedLine.getOptionValue("target"));
+    }

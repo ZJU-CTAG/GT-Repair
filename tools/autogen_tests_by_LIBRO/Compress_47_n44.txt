@@ -1,0 +1,12 @@
+public void testIssue90() throws Exception {
+    try (ZipFile file = new ZipFile(getFile("COMPRESS-327.zip"))) {
+        ZipArchiveEntry entry = file.getEntry("a.txt");
+        assertTrue(entry.getCompressedSize() == -1);
+        try (InputStream is = file.getInputStream(entry)) {
+            fail("Expected an exception to be thrown");
+        } catch (Exception e) {
+            assertTrue("Wrong exception: " + e.getClass() + ": " + e.getMessage(), e instanceof ZipException);
+            assertTrue("Wrong exception: " + e, e.getMessage().contains("Unknown compressed size"));
+        }
+    }
+}

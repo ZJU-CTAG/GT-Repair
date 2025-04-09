@@ -1,0 +1,12 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    Variable x = new Variable("x");
+    Variable y = new Variable("y");
+    Expression e = new Expression(x).plus(y);
+    solver.addConstraint(new LinearEquation(e, Operator.EQ, 1));
+    solver.addConstraint(new LinearEquation(x, Operator.EQ, -3));
+    solver.addConstraint(new LinearEquation(y, Operator.EQ, -3));
+    solver.solve();
+    assertEquals(-3, x.getValue(), DELTA);
+    assertEquals(-3, y.getValue(), DELTA);
+}

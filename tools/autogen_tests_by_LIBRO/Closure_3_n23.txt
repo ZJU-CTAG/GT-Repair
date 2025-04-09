@@ -1,0 +1,20 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    // To get the complete set of externs, the logic in
+    // CompilerRunner.getDefaultExterns() should be used here.
+    List<SourceFile> externs = ImmutableList.of(
+        SourceFile.fromCode("externs", "function alert(s) {}"));
+
+    // The dummy input name "input.js" is used here so that any warnings or
+    // errors will cite line numbers in terms of input.js.
+    List<SourceFile> srcs = ImmutableList.of(
+        SourceFile.fromCode("input.js", "function getStack() {\n"
+            + " var getErrorObject = function() {\n"
+            + " try {\n"
+            + " throw Error(\"\");\n"
+            + " } catch(err

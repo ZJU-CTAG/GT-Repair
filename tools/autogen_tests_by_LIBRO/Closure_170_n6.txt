@@ -1,0 +1,9 @@
+public void testIssue109() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile("function Test(n) { var i = 0; " +
+        "return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), " +
+            "i } var dummy = \"6chars\"; console && console.log( Test(dummy) );");
+    assertEquals("function Test(a){return 0}var dummy=\"6chars\";console&&console.log(Test(dummy))"
+        , result.getResult());
+}

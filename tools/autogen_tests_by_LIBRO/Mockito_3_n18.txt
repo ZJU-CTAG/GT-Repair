@@ -1,0 +1,9 @@
+public void testFails() {
+    final List<String> list = new ArrayList<>();
+    final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    when(mock.method(captor.capture())).thenReturn(list);
+    final List<String> result = mock.method("foo", "bar", "baz");
+    assertEquals(list, result);
+    assertEquals(1, captor.getAllValues().size());
+    assertEquals("foo", captor.getValue());
+}

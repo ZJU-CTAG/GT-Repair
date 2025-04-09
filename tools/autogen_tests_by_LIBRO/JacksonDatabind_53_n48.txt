@@ -1,0 +1,33 @@
+public void testIssue108() throws IOException
+{
+    // Works in 2.6.6 but not in 2.7.x
+    String json = "{\"something\":[{\"id\":\"a uuid\",\"property\":\"value\"}]}";
+    MyPojo p = new ObjectMapper().readValue(json, MyPojo.class);
+}
+
+public static class MyPojo {
+    private Map<UUID, Foo> something;
+
+    @JsonDeserialize(as = MyHashMap.class)
+    private void setSomething(Map<UUID, Foo> incomingValue) {
+        this.something = incomingValue;
+    }
+
+    public Map<UUID, Foo> getSomething() {
+        return this.something;
+    }
+}
+
+public static class MyHashMap<V extends MyCustomIdInterface> extends HashMap<UUID, V> {
+}
+
+public static class MyCustomIdInterface {
+    private UUID id;
+
+    public UUID getId() {
+        return this.id;
+    }
+}
+
+public static class Foo implements MyCustomIdInterface {
+    private U

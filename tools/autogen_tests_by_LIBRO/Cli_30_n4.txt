@@ -1,0 +1,20 @@
+public void testIssue103() {
+    class Options {
+        @Option(name="a", required=true, help=true)
+        boolean a;
+        @Option(name="b", help=true)
+        boolean b;
+    }
+    Options options = new Options();
+    Properties defaults = new Properties();
+    defaults.setProperty("a", "false");
+    defaults.setProperty("b", "true");
+    new CommandLine(options).parse(defaults);
+    assertTrue(options.b);
+    try {
+        new CommandLine(options).parse("--b");
+        fail("expected exception");
+    } catch (MissingParameterException ex) {
+        assertEquals("Missing required option '--a'", ex.getMessage());
+    }
+}

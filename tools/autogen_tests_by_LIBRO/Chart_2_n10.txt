@@ -1,0 +1,15 @@
+public void testIssue959() {
+    DefaultCategoryDataset d = new DefaultCategoryDataset();
+    d.addValue(1.0, "R0", "C0");
+    d.addValue(2.0, "R1", "C0");
+    d.addValue(3.0, "R0", "C1");
+    d.addValue(4.0, "R1", "C1");
+    d.addValue(5.0, "R0", "C2");
+    d.addValue(6.0, "R1", "C2");
+    Range r = DatasetUtilities.iterateRangeBounds(d);
+    assertEquals(new Range(1.0, 6.0), r);
+    r = DatasetUtilities.iterateRangeBounds(d, true);
+    assertEquals(new Range(1.0, 2.0), r);
+    r = DatasetUtilities.iterateRangeBounds(d, false);
+    assertEquals(new Range(3.0, 6.0), r);
+    r =

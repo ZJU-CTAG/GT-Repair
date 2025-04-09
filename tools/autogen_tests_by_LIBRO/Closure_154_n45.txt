@@ -1,0 +1,12 @@
+public void testIssue108() {
+    JsDocBuilder b = new JsDocBuilder();
+    b.add("function I() {}");
+    b.add("/** @type {string} */");
+    b.add("I.prototype.foobar;");
+    b.add("/** @constructor @implements {I} */");
+    b.add("function C() { this.foobar = 2; };");
+    b.add("/** @type {I} */");
+    b.add("var test = new C();");
+    b.add("alert(test.foobar);");
+    assertEquals("I", b.js().getProperty("test").getType().toString());
+}

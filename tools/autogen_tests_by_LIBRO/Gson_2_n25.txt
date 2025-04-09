@@ -1,0 +1,19 @@
+public void testIssue56() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule testModule = new SimpleModule("MyModule", new Version(1, 0, 0, null));
+    testModule.addAbstractTypeMapping(Vehicle.class, Car.class);
+    mapper.registerModule(testModule);
+
+    String json = "{\"type\":\"car\",\"doors\":4}";
+    Vehicle myVehicle = mapper.readValue(json, Vehicle.class);
+    assertTrue(myVehicle instanceof Car);
+    Car myCar = (Car) myVehicle;
+    assertEquals(4, myCar.getDoors());
+
+    json = "{\"type\":\"truck\",\"doors\":2,\"payload\":2.1}";
+    try {
+        mapper.readValue(json, Vehicle.class);
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+    }
+}

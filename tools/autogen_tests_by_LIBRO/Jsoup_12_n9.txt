@@ -1,0 +1,14 @@
+public void testIssue115() {
+    String html = "<div><table class='x'></table></div><table class='y'></table>";
+    Document doc = Jsoup.parse(html);
+    Elements els = doc.select("div table[class~=x|y]");
+    assertEquals(1, els.size());
+    els = doc.select("div > table[class~=x|y]");
+    assertEquals(1, els.size());
+    els = doc.select("div + table[class~=x|y]");
+    assertEquals(0, els.size());
+    els = doc.select("div ~ table[class~=x|y]");
+    assertEquals(1, els.size());
+    els = doc.select("div, table[class~=x|y]");
+    assertEquals(2, els.size());
+}

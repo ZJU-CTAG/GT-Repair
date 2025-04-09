@@ -1,0 +1,13 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    JsonFactory factory = mapper.getJsonFactory();
+
+    JsonParser p0 = factory.createJsonParser(new ByteArrayInputStream("{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}".getBytes()));
+    JsonParser p = new FilteringParserDelegate(p0, new NameMatchFilter("value"), true, false);
+    JsonToken t;
+    do {
+        t = p.nextToken();
+        System.out.println("Token: " + t);
+    } while (t != null);
+}

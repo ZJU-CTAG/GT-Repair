@@ -1,0 +1,15 @@
+public void testIssue108() {
+    File file = new File("src/test/resources/biguid.tar.gz");
+    GzipCompressorInputStream gzin;
+    try {
+        gzin = new GzipCompressorInputStream(new FileInputStream(file));
+        TarArchiveInputStream in = new TarArchiveInputStream(gzin);
+        TarArchiveEntry entry = in.getNextTarEntry();
+        while (entry != null) {
+            entry = in.getNextTarEntry();
+        }
+        in.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

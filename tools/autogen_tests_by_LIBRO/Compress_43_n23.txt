@@ -1,0 +1,23 @@
+public void testZipArchiveOutputStream() throws IOException {
+    final File target = new File("target");
+    final File output = new File(target, "test.zip");
+
+    final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(output);
+    zos.setMethod(ZipEntry.DEFLATED);
+    zos.setEncoding("UTF-8");
+    zos.setLevel(Deflater.BEST_SPEED);
+
+    final ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+    ze.setTime(System.currentTimeMillis());
+
+    zos.putArchiveEntry(ze);
+    zos.write("Test".getBytes("UTF-8"));
+    zos.closeArchiveEntry();
+
+    zos.close();
+
+    final ZipFile zf = new ZipFile(output);
+    final InputStream zis = zf.getInputStream(zf.getEntry("test.txt"));
+    final String actual = IOUtils.toString(zis, "UTF-8");
+    zis.close();
+    zf.

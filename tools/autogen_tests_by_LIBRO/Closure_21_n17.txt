@@ -1,0 +1,16 @@
+public void testCommaOperator() {
+    final IntFunction<Integer> f = new IntFunction<Integer>() {
+        @Override
+        public Integer apply(int t) {
+            return t;
+        }
+    };
+    assertEquals(42, f.apply((1, 2, 42)));
+    assertEquals(42, f.apply((bar(), 2, 42)));
+    assertEquals(42, f.apply(((1, 2, 3), (4, 5, 42))));
+}
+
+private int bar() {
+    System.out.println("bar() called");
+    return 0;
+}

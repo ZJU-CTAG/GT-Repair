@@ -1,0 +1,15 @@
+public void test() {
+        String json = "{\"result\":{\"a\":1,\"b\":2},\"result\":{\"a\":1,\"b\":2}}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(json);
+        JsonGenerator generator = new JsonFactory().createGenerator(System.out);
+        FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(generator, true, new _Filter());
+        mapper.writeTree(delegate, jsonNode);
+    }
+
+    class _Filter extends JacksonUtils.SimpleBeanPropertyFilter {
+        @Override
+        protected boolean include(BeanPropertyWriter writer) {
+            return false;
+        }
+    }

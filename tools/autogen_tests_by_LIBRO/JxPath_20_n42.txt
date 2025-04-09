@@ -1,0 +1,18 @@
+public void testRelationalOperationsWithIterators() {
+    JXPathContext jxpath = JXPathContext.newContext(new TestBean());
+    jxpath.setLenient(true);
+    jxpath.setFunctions(new JXPathAbstractFactory() {
+        public boolean createObject(JXPathContext context, Pointer pointer,
+                Object parent, String name, int index) {
+            return false;
+        }
+        public boolean declareVariable(JXPathContext context, String name) {
+            return false;
+        }
+    });
+    jxpath.getVariables().declareVariable("var1", new Integer(0));
+    jxpath.getVariables().declareVariable("var2", new Integer(0));
+    jxpath.getVariables().declareVariable("var3", new Integer(1));
+    jxpath.getVariables().declareVariable("var4", new Integer(0));
+    assertEquals(new Integer(0), jxpath.getValue("$var1 + $var2"));
+    assertEquals(new Integer(1), jx

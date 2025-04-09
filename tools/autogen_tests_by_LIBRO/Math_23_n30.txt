@@ -1,0 +1,15 @@
+public void testBrentOptimizer() throws Exception {
+    final double init = -3.0;
+    final double max = -init;
+    final UnivariateFunction f = new UnivariateFunction() {
+        public double value(final double x) {
+            final double dx = x - init;
+            return dx * dx / (max + 1.0 - dx);
+        }
+    };
+    final double min = new BrentOptimizer(1.0e-6, 1.0e-12).optimize(new MaxEval(32),
+                                                                     new UnivariateObjectiveFunction(f),
+                                                                     GoalType.MINIMIZE,
+                                                                     new SearchInterval(init, max)).getPoint();
+    Assert.assertEquals(max, min, 1.0e-6);
+}

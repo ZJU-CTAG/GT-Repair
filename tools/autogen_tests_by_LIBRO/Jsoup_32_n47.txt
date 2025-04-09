@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    HtmlPage page = new HtmlPage(null);
+    Element body = page.getBody();
+    Set classNames = body.getClassNames();
+    assertEquals(1, classNames.size());
+    assertTrue(classNames.contains("body"));
+    Element body2 = (Element) body.cloneNode(true);
+    assertEquals(1, body2.getClassNames().size());
+    assertTrue(body2.getClassNames().contains("body"));
+    classNames = body.getClassNames();
+    assertEquals(1, classNames.size());
+    assertTrue(classNames.contains("body"));
+    body.addClassName("test");
+    assertEquals(2, body2.getClassNames().size());
+    assertTrue(body2.getClassNames().contains("body"));
+    assertTrue(body2.getClassNames().contains("test"));
+}

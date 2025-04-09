@@ -1,0 +1,16 @@
+public void testIssue107() {
+    String html = "<html><head><title>First parse</title></head>"
+            + "<body><form><input type=\"hidden\" name=\"alpha\" value=\"1\"/><input type=\"hidden\" name=\"beta\" value=\"2\"/></form></body></html>";
+
+    Document doc = Jsoup.parse(html);
+    FormElement form = (FormElement)doc.select("form").first();
+
+    //prints a list including "alpha"
+    System.out.println(form.toString());
+
+    doc.select("input[name=alpha]").first().remove();
+
+    System.out.println(form.toString());
+    //prints a list including "alpha"
+    System.out.println(form.formData().toString());
+}

@@ -1,0 +1,15 @@
+public void testEqualsBuilder_BigDecimals() {
+    final EqualsBuilder eb = new EqualsBuilder();
+    eb.append(new BigDecimal("0.0"), new BigDecimal("0.00"));
+    assertFalse(eb.isEquals());
+}
+public void testEqualsBuilder_BigDecimals_correct() {
+    final EqualsBuilder eb = new EqualsBuilder();
+    eb.append(new BigDecimal("0.0"), new BigDecimal("0.00"), new Comparator<BigDecimal>() {
+        @Override
+        public int compare(final BigDecimal o1, final BigDecimal o2) {
+            return o1.compareTo(o2);
+        }
+    });
+    assertTrue(eb.isEquals());
+}

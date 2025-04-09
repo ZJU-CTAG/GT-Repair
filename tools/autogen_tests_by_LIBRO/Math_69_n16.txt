@@ -1,0 +1,12 @@
+public void testPValuesOfCorrelation() {
+    RandomGenerator rg = new JDKRandomGenerator();
+    rg.setSeed(123456789);
+    NormalDistribution dist = new NormalDistribution(100,10);
+    double[] vals = dist.sample(rg,200);
+    PearsonsCorrelation corr = new PearsonsCorrelation();
+    double r = corr.correlation(vals, vals);
+    double t = r * FastMath.sqrt((vals.length - 2) / (1 - FastMath.pow(r, 2)));
+    RealDistribution tDist = new TDistribution(vals.length - 2);
+    double p = 2 * (1 - tDist.cumulativeProbability(t));
+    assertEquals(0.0, p, 0.000000001);
+}

@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.JSDOC_TYPES, CheckLevel.WARNING);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Result result = compile(options, "/**\n" +
+     " * @type function\n" +
+     " */\n" +
+     "var callback;");
+    assertEquals(1, result.warnings.size());
+    SourceMap.Location loc = result.sourceMap.getMappingForLine(2, 0);
+    assertEquals(2, loc.getLineNumber());
+    assertEquals(0, loc.getColumnNumber());
+    assertEquals("JSC_PARSE_ERROR", result.warnings.get(0).getType());
+}

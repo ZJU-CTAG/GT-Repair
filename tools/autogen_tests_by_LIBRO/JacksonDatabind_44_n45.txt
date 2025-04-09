@@ -1,0 +1,30 @@
+public void testIssue1088() throws Exception
+{
+    ObjectMapper mapper = ObjectMapper.builder()
+            .propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .build();
+    final String json = "{\"type\":\"a\",\"hello\":42}";
+
+    Foo<?> foo = mapper.readValue(json, Foo.class);
+    assertEquals("a", foo.type);
+    assertEquals(42, foo.hello);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "a", value = A.class),
+    @JsonSubTypes.Type(name = "b", value = B.class)
+})
+static class Foo<T extends Foo<T>> {
+    @JsonProperty
+    String type;
+    @JsonProperty
+    int hello;
+}
+
+static class A extends Foo<A> {
+    @JsonProperty
+    String a;
+}
+
+static class B extends Foo

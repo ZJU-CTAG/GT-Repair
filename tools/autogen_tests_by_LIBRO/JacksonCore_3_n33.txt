@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    final StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < 100; i++) {
+        builder.append('a');
+    }
+    final String json = builder.toString();
+
+    final int offset = 10;
+    final byte[] buffer = json.getBytes();
+    final InputStream stream = new ByteArrayInputStream(buffer);
+
+    final UTF8StreamJsonParser parser = new UTF8StreamJsonParser(new IOContext(new byte[64]), 0, stream, null,
+            new ByteArrayBytesToNameCanonicalizer(64), buffer, offset, buffer.length, true);
+
+    try {
+        while (parser.nextToken() != null)
+            ;
+    } catch (JsonParseException e) {
+        assertEquals(1, e.getLocation().getLineNr());
+        assertEquals(offset + 1, e.getLocation().getColumnNr());
+    }
+}

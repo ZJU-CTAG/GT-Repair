@@ -1,0 +1,14 @@
+public void testIssue96() {
+    // FIXME - this should probably work fine.
+    String[] data = new String[] {"a","b","c"};
+    CSVFormat format = CSVFormat.RFC4180.withNullString("").withHeader();
+    StringWriter sw = new StringWriter();
+    try {
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        printer.printRecord(data);
+        printer.close();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    System.out.println(sw.toString());
+}

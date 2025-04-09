@@ -1,0 +1,18 @@
+public void testArrayJoin() {
+	String source = "$.fn.hasClass = function(selector) {" +
+		" return ( this.length > 0 ? " +
+		"!( ( ['', this[0].className, ''].join(' ') ).indexOf( ['', selector, " +
+		"''].join(' ') ) == -1 )" +
+		": false );" +
+		"};";
+	String expected = "$.fn.hasClass=function(a){return this.length>0?" +
+		"(''+this[0].className).indexOf(''+a)!=-1:false};";
+	String actual = (String) JavaScriptCompressor.compress(source, null, -1, new ErrorReporter() {
+		public void warning(String message, String sourceName,
+				int line, String lineSource, int lineOffset) {
+			fail(message);
+		}
+
+		public void error(String message, String sourceName,
+				int line, String lineSource, int lineOffset) {
+			

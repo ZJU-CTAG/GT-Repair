@@ -1,0 +1,17 @@
+public void testGlobalThis() {
+    String source = "var x = {};\n"
+            + "/** @constructor */\n"
+            + "x.B = function() {};\n"
+            + "x.B.prototype.foo = function() {\n"
+            + "  var global = this;\n"
+            + "  var g = globalThis;\n"
+            + "};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT_2015);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setEmitUseStrict(false);
+    Result result = compiler.compile(SourceFile.fromCode("[ex

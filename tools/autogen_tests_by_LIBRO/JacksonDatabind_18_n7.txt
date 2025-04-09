@@ -1,0 +1,14 @@
+public void testErrorRecovery() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        MappingIterator<String> it = mapper.reader(String.class).readValues(new StringReader("[ \"foobar\", \"baz\" }"));
+        assertTrue(it.hasNextValue());
+        assertEquals("foobar", it.nextValue());
+        assertTrue(it.hasNextValue());
+        assertEquals("baz", it.nextValue());
+        assertFalse(it.hasNextValue());
+    } catch (JsonProcessingException e) {
+        fail("Should not get an exception");
+    }
+}

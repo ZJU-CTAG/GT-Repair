@@ -1,0 +1,12 @@
+public void testMinimumSelection() throws Exception {
+    CommandLineParser parser = new DefaultParser();
+    Options options = new Options();
+    Group group = new GroupBuilder().withName("group1").withMinimum(1).withOption(Option.builder("A").build()).create();
+    options.addOptionGroup(group);
+    try {
+        parser.parse(options, new String[]{});
+        fail("Expected ParseException.");
+    } catch (ParseException pe) {
+        assertEquals("Missing required option: A", pe.getMessage());
+    }
+}

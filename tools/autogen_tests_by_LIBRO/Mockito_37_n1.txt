@@ -1,0 +1,9 @@
+public void testIssue108() {
+    JUnit4Mockery context = new JUnit4Mockery();
+    final DateTimeUtils mock = context.mock(DateTimeUtils.class);
+    context.checking(new Expectations() {{
+        oneOf(mock).getCurrentTimeMillis(); will(returnValue(1L));
+    }});
+    DateTimeUtils.setCurrentMillisFixed(2L);
+    assertEquals(1L, DateTimeUtils.currentTimeMillis());
+}

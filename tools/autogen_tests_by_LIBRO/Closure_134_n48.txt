@@ -1,0 +1,25 @@
+public void testIssue108() throws Exception {
+
+    // create a temp file and set contents to the source code
+    File tempFile = File.createTempFile("test", ".js");
+    FileUtils.writeStringToFile(tempFile, "interface ITest {\n" 
++ "    /**\n" 
++ "     * @param {string} a\n" 
++ "     */\n" 
++ "    function foo(a: string);\n" 
++ "}\n" 
++ "\n" 
++ "/**\n" 
++ "* @implements {ITest}\n" 
++ "*/\n" 
++ "class Test {\n" 
+        + "    /**\n" 
++ "     * @inheritDoc\n" 
++ "     */\n" 
++ "    function foo(a: string) {\n" 
++ "        alert(a.substring(0)); // ERROR - could not determine the type 
+of this expression\n" 
++ "    }\n" 
++ "}"
+    );
+

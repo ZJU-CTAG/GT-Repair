@@ -1,0 +1,15 @@
+public void testIssue150() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    RemoteCall message = new RemoteCall(
+      "com.ubitricity.devices.common.tasks.ResponseReceiver",
+      "method",
+      new Object[] { new CommandAPDU("7C00041B010203040506070809"),
+          new RemoteInstance("b0e15098-f49e-4328-b072-fc5df42799bd", "com.ubitricity.devices.common.tasks.ResponseReceiver") });
+    String json = mapper.writeValueAsString(message);
+    LOG.v("Serialized as: " + json);
+    RemoteCall back = mapper.readValue(json, RemoteCall.class);
+    LOG.v("Deserialized as: " + back);
+    assertEquals(message, back);
+}

@@ -1,0 +1,13 @@
+public void testParseOption() throws Exception {
+    final String OPTION_TARGET = "t";
+    final String OPTION_TARGET_LONG = "target";
+    final String OPTION_TARGET_VALUE = "foobar.com";
+    final String[] args = { "-target", OPTION_TARGET_VALUE };
+    final Option target = new Option(OPTION_TARGET, OPTION_TARGET_LONG, true, "Generate files for the specified target machine");
+    Options ops = new Options();
+    ops.addOption(target);
+    final PosixParser parser = new PosixParser();
+    final CommandLine cl = parser.parse(ops, args);
+    assertTrue("Command line has option " + OPTION_TARGET_LONG, cl.hasOption(OPTION_TARGET));
+    assertEquals("Command line option " + OPTION_TARGET_LONG + " has value " + OPTION_TARGET_VALUE, OPTION_TARGET_VALUE, cl.getOptionValue(OPTION_TARGET));
+}

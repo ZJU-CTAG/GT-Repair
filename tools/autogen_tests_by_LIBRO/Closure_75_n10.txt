@@ -1,0 +1,16 @@
+public void testClosureCompiledSwfObject() {
+    String src = "function urlEncodeIfNecessary(s) {\n" +
+            " var regex = /[\\\"<>\\.;]/;\n" +
+            " var hasBadChars = regex.exec(s) != null;\n" +
+            " return hasBadChars && typeof encodeURIComponent != UNDEF ? encodeURIComponent(s) : s;\n" +
+            "}";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    Externs externs = null;
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js", src));
+    List<SourceFile> externsList = new ArrayList<SourceFile>();
+    externsList.add(SourceFile.fromCode("externs.js", ""));
+    Result result = null;
+    result = Compiler

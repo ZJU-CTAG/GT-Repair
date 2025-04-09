@@ -1,0 +1,13 @@
+public void testIssue1() throws Exception {
+    // 1) compile
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("input.js", "var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};"));
+    // 2) check
+    assertTrue(result.success);
+    assertEquals(result.warnings.toString(), 0, result.warnings.length);
+    assertEquals(result.errors.toString(), 0, result.errors.length);
+    assertEquals("var foo = function() { alert(void 0); };", compiler.toSource());
+}

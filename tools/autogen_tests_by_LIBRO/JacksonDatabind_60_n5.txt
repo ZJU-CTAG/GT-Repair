@@ -1,0 +1,12 @@
+public void testIssue62() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    byte[] bytes = new byte[]{(byte) 0x01, (byte) 0x02, (byte) 0x03};
+    CommandAPDU commandAPDU = new CommandAPDU(bytes);
+    assertEquals(bytes, commandAPDU.getBytes());
+    String json = mapper.writeValueAsString(commandAPDU);
+    assertNotNull(json);
+    CommandAPDU commandAPDU1 = mapper.readValue(json, CommandAPDU.class);
+    assertNotNull(commandAPDU1);
+    assertEquals(bytes, commandAPDU1.getBytes());
+}

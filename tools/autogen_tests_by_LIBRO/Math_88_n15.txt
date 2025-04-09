@@ -1,0 +1,15 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    
+    LinearObjectiveFunction objective = new LinearObjectiveFunction(new double[] { 1.0, 1.0 }, 0.0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { -1.0, 1.0 }, Relationship.EQ, 2));
+    constraints.add(new LinearConstraint(new double[] { 1.0, 1.0 }, Relationship.EQ, 3));
+    constraints.add(new LinearConstraint(new double[] { 1.0, 1.0 }, Relationship.GEQ, 2));
+    
+    RealPointValuePair solution = solver.optimize(objective, constraints, GoalType.MAXIMIZE, false);
+    
+    double[] sol = solution.getPoint();
+    System.out.println(sol[0]);
+    System.out.println(sol[1]);
+}

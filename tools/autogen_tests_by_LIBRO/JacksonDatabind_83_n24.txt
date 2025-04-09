@@ -1,0 +1,20 @@
+public void testUUID() throws Exception
+{
+    String UUID_STRING = "01234567-89ab-cdef-fedc-ba9876543210";
+    String JSON = "{\"uuid\" : \""+UUID_STRING+"\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt,
+                Class<?> targetType, String valueToConvert,
+                String failureMsg) throws IOException {
+            if (UUID.class.isAssignableFrom(targetType)) {
+                return UUID.fromString(UUID_STRING);
+            }
+            return super.handleWeirdStringValue(ctxt, targetType,
+                    valueToConvert, failureMsg);
+        }
+    });
+    TestBean bean = mapper.readValue(JSON, TestBean.class);
+    assertEquals(UUID_STRING, bean.uuid.toString());
+}

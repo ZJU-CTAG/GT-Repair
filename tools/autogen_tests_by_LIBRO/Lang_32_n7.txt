@@ -1,0 +1,25 @@
+public void testToStringStyleThreadLocal() {
+    ToStringStyle tss = ToStringStyle.SHORT_PREFIX_STYLE;
+    assertNotNull(tss);
+    Constructor<?> constructor = null;
+    try {
+        constructor = Class.forName("org.apache.commons.lang3.builder.ToStringStyle$MultilineRecursiveToStringStyle").getDeclaredConstructor();
+    } catch (Exception e) {
+        fail("Could not find ToStringStyle.MultilineRecursiveToStringStyle");
+    }
+    constructor.setAccessible(true);
+    try {
+        constructor.newInstance();
+    } catch (Exception e) {
+        fail("Could not instantiate ToStringStyle.MultilineRecursiveToStringStyle");
+    }
+
+    Field field = null;
+    try {
+        field = ToStringStyle.class.getDeclaredField("style");
+    } catch (Exception e) {
+        fail("Could not find ToStringStyle field");
+    }
+    field.setAccessible(true);
+    ThreadLocal<?> threadLocal = null;
+    try

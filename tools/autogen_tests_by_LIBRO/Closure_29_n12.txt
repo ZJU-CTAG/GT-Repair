@@ -1,0 +1,14 @@
+public void testClosureCompiler() {
+    String source = "function isFunction(functionToCheck) {\n" +
+            " var getType;\n" +
+            " getType = {};\n" +
+            " return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]';\n" +
+            " };";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[]{JSSourceFile.fromCode("source", source)},
+            new CompilerOptions());
+    assertEquals("function isFunction(a) {\n" +
+            "  return a && \"[object Function]\" === (void 0).apply(a)\n" +
+            "}", compiler.toSource());
+}

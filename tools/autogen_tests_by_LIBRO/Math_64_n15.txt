@@ -1,0 +1,21 @@
+public void testOptimize() {
+    final double[] x = new double[] {1, 2, 3, 4};
+    final double[] y = new double[] {2, 4, 6, 8};
+    final double[] p = new double[] {1, 2, 1};
+    final ParametricRealFunction f = new ParametricRealFunction() {
+        @Override
+        public double value(double t, double... parameters) {
+            return parameters[0] + parameters[1]*t + parameters[2]*t*t;
+        }
+        @Override
+        public double[] gradient(double t, double... parameters) {
+            return new double[] {1, t, t*t};
+        }
+    };
+    final double[] residuals = new double[x.length];
+    final double[] objective = new double[x.length];
+    for (int i = 0; i < x.length; i++) {
+        objective[i] = f.value(x[i], p) - y[i];
+        residuals[i] = objective[i] * objective[i];
+    }
+    final double cost =

@@ -1,0 +1,23 @@
+public void testSimpleMappingIterator() throws IOException
+{
+    String INPUT = "[ { },\n{ \"a\" : 1, \"b\" : 2, \"c\" : 3, \"d\" : 4, \"e\" : 5, \"f\" : 6, \"g\" : 7 }\n";
+
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Map<String,Object>> it = mapper.reader(Map.class)
+            .readValues(INPUT);
+    Map<String,Object> v;
+    v = it.nextValue();
+    assertNotNull(v);
+    assertEquals(0, v.size());
+    assertFalse(it.hasNext());
+    try {
+        v = it.nextValue();
+        fail("Should not pass");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "Unexpected close marker '}': expected ','");
+    }
+    assertFalse(it.hasNext());
+
+    // and then the real test
+    it = mapper.reader(Map.class)
+            .with(Deserial

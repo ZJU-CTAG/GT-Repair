@@ -1,0 +1,13 @@
+public void testCSVFormatWithEmptyHeader() {
+    StringWriter sw = new StringWriter();
+    CSVFormat csvFormat = CSVFormat.DEFAULT.withNullString("");
+    String[] headers = new String[0];
+    String[] values = new String[0];
+    try (CSVPrinter csvPrinter = new CSVPrinter(sw, csvFormat);) {
+        csvPrinter.printRecord(headers);
+        csvPrinter.printRecord(values);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    System.out.println(sw.toString());
+}

@@ -1,0 +1,19 @@
+public void testOptimize() throws Exception {
+    final SimplexTableau simplexTableau = new SimplexTableau(
+            new LinearObjectiveFunction(new double[]{2, 3}, 0),
+            new Array2DRowRealMatrix(new double[][]{
+                    {-4, -5},
+                    {-1, 0},
+                    {0, -1}
+            }),
+            new double[]{-20, 0, 0},
+            new boolean[]{false, true, true},
+            new MaxIter(100),
+            1e-6
+    );
+
+    final PointValuePair solution = simplexTableau.optimize(new ObjectiveFunction(new MaxIter(100)));
+
+    assertEquals(0.0, solution.getValue(), 0.001);
+    assertArrayEquals(new double[]{0.0, 0.0}, solution.getPoint(), 0.001);
+}

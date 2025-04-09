@@ -1,0 +1,26 @@
+public void testIssue() {
+    String script = "var uid;\n" +
+            "function reset() {\n" +
+            " uid = Math.random();\n" +
+            "}\n" +
+            "function doStuff() {\n" +
+            " reset();\n" +
+            " var _uid = uid;\n" +
+            "\n" +
+            " if (uid < 0.5) {\n" +
+            " doStuff();\n" +
+            " }\n" +
+            "\n" +
+            " if (_uid !== uid) {\n" +
+            " throw 'reset() was called';\n" +
+            " }\n" +
+            "}\n" +
+            "doStuff();\n";
+    Context context = Context.enter();
+    try {
+        context.setOptimizationLevel(9);
+        context.compileString(script, null, 1, null).exec(context, context.initStandardObjects());
+    } finally {
+        Context.exit();
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssue107() {
+    ArgumentCaptor<String[]> argCaptor = ArgumentCaptor.forClass(String[].class);
+
+    URL url = new URL("http://www.google.com");
+    URL[] urls = new URL[] { url };
+    URLClassLoader classLoader = new URLClassLoader(urls);
+
+    // this line fails in Mockito 1.10.8
+    classLoader.loadClass("com.google.common.base.Strings");
+
+    verify(classLoader).loadClass(argCaptor.capture());
+    assertEquals("com.google.common.base.Strings", argCaptor.getValue()[0]);
+}

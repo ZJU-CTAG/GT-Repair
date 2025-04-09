@@ -1,0 +1,20 @@
+public void testIssue_107() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    final Compiler compiler = new Compiler();
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "goog.scope(function() {\n" +
+                            "    /** @private */\n" +
+                            "    function test() {}\n" +
+                            "});\n")
+            },
+            options);
+    assertTrue(result.success);
+    assertEquals("goog.scope(function() {\n" +
+                    "  var test = function() {};\n" +
+                    "});\n",
+            compiler.toSource());
+}

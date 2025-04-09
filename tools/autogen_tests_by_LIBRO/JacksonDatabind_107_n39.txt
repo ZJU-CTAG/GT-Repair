@@ -1,0 +1,24 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper objectMapper = objectMapperBuilder()
+            .enableDefaultTyping()
+            .addHandler(new DeserializationProblemHandler() {
+                @Override
+                public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+                    return ctxt.constructType(Void.class);
+                }
+            })
+            .build();
+
+    TypeReference<List<String>> typeReference = new TypeReference<List<String>>() {
+    };
+
+    final List<String> strings = new ArrayList<>();
+    strings.add("one");
+    strings.add("two");
+
+    byte[] bytes = objectMapper.writerFor(typeReference).writeValueAsBytes(strings);
+
+    List<String> parsedStrings = objectMapper.readValue(bytes, typeReference);
+
+    assertEquals(strings, parsedStrings);
+}

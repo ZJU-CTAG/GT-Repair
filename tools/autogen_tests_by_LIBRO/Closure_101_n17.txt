@@ -1,0 +1,13 @@
+public void testProcessClosurePrimitives() throws Exception {
+    CommandLineRunner runner = new CommandLineRunner(new String[] {
+            "--process_closure_primitives", "false",
+            "--jscomp_off", "checkVars",
+            "--warning_level", "QUIET",
+            "--js", "testcode/test.js"
+    });
+    runner.doRun();
+    assertEquals(
+            "var testcode = {};\n" +
+            "testcode.test = function() {};\n",
+            runner.getCompiler().toSource());
+}

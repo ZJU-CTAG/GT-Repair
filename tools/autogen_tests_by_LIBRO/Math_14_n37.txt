@@ -1,0 +1,25 @@
+public void testWeight() {
+    int n = 10000;
+    PostEvaluation[] functions = new PostEvaluation[n];
+    for (int i = 0; i < n; i++) {
+        functions[i] = new PostEvaluation(i);
+    }
+    Weight[] weights = new Weight[n];
+    for (int i = 0; i < n; i++) {
+        weights[i] = new Weight(functions[i]);
+    }
+    MultivariateVectorFunction f = new PostEvaluationFunction(functions);
+    double[] p = new double[n];
+    for (int i = 0; i < n; i++) {
+        p[i] = i + 1;
+    }
+    f.value(p);
+}
+private static class PostEvaluation implements MultivariateFunction {
+    private final int index;
+    public PostEvaluation(int index) {
+        this.index = index;
+    }
+    public double value(double[] point) {
+        assertEquals(index + 1, point[index], FastMath.ulp(index + 1));
+        return

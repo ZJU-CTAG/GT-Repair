@@ -1,0 +1,13 @@
+public void testIssue110() {
+    String script = "goog.provide('apps');\n" +
+    		"goog.provide('apps.foo.bar.B');\n" +
+    		"goog.provide('apps.foo.bar.C');";
+    Scriptable scope = Context.enter().initStandardObjects();
+    try {
+        Object result = Context.getCurrentContext().evaluateString(
+                scope, script, "<script>", 1, null);
+        assertNull(result);
+    } finally {
+        Context.exit();
+    }
+}

@@ -1,0 +1,22 @@
+public void testIssue122() {
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    String code = "/** @constructor */\n" +
+            "function Foo() {\n" +
+            " var self = this;\n" +
+            " window.setTimeout(function() {\n" +
+            " window.location = self.location;\n" +
+            " }, 0);\n" +
+            "}\n" +
+            "\n" +
+            "Foo.prototype.setLocation = function(loc) {\n" +
+            " this.location = loc;\n" +
+            "};\n" +
+            "\n" +
+            "(new Foo()).setLocation('http://www.google.com/');";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            ImmutableList.of(),
+            ImmutableList

@@ -1,0 +1,11 @@
+public void testWithNullObjectId() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectIdSerializer serializer = new ObjectIdSerializer();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(ObjectId.class, serializer);
+    mapper.registerModule(module);
+    POJO pojo = new POJO();
+    pojo.id = null;
+    String id = mapper.writeValueAsString(pojo);
+    assertEquals("{\"id\":null,\"name\":null}", id);
+}

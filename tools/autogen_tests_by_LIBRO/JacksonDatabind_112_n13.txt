@@ -1,0 +1,24 @@
+public void testStringCollectionDeserializer_invalid_custom_collection() throws Exception {
+    final String json = "{\"items\":[\"a\",\"b\",\"c\"]}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addDeserializer(ImmutableCollection.class, new StringCollectionDeserializer()));
+    ObjectWithStringCollection obj = mapper.readValue(json, ObjectWithStringCollection.class);
+    assertEquals(3, obj.items.size());
+}
+
+class ObjectWithStringCollection {
+    public ImmutableCollection<String> items;
+}
+
+// Custom collection that doesn't allow modifications
+class ImmutableCollection<E> extends ArrayList<E> {
+    public ImmutableCollection(Collection<? extends E> c) {
+        super(c);
+    }
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        if (!isEmpty()) {
+            throw new IOException("Cannot modify collection");
+        }
+    }
+    private Object write

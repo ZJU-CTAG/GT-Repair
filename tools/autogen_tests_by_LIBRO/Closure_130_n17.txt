@@ -1,0 +1,16 @@
+public void testIssue128() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROVIDE, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_REQUIRE, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_REQUIRE_CSS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.STRICT_MODULE_DEP_CHECK, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("test.js",
+            "function () { return function () { alert(arguments); } }"
+        ) },
+        new CompilerOptions[] { options }

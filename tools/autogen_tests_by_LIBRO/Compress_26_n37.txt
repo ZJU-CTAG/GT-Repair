@@ -1,0 +1,11 @@
+public void testIOUtilsSkip() throws Exception {
+    Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
+    SecretKey secretKey = new SecretKeySpec(new byte[16], "AES");
+    IvParameterSpec ivSpec = new IvParameterSpec(new byte[16]);
+    cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(new CipherInputStream(new ByteArrayInputStream(new byte[1000]), cipher));
+    //TarArchiveInputStream tarIn = new TarArchiveInputStream(new ByteArrayInputStream(new byte[1000]));
+    ArchiveEntry entry = tarIn.getNextEntry();
+    long skipped = IOUtils.skip(tarIn, 100);
+    assertEquals(100, skipped);
+}

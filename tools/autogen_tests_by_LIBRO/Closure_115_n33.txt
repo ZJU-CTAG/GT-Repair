@@ -1,0 +1,19 @@
+public void testIssue108() {
+  // The following JavaScript is wrong, but the compiler optimizes it even
+  // further.
+  String js =
+    "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+    "  return (function (saved) {\n" +
+    "    return modifiesProp(obj) + saved;\n" +
+    "  })(obj[\"prop\"]);\n" +
+    "}\n";
+
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  compiler.compile(null, externs, createJSCode(js), options);
+  String compiledJs = compiler.toSource();
+  assertTrue(compiledJs.contains(
+      "window.anchor=function(a,b){var HOLD=a.prop;return b(a)+HOLD}") ||
+      compiledJs.contains(
+          "window[\"anchor\"]=function(a,

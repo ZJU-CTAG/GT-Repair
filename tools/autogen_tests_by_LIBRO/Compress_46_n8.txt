@@ -1,0 +1,22 @@
+public void testExtendedTimestamp() throws Exception {
+    File file = new File("/home/sebb/tmp/x5455test.jar");
+    JarOutputStream jos = new JarOutputStream(new FileOutputStream(file));
+    try {
+        ZipEntry ze = new ZipEntry("test.txt");
+        jos.putNextEntry(ze);
+        jos.write("test".getBytes());
+        jos.closeEntry();
+    } finally {
+        jos.close();
+    }
+    try (JarFile jf = new JarFile(file)) {
+        ZipEntry ze = jf.getEntry("test.txt");
+        assertNotNull(ze);
+        long now = System.currentTimeMillis() / 1000 * 1000;
+        long then = now - 20000;
+        ze.setTime(then);
+        jf.close();
+        try (JarFile jf2 = new JarFile(file)) {
+            ze = jf2.getEntry("test.txt");
+            assertNotNull(ze);
+            assertEquals("Time not set correctly", then, ze.getTime

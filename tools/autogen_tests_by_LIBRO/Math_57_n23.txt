@@ -1,0 +1,17 @@
+public void testClusterer() throws MathUserException {
+    double[][] points = new double[][]{
+            {0,0},
+            {1,1},
+            {2,2},
+    };
+    Clusterable[] clusterablePoints = new Clusterable[points.length];
+    for (int i = 0; i < points.length; i++)
+        clusterablePoints[i] = new DoublePoint(points[i]);
+
+    KMeansPlusPlusClusterer<Clusterable> clusterer = new KMeansPlusPlusClusterer<Clusterable>(1, new MersenneTwister());
+
+    List<CentroidCluster<Clusterable>> clusters = clusterer.cluster(Arrays.asList(clusterablePoints));
+    assertEquals(1, clusters.size());
+    CentroidCluster<Clusterable> cluster = clusters.get(0);
+    assertEquals(points.length, cluster.getPoints().size());
+}

@@ -1,0 +1,14 @@
+public void testEmptyHeader() throws Exception {
+    String[] cols = new String[] { "a", "b", "c" };
+    String[][] data = new String[2][];
+    data[0] = new String[] { "1", "2", "" };
+    data[1] = new String[] { "a", "b", "" };
+
+    CSVWriter writer = new CSVWriter(new StringWriter(), '\t', '"', '\\', "\n");
+    CSVWriter writer2 = new CSVWriter(new StringWriter(), '\t', '"', '\\', "\n");
+    writer2.setNullString("");
+    writer.writeAll(data);
+    writer2.writeAll(data);
+
+    assertEquals(writer.getOut().toString(), writer2.getOut().toString());
+}

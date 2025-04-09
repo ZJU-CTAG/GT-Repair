@@ -1,0 +1,14 @@
+public void testIssue108() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return Math.sin(x);
+        }
+    };
+    BrentOptimizer brentOptimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariateRealPointValuePair optimum = brentOptimizer.optimize(new UnivariateRealFunction() {
+        public double value(double x) {
+            return Math.sin(x);
+        }
+    }, GoalType.MINIMIZE, new SearchInterval(-0.9, 0.9));
+    assertTrue("value at optima is not the minimum", brentOptimizer.getMin() == optimum.getValue());
+}

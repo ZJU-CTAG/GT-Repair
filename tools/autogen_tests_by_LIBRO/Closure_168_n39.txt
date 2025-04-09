@@ -1,0 +1,9 @@
+public void testIssue117() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    Result result = compiler.compile(SourceFile.fromCode("foo.js", "var x = {}; x.y = 'foo'; x.y();"), options);
+    assertTrue(result.success);
+    assertEquals(1, compiler.getWarnings().length);
+    assertEquals("function expected", compiler.getWarnings()[0].description);
+}

@@ -1,0 +1,19 @@
+public void testRead() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(JsonSchema.class, JsonSchemaMixin.class);
+    mapper.addMixIn(JsonRoot.class, JsonRootMixin.class);
+
+    JsonRoot root;
+    try {
+      root =
+          mapper.readValue(
+              this.getClass().getResourceAsStream("/org/apache/calcite/test/foodmart.json"),
+              JsonRoot.class);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    assertNotNull(root);
+    assertThat(root.schemas.size(), is(1));
+    assertThat(root.schemas.get(0).name, is("FoodMart"));
+  }
+

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    Element root = document.createElement("root");
+    document.appendChild(root);
+    Element foo = document.createElement("foo");
+    root.appendChild(foo);
+    foo.setAttribute("xmlns", "test111");
+    Element bar = document.createElement("bar");
+    bar.setTextContent("a");
+    foo.appendChild(bar);
+    Element test = document.createElement("test");
+    foo.appendChild(test);
+    test.setAttribute("xmlns", "");
+    DOMNodePointer p = new DOMNodePointer(null, document);
+    JXPathContext ctx = JXPathContext.newContext(p);
+    assertEquals("/root/foo[1]/test[1]", ctx.getPointer("/root/foo/test").asPath());
+}

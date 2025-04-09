@@ -1,0 +1,17 @@
+public void testIssue() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("/** @param {number} x */ function f(x) {\n");
+    sb.append("  /** @type {number} */ var n = x;\n");
+    sb.append("  /** @type {string} */ var s = x;\n");
+    sb.append("  n = s;\n");
+    sb.append("}\n");
+    
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.TYPE_CHECKS, CheckLevel.WARNING);
+    Result result = compiler.compile(
+        SourceFile.fromCode("testcode", sb.toString()), options);
+    JSError[] warnings = result.warnings;
+    assertEquals(1, warnings.length);
+    assertEquals(TypeValidator.TYPE_MISMATCH_WARNING, warnings[0].getType());
+}

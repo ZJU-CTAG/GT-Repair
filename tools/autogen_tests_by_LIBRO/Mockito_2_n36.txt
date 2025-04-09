@@ -1,0 +1,6 @@
+public void testAfterNegativeTime() {
+    Runnable runnable = mock(Runnable.class);
+    verify(runnable, Mockito.never()).run(); // passes as expected
+    verify(runnable, Mockito.after(1000).never()).run(); // passes as expected
+    verify(runnable, Mockito.after(-1000).atLeastOnce()).run(); // passes incorrectly
+}

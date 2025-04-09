@@ -1,0 +1,23 @@
+public void testIssue() {
+    String input = "/** @fileoverview Test */\n"
+            + "var t = null;\n"
+            + "window.test = function() {\n"
+            + "  if (t != null) {\n"
+            + "    t = null;\n"
+            + "  }\n"
+            + "  t = 1;\n"
+            + "};\n";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setCheckTypes(true);
+    options.setCheckSuspiciousCode(true);
+
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", input),
+            options);
+    assertFalse(result.success);
+    assertFalse(result.warnings.isEmpty());
+    assertEquals("JSC_DETERMINISTIC_TEST", result.warnings.get(0).getType());
+}

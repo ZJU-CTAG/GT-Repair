@@ -1,0 +1,13 @@
+public void testWrite7zEmptyEntries() throws IOException {
+    SevenZOutputFile output = new SevenZOutputFile(new File(dir, "issue107.7z"));
+    output.setContentCompression(SevenZMethod.COPY);
+    output.setContentMethods(SevenZMethod.COPY, SevenZMethod.COPY, SevenZMethod.COPY);
+    SevenZArchiveEntry entry = output.createArchiveEntry(new File(dir, "issue107.txt"), "issue107.txt");
+    output.putArchiveEntry(entry);
+    output.closeArchiveEntry();
+    output.close();
+    SevenZFile file = new SevenZFile(new File(dir, "issue107.7z"));
+    entry = file.getNextEntry();
+    assertEquals("issue107.txt", entry.getName());
+    file.close();
+}

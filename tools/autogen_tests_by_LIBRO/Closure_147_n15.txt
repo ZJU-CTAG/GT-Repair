@@ -1,0 +1,24 @@
+public void testIssueLostWarning() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new JsOptions());
+    compiler.compile(null, new JSSourceFile[] {
+        JSSourceFile.fromCode("in", "var NS = {\n"
+            + " read: function() {\n"
+            + "   return this.foo;\n"
+            + " },\n"
+            + "\n"
+            + " write: function() {\n"
+            + "   this.foo = 123;\n"
+            + " }\n"
+            + "};\n"
+            + "\n"
+            + "NS.write2 = function() {\n"
+            + "   this.foo = 123;\n"
+            + "};\n"
+            + "\n"
+            )
+    });
+    JSError[] errors = compiler.getWarnings();
+    assertEquals(1, errors.length);
+    assertEquals("JSC_USED_GLOBAL_THIS", errors[0].description);

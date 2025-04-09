@@ -1,0 +1,10 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[\"a\", \"b\"]", new TypeReference<ArrayList<Integer>>() {
+        });
+    } catch (JsonMappingException e) {
+        InvalidFormatException ee = (InvalidFormatException) e.getCause();
+        assertEquals(1, ee.getPath().getIndex());
+    }
+}

@@ -1,0 +1,24 @@
+public void testTypeSafety() {
+    // the following will succeed, but should have failed
+    assertTrue(MockEnum.MOCK.compareTo(MockEnum2.MOCK2) == 0);
+
+    // this will fail as expected
+    assertTrue(MockEnum.MOCK.compareTo(MockEnum2.MOCK21) != 0);
+}
+
+private static class MockEnum extends ValuedEnum {
+    public static final MockEnum MOCK = new MockEnum("MOCK", 0);
+
+    private MockEnum(String name, int value) {
+        super(name, value);
+    }
+}
+
+private static class MockEnum2 extends ValuedEnum {
+    public static final MockEnum2 MOCK2 = new MockEnum2("MOCK2", 0);
+    public static final MockEnum2 MOCK21 = new MockEnum2("MOCK21", 1);
+
+    private MockEnum2(String name, int value) {
+        super(name, value);
+    }
+}

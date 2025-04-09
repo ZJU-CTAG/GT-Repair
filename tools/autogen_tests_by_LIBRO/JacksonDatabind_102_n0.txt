@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    // mapper.registerModule(new SimpleModule() {
+    // {
+    // addSerializer(
+    // java.sql.Date.class,
+    // new SqlDateSerializer().withFormat(false, new SimpleDateFormat("yyyy-MM-dd"))
+    // );
+    // }
+    // });
+    final Date date = new Date();
+    final java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+    writeAndRead(mapper, date);
+    writeAndRead(mapper, sqlDate);
+}
+
+private void writeAndRead(ObjectMapper mapper, Object value) throws Exception {
+    final String serialized = mapper.writeValueAsString(value);
+    final Object deserialized = mapper.readValue(serialized, value.getClass());
+    assertEquals(value, deserial

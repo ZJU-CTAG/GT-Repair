@@ -1,0 +1,17 @@
+public void testCorrelationPValuesPrecision() {
+    int nTreatments = 1000;
+    int nPoints = 10;
+    double[] data = new double[nTreatments * nPoints];
+    NormalDistribution normal = new NormalDistribution(0, 1);
+    for (int i = 0; i < nTreatments; i++) {
+        for (int j = 0; j < nPoints; j++) {
+            data[i * nPoints + j] = normal.sample();
+        }
+    }
+    PearsonsCorrelation correlation = new PearsonsCorrelation(data, nTreatments, nPoints);
+    double[] pValues = correlation.getCorrelationPValues();
+    for (int i = 0; i < nTreatments; i++) {
+        for (int j = i + 1; j < nTreatments; j++) {
+            int k = i * nTreatments - ((i * (i + 1)) / 2) + j - 1;
+            double t = correlation.getCorrelationMatrix().getEntry(i, j)
+                    / FastMath.sqrt((1

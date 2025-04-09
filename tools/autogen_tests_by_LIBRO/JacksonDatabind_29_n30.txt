@@ -1,0 +1,16 @@
+public void testDeserializePolymorphicTypeWithoutTypeId() {
+    ObjectMapper mapper = new ObjectMapper();
+    PojoWithPolymorphicPropertyWithExternalTypeId pojo = mapper.readValue(
+          "{\"value\":{\"a\":\"b\"}}",
+          PojoWithPolymorphicPropertyWithExternalTypeId.class);
+    assertNotNull(pojo.getValue());
+    assertEquals(2, pojo.getValue().size());
+    assertEquals("a", pojo.getValue().get(0));
+    assertEquals("b", pojo.getValue().get(1));
+}
+
+public class PojoWithPolymorphicPropertyWithExternalTypeId {
+  @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXTERNAL_PROPERTY, property="type", defaultImpl=LinkedList.class)
+  @JsonSubTypes({@JsonSubTypes.Type(name="list", value=LinkedList.class)})
+  private List<String> value;
+  public List<String> get

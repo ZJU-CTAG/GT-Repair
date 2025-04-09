@@ -1,0 +1,16 @@
+public void testIssue86() {
+    EmbeddedRungeKuttaIntegrator integ = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    FirstOrderDifferentialEquations eqn = new FirstOrderDifferentialEquations() {
+
+        public int getDimension() {
+            return 3;
+        }
+
+        public void computeDerivatives(double t, double[] y, double[] yDot)
+                throws MaxCountExceededException, DimensionMismatchException {
+            yDot[0] = -0.04 \* y[0] + 1.0e4 \* y[1] \* y[2];
+            yDot[1] = 0.04 \* y[0] - 1.0e4 \* y[1] \* y[2] - 3.0e7 \* y[1] \* y[1];
+            yDot[2] = 3.0e7 \* y[1] \* y[1];
+        }
+    };
+    double[] y

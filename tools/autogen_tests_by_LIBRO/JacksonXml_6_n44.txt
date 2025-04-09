@@ -1,0 +1,21 @@
+public void testWriteBinary() throws IOException, XMLStreamException {
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    XMLOutputFactory xof = XMLOutputFactory.newFactory();
+    ToXmlGenerator xmlGenerator = new ToXmlGenerator(xof.createXMLStreamWriter(buffer, "UTF-8"),
+            new JsonWriteContext(JsonWriteContext.STATUS_OK_AS_IS),
+            new ObjectMapper());
+
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeFieldName("field");
+
+    byte[] bytes = new byte[]{1, 2, 3};
+    ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+    xmlGenerator.writeBinary(Base64Variants.MIME_NO_LINEFEEDS, byteStream, bytes.length);
+
+    xmlGenerator.writeEndObject();
+    xmlGenerator.close();
+
+    String xml = new String(buffer.toByteArray(), "UTF-8");
+
+    String expectedXml = "<object><field>AQID</field></object>";
+    assertEquals(

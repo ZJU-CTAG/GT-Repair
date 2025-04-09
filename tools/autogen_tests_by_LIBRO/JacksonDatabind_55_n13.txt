@@ -1,0 +1,17 @@
+public void testEnumMapWithJsonProperty() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_ANNOTATIONS, true);
+    mapper.registerModule(new Jdk8Module()); // or use ObjectMapper#registerModule(new Jdk8Module());
+    final EnumMap<TestEnum, String> enumMap = Collections.singletonMap(TestEnum.A, "A value");
+    final String json = mapper.writeValueAsString(enumMap);
+    final EnumMap<TestEnum, String> mapFromJson = mapper.readValue(json, new TypeReference<EnumMap<TestEnum, String>>() {
+    });
+    assertEquals(enumMap, mapFromJson);
+}
+
+enum TestEnum {
+    @JsonProperty("A name")
+    A,
+    @JsonProperty("B name")
+    B;
+}

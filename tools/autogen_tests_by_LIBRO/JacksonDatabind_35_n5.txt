@@ -1,0 +1,21 @@
+public void testObjectIdAndTypeIdAsWrapperObject() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public ObjectIdInfo findObjectIdInfo(Annotated ann) {
+            if (ann.getAnnotation(XmlID.class) != null) {
+                return new ObjectIdInfo(new PropertyName("@id"), ObjectId.class, null);
+            }
+            return super.findObjectIdInfo(ann);
+        }
+    });
+
+    final String EXP = aposToQuotes("{'@id':'abc','@type':'A', 'a':123 }");
+
+    A value = new A("abc");
+    value.a = 123;
+    assertEquals(EXP, mapper.writeValueAsString(

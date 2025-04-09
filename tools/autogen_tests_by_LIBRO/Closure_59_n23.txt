@@ -1,0 +1,10 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler(System.err, null);
+    List<SourceFile> externs = Lists.newArrayList(SourceFile.fromCode("externs", "var globalThis = 'foo';"), SourceFile.fromCode("externs", "/** @define {boolean} */ var DEFINE = true;"));
+    List<SourceFile> inputs = Lists.newArrayList(SourceFile.fromCode("input", "/** @define {boolean} */ var DEFINE = true;"), SourceFile.fromCode("input", "var foo = {}; foo['foo'] = DEFINE; var x = foo.foo;"));
+    List<String> defines = Lists.newArrayList("DEFINE=true");
+    List<JSError> errors = Lists.newArrayList();
+    List<JSError> warnings = Lists.newArrayList();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD

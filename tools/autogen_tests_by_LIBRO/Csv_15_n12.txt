@@ -1,0 +1,21 @@
+public void testQuoteCharUsing() throws IOException {
+
+    // this is a bug - according to the
+    // http://tools.ietf.org/html/rfc4180#page-2
+    // the first field of a record should be quoted
+    // if it contains the quote char.
+    // In Excel, this record is written as "あ",い,う
+    StringBuilder sb = new StringBuilder();
+    sb.append("あ").append(",");
+    sb.append("い").append(",");
+    sb.append("う");
+    String data = sb.toString();
+    StringReader r = new StringReader(data);
+    CSVParser p = new CSVParser(r, CSVFormat.EXCEL);
+    List<CSVRecord> list = p.getRecords();
+    CSVRecord record = list.get(0);
+    assertEquals(3, record.size());
+    assertEquals("あ", record.get(0));
+    assertEquals("い", record.get(1));
+    assertEquals("う", record.get(2));
+}

@@ -1,0 +1,17 @@
+public void testFilterParserMissesLastEndObject()
+        throws Exception
+    {
+        final String JSON = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+        final JsonFactory jf = new JsonFactory();
+        JsonParser p = jf.createJsonParser(new ByteArrayInputStream(JSON.getBytes("UTF-8")));
+        p = new FilteringParserDelegate(p,
+            new NameMatchFilter("value"),
+                true, // includePath
+                false // multipleMatches
+            );
+        JsonToken t;
+        while ((t = p.nextToken()) != null) {
+            ;
+        }
+        p.close();
+    }

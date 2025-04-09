@@ -1,0 +1,14 @@
+public void testUnion() throws JaxenException {
+    Navigator nav = getNavigator();
+    String url = "xml/union.xml";
+    log("Document [" + url + "]");
+    Object document = nav.getDocument(url);
+    XPath contextpath = new BaseXPath("/MAIN/B | /MAIN/A", nav);
+    log("Initial Context :: " + contextpath);
+    List list = contextpath.selectNodes(document);
+    Iterator iter = list.iterator();
+    while (iter.hasNext()) {
+        Object context = iter.next();
+        assertValueOfXPath(context, "string(.)", "avalue");
+    }
+}

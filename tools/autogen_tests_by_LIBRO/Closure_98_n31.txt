@@ -1,0 +1,7 @@
+public void testClosureInline() {
+    String js = "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } } foo();";
+    String[] args = { "--compilation_level=SIMPLE_OPTIMIZATIONS", "--use_types_for_optimization", "--jscomp_off=internetExplorerChecks", "--jscomp_off=checkVars", "--jscomp_off=checkRegExp", "--jscomp_off=checkTypes", "--jscomp_off=checkControlStructures" };
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(SourceFile.fromCode("test.js", js), SourceFile.fromCode("externs.js

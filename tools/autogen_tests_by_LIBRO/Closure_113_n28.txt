@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.init(new ArrayList<SourceFile>(), new ArrayList<SourceFile>(), new CompilerOptions());
+    compiler.parseInputs();
+    Node externsRoot = compiler.getRoot().getFirstChild();
+    Node jsRoot = externsRoot.getNext();
+    NodeTraversal.traverse(compiler, jsRoot, new ProcessClosurePrimitives(
+        compiler,
+        compiler.getCodingConvention(),
+        new CompilerOptions(),
+        CheckLevel.ERROR,
+        false,
+        true,
+        false,
+        new PrintStream(new ByteArrayOutputStream()),
+        new PrintStream(new ByteArrayOutputStream())));
+}

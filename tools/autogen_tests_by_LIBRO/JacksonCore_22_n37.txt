@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(MapperFeature.AUTO_DETECT_CREATORS, true);
+
+    String json = om.writeValueAsString(new Entity());
+    Entity entity = om.readValue(json, Entity.class);
+    assertEquals("foo", entity.getData().get(0).getName());
+    assertEquals("bar", entity.getData().get(1).getName());
+}

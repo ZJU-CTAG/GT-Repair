@@ -1,0 +1,13 @@
+public void testIssue107() {
+    ArchiveInputStream stream = new ArchiveStreamFactory().createArchiveInputStream(
+        new URL("https://dl.dropboxusercontent.com/u/17864973/umlaute/umlaute.zip").openStream());
+    ZipArchiveEntry entry = (ZipArchiveEntry) stream.getNextEntry();
+    assertEquals("/", entry.getName());
+    entry = (ZipArchiveEntry) stream.getNextEntry();
+    assertEquals("/ä/", entry.getName());
+    assertTrue(entry.isDirectory());
+    entry = (ZipArchiveEntry) stream.getNextEntry();
+    assertEquals("/ä/länger.txt", entry.getName());
+    assertFalse(entry.isDirectory());
+    stream.close();
+}

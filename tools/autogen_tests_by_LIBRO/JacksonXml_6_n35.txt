@@ -1,0 +1,20 @@
+public void testLargeBinary() throws Exception {
+    File binaryFile = new File("/tmp/foo.txt");
+    binaryFile.createNewFile();
+    FileOutputStream out = new FileOutputStream(binaryFile);
+    out.write("Hello World".getBytes());
+    out.flush();
+    out.close();
+    FileInputStream in = new FileInputStream(binaryFile);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    XmlFactory xmlFactory = new XmlFactory();
+    ToXmlGenerator generator = xmlFactory.createGenerator(baos);
+    generator.writeStartDocument();
+    generator.writeFieldName("foo");
+    generator.writeBinary(Base64Variants.MIME, in, -1);
+    generator.writeEndDocument();
+    generator.close();
+    in.close();
+    String result = baos.toString();
+    System.out.println(result);
+    assertEquals(result, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<foo>SGVsbG8gV29ybGQ

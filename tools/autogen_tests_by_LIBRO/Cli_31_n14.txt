@@ -1,0 +1,12 @@
+public void testHelpFormatter() throws Exception {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("foo");
+    formatter.setOptionComparator(null);
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("long").create());
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    formatter.printHelp(new PrintWriter(out));
+    String s = out.toString();
+    assertTrue(s.indexOf("[foo]") > 0);
+    assertTrue(s.indexOf("[arg]") == -1);
+}

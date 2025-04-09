@@ -1,0 +1,9 @@
+public void testEmptyArchiveEntries() throws IOException {
+    SevenZFile sevenZFile = new SevenZFile(new File("src/test/resources/test7.7z"));
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertEquals("empty_file", entry.getName());
+    assertEquals(0, entry.getSize());
+    byte[] content = new byte[(int) entry.getSize()];
+    int read = entry.read(content);
+    assertEquals(-1, read);
+}

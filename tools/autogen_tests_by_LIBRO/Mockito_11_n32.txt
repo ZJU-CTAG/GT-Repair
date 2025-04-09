@@ -1,0 +1,28 @@
+public void testEqualsVerificationMode() {
+    final MyVerificationMode mode = new MyVerificationMode();
+    mock.simpleMethod();
+
+    Method equalsMethod = null;
+    try {
+        equalsMethod = DelegatingMethod.class.getDeclaredMethod("equals", Object.class);
+    } catch (NoSuchMethodException e) {
+        fail("NoSuchMethodException: equals");
+    }
+    equalsMethod.setAccessible(true);
+
+    VerificationMode equalsMode = new DelegatingVerificationMode(mode);
+    Object[] mocks = new Object[]{mock};
+    Object[] args = new Object[]{};
+    try {
+        boolean equals = (Boolean) equalsMethod.invoke(mocks, args);
+        assertTrue(equals);
+    } catch (IllegalAccessException e) {
+        fail("IllegalAccessException: equals");
+    } catch (InvocationTargetException e) {
+        fail("InvocationTargetException: equals");
+    }
+}
+
+private class MyVerificationMode extends VerificationMode {
+    public void verify(VerificationData data) {
+    }

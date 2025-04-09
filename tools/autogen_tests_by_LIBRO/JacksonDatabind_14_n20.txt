@@ -1,0 +1,15 @@
+public void testCustomDeserializerWithParentUpdate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(DataB.DataA.class, new DataADeserializer());
+    mapper.registerModule(module);
+
+    DataB orig = new DataB();
+    orig.da.i = 11;
+    orig.k = 13;
+    JsonNode origNode = mapper.valueToTree(orig);
+
+    DataB updatedViaNode = mapper.readerForUpdating(new DataB()).readValue(origNode);
+    Assert.assertEquals(5, updatedViaNode.da.i);
+    Assert.assertEquals(13, updatedViaNode.k);
+}

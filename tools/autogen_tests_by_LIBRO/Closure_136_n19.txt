@@ -1,0 +1,12 @@
+public void testSuperReplacement() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCodingConvention(new ClosureCodingConvention());
+    compiler.compile(SourceFile.fromCode("in", "var A = function() { };" +
+        "A.prototype = { foo: function() { } };" +
+        "var B = function() { A.call(this); };" +
+        "B.prototype = { __proto__: A.prototype," +
+        "foobar: function() { $super.foo(); } };"),
+        new SourceFile[] { SourceFile.fromCode("externs", "") }, options);
+}

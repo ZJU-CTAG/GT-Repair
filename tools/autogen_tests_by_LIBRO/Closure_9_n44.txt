@@ -1,0 +1,14 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.disableThreads();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> inputs = ImmutableList.of(
+            SourceFile.fromCode("lib/Foo.js", "goog.provide('Foo'); Foo = function() {};"),
+            SourceFile.fromCode("Bar.js", "goog.provide('Bar'); goog.require('Foo'); Bar = function() {}; new Foo();")
+    );
+    Result result = compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+    assertTrue(result.compiledSource.contains("var Foo = function() {};"));
+    assertTrue(result.compiledSource.contains("var Bar = function() {};"));
+}

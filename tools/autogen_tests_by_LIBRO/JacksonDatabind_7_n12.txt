@@ -1,0 +1,30 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer();
+    Value value = new Value();
+    value.a = 1;
+    value.b = null;
+    String json = writer.writeValueAsString(value);
+    Value deserialized = mapper.readValue(json, Value.class);
+    assertEquals(value, deserialized);
+}
+
+static class Value {
+    int a;
+    String b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value value = new Value();
+        JsonParser parser = buffer.asParser();
+        parser.nextToken();
+        JsonToken token = parser.getCurrentToken();
+        while (token != null) {
+            if (token == JsonToken.FIELD_NAME) {
+                String fieldName = parser.getCurrentName();
+                parser.nextToken();
+                switch (fieldName) {
+                    case "a":
+                        value.a = parser.getIntValue();
+                        break;
+                    case

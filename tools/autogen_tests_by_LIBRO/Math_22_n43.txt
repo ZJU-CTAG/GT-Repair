@@ -1,0 +1,27 @@
+public void testSupportInclusive() {
+    final double[] support = {0, 1};
+    final double[] upper = {Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
+    final double[] lower = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
+    final boolean[] supportLowerInclusive = {true, true};
+    final boolean[] supportUpperInclusive = {true, true};
+    final double[] densityRef = {0.5, 0.5};
+    checkSupport(new AbstractRealDistribution() {
+
+        @Override
+        public double density(double x) {
+            for (int i = 0; i < support.length; i++) {
+                if ((x == support[i]) &&
+                    (x == upper[i] || x == lower[i])) {
+                    return densityRef[i];
+                }
+            }
+            return Double.NaN;
+        }
+
+        @Override
+        public double cumulativeProbability(double x) {
+            return Double.NaN;
+        }
+
+        @Override
+        public double

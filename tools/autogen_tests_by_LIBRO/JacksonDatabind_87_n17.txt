@@ -1,0 +1,10 @@
+public void testTzNoOffset() throws Exception {
+    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+    Date date = fmt.parse("1970-01-01T00:00:00.000");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+    Date date2 = mapper.readValue("\"1970-01-01T00:00:00.000\"", java.util.Date.class);
+    assertEquals(date, date2);
+}

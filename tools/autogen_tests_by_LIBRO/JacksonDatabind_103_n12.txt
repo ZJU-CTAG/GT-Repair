@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    try {
+        objectMapper.readValue("[{\"foo\": \"foo\", \"value\": \"bar\"}]", new TypeReference<List<TestClass>>() {});
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        assertFalse(msg.contains(" at [source:"));
+    }
+}
+
+public class TestClass {
+    public String foo;
+    public Integer value;
+}

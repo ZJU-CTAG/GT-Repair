@@ -1,0 +1,16 @@
+public void testPrototypeMethodIssue() {
+    final Foo foo = new Foo();
+    assertNotNull(foo.foobar);
+    assertNotNull(foo.foobar.bar1);
+    assertEquals("bar1", foo.foobar.bar1());
+}
+
+public static class Foo {
+    public Bar.Inner foobar = new Bar.Inner();
+
+    public static class Bar {
+        public class Inner {
+            public String bar1() { return "bar1"; }
+        }
+    }
+}

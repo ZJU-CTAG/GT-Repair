@@ -1,0 +1,22 @@
+public void test_mockito_spy_issue_with_abstract_class() {
+    final Foo foo = Mockito.spy(new FooImpl());
+    Mockito.doNothing().when(foo).abstractMethod();
+    foo.doSomething();
+    Mockito.verify(foo).doSomething();
+    Mockito.verify(foo).abstractMethod(); // does not match, throws exception
+    Mockito.verifyNoMoreInteractions(foo);
+}
+
+private abstract class Foo {
+    public abstract void abstractMethod();
+
+    public void doSomething() {
+        abstractMethod();
+    }
+}
+
+private class FooImpl extends Foo {
+    public void abstractMethod() {
+        System.out.println("foo");
+    }
+}

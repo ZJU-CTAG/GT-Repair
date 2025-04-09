@@ -1,0 +1,20 @@
+public void testTypeAliases() {
+    JsAST jsast = new JsAST();
+
+    JsFunction bar = jsast.newJsFunction("Foo.Bar");
+    JsFunction foo = jsast.newJsFunction("Foo");
+
+    JsParameter barParm = jsast.newJsParameter("bar", "Foo.Bar");
+    JsNameRef barRef = jsast.newJsNameRef("Foo.Bar");
+    JsParameter fooParm = jsast.newJsParameter("foo", "Foo");
+    JsNameRef fooRef = jsast.newJsNameRef("Foo");
+
+    bar.addParameter(barParm);
+    bar.addBody(barRef);
+
+    foo.addParameter(fooParm);
+    foo.addBody(fooRef);
+
+    assertEquals("function Foo(foo) {Foo}", foo.toString());
+    assertEquals("function Foo.Bar(bar) {Foo.Bar}", bar.toString());
+}

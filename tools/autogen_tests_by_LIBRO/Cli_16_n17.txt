@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    Options options = new Options();
+    options.addOption(new Option("a", "a", false, "a"));
+    options.addOption(new Option("b", "b", false, "b"));
+    Group group = new GroupBuilder()
+            .withOption(OptionBuilder.withArgName("c").hasArg().create("c"))
+            .hasMinimum(1)
+            .hasMaximum(1)
+            .create();
+    options.addOptionGroup(group);
+
+    BasicParser parser = new BasicParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-a", "-b"});
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+    assertFalse(cmd.hasOption("c"));
+}

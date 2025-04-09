@@ -1,0 +1,23 @@
+public void testSuper() {
+    String input = ""
+        + "  function Foo() {};"
+        + "  Foo.prototype = {"
+        + "    method: function () {"
+        + "      alert('Foo.method');"
+        + "    }"
+        + "  };"
+        + "  function Bar() {"
+        + "    Bar.$$parent$$.constructor.call(this);"
+        + "  };"
+        + "  Bar.$$parent$$ = Foo.prototype;"
+        + "  Bar.prototype = Object.create(Foo.prototype, {"
+        + "    constructor: {value: Bar, writable: true, configurable: true},"
+        + "    method: {value: function () {"
+        + "        Bar.$$parent$$.method.call(this);"
+        + "        alert('Bar.method');"
+        + "      }, writable: true, configurable: true}"
+        + "  });"
+        + "  (function () {"
+        + "    alert('test');"
+        + "  })();";
+    Comp

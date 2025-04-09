@@ -1,0 +1,16 @@
+public void testReadOnly() {
+    TestPojo pojo = new TestPojo();
+    pojo.setFirstName("John");
+    pojo.setLastName("Doe");
+    assertEquals("John Doe", pojo.getFullName());
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        String pojoJson = mapper.writeValueAsString(pojo);
+        TestPojo pojo2 = mapper.readValue(pojoJson, TestPojo.class);
+        assertEquals("John", pojo2.getFirstName());
+        assertEquals("Doe", pojo2.getLastName());
+        assertEquals("John Doe", pojo2.getFullName());
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+}

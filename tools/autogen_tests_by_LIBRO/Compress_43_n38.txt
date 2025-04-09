@@ -1,0 +1,20 @@
+public void testRandomAccessIssue() throws Exception {
+    final File testFile = new File("test.zip");
+    testFile.delete();  // don't worry if it doesn't exist
+    FileOutputStream fout = new FileOutputStream(testFile);
+    ZipArchiveOutputStream zout = new ZipArchiveOutputStream(fout);
+    zout.setUseZip64(Zip64Mode.AsNeeded);
+    zout.setCreateUnicodeExtraFields(UnicodeExtraFieldPolicy.ALWAYS);
+    zout.setLevel(Deflater.DEFAULT_COMPRESSION);
+    zout.setEncoding("UTF-8");
+    zout.setFallbackToUTF8(false);
+
+    ZipArchiveEntry entry = new ZipArchiveEntry("foo");
+    entry.setSize(42);
+    entry.setMethod(ZipEntry.DEFLATED);
+    entry.setUnixMode(0644);
+    entry.setTime(0);
+    zout.putArchiveEntry(entry);
+    zout.closeArchiveEntry();
+    zout.close();
+    fout.close

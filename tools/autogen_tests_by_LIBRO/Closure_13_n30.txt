@@ -1,0 +1,20 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("foo.js", "function some_function() {\r\n" +
+                    " var fn1;\r\n" +
+                    " var fn2;\r\n" +
+                    " \r\n" +
+                    " if (any_expression) {\r\n" +
+                    " fn2 = external_ref;\r\n" +
+                    " fn1 = function (content) {\r\n" +
+                    " return fn2();\r\n" +
+                    " }\r\n" +
+                    " }\r\n" +
+                    " \r\n" +
+                    " return {\r\n" +
+                    " method

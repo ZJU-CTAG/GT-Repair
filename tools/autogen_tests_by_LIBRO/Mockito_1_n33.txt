@@ -1,0 +1,10 @@
+public void testCaptorVarargs() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(mock).join("a", "b", "c");
+    verify(mock).join("a", "b", "c", captor.capture());
+    verify(mock).join(captor.capture());
+    List<String> captured = captor.getAllValues();
+    assertEquals("a", captured.get(0));
+    assertEquals("a", captured.get(1));
+    assertEquals("c", captured.get(2));
+}

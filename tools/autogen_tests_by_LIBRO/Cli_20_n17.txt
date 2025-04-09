@@ -1,0 +1,11 @@
+public void testParseUnknownOption() throws ParseException {
+    Options options = new Options();
+    options.addOption("a", false, "a");
+    options.addOption("b", true, "b");
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[] { "--zop", "-abfoo" };
+    CommandLine cmd = parser.parse(options, args, true);
+    assertFalse(cmd.hasOption("zop"));
+    assertEquals(1, cmd.getArgList().size());
+    assertEquals("--zop", cmd.getArgList().get(0));
+}

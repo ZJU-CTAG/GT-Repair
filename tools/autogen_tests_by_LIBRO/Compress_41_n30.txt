@@ -1,0 +1,17 @@
+public void testReadAfterInvalidEntry() throws IOException {
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zipArchiveOutputStream = new ZipArchiveOutputStream(outputStream);
+    zipArchiveOutputStream.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zipArchiveOutputStream.write("test data".getBytes());
+    zipArchiveOutputStream.closeArchiveEntry();
+    zipArchiveOutputStream.close();
+
+    // Insert a garbage entry between the valid entries
+    final byte[] zipData = outputStream.toByteArray();
+    System.arraycopy(new byte[]{0, 0, 0, 0, 0, 0, 0, 0}, 0, zipData, zipData.length - 8, 8);
+
+    final ZipArchiveInputStream zipArchiveInputStream = new ZipArchiveInputStream(new ByteArrayInputStream(zipData));
+    assertNotNull(zipArchiveInputStream.getNextZipEntry());
+    assertNotNull(zipArchiveInputStream.getNextZipEntry());
+    try {
+        zipArchiveInputStream.

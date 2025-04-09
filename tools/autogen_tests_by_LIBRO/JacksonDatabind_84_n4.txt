@@ -1,0 +1,16 @@
+public void test_recursive_interface() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addMixIn(Base.class, BaseMixIn.class);
+    objectMapper.addMixIn(Sub.class, SubMixIn.class);
+    TypeFactory typeFactory = objectMapper.getTypeFactory();
+    Class<?>[] interfaces = new Class<?>[] { IFace.class };
+    JavaType baseType = typeFactory.constructSimpleType(Base.class, interfaces);
+    JavaType subType = typeFactory.constructSimpleType(Sub.class, interfaces);
+    baseType.acceptJsonFormatVisitor(objectMapper, new BaseVisitor());
+    subType.acceptJsonFormatVisitor(objectMapper, new SubVisitor());
+    
+    String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(new Sub());
+    System.out.println(json);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")

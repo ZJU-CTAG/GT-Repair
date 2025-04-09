@@ -1,0 +1,13 @@
+public void testWriteStringAfterFieldName() throws Exception {
+    StringWriter sw = new StringWriter();
+    JsonGenerator jg = JSON_F.createJsonGenerator(sw);
+    jg.writeStartObject();
+    jg.writeFieldName("field");
+    try {
+        jg.writeString("value");
+        fail("Should have thrown exception");
+    } catch (JsonGenerationException e) {
+        // good
+    }
+    jg.close();
+}

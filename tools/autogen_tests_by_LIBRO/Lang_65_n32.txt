@@ -1,0 +1,12 @@
+public void testTimeZone() {
+    String tz = System.getProperty("user.timezone");
+    try {
+        System.setProperty("user.timezone", "America/Denver");
+        // truncate 2004-10-31 01:00:00 MDT
+        Date oct31_01MDT = new Date(1099206000000L);
+        Date result = DateUtils.truncate(oct31_01MDT, Calendar.HOUR_OF_DAY);
+        assertEquals(oct31_01MDT, result);
+    } finally {
+        System.setProperty("user.timezone", tz);
+    }
+}

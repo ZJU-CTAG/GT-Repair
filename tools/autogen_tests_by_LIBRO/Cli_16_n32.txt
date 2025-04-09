@@ -1,0 +1,27 @@
+public void testIssue108() {
+    CommandLine line = new CommandLine(new MyApp());
+    line.parse("-a", "-c", "-d", "-f", "-e", "-g");
+    assertEquals("[-a -c -d -f -e -g]", line.toString());
+}
+
+@Command(name = "myapp", mixinStandardHelpOptions = true, version = "myapp 1.0")
+static class MyApp {
+    @Group(exclusive = false, multiplicity = "1..*")
+    private AGroup aGroup = new AGroup();
+}
+
+@Command(name = "AGroup", mixinStandardHelpOptions = true)
+static class AGroup {
+    @Option(names = "-a")
+    private boolean a;
+
+    @Group(exclusive = false, multiplicity = "0..*")
+    private BGroup bGroup = new BGroup();
+}
+
+@Command(name = "BGroup", mixinStandardHelpOptions = true)
+static class BGroup {
+    @Option(names = "-b")
+    private boolean b;
+
+    @Group(exclusive =

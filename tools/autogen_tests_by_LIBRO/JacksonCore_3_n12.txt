@@ -1,0 +1,16 @@
+public void testIssue123() throws IOException {
+    final StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < 100; ++i) {
+        builder.append("{\"key\":")
+        .append(i)
+        .append("}");
+    }
+    final JsonFactory factory = new JsonFactory();
+    final byte[] input = builder.toString().getBytes();
+    final ByteArrayInputStream in = new ByteArrayInputStream(input);
+    final JsonParser parser = factory.createJsonParser(in);
+    parser.nextToken();
+    final Location loc = parser.getCurrentLocation();
+    assertEquals(1, loc.getLineNr());
+    assertEquals(2, loc.getColumnNr());
+}

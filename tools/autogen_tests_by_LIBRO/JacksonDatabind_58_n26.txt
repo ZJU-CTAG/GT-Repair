@@ -1,0 +1,24 @@
+public void testIssue107() throws Exception {
+    //ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JAXBAnnotationModule());
+    mapper.enableDefaultTyping(DefaultTyping.JAVA_LANG_OBJECT);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    MyException ex = new MyException("test");
+    byte[] data = mapper.writeValueAsBytes(ex);
+    MyException ex2 = mapper.readValue(data, MyException.class);
+    assertEquals(ex.getMessage(), ex2.getMessage());
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+  public MyException() {
+  }
+
+  public MyException(String message) {
+    super(message);
+  }
+
+  public MyException(String message, Throwable cause) {
+    super

@@ -1,0 +1,9 @@
+public void testPrefixWildcard()
+{
+    final String xml = "<xml xmlns:x='foo' x:pop='a'/>";
+    final Document doc = DocumentHelper.parseText(xml);
+    DOMXPath path = new DOMXPath("@*/pop");
+    path.setNamespaceContext(new SimpleNamespaceContext(Collections.singletonMap("", "foo")));
+    final String pop = path.stringValueOf(doc);
+    assertEquals("a", pop);
+}

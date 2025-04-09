@@ -1,0 +1,18 @@
+public void testIssue107() {
+    GammaDistribution dist = new GammaDistribution(1.2, 3.4);
+    
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(bos);
+    oos.writeObject(dist);
+    byte[] bytes = bos.toByteArray();
+    
+    ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    ObjectInputStream ois = new ObjectInputStream(bis);
+    GammaDistribution copy = (GammaDistribution) ois.readObject();
+    
+    assertEquals(dist.getSampleSize(), copy.getSampleSize());
+    assertEquals(dist.getShape(), copy.getShape(), tolerance);
+    assertEquals(dist.getScale(), copy.getScale(), tolerance);
+    assertEquals(dist.getNumericalMean(), copy.getNumericalMean(), tolerance);
+    assertEquals(dist.getNumericalVariance(), copy.getNumericalVariance(), tolerance);
+    assertEquals(dist.getSupportLowerBound(), copy.getSupportLower

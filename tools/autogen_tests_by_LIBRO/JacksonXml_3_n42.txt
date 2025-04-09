@@ -1,0 +1,11 @@
+public void testIssue129() throws Exception {
+    XmlMapper mapper = new XmlMapper();
+    String xml = "<root attr=\"value\" />";
+    JsonParser parser = mapper.getFactory().createParser(xml);
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.getCurrentName());
+    assertEquals("value", parser.nextTextValue());
+    assertNull(parser.nextTextValue());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+}

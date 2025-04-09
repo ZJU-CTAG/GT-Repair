@@ -1,0 +1,20 @@
+public void testJsonIncludeWithNonDefault() {
+    JsonInclude obj = new JsonInclude();
+    obj.setS("default");
+    String json = objectMapper.writeValueAsString(obj);
+    assertNotNull(json);
+    assertTrue(json.contains("\"s\":\"default\""));
+}
+
+class JsonInclude {
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    String s;
+
+    public String getS() {
+        return s;
+    }
+
+    public void setS(String s) {
+        this.s = s;
+    }
+}

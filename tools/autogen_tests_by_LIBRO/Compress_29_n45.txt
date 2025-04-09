@@ -1,0 +1,11 @@
+public void testCreateArchiveInputStreams() throws Exception {
+    String outputFile = getFile("output.zip").getAbsolutePath();
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("zip", new FileOutputStream(outputFile));
+    aos.close();
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("zip", new FileInputStream(outputFile));
+    assertTrue(ais instanceof ZipArchiveInputStream );
+    ais.close();
+    ais = new ArchiveStreamFactory().createArchiveInputStream("zip", new FileInputStream(outputFile), "UTF8");
+    assertTrue(ais instanceof ZipArchiveInputStream );
+    ais.close();
+}

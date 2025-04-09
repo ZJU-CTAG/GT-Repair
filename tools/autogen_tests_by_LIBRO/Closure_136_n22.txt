@@ -1,0 +1,20 @@
+public void testIssue1() {
+    String js = "var a = { foo: function() { return 'a.foo'; },\n"
+        + "bar: function() { return 'a.bar'; } };\n"
+        + "var b = { foo: function() { return 'b.foo'; } };\n"
+        + "b.__proto__ = a;\n"
+        + "var c = {};\n"
+        + "c.__proto__ = b;\n"
+        + "alert(c.$super('foo'));\n";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+        JSSourceFile.fromCode("testcode", js),
+        new ErrorManager() {
+            @Override
+            public void println(CheckLevel level, JSError error) {
+                fail(error.toString());
+            }
+        });
+}

@@ -1,0 +1,10 @@
+public void testContext() throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder().parse(new InputSource(
+                JXPathTest.class.getResourceAsStream("/test.xml")));
+
+        JXPathContext context = JXPathContext.newContext(doc);
+        context.setLenient(true);
+        assertEquals("1234", context.selectSingleNode("//root/@id/text()"));
+        assertEquals("1234", context.selectSingleNode("//root/@id"));
+    }

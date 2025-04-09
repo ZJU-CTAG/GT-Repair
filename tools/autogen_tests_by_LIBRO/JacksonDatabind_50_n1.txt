@@ -1,0 +1,14 @@
+public void testIssue1255_2() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    //mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.PROPERTY);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.registerModule(new Jdk8Module());
+
+    String json = "{\"@class\":\"com.fasterxml.jackson.databind.deser.impl.UnwrappedPropertyHandler$AsPropertyList\",\"id\":\"1\",\"index\":0,\"value\":"
+            + "{"
+            + "\"@class\":\"com.fasterxml.jackson.databind.deser.impl.UnwrappedPropertyHandler$AsPropertyList\",\"id\":\"2\",\"index\":0,\"value\":"
+            + "["
+            + "{"
+            + "

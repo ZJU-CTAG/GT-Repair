@@ -1,0 +1,17 @@
+public void testIssue1579() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("window[\"foo\"] = function (obj, modifiesProp) {\n");
+    sb.append("return (function (saved) {\n");
+    sb.append("return modifiesProp(obj) + saved;\n");
+    sb.append("})(obj[\"prop\"]);\n");
+    sb.append("};\n");
+    String input = sb.toString();
+
+    Compiler compiler = new Compiler(System.err);
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    List<SourceFile> inputs = new Array

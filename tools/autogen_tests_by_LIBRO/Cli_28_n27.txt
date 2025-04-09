@@ -1,0 +1,20 @@
+public void testIssueDefaultOptions() throws ParseException {
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("b", true, "set -b");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption(OptionBuilder.hasOptionalArg().create('d'));
+    opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+    opts.addOption(OptionBuilder.hasOptionalArg().create('f'));
+
+    Properties properties = new Properties();
+    properties.setProperty( "a", "true" );
+    properties.setProperty( "b", "2" );
+    properties.setProperty( "c", "true" );
+    properties.setProperty( "d", "1" );
+    properties.setProperty( "e", "true" );
+    properties.setProperty( "f", "2" );
+
+    CommandLineParser parser = new GnuParser();
+    CommandLine cmd = parser.parse(opts, null, properties);
+   

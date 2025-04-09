@@ -1,0 +1,13 @@
+public void testTarFile() throws Exception {
+    File file = new File("src/test/resources/test-proguard-0.tar");
+    ArchiveInputStream in = new TarArchiveInputStream(new FileInputStream(file));
+    try {
+        TarArchiveEntry entry = (TarArchiveEntry) in.getNextEntry();
+        while (entry != null) {
+            System.out.println(entry.getName());
+            entry = (TarArchiveEntry) in.getNextEntry();
+        }
+    } finally {
+        in.close();
+    }
+}

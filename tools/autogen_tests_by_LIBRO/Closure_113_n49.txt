@@ -1,0 +1,13 @@
+public void testProcessRequireCall() {
+    Node require = node(Token.EXPR_RESULT,
+        node(Token.CALL,
+            node(Token.GETPROP,
+                node(Token.NAME, "goog"),
+                node(Token.STRING, "require")),
+            node(Token.STRING, "invalid.symbol")));
+    boolean result = CodeGenerationUtil.processRequireCall(
+        null, require, null);
+    assertEquals("require call should not have been removed",
+        1, require.getChildCount());
+    assertTrue("should have returned true", result);
+}

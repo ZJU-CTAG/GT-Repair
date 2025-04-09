@@ -1,0 +1,11 @@
+public void testExtIdWithTypeIdFirst() throws Exception
+{
+    final String TYPE_ID = "type";
+    final String JSON = "{\"@type\":\"com.fasterxml.jackson.datatype.joda.TestJodaExternalTypeIdDeser$Person\",\"name\":\"Bar\"}";
+    final ObjectMapper MAPPER = new ObjectMapper();
+    MAPPER.registerModule(new JodaModule());
+    MAPPER.addMixIn(Person.class, MixInForExternalTypeIdTests.class);
+
+    Person deserialized = MAPPER.readValue(JSON, Person.class);
+    assertEquals("Bar", deserialized.name);
+}

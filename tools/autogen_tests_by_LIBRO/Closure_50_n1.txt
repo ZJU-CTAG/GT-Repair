@@ -1,0 +1,17 @@
+public void testSameLength() {
+    String script =
+        "var my_jquery_selectors = [];\n" +
+        "// ... append to my_jquery_selectors from various parts of the codebase ...\n" +
+        "$(my_jquery_selectors.join(\",\")).html(\"the code is more readable with the comma left in place\");";
+    String expected =
+        "var a=[];$(a.join()).html(\"the code is more readable with the comma left in place\");";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setEmitUseStrict(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    compiler.compile(JSSourceFile.fromCode("script", script), options);
+    assertEquals(expected, compiler.toSource());
+}
+``

@@ -1,0 +1,29 @@
+public void testMemoryLeak() {
+    final int n = 100000;
+    final double[] w = new double[n];
+    
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] point) {
+            double[] res = new double[n];
+            for (int i = 0; i < n; i++) {
+                res[i] = point[0] * w[i];
+            }
+            return res;
+        }
+    };
+    
+    MultivariateMatrixFunction j = new MultivariateMatrixFunction() {
+        public double[][] value(double[] point) {
+            double[][] res = new double[n][1];
+            for (int i = 0; i < n; i++) {
+                res[i][0] = w[i];
+            }
+            return res;
+        }
+    };
+    
+    
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    
+    double[] target = new double[n];
+    double[] guess  = new double[

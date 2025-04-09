@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String source = "var b = {$super: function () {;}};";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(EXTERNS, SourceFile.fromCode("externs", source), options);
+    assertEquals(1, compiler.getErrorCount());
+    String expected = "Parse error. identifier is a reserved word";
+    String actual = compiler.getErrors()[0].description;
+    assertTrue("Expected:\n" + expected + "\nActual:\n" + actual, actual.contains(expected));
+}

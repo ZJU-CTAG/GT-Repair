@@ -1,0 +1,13 @@
+public void testReadEmptyArchiveEntry() throws Exception {
+    byte[] empty = new byte[0];
+    SevenZOutputFile out = new SevenZOutputFile(new ByteArrayOutputStream());
+    SevenZArchiveEntry entry = out.createArchiveEntry(new ByteArrayInputStream(empty), "test");
+    entry.setSize(empty.length);
+    out.putArchiveEntry(entry);
+    out.closeArchiveEntry();
+    out.close();
+    ByteArrayOutputStream baos = (ByteArrayOutputStream) out.getStream();
+    SevenZFile in = new SevenZFile(new ByteArrayInputStream(baos.toByteArray()));
+    SevenZArchiveEntry entryIn = in.getNextEntry();
+    entryIn.read(new byte[1]);
+}

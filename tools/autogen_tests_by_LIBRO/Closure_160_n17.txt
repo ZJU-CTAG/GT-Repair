@@ -1,0 +1,13 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckUndefinedVariables(CheckLevel.ERROR);
+    test(options, "foo={bar:function(){alert(this.baz)}};",
+            "test.js:1: ERROR - variable foo is undefined\n" +
+            "foo={bar:function(){alert(this.baz)}};\n" +
+            "^\n" +
+            "test.js:2: WARNING - dangerous use of the global this object\n" +
+            "foo={bar:function(){alert(this.baz)}};\n" +
+            "    ^\n",
+            null, null);
+}

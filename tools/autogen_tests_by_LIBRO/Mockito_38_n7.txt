@@ -1,0 +1,10 @@
+public void testPullRequestOnMaster() throws IOException {
+    GitHub github = Mockito.mock(GitHub.class);
+    PullRequest pullRequest = Mockito.mock(PullRequest.class);
+    Mockito.when(pullRequest.getHead()).thenReturn(repository);
+    Mockito.when(github.getUser(Mockito.eq("user"))).thenReturn(user);
+    Mockito.when(github.getRepository(Mockito.eq("user") + "/" + Mockito.eq("repository"))).thenReturn(repository);
+    Mockito.when(repository.getPullRequests(Mockito.eq(Mockito.any(GHIssueState.class)))).thenReturn(Collections.singletonList(pullRequest).iterator());
+    Mockito.when(repository.getName()).thenReturn("repository");
+    Mockito.when(repository.getPullRequest(Mockito.anyInt())).thenReturn(pullRequest);
+    Mockito.when(repository.getOwner()).thenReturn(user);

@@ -1,0 +1,12 @@
+public void testJira108() throws Exception {
+        Options opts = new Options();
+        opts.addOption(OptionBuilder.withLongOpt("a").create());
+        opts.addOption(OptionBuilder.withLongOpt("b").create());
+
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse(opts, new String[] { "-azb" }, true);
+
+        assertEquals(2, cmd.getOptions().length);
+        assertEquals("zb", cmd.getOptionValue("a"));
+        assertEquals(null, cmd.getOptionValue("b"));
+    }

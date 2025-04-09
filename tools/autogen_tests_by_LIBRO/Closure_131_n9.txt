@@ -1,0 +1,11 @@
+public void testIssue109() throws Exception {
+        StringWriter sw = new StringWriter();
+        JsonFactory f = new JsonFactory();
+        JsonGenerator g = f.createGenerator(sw);
+        g.writeStartObject();
+        g.writeFieldName("a\u0004b");
+        g.writeString("c");
+        g.writeEndObject();
+        g.close();
+        assertEquals("{\"a\\u0004b\":\"c\"}", sw.toString());
+    }

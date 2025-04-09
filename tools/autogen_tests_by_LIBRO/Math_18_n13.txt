@@ -1,0 +1,23 @@
+public void testCMAESOptimizer() {
+    double min = 0.0;
+    double max = 1.0;
+    RandomGenerator random = new JDKRandomGenerator();
+    random.setSeed(0);
+
+    // create a small dummy model
+    double[] coeffs = new double[] {1.0, 2.0, 3.0};
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] point) {
+            double[] values = new double[point.length];
+            for (int i = 0; i < point.length; i++) {
+                values[i] = point[i] * (coeffs[i] + 1);
+            }
+            return values;
+        }
+    };
+
+    double[] startPoint = new double[] {(min + max) / 2.0}; // initial guess
+    double[] targetValues = f.value(startPoint);
+    MultivariateMatrixFunction jacobian = new MultivariateMatrixFunction() {
+        public double[][] value(double[] point) {
+            double[][] jacob

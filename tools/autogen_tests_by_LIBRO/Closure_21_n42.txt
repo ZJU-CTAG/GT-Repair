@@ -1,0 +1,14 @@
+public void testClassifyNonRightmostExpressionsAsProblematic() {
+    final Expression expression = new Expression("(1, 2, 42)");
+    final SourceFile sourceFile = new SourceFile(new File("<test>"), expression);
+    final ASTCompilationUnit compilationUnit = new ASTCompilationUnit(sourceFile);
+    final List<String> warnings = new ArrayList<>();
+    final List<String> errors = new ArrayList<>();
+    final Map<String, String> properties = new HashMap<>();
+    final CompilationUnit unit = compilationUnit.jjtAccept(new ASTCompilationUnitVisitor(sourceFile, warnings, errors, properties), null);
+    final List<MethodDeclaration> methods = unit.findDescendantsOfType(MethodDeclaration.class);
+    assertEquals(1, methods.size());
+    final List<MessageSend> messageSends = methods.get(0).findDescendantsOfType(MessageSend.class);
+    assertEquals(1, messageSends.size());
+    final MessageSend messageSend = messageSends.get(0);
+    assertEquals("foo", message

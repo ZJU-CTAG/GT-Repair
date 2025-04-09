@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    String source = "var $super = 1;";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    compiler.compile(new CompilerInput(source), new CompilerInput(getClass().getResourceAsStream("issue108.js")), options);
+    String output = compiler.toSource();
+    assertTrue(output, output.contains("var $super"));
+}

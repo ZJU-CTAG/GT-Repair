@@ -1,0 +1,7 @@
+public void testIssue() throws Exception {
+    String html = "<html> <body> <script type=\"text/javascript\"> var inside = true; </script> this should be outside. </body> </html>";
+    Document doc = Jsoup.parse(html);
+    assertTrue(doc.body().child(0) instanceof ScriptTag);
+    assertTrue(doc.body().child(1) instanceof TextNode);
+    assertEquals("this should be outside.", doc.body().child(1).toString());
+}

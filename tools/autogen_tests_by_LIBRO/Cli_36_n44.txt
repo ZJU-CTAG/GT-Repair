@@ -1,0 +1,21 @@
+public void testIssue181() {
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h)
+         .addOption(s)
+         .addOption(b)
+         .addOption(t);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    formatter.printHelp(printWriter, 120, "cmd", "", options, 0, 0, "", false);
+    printWriter.flush();
+    String output = stringWriter.getBuffer().toString();
+    assertTrue(output.indexOf("h") < output.indexOf("s"));
+    assertTrue(output.indexOf("s") < output.

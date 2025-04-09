@@ -1,0 +1,22 @@
+public void testGetNextZipEntry() throws IOException {
+    String contents = "content";
+    String entryName = "entry";
+    byte[] contentsBytes = contents.getBytes();
+    byte[] entryBytes = entryName.getBytes();
+    byte[] invalidBytes = new byte[] {};
+    byte[] archiveBytes = new byte[4 + entryBytes.length + contentsBytes.length + 4 + invalidBytes.length];
+    ByteBuffer buf = ByteBuffer.wrap(archiveBytes);
+    buf.putInt(entryBytes.length);
+    buf.put(entryBytes);
+    buf.putInt(contentsBytes.length);
+    buf.put(contentsBytes);
+    buf.putInt(invalidBytes.length);
+    buf.put(invalidBytes);
+
+    try (ZipArchiveInputStream in = new ZipArchiveInputStream(new ByteArrayInputStream(archiveBytes))) {
+        in.read();
+        try {
+            ZipArchiveEntry zae = in.getNextZipEntry();
+            fail("IOException should be thrown when invalid entry is encountered");
+        } catch (IOException e) {
+            //

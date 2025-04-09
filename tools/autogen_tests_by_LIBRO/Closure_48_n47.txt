@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("test.js",
+        "var myclass = function() {};\n"
+        + "/** @param {boolean} success */\n"
+        + "myclass.prototype.fn = function(success) {};\n"
+        + "myclass.prototype.test = function() { this.fn(); this.fn = function() { }; };\n"),
+        options);
+    assertEquals("", result.errors.toString());
+}

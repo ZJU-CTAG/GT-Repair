@@ -1,0 +1,22 @@
+public void testIssue() {
+    Options options = buildCommandLineOptions();
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = null;
+
+    try {
+        commandLine = parser.parse(options, new String[]{"-t", "-something"});
+    }
+    catch (ParseException e) {
+        System.out.println("Invalid parameters. " + e.getMessage() + NEW_LINE);
+    }
+
+    assertEquals(commandLine.getOptionValue('t'), "-something");
+}
+
+private static Options buildCommandLineOptions() {
+    Options options = new Options();
+    Option option = new Option("t", true, "a test option");
+    option.setRequired(true);
+    options.addOption(option);
+    return options;
+}

@@ -1,0 +1,20 @@
+public void testBlockTypes() throws Exception
+{
+    // first: test that we can deserialize, since mapper is default:
+    ObjectMapper mapper = new ObjectMapper();
+    // note: empty Map is fine
+    Map<?,?> result = mapper.readValue("{}", Map.class);
+    assertNotNull(result);
+    assertEquals(0, result.size());
+
+    // but then let's explicitly block
+    mapper = JsonMapper.builder()
+            .addModules(new Jdk8Module())
+            .build();
+    try {
+        mapper.readValue("{}", Map.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "known to be not safe");
+    }
+}

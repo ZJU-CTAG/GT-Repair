@@ -1,0 +1,27 @@
+public void testBeanDeserializerConstructor() throws Exception {
+    String json = "{\"cause\":\"junit\"}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+            false);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, false);
+
+    MyException ex = mapper.readValue(json, MyException.class);
+    assertEquals("junit", ex.getCause().getMessage());
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+
+    public MyException(String message) {
+        super(message);
+    }
+
+    public MyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+}

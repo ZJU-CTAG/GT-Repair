@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    final DefaultCodeFormatterOptions options = new DefaultCodeFormatterOptions("1TBS");
+    final CodeFormatterVisitor codeFormatter = new CodeFormatterVisitor(options);
+    final File in = new File("src/test/resources/if.js");
+    final File out = new File(in.getParentFile(), "if.fixed.js");
+    final FileWriter writer = new FileWriter(out);
+    final CompilationUnit compilationUnit = Parser.parse(in);
+    compilationUnit.jjtAccept(codeFormatter, writer);
+    writer.close();
+}

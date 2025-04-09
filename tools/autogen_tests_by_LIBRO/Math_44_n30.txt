@@ -1,0 +1,11 @@
+public void testIssue108() {
+    DateTimeZone zone = DateTimeZone.forID("America/Los_Angeles");
+    MutableInterval i = new MutableInterval(0, 1000, zone);
+    DateTime start = new DateTime(0, zone);
+    DateTime end = start.plusHours(1);
+    DateTimeEventIterator it = new DateTimeEventIterator(i, new PreciseDateTimeZone(zone, 0));
+    assertTrue(it.next());
+    assertEquals(start, it.nextEvent().getDateTime());
+    assertTrue(it.next());
+    assertEquals(end, it.nextEvent().getDateTime());
+}

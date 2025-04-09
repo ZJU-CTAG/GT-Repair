@@ -1,0 +1,21 @@
+public void testCMAESOptimizer() {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] point) {
+            double x = point[0];
+            return (x-0.5)*(x-0.5);
+        }
+    };
+
+    // create bounds array
+    double[] lower = {0.0};
+    double[] upper = {1.0};
+    RealConvergenceChecker checker = new RealConvergenceChecker() {
+        public boolean converged(int iteration, RealPointValuePair previous, RealPointValuePair current) {
+            double[] x = current.getPoint();
+            return (x[0] < 1.0e-12);
+        }
+    };
+    CMAESOptimizer optimizer = new CMAESOptimizer(200, 1.0e-12, true, 0, 0, checker, false);
+    double[] x = {1.0};
+    RealPointValuePair result = optimizer.optimize(f, GoalType.MINIMIZE, x);
+    System.out.println

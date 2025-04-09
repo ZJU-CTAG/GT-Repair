@@ -1,0 +1,26 @@
+public void testFinish() throws ArchiveException, IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(baos);
+    ArchiveEntry entry = new TarArchiveEntry("entry");
+    taos.putArchiveEntry(entry);
+    taos.write("".getBytes());
+    taos.closeArchiveEntry();
+    // This should fail
+    try {
+        taos.finish();
+        fail("Should have thrown an exception");
+    } catch (IOException ex) {
+        assertTrue(ex.getMessage().contains("No archive has been created yet"));
+    }
+    // This should fail
+    try {
+        taos.putArchiveEntry(entry);
+        fail("Should have thrown an exception");
+    } catch (IOException ex) {
+        assertTrue(ex.getMessage().contains("Stream is already finished"));
+    }
+    // This should fail
+    try {
+        taos.closeEntry();
+        fail("Should have thrown an exception");
+    } catch (IOException ex) {

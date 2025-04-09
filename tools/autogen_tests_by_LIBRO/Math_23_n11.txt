@@ -1,0 +1,19 @@
+public void testBrentOptimizer() {
+    class BrentOptimizerTestFunction extends UnivariateRealFunction {
+        @Override
+        public double value(double x) {
+            if (x < 0) {
+                return 0;
+            } else if (x < 1) {
+                return 1 - x;
+            } else if (x < 2) {
+                return x - 1;
+            }
+            return 0;
+        }
+    }
+
+    UnivariateRealOptimizer optimizer = new BrentOptimizer();
+    double result = optimizer.optimize(new MaxEval(1000), new ObjectiveFunction(new BrentOptimizerTestFunction()), GoalType.MINIMIZE, new SearchInterval(0, 2));
+    Assert.assertTrue(result <= 1.0);
+}

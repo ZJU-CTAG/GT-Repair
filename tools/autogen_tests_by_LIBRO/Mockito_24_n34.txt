@@ -1,0 +1,11 @@
+public void testIssue88() {
+    Description description = Description.createTestDescription(getClass(), "test");
+    Description nested = Description.createSuiteDescription(getClass());
+    Description child = Description.createSuiteDescription(getClass());
+    nested.addChild(child);
+    description.addChild(nested);
+
+    assertEquals(description, description.childlessCopy());
+    assertEquals(nested, nested.childlessCopy());
+    assertEquals(child, child.childlessCopy());
+}

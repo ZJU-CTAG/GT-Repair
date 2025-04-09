@@ -1,0 +1,22 @@
+public void testDelete() {
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader("(function(arg) {var foo = {};foo.bar = arg;console.log(foo.bar);delete foo.bar;console.log(foo.bar);})();"), new ErrorReporter() {
+
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException("Warning: " + message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException("Error: " + message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);
+        }
+    });
+
+    StringWriter out = new StringWriter();
+    compressor.compress(out, -1, true, true, true, true);

@@ -1,0 +1,12 @@
+public void testIssue110() throws Exception {
+    String js = "if (e.onchange) {e.onchange({_extendedByPrototype:Prototype.emptyFunction,target:e});}";
+    String compilationLevel = "SIMPLE_OPTIMIZATIONS";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.valueOf(compilationLevel).setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            new JSSourceFile[] {JSSourceFile.fromCode("test.js", js)},
+            options);
+    assertTrue(result.success);
+    System.out.println(result.compiledCode);
+}

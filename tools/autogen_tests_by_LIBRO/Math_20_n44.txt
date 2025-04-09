@@ -1,0 +1,11 @@
+public void testBounds () {
+    final CMAESOptimizer opt = new CMAESOptimizer(1, 10, true, 1e-14, 1e-14, 1e-14, 1e-14, 1, 1, 0.0, false, false, new MersenneTwister(), false, 1, 1);
+    PointValuePair pvp = opt.optimize(new ObjectiveFunction(new MultivariateFunction() {
+        public double value(double[] x) {
+            return x[0];
+        }
+    }), GoalType.MINIMIZE, new MaxEval(10000), new InitialGuess(new double[] {3}), new SimpleBounds(new double[] {0}, new double[] {1}));
+    System.out.println("x=" + pvp.getPoint()[0] + " fval=" + pvp.getValue());
+    assertTrue(pvp.getPoint()[0] >= 0);
+    assertTrue(pvp.getPoint()[0] <= 1);
+}

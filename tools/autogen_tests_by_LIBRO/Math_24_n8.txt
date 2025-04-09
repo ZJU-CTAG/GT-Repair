@@ -1,0 +1,14 @@
+public void testBrentOptimizer() {
+    UnivariateRealFunction f = new SinusFunction();
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariateRealPointValuePair optimum = optimizer.optimize(new UnivariateRealFunction[] {f}, GoalType.MINIMIZE, new double[] {0}, new double[] {2 * FastMath.PI});
+    assertEquals(0, optimum.getValue(), 1e-10);
+}
+
+private static class SinusFunction implements UnivariateRealFunction {
+    public double value(double x) {
+        double t = x - FastMath.PI / 2;
+        double f = t - FastMath.sin(t);
+        return f;
+    }
+}

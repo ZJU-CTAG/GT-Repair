@@ -1,0 +1,12 @@
+public void testNulUserGroup() throws IOException {
+    try (TarArchiveInputStream tais =
+            new TarArchiveInputStream(
+                    new GzipCompressorInputStream(
+                        getClass().getResourceAsStream("COMPRESS-262.tar.gz")))) {
+        TarArchiveEntry tae;
+        while ((tae = tais.getNextTarEntry()) != null) {
+            assertNotNull(tae.getUserName());
+            assertNotNull(tae.getGroupName());
+        }
+    }
+}

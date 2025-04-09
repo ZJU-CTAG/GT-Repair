@@ -1,0 +1,21 @@
+public void testOptionGroupReproduction() {
+    final String[] args = new String[] {"--foo"};
+    final String[] otherArgs = new String[] {"--foo", "--bar"};
+    CommandLineParser parser = new PosixParser();
+
+    Options options = new Options();
+    OptionGroup optionGroup = new OptionGroup();
+    optionGroup.addOption(new Option("foo", "foo description"));
+    optionGroup.addOption(new Option("bar", "bar description"));
+    options.addOptionGroup(optionGroup);
+
+    CommandLine commandLine = parser.parse(options, args);
+    assertTrue(commandLine.hasOption("foo"));
+    assertFalse(commandLine.hasOption("bar"));
+
+    Properties defaultOptions = new Properties();
+    defaultOptions.setProperty("bar", "");
+    commandLine = parser.parse(options, otherArgs, defaultOptions);
+    assertTrue(commandLine.hasOption("foo"));
+    assertTrue(commandLine.hasOption("bar"));
+}

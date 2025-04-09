@@ -1,0 +1,11 @@
+public void testIssueSequence() throws Exception {
+    String input = "{\"foo\" : \"bar\"}";
+    JsonParser p1 = MAPPER.readTree(input).traverse();
+    JsonParser p2 = MAPPER.readTree(input).traverse();
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(p1, p2);
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, sequence.nextToken());
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+}

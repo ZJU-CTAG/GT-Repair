@@ -1,0 +1,22 @@
+public void testIssueNON_DEFAULT() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    final A a = new A();
+    a.setId("foo");
+    final String s = mapper.writeValueAsString(a);
+    assertEquals("{\"id\":\"foo\"}", s);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+public class A {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
+}
+

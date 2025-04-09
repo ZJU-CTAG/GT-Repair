@@ -1,0 +1,28 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+
+    // filter out everything that is not
+    final PathFilter filter = new PathFilter(true, "a", "b", "c.d");
+
+    // print out the filter context to see what is going on
+    mapper.setFilterProvider(new SimpleFilterProvider().addFilter("root", new AntPathFilter(filter) {
+        @Override
+        protected boolean include(JsonStreamContext context) {
+            System.out.println(context);
+            return super.include(context);
+        }
+    }));
+
+    // create the object
+    Map<String, Object> object = new HashMap<>();
+    object.put("a", 1);
+    object.put("b", 2);
+    Map<String, Object> c = new HashMap<>();
+    c.put("d", "value");
+    object.put("c", c);
+    System.out.println();
+
+    // print it out without the convert feature
+    System.out.println("without convert");
+    System.out.println(object);
+    System.

@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<html><body><table>" +
+            " <tr><td>Cell1</td><td>Cell2</td></tr>" +
+            " <tr><td>Cell3</td><td>Cell4</td></tr>" +
+            " <tr><td>Cell1</td><td>Cell2</td></tr>" +
+            " <tr><td>Cell5</td><td>Cell6</td></tr>" +
+            " <tr><td>Cell1</td><td>Cell2</td></tr>" +
+            "</table></body></html>");
+    Element elem = doc.select("table tr:eq(3)").first();
+    int n = elem.elementSiblingIndex();
+    assertEquals(3, n);
+    assertNotSame(elem, elem.parent().child(n));
+}

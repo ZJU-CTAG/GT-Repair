@@ -1,0 +1,8 @@
+public void testIssue() {
+    String code = "Math.blah = function(test) { test.a = 5; };\n" +
+            "var test = new Object();\n" +
+            "Math.blah(test);";
+    String expected = "Math.blah=function(a){a.a=5};var test={};";
+    String result = Closure.compile(code, Closure.COMPILATION_LEVEL.SIMPLE_OPTIMIZATIONS);
+    assertEquals(expected, result);
+}

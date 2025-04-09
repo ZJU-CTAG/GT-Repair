@@ -1,0 +1,19 @@
+public void testIssue172() throws Exception {
+    final Document doc = DOMUtils.parse(
+            "<?xml version='1.0'?>" +
+            "<root>" +
+            "  <attributes/>" +
+            "  <attribute name='a' value='1'/>" +
+            "  <attribute name='b' value='2'/>" +
+            "  <attribute name='c' value='3'/>" +
+            "  <attribute name='d' value='4'/>" +
+            "</root>"
+    );
+    final DocumentBuilder docBuilder = XmlUnit.newControlParser();
+    final InputSource inputSource = new InputSource(new StringReader(
+            "\r\n<root>\r\n" +
+            "  <attributes>\r\n" +
+            "    <attribute name=\"d\" value=\"4\"/>\r\n" +
+            "    <attribute name=\"b\" value=\"2\"/>\r\n" +
+            "    <attribute name=\"c\" value=\"3\"/>\r\n" +
+            "    <attribute name

@@ -1,0 +1,21 @@
+public void testSerializerContextual() {
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    final DateTime dateTime = dateTimeFormatter.parseDateTime("2014-06-21T18:39:42.923");
+    final JodaBeanWithAnnotation bean = new JodaBeanWithAnnotation();
+    bean.setDateTime(dateTime);
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"));
+
+    String json = "";
+    try {
+        json = mapper.writeValueAsString(bean);
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+    }
+
+    assertEquals("{\"dateTime\":\"2014-06-21T18:39:42.923\"}", json);
+}
+
+@SuppressWarnings("unused")
+@JsonSerialize

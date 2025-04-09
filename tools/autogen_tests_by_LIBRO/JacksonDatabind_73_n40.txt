@@ -1,0 +1,17 @@
+public void testIssue108() {
+    ObjectMapper om = new ObjectMapper();
+    om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    TestPojo testPojo = new TestPojo();
+    testPojo.setFirstName("first");
+    testPojo.setLastName("last");
+
+    String json = om.writeValueAsString(testPojo);
+    assertFalse(json.contains("fullName"));
+    assertTrue(json.contains("firstName"));
+    assertTrue(json.contains("lastName"));
+
+    TestPojo newPojo = om.readValue(json, TestPojo.class);
+    assertEquals("first", newPojo.getFirstName());
+    assertEquals("last", newPojo.getLastName());
+    assertEquals("first last", newPojo.getFullName());
+}

@@ -1,0 +1,20 @@
+public void testIssue() throws IOException {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setCheckTypes(true);
+    options.setGenerateExports(true);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    compiler.disableThreads();
+    SourceFile extern = SourceFile.fromCode("externs.js", "");
+    List<SourceFile> externs = ImmutableList.of(extern);
+
+    SourceFile echo = SourceFile.fromCode("echo.js", "define(function() { return { echo: function(val) { window.console.log(val); }}});");
+    SourceFile echoMain = SourceFile.fromCode("echo-main.js", "var echo = require('echo');\necho.echo('hello world');");
+
+    List<SourceFile> inputs = ImmutableList.of(

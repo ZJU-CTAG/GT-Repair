@@ -1,0 +1,16 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<pre><code>\n"
+        + "  message <span style=\"color:red\"> other   \n    message  with \n"
+        + "   whitespaces      </span>\n"
+        + "</code></pre>");
+    Element pre = doc.select("pre").first();
+    assertFalse(pre.hasText());
+    assertEquals("<pre><code>\n"
+        + "  message <span style=\"color:red\"> other   \n    message  with \n"
+        + "   whitespaces      </span>\n"
+        + "</code></pre>", pre.outerHtml());
+    assertEquals("<pre><code>\n"
+        + "  message <span style=\"color:red\"> other   \n    message  with \n"
+        + "   whitespaces      </span>\n"
+        + "</code></pre>", pre.html());
+}

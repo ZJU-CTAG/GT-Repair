@@ -1,0 +1,13 @@
+public void testWithEvents() throws MathIllegalStateException, MathIllegalArgumentException, MathIllegalStateException {
+        final ODEModelWithEvents model = new ODEModelWithEvents(1.0);
+        double[] y = new double[] { 0.0 };
+        final double maxTime = 10.0;
+        double t = 0;
+        final double dt = 0.1;
+
+        RungeKuttaFehlbergIntegrator integrator = new RungeKuttaFehlbergIntegrator(dt, dt, dt * 1.0e-6, dt * 1.0e-6);
+        integrator.addEventHandler(model.getEvent1(), 0.1, dt / 10., 100);
+        integrator.addEventHandler(model.getEvent2(), 0.1, dt / 10., 100);
+        integrator.addEventHandler(model.getEvent3(), 0.1, dt / 10., 100);
+        integrator.integrate(model, t, y, maxTime, y);
+        for (double tt = 0.0; tt < maxTime

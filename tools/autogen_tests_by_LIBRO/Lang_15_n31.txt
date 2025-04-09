@@ -1,0 +1,14 @@
+public void testGetTypeArguments() {
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+
+    typeVarAssigns = TypeUtils.getTypeArguments(StringList.class, List.class);
+    Assert.assertEquals(1, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(List.class.getTypeParameters()[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(StringList.class, Collection.class);
+    Assert.assertEquals(1, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(Collection.class.getTypeParameters()[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(StringList.class, Iterable.class);
+    Assert.assertEquals(1, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(Iterable.class.getTypeParameters()[

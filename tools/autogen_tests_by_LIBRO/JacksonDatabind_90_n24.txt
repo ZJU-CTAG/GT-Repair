@@ -1,0 +1,8 @@
+public void testValueInstantiator() throws Exception
+{
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Collection.class, ArrayList.class);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+    assertEquals(new ArrayList<>(), mapper.readValue(quote("[]"), Collection.class));
+}

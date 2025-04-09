@@ -1,0 +1,18 @@
+public void testIssue268() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("externs.js",
+                    "/** @constructor */ bug.A = function() {};" +
+                    "/** @constructor */ bug.B = function() {};" +
+                    "/** @typedef {bug.A|bug.B} */ bug.Thing;"
+            ),
+            SourceFile.fromCode("testcode.js",
+                    "/** @this {bug.Thing} */" +
+                    "bug.sharedMethod = function() {};"
+            ),
+            options);
+    JSError[] errors = result.errors;
+    assertEquals(0, errors.length);
+}

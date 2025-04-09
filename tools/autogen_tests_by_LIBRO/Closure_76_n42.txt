@@ -1,0 +1,17 @@
+public void testAssignmentsWithinConditions() throws Exception {
+    String source = "function reduction() {\n" +
+                    " var a, b;\n" +
+                    " if (echo(b = true) || echo(b = false))\n" +
+                    " a = b;\n" +
+                    " else\n" +
+                    " a = null;\n" +
+                    " return a;\n" +
+                    "}\n";
+    String target = "function reduction() {\n" +
+                    " var a;\n" +
+                    " return echo(true) || echo(a = false) ? a : null;\n" +
+                    "}\n";
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test.js", source) });
+    assertEquals(target, compiler.toSource());
+}

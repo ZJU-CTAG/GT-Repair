@@ -1,0 +1,21 @@
+public void testTgz() throws Exception {
+    File tempFile = createTempFile("test", ".tgz");
+    writeTGZ(tempFile);
+    Enumeration<ArchiveEntry> entries = getTGZEntries(tempFile);
+    int count = 0;
+    while (entries.hasMoreElements()) {
+        entries.nextElement();
+        count++;
+    }
+    assertEquals(2, count);
+}
+
+private void writeTGZ(File tempFile) throws IOException {
+    try (OutputStream fileOut = new FileOutputStream(tempFile);
+         BufferedOutputStream out = new BufferedOutputStream(fileOut);
+         GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(out);
+         TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzOut)) {
+        tarOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+        tarOut.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_STAR);
+        ArchiveEntry entry = new TarArchiveEntry("test");
+        entry.

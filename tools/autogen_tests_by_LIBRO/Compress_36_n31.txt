@@ -1,0 +1,20 @@
+public void testReadEmpty() throws Exception {
+    for (int i = 0; i < 100; i++) {
+        byte[] archive = createArchive(i);
+        SevenZFile sevenZFile = new SevenZFile(new ByteArrayInputStream(archive));
+        assertEquals(0, sevenZFile.getNextEntry().read(new byte[1]));
+        assertEquals(-1, sevenZFile.getNextEntry().read(new byte[1]));
+        sevenZFile.close();
+    }
+}
+
+private byte[] createArchive(int numberOfFiles) throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    SevenZOutputFile out = new SevenZOutputFile(baos);
+    for (int i = 0; i < numberOfFiles; i++) {
+        SevenZArchiveEntry entry = out.createArchiveEntry(new ByteArrayInputStream(new byte[0]), "file" + i);
+        out.putArchiveEntry(entry);
+        out.closeArchiveEntry();
+    }
+    out.close();
+    return baos.toByteArray

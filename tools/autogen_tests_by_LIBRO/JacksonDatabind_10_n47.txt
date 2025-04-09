@@ -1,0 +1,30 @@
+public void testAnnotations() throws IOException {
+    Context context = new Context();
+    context.setParameter("param1", "value1");
+    context.setParameter("param2", "value2");
+
+    String json = mapper.writeValueAsString(context);
+    Context context2 = mapper.readValue(json, Context.class);
+
+    assertEquals(context.getParameters(), context2.getParameters());
+}
+
+public class Context {
+    private final Map<String, String> parameters = new TreeMap<String, String>();
+
+    @JsonAnySetter
+    public void setParameter(String key, String value) {
+        parameters.put(key, value);
+    }
+
+    //@JsonAnyGetter
+    //@JsonSerialize(using = MySerializer.class)
+    @JsonAnyGetter
+    @JsonSerialize(keyUsing = MyKeySerializer.class)
+    public Map<String, String> getParameters(){
+        return parameters;
+    }
+}
+
+public class MySerializer extends StdSerializer<Map<String, String>> {
+    public My

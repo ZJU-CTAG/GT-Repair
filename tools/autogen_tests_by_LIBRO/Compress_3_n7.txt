@@ -1,0 +1,15 @@
+public void testPublicFinishMethods() {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ArchiveOutputStream stream = null;
+    try {
+        stream = factory.createArchiveOutputStream(ArchiveStreamFactory.CPIO, new ByteArrayOutputStream());
+        stream.finish();
+        fail("Expected IOException");
+    } catch (ArchiveException e) {
+        assertEquals("Stream is already finished", e.getMessage());
+    } catch (IOException e) {
+        fail("Unexpected IOException");
+    } finally {
+        IOUtils.closeQuietly(stream);
+    }
+}

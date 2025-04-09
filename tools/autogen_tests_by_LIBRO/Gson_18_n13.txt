@@ -1,0 +1,18 @@
+public void testIssue114() {
+    Gson gson = new GsonBuilder().create();
+
+    String json = "{\"inBig\":{\"key\":[{\"inSmall\":\"hello\"}]}}";
+    BigClass big = gson.fromJson(json, BigClass.class);
+
+    List<SmallClass> small = big.inBig.get("key");
+    assertEquals(1, small.size());
+    assertEquals("hello", small.get(0).inSmall);
+}
+
+class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+}
+
+class SmallClass {
+    String inSmall;
+}

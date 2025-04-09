@@ -1,0 +1,20 @@
+public void testDeserializationWithDeserializationProblemHandler()
+        throws Exception
+{
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser jp, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException, JsonProcessingException {
+            return true;
+        }
+
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.defaultInstance().constructType(Void.class);
+        }
+    });
+    objectMapper.enableDefaultTyping();
+
+    // This causes a

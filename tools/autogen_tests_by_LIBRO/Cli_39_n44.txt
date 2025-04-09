@@ -1,0 +1,9 @@
+public void testExistingFile() throws Exception {
+    Options options = new Options();
+    Option option = Option.builder("f").hasArg().type(FileInputStream.class).build();
+    options.addOption(option);
+    String[] args = new String[]{"-f", "target/test-classes/random.bin"};
+    CommandLine cli = cliParser.parse(options, args);
+    FileInputStream file = (FileInputStream) cli.getParsedOptionValue("f");
+    assertTrue(file.getFD().valid());
+}

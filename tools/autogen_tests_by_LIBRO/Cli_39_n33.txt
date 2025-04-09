@@ -1,0 +1,13 @@
+public void testInputStream() throws ParseException {
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+
+    CommandLineParser parser = new DefaultParser();
+    CommandLine cline = parser.parse(options, new String[]{"-f","src/test/resources/test.properties"});
+
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    Properties props = new Properties();
+    props.load(file);
+
+    assertEquals("value",props.getProperty("key"));
+}

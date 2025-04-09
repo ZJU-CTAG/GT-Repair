@@ -1,0 +1,26 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.foldConstants = true;
+    options.deadAssignmentElimination = true;
+    options.optimizeArgumentsArray = true;
+    options.flowSensitiveInlineVariables = true;
+    options.removeDeadCode = true;
+    options.inlining = true;
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            EXTERNS,
+            "function getStack() {\n" +
+            " var getErrorObject = function() {\n" +
+            " try {\n" +
+            " throw Error('');\n" +
+            " } catch(err) {\n" +
+            " return err;\n" +
+            " }\n" +
+            " };\n" +
+            " return getErrorObject().stack;\n" +
+            "}\n" +
+            "window['getStackTrace']=getStack;",
+            options);
+    assertTrue(result.success);
+    assertEqu

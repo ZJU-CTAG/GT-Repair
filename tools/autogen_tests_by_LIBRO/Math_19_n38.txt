@@ -1,0 +1,22 @@
+public void testOptimizer() {
+    final ParameterValidator validator = new ParameterValidator() {
+
+        public double validateParameter(final double param) {
+            if (Double.isNaN(param)) {
+                throw new IllegalArgumentException();
+            }
+            return param;
+        }
+    };
+    final FitnessFunction fitnessFunction = new FitnessFunction() {
+
+        public double getValue(final double[] params) {
+            return (params[0] * params[0]);
+        }
+    };
+    final MaxEval maxEval = new MaxEval(100000);
+    final SimpleBounds simpleBounds = new SimpleBounds(new double[] { -Double.MAX_VALUE }, new double[] { Double.MAX_VALUE });
+    final CMAESOptimizer optimizer = new CMAESOptimizer(true, simpleBounds, maxEval, 1e-8, 1e-8, 0, 1, 1, 0);
+    final OptimizationData[] optimizationData = new OptimizationData[2];
+    optimizationData[0] = simpleBounds;
+    optimizationData[1] = max

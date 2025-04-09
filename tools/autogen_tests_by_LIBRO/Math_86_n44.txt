@@ -1,0 +1,17 @@
+public void testSymPosDef() {
+    RealMatrix cov = new BlockRealMatrix(new double[][]{
+        {1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}
+    });
+    CholeskyDecomposition c = new CholeskyDecomposition(cov);
+    assertTrue(c.isSPD());
+    cov = new BlockRealMatrix(new double[][]{
+        {1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, -1.0}
+    });
+    c = new CholeskyDecomposition(cov);
+    assertFalse(c.isSPD());

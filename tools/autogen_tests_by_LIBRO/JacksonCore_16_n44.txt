@@ -1,0 +1,16 @@
+public void testJsonParserSequence() throws IOException {
+  JsonFactory factory = new JsonFactory();
+  List<JsonParser> parsers = new ArrayList<JsonParser>();
+  parsers.add(factory.createParser("{\"a\":1}"));
+  parsers.add(factory.createParser("[\"b\",\"c\",\"d\"]"));
+
+  ObjectMapper mapper = new ObjectMapper(factory);
+  mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+      .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+      .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+      .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+      .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+
+  JsonParserSequence sequence = JsonParserSequence.createFlattened(false, parsers.toArray(new JsonParser[]{}));
+
+  assertEquals(JsonToken.START

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final ScriptEngineManager mgr = new ScriptEngineManager();
+    final ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    try {
+        engine.eval(""
+            + "var customData = { key: 'value' };"
+            + "function testRemoveKey( key ) {"
+            + " var dataSlot = customData, retval = dataSlot && dataSlot[ key ],"
+            + " hadKey = dataSlot && ( key in dataSlot );"
+            + " if ( dataSlot ) delete dataSlot[ key ];"
+            + " return hadKey ? retval : null;"
+            + "};"
+            + "console.log( testRemoveKey( 'key' ) );"
+            + "console.log( 'key' in customData );"
+        );
+    } catch (final ScriptException e) {
+        e.printStackTrace();
+    }
+}

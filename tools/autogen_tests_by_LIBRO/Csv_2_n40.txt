@@ -1,0 +1,9 @@
+public void testInvalidHeader() throws Exception {
+    final CSVParser parser = new CSVParser("a,b", CSVFormat.newBuilder().withHeader("A", "B", "C").build());
+    final CSVRecord record = parser.iterator().next();
+    try {
+        record.get("C");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        fail("Should throw IndexOutOfBoundsException");
+    }
+}

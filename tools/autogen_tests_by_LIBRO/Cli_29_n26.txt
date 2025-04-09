@@ -1,0 +1,12 @@
+public void testIssue110() {
+    Options options = new Options();
+    options.addOption("b", "balloo", true, "a test option");
+    String[] args = { "--balloo", "this is a \"test\"" };
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine line = parser.parse(options, args);
+        assertEquals("this is a \"test\"", line.getOptionValue("balloo"));
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

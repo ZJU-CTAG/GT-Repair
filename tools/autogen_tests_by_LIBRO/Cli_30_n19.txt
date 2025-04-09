@@ -1,0 +1,19 @@
+public void testOptionGroupState () {
+    CommandLineParser parser = new PosixParser();
+    Option a = OptionBuilder.withLongOpt("a").create();
+    Option b = OptionBuilder.withLongOpt("b").create();
+    Options options = new Options();
+    options.addOption(a);
+    options.addOption(b);
+    OptionGroup group = new OptionGroup();
+    group.setRequired(true);
+    group.addOption(a);
+    group.addOption(b);
+    options.addOptionGroup(group);
+    String[] args = new String[] { "-b" };
+    Properties props = new Properties();
+    props.setProperty("a", "");
+    CommandLine line = parser.parse(options, args, props);
+    assertTrue(line.hasOption("a"));
+    assertTrue(line.hasOption("b"));
+}

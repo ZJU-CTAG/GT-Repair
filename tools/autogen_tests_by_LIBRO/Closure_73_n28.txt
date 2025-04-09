@@ -1,0 +1,9 @@
+public void testIssueClosureCompiler() {
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.setOutputCharset("UTF-8");
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("source", "alert('\u007f')")), options);
+    assertEquals("alert(\"\");", compiler.toSource());
+}

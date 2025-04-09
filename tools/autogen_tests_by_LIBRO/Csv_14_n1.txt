@@ -1,0 +1,21 @@
+public void testNegativeNumericValuesInTheFirstColumnAreAlwaysQuotedInMinimalMode() {
+    final String[] firstColumn = {"-92.222"};
+    final String[] secondColumn = {"43.333"};
+    final String[] thirdColumn = {"3"};
+
+    final String[] header = {"lat", "long", "data"};
+    final String[][] data = {firstColumn, secondColumn, thirdColumn};
+
+    final StringWriter sw = new StringWriter();
+    final CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withHeader(header).withQuoteMode(QuoteMode.MINIMAL));
+
+    printer.printRecord(firstColumn);
+    printer.printRecord(secondColumn);
+    printer.printRecord(thirdColumn);
+
+    printer.close();
+
+    final CSVRecord[] records = CSVFormat.DEFAULT.withHeader(header).withQuoteMode(QuoteMode.MINIMAL).parse(sw.toString()).getRecords().toArray(new CSVRecord[3]);
+
+    assertEquals(firstColumn[0], records[0].get(0));
+    assertEquals

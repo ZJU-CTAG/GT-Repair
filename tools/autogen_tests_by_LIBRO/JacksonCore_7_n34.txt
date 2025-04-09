@@ -1,0 +1,12 @@
+public void testIssue106() throws Exception {
+    JsonFactory f = new JsonFactory();
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = f.createJsonGenerator(bytes);
+    gen.writeStartObject();
+    gen.writeStringField("foo", "bar");
+    gen.writeEndObject();
+    gen.close();
+    final String expected = "{\"foo\":\"bar\"}";
+    final String actual = bytes.toString("UTF-8");
+    assertEquals(expected, actual);
+}

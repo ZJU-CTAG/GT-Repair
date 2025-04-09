@@ -1,0 +1,10 @@
+public void testIssue109() throws Exception {
+    StringWriter sw = new StringWriter();
+    CSVFormat format = CSVFormat.DEFAULT.withMinimalQuotes(true);
+    CSVPrinter printer = new CSVPrinter(sw, format);
+    printer.printRecords(Arrays.asList(new Object[] {"-1", "2"}));
+    printer.close();
+    List<CSVRecord> records = CSVParser.parse(sw.toString(), format).getRecords();
+    assertEquals("-1", records.get(0).get(0));
+    assertEquals("2", records.get(0).get(1));
+}

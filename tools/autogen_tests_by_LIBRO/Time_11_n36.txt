@@ -1,0 +1,16 @@
+public void testThreadSafe() throws InterruptedException {
+    final DateTimeZoneBuilder dtzBuilder = new DateTimeZoneBuilder();
+    dtzBuilder.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+    dtzBuilder.setStandardOffset(3600000);
+    dtzBuilder.addRecurringSavings("", 3600000, 1601, Integer.MAX_VALUE, 'w', 3, -1, 1, false, 7200000);
+    dtzBuilder.addRecurringSavings("", 0, 1601, Integer.MAX_VALUE, 'w', 10, -1, 1, false, 10800000);
+    final DateTimeZone dtz = dtzBuilder.toDateTimeZone("TestDTZ1", true);
+    Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            dtz.getOffset(0);
+        }
+    });
+    t.start();
+    t.join();
+}

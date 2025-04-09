@@ -1,0 +1,15 @@
+public void testIssue130() throws Exception {
+    String xml = "<Root><Element value=\"test\"/></Root>";
+    XmlFactory factory = new XmlFactory();
+    XmlMapper xmlMapper = new XmlMapper(factory);
+    XmlParser parser = xmlMapper.getFactory().createParser(xml);
+    parser.nextToken();
+    parser.nextToken();
+    assertEquals("Element", parser.getCurrentName());
+    JsonToken peek = parser.nextToken();
+    assertEquals(JsonToken.VALUE_STRING, peek);
+    String value = parser.nextTextValue();
+    assertEquals("test", value);
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+    parser.close();
+}

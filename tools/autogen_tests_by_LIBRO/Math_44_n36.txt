@@ -1,0 +1,23 @@
+public void testIssue108() {
+    PlannerTestUtils.buildPlanner(
+        new TestdataEntity("E1"),
+        new TestdataEntity("E2"),
+        new TestdataValue("V1"),
+        new TestdataValue("V2"),
+        new TestdataValue("V3"),
+        new TestdataValue("V4"));
+
+    ScoreDirectorFactory<TestdataSolution> scoreDirectorFactory
+        = PlannerTestUtils.mockScoreDirectorFactory(
+            TestdataSolution.buildSolutionDescriptor(), (factory) -> {
+                return new InnerScoreDirectorFactory<TestdataSolution, SimpleScore>(
+                    factory, false, (ConstraintProvider) null) {
+                    @Override
+                    public InnerScoreDirector<TestdataSolution, SimpleScore> buildScoreDirector(
+                        boolean constraintMatchEnabledPreference, ScoreDefinition<SimpleScore> scoreDefinition) {
+
+                        // Mock the Selector
+                        InnerScoreDirector<TestdataSolution, SimpleScore> scoreDirector = Mockito.mock(
+                            InnerScoreDirector.class,
+                            Mockito.withSettings().extraInterfaces(
+                                Selector.class, Phase

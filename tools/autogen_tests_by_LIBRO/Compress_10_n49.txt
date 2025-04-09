@@ -1,0 +1,9 @@
+public void testUnicodeExtraFields() throws Exception {
+        final File zipFile = getFile("bla.zip");
+        final ZipFile zf = new ZipFile(zipFile);
+        final Enumeration< ? extends ZipArchiveEntry> e = zf.getEntries();
+        assertTrue(e.hasMoreElements());
+        final ZipArchiveEntry ze = e.nextElement();
+        assertEquals("\u00E4.txt", ze.getName());
+        assertNotNull(zf.getInputStream(ze));
+    }

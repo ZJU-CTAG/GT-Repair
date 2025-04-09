@@ -1,0 +1,7 @@
+public void testNamespaceWildcard() {
+    Document document = new DOMBuilder().build(new StringReader("<xml xmlns:x='foo' x:pop='a'/>"));
+    Element el = document.getRootElement();
+    assertEquals("a", el.attributeValue("x:pop"));
+    XPath xpath = new DefaultXPath("@*");
+    assertEquals(1, xpath.selectNodes(document).size());
+}

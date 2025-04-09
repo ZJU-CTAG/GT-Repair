@@ -1,0 +1,20 @@
+public void testNamespaces() {
+    String testFile = "test.xml";
+    String testURL = "http://www.foo.com";
+    String testContent = "<?xml version=\"1.0\"?>\n" +
+            "<ElementA xmlns:A='" + testURL + "' A:myAttr=\"Mytype\">\n" +
+            " <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    try {
+        FileUtils.writeStringToFile(new File(testFile), testContent);
+    } catch (IOException e) {
+        System.out.println(e);
+    }
+
+    JXPathContext context = JXPathContext.newContext(testFile);
+    context.registerNamespace("A", testURL);
+    context.registerNamespace("B", testURL);
+
+    assertEquals("Mytype", context.getValue("/ElementA/@A:myAttr"));
+    assertEquals("MY VALUE", context.getValue("/ElementA/B:ElementB"));
+}

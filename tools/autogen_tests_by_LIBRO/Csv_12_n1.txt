@@ -1,0 +1,15 @@
+public void testEmptyColumnNames() throws Exception {
+    String s = "A,B,C,,\na,b,c,d,e";
+    CSVParser parser = CSVParser.parse(new StringReader(s), CSVFormat.EXCEL);
+
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(1, records.size());
+
+    CSVRecord record = records.get(0);
+    assertEquals(5, record.size());
+    assertEquals("a", record.get(0));
+    assertEquals("b", record.get(1));
+    assertEquals("c", record.get(2));
+    assertEquals("d", record.get(3));
+    assertEquals("e", record.get(4));
+}

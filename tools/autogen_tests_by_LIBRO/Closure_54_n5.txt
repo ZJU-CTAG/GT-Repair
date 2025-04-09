@@ -1,0 +1,9 @@
+public void testIssue108() {
+    String s = "var Foo = function() { this.prototype.method(); }; Foo.prototype.method = function () {}; new Foo();";
+    Config cfg = new Config();
+    cfg.setLanguage(Config.LanguageMode.ECMASCRIPT5);
+    cfg.setJquery(Config.Jquery.NONE);
+    JsChecker chkr = new JsChecker(cfg);
+    List<Issue> issues = chkr.check(s);
+    assertEquals(0, issues.size());
+}

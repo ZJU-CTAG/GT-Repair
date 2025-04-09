@@ -1,0 +1,14 @@
+public void testIssue571() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public Object findSerializer(Annotated a) {
+            if (a.getDeclaringClass() == WithAnyGetter.class) {
+                return new MyConverter();
+            }
+            return super.findSerializer(a);
+        }
+    });
+    String s = mapper.writeValueAsString(new WithAnyGetter());
+    assertEquals("{\"bar\":\"baz\"}", s);
+}

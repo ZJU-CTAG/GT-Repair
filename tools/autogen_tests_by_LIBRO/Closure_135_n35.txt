@@ -1,0 +1,22 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("in.js",
+                "function inherit(Child, Parent) {\n" +
+                "  Child.prototype = new Parent();\n" +
+                "}\n" +
+                "/** @constructor */\n" +
+                "function SuperClass() {}\n" +
+                "SuperClass.prototype.CustomMethod = function() {};\n" +
+                "/** @constructor @extends {SuperClass} */\n" +
+                "function SubClass() {}\n" +
+                "inherit(SubClass, SuperClass);\n" +
+                "/** @override */\n" +
+                "SubClass.prototype.CustomMethod = function() {\n" +
+                "  this.myProperty = 'value';\n" +
+                "};\n" +
+                "new SubClass();\n" +
+                "var unused = {}\n")
+        },
+        new Compiler

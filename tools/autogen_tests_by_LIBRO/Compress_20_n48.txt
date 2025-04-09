@@ -1,0 +1,11 @@
+public void testTrailingHeaderProblem() throws Exception {
+    ArchivedFileSet f = ArchivedFileSet.builder().source(new File(testDataPath, "commons-compress-cpiotrailer.cpio")).build();
+    try (ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("cpio", new FileInputStream(f.getSourceFile()))) {
+        CpioArchiveEntry entry;
+        while ((entry = (CpioArchiveEntry) ais.getNextEntry()) != null) {
+            if (entry.getName().endsWith("test")) {
+                assertEquals("bar", IOUtils.toString(ais));
+            }
+        }
+    }
+}

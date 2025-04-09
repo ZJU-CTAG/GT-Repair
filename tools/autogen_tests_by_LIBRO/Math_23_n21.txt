@@ -1,0 +1,17 @@
+public void testBrentOptimizer() {
+    final double[] x = new double[101];
+    for (int i = 0; i < x.length; i++) {
+        x[i] = i;
+    }
+    final double[] y = new double[x.length];
+    for (int i = 0; i < x.length; i++) {
+        y[i] = -x[i] + x[i] * Math.sin(x[i] / 10) * Math.cos(x[i] / 5);
+    }
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return -x + x * Math.sin(x / 10) * Math.cos(x / 5);
+        }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer();
+    UnivariateRealPointValuePair result = optimizer.optimize(f, GoalType.MINIMIZE, new MaxEval(100), new MaxIter(100), new SearchInterval(0, 100));
+    System.out.println(

@@ -1,0 +1,20 @@
+public void testSkip() throws Exception {
+    InputStream in = new FailingSkipInputStream(new ByteArrayInputStream(new byte[] {0, 1, 2, 3}));
+    long skipped = IOUtils.skip(in, 2);
+    assertEquals(1, skipped);
+    assertEquals(2, in.read());
+    assertEquals(3, in.read());
+    assertEquals(-1, in.read());
+}
+
+public static class FailingSkipInputStream extends FilterInputStream {
+
+    public FailingSkipInputStream(InputStream in) {
+        super(in);
+    }
+
+    @Override
+    public long skip(long n) throws IOException {
+        return super.skip(n-1);
+    }
+}

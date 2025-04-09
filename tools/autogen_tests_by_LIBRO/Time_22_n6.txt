@@ -1,0 +1,15 @@
+public void testDurationToPeriod() {
+    DateTimeZone zone = DateTimeZone.getDefault();
+    try {
+        DateTimeZone.setDefault(DateTimeZone.UTC);
+        Duration d = new Duration(DateTimeConstants.MILLIS\_PER\_HOUR \* 30 + DateTimeConstants.MILLIS\_PER\_MINUTE \* 50
+                + DateTimeConstants.MILLIS\_PER\_SECOND \* 14);
+        Period p = d.toPeriod();
+        assertEquals(1, p.getDays());
+        assertEquals(6, p.getHours());
+        assertEquals(50, p.getMinutes());
+        assertEquals(14, p.getSeconds());
+    } finally {
+        DateTimeZone.setDefault(zone);
+    }
+}

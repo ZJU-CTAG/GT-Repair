@@ -1,0 +1,17 @@
+public void testIntWrapperOverride() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    m.registerModule(new JaxbAnnotationModule());
+
+    JavaType t = m.constructType(IntOverride.class);
+    assertEquals(Integer.class, t.getRawClass());
+    assertEquals(Integer.class, t.getContentType().getRawClass());
+}
+
+public static class IntOverride {
+    public Integer v;
+
+    public void setValue(int v) {
+        this.v = Integer.valueOf(v);
+    }
+}

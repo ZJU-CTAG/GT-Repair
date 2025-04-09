@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options()
+        .addOption("a", "enable-a", false, "turn [a] on or off")
+        .addOption("b", "enable-b", false, "turn [b] on or off")
+        .addOptionGroup(new OptionGroup()
+            .addOption(new Option("a", "enable-a", false, "turn [a] on or off"))
+            .addOption(new Option("b", "enable-b", false, "turn [b] on or off")));
+    String[] args = new String[] { "-a" };
+    Properties properties = new Properties();
+    properties.setProperty("b", "true");
+    CommandLine line = parser.parse(options, args, properties);
+    assertTrue("Conflicting option values not detected", line.hasOption("a"));
+    assertTrue("Default option value not detected", line.hasOption("b"));
+}

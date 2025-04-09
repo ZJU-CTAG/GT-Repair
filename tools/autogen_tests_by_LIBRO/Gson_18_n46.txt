@@ -1,0 +1,30 @@
+public void testIssue1826() {
+    String json = "{\"inBig\":{\"key\":[{\"inSmall\":\"hello\"}]}}";
+    SmallClass small = new Gson().fromJson(json, BigClass.class).inBig.get("inSmall1").get(0);
+    assertNotNull(small);
+    assertEquals("hello", small.inSmall);
+}
+
+static class SmallClass {
+    String inSmall;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SmallClass that = (SmallClass) o;
+
+        return !(inSmall != null ? !inSmall.equals(that.inSmall) : that.inSmall != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return inSmall != null ? inSmall.hashCode() : 0;
+    }
+}
+
+static class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+}

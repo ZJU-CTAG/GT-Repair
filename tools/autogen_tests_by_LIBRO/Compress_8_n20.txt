@@ -1,0 +1,11 @@
+public void testCreateTarHeaderWithBigSize() throws IOException {
+    final TarArchiveEntry header = new TarArchiveEntry("12345678901234");
+    header.setSize(1234567890123L);
+    final ByteArrayOutputStream output = new ByteArrayOutputStream();
+    header.writeEntryHeader(output);
+    assertEquals(512, output.size());
+    assertEquals(0, output.toByteArray()[508]);
+    assertEquals(0, output.toByteArray()[509]);
+    assertEquals(0, output.toByteArray()[510]);
+    assertEquals(0, output.toByteArray()[511]);
+}

@@ -1,0 +1,17 @@
+public void testStackOverflow() throws Exception {
+    closure();
+}
+
+private static final String JS_URL = "http://closure-compiler.googlecode.com/svn/trunk/contrib/externs/jquery-1.7.js";
+private static final String JS_URL_MIN = "http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js";
+
+public static void closure() throws Exception {
+    String code = IOUtils.toString(new FileInputStream("src/test/resources/code.js"));
+    String externs = IOUtils.toString(new URL(JS_URL));
+    String externsMin = IOUtils.toString(new URL(JS_URL_MIN));
+    
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, code, CompilerOptions.builder()
+            .setOutputCharset("UTF-8")
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguage

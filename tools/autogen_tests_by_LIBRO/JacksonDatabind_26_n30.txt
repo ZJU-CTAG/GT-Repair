@@ -1,0 +1,17 @@
+public void testSerializability() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    final ObjectReader reader = mapper.reader();
+    final ObjectWriter writer = mapper.writer();
+
+    final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    final ObjectOutputStream oos = new ObjectOutputStream(bytes);
+    oos.writeObject(reader);
+    oos.writeObject(writer);
+    oos.close();
+    
+    final ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()));
+    assertNotNull(ois.readObject());
+    assertNotNull(ois.readObject());
+    ois.close();
+}

@@ -1,0 +1,13 @@
+public void testBigUID() throws Exception {
+    byte[] header = new byte[512];
+    int offset = 0;
+    offset = TarUtils.formatNameBytes(new byte[100], 0, "", header, offset, 100);
+    offset = TarUtils.formatOctalBytes(62410554, header, offset, 8);
+    offset = TarUtils.formatOctalBytes(62410554, header, offset, 8);
+    ByteArrayInputStream bais = new ByteArrayInputStream(header);
+    TarArchiveInputStream tais = new TarArchiveInputStream(bais);
+    TarArchiveEntry tae = tais.getNextTarEntry();
+    assertNotNull(tae);
+    assertEquals(62410554, tae.getLongUserId());
+    assertEquals(62410554, tae.getLongGroupId());
+}

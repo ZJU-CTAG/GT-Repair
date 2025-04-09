@@ -1,0 +1,19 @@
+public void testIssue108() {
+    double[] x = new double[] {Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
+    double[] y = new double[] {Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
+    UnivariateRealFunction f = new MyFunction(x, y);
+    BrentOptimizer optimizer = new BrentOptimizer(0.01, 0.01);
+    double result = optimizer.optimize(f, GoalType.MINIMIZE, new MaxEval(100), new UnivariateRealPointValuePair(0, 0)).getPoint();
+    assertEquals(0.0, result, 0.0);
+}
+private static class MyFunction implements UnivariateRealFunction {
+    private final double[] x;
+    private final double[] y;
+    public MyFunction(final double[] x, final double[] y) {
+        this.x = x;
+        this.y = y;
+    }
+    @Override
+    public double value(double z) {
+        if (z < x[0]) {
+           

@@ -1,0 +1,10 @@
+public void testCoreOperationUnion() throws Exception {
+    String input = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    String xpath = "string(/MAIN/B | /MAIN/A)";
+    XPathProcessorImpl processor = new XPathProcessorImpl();
+    processor.setXPathVersion(XPathProcessorVersion.V2);
+    XPathExpression xpathExpression = processor.parseExpression(xpath);
+    XPathEvaluationContext context = new XPathEvaluationContextImpl(input);
+    Object result = xpathExpression.evaluate(context);
+    assertEquals("avalue", result);
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(CheckLevel.ERROR);
+    compiler.compile(
+            SourceFile.fromCode("externs.js",
+                    "/** @const */ var window = {};"),
+            SourceFile.fromCode("testcode.js",
+                    "var makeClass = function(protoMethods) {\n" +
+                            " var clazz = function() {\n" +
+                            " this.initialize.apply(this, arguments);\n" +
+                            " }\n" +
+                            " for (var i in protoMethods) {\n" +
+                            " clazz.prototype[i] = protoMethods[i];\n" +
+                            " }\n" +
+                            "\n" +
+                            " return clazz;\n" +
+                            "}\n" +
+                            "\n" +
+                            "/**\n" +
+                            " * @constructor\n

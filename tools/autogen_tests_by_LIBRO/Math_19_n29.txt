@@ -1,0 +1,14 @@
+public void testIssue108() {
+    final double LB = -100;
+    final double UB = 100;
+    final double[] init = {0};
+    final double[] steps = {1};
+    CMAESOptimizer optimizer = new CMAESOptimizer(1, LB, UB, steps, 0, 100, false, RandomGenerator.getGlobal());
+    optimizer.optimize(new ObjectiveFunction(new MaxEval(1), new MultiVariateFunction() {
+        @Override
+        public double value(double[] point) {
+            System.out.println(Arrays.toString(point));
+            return 0;
+        }
+    }), GoalType.MAXIMIZE, new InitialGuess(init));
+}

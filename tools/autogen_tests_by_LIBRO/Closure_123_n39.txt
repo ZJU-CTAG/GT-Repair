@@ -1,0 +1,24 @@
+public void testIssue45() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(
+            "/*\n" +
+            " * @fileoverview Example code that generates with a parser error.\n" +
+            " * @externs\n" +
+            " */\n" +
+            "window.Foo = function(A, B, C, D) {\n" +
+            " if ( A ) {\n" +
+            " if ( B ) {\n" +
+            " C = 0;\n" +
+            " } else {\n" +
+            " C = 0 in D;\n" +
+            " }\n" +
+            " while ( C-- ) {}\n" +
+            " }\n" +
+            "};",
+            new compiler.SourceFile("foo.js"));
+    assertTrue(result.success);
+    assertTrue(result.errors.length == 0);
+    assertTrue(result.warnings.length == 0);
+    assertEquals(
+            "window.

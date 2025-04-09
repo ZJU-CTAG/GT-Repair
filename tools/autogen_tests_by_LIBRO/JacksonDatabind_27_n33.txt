@@ -1,0 +1,11 @@
+public void testDeserializeExtTypeId() throws IOException
+{
+    final ObjectMapper m = new ObjectMapper();
+    m.addMixInAnnotations(ExtTypeIdBean.class, Object.class);
+    final ExtTypeIdBean input = new ExtTypeIdBean("b1", 13);
+    String json = m.writeValueAsString(input);
+    System.out.println("JSON: "+json);
+
+    final ExtTypeIdBean result = m.readValue(json, ExtTypeIdBean.class);
+    assertEquals(input, result);
+}

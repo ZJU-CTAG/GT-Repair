@@ -1,0 +1,12 @@
+public void testNullObjectId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new BeanWithId());
+    BeanWithId result = mapper.readValue(json, BeanWithId.class);
+    assertNotNull(result.id);
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+static class BeanWithId {
+    public int id;
+}

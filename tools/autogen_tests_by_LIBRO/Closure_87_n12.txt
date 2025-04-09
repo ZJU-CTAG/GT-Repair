@@ -1,0 +1,9 @@
+public void testIssue() {
+    String javaScript = "if(b.onchange){b.onchange({_extendedByPrototype:Prototype.emptyFunction,target:b})}";
+    String expectedJavaScript = "b.onchange&&b.onchange({_extendedByPrototype:Prototype.emptyFunction,target:b});";
+    Compiler compiler = new Compiler();
+    compiler.setLanguage(LanguageMode.ECMASCRIPT5);
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("/test.js", javaScript));
+    assertEquals(expectedJavaScript, result.getCompiledCode());
+}

@@ -1,0 +1,13 @@
+public void testIssue_optimization_fails_with_variable_in_catch_clause() {
+    String source = "(function getStack() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject().stack;})";
+    String expected = "(function() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject().stack;})";
+    CompilerEnvirons compilerEnvirons = new CompilerEnvirons();
+    compilerEnvirons.setLanguageVersion(Context.VERSION_1_8);
+    compilerEnvirons.setOptimizationLevel(9);
+    Parser p = new Parser(compilerEnvirons, compilerEnvirons.getErrorReporter());
+    AstRoot script = p.parse(source, null, 0);
+    script.visit(new NodeVisitor() {
+        @Override
+        public boolean visit(AstNode node) {
+            if (node instanceof ThrowStatement) {
+                assertTrue(node.getFirst

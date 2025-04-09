@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    objectMapper.registerSubtypes(new NamedType(Child.class, "child"));
+    objectMapper.registerSubtypes(new NamedType(AnotherChild.class, "anotherChild"));
+    objectMapper.registerSubtypes(new NamedType(YetAnotherChild.class, "yetAnotherChild"));
+    // here we have "Parent" entry, but only if we use it
+
+    assertEquals("[{\"@class\":\"Parent\"},{\"@class\":\"child\"},{\"@class\":\"anotherChild\"},{\"@class\":\"yetAnotherChild\"}]",
+            objectMapper.writeValueAsString(objectMapper.getSubtypeResolver().collectAndResolveSubtypes(Parent.class, objectMapper.getDeserializationConfig(), objectMapper.getSerializationConfig()).values()));
+}
+
+class

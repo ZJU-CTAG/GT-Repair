@@ -1,0 +1,33 @@
+public void testCustomSerializerForJsonValue() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+
+    final SimpleModule module = new SimpleModule();
+    module.addSerializer(new CustomerSerializer());
+    module.addKeySerializer(Customer.class, new CustomerSerializer());
+    module.addKeyDeserializer(Customer.class, new CustomerKeyDeserializer());
+    objectMapper.registerModule(module);
+
+    final Customer customer = new Customer("Brian", 25);
+    final Map<Customer, Integer> map = Collections.singletonMap(customer, 5);
+
+    assertEquals("{\"Brian\":5}", objectMapper.writeValueAsString(map));
+}
+
+public static class Customer {
+    private final String name;
+    private final int age;
+
+    public Customer(final String name, final int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @JsonValue
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}

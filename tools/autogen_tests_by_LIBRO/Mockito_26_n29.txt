@@ -1,0 +1,30 @@
+public void testInjectMocks() {
+    final Foo foo = new Foo();
+    final Bar bar = new Bar();
+    Mockito.when(bar.getFoo()).thenReturn(foo);
+    final Fooer fooer = new Fooer(bar);
+    Mockito.when(fooer.getFoo()).thenReturn(foo);
+    final Foobar foobar = new Foobar(fooer);
+
+    final Foobar foobar2 = new Foobar(fooer);
+    Mockito.injectMocks(foobar2);
+    assertSame(foo, foobar2.fooer.foo);
+    assertSame(foo, foobar2.fooer.bar.foo);
+}
+
+public static class Foobar {
+    @InjectMocks
+    final Fooer fooer;
+
+    public Foobar(final Fooer fooer) {
+        this.fooer = fooer;
+    }
+}
+
+public static class Fooer {
+    @InjectMocks
+    final Bar bar;
+    final Foo foo;
+
+    public Fooer(final Bar bar) {
+        this.bar = bar;

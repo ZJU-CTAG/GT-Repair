@@ -1,0 +1,11 @@
+public void testWriteBinaryStream() throws Exception {
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator gen = new ToXmlGenerator(sw);
+    gen.writeStartObject();
+    gen.writeFieldName("test");
+    InputStream is = new ByteArrayInputStream(new byte[] { 1, 2, 3, 4 });
+    gen.writeBinary(Base64Variants.getDefaultVariant(), is, 4);
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("<object><test>AQIDBA==</test></object>", sw.toString());
+}

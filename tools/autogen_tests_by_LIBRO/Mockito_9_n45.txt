@@ -1,0 +1,25 @@
+public void testIssue121() {
+    // Given
+    AbstractClass ac = spy(new ConcreteClass());
+
+    // When
+    ac.someMethod();
+
+    // Then
+    verify(ac).someMethod();
+}
+
+abstract class AbstractClass {
+    public void someMethod() {
+        someOtherMethod();
+    }
+
+    public abstract void someOtherMethod();
+}
+
+class ConcreteClass extends AbstractClass {
+    @Override
+    public void someOtherMethod() {
+        // do nothing
+    }
+}

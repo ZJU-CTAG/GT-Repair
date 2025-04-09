@@ -1,0 +1,19 @@
+public void testIssue602() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckTypes(true);
+    options.setCheckSuspiciousCode(true);
+    options.setAggressiveVarCheck(CheckLevel.ERROR);
+    options.setCheckGlobalThisLevel(CheckLevel.ERROR);
+    options.setSuspiciousCode(CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setStrictModeInput(false);
+    
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            new JSSourceFile[]{
+                JSSourceFile.fromCode("issue602.js", "function Foo() {\n" +
+                        " var self = this;\n" +
+                        " window.setTimeout(function() {\n" +
+                        " window.location = self.location;\n" +

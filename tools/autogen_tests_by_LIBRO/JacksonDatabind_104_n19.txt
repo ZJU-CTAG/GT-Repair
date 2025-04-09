@@ -1,0 +1,11 @@
+public void testIssue108() throws JsonProcessingException, ParseException {
+    StdDateFormat formatter = new StdDateFormat();
+    System.out.println(formatter.format(new Date(Long.MIN_VALUE)));
+    System.out.println(formatter.format(new Date(Long.MAX_VALUE)));
+    System.out.println(formatter.parse(formatter.format(new Date(Long.MIN_VALUE))));
+    System.out.println(formatter.parse(formatter.format(new Date(Long.MAX_VALUE))));
+
+    assertEquals(Long.MAX_VALUE, formatter.parse(formatter.format(new Date(Long.MAX_VALUE))).getTime());
+    // Will fail due to lack of support for negative dates.
+    //assert formatter.parse(formatter.format(new Date(Long.MIN_VALUE))).getTime() == Long.MIN_VALUE;
+}

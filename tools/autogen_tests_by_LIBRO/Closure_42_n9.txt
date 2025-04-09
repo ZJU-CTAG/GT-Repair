@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String code = "contactcenter.screenpop.updatePopStatus = function(stamp, status) {\n"+
+                  "for each ( var curTiming in this.timeLog.timings ) {\n"+
+                  "if ( curTiming.callId == stamp ) {\n"+
+                  "curTiming.flag = status;\n"+
+                  "break;\n"+
+                  "}\n"+
+                  "}\n"+
+                  "};";
+    String[] script = { code };
+    try {
+        Reader in = JavaScriptCompressor.compress(script, null, true, false, false, false);
+        String out = IOUtils.toString(in);
+        assertTrue(out.contains("for each"));
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        fail();
+    }
+}

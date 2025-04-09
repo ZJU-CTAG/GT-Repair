@@ -1,0 +1,18 @@
+public void testPolymorphicTypeLost() throws Exception {
+    ObjectMapper mapper = JsonMapper.builder().addModule(new SimpleModule()
+            .addSerializer(byte[].class, new ByteArraySerializer())
+            .addDeserializer(byte[].class, new ByteArrayDeserializer()))
+            .defaultTyping(new DefaultTypeResolverBuilder(DefaultTyping.NON_FINAL))
+            .build();
+
+    // First, serialize
+    RemoteCall serializeMessage = new RemoteCall();
+    serializeMessage.setServiceName("com.ubitricity.devices.common.pal.CommandAPDU");
+    serializeMessage.setMethodName("toString");
+    serializeMessage.setArgs(new Object[]{
+            new CommandAPDU(new byte[]{0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08}),
+            "WALA"
+    });
+
+    String serializedJson = mapper.writeValueAsString(serializeMessage);
+    // Deserialize

@@ -1,0 +1,10 @@
+public void testNullUsernameAndGroupEntries() throws Exception {
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    InputStream is = new FileInputStream("src/test/resources/test.tar.gz");
+    try (ArchiveInputStream in = asf.createArchiveInputStream("tar", new GzipCompressorInputStream(is))) {
+        TarArchiveEntry entry = (TarArchiveEntry) in.getNextEntry();
+        assertNotNull(entry);
+        assertEquals("0", entry.getUserName());
+        assertEquals("0", entry.getGroupName());
+    }
+}

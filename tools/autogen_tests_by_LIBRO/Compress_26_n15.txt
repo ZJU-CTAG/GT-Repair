@@ -1,0 +1,22 @@
+public void testIOUtils() throws Exception {
+    byte[] original = new byte[] {1,2,3,4,5};
+    byte[] ciphertext = new byte[] {2,4,6,8,10};
+    InputStream input = new ByteArrayInputStream(ciphertext);
+    CipherInputStream cipher = new CipherInputStream(input, new MockDecryptor(original));
+    assertEquals(3, IOUtils.skip(cipher, 3));
+    assertEquals(2, IOUtils.skip(cipher, 100));
+    assertEquals(-1, cipher.read());
+}
+
+private static final class MockDecryptor implements Cipher {
+    private final InputStream input;
+
+    private MockDecryptor(byte[] input) {
+        this.input = new ByteArrayInputStream(input);
+    }
+
+    public int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) throws ShortBufferException {
+        throw new UnsupportedOperationException();
+    }
+
+    public byte[] doFinal(byte[] input) throws IllegalBlockSizeException, Bad

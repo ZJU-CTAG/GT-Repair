@@ -1,0 +1,14 @@
+public void testStackOverflowError() throws IOException {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.formatting = FormattingOption.PRETTY_PRINT;
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        Lists.newArrayList(getSource("AdMedia.eam.js")), options);
+}
+
+private static JSSourceFile getSource(String sourceName) {
+    return JSSourceFile.fromFile(new File("src/test/resources/" + sourceName), Charset.forName("UTF-8"));
+}

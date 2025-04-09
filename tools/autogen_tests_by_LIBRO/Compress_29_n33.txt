@@ -1,0 +1,11 @@
+public void testArchiveStreamFactory () throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("jar", baos);
+    ArchiveEntry ae = aos.createArchiveEntry(new File("file"), "file");
+    aos.putArchiveEntry(ae);
+    aos.close();
+    
+    byte[] data = baos.toByteArray();
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("jar", new ByteArrayInputStream(data));
+    assertNotNull(ais);
+}

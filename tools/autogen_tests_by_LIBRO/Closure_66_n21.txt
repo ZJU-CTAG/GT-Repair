@@ -1,0 +1,12 @@
+public void testIssueAtEnum() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        "",
+        "var NS = {}; " +
+        "/** @enum {number} */ NS.keys = { a: 1, b: 2, c: 3 }; " +
+        "/** @enum */ window['gKEYS'] = NS.keys; "
+    );
+    assertEquals(1, result.errors.length);
+    assertEquals(TypeValidator.TYPE_MISMATCH_WARNING,
+    result.errors[0].type);
+}

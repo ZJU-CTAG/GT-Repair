@@ -1,0 +1,23 @@
+public void testTarArchive() throws Exception {
+    String testdata = "This is a test";
+    byte[] bytes = testdata.getBytes();
+
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream in = new ByteArrayInputStream(bytes);
+
+    ArchiveInputStream ais = factory.createArchiveInputStream(in);
+    assertTrue(ais instanceof TarArchiveInputStream);
+    TarArchiveInputStream tis = (TarArchiveInputStream) ais;
+    TarArchiveEntry entry = tis.getNextTarEntry();
+    assertEquals("", entry.getName());
+
+    in.reset();
+    ais = factory.createArchiveInputStream(new ArchiveStreamFactory.TarStreamWrapper(in));
+    assertTrue(ais instanceof TarArchiveInputStream);
+    tis = (TarArchiveInputStream) ais;
+    entry = tis.getNextTarEntry();
+    assertEquals("", entry.getName());
+
+    in.reset();
+    ais = factory.createArchiveInputStream(new ArchiveStreamFactory.ZipStreamWrapper(in));
+    assert

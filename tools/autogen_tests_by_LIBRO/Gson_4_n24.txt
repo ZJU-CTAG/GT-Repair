@@ -1,0 +1,16 @@
+public void testNonLenient() {
+    String json = "{\"key\": \"value\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, false);
+    mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, false);
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, false);
+
+    try {
+        mapper.readTree(json);
+        fail("Expected JsonParseException");
+    } catch (JsonParseException e) {
+        assertEquals("Unexpected character ('k' (code 107)): was expecting double-quote to start field name\n" +
+                        " at [Source: {\"key\": \"value\"}; line: 1, column: 2]",
+                e.getMessage());
+    }
+}

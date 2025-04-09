@@ -1,0 +1,10 @@
+public void testIssueCompressorStreamFactory1() throws IOException {
+    File testDataDir = new File(getTestDirectory(), "testdata");
+    File input = new File(testDataDir, "bla.tar.deflatez");
+    File output = new File(testDataDir, "bla.tar.deflatez.out");
+    CompressorStreamFactory compressorStreamFactory = new CompressorStreamFactory();
+    CompressorInputStream in = compressorStreamFactory.createCompressorInputStream(CompressorStreamFactory.DEFLATE, new FileInputStream(input));
+    IOUtils.copy(in, new FileOutputStream(output));
+    in.close();
+    assertTrue(FileUtils.contentEquals(new File(testDataDir, "bla.tar"), output));
+}

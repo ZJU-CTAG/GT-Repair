@@ -1,0 +1,16 @@
+public void testNamespaceInheritance() throws IOException, SAXException, ParserConfigurationException {
+
+    File input = new File("test.html");
+    Document doc = Jsoup.parse(input, "UTF-8");
+
+    org.w3c.dom.Document w3cDoc = Jsoup.parse(input, "UTF-8", "").outputSettings(new Document.OutputSettings().syntax(Document.OutputSettings.Syntax.xml)).toW3cDocument();
+
+    assertEquals(w3cDoc.getElementsByTagName("ns:div").item(0).getNodeName(), "ns:div");
+
+    assertEquals(w3cDoc.getElementsByTagName("div").item(0).getNodeName(), "ns:div");
+
+    assertEquals(w3cDoc.getElementsByTagName("div").item(1).getNodeName(), "ns:div");
+
+    assertEquals(w3cDoc.getElementsByTagName("div").item(2).getNodeName(), "ns:div");
+
+    assertEquals(w3cDoc.getE

@@ -1,0 +1,9 @@
+public void testCID() throws IOException {
+    String test = "<html><body><img src=\"cid:some_random_text\"/></body></html>";
+    Whitelist wl = Whitelist.none();
+    wl.addTags("img");
+    wl.addAttributes("img", "src");
+    wl.addProtocols("img", "src", "cid");
+    Document doc = Jsoup.clean(test, wl);
+    assertEquals("<html><head></head><body><img src=\"cid:some_random_text\"></body></html>", doc.outerHtml());
+}

@@ -1,0 +1,12 @@
+public void testFull()
+		throws IOException
+{
+	String value = "{\"loggerName\":\"de.huxhorn.lilith.data.logging.logback.LogbackLoggingEvent\",\"timeStamp\":1344808863928,\"level\":\"DEBUG\",\"threadName\":\"main\",\"formattedMessage\":\"bla bla\",\"loggerContextVO\":{\"name\":\"default\",\"propertyList\":[]},\"marker\":null,\"argumentArray\":null,\"callerData\":null,\"mdcPropertyMap\":null,\"ndc\":null,\"throwableProxy\":null,\"contextMap\":{}}";
+	value = value.replace("\"argumentArray\":null", "\"argumentArray\":[\"test\"]");
+	ObjectMapper mapper = new ObjectMapper();
+	mapper.registerModule(new LoggingModule());
+	LoggingEvent event = mapper.readValue(value, LoggingEvent.class);
+	assertThat(event.getArgumentArray(), is(new Object[]{"test"}));
+}
+
+public void testNullArgument()

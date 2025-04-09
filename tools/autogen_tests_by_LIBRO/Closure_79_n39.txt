@@ -1,0 +1,18 @@
+public void testRuntimeException() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    MessageFormatter formatter = new DefaultMessageFormatter();
+    ArrayList<SourceFile> externs = new ArrayList<>();
+    externs.add(SourceFile.fromCode("externs.js", "var $ = {};"));
+    ArrayList<SourceFile> sources = new ArrayList<>();
+    sources.add(SourceFile.fromCode("sources.js", "var $ = {};"));
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPreserveTypeAnnotations(true);
+    options.setPrettyPrint(true);
+    Result result = compiler.compile(externs, sources, options);
+    if (!result.success) {
+        StringBuilder sb = new StringBuilder();
+        for (JSError error : result.errors) {
+            sb.append

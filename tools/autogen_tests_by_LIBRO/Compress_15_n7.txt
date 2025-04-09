@@ -1,0 +1,14 @@
+public void testZipFile() throws IOException {
+    File file = new File("src/test/resources/zip/issue.zip");
+    ZipFile zipFile = new ZipFile(file);
+    Enumeration<ZipArchiveEntry> en = zipFile.getEntries();
+    assertEquals(true, en.hasMoreElements());
+    ZipArchiveEntry entry = en.nextElement();
+    assertEquals(false, en.hasMoreElements());
+    assertNotNull(entry);
+    assertEquals(true, entry.getName().endsWith("issue.txt"));
+
+    FileInputStream fis = new FileInputStream(file);
+    ZipArchiveInputStream zais = new ZipArchiveInputStream(fis);
+    assertEquals(true, zais.canReadEntryData(entry));
+}

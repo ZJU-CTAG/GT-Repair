@@ -1,0 +1,18 @@
+public void testReadArchive() throws Exception {
+    // create a tar file with an entry whose size is too big
+    File tarFile = File.createTempFile("commons-compress", "tar");
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(new FileOutputStream(tarFile));
+    TarArchiveEntry e = new TarArchiveEntry("entry1");
+    e.setSize(0x100000000L);
+    tos.putArchiveEntry(e);
+    tos.closeArchiveEntry();
+    tos.close();
+
+    // read it in and make sure it is handled correctly
+    TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(tarFile));
+    e = tis.getNextTarEntry();
+    assertNotNull(e);
+    assertEquals(0x100000000L, e.getSize());
+    tis.close();
+    tarFile.delete();
+}

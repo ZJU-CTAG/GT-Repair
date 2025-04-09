@@ -1,0 +1,14 @@
+public void testRead(ObjectMapper mapper) throws Exception {
+    try {
+      final ObjectReader reader = mapper.reader(JsonRoot.class);
+      final JsonRoot model = reader.readValue(new File("src/test/resources/model.json"));
+      if (Util.DEBUG) {
+        System.out.println(mapper.writer(new DefaultPrettyPrinter())
+                .writeValueAsString(model));
+      }
+      assertThat(model, instanceOf(JsonRoot.class));
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
+  }

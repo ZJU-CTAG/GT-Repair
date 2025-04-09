@@ -1,0 +1,14 @@
+public void testClosureCompiler() throws Exception {
+    final String script = "var v = 'Rußland';";
+    for (CompilationLevel level : CompilationLevel.values()) {
+        Compiler compiler = new Compiler();
+        CompilerOptions options = new CompilerOptions();
+        level.setOptionsForCompilationLevel(options);
+        options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+        options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+        compiler.compile(new JSSourceFile[] {
+                JSSourceFile.fromCode("main", script)
+        }, options);
+        System.out.println(level.name() + ": " + compiler.toSource());
+    }
+}

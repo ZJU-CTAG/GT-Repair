@@ -1,0 +1,22 @@
+public void testJsonValueAnnotation() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping();
+    objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    objectMapper.configure(MapperFeature.AUTO_DETECT_CREATORS, true);
+
+    byte[] byteArray = new byte[] {0x42, 0x43, 0x44};
+    CommandAPDU commandAPDU = new CommandAPDU(byteArray);
+
+    String json = objectMapper.writeValueAsString(commandAPDU);
+    CommandAPDU deserialized = objectMapper.readValue(json, CommandAPDU.class);
+    assertThat(deserialized, notNullValue());
+    assertThat(deserialized, is(instanceOf(CommandAPDU.class)));
+}
+
+private static final class CommandAPDU {
+
+    private byte[] apdu;
+
+    @JsonCreator
+    public CommandAPDU(@JsonProperty(value = "bytes") byte[] apdu) {
+        this

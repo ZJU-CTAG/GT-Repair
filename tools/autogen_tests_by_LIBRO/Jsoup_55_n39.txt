@@ -1,0 +1,8 @@
+public void testEmptyAttributes() {
+    String html = "<img /onerror=\"a()\"/>";
+    String clean = Jsoup.clean(html, Whitelist.none());
+    Document doc = Jsoup.parse(clean);
+    Elements imgs = doc.select("img");
+    assertEquals(1, imgs.size());
+    assertEquals("", imgs.first().attr("onerror"));
+}

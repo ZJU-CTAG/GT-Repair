@@ -1,0 +1,17 @@
+public void testIssue123() {
+    Document doc = Jsoup.parse("<html><body><div id=1></div><div id=2></div><div id=3></div></body></html>");
+    Document doc2 = Jsoup.parse("<html><body><div id=2></div><div id=3></div><div id=1></div></body></html>");
+
+    Element el1 = doc.select("#1").first();
+    Element el2 = doc.select("#2").first();
+    Element el3 = doc.select("#3").first();
+
+    ArrayList<Element> toMove = new ArrayList<Element>();
+    toMove.add(el1);
+    toMove.add(el2);
+
+    Element body = doc.select("body").first();
+    body.insertChildren(0, toMove);
+
+    assertEquals(doc.html(), doc2.html());
+}

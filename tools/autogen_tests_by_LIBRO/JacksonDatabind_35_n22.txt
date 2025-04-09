@@ -1,0 +1,25 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_OBJECT);
+    ObjectIdGenerator<String> idGenerator = new StringIdGenerator();
+    mapper.setHandlerInstantiator(new JacksonAnnotationIntrospector.Pair(null, idGenerator));
+
+    String json = mapper.writeValueAsString(new BasicBean("foo"));
+    BasicBean result = mapper.readValue(json, BasicBean.class);
+}
+
+// dummy class for testing
+static class BasicBean {
+    @JacksonXmlProperty(isAttribute = true)
+    @JacksonXmlIdentityInfo(generator = StringIdGenerator.class, property = "@id")
+    public String name;
+
+    BasicBean() {}
+    BasicBean(String name) {
+        this.name = name;
+    }
+}
+
+// dummy generator
+static class

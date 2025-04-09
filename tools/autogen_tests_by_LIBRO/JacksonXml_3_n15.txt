@@ -1,0 +1,16 @@
+public void testXmlParsingWithAttribute() throws Exception {
+   String xml = " <person><name id=\"1\">John</name></person>";
+   XmlMapper mapper = new XmlMapper();
+   Person person = mapper.readValue(xml, Person.class);
+   assertEquals("1", person.name.id);
+}
+
+class Person {
+   @JacksonXmlProperty(localName = "name")
+   public Name name;
+}
+
+class Name {
+   @JacksonXmlProperty(isAttribute = true)
+   public String id;
+}

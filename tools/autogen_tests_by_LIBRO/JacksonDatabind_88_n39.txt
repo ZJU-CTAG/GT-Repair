@@ -1,0 +1,16 @@
+public void testPolymorphicTypeId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String,Object> props = new HashMap<String,Object>();
+    props.put("x", "foo");
+    props.put("y", Integer.valueOf(3));
+    props.put("@class", "java.util.HashMap");
+    Object result = mapper.readValue(mapper.writeValueAsString(props), Object.class);
+    // should now be a HashMap<String,String>; if not, type check failed
+    assertTrue(result instanceof HashMap<?,?>);
+    // and should NOT be a HashMap<String,Object>
+    assertFalse(result instanceof Map<?,?>);
+    Map<?,?> mapped = (Map<?,?>) result;
+    assertEquals(2, mapped.size());
+    assertEquals("foo", mapped.get("x"));
+    assertEquals(Integer.valueOf(3), mapped.get("y"));
+}

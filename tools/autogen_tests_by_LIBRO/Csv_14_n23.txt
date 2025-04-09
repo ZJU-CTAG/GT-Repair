@@ -1,0 +1,12 @@
+public void testNoQuote() throws IOException {
+    final String writerContent = "long,lat,data\n-92.222,43.333,3";
+
+    // write
+    final StringWriter writer = new StringWriter();
+    final CSVPrinter printer = new CSVPrinter(writer, CSVFormat.MINIMAL.withHeader("long", "lat", "data"));
+    printer.printRecord(-92.222, 43.333, 3);
+    printer.close();
+    final String printed = writer.toString();
+
+    assertEquals(writerContent, printed);
+}

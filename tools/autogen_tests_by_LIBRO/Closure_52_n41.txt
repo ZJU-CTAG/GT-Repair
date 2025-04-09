@@ -1,0 +1,8 @@
+public void testIssue146() throws Exception {
+    Global g = new Global();
+    g.init(new String[]{"-w"});
+    Script script = g.compile("var lit = {\"0102\":\"Zero One Zero Two\"};alert(lit[\"0102\"]);");
+    Writer w = new StringWriter();
+    script.exec(g.getContext(), g.getShellScope(), w);
+    assertEquals("var lit={\"0102\":\"Zero One Zero Two\"};alert(lit[\"0102\"]);", w.toString());
+}

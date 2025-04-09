@@ -1,0 +1,11 @@
+public void testIssue1079() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    final TypeFactory typeFactory = mapper.getTypeFactory();
+    TypeReference<?> ref = new TypeReference<Optional<String>>() { };
+    final JavaType t = typeFactory.constructType(ref);
+    assertEquals(Optional.class, t.getRawClass());
+    assertEquals(1, t.containedTypeCount());
+    assertEquals(String.class, t.containedType(0).getRawClass());
+}

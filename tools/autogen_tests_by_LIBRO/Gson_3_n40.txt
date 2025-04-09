@@ -1,0 +1,26 @@
+public void testIssue624() {
+    ConcurrentNavigableMap<String, String> data = new ConcurrentSkipListMap<>();
+    data.put("test", "test");
+    OriginalState state = new OriginalState();
+    state.setData(data);
+
+    Gson gson = new GsonBuilder().create();
+    String json = gson.toJson(state);
+
+    OriginalState deserializedState = gson.fromJson(json, OriginalState.class);
+    assertEquals(state, deserializedState);
+}
+
+
+public static class OriginalState {
+    private ConcurrentNavigableMap<String, String> data;
+
+    public void setData(ConcurrentNavigableMap<String, String> data) {
+        this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return data.equals(((OriginalState) obj).data);
+    }
+}

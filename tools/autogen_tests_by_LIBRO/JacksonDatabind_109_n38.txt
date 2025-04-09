@@ -1,0 +1,14 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new JodaModule());
+    mapper.registerModule(new KotlinModule());
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
+
+    String json = mapper.writeValueAsString(new Test(new BigDecimal("0.0000000005")));
+    assertEquals("{\"

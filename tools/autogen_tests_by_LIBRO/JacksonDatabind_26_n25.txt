@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader(String.class);
+    ObjectWriter writer = mapper.writer(String.class);
+
+    // This should work fine:
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    writer.writeValue(out, "foo");
+    out.close();
+    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+    assertEquals("foo", reader.readValue(in));
+    in.close();
+    
+    // This produces "java.io.NotSerializableException: com.fasterxml.jackson.databind.util.CompactStringObjectMap"
+    out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(reader);
+    oos.close();
+}

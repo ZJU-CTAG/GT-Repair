@@ -1,0 +1,28 @@
+public void testBug() throws Exception {
+    // Create a new CommandLine object
+    CommandLine cl = new CommandLine();
+
+    // Create an Option which can have one argument and one default argument
+    Option option = new Option( "o", "option", true, "option" );
+    option.setArgs(1);
+    option.setDefault("default");
+
+    // Add the Option
+    cl.addOption( option );
+
+    // Create a CommandLineParser
+    CommandLineParser parser = new PosixParser();
+
+    // Parse the command line arguments
+    try {
+        cl = parser.parse( cl, new String[] {"-o", "option"} );
+    }
+    catch ( ParseException exp ) {
+        fail( "Unable to parse command line." );
+    }
+
+    // Check the values
+    assertTrue( cl.hasOption( "o" ) );
+    assertTrue( cl.getOptionValue( "o" ).equals( "option" ) );
+    assertTrue( cl.getOptionObject( "o" ).getValues().length == 1 );
+}

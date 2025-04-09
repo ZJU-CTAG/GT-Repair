@@ -1,0 +1,25 @@
+public void testErrorRecovery() throws Exception
+{
+    final String JSON = "{ \"a\":\"a\", \"b\":\"b\", \"c\":\"c\" }";
+    // let's try to read as ints
+    final ObjectMapper mapper = new ObjectMapper();
+    final MappingIterator<Integer> it = mapper.reader(Integer.class).readValues(JSON);
+
+    final List<Integer> result = new ArrayList<Integer>();
+    while (it.hasNextValue()) {
+        int value = it.nextValue();
+        result.add(value);
+    }
+    // should get a single exception
+    assertEquals(1, it.getErrorCount());
+
+    // and we should have been able to continue reading from point of error
+    try {
+        it.nextValue();
+        fail("Should not have gotten a value");
+    } catch (JsonMappingException e) {
+        verifyException(e, "out of START_OBJECT");
+    }
+    // and the error should not have propagated to other calls
+    assertFalse(it.hasNextValue());
+    assertFalse(it

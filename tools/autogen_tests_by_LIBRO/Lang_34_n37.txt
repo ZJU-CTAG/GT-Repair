@@ -1,0 +1,21 @@
+public void testThreadLocalLeak() throws Exception {
+    // Make sure ToStringStyle is loaded
+    ToStringStyle ts = ToStringStyle.SHORT_PREFIX_STYLE;
+
+    // Get a reference to the ThreadLocal in ToStringStyle and
+    // set a value in it
+    Field field = ToStringStyle.class.getDeclaredField("threadLocal");
+    field.setAccessible(true);
+    ThreadLocal<ToStringBuilder> tl = (ThreadLocal<ToStringBuilder>) field.get(null);
+    tl.set(new ToStringBuilder(new Object()));
+
+    // Create a new class loader and force the ToStringStyle class to be
+    // garbage collected
+    ClassLoader loader = new URLClassLoader(new URL[] {}, this.getClass().getClassLoader().getParent());
+    Class<?> clazz = loader.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+    clazz = null;
+    loader = null;
+    System.gc();
+    System.runFinalization();
+
+    // The reference chain should now be broken and the value in the

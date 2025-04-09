@@ -1,0 +1,12 @@
+public void testIssue128() {
+    String[] months = new String[] { "MMM", "MMMM" };
+    String date = "2011";
+    DateTimeFormatter[] formatters = new DateTimeFormatter[months.length];
+    for (int i = 0; i < months.length; i++) {
+        formatters[i] = DateTimeFormat.forPattern(date + months[i]);
+    }
+    DateTime dt = formatters[0].parseDateTime("2011MMM");
+    assertEquals(2011, dt.getYear());
+    assertEquals(10, dt.getMonthOfYear());
+    assertEquals(1, dt.getDayOfMonth());
+}

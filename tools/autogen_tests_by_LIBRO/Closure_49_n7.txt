@@ -1,0 +1,16 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+
+    String code = "var foo = function bar(){\n" +
+            "    var bar;\n" +
+            "    alert(bar)\n" +
+            "};";
+
+    Result result = compiler.compile(SourceFile.fromCode("test.js", code), options);
+    assertTrue(result.success);
+    assertEquals("var foo=function(){alert(void 0)};", compiler.toSource());
+}

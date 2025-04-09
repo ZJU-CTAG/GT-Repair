@@ -1,0 +1,12 @@
+public void testDormandPrince() {
+    double range = 1e-20;
+    double t0 = 0;
+    double t1 = range;
+    double y0 = 1.0;
+    double[] y1 = new double[1];
+    DormandPrince853Integrator integrator = new DormandPrince853Integrator(range * 0.1, range, 1e-20, 1e-20);
+    integrator.integrate(new TestODE(range), t0, new double[] { y0 }, t1, y1);
+    assertEquals(y0, y1[0], 1.0e-10);
+    integrator.integrate(new TestODE(range), t0, new double[] { y0 }, t1, y1);
+    assertEquals(y0, y1[0], 1.0e-10);
+}

@@ -1,0 +1,16 @@
+public void testZipVersion() throws Exception {
+    final File testFile = new File("target/test-classes/test.zip");
+    try (FileOutputStream fos = new FileOutputStream(testFile);
+            ZipArchiveOutputStream zos =
+                new ZipArchiveOutputStream(fos)) {
+        final ZipArchiveEntry zipEntry = new ZipArchiveEntry("test.txt");
+        zipEntry.setMethod(ZipEntry.DEFLATED);
+        zos.putArchiveEntry(zipEntry);
+        zos.write("test".getBytes());
+        zos.closeArchiveEntry();
+    }
+    try (final RandomAccessFile raf = new RandomAccessFile(testFile, "r");
+            final FileInputStream fis = new FileInputStream(raf.getFD())) {
+        final ZipArchiveInputStream zis = new ZipArchiveInputStream(fis);
+        final ZipArchiveEntry zipEntry = zis.getNextZipEntry();
+        assertEquals("LFH_VERSION_NEEDED_OFFSET", 20, zis.getLocalFileHeaderData().getVersionNeeded

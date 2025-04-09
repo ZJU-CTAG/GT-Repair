@@ -1,0 +1,20 @@
+public void testNewlineInPre() {
+    Document doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    Element pre = doc.select("pre").first();
+    assertEquals("abc def", pre.text());
+    assertEquals("abc def", pre.ownText());
+    assertEquals("\nabc def", pre.wholeText());
+}
+
+public void testNewlineInTextarea() {
+    Document doc = Jsoup.parse("<textarea>\nabc  def</textarea>");
+    Element textarea = doc.select("textarea").first();
+    assertEquals("abc def", textarea.text());
+    assertEquals("abc def", textarea.ownText());
+    assertEquals("\nabc def", textarea.wholeText());
+}
+
+public void testNewlineInTextareaWithMulipleNewlines() {
+    Document doc = Jsoup.parse("<textarea>\n\nabc  def</textarea>");
+    Element textarea = doc.select("textarea").first();
+    assertEquals("

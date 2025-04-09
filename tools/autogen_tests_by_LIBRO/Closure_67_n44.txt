@@ -1,0 +1,20 @@
+public void testAdvancedCompilation() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("foo",
+                "function A() { this._x = 1; }\n" +
+                "A.prototype['func1'] = // done to save public reference to func1\n" +
+                "A.prototype.func1 = function() {\n" +
+                "  this._x = 2;\n" +
+                "  this.func2();\n" +
+                "};\n" +
+                "A.prototype.func2 = function() {\n" +
+                "  this._x = 3;\n" +
+                "  this.func3();\n" +
+                "};\n" +

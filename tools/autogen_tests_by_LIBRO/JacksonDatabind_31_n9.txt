@@ -1,0 +1,19 @@
+public void testConvert() throws Exception {
+    JsonFactory jsonFactory = new JsonFactory();
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectWriter writer = objectMapper.writer();
+
+    JsonGenerator jsonGenerator = jsonFactory.createGenerator(new ByteArrayOutputStream());
+    JsonStreamContext writeContext = jsonGenerator.getOutputContext();
+
+    ObjectReader reader = objectMapper.readerFor(Person.class);
+    JsonParser jsonParser = reader.getFactory().createParser("{\"person\":{\"firstName\":\"John\",\"lastName\":\"Doe\",\"age\":42}}");
+
+    JsonStreamContext convertContext = jsonParser.getParsingContext();
+
+    assertEquals(writeContext.getCurrentName(), convertContext.getCurrentName());
+    assertEquals(writeContext.getCurrentValue(), convertContext.getCurrentValue());
+    assertEquals(writeContext.inArray(), convertContext.inArray());
+    assertEquals(writeContext.inObject(), convertContext.inObject());
+    assertEquals(writeContext.getParent(), convertContext.getParent

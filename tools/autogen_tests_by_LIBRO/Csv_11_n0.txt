@@ -1,0 +1,9 @@
+public void testNullPointerExceptionWhenEmptyHeaderString() throws Exception {
+    String csv = "header1,header2\n"
+            + "value1,value2";
+    OpenCsvParser parser = new OpenCsvParser(new CsvParserBuilder().withFieldAsNull(CsvReaderNullFieldIndicator.EMPTY_SEPARATORS).build());
+    CSVParser parse = parser.parse(new StringReader(csv));
+    CSVRecord record = parse.iterator().next();
+    assertEquals("value1", record.get("header1"));
+    assertEquals("value2", record.get("header2"));
+}

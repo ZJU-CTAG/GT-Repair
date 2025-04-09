@@ -1,0 +1,11 @@
+public void testIssue212() throws IOException {
+    Document doc = Jsoup.parse("issue-212.html", "UTF-8", Parser.xmlParser());
+    Elements divs = doc.select("div");
+    for (Element div : divs) {
+        if (div.text().equals("2")) {
+            assertEquals("http://www.w3.org/1999/xhtml", div.namespace());
+        } else {
+            assertEquals("http://www.w3.org/1999/xlink", div.namespace());
+        }
+    }
+}

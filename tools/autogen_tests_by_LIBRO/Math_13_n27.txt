@@ -1,0 +1,18 @@
+public void testLargeNumberOfWeights() {
+    final Random rng = new Well1024a(0x1234678);
+    final MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] x) {
+            double[] r = new double[x.length];
+            for (int i = 0; i < r.length; i++) {
+                r[i] = rng.nextDouble();
+            }
+            return r;
+        }
+    };
+    AbstractScalarDifferentiableMultivariateVectorOptimizer optimizer =
+        new NonLinearConjugateGradientOptimizer(ConjugateGradientFormula.FLETCHER_REEVES,
+                                                new SimpleValueChecker(1e-6, 1e-6));
+    int n = 41200;
+    double[] start = new double[n];
+    optimizer.optimize(f, GoalType.MINIMIZE, start);
+}

@@ -1,0 +1,9 @@
+public void testUtf16Encoding() throws Exception {
+    byte[] data = new byte[] { (byte) 0xff, (byte) 0xfe, (byte) 0x4c, (byte) 0x00 };
+    String charset = "UTF-16";
+    InputStream inputStream = new ByteArrayInputStream(data);
+    ParseErrorList errors = new ParseErrorList();
+    Document document = DataUtil.parseByteData(inputStream, charset, "http://example.com/", errors);
+    String text = document.text();
+    assertEquals("L", text);
+}

@@ -1,0 +1,27 @@
+public void testNamespaceDefinition() {
+    SimpleScriptable s = new SimpleScriptable();
+    assertEquals(false, s.has("Node", s));
+    ContextFactory factory = new ContextFactory();
+    Context cx = factory.enterContext();
+    cx.setLanguageVersion(Context.VERSION_1_7);
+    ScriptableObject scope = cx.initStandardObjects(s);
+    scope.defineFunctionProperties(s.getFunctionNames(), SimpleScriptable.class, ScriptableObject.DONTENUM);
+    cx.evaluateString(scope, "Node = {};", "<cmd>", 1, null);
+    assertEquals(true, s.has("Node", s));
+}
+
+@JsFunction
+public interface IFunction {
+    Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args);
+}
+
+public static class SimpleScriptable extends ScriptableObject {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public String getClassName() {
+        return "SimpleScriptable";
+    }
+
+    public String[] getFunctionNames() {
+        return new String

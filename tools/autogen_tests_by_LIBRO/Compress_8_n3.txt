@@ -1,0 +1,18 @@
+public void testOctalSize() throws Exception {
+    // the size field in the header is 12 bytes - only 11 octal digits are allowed
+    byte[] header = new byte[512];
+    Arrays.fill(header, (byte)' ');
+    header[124] = '0';
+    header[125] = '0';
+    header[126] = '0';
+    header[127] = '0';
+    header[128] = '0';
+    header[129] = '0';
+    header[130] = '0';
+    header[131] = '0';
+    header[132] = '0';
+    header[133] = '0';
+    header[134] = '0';
+    TarArchiveEntry entry = new TarArchiveEntry(header, 0);
+    assertEquals(0, entry.getSize());
+}

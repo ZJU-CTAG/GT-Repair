@@ -1,0 +1,26 @@
+public void testIssue110() {
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    verify(mock).set(captor.capture());
+    assertEquals("foo", captor.getValue());
+}
+
+public interface MockInterface {
+    public void set(Object... values);
+}
+
+@Mock
+private MockInterface mock;
+
+@Before
+public void setup() {
+    MockitoAnnotations.initMocks(this);
+    doCallRealMethod().when(mock).set(any(Object[].class));
+}
+
+@Test
+public void testIssue110() {
+    mock.set("foo");
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    verify(mock).set(captor.capture());
+    assertEquals("foo", captor.getValue());
+}

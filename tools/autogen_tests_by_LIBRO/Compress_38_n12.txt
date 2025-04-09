@@ -1,0 +1,12 @@
+public void testIssue107() throws Exception {
+    InputStream is = getClass().getResourceAsStream("/pax-trailing-slash.tar");
+    try {
+        TarArchiveInputStream tais = new TarArchiveInputStream(is);
+        TarArchiveEntry entry = null;
+        while ((entry = tais.getNextTarEntry()) != null) {
+            System.out.println(entry.getName());
+        }
+    } finally {
+        IOUtils.closeQuietly(is);
+    }
+}

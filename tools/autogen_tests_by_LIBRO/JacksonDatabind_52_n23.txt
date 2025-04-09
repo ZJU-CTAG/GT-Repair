@@ -1,0 +1,8 @@
+public void testExternalId() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    SimpleModule module = new SimpleModule("MyModule", new Version(1, 0, 0, null));
+    module.addDeserializer(Id.class, new IdDeser());
+    om.registerModule(module);
+    User user = om.readValue("{\"user\":\"user\", \"id\":\"abc\"}", User.class);
+    assertEquals("abc", user.getId().toString());
+}

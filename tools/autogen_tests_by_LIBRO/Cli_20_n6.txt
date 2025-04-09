@@ -1,0 +1,20 @@
+public void testStopAtNonOption() {
+    Options options = new Options()
+        // -a
+        .addOption(Option.builder("a").build())
+        // -b <arg>
+        .addOption(Option.builder("b").desc("arg").hasArg().build());
+
+    String[] args = { "--zop", "-abfoo" };
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(options, args, true);
+
+    assertEquals(2, line.getOptions().length);
+    assertEquals("a", line.getOptions()[0].getOpt());
+    assertEquals("b", line.getOptions()[1].getOpt());
+    assertEquals("foo", line.getOptionValue("b"));
+
+    assertEquals(1, line.getArgList().size());
+    assertEquals("--zop", line.getArgList().get(0));
+}

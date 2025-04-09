@@ -1,0 +1,21 @@
+public void testIssue115() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("input", "function Foo() {\n" +
+            " var self = this;\n" +
+            " window.setTimeout(function() {\n" +
+            " window.location = self.location;\n" +
+            " }, 0);\n" +
+            "}\n" +
+            "\n" +
+            "Foo.prototype.setLocation = function(loc) {\n" +
+            " this.location = loc;\n" +
+            "};\n" +
+            "\n" +
+            "(new Foo()).setLocation('http://www.google.com/');"),
+        options);
+    assertTrue(result.

@@ -1,0 +1,20 @@
+public void testIssue() throws Exception {
+    final InputStream is = getClass().getResourceAsStream("/PAXHeaderIssue.tar");
+    try {
+        final TarArchiveInputStream tis = new TarArchiveInputStream(is);
+        try {
+            TarArchiveEntry entry;
+            while ((entry = tis.getNextTarEntry()) != null) {
+                System.out.println(entry.getName() + ": " + entry.getSize() + " bytes");
+                if (!entry.isDirectory()) {
+                    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    IOUtils.copy(tis, bos);
+                }
+            }
+        } finally {
+            IOUtils.closeQuietly(tis);
+        }
+    } finally {
+        IOUtils.closeQuietly(is);
+    }
+}

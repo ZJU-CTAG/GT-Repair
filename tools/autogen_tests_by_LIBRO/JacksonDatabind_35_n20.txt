@@ -1,0 +1,25 @@
+public void testIssue() throws Exception {
+    ObjectIdResolver oir = new ObjectIdResolver() {
+        @Override
+        public void bindItem(ObjectIdGenerator.IdKey id, Object pojo) { }
+
+        @Override
+        public Object resolveId(ObjectIdGenerator.IdKey id) { return new Object(); }
+
+        @Override
+        public ObjectIdResolver newForDeserialization(Object context) { return this; }
+
+        @Override
+        public boolean canUseFor(ObjectIdResolver resolverType) { return false; }
+    };
+    ObjectIdGenerator oig = new ObjectIdGenerator() {
+        @Override
+        public ObjectIdGenerator forScope(Class<?> scope) { return this; }
+        @Override
+        public ObjectIdGenerator newForSerialization(Object context) { return this; }
+        @Override
+        public IdKey key(Object key) { return new IdKey(getClass(), null, key); }
+        @Override
+        public boolean canUseFor(ObjectIdGenerator gen) { return false; }
+    };
+    ObjectIdInfo oii = new ObjectId

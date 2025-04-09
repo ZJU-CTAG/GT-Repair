@@ -1,0 +1,16 @@
+public void testIssue108() {
+    addSetUp(new Setup() {
+        @Override
+        public void setup(Context ctx) {
+            ctx.setOptimizationLevel(-1);
+        }
+    });
+    Function f = new Function() {
+        @Override
+        public void invoke(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+            // NOOP
+        }
+    };
+    ScriptableObject.putProperty(scope, "f", f);
+    addTest(new Test("testIssue108", "function f(a,b){}alert(f.length);"));
+}

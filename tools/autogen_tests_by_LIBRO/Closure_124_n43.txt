@@ -1,0 +1,16 @@
+public void testIssue123() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    test("var foreignObject = gfx.parentNode.parentNode;\n" +
+             "var parentContainer = foreignObject.parentNode.parentNode;\n" +
+             "if(parentContainer != null) {\n" +
+             "  parentContainer.appendChild(foreignObject);\n" +
+             "}");
+    test("var foreignObject = gfx.parentNode.parentNode;\n" +
+             "var parentContainer = foreignObject.parentNode.parentNode;\n" +
+             "if(b) {\n" +
+             "  if(a=b.parentNode.parentNode,b=a.parentNode.parentNode,null!==b) {\n" +
+             "    b.appendChild(a);\n" +
+             "  }\n" +
+             "}",
+         "var b=a=a.parentNode.parentNode;if(b)b.appendChild(a)");
+}

@@ -1,0 +1,17 @@
+public void testIssue172() {
+    XPath xpath = new XPath(
+            "count(//@*[local-name() = 'id' and namespace-uri() = 'http://www.example.com/test'])");
+    String xml = "<?xml version='1.0' encoding='UTF-8'?>"
+            + "<test xmlns='http://www.example.com/test'>"
+            + "<test1 id='test1'>"
+            + "</test1>"
+            + "</test>";
+    Document doc = null;
+    try {
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(new InputSource(new StringReader(xml)));
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+    assertEquals(0, xpath.numberValueOf(doc).intValue());
+}

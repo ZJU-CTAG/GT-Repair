@@ -1,0 +1,13 @@
+public void testIssue111() throws Exception
+{
+    try {
+        final ObjectMapper mapper = new ObjectMapper();
+        final JsonGenerator gen = mapper.getFactory().createGenerator(new ByteArrayOutputStream());
+        gen.writeStartObject();
+        gen.writeString("foo");
+        gen.close();
+        fail("Expected " + JsonGenerationException.class.getName());
+    } catch (final JsonGenerationException e) {
+        verifyException(e, "writeString");
+    }
+}

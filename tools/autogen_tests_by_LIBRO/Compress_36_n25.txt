@@ -1,0 +1,12 @@
+public void testCOMPRESS340 () {
+    File file = new File("testCOMPRESS340.7z");
+    SevenZOutputFile zOut = new SevenZOutputFile(file);
+    SevenZArchiveEntry entry = zOut.createArchiveEntry(new File("testCOMPRESS340.7z"), "testCOMPRESS340.txt");
+    zOut.putArchiveEntry(entry);
+    zOut.closeArchiveEntry();
+    zOut.close();
+
+    SevenZFile zIn = new SevenZFile(file);
+    assertNull(zIn.getNextEntry());
+    assertEquals(-1, zIn.read(new byte[2048]));
+}

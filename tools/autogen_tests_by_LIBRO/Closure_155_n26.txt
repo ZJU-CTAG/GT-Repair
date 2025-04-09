@@ -1,0 +1,20 @@
+public void testOptimiseArguments()
+{
+    StringBuilder sb = new StringBuilder();
+    CompilerEnvirons ce = new CompilerEnvirons();
+    ce.setOptimizationLevel(-1);
+    ce.setStrictMode(false);
+    ce.setRecoverFromErrors(true);
+    ce.setConfigurable(true);
+    ce.setGenerateDebugInfo(true);
+    ce.setErrorReporter(new DefaultErrorReporter(System.err));
+    Parser p = new Parser(ce, new DefaultErrorReporter(System.err));
+    p.parse(new StringReader("function d3_call(callback) { " +
+            "var f = callback; " +
+            "arguments[0] = this; " +
+            "f.apply(this, arguments); " +
+            "return this;" +
+            "}"), "", 0);
+    ScriptNode scriptTree = p.getScriptNode();
+    IRFactory irFactory = new IRFactory(new CompilerEnvirons());
+    ScriptNode irTree = irFactory.transformTree(scriptTree);

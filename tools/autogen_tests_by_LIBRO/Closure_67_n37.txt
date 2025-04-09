@@ -1,0 +1,14 @@
+public void testAdvanced() throws Exception {
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+
+    Externs externs = new Externs();
+    SourceFile input = SourceFile.fromCode("input", "function A() { " + "this._x = 1; }"
+            + "A.prototype['func1'] = " + "A.prototype.func1 = function() { " + "this._x = 2; " + "this.func2(); }"
+            + "A.prototype.func2 = function() { " + "this._x = 3; " + "this.func3(); }" + "window['A'] = A; ");
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, input, options);
+    String output = compiler.toSource();
+    System.out.println(output);
+}

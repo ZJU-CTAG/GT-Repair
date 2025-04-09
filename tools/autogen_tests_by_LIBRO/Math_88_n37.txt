@@ -1,0 +1,21 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+
+    // define linear constraint
+    // -2x + y + z = 3
+    LinearConstraint constraint = new LinearConstraint(
+            new double[]{-2.0, 1.0, 1.0}, Relationship.EQ, 3.0);
+    solver.addConstraint(constraint);
+
+    // solve
+    PointValuePair solution = solver.optimize(
+            new MaxIter(100),
+            new ObjectiveFunction(new LinearObjectiveFunction(
+                    new double[]{1.0, 1.0, 1.0}, 0.0)),
+            new NonNegativeConstraint(false),
+            PivotSelectionRule.BLAND);
+    
+    // should be {2.5, 0.5, 0.5}
+    assertEquals(2.5, solution.getPoint()[0], 0.001);
+    assertEquals(0.5, solution.getPoint()[1], 0.001);
+    assertEquals(0.5, solution.get

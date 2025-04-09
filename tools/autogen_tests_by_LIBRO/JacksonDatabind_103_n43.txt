@@ -1,0 +1,14 @@
+public void testIssue113() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // Ensure that we get the "at [source]" message...
+    mapper.enable(DeserializationFeature.INDENT_OUTPUT);
+    try {
+        mapper.readValue("[ 0 ]", LocalDateTime[].class);
+    } catch (JsonMappingException e) {
+        // first time we get message, it's ok
+        assertEquals("Can not deserialize value of type java.time.LocalDateTime from String \"0\": Text '0' could not be parsed at index 0\n at [Source: (String)\"[ 0 ]\"; line: 1, column: 2]", e.getMessage());
+        // but not second time
+        assertFalse(e.getMessage().endsWith("\n at [Source: (String)\"[ 0 ]\"; line: 1, column: 2]\n at [Source: (String)\"[ 0 ]\"; line: 1, column: 2]"));
+    }
+}

@@ -1,0 +1,12 @@
+public void testFilterCount() throws Exception {
+    JsonFactory jf = new JsonFactory();
+    JsonGenerator jgen = jf.createGenerator(new StringWriter());
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(jgen,
+            new SimpleBeanPropertyFilter(), false, null);
+    delegate.writeStartObject();
+    delegate.writeFieldName("foo");
+    delegate.writeString("bar");
+    delegate.writeEndObject();
+    delegate.flush();
+    assertEquals(1, delegate.getMatchCount());
+}

@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String code = "" +
+    "function foo(arg) {" +
+    "  var foo = {};" +
+    "  foo.bar = arg;" +
+    "  console.log(foo.bar);" +
+    "  delete foo.bar;" +
+    "  console.log(foo.bar);" +
+    "}" +
+    "foo('test');";
+    String min = new JavaScriptCompressor(new StringReader(code), null).compress(0, 0, 0);
+    assertTrue(min.contains("test"));
+    assertTrue(min.contains("undefined"));
+}

@@ -1,0 +1,18 @@
+public void testTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_ANNOTATIONS, true);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.EXTERNAL_PROPERTY);
+    TestBean bean = new TestBean();
+    bean.setValue(Collections.singletonList(new TestBean()));
+    String json = mapper.writeValueAsString(bean);
+
+    TestBean result = mapper.readValue(json, TestBean.class);
+    assertNotNull(result.value);
+    assertEquals(1, result.value.size());
+    assertTrue(result.value.get(0) instanceof TestBean);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({ @JsonSubTypes.Type(TestBean.class) })
+public class Test

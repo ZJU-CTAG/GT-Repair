@@ -1,0 +1,11 @@
+public void testTarSize() throws Exception {
+    final File f = new File("src/test/resources/commons-compress-1.13-src.tar");
+    try (TarArchiveInputStream tin = new TarArchiveInputStream(new FileInputStream(f))) {
+        TarArchiveEntry te = tin.getNextTarEntry();
+        assertEquals("common-compress-1.13-src/", te.getName());
+        assertEquals(48, te.getSize());
+        te = tin.getNextTarEntry();
+        assertEquals("common-compress-1.13-src/LICENSE.txt", te.getName());
+        assertEquals(1087, te.getSize());
+    }
+}

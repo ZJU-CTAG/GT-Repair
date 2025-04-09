@@ -1,0 +1,15 @@
+public void testClosure() {
+    Closure closure = new Closure(false, new File("."));
+    closure.setOutput(false);
+    closure.setVerbose(true);
+    closure.setSkipAllPasses(true);
+    closure.setWarnings(true);
+    closure.setDebug(false);
+    closure.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    closure.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    closure.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    closure.setStatistics(false);
+    closure.setJsonStreamMode(false);
+    String result = closure.compile("Math.blah = function(test) { test.a = 5; }; var test = new Object(); Math.blah(test);", null);
+    assertEquals("Math.blah=function(a){a.a=5};var test={};", result);
+}

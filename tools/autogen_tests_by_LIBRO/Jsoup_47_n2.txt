@@ -1,0 +1,9 @@
+public void testIssue107() {
+    String html = "<div data-foo='1 &lt; 2'>One &lt; two</div>";
+    Document doc = Jsoup.parse(html, "UTF-8");
+    Element div = doc.select("div").get(0);
+    Attribute attr = div.attributes().asList().get(0);
+    assertEquals("1 < 2", attr.getValue());
+    assertEquals("1 &lt; 2", attr.getEscapedValue());
+    assertEquals("One < two", div.text());
+}

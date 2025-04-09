@@ -1,0 +1,7 @@
+public void testIssue108() {
+    SourceMapGenerator generator = new SourceMapGenerator();
+    generator.addMapping(new FilePosition(1, 1), new FilePosition(2, 3), "foo.js", "   abc", "def");
+    SourceMap sourceMap = generator.toSourceMap(new FilePosition(1, 1), "foo.js");
+    String json = sourceMap.toJson();
+    assertEquals("{\"version\":3,\"file\":\"foo.js\",\"mappings\":\"AAAAA,OAAO,SAASC,EAAEC,EAAEA\"}", json);
+}

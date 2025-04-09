@@ -1,0 +1,15 @@
+public void testIssue107() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return x;
+        }
+    };
+    BrentSolver solver = new BrentSolver();
+    try {
+        solver.solve(f, -100, 100, -100);
+        fail("Should have thrown an exception");
+    } catch (MathIllegalArgumentException iae) {
+        // we expect this exception
+    }
+}

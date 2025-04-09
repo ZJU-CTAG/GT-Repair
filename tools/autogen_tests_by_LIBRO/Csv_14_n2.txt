@@ -1,0 +1,20 @@
+public void testIssue149() {
+    StringWriter sw = new StringWriter();
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVPrinter printer = null;
+    try {
+        printer = new CSVPrinter(sw, format);
+        printer.printRecord(1, 2, 3);
+        printer.printRecord(null, 2, 3);
+        printer.printRecord(-1, 2, 3);
+        printer.printRecord(1, 2, -3);
+        printer.printRecord(1, 2, -3.0);
+        printer.printRecord(1, 2, -3.0f);
+        printer.flush();
+        printer.close();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    assertEquals("1,2,3\n,2,3\n-1,2,3\n1,2,-3\n1,2,-3.0\n1,2,-3.0\n", sw.toString());
+}

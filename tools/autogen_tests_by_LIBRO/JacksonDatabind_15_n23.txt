@@ -1,0 +1,27 @@
+public void testIssueXmlAdapter() throws Exception {
+    ObjectMapper mapper = (new ObjectMapper()).setAnnotationIntrospector(new JaxbAnnotationIntrospector());
+    SomeIntListHolder listHolder = new SomeIntListHolder();
+    listHolder.setListOne(asList(1, 2, 3));
+    System.out.println(mapper.writeValueAsString(listHolder));
+}
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+class SomeIntListHolder {
+
+    @XmlAttribute
+    @XmlJavaTypeAdapter(IntegerListXmlAdapter.class)
+    private List<Integer> listOne;
+
+    public List<Integer> getListOne() {
+        return listOne;
+    }
+
+    public void setListOne(List<Integer> listOne) {
+        this.listOne = listOne;
+    }
+}
+
+public static class IntegerListXmlAdapter extends XmlAdapter<Object, List<Integer>> {
+    @Override
+    public List<Integer> unmarshal(Object

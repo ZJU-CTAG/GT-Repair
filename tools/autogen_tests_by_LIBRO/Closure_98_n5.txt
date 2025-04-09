@@ -1,0 +1,9 @@
+public void testClosureCompiler() {
+    String input = "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } }";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(SourceFile.fromCode("closureTest", input),
+                     new CompilerOptions());
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+}

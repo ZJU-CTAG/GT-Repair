@@ -1,0 +1,10 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setProcessClosurePrimitives(false);
+    Compiler compiler = new Compiler();
+    SourceFile extern = SourceFile.fromCode("externs.js", "var document;");
+    SourceFile input = SourceFile.fromCode("input.js", "var a = {};");
+    compiler.compile(extern, input, options);
+    assertEquals("var a={}", compiler.toSource());
+}

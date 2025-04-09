@@ -1,0 +1,22 @@
+public void testPreserve() {
+  String js = "/**\n" +
+              " * @preserve\n" +
+              "\n" +
+              "This\n" +
+              "is\n" +
+              "ASCII\n" +
+              "Art\n" +
+              "\n" +
+              "*/";
+  String expected = "/*\n" +
+                    "This\n" +
+                    "is\n" +
+                    "ASCII\n" +
+                    "Art\n" +
+                    "*/\n";
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(new SimpleSourceFile("in.js", js),
+                                   new SimpleSourceFile("out.js"));
+  assertTrue(result.success);
+  assertEquals(expected, result.compiledSource);
+}

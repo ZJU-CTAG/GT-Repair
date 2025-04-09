@@ -1,0 +1,13 @@
+public void test() throws Exception {
+    String json = "{\"Foo\":{\"bar\": \"baz\"}}";
+    Map<EnumKey, String> map = new ObjectMapper()
+            .readValue(json, new TypeReference<Map<EnumKey, String>>() {});
+    assertEquals("baz", map.get(EnumKey.bar));
+}
+
+public enum EnumKey {
+    @JsonProperty("bar")
+    BAR,
+    @JsonProperty("biz")
+    BIZ;
+}

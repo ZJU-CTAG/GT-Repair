@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js",
+            "var t = null;" +
+            "window.test = function() {" +
+            "if (t != null) {" +
+            "   t = null;" +
+            "}" +
+            "t = 1;" +
+            "}"),
+        new CompilerOptions());
+    assertEquals(result.errors.length, 0);
+}

@@ -1,0 +1,12 @@
+public void testIssue122() {
+    try {
+        new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1});
+        Assert.fail("Types array must not contain duplicate");
+    } catch (Exception expected) {
+    }
+    try {
+        new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1).isEqual(new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1));
+        Assert.fail("objects must have matching field types");
+    } catch (Exception expected) {
+    }
+}

@@ -1,0 +1,14 @@
+public void testCMAESOptimizerFitnessFunctionEncodeDecode() {
+    FitnessFunction f = new FitnessFunction() {
+        public double getValue(double[] x) {
+            return 0.0;
+        }
+    };
+    double[] lowerBounds = new double[] {-Double.MAX_VALUE};
+    double[] upperBounds = new double[] {Double.MAX_VALUE};
+    CMAESOptimizer cmaesOptimizer = new CMAESOptimizer(Integer.MAX_VALUE, 0.0, true, 0, 0, new MersenneTwister(), false, null);
+    double[] encoded = cmaesOptimizer.encode(lowerBounds, upperBounds, new double[] {0.0});
+    assertFalse(Double.isNaN(encoded[0]));
+    double[] denormalized = cmaesOptimizer.denormalize(lowerBounds, upperBounds, encoded);
+    assertFalse(Double.isNaN(denormalized[0]));
+}

@@ -1,0 +1,12 @@
+public void testIssue () throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    mapper.registerModule(new JodaModule());
+    X<String> x = new X<String>();
+    x.s = "foo";
+    x.items = new ArrayList<String>();
+    x.items.add("bar");
+    JsonNode value = mapper.valueToTree(x);
+    assertEquals("foo", value.get("s").asText());
+    assertEquals("bar", value.get("items").get(0).asText());
+}

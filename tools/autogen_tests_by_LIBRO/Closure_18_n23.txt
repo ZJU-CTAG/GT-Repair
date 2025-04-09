@@ -1,0 +1,15 @@
+public void testDependencySorting() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compiler.setOptions(compilerOptions);
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+    dependencyOptions.setDependencyPruning(false);
+    compiler.setDependencyOptions(dependencyOptions);
+    SourceFile extern = SourceFile.fromCode("externs.js", "");
+    SourceFile input1 = SourceFile.fromCode("Test1.js", "goog.provide('Test1');goog.require('Test2')");
+    SourceFile input2 = SourceFile.fromCode("Test2.js", "goog.provide('Test2');goog.require('Test1')");
+    List<SourceFile> inputs = Lists.newArrayList(extern, input1, input2);
+    Result result = compiler.compile(externs, inputs, compilerOptions);
+    String compiledCode = compiler.

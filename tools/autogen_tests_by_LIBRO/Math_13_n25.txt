@@ -1,0 +1,12 @@
+public void testIssue108() {
+    // this will fail with an OutOfMemoryError
+    new GaussNewtonOptimizer(true).optimize(
+            new MaxEval(1000),
+            new ObjectiveFunction(new MultivariateJacobianFunction() {
+                public Pair<RealVector, RealMatrix> value(RealVector point) {
+                    return new Pair<RealVector, RealMatrix>(null, new Array2DRowRealMatrix(new double[41200][41200]));
+                }
+            }),
+            GoalType.MINIMIZE,
+            new InitialGuess(new double[41200]));
+}

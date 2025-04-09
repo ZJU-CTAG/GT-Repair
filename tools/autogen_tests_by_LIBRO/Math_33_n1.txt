@@ -1,0 +1,12 @@
+public void testSimplexSolver(){
+    double[][] A = { {1,1},{1,1} };
+    double[] B = {1,1};
+    double[] C = {1,1};
+    double[] c = {1,1};
+    LinearConstraintSet constraints = new LinearConstraintSet(A, B);
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(new MaxIter(100), new ObjectiveFunction(C), constraints, new NonNegativeConstraint(true));
+    double[] x = solution.getPoint();
+    assertEquals(1.0, x[0],0.05);
+    assertEquals(0.0, x[1],0.05);
+}

@@ -1,0 +1,12 @@
+public void testNoHeadersToMap() throws Exception {
+    CSVParser p = CSVParser.parse("a,b,c\n1,2,3", CSVFormat.RFC4180.withHeader());
+    assertEquals(3, p.getHeaderMap().size());
+    assertEquals("a", p.getHeaderMap().get("a"));
+
+    p = CSVParser.parse("a,b,c\n1,2,3", CSVFormat.RFC4180.withHeader());
+    assertEquals(null, p.getHeaderMap().get("x"));
+
+    for(CSVRecord r : p.getRecords()) {
+        assertNotNull(r.toMap());
+    }
+}

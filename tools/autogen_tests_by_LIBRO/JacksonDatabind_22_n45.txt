@@ -1,0 +1,26 @@
+public void testCustomSerializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializerFactory(new BeanSerializerFactory(null));
+    mapper.getSerializerProvider().setNullValueSerializer(new NullSerializer());
+
+    Foo foo = new Foo();
+    String json = mapper.writeValueAsString(foo);
+    Assert.assertEquals("\"null\"", json);
+}
+
+public static class NullSerializer extends JsonSerializer<Object> {
+
+    @Override
+    public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeString("null");
+    }
+}
+
+public static class Foo {
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return null;
+    }
+}

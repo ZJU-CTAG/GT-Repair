@@ -1,0 +1,13 @@
+public void testBinaryOperators() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new InputSource(new StringReader(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<doc/>")));
+    JXPathContext context = JXPathContext.newContext(document);
+    assertFalse((Boolean) context.getValue("2.0 > child1", Boolean.class));
+    assertFalse((Boolean) context.getValue("child1 > 2.0", Boolean.class));
+    assertFalse((Boolean) context.getValue("2.0 < child1", Boolean.class));
+    assertFalse((Boolean) context.getValue("child1 < 2.0", Boolean.class));
+    assertTrue((Boolean) context.getValue("2.0 >= child1", Boolean.class));
+    assertTrue((Boolean) context.getValue("child1 <= 2.0", Boolean.class));
+    assertTrue((Boolean) context.getValue

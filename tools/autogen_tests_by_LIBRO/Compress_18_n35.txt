@@ -1,0 +1,11 @@
+public void testLongDirectoryName() throws IOException {
+    File temp = File.createTempFile("commons-compress-test", ".tar");
+    temp.deleteOnExit();
+    File dir = new File(temp.getParent(), "This is a really long directory name");
+    dir.mkdirs();
+    dir.deleteOnExit();
+    File entry = new File(dir, "somefile.txt");
+    FileUtils.writeStringToFile(entry, "This is some content");
+    TarUtilities.tar(temp, dir);
+    // should not throw an exception
+}

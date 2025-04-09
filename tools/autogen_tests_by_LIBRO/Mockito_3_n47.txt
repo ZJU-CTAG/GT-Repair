@@ -1,0 +1,14 @@
+public void testIssue108() {
+    @SuppressWarnings("unchecked")
+   ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    
+    Mockito.verify(mock, Mockito.times(1)).varargs(captor.capture());
+    String[] args = captor.getAllValues().toArray(new String[] {});
+    assertEquals("a", args[0]);
+    assertEquals("b", args[1]);
+    assertEquals("c", args[2]);
+}
+
+private interface Mock {
+    public void varargs(String... args);
+}

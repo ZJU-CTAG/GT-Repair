@@ -1,0 +1,32 @@
+public void testMixinAnnotations() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("MyModule", new Version(1, 0, 0, null));
+    module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    mapper.registerModule(module);
+
+    Person person = new PersonImpl();
+    person.setCity("London");
+    assertEquals("{\"city\":\"London\"}", mapper.writeValueAsString(person));
+}
+
+public interface Contact {
+    String getCity();
+}
+
+public class ContactImpl implements Contact {
+    private String city;
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+}
+
+public class ContactMixin implements Contact {
+    @JsonProperty
+    public String getCity() { return null; }
+}
+
+public interface Person extends Contact {}
+
+public class PersonImpl extends ContactImpl implements Person {}
+
+public class PersonMixin extends ContactMixin implements Person {}

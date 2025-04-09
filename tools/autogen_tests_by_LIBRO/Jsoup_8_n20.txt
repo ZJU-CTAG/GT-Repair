@@ -1,0 +1,10 @@
+public void testOrphanNPE() {
+    DateTimeZone tz = DateTimeZone.forID("America/Los_Angeles");
+    DateTime dt = new DateTime(2008, 1, 1, 1, 1, 1, 1, tz);
+    assertEquals("2008-01-01T01:01:01.001-08:00", dt.toString());
+    DateTimeFormatter dtf = ISODateTimeFormat.dateTime().withZone(tz);
+    assertEquals("2008-01-01T01:01:01.001-08:00", dtf.print(dt));
+    DateTimeZone.setDefault(tz);
+    assertEquals("2008-01-01T01:01:01.001-08:00", dtf.print(dt.toDateTime()));
+    assertEquals("2008-01-01T01:01:01.001-08:00", DateTimeFormat.fullDateTime().print(dt));
+}

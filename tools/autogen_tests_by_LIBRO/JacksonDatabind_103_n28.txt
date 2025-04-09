@@ -1,0 +1,23 @@
+public void testLocation() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    try {
+        mapper.readValue("123", Foo.class);
+    } catch (JsonMappingException e) {
+        System.out.println(e.getMessage());
+    }
+}
+
+static class Foo {
+    @JsonCreator
+    public Foo(@JsonProperty("x") @JsonDeserialize(using=XDeserializer.class) int x) { }
+}
+
+static class XDeserializer extends JsonDeserializer<Integer> {
+    @Override
+    public Integer deserialize(JsonParser jp, DeserializationContext ctxt)
+            throws IOException, JsonProcessingException {
+        return jp.getIntValue();
+    }
+}

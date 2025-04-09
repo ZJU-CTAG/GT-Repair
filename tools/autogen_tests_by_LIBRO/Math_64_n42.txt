@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    LeastSquaresProblem problem =
+        new LeastSquaresBuilder().
+        start(new double[] { 0, 0, 0 }).
+        target(new double[] { 1, 2, 3 }).
+        model(new MultivariateJacobianFunction() {
+            public Pair<RealVector, RealMatrix> value(RealVector point) {
+                return new Pair<RealVector, RealMatrix>(point,
+                                                        new BlockRealMatrix(3, 3));
+            }
+        }).
+        maxEvaluations(Integer.MAX_VALUE).
+        maxIterations(Integer.MAX_VALUE).
+        build();
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair optimum = optimizer.optimize(problem);
+    double[] residuals = optimum.getResiduals();
+    double cost = optimum.getCost();
+    double[] point = optimum.getPoint();
+    assertEquals(0.0, residuals[0], 0);
+    assertEquals(0.0

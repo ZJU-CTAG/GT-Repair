@@ -1,0 +1,9 @@
+public void testExternalTypeWithAfterburner() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new AfterburnerModule())
+            .enableDefaultTyping(DefaultTyping.NON_FINAL);
+    final String json = mapper.writeValueAsString(new ExternalTypeWrapper(new ExternalType()));
+    ExternalTypeWrapper wr = mapper.readValue(json, ExternalTypeWrapper.class);
+    assertNotNull(wr);
+    assertEquals(ExternalType.class, wr.wrapped.getClass());
+}

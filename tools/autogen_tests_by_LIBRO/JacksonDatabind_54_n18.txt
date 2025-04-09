@@ -1,0 +1,21 @@
+public void testOptionalNonAbsent() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+    String json = mapper.writeValueAsString(new JsonResult());
+    assertEquals("{}", json);
+}
+
+public void testOptionalNonEmpty() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.registerModule(new Jdk8Module());
+    String json = mapper.writeValueAsString(new JsonResult());
+    assertEquals("{}", json);
+}
+
+@Data
+public class JsonResult {
+    private Object a;
+    private Optional<Object> b;
+}

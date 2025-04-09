@@ -1,0 +1,19 @@
+public void testIssue108() {
+    Document doc = Jsoup.parse("<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <title>Vertical text</title>\n" +
+            "    <style>\n" +
+            "        .vertical {\n" +
+            "            writing-mode: tb-lr;\n" +
+            "        }\n" +
+            "    </style>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <div class=\"vertical\">Vertical Text</div>\n" +
+            "</body>\n" +
+            "</html>");
+    Element element = doc.getElementsByClass("vertical").first();
+    assertEquals("tb-lr", element.style().get("writing-mode"));
+}

@@ -1,0 +1,14 @@
+public void testEmbeddedAsBytes() throws Exception
+{
+  final byte[] BYTES = new byte[] { 1, 2, 3, 4 };
+  ObjectMapper mapper = new ObjectMapper();
+  ByteArrayOutputStream out = new ByteArrayOutputStream();
+  JsonGenerator g = new JsonFactory().createGenerator(out);
+  g.writeEmbeddedObject(BYTES);
+  g.close();
+
+  byte[] json = out.toByteArray();
+  assertEquals("[1,2,3,4]", new String(json, "UTF-8"));
+
+  assertEquals(BYTES, mapper.readValue(json, byte[].class));
+}

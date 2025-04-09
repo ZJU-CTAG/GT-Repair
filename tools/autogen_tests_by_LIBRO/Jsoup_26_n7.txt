@@ -1,0 +1,9 @@
+public void testIssue107() throws IOException {
+    File file = new File("./src/test/resources/list.html");
+    Document doc = Jsoup.parse(file, "UTF-8", "http://example.com/");
+    Document cleaned = new Cleaner(Whitelist.none()).clean(doc);
+    
+    // clean() throws NullPointerException before fix
+    // cleaned is null after fix
+    assertNotNull(cleaned);
+}

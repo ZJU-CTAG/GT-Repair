@@ -1,0 +1,22 @@
+public void testBrentOptimizer() {
+    final UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-8, 1e-14);
+    final UnivariateRealFunction function = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            // this function is non-convex and has a huge local minimum at x=12
+            return 1.0 / (x - 12);
+        }
+    };
+    final double result = optimizer.optimize(new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            try {
+                return function.value(x);
+            } catch (FunctionEvaluationException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }, GoalType.MINIMIZE, new MaxEval(100), new MaxIter(100),
+            new SearchInterval(0, 1000, 100)).getPoint();
+    assertEquals(12, result, 1e-8);
+}

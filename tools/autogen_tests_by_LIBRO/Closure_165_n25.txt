@@ -1,0 +1,23 @@
+public void testPropertiesApplyingToUnrelatedRecordTypes() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setExtraAnnotationNames(
+        ImmutableSet.of("typedef"));
+    options.setCheckTypes(true);
+    compiler.setPassConfig(new DefaultPassConfig(options));
+    compiler.compile(
+        SourceFile.fromCode("testcode", Joiner.on("\n").join(
+            "/**",
+            " * @typedef {{name: string, id: number}}",
+            " */",
+            "var RecordType1;",
+            "",
+            "/**",
+            " * @param {RecordType1} rec",
+            " */",
+            "var func = function(rec) {",
+            " alert(rec.name2);",
+            "};",
+            "func({name: 'jim', id: 0});")));
+  }

@@ -1,0 +1,26 @@
+public void testIssue110() {
+    String[] input = new String[]{
+        "function sortfunc(a, b) {",
+        "  return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0;",
+        "}",
+        "",
+        "function do_something(data, compare_func) {",
+        "    data.sort(compare_func);",
+        "}",
+        "",
+        "var threshold = 250;",
+        "",
+        "var data = [];",
+        "for (var i = 0; i < threshold; i++) {",
+        "    data.push([i]);",
+        "}",
+        "",
+        "do_something(data, sortfunc);"
+    };
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        Lists.newArrayList(SourceFile.fromCode("test", Joiner.on("\n").join(input))),
+        options

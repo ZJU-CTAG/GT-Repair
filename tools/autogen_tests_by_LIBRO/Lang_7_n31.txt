@@ -1,0 +1,11 @@
+public void testCreateNumber() {
+    assertEquals(null, NumberUtils.createNumber("--1"));
+    assertEquals(null, NumberUtils.createNumber("--0"));
+    assertEquals(null, NumberUtils.createNumber("--0.0"));
+    assertEquals(null, NumberUtils.createNumber("--0e0"));
+    assertEquals(null, NumberUtils.createNumber("--0.0e0"));
+
+    // in all other cases, treat "--" as a valid number
+    assertEquals(BigInteger.ONE, NumberUtils.createNumber("--1.0e-2"));
+    assertEquals(new BigDecimal("1.0e-2"), NumberUtils.createNumber("-1.0e-2"));
+}

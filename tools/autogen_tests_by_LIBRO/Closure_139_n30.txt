@@ -1,0 +1,18 @@
+public void testIssue107() {
+    String script = "function assert(b) {if (!b) throw 'error'}"
++ "assert(f() === 1)\n"
++ "var f = function() {return 2;}\n"
++ "assert(f() === 2)\n"
++ "function f() {return 1;}\n";
+    ScriptableObject globalScope = new ImporterTopLevel(getFactory());
+    globalScope.defineFunctionProperties(new String[] { "assert" },
+        getClass().getDeclaredMethod("assert", new Class[] { ScriptRuntime.BooleanClass }),
+        ScriptableObject.DONTENUM);
+    getFactory().compileString(script, "script", 1, null).exec(getFactory().getContext(), globalScope);
+}
+
+public static void assert(boolean b) {
+    if (!b) {
+        throw new RuntimeException("error");
+    }
+}

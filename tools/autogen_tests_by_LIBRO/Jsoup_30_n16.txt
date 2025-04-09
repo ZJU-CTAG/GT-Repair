@@ -1,0 +1,16 @@
+public void testJsonp() {
+    String URL = "http://blog.sina.com.cn/s/blog_501a5b1f0102dx6z.html";
+    String content = Jsoup.connect(URL).ignoreContentType(true).timeout(30000).execute().body();
+    Document doc = Jsoup.parse(content);
+    doc.setBaseUri(URL);
+    Element bodyEle = doc.body();
+    Element newBodyEle = new Element("body");
+    Element newTableEle = new Element("table");
+    newBodyEle.appendChild(newTableEle);
+
+    // get clean content
+    String cleanedContent = Jsoup.clean(bodyEle.html(), "", Whitelist.basic(), new Document.OutputSettings().prettyPrint(false));
+    newTableEle.html(cleanedContent);
+    String bodyEleStr = newBodyEle.html();
+    System.out.println(bodyEleStr);
+}

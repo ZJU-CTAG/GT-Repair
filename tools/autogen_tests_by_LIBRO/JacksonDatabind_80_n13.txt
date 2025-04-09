@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(BaseClass.class);
+    final String json = mapper.writeValueAsString(new DerivedClass());
+    assertEquals("{\"type\":\"DerivedClass\"}", json);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+static abstract class BaseClass { }
+
+static class DerivedClass extends BaseClass { }

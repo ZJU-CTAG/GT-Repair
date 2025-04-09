@@ -1,0 +1,20 @@
+public void testIntBounds() throws Exception {
+    final String INT_OVERFLOW_JSON = "{\"x\": 2147483648}";
+    final String INT_UNDERFLOW_JSON = "{\"x\": -4294967295}";
+    final String INT_HALF_JSON = "{\"x\": 0.5}";
+    final String INT_QUARTER_JSON = "{\"x\": 0.25}";
+    final String INT_ZERO_JSON = "{\"x\": 0}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node;
+    IntClass fromTree;
+    IntClass fromString;
+
+    // should overflow
+    node = mapper.readTree(INT_OVERFLOW_JSON);
+    fromTree = mapper.readerFor(IntClass.class).readValue(node);
+    fromString = mapper.readerFor(IntClass.class).readValue(INT_OVERFLOW_JSON);
+    assertEquals(-2147483648, fromTree.x);
+    assertEquals(fromTree.x, fromString.x);
+
+    //

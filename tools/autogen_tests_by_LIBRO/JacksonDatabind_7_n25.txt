@@ -1,0 +1,27 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    final JsonNode node = mapper.readTree("{\"a\":1, \"b\":null}");
+    final TokenBuffer buffer = new TokenBuffer(mapper, false);
+    buffer.copyCurrentStructure(node);
+    final Value value = mapper.readValue(buffer.asParser(), Value.class);
+    assertThat(value.getA(), is(1));
+    assertThat(value.getB(), nullValue());
+}
+
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+public class Value {
+
+    private final int a;
+    private final String b;
+
+    public Value(int a, String b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        JsonParser parser = buffer.asParser();
+        JsonToken token = parser.nextToken();
+        assertThat(token, is(JsonToken.FIELD_NAME));

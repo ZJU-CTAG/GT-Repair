@@ -1,0 +1,14 @@
+public void test_checksum_padded_right() throws Exception {
+    // contains a single file, f, with content "a"
+    InputStream in = this.getClass().getResourceAsStream("/padded_right.tar");
+    try {
+        ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("tar", in);
+        try {
+            assertEquals("a", IOUtils.toString(ais));
+        } finally {
+            ais.close();
+        }
+    } finally {
+        in.close();
+    }
+}

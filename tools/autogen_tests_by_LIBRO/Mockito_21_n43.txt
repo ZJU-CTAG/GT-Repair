@@ -1,0 +1,24 @@
+public void testIssue116() {
+    AccountService service = new AccountService() {
+        @Override
+        public void getAccount(final String id, final AsyncCallback<UserAccount> callback) {
+            callback.onSuccess(getAccount(id));
+        }
+
+        public UserAccount getAccount(final String id) {
+            // TODO trick to get a spy at runtime?
+            return new UserAccount() {
+                @Override
+                public List<String> getEmails() {
+                    return null;
+                }
+
+                @Override
+                public void addEmail(final String email) {
+                }
+            };
+        }
+    };
+    UserAccount account = mock(UserAccount.class);
+    when(service.getAccount("id")).thenReturn(account);
+}

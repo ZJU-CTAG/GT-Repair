@@ -1,0 +1,22 @@
+public void testIssue112() {
+    String[] args = new String[] {
+        "--compilation_level", "ADVANCED_OPTIMIZATIONS",
+        "--language_in", "ECMASCRIPT5_STRICT"
+    };
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(Options.getOptions());
+
+    Options.getOptions().prettyPrint = true;
+    SourceFile in = SourceFile.fromCode("in.js",
+        "/** @constructor */\n" +
+        "function Foo() {\n" +
+        "  var self = this;\n" +
+        "  window.setTimeout(function() {\n" +
+        "    window.location = self.location;\n" +
+        "  }, 0);\n" +
+        "}\n" +
+        "\n" +
+        "Foo.prototype.setLocation = function(loc) {\n" +
+        "  this.location = loc;\n" +
+        "};\n" +
+        "\n" +
+        "(new Foo

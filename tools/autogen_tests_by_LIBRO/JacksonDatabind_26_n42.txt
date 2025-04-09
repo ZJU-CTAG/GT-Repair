@@ -1,0 +1,11 @@
+public void testSparkSerialization() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader(Person.class);
+    String json = mapper.writeValueAsString(reader);
+    ObjectReader newReader = new ObjectMapper().reader(Person.class);
+    Person person = newReader.readValue(json);
+}
+
+public static class Person {
+    public String name;
+}

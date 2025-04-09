@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException
+{
+    TypeReference<Base> type = new TypeReference<Base>() {};
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(IFace.class, Sub.class);
+    mapper.registerModule(module);
+
+    String json = mapper.writeValueAsString(new Base());
+    Base base = mapper.readValue(json, type);
+    assertEquals(1, base.base);
+}

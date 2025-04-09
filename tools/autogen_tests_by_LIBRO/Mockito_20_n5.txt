@@ -1,0 +1,12 @@
+public void testIssue26() throws Exception {
+    final AccountRpcService service = new AccountRpcService() {
+      @Override
+      public Future<Account> getAccount(RpcContext context, String id) {
+        return null;
+      }
+    };
+    final AccountRpcService spy = spy(service);
+    doReturn(Future.succeededFuture(new Account())).when(spy).getAccount(anyString());
+    final Future<Account> account = spy.getAccount(new RpcContext(), "id");
+    assertTrue(account.isComplete());
+  }

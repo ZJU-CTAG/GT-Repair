@@ -1,0 +1,17 @@
+public void testIssue_107() {
+    String js = "var RecordType1; \n" +
+            "var RecordType2; \n" +
+            "var func = function(rec) {\n" +
+            "  alert(rec.name2); \n" +
+            "}; \n" +
+            "func({name: 'jim', id: 0});";
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckVars(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertEquals(1, result.errors.length);
+    assertEquals("Property name2 never defined on rec", result.errors

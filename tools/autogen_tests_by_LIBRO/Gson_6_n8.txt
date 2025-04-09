@@ -1,0 +1,12 @@
+public void testGsonNullAdapter() {
+    GsonBuilder builder = new GsonBuilder()
+            .registerTypeAdapterFactory(new NullAdapterFactory());
+    Gson gson = builder.create();
+    assertNull(gson.fromJson("null", Object.class));
+}
+
+private static class NullAdapterFactory implements TypeAdapterFactory {
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        return null;
+    }
+}

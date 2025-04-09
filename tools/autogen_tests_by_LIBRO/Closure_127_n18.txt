@@ -1,0 +1,10 @@
+public void testFinally() {
+    Context cx = Context.enter();
+    try {
+        Scriptable scope = cx.initStandardObjects();
+        Object result = cx.evaluateString(scope, "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')", "test", 1, null);
+        assertEquals("ok then...", Context.toString(result));
+    } finally {
+        Context.exit();
+    }
+}

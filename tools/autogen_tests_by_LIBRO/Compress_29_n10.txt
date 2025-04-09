@@ -1,0 +1,13 @@
+public void testArchiveStreamFactory() throws Exception {
+    String encoding = "ISO-8859-1";
+    ArchiveStreamFactory factory = new ArchiveStreamFactory(encoding);
+    assertSame(encoding, factory.getEntryEncoding());
+    ArchiveInputStream in = factory.createArchiveInputStream(ArchiveStreamFactory.ARJ, new ByteArrayInputStream(new byte[0]));
+    assertTrue(in instanceof ArjArchiveInputStream);
+    assertSame(encoding, ((ArjArchiveInputStream)in).getEntryEncoding());
+    in = factory.createArchiveInputStream(ArchiveStreamFactory.CPIO, new ByteArrayInputStream(new byte[0]));
+    assertTrue(in instanceof CpioArchiveInputStream);
+    assertSame(encoding, ((CpioArchiveInputStream)in).getEntryEncoding());
+    in = factory.createArchiveInputStream(ArchiveStreamFactory.DUMP, new ByteArrayInputStream(new byte[0]));
+    assertTrue(in instanceof DumpArchiveInputStream);
+    assertSame(encoding, ((DumpArch

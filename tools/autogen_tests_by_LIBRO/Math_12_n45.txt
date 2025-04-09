@@ -1,0 +1,24 @@
+public void testGammaDistributionSamples() throws Exception {
+    final double shape = 2.0;
+    final double scale = 3.0;
+    final int n = 100000;
+
+    final GammaDistribution original = new GammaDistribution(shape, scale);
+    final List<Double> originalSamples = generateSamples(original, n);
+    final byte[] byteArray = serialize(original);
+    final GammaDistribution deserialized = deserialize(byteArray);
+    final List<Double> deserializedSamples = generateSamples(deserialized, n);
+
+    assertEquals(originalSamples, deserializedSamples);
+}
+
+private List<Double> generateSamples(final GammaDistribution original, final int n) {
+    final List<Double> samples = new ArrayList<Double>();
+    for (int i = 0; i < n; i++) {
+        samples.add(original.sample());
+    }
+    return samples;
+}
+
+private byte[] serialize(final GammaDistribution original) throws IOException {
+    final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream

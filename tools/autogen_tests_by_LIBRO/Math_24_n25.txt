@@ -1,0 +1,16 @@
+public void testIssue108()
+{
+    // create an optimizer for minimizing functions
+    UnivariateOptimizer optimizer = new BrentOptimizer(1e-9, 1e-14);
+
+    // create a simple function to be optimized
+    UnivariateFunction f = new SinFunction();
+
+    // get a point near the optimum
+    double result = optimizer.optimize(
+            new UnivariateObjectiveFunction(f), GoalType.MINIMIZE,
+            new SearchInterval(0, Math.PI)).getPoint();
+
+    // check that the optimizer really finds the optimum
+    assertEquals(0.0, result, 1e-14);
+}

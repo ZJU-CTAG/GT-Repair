@@ -1,0 +1,8 @@
+public void testBlankHeaders() throws IOException {
+    final String input = "A,B,C,,\na,b,c,d,e\n";
+    final Reader reader = new StringReader(input);
+    final CSVParser parser = CSVParser.parse(reader, CSVFormat.EXCEL.withHeader());
+    final CSVRecord record = parser.getRecords().get(0);
+    assertEquals(record.toMap().size(), 3);
+    assertEquals(record.toMap().get(""), null);
+}

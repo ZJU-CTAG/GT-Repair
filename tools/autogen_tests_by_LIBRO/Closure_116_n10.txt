@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions opts = new CompilerOptions();
+    opts.prettyPrint = true;
+    opts.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("input.js",
+            "window['foo'] = function (obj, modifiesProp) {\n" +
+                    "  return (function (saved) {\n" +
+                    "    return modifiesProp(obj) + saved;\n" +
+                    "  })(obj['prop']);\n" +
+                    "}\n"));
+    compiler.compile(ImmutableList.<SourceFile>of(), inputs, opts);
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", compiler.toSource());
+}

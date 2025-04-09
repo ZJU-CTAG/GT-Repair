@@ -1,0 +1,22 @@
+public void testIssue749() throws Exception
+{
+    final ObjectMapper MAPPER = new ObjectMapper()
+            .registerModule(new SimpleModule()
+                    .setDeserializerModifier(new BeanDeserializerModifier() {
+                        @Override
+                        public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config,
+                                JavaType type, KeyDeserializer deserializer) {
+                            return (KeyDeserializer) (ctx, str) -> {
+                                System.out.println("Created key deserializer");
+                                return str.toLowerCase();
+                            };
+                        }
+                    })
+                    .addKeyDeserializer(String.class, (KeyDeserializer) (ctx, str) -> {
+                        System.out.println("Added key deserializer");
+                        return str.toUpperCase();
+                    })
+            );
+    final String JSON = "{\"upper_case\":1}";
+    final Map<String, Integer> map = MAPPER.readValue(JSON, new TypeReference<Map<String, Integer>>(){});
+    assertEquals(1, (int)

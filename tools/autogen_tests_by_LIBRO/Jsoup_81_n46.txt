@@ -1,0 +1,9 @@
+public void testXhtmlDeclaredEncoding() throws IOException {
+    String originalHtml = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">" +
+            "</head><body><p>Hellö Wörld!</p></body></html>";
+    String html = originalHtml;
+    String charset = "ISO-8859-1";
+    InputStream inputStream = new ByteArrayInputStream(html.getBytes(charset));
+    Document document = Jsoup.parse(inputStream, charset, "http://www.example.com/");
+    assertEquals(originalHtml, document.outerHtml());
+}

@@ -1,0 +1,29 @@
+public void testInvalidDoubleIssue120() {
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    try {
+        writer.value(1.0);
+        writer.value(Double.NaN);
+        fail();
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}
+
+public void testInvalidDouble2Issue120() {
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    try {
+        writer.value((Number) Double.valueOf(1.0));
+        writer.value((Number) Double.valueOf(Double.NaN));
+        fail();
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}
+
+public void testInvalidDouble3Issue120() {
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    try {
+        writer.setLenient(true);
+        writer.value((Number) Double.valueOf(1.0));
+        writer.value((Number) Double.valueOf(Double.NaN));
+    } catch (IllegalArgumentException e)

@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    final String json = "{}";
+    final ObjectMapper mapper = new ObjectMapper();
+    final SomeObjectThatCanBeAggregated so = mapper.readValue(json, SomeObjectThatCanBeAggregated.class);
+    assertEquals("{}", so.obj.toString());
+}
+
+static class SomeObjectThatCanBeAggregated {
+    Object obj;
+
+    @JsonCreator
+    public SomeObjectThatCanBeAggregated(Object obj) {
+        this.obj = obj;
+    }
+}

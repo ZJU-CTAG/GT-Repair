@@ -1,0 +1,12 @@
+public void testHandleWeirdStringValue() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
+            return targetType.isAssignableFrom(Integer.class) ? Integer.valueOf(valueToConvert) : super.handleWeirdStringValue(ctxt, targetType, valueToConvert, failureMsg);
+        }
+    });
+    final TestPojo pojo = objectMapper.readValue("{\"intValue\":\"not an integer\"}", TestPojo.class);
+    assertEquals(Integer.valueOf("not an integer"), pojo.intValue);
+}

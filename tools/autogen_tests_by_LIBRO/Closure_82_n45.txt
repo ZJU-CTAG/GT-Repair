@@ -1,0 +1,22 @@
+public void testIssue108() {
+    try {
+        // remove trailing . from variable name
+        ScriptableObject.defineClass(scope, Issue108.class);
+        Scriptable test = cx.newObject(scope, "Issue108");
+        test.put("test", test, "123");
+        assertEquals(7, cx.evaluateString(test, "test.length", "test", 1, null));
+        assertEquals(3, cx.evaluateString(test, "test.len", "test", 1, null));
+    } catch (Exception ex) {
+        throw new RuntimeException(ex);
+    }
+}
+
+public static class Issue108 extends ScriptableObject {
+    @Override
+    public String getClassName() {
+        return "Issue108";
+    }
+    public String getTest() {
+        return "123";
+    }
+}

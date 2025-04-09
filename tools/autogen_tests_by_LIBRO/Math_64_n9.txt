@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final DifferentiableMultivariateVectorFunction f = new MyFunction();
+    final double[] minPoint = { 0.0, 1.0 };
+    final double[] weights = { 1.0, 1.0 };
+    final double[] target = { 3.0, 4.0 };
+    final double[] initialPoint = { -1.0, 1.0 };
+    final double[] residualsWeights = { 1.0, 1.0 };
+    final Optimum optimum =
+        new LevenbergMarquardtOptimizer().optimize(
+            new MaxEval(100),
+            new ObjectiveFunction(f),
+            new Target(target),
+            new InitialGuess(initialPoint),
+            new Weight(weights),
+            new Weight(residualsWeights));
+    final VectorialPointValuePair optimum2 =
+        new LevenbergMarquardtOptimizer().doOptimize();
+    assertTrue(optimum.getPointRef()[0]==optimum2.getPointRef()[0]);
+}
+
+private static class MyFunction implements DifferentiableMultivariateVector

@@ -1,0 +1,11 @@
+public void testIssue102() throws Exception {
+  byte[] bytes = new byte[20];
+  for (int i = 0; i < bytes.length; i++) {
+    bytes[i] = (byte) (i + 10);
+  }
+  InputStream inputStream = new Base64InputStream(new ByteArrayInputStream(bytes), true);
+  for (int i = 0; i < bytes.length; i++) {
+    assertEquals(bytes[i], inputStream.read());
+  }
+  assertEquals(-1, inputStream.read());
+}

@@ -1,0 +1,11 @@
+public void testPosixParser() throws ParseException {
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().withArgName("name").hasArg().withDescription("name").withLongOpt("name").create('n'));
+    options.addOption(OptionBuilder.isRequired().withArgName("value").hasArg().withDescription("value").withLongOpt("value").create('v'));
+
+    PosixParser parser = new PosixParser();
+    CommandLine commandLine = parser.parse(options, new String[] {"--name", "--value=test"});
+
+    assertEquals("--name", commandLine.getOptionValue("name"));
+    assertEquals("test", commandLine.getOptionValue("value"));
+}

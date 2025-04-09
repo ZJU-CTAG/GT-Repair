@@ -1,0 +1,9 @@
+public void testIssue170() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationConfig.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    Definition def = mapper.readValue("{\"definition\":{\"records\":[{\"fields\":[{\"fieldName\":\"A\"},{\"fieldName\":\"B\"},{\"fieldName\":\"C\"}]},{\"fields\":[{\"fieldName\":\"D\"},{\"fieldName\":\"E\"},{\"fieldName\":\"F\"}]},{\"fields\":[{\"fieldName\":\"G\"},{\"fieldName\":\"H\"},{\"fieldName\":\"I\"}]}]}}", Definition.class);
+    assertNotNull(def);
+    assertEquals(3, def.records.size());
+    for (int i = 0; i < 3; i++) {
+        assertEquals(3, def.rec

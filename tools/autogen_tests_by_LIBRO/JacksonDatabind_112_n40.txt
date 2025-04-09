@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TestClass testClass = objectMapper.readValue("{\"collection\": [\"string1\", \"string2\"]}", TestClass.class);
+}
+
+@JsonSerialize(as = ImmutableStringCollection.class)
+@JsonDeserialize(as = ImmutableStringCollection.class)
+public interface StringCollection extends Collection<String> { }
+
+public final class ImmutableStringCollection extends ImmutableCollection<String> implements StringCollection {
+    public static ImmutableStringCollection copyOf(Collection<? extends String> collection) {
+        return (ImmutableStringCollection) ImmutableCollection.copyOf(collection);
+    }
+
+    ImmutableStringCollection(Collection<? extends String> collection, Object object) {
+        super(collection, object);
+    }
+}
+
+public class TestClass {
+    private StringCollection collection;
+}

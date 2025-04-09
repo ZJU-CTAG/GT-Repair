@@ -1,0 +1,9 @@
+public void testIssue() throws Exception
+{
+    AtomicReference<AtomicReference<Integer>> input = new AtomicReference<AtomicReference<Integer>>(new AtomicReference<Integer>(Integer.valueOf(3)));
+    final ObjectMapper mapper = new ObjectMapper();
+    AtomicReference<AtomicReference<Integer>> result = mapper.readValue(
+            mapper.writeValueAsString(input),
+            new TypeReference<AtomicReference<AtomicReference<Integer>>>() { });
+    assertEquals(input.get().get(), result.get().get());
+}

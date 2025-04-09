@@ -1,0 +1,18 @@
+public void testIssue() {
+    try {
+        final InputStream is = new FileInputStream(new File("src/test/resources/test.tar.gz"));
+        final BufferedInputStream bis = new BufferedInputStream(is);
+        final GzipCompressorInputStream gcis = new GzipCompressorInputStream(bis);
+        final TarArchiveInputStream tais = new TarArchiveInputStream(gcis);
+        final List<String> nameList = new ArrayList<String>();
+        TarArchiveEntry tae = null;
+        while ((tae = tais.getNextTarEntry()) != null) {
+            nameList.add(tae.getName());
+            System.out.println(tae.getUserName()+"/"+tae.getGroupName());
+        }
+        assertEquals(2, nameList.size());
+        assertEquals("test/", nameList.get(0));
+        assertEquals("test/test.txt", nameList.get(1));
+    } catch (final Exception e) {
+        e.printStackTrace();
+        fail

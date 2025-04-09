@@ -1,0 +1,16 @@
+public void testIssue109() throws IOException {
+    final String JSON_STRING = "{\"foo\": \"bar\", \"baz\": 500}";
+    JsonFactory jf = new JsonFactory();
+    JsonParser jp = jf.createParser(JSON_STRING);
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+    assertEquals(JsonToken.END_OBJECT, jp.nextToken());
+    assertNull(jp.nextToken());
+    jp.close();
+    
+    jp = jf.createParser(JSON_STRING);
+    jp.setLenient(false);
+    assertEquals(JsonToken.START_OBJECT, jp.next

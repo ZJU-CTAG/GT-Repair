@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+    byte[] json = "{\"a\":\"b\"}".getBytes("UTF-8");
+    ByteArrayInputStream in = new ByteArrayInputStream(json);
+    UTF8StreamJsonParser p = new UTF8StreamJsonParser(null, 0, in, null, null, null, 0, json.length, false);
+    try {
+        while (true) {
+            JsonToken token = p.nextToken();
+            if (token == null) break;
+        }
+    } catch (JsonParseException e) {
+        System.out.println(e.getMessage());
+    }
+}

@@ -1,0 +1,15 @@
+public void testAssignmentRemovedWhenUsedAsExpressionResultToArrayPush () {
+    foo(new Foo());
+}
+private native void foo(Foo foo) /*-{
+    var a = [], b;
+    a.push(b = []);
+    b[0] = 1;
+    foo.@com.google.gwt.core.client.JavaScriptObject::array = a;
+}-*/;
+class Foo extends JavaScriptObject {
+    protected Foo() {}
+    native JavaScriptObject getArray () /*-{
+        return this.array;
+    }-*/;
+}

@@ -1,0 +1,15 @@
+public void testIssue29() throws Exception
+{
+    final BigDecimal value = new BigDecimal("-10000000000.0000000001");
+    final Wrapper input = new Wrapper();
+    input.typeEnum = Type.BIG_DECIMAL;
+    input.value = value;
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    String json = mapper.writeValueAsString(input);
+    Wrapper output = mapper.readValue(json, Wrapper.class);
+
+    assertEquals(input.typeEnum, output.typeEnum);
+    assertEquals(value, output.value);
+}

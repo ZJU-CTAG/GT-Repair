@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    try {
+        compile(
+            "/** @const */ var goog = {};" +
+            "/** @const */ goog.scope = function(f) { f(); };" +
+            "goog.provide('main');" +
+            "goog.scope(function (){" +
+            " var a = foo, b, c = 1;" +
+            "});"
+            , options);
+    } catch (RuntimeException e) {
+        // TODO(tbreisacher): We shouldn't be catching exceptions here.
+        // We should be failing the test if compile() throws an exception.
+    }
+}

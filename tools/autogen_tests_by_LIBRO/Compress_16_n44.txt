@@ -1,0 +1,12 @@
+public void testIssue108() {
+    InputStream is = ZipFileTest.class.getClassLoader().getResourceAsStream(
+        "test-documents/testAIFF.aif");
+    try {
+        ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        ArchiveInputStream stream = factory.createArchiveInputStream(is);
+        stream.read();
+        fail("Stream shouldn't have matched");
+    } catch (ArchiveException ex) {
+        assertTrue(ex.getMessage().toLowerCase().contains("no"));
+    }
+}

@@ -1,0 +1,15 @@
+public void testFittingWithBounds() throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+    // Create a parabola to fit
+    double[] centroid = new double[] {0.0, 0.0};
+    double[][] covariance = new double[][] {{1.0, 0.0}, {0.0, 1.0}};
+    MultivariateNormalDistribution mvnd = new MultivariateNormalDistribution(centroid, covariance);
+    MultivariateFunction fitFunc = new MultivariateFunction() {
+        public double value(double[] x) {
+            return (x[0] - 0.3) * (x[0] - 0.3);
+        }
+    };
+
+    // Run the optimizer
+    CMAESOptimizer optimizer = new CMAESOptimizer(1000, 1.0e-9, true, 100, 0, new MersenneTwister(new java.util.Date()), false, null);
+    double[] initialGuesses = new double[] {0.5};
+    double[] lowerBounds = new double[] {-1.

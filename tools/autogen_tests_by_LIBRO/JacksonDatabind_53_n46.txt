@@ -1,0 +1,32 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(MyHashMap.class, MyCustomIdInterface.class);
+
+    String myJson = "{\"something\":[{\"id\":\"a uuid\",\"property\":\"value\"}]}";
+    Wrapper wrapper = mapper.readValue(myJson, Wrapper.class);
+    assertNotNull(wrapper);
+}
+
+public static class Wrapper {
+
+    @JsonDeserialize(as = MyHashMap.class)
+    private void setSomething(Map<UUID, MyCustomIdInterface> incomingValue) {
+        this.something = incomingValue;
+    }
+
+    Map<UUID, MyCustomIdInterface> something;
+}
+
+public static class MyHashMap extends HashMap<UUID, MyCustomIdInterface> {
+}
+
+public interface MyCustomIdInterface {
+    UUID getId();
+}
+
+public static class Foo implements MyCustomIdInterface {
+    private UUID id;
+    private String property;
+
+    @Override
+    public UUID getId() {

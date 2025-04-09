@@ -1,0 +1,15 @@
+public void testIssue287() throws IOException {
+    String html = "<html>\n" +
+            "<head>\n" +
+            "    <style />   <!-- < - - this is the culprit -->\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <p>Whatever</p>\n" +
+            "</body>\n" +
+            "</html>";
+
+    Document doc = Jsoup.parse(html, "http://whatever");
+    String s = doc.html();
+    assertTrue(s.contains("<style></style>"));
+    assertTrue(s.contains("<p>Whatever</p>"));
+}

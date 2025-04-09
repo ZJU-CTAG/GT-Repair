@@ -1,0 +1,10 @@
+public void testExternalPropertyPolymorphicDeserialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new KotlinModule());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.EXTERNAL_PROPERTY);
+    String json = "{ \"kind\":\"CONTACT\", \"to\": { \"name\":\"Foo\" } }";
+    // Exception in thread "main" com.fasterxml.jackson.databind.JsonMappingException: Can not construct instance of enum.Invite, problem: argument type mismatch
+    Invite invite = mapper.readValue(json, Invite.class);
+    assertEquals(Invite.Kind.CONTACT, invite.getKind());
+    assertEquals("Foo", invite.getTo().getName());
+}

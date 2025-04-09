@@ -1,0 +1,31 @@
+public void testPolymorphicTypeHandling() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new TestBaseClass());
+    final TestBaseClass parsed = mapper.readValue(json, TestBaseClass.class);
+    assertTrue(parsed instanceof TestSubClass);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({ @Type(TestSubClass.class) })
+abstract class TestBaseClass {
+    private String data;
+
+    @JsonCreator
+    public TestBaseClass() {
+        data = "base";
+    }
+
+    public String getData() {
+        return data;
+    }
+}
+
+class TestSubClass extends TestBaseClass {
+    @JsonCreator
+    public TestSubClass() {
+        super();
+    }
+}

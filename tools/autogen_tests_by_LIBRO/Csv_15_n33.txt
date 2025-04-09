@@ -1,0 +1,18 @@
+public void testExcelQuoteChar() throws Exception {
+    String[] record = new String[] { "あ", "い", "う" };
+    String fileName = "test.csv";
+    File f = new File(fileName);
+    f.deleteOnExit();
+    FileWriter out = new FileWriter(f);
+    CSVPrinter printer = CSVFormat.EXCEL.withQuote('\"').print(out);
+    printer.printRecord(record);
+    out.close();
+
+    FileReader in = new FileReader(f);
+    BufferedReader br = new BufferedReader(in);
+    String line = br.readLine();
+    in.close();
+    br.close();
+    // if the first string starts with CJK chars, Excel adds a quote char before the string
+    assertEquals("\"あ\",い,う", line);
+}

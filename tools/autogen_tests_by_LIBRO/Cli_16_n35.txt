@@ -1,0 +1,25 @@
+public void testGroup() {
+    Options options = new Options();
+    OptionGroup group1 = new OptionGroup();
+    group1.setRequired(true);
+    group1.addOption(new Option("a", "a", false, "a"));
+    group1.addOption(new Option("b", "b", false, "b"));
+    OptionGroup group2 = new OptionGroup();
+    group2.setRequired(true);
+    group2.addOption(new Option("c", "c", false, "c"));
+    group2.addOption(new Option("d", "d", false, "d"));
+    group1.addOption(group2);
+    options.addOptionGroup(group1);
+
+    CommandLineParser parser = new DefaultParser();
+
+    CommandLine cmd;
+    try {
+        cmd = parser.parse(options, new String[]{ "-a" });
+    } catch (ParseException e) {
+        fail("should not happen");
+        return;
+    }
+
+    assertTrue("a should be present", cmd.hasOption("a"));
+    assertFalse("b should NOT be

@@ -1,0 +1,19 @@
+public void testIssue132() {
+    String code = "/**\n"
+                 + " * @param {*} object\n"
+                 + " * @return {*}\n"
+                 + " */\n"
+                 + "var test = function(object) {\n"
+                 + "  if (goog.isArray(object)) {\n"
+                 + "    /** @type {Array} */ var x = object;\n"
+                 + "    return x;\n"
+                 + "  }\n"
+                 + "};";
+    Compiler compiler = new Compiler();
+    compiler.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    compiler.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Result result = compiler.compile(CodePrinter.createServerCodePrinter("test.js", code, false),
+                                     new ErrorManager(),
+                                     null);
+    assertFalse(result.success);
+}

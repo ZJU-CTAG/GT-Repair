@@ -1,0 +1,21 @@
+public void testLongDirectoryNames() throws Exception {
+    File temp = File.createTempFile("test", "tar");
+    try {
+        File testDir = new File(temp.getParent(), "longName");
+        testDir.mkdir();
+        try {
+            File testFile = new File(testDir, "testFile");
+            testFile.createNewFile();
+            try {
+                File outFile = new File(temp.getParent(), "longName.tar");
+                TarUtilities.tar(testDir, outFile);
+            } finally {
+                testFile.delete();
+            }
+        } finally {
+            testDir.delete();
+        }
+    } finally {
+        temp.delete();
+    }
+}

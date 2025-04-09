@@ -1,0 +1,19 @@
+public void testIssue108() {
+    RealMatrix m = new Array2DRowRealMatrix(new double[][] {
+        { 1, 1, 1 },
+        { 1, 1, 1 },
+        { 1, 1, 1 }
+    });
+    double[] y = new double[] { 1.0, 2.0, 3.0 };
+    double[] sigma = new double[] { 1.0, 2.0, 3.0 };
+    AbstractLeastSquares ls = new GaussNewtonOptimizer(false).
+        optimize(new LeastSquaresBuilder().
+                 start(new double[] { 0, 0, 0 }).
+                 model(m).
+                 target(y).
+                 weight(MatrixUtils.createRealDiagonalMatrix(sigma)).
+                 maxIterations(100).
+                 maxEvaluations(100).
+                 build());
+    assertEquals(Math.sqrt(2.0 / 3.0), ls.getRMS(), 1.0e-10);
+}

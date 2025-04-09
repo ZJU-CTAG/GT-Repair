@@ -1,0 +1,29 @@
+public void testIssue33() {
+    RandomDataGenerator randomDataGenerator = new RandomDataGenerator(new Well19937c(42));
+
+    // data set size
+    int n = 1500;
+
+    // n random points between 0 and 1
+    double[] x = randomDataGenerator.nextUniform(0, 1, n);
+
+    // n random points between 0 and 1
+    double[] y = randomDataGenerator.nextUniform(0, 1, n);
+
+    // data set 1
+    double[] a = x;
+
+    // data set 2
+    double[] b = y;
+
+    MannWhitneyUTest mannWhitneyUTest = new MannWhitneyUTest();
+
+    // should be equal if the data sets are equal
+    double p = mannWhitneyUTest.mannWhitneyUTest(a, b);
+    assertEquals(0.5, p, 0);
+
+    // should be non-equal if the data sets are non-equal
+    for (int i=0; i<n; i++) {
+        b[i] = 1 - b[i];
+    }
+    p = mann

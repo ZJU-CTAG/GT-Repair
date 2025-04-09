@@ -1,0 +1,14 @@
+public void testQuadratic() throws IOException {
+    String html = Resources.toString(Resources.getResource("sv.stargate.wikia.com/wiki/M2J"), UTF_8);
+
+    long now = System.nanoTime();
+
+    Document doc = Jsoup.parse(html, "UTF-8");
+    assertEquals("M2J-506", doc.getElementById("firstHeading").ownText());
+
+    long time = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - now);
+    System.out.printf("Time taken: %d ms%n", time);
+
+    // with default stack size (256):
+    assertTrue(time < 2000);
+}

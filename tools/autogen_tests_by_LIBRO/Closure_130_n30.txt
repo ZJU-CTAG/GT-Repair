@@ -1,0 +1,13 @@
+public void testIssue106() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("input.js", "function f() { return function() { setTimeout(function(){ alert(arguments); }, 0); }; };"), options);
+    Node root = compiler.getRoot().getLastChild();
+    assertEquals(2, root.getChildCount());
+    assertEquals(Token.NAME, root.getChildAtIndex(0).getToken());
+    assertEquals(Token.FUNCTION, root.getChildAtIndex(1).getToken());
+    assertEquals(Token.NAME, root.getChildAtIndex(1).getChildAtIndex(0).getToken());
+    assertEquals(Token.PARAM_LIST, root.getChildAtIndex(1).getChildAtIndex(1).getToken());
+    assertEquals(Token.FUNCTION, root.getChild

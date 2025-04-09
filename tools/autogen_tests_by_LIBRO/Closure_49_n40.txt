@@ -1,0 +1,17 @@
+public void testIssue() {
+    String js = "/** @preserve \n" +
+        " * @license\n" +
+        " */\n" +
+        "var foo = function bar(){\n" +
+        "    var bar;\n" +
+        "    alert(bar)\n" +
+        "};\n" +
+        "/** @preserve \n" +
+        " * @license\n" +
+        " */\n" +
+        "var foo=function(){alert()};";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    StringWriter writer = new StringWriter();
+    Compiler.compile(SourceFile.fromCode("source.js", js), SourceFile.fromCode("externs.js", ""), options).js.appendTo(writer);
+    assertEquals(js, writer.toString());
+}

@@ -1,0 +1,17 @@
+public void testIssue110() {
+    String actual = new JavaScriptCompressor(new StringReader("var x=0,y=1;x||y=8"), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            assertEquals("", message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            assertEquals("Invalid assignment left-hand side", message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            assertEquals("", message);
+            return null;
+        }
+    }).compress(new StringWriter(), -1, true, false, false, false).toString();
+    assertEquals("var x=0,y=1;x||y=8", actual);
+}

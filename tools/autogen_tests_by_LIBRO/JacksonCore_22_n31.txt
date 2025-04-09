@@ -1,0 +1,19 @@
+public void testFilteringGeneratorDelegate() throws IOException {
+    final JsonGenerator jsonGenerator = new JsonFactory().createGenerator(new ByteArrayOutputStream());
+    jsonGenerator.setCodec(new ObjectMapper());
+    final FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(jsonGenerator, new SimpleBeanPropertyFilter() {
+        @Override
+        protected boolean include(BeanPropertyWriter writer) {
+            return false;
+        }
+    }, false, null);
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeNumberField("a", 5);
+    jsonGenerator.writeNumberField("b", 5);
+    jsonGenerator.writeNumberField("c", 5);
+    jsonGenerator.writeNumberField("d", 5);
+    jsonGenerator.writeEndObject();
+    final int matchCount = filteringGeneratorDelegate.getMatchCount();
+    // matchCount should be 4, but is 0
+    assertEquals(4, matchCount);
+}

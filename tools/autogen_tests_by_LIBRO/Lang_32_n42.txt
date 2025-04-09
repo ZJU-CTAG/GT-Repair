@@ -1,0 +1,27 @@
+public void testThreadLocalsInToStringStyle() {
+    final ToStringStyle style = ToStringStyle.NO_FIELD_NAMES_STYLE;
+    ThreadLocal threadLocals = getThreadLocal(style);
+
+    assertThreadLocalNotEmpty(threadLocals);
+
+    style.toString();
+    assertThreadLocalEmpty(threadLocals);
+}
+
+@SuppressWarnings("unchecked")
+private ThreadLocal<?> getThreadLocal(final ToStringStyle style) {
+    Field field = null;
+    try {
+        field = style.getClass().getDeclaredField("fieldNameValue");
+    } catch (final SecurityException e) {
+        fail(e.getMessage());
+    } catch (final NoSuchFieldException e) {
+        fail(e.getMessage());
+    }
+    field.setAccessible(true);
+    ThreadLocal<?> threadLocals = null;
+    try {
+        threadLocals = (ThreadLocal<?>) field.get(style);
+    } catch (final IllegalArgumentException e) {
+        fail(e.getMessage());
+    } catch (final IllegalAccessException

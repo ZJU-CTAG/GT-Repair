@@ -1,0 +1,20 @@
+public void testVoid() {
+    ParserContext parserContext = new ParserContext(null, null);
+    parserContext.setStrictMode(true);
+    parserContext.setWarnings(true);
+    DefaultErrorManager errorManager = new DefaultErrorManager();
+    parserContext.setErrorManager(errorManager);
+    parserContext.setLanguageVersion(Context.VERSION_ES6);
+    parserContext.setFeature(LanguageFeatures.ES6_CLASS_EXTENDS);
+    parserContext.setFeature(LanguageFeatures.ES6_CLASS_CONSTRUCTOR);
+    parserContext.setFeature(LanguageFeatures.ES6_ARROW_FUNCTIONS);
+    parserContext.setFeature(LanguageFeatures.ES6_TEMPLATE_LITERALS);
+    parserContext.setFeature(LanguageFeatures.ES6_GENERATOR);
+    Script script = Script.parse(
+            "function f() { }\n" +
+            "alert(f());\n",
+            "",
+            parserContext
+    );
+    assertEquals(1, errorManager.getErrorCount());
+    assertEquals(0, error

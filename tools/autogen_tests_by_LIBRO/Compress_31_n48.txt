@@ -1,0 +1,18 @@
+public void testTgz() throws IOException {
+        InputStream input = new FileInputStream("/home/ebourg/Downloads/hibernate-release-4.1.9.Final.zip");
+        try {
+            Archiver archiver = ArchiverFactory.createArchiver("zip");
+            TarArchiveInputStream tgzIn = new TarArchiveInputStream(new GZIPInputStream(new BufferedInputStream(input)));
+            try {
+                TarArchiveEntry entry = tgzIn.getNextTarEntry();
+                while (entry != null) {
+                    System.out.println(entry.getName());
+                    entry = tgzIn.getNextTarEntry();
+                }
+            } finally {
+                tgzIn.close();
+            }
+        } finally {
+            input.close();
+        }
+    }

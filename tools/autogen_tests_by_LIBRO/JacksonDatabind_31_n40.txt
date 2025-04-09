@@ -1,0 +1,23 @@
+public void test() throws IOException {
+    // Test Data
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("wurst", "wurst");
+    map.put("foo", "bar");
+    map.put("foo.bar", "bar");
+    map.put("foo.bar.bar", "bar");
+
+    // Setup
+    ObjectMapper mapper = new ObjectMapper();
+    JsonGenerator generator = mapper.getFactory().createGenerator(System.out);
+    DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter();
+    prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+    generator.setPrettyPrinter(prettyPrinter);
+
+    // Checking the writeContext creation
+    System.out.println("writeContext before: " + generator.getOutputContext());
+    mapper.writeValue(generator, map);
+    System.out.println("writeContext after: " + generator.getOutputContext());
+    System.out.println();
+
+    // Checking the convertContext creation
+    System

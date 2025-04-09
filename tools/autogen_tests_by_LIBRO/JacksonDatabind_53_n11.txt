@@ -1,0 +1,27 @@
+public void testJsonDeserialize() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"something\":[{\"id\":\"1\",\"property\":\"value\"}]}";
+    final TestPojo pojo = mapper.readValue(json, TestPojo.class);
+    assertEquals(1, pojo.getSomething().size());
+    assertEquals("1", pojo.getSomething().keySet().iterator().next().toString());
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TestPojo {
+    private Map<UUID, MyCustomIdInterface> something;
+
+    public Map<UUID, MyCustomIdInterface> getSomething() {
+        return something;
+    }
+
+    @JsonDeserialize(as = MyHashMap.class)
+    public void setSomething(Map<UUID, MyCustomIdInterface> something) {
+        this.something = something;
+    }
+}
+
+public class Foo implements MyCustomIdInterface {
+    private UUID id;
+    private String property;
+
+    public Foo

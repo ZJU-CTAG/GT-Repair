@@ -1,0 +1,9 @@
+public void testTarArchiveOutputStreamFinish() throws Exception {
+    try (TarArchiveOutputStream tos = new TarArchiveOutputStream(
+            new ByteArrayOutputStream())) {
+        tos.putArchiveEntry(new TarArchiveEntry("test"));
+        tos.write("test".getBytes());
+        tos.closeArchiveEntry();
+        tos.finish(); // Fails with IllegalStateException
+    }
+}

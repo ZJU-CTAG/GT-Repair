@@ -1,0 +1,23 @@
+public void testIssue108() {
+    final double tol = 1e-10;
+    final double value = -3;
+
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return x * x - value;
+        }
+    };
+
+    final UnivariateRealSolver solver = new BrentOptimizer(tol, tol);
+
+    final double root = solver.optimize(new MaxEval(100),
+            new UnivariateRealFunction() {
+                @Override
+                public double value(double x) {
+                    return f.value(x);
+                }
+            }, GoalType.MINIMIZE, -3, 3).getPoint();
+
+    assertEquals(Math.sqrt(value), root, tol);
+}

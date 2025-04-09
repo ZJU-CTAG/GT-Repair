@@ -1,0 +1,10 @@
+public void testControlCharacterInTagName() {
+        String controlCharacter = "";
+        for (char c = 0; c <= 31; c++) {
+            if (c == 0 || c == 9 || c == 10 || c == 12 || c == 13) continue;
+            controlCharacter = String.valueOf(c);
+            String html = "<a" + controlCharacter + ">";
+            String clean = Jsoup.clean(html, Whitelist.none());
+            assertEquals(html, clean);
+        }
+}

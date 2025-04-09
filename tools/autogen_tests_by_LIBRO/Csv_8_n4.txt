@@ -1,0 +1,10 @@
+public void testIssue138() throws IOException {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader("a", "b", "a");
+    StringWriter sw = new StringWriter();
+    try (CSVPrinter printer = new CSVPrinter(sw, format)) {
+        printer.printRecord("1", "2", "3");
+        fail("Should have thrown exception");
+    } catch (IllegalArgumentException e) {
+        assertEquals("CSVFormat.header must not contain duplicate names: [a]", e.getMessage());
+    }
+}

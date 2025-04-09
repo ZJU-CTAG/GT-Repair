@@ -1,0 +1,14 @@
+public void testGetBytesWritten() throws Exception {
+    final byte[] contents = new byte[] {1, 2, 3, 4};
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    final TarArchiveOutputStream tos = new TarArchiveOutputStream(bos);
+    final TarArchiveEntry entry = new TarArchiveEntry("test");
+    entry.setSize(contents.length);
+    tos.putArchiveEntry(entry);
+    tos.write(contents);
+    assertEquals(contents.length, tos.getBytesWritten());
+    tos.closeArchiveEntry();
+    assertEquals(contents.length, tos.getBytesWritten());
+    tos.close();
+    assertEquals(contents.length, tos.getBytesWritten());
+}

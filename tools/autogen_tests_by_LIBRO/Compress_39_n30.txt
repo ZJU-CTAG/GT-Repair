@@ -1,0 +1,9 @@
+public void testIssue108() throws IOException {
+    try {
+        ZipInputStream zis = new ZipInputStream(new FileInputStream("src/test/resources/issue108.zip"));
+        zis.getNextEntry();
+        Assert.fail("Exception expected.");
+    } catch (ZipException ex) {
+        assertEquals("probably not a zip file: java.io.EOFException", ex.getMessage());
+    }
+}

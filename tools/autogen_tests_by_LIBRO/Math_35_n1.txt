@@ -1,0 +1,36 @@
+public void testElitismRateRangeChecks() {
+    try {
+        new ElitisticListPopulation(10, 0.6, new TournamentSelection(2), new ChromosomePair() {
+            @Override
+            public ChromosomePair mate() {
+                return null;
+            }
+        });
+        fail("An IllegalArgumentException should have been thrown for an elitismRate greater than 0.5");
+    } catch (IllegalArgumentException expected) {
+    }
+    try {
+        new ElitisticListPopulation(10, 0.4, new TournamentSelection(2), new ChromosomePair() {
+            @Override
+            public ChromosomePair mate() {
+                return null;
+            }
+        }, new RandomGenerator() {
+            @Override
+            public int nextInt() {
+                return 0;
+            }
+
+            @Override
+            public int nextInt(int n) {
+                return 0;
+            }
+
+            @Override
+            public long nextLong() {
+                return 0;
+            }
+
+            @Override
+            public float nextFloat() {
+                return 0;

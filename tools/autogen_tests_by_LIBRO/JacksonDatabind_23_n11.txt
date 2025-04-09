@@ -1,0 +1,33 @@
+public void testIssue55() throws IOException {
+    String json = "{\"entries\":[{\"code\":\"abc\",\"value\":\"123\"}]}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    mapper.enable(MapperFeature.USE_GETTERS_AS_SETTERS);
+    TestBean t = mapper.readValue(json, TestBean.class);
+    assertEquals(1, t.getEntries().size());
+}
+
+public static class TestBean {
+    private List<Entry> entries = new ArrayList<>();
+
+    public void addEntry(Entry e) {
+        entries.add(e);
+    }
+
+    public List<Entry> getEntries() {
+        return entries;
+    }
+
+    public static class Entry {
+        private String code;
+        private int value;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public

@@ -1,0 +1,8 @@
+public void testIssue1096() throws Exception {
+    Gson gson = new GsonBuilder().serializeNulls().create();
+    String json = gson.toJson(new Date[3], Date[].class);
+    assertEquals("[null,null,null]", json);
+    Date[] dates = gson.fromJson("[null,null,null]", Date[].class);
+    assertEquals(3, dates.length);
+    assertArrayEquals(new Date[]{null, null, null}, dates);
+}

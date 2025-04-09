@@ -1,0 +1,24 @@
+public void testReadTruncated() {
+    final String DATA = "a" * 1024;
+    final int READ_SIZE = 769;
+
+    try {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BZip2CompressorOutputStream bzout = new BZip2CompressorOutputStream(out);
+        bzout.write(DATA.getBytes());
+        bzout.close();
+
+        byte[] data = out.toByteArray();
+        byte[] truncated = new byte[data.length-1];
+        System.arraycopy(data, 0, truncated, 0, data.length-1);
+
+        ByteArrayInputStream in;
+        in = new ByteArrayInputStream(truncated);
+        BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(in);
+        byte[] uncompressed = new byte[READ_SIZE];
+        int n = bzIn.read(uncompressed);
+        bzIn.close();
+
+        assertEquals(READ_SIZE, n);
+    } catch (IOException ioe) {
+        ioe.printStack

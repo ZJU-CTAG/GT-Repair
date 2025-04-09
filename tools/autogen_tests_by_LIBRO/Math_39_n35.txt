@@ -1,0 +1,24 @@
+public void testEmbeddedStepSize() {
+    final double maxCheck = 230.0;
+    ODEEventHandler[] handlers = new ODEEventHandler[] {
+        new ODEEventHandler() {
+            public void init(ODEStateAndDerivative state0, double t) {
+            }
+            public double g(ODEStateAndDerivative state) {
+                return state.getTime() - maxCheck;
+            }
+            public Action eventOccurred(ODEStateAndDerivative state, boolean increasing) {
+                return Action.RESET_STATE;
+            }
+            public ODEStateAndDerivative resetState(ODEStateAndDerivative oldState) {
+                return oldState;
+            }
+        }
+    };
+
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public int getDimension() {
+            return 1;
+        }
+        public void computeDerivatives(

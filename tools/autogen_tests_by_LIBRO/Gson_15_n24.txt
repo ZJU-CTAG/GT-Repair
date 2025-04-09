@@ -1,0 +1,12 @@
+public void testIssue_JsonWriter_Value_Double() {
+    JsonWriter writer = new JsonWriter(new StringWriter());
+    writer.beginArray();
+    try {
+        writer.value((Number) Double.NaN); // OK
+        writer.value(Double.NaN); // java.lang.IllegalArgumentException: Numeric values must be finite, but was NaN
+        fail();
+    } catch (IllegalArgumentException e) {
+        assertEquals("Numeric values must be finite, but was NaN", e.getMessage());
+    }
+    writer.endArray();
+}

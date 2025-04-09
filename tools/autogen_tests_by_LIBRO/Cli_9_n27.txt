@@ -1,0 +1,23 @@
+public void testMissingOptionException_getMessage() {
+    String[] args = { };
+    HelpFormatter formatter = new HelpFormatter();
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    Option opt = new Option("format", "format", true, "format");
+    opt.setRequired(true);
+    options.addOption(opt);
+    opt = new Option("source", "source", true, "source");
+    opt.setRequired(true);
+    options.addOption(opt);
+    opt = new Option("properties", "properties", true, "properties");
+    opt.setRequired(true);
+    options.addOption(opt);
+    try {
+        parser.parse(options, args);
+        fail("MissingOptionException missing");
+    } catch (ParseException e) {
+        assertTrue(e instanceof MissingOptionException);
+        MissingOptionException missingOptionException = (MissingOptionException) e;
+        assertEquals("Missing required options: -format -source -properties", missingOptionException.getMessage());
+    }
+}

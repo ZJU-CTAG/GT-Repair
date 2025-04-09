@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            "function Foo() {\n" +
+            " var self = this;\n" +
+            " window.setTimeout(function() {\n" +
+            " window.location = self.location;\n" +
+            " }, 0);\n" +
+            "}\n" +
+            "\n" +
+            "Foo.prototype.setLocation = function(loc) {\n" +
+            " this.location = loc;\n" +
+            "};\n" +
+            "\n" +
+            "(new Foo()).setLocation('http://www.google.com/');");
+    assertTrue(result.success);
+    assertTrue(result.warnings.isEmpty());
+    assertTrue(result.errors.isEmpty());
+    assertTrue(result.externExports.isEmpty());
+    assertEquals("\"use strict\";(function(){var window=this;function Foo(){var self=this;window.setTimeout(function(){window.location=self.location;

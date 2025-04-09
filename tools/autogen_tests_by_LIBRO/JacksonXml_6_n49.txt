@@ -1,0 +1,12 @@
+public void testIssue1() {
+	StringWriter sw = new StringWriter();
+	
+	ToXmlGenerator generator = new ToXmlGenerator(JsonFactory.builder().build().createGenerator(sw), new ToXmlGenerator.Feature[] {ToXmlGenerator.Feature.WRITE_XML_DECLARATION}, new ToXmlGenerator.Feature[] {ToXmlGenerator.Feature.WRITE_XML_DECLARATION}, null, null);
+	generator.writeStartObject();
+	generator.writeFieldName("base64");
+	generator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("data".getBytes()), 3);
+	generator.writeEndObject();
+	generator.close();
+	
+	assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><base64>ZGF0YQ==</base64></root>", sw.toString());
+}

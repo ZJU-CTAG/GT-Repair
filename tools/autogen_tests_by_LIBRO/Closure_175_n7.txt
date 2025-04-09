@@ -1,0 +1,20 @@
+public void testAssertion() {
+  // This is a sanity check, to make sure the test case is not buggy.
+  CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+  CompilerOptions options = new CompilerOptions();
+  level.setOptionsForCompilationLevel(options);
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  Compiler compiler = new Compiler();
+  compiler.compile(
+      SourceFile.fromCode("externs.js", "var window;"),
+      SourceFile.fromCode("input.js",
+          "window['foo'] = function (obj, modifiesProp) {" +
+          "  return (function (saved) {" +
+          "    return modifiesProp(obj) + saved;" +
+          "  })(obj['prop']);" +
+          "};"),
+      options);
+
+  String result = compiler.toSource();
+  assertThat(result).isEqualTo(
+      "window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};

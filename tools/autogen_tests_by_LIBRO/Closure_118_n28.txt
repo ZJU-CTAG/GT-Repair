@@ -1,0 +1,8 @@
+public void testIssue167() {
+    String code = "var foo = {}; foo.bar = { 'bar1': function() { console.log('bar1'); } } " +
+            "function foobar() {} foobar.prototype = foo.bar; foo.foobar = new foobar; console.log(foo.foobar['bar1']);";
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("[extern]", "console.log(a);"), SourceFile.fromCode("[testcode]", code));
+    String result = compiler.toSource();
+    assertTrue(result.contains("bar1"));
+}

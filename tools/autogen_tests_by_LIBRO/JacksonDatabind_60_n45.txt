@@ -1,0 +1,28 @@
+public void testIssue108() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+
+    A a = new A();
+    String json = mapper.writeValueAsString(a);
+    System.out.println(json);
+
+    A b = mapper.readValue(json, A.class);
+    System.out.println(b.getBytes() instanceof byte[]);
+}
+
+class A {
+    private byte[] bytes;
+
+        public byte[] getBytes() {
+            return bytes;
+        }
+
+        public void setBytes(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        public A() {
+            bytes = "test".getBytes();
+        }
+    }

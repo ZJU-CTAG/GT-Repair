@@ -1,0 +1,12 @@
+public void testEmptyEntry() throws Exception {
+    File file = getFile("COMPRESS-340.7z");
+    SevenZFile sevenZFile = new SevenZFile(file);
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(0, entry.getSize());
+    assertEquals(0, sevenZFile.read(new byte[8]));
+    entry = sevenZFile.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(7, sevenZFile.read(new byte[8]));
+    sevenZFile.close();
+}

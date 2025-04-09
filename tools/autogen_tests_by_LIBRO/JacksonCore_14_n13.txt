@@ -1,0 +1,9 @@
+public void test() throws IOException {
+    DataOutputBuffer buf = new DataOutputBuffer(32);
+    buf.writeUTF("012345678901234567890123456789");
+    buf.writeLong(1234567890L);
+    DataInputBuffer inp = new DataInputBuffer();
+    inp.reset(buf.getData(), 0, buf.getLength());
+    assertEquals("012345678901234567890123456789", inp.readUTF());
+    assertEquals(1234567890L, inp.readLong());
+}

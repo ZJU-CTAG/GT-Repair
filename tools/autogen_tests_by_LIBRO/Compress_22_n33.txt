@@ -1,0 +1,20 @@
+public void testReadTruncated(self)
+{
+    f = open(support.TESTFN, "wb")
+    data = b"x" * 10000
+    f.write(data)
+    f.close()
+    f = bz2.BZ2File(support.TESTFN, "wb")
+    f.write(b"x" * 1000)
+    f.close()
+    f = bz2.BZ2File(support.TESTFN, "rb")
+    self.assertEqual(f.read(), b"x" * 1000)
+    f.close()
+    f = open(support.TESTFN, "rb")
+    self.assertEqual(f.read(769), b"x" * 769)
+    f.close()
+    f = bz2.BZ2File(support.TESTFN, "rb")
+    self.assertEqual(f.read(1000), b"x" * 1000)
+    f.close()
+    f = bz2.BZ2File(support.TESTFN)
+    self.assertEqual

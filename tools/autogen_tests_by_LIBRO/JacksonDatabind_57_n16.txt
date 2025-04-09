@@ -1,0 +1,17 @@
+public void testReadValuesWithOffsetAndLength() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader();
+
+    final int offset = 10;
+    final int length = 5;
+    char[] data = new char[length + offset];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = (char) ('0' + i);
+    }
+
+    JsonParser parser = reader.createParser(data, offset, length);
+    assertEquals('1', parser.nextToken());
+
+    parser = reader.createParser(data, offset, length);
+    assertEquals(JsonToken.START_OBJECT, parser.nextValue());
+}

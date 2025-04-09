@@ -1,0 +1,12 @@
+public void testCorruptFile() throws IOException {
+    File file = File.createTempFile("CommonCompress", "Test");
+    try {
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+        out.write(0);
+        out.close();
+        TarArchiveInputStream in = new TarArchiveInputStream(new FileInputStream(file));
+        in.getNextTarEntry();
+    } finally {
+        file.delete();
+    }
+}

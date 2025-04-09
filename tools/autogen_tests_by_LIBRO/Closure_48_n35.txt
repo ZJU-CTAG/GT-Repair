@@ -1,0 +1,25 @@
+public void testIssue115() {
+    String js = "/** @constructor */ var myclass = function() {};"
+            + "/** @param {boolean} success */ myclass.prototype.fn = function(success) { };"
+            + "/** @return {void} */myclass.prototype.test = function() {"
+            + "this.fn();"
+            + "this.fn = function(success) { };"
+            + "}";
+
+    Linter linter = new Linter();
+    linter.addOption("undef");
+    linter.addOption("unused");
+
+    linter.addOption("browser");
+    linter.addOption("devel");
+    linter.addOption("jquery");
+    linter.addOption("sloppy");
+    linter.addOption("stupid");
+    linter.addOption("vars");
+    linter.addOption("white");
+    linter.addOption("yui");
+
+    linter.addOption("predef", "myclass");
+    linter.addOption("predef", "alert");
+
+    linter

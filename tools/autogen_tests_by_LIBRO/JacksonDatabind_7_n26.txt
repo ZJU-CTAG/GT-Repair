@@ -1,0 +1,28 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    
+    Value actual = mapper.readValue("{\"a\":1,\"b\":null}", Value.class);
+    assertEquals(1, actual.a);
+    assertNull(actual.b);
+}
+
+public class Value {
+    public int a;
+    public String b;
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        JsonParser parser = buffer.asParser();
+        JsonToken tok;
+        while ((tok = parser.nextToken()) != null) {
+            if (tok == JsonToken.FIELD_NAME) {
+                String field = parser.getCurrentName();
+                if ("a".equals(field)) {
+                    parser.nextToken();
+                    value.a = parser.getIntValue();
+                }
+                else if ("b".equals(field)) {
+                    parser.nextToken();
+                    value.b = parser.getValueAsString();
+                }
+                else {
+                    throw new IllegalStateException("

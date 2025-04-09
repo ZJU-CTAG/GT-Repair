@@ -1,0 +1,16 @@
+public void testIssueVarargs() {
+    List<String> strings = new ArrayList<String>();
+    strings.add("1");
+
+    ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+    Mockito.doNothing().when(mockedList).add(argumentCaptor.capture());
+
+    mockedList.addAll(strings);
+
+    Assert.assertEquals(1, argumentCaptor.getAllValues().size());
+    Assert.assertEquals(strings.get(0), argumentCaptor.getValue());
+}
+
+@Mock
+private List mockedList;

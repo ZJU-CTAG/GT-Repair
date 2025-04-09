@@ -1,0 +1,12 @@
+public void testResetDefaultNamespace() throws Exception {
+    final String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><a xmlns=\"test111\"><b:foo xmlns:b=\"bla\" xmlns=\"test111\"><b:bar>a</b:bar><test xmlns=\"\"></test></b:foo></a>";
+    
+    JXPathContext context = JXPathContext.newContext(new InputSource(new StringReader(xml)));
+    context.getVariables().declareVariable("a", "test111");
+    context.setLenient(true);
+    context.setNamespaceContextPointer(new NamespaceContextPointer(new SimpleNamespaceContext()));
+    ((SimpleNamespaceContext) context.getNamespaceContextPointer().getValue()).add("a", "test111");
+    context.createPathAndSetValue("//a:foo/test", "test");
+    String path = context.getPointer("//a:foo/test").asPath();
+    
+    assertEquals("/test111:a/test111:foo/test

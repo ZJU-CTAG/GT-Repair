@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    ByteArrayInputStream in = new ByteArrayInputStream("{ \"test\" \"value\" }".getBytes());
+    UTF8StreamJsonParser parser = new UTF8StreamJsonParser(in, ObjectCodecs.nullCodec(), new BytesToNameCanonicalizer());
+    try {
+        parser.readValueAs(Map.class);
+        fail();
+    } catch (JsonParseException e) {
+        JsonLocation location = e.getLocation();
+        assertEquals(1, location.getLineNr());
+        assertEquals(12, location.getColumnNr());
+    }
+}

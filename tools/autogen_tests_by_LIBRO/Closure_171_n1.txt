@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Object obj = ScriptableObject.getProperty(scope, "foo");
+    assertTrue("foo is not a function", obj instanceof Function);
+    Function f = (Function)obj;
+    Object result = f.call(cx, scope, scope, new Object[0]);
+    assertNotNull("foo result", result);
+    obj = ScriptableObject.getProperty(scope, "alert");
+    assertTrue("alert is not a function", obj instanceof Function);
+    f = (Function)obj;
+    result = f.call(cx, scope, scope, new Object[1]);
+    assertNull("alert result", result);
+}

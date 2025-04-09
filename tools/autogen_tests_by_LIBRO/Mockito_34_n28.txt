@@ -1,0 +1,11 @@
+public void testSourceFilesShouldNotBePutInBinaryJar() throws Exception {
+    JarInputStream jarInputStream = new JarInputStream(new FileInputStream(new File(MOCKITO_CORE_JAR)));
+    JarEntry jarEntry = null;
+    while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
+        String entryName = jarEntry.getName();
+        if (entryName.endsWith(".java")) {
+            throw new Exception("Source file " + entryName + " should not be put in binary JAR.");
+        }
+    }
+    jarInputStream.close();
+}

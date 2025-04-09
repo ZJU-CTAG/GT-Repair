@@ -1,0 +1,19 @@
+public void testIssue123() throws IOException {
+  // the data contains 10 bytes
+  final byte[] data = new byte[] {
+    (byte) 0x57, (byte) 0x2D, (byte) 0x42, (byte) 0x0F,
+    (byte) 0x5A, (byte) 0x1D, (byte) 0x58, (byte) 0x3D,
+    (byte) 0x21, (byte) 0x4A
+  };
+  try (
+    ByteArrayInputStream in = new ByteArrayInputStream(data);
+    BitInputStream bin = new BitInputStream(in, ByteOrder.LITTLE_ENDIAN);
+  ) {
+    long ret = bin.readBits(5);
+    assertEquals(23, ret);
+    ret = bin.readBits(63);
+    assertEquals(1063046383712378833L, ret);
+    ret = bin.readBits(12);
+    assertEquals(2, ret);
+  }
+}

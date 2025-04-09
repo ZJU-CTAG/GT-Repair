@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String input = "contactcenter.screenpop.updatePopStatus = function(stamp, status) {\n"
+            + "for each ( var curTiming in this.timeLog.timings ) {\n"
+            + "if ( curTiming.callId == stamp ) {\n"
+            + "curTiming.flag = status;\n"
+            + "break;\n"
+            + "}\n"
+            + "}\n"
+            + "};\n";
+    String expected = "contactcenter.screenpop.updatePopStatus=function(stamp,status){for(var curTiming in this.timeLog.timings)if(curTiming.callId==stamp){curTiming.flag=status;break}}";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(input), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING]

@@ -1,0 +1,13 @@
+public void testIssue108() {
+    try {
+        int i = 1, j = 2, k = 42;
+        foo((i, j, k));
+        fail("Expected exception was not thrown!");
+    } catch (MyException me) {
+        assertEquals("42", me.getMessage());
+    }
+}
+
+private void foo(int... args) throws MyException {
+    throw new MyException(String.valueOf(args[args.length - 1]));
+}

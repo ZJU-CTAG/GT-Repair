@@ -1,0 +1,34 @@
+public void testIssue108() {
+    Thing thing = Mockito.mock(Thing.class);
+
+    new MockitoRule(this).set(thing);
+
+    assertSame(thing, this.thing);
+}
+
+public class MockitoRule extends ExternalResource {
+  private final Object testInstance;
+
+  public MockitoRule(Object testInstance) {
+    this.testInstance = testInstance;
+  }
+
+  @Override
+  protected void before() {
+    MockitoAnnotations.initMocks(testInstance);
+  }
+
+  public <T> T set(T mock) {
+    try {
+      Field field = testInstance.getClass().getDeclaredField(nameOf(mock));
+      field.setAccessible(true);
+      field.set(testInstance, mock);
+    } catch (IllegalAccessException e) {
+      throw new IllegalStateException(e);
+    } catch (NoSuchFieldException e) {
+      throw new IllegalArgumentException("Field " + nameOf(mock) + " doesn't exist", e);
+    }
+    return mock;
+  }
+
+  private <T>

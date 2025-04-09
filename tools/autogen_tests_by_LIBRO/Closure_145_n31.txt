@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("t.js", "var i = 0;"
+            + "lab1: do{"
+            + " lab2: do{"
+            + " i++;"
+            + " if (1) {"
+            + " break lab2;"
+            + " } else {"
+            + " break lab1;"
+            + " }"
+            + " } while(false);"
+            + "} while(false);"
+            + "console.log(i);") });
+    assertEquals("var a=0;do b:do{a++;break b}while(0);while(0);console.log(a);",
+        compiler.toSource());
+}

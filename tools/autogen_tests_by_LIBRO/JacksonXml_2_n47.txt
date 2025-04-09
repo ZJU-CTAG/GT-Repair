@@ -1,0 +1,14 @@
+public void testMixedContentWithChildElement() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.registerModule(new JacksonXmlModule());
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+    WindSpeed windSpeed = mapper.readValue(xml, WindSpeed.class);
+
+    assertEquals("kt

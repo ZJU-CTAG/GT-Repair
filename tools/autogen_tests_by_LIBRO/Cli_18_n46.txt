@@ -1,0 +1,9 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption("a", "enable-a", false, "turn [a] on or off");
+    options.addOption("b", "bfile", true, "set the value of [b]");
+    PosixParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-z", "-a", "foo", "--bfile", "bar"});
+    assertTrue(cmd.hasOption("a"));
+    assertEquals("bar", cmd.getOptionValue("bfile"));
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    final RealVector[] model = new RealVector[1];
+    VectorialConvergenceChecker checker = new VectorialConvergenceChecker() {
+        public boolean converged(int iteration, RealVector previous, RealVector current) {
+            model[0] = current;
+            return false;
+        }
+    };
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(checker);
+    VectorialPointValuePair result = optimizer.optimize(
+        new MaxEval(1),
+        new MaxIter(1),
+        GoalType.MINIMIZE,
+        new VectorialPointValuePair(new RealVector(new double[] { 0, }), new RealVector(new double[] { 1, })),
+        new VectorialDifferentiableMultivariateVectorFunction() {
+            public VectorialValuedPair value(RealVector point) {
+                return new VectorialValuedPair(point, new double[] { point.getEntry(0), });
+            }
+        }
+    );

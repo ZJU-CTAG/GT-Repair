@@ -1,0 +1,15 @@
+public void testIssue113() {
+    String code =
+        "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"
+            + "function SubFoo() {}"
+            + "/** @constructor"
+            + " * @extends {Foo} */"
+            + "function SubFoo() { /** @private */ this.x_ = 3; }";
+    Compiler compiler = new Compiler();
+    compiler.initCompilerOptionsIfTesting();
+    compiler.getOptions().setWarningLevel(
+        DiagnosticGroups.VISIBILITY, CheckLevel.WARNING);
+    compiler.compile(SourceFile.fromCode("testcode", code));
+    JSError[] warnings = compiler.getWarnings();
+    assertEquals(0, warnings.length);
+}

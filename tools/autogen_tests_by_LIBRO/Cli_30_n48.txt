@@ -1,0 +1,16 @@
+public void testOptionGroupState() {
+    class TestOptions {
+        @Option(name="-a") boolean a;
+        @Option(name="-b") boolean b;
+        @Option(name="-c") boolean c;
+    }
+    TestOptions opts = new TestOptions();
+    CommandLine cmd = new CommandLine(opts);
+    Properties props = new Properties();
+    props.put("-a", "true");
+    props.put("-b", "true");
+    cmd.parse(new String[] {"-c"}, props);
+    assertTrue("-a", opts.a);
+    assertTrue("-b", opts.b);
+    assertTrue("-c", opts.c);
+}

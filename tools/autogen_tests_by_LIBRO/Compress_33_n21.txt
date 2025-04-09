@@ -1,0 +1,8 @@
+public void testDeflateWithZlibHeader() throws Exception {
+    FileInputStream fis = new FileInputStream(getFile("bla.tar.deflatez"));
+    CompressorStreamFactory csf = new CompressorStreamFactory();
+    CompressorInputStream cis = csf.createCompressorInputStream(CompressorStreamFactory.DEFLATE, fis);
+    byte[] decompressed = IOUtils.toByteArray(cis);
+    byte[] original = IOUtils.toByteArray(new FileInputStream(getFile("bla.tar")));
+    assertTrue(Arrays.equals(original, decompressed));
+}

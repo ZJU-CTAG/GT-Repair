@@ -1,0 +1,17 @@
+public void testIssue() {
+    MultivariateVectorialOptimizer optimizer = new PowellOptimizer(1e-10, 1e-30);
+    ConvergenceChecker<VectorialPointValuePair> checker = new VectorialConvergenceChecker(1e-6, 1e-6);
+    optimizer.setConvergenceChecker(checker);
+    final double[] startPoint = { 0.0, 0.0 };
+    final double[] start = { 0.0, -1.0 };
+    final double[] end = { 1.0, 1.0 };
+    final int n = 100;
+    final double[][] data = new double[n][2];
+    final double[] w = new double[n];
+    for (int i = 0; i < n; i++) {
+        final double x = ((double) i) / (n - 1);
+        data[i][0] = x;
+        data[i][1] = (1.0 + 2 * x) * Math.exp(-x);
+        w[i] = 1;
+    }
+    final

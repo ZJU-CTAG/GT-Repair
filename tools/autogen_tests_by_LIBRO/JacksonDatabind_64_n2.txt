@@ -1,0 +1,26 @@
+public void test_jsoninclude_null() throws Exception {
+    final MapperConfig<?> mapperConfig = newMapperConfig(JsonInclude.Include.NON_DEFAULT);
+    final ObjectMapper mapper = mapperConfig.getDefaultMapper();
+
+    // Success case:
+    {
+        final String json = mapper.writeValueAsString(new POJO(null));
+        System.out.println(json);
+        assertEquals("{\"value\":\"\"}", json);
+    }
+
+    // Failure case:
+    {
+        final String json = mapper.writeValueAsString(new POJO2(null));
+        System.out.println(json);
+        assertEquals("{\"value\":null}", json);
+    }
+}
+
+private MapperConfig<?> newMapperConfig(JsonInclude.Include include) {
+    final SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addSerializer(new ToStringSerializer(String.class));
+
+    return mapperBuilder()
+            .addModule(simpleModule)
+            .defaultSerializationInclusion(

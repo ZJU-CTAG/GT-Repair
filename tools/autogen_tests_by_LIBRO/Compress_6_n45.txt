@@ -1,0 +1,20 @@
+public void testZipOutputStreamManyEntries() throws IOException {
+    File testZip = new File(testDir, "test.zip");
+    testZip.deleteOnExit();
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(testZip));
+    String filePrefix = "test";
+    int numFiles = 1000;
+    for (int i = 0; i < numFiles; i++) {
+        ZipArchiveEntry ze = new ZipArchiveEntry(filePrefix + i);
+        zos.putNextEntry(ze);
+        zos.write(new byte[1]);
+        zos.closeEntry();
+    }
+    zos.close();
+    ZipFile zf = new ZipFile(testZip);
+    Enumeration<ZipArchiveEntry> zes = zf.getEntriesInPhysicalOrder();
+    for (int i = 0; i < numFiles; i++) {
+        ZipArchiveEntry ze = zes.nextElement();
+        assertEquals(filePrefix + i, ze.getName());
+    }
+    assertFalse(zes.hasMoreElements());

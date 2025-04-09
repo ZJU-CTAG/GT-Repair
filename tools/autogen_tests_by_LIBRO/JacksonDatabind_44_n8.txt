@@ -1,0 +1,28 @@
+public void testJsonTypeInfoPolymorphicType() throws Exception {
+  final String json = "{\"data\":{\"@type\":\"data\",\"name\":\"foobar\"}}";
+
+  final ObjectMapper objectMapper = new ObjectMapper();
+  objectMapper.registerModule(new TestModule());
+
+  final JsonNode jsonNode = objectMapper.readTree(json);
+  final JsonNode data = jsonNode.get("data");
+
+  objectMapper.readerFor(Data.class).readValue(data);
+}
+
+public static class Data {
+  @JsonProperty
+  private String name;
+}
+
+public static class TestModule extends SimpleModule {
+
+  public TestModule() {
+    super("test");
+    setMixInAnnotation(Data.class, DataMixIn.class);
+  }
+
+  public static abstract class DataMixIn {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl = Data.class)
+    @JsonSubTypes({
+        @JsonSubTypes.

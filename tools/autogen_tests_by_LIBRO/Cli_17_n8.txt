@@ -1,0 +1,14 @@
+public void testPosixParser() throws Exception {
+    Options options = new Options();
+    options.addOption("a", "aaa", false, "aaa");
+    options.addOption("b", "bbb", false, "bbb");
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = null;
+    String[] args = new String[] { "-azb" };
+    line = parser.parse(options, args, true);
+    assertFalse(line.hasOption("a"));
+    assertFalse(line.hasOption("b"));
+    assertFalse(line.hasOption("z"));
+    assertEquals(0, line.getOptions().length);
+}

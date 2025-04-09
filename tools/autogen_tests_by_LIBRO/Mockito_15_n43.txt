@@ -1,0 +1,11 @@
+public void test() {
+    final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    class Foo {
+        void bar(String... strings) {
+        }
+    }
+    Foo foo = Mockito.mock(Foo.class);
+    foo.bar("a", "b", "c");
+    Mockito.verify(foo).bar(captor.capture());
+    assertEquals(Arrays.asList("a", "b", "c"), captor.getAllValues());
+}

@@ -1,0 +1,16 @@
+public void testEmbeddedRK13() throws Exception {
+    double t0 = 5.0;
+    double t1 = 5.0;
+    double y0 = 1.0;
+    double[] y1 = new double[1];
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public int getDimension() {
+            return 1;
+        }
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = -y[0];
+        }
+    };
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-1, 100.0, 1.0e-10, 1.0e-10);
+    integrator.integrate(ode, t0, y0, t1, y1);
+}

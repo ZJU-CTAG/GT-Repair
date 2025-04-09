@@ -1,0 +1,21 @@
+public void testPropertyNamingStrategy() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.enable(MapperFeature.USE_STD_BEAN_NAMING);
+    om.setPropertyNamingStrategy(new PropertyNamingStrategy.SnakeCaseStrategy());
+    String json = om.writeValueAsString(new Bean());
+    assertEquals("{\"foo\":\"bar\",\"bar\":\"baz\"}", json);
+}
+
+public static class Bean {
+    public String foo;
+    public String bar;
+
+    public Bean() {
+        //
+    }
+
+    public Bean(String foo, String bar) {
+        this.foo = foo;
+        this.bar = bar;
+    }
+}

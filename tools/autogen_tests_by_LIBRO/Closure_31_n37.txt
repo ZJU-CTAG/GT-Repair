@@ -1,0 +1,13 @@
+public void testIssue108() {
+        List<String> arguments = Arrays.asList(
+            "--compilation_level", "WHITESPACE_ONLY",
+            "--js", "some.js");
+        CommandLineRunner runner = new CommandLineRunner(arguments);
+        runner.doRun();
+        CompilerOptions options = runner.getOptions();
+        assertEquals(CompilationLevel.WHITESPACE_ONLY, options.getCompilationLevel());
+        // With the given arguments, dependencies should be managed,
+        // because the compilation level is WHITESPACE_ONLY.
+        assertTrue(options.shouldManageDependencies());
+        assertTrue(options.shouldOnlyManageDependencies());
+    }

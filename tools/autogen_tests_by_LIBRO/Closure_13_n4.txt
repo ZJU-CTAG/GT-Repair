@@ -1,0 +1,8 @@
+public void testIssue128() throws Exception {
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader("function some_function() { var fn1; var fn2; if (any_expression) { fn2 = external_ref; fn1 = function (content) { return fn2(); } } return { method1: function () { if (fn1) fn1(); return true; }, method2: function () { return false; } } }"), null);
+    StringWriter writer = new StringWriter();
+    compressor.compress(writer, -1, true, true, false, false);
+    String result = writer.toString();
+    assertTrue(result.contains("if(a)a();return true"));
+    assertTrue(result.contains("return false"));
+}

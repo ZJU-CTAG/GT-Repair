@@ -1,0 +1,16 @@
+public void testArchiveInputStream() throws Exception {
+    File testFile = File.createTempFile("test-", ".txt");
+    byte[] testData = new byte[100];
+    new Random().nextBytes(testData);
+    FileUtils.writeByteArrayToFile(testFile, testData);
+    FileInputStream fileInputStream = new FileInputStream(testFile);
+    ArchiveInputStream archiveInputStream = new ArchiveStreamFactory().createArchiveInputStream(fileInputStream);
+    assertNull(archiveInputStream);
+
+    testData = new byte[101];
+    new Random().nextBytes(testData);
+    FileUtils.writeByteArrayToFile(testFile, testData);
+    fileInputStream = new FileInputStream(testFile);
+    archiveInputStream = new ArchiveStreamFactory().createArchiveInputStream(fileInputStream);
+    assertNotNull(archiveInputStream);
+}

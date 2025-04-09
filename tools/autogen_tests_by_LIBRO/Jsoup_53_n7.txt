@@ -1,0 +1,10 @@
+public void testSelectorParseException() throws IOException {
+    String html = "<div class=\"card-content2\">\n" +
+            "  <a class=\"title\" title=\"MyTitle :\"></a>\n" +
+            "  <a class=\"subtitle\" title=\"MySubTitle:\"></a>\n" +
+            "</div>";
+    Document doc = Jsoup.parse(html);
+    String selector = "div.card-content2:has(a.subtitle[title= MySubTitle:)]) OR a.title[title=MyTitle :] ]";
+    Elements elements = doc.select(selector);
+    assertTrue(elements.size() == 2);
+}

@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // use non-String type
+    ObjectWriter w = mapper.writerFor(new TypeReference<List<Long>>() { });
+    try {
+        w.writeValueAsString(Arrays.asList(Boolean.TRUE));
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        if (e.getMessage().indexOf(" at [Source: ") < 0) {
+            fail("Should find location");
+        }
+        if (e.getMessage().indexOf(" at [Source: [true]") < 0) {
+            fail("Should find [true]");
+        }
+        if (e.getMessage().indexOf(" at [Source: [true]") != e.getMessage().lastIndexOf(" at [Source: ")) {
+            fail("Should not have multiple occurrences of location info: "+e.getMessage());
+        }
+    }
+}

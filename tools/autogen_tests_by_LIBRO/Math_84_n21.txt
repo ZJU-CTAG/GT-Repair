@@ -1,0 +1,16 @@
+public void testMultiDirectionalCorrectStart() {
+    final double epsilon = 1e-6;
+    for (int i = 0; i < 10000; i++) {
+        final LinearObjectiveFunction f = new LinearObjectiveFunction(
+            new double[] { Math.random(), Math.random() }, 0);
+        final Collection<LinearConstraint> constraints = new ArrayList<>();
+        constraints.add(new LinearConstraint(
+            new double[] { Math.random(), Math.random() }, Relationship.LEQ, Math.random()));
+        constraints.add(new LinearConstraint(
+            new double[] { Math.random(), Math.random() }, Relationship.LEQ, Math.random()));
+        final SimplexSolver solver = new SimplexSolver();
+        final PointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE, true);
+        final double[] point = solution.getPoint();
+        assertEquals(f.value(point), solution.getValue(), epsilon);
+        for (LinearConstraint constraint : constraints) {
+           

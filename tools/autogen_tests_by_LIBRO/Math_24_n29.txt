@@ -1,0 +1,13 @@
+public void testOptimizer() {
+    final UnivariateFunction f = new UnivariateFunction() {
+        
+        public double value(double x) {
+            return x*x - 2.0D;
+        }
+        
+    };
+
+    UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    double result = optimizer.optimize(100, f, GoalType.MINIMIZE, -1.0D, 3.0D).getPoint();
+    assertEquals(Math.sqrt(2.0D), result, 1e-8);
+}

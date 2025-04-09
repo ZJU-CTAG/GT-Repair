@@ -1,0 +1,9 @@
+public void testClosure() {
+    final ClosureCompiler compiler = new ClosureCompiler();
+    compiler.add("Math.blah = function(test) { test.a = 5; };");
+    compiler.add("var test = new Object();");
+    compiler.add("Math.blah(test);");
+    compiler.compile();
+    assertTrue(compiler.getOutput().contains("Math.blah"));
+    assertTrue(compiler.getOutput().contains("test = {}"));
+}

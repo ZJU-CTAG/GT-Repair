@@ -1,0 +1,18 @@
+public void testIssue() {
+    final String js = "/**\n" +
+            " * Returns the roster widget element.\n" +
+            " * @this {Widget} <-- currently this doesn't matter\n" +
+            " * @return {Element}\n" +
+            " */\n"
+            + "function() {\n" +
+            " return this.getComponent().getElement();\n" +
+            "}";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(CompilerOptions);
+    // CompilerOptions.setWarningLevel(DiagnosticGroups.DANGEROUS_NAME, CheckLevel.WARNING);
+    CompilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilerOptions.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    result = compiler.compile(externs, jsSource, CompilerOptions);
+    for (JSError error : result.errors) {
+        System.out.println(error.toString());
+    }
+}

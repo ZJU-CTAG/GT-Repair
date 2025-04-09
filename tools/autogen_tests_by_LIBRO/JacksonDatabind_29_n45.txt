@@ -1,0 +1,16 @@
+public void testIssue() {
+    PropertyNamingStrategy namingStrategy = new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy();
+    ObjectMapper mapper = new ObjectMapper().setPropertyNamingStrategy(namingStrategy);
+    String json = "{\"b\":\"test\"}";
+    String json2 = "{\"b\":\"test\",\"a\":\"test\"}";
+    String json3 = "{\"a\":\"test\"}";
+    String json4 = "{\"c\":\"test\"}";
+    String json5 = "{\"c\":\"test\",\"a\":\"test\"}";
+    assertEquals(mapper.readValue(json2, B.class), mapper.readValue(json, B.class));
+    assertEquals(mapper.readValue(json3, A.class), mapper.readValue(json, A.class));
+    assertEquals(mapper.readValue(json5, B.class), mapper.readValue(json4, B.class));
+}
+
+static class A {}
+
+static class B extends A {}

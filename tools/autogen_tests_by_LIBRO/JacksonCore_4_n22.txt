@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonGenerator generator = jsonFactory.createGenerator(new NullOutputStream());
+    generator.writeStartObject();
+    generator.writeFieldName(createFieldName(262145));
+    generator.writeNumber("test");
+    generator.writeFieldName("test");
+    generator.writeNumber("test");
+    generator.writeEndObject();
+    generator.close();
+}
+
+private String createFieldName(int fieldNameLength) {
+    StringBuilder sb = new StringBuilder(fieldNameLength);
+    for (int i = 0; i < fieldNameLength; i++) {
+        sb.append("a");
+    }
+    return sb.toString();
+}

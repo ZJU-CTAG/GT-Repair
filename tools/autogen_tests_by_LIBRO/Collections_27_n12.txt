@@ -1,0 +1,15 @@
+public void testInvokerTransformer() throws Exception {
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("add", "java.lang.Runtime");
+    map.put("getRuntime", "getClass");
+    map.put("getClass", "getMethod");
+    map.put("getMethod", "getName");
+    map.put("getName", "exit");
+    map.put("exit", "1");
+    map.put("1", "1"); // Object[]{1}
+    map.put("2", "1"); // Class[]{int.class}
+    InvokerTransformer transformer = new InvokerTransformer("invoke", new Class[]{Object.class, Object[].class}, new Object[] {null, null});
+    Map<Object, Object> transformedMap = TransformedMap.decorate(map, null, transformer);
+    AnnotationInvocationHandler handler = new AnnotationInvocationHandler(Void.class, transformedMap);
+    Map<Object, Object> copy = (Map<Object, Object>) serializeAndDeserialize(handler);
+    assertEqu

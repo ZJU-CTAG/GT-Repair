@@ -1,0 +1,17 @@
+public void testIssue136() throws Exception {
+    TarArchiveInputStream input = new TarArchiveInputStream(new FileInputStream("/home/sebb/tmp/jmeter-plugins-manager-0.15-SNAPSHOT.jar"));
+
+    TarArchiveEntry entry = input.getNextTarEntry();
+    while (entry != null) {
+        if (entry.getName().endsWith("/layer.tar")) {
+            InputStream layer = input.getInputStream();
+            TarArchiveInputStream layerInput = new TarArchiveInputStream(layer);
+            TarArchiveEntry layerEntry = layerInput.getNextTarEntry();
+            while (layerEntry != null) {
+                layerEntry = layerInput.getNextTarEntry();
+            }
+            System.out.println("Finished processing: " + entry.getName());
+        }
+        entry = input.getNextTarEntry();
+    }
+}

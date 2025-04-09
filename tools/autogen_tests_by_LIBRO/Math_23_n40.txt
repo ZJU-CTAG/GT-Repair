@@ -1,0 +1,11 @@
+public void testOptimizer() throws MathException {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return Math.cos(x);
+        }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    double result = optimizer.optimize(f, GoalType.MINIMIZE, -1);
+    assertEquals(Math.PI, result, 1e-12);
+}

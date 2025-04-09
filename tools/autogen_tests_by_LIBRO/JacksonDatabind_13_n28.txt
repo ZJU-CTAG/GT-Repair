@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_PROPERTY_ID, true);
+    try {
+        mapper.readValue("{}", Issue108Entity.class);
+        fail("Missing property exception should have been thrown");
+    } catch (InvalidDefinitionException e) {
+        System.out.println("Caught " + e);
+    }
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
+                  property="value", scope=Issue108Entity.class, resolver=Issue108Resolver.class)
+static class Issue108Entity {
+    @JsonProperty("value") public int value = 3;
+    @JsonProperty("parent") public Issue108Entity parent;
+}
+
+static class Issue108Resolver extends ObjectIdResolver {
+    @Override public void bindItem(ObjectIdGenerator.IdKey id, Object pojo) { }
+    @Override public Object resolveId(ObjectIdGenerator.

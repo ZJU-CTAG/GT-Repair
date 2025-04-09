@@ -1,0 +1,9 @@
+public void testBinaryValue() throws Exception {
+    final String text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    final JsonNode node = JsonNodeFactory.instance.textNode(text);
+    final JsonParser parser = new TreeTraversingParser(node, new ObjectMapper());
+    parser.setCodec(new ObjectMapper());
+    final byte[] data = parser.getBinaryValue(Base64Variants.MODIFIED_FOR_URL);
+    assertNotNull(data);
+    assertEquals(text, new String(data, "UTF-8"));
+}

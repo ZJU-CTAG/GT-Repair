@@ -1,0 +1,13 @@
+public void testWriteBinary() throws Exception {
+    File file = new File("src/test/resources/bop.jpg");
+    try (InputStream is = new FileInputStream(file)) {
+        try (StringWriter writer = new StringWriter()) {
+            try (ToXmlGenerator gen = new ToXmlFactory().createGenerator(writer)) {
+                gen.writeStartObject();
+                gen.writeBinaryField("someBinaryData", is, (int) file.length());
+                gen.writeEndObject();
+            }
+            System.out.println(writer.toString());
+        }
+    }
+}

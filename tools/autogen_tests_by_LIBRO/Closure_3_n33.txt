@@ -1,0 +1,15 @@
+public void testIssue_1_() {
+    String source = "function getStack() { var getErrorObject = function() { try { throw Error(''); } catch(err) { return err; } }; return getErrorObject().stack; } window['getStackTrace']=getStack;";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+        SourceFile.fromCode("input.js", source),
+        SourceFile.fromCode("externs.js", ""),
+        options);
+    assertEquals(result.errors.length, 0);
+    assertEquals(result.warnings.length, 0);
+    assertEquals(result.success, true);
+    assertEquals(result.ast.toSource(), "function getStack() {\n try {\n throw Error(''

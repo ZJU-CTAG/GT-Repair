@@ -1,0 +1,14 @@
+public void testSubClassCreate()
+    throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationConfig(mapper.getSerializationConfig().with(new CustomPrettyPrinter()));
+    StringWriter sw = new StringWriter();
+    mapper.writeValue(sw, new Point(1, 2));
+    assertEquals("{ \"x\" : 1, \"y\" : 2 }", sw.toString());
+}
+
+public static class CustomPrettyPrinter extends DefaultPrettyPrinter
+{
+    public static final CustomPrettyPrinter instance = new CustomPrettyPrinter();
+}

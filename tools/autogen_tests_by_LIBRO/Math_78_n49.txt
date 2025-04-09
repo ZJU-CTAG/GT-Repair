@@ -1,0 +1,24 @@
+public void testEvents() {
+        double[] times = {
+            0, 90, 135
+        };
+        double[] states = {
+            0, 0, 0
+        };
+        double[] statesDot = {
+            0, 0, 0
+        };
+        MyProblem problem = new MyProblem(times, states, statesDot);
+        double minStep = 0;
+        double maxStep = 1000;
+        double scalAbsoluteTolerance = 1.0e-8;
+        double scalRelativeTolerance = 1.0e-8;
+        FirstOrderIntegrator integ =
+            new DormandPrince853Integrator(minStep, maxStep,
+                                           scalAbsoluteTolerance,
+                                           scalRelativeTolerance);
+        integ.addEventHandler(problem, 1.0e-8, 1.0e-8, 1000);
+        double stopTime = 200;
+        integ.integrate(problem, 0.0, states, stopTime, states);
+        RealVector finalState = problem.getFinalState();
+        assertTrue((finalState.getEntry(0) - 0.5) > 1

@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    final IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+    final byte[] buffer = new byte[10];
+    final int offset = 0;
+    final int count = buffer.length;
+    final byte[] result = ctxt.allocReadIOBuffer(count);
+    assertNotSame(result, buffer);
+    assertEquals(count, result.length);
+    assertEquals(count, ctxt.allocReadIOBuffer(count).length);
+    ctxt.releaseReadIOBuffer(result);
+    ctxt.releaseReadIOBuffer(buffer);
+    assertEquals(count, ctxt.allocReadIOBuffer(count).length);
+}

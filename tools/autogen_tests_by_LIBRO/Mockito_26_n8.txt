@@ -1,0 +1,20 @@
+public void testIssue() {
+    class A {
+        final B b;
+
+        A(B b) {
+            this.b = b;
+        }
+    }
+    class B {
+    }
+
+    B b = new B();
+    A a = new A(b);
+    A aSpy = Mockito.spy(a);
+
+    Mockito.when(aSpy.b).thenReturn(b);
+
+    assertNotSame(b, a.b);
+    assertSame(b, aSpy.b);
+}

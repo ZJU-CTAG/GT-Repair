@@ -1,0 +1,11 @@
+public void testStopAtNonOption() throws Exception {
+        // -azb should be turned into -a zb and -b
+        Options options = new Options();
+        options.addOption("a", false, "toggle -a");
+        options.addOption("b", "bfile", true, "set -b");
+        String[] args = new String[] { "-azb" };
+        CommandLineParser parser = new PosixParser();
+        CommandLine line = parser.parse(options, args, true);
+        assertTrue(line.hasOption("a"));
+        assertEquals("zb", line.getOptionValues("b")[0]);
+}

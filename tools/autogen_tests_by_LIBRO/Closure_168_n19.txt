@@ -1,0 +1,10 @@
+public void testIssue363() {
+    String js = "function f() { this.g(); } " +
+                "f.prototype.g = function() {}; " +
+                "new f();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("testcode", js), new CompilerOptions());
+    String output = compiler.toSource();
+    assertTrue(result.errors.length == 0);
+}

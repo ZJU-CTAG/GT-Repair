@@ -1,0 +1,18 @@
+public void testIssue107() {
+    Option target = OptionBuilder.withLongOpt("target")
+    .withDescription("Generate files for the specified target machine")
+    .hasArg()
+    .create("t");
+    Options opts = new Options();
+    opts.addOption(target);
+    CommandLineParser parser = new PosixParser();
+    // With just "-target", we succeed
+    CommandLine line = parser.parse(opts, new String[] { "--target", "foobar.com" });
+    assertEquals("foobar.com", line.getOptionValue("target"));
+    // With "-t", we succeed
+    line = parser.parse(opts, new String[] { "-t", "foobar.com" });
+    assertEquals("foobar.com", line.getOptionValue("target"));
+    // With "-target foobar.com", we succeed
+    line = parser.parse(opts, new String[] { "-target", "foobar.com" });
+    assertEquals("foobar.com", line.getOptionValue("target"));
+    // With "-t foobar

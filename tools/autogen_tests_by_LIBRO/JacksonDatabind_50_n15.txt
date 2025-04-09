@@ -1,0 +1,19 @@
+public void testIssue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new AfterburnerModule())
+            .registerModule(new Jdk8Module())
+            .registerModule(new ParameterNamesModule())
+            .registerModule(new JsonCreator.ValueInstantiatorModule());
+
+    final String json = "{\"parent\":{\"id\":{\"value\":\"1\"},\"ref\":{\"id\":{\"value\":\"2\"}},\"children\":[{\"id\":{\"value\":\"3\"},\"ref\":{\"id\":{\"value\":\"4\"}}}]}}";
+    final Root root = mapper.readValue(json, Root.class);
+
+    assertEquals(
+            root,
+            root.getParent());
+    assertEquals(
+            root.getParent().getRef(),
+            root.getParent().getRef().getRef());
+    assertEquals(
+            root.getParent().getRef().getRef().getChildren().get(0),
+            root.getParent().getRef().getRef().getChildren().get(0

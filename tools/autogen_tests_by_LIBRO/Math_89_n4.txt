@@ -1,0 +1,18 @@
+public void testComparableFrequency() {
+    final Object OBJ = new Object();
+    final Comparable COMP = new Integer(1);
+    Frequency f = new Frequency();
+    try {
+        f.addValue(OBJ);
+        assertEquals(1, f.getCount(OBJ));
+        assertEquals(1.0, f.getPct(OBJ), 0.0);
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        assertEquals("Value must implement Comparable", ex.getMessage());
+    }
+    f.addValue(COMP);
+    assertEquals(1, f.getCount(COMP));
+    assertEquals(1.0, f.getPct(COMP), 0.0);
+    assertEquals(0, f.getCount(OBJ));
+    assertEquals(0.0, f.getPct(OBJ), 0.0);
+}

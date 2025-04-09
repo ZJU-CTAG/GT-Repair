@@ -1,0 +1,8 @@
+public void testInterfaceWhereGenericTypeHasItselfAsUpperBound() {
+    GenericMetadataSupport genericMetadata = inferFrom(GenericsSelfReference.class).resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReference.class));
+    assertThat(genericMetadata.rawType()).isEqualTo(GenericsSelfReference.class);
+}
+
+interface GenericsSelfReference<T extends GenericsSelfReference<T>> {
+    T self();
+}

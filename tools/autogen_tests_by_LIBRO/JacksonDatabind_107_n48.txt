@@ -1,0 +1,22 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    mapper.enableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public boolean handleUnknownTypeId(DeserializationContext ctxt, JavaType type, String typeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return false;
+        }
+
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType type, String typeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return Void.class; // <--- This is where it fails
+        }
+    });
+
+    Issue107Person person = new Issue107Person();
+    person.name = "John Doe";
+
+    String personJson = mapper.writeValueAsString(person);
+    Issue107Person readPerson = mapper.readValue(personJson, Issue107Person.class);
+}

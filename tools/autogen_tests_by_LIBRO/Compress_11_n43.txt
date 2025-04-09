@@ -1,0 +1,18 @@
+public void testCreateArchiveInputStream() throws Exception {
+    File file = File.createTempFile("compress-117", ".txt");
+    file.deleteOnExit();
+    Writer out = new FileWriter(file);
+    out.write("foo,bar"); // 100 bytes
+    out.close();
+    InputStream input = new FileInputStream(file);
+    // should be empty as file is not an archive
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ArchiveInputStream ais = factory.createArchiveInputStream(input);
+    int archiveEntryCount = 0;
+    ArchiveEntry entry = ais.getNextEntry();
+    while (entry != null) {
+        archiveEntryCount++;
+        entry = ais.getNextEntry();
+    }
+    assertEquals("Archive Stream should be empty", 0, archiveEntryCount);
+}

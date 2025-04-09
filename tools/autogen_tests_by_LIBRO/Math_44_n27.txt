@@ -1,0 +1,17 @@
+public void testIssue() {
+  ProblemBuilder builder = new ProblemBuilder();
+  SolutionDescriptor descriptor = new SolutionDescriptor(TestdataMultiVarEntity.class, TestdataMultiVarSolution.class);
+  TestdataMultiVarEntity b = new TestdataMultiVarEntity("b", 20);
+  TestdataMultiVarEntity c = new TestdataMultiVarEntity("c", 15);
+  TestdataMultiVarSolution initialSolution = new TestdataMultiVarSolution("solution");
+  initialSolution.setValueList(Arrays.asList(b, c));
+  initialSolution.setValueSet(new HashSet<>(initialSolution.getValueList()));
+  initialSolution.setValueMap(new HashMap<>());
+  initialSolution.getValueMap().put(b, "b");
+  initialSolution.getValueMap().put(c, "c");
+  builder.setSolutionDescriptor(descriptor)
+      .setEntityListPropertyName("valueList")
+      .setEntitySetPropertyName("valueSet")
+      .setEntityMapPropertyName("valueMap")
+      .addEntity(b)
+      .addEntity(

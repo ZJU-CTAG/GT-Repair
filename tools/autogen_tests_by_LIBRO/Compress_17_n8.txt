@@ -1,0 +1,13 @@
+public void testTar(String filename) throws Exception {
+    File tarfile = ResourceUtils.getResourceAsFile(filename);
+    InputStream tarstream = new FileInputStream(tarfile);
+    try {
+        TarArchiveInputStream tin = new TarArchiveInputStream(tarstream);
+        TarArchiveEntry entry = null;
+        while ((entry = tin.getNextTarEntry()) != null) {
+            System.out.println(entry.getName());
+        }
+    } finally {
+        IOUtils.closeQuietly(tarstream);
+    }
+}

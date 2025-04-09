@@ -1,0 +1,21 @@
+public void testZipWithCollidingFiles() throws Exception {
+    File outputZip = File.createTempFile("testZipWithCollidingFiles", ".zip");
+
+    FileOutputStream fos = new FileOutputStream(outputZip);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+    zos.setEncoding("cp437");
+
+    for (int i = 0; i < 10; i++) {
+        String fileName = String.valueOf(i);
+        ZipArchiveEntry entry = new ZipArchiveEntry(fileName);
+        zos.putArchiveEntry(entry);
+        zos.write(fileName.getBytes());
+        zos.closeArchiveEntry();
+    }
+
+    zos.close();
+
+    ZipFile zipFile = new ZipFile(outputZip);
+    ZipArchiveEntry entry = (ZipArchiveEntry)zipFile.getEntries().nextElement();
+    assertEquals("0", entry.getName());
+}

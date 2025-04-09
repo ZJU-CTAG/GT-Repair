@@ -1,0 +1,17 @@
+public void testIssueIdentifierMinusNumber() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    
+    List<SourceFile> externs = Arrays.<SourceFile>asList(
+        SourceFile.fromCode("externs.js", ""));
+    List<SourceFile> inputs = Arrays.<SourceFile>asList(
+        SourceFile.fromCode("input.js", "g--0.0"));
+    
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setIdeMode(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    
+    Result result = compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+}

@@ -1,0 +1,14 @@
+public void testNPE() {
+    DateTimeZoneBuilder dtzb = new DateTimeZoneBuilder();
+    dtzb.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+    dtzb.setStandardOffset(3600000);
+    dtzb.addRecurringSavings("", 3600000, 1601, Integer.MAX_VALUE, 'w', 3, -1, 1, false, 7200000);
+    dtzb.addRecurringSavings("", 0, 1601, Integer.MAX_VALUE, 'w', 10, -1, 1, false, 10800000);
+    DateTimeZone tz1 = dtzb.toDateTimeZone("TestDTZ1", true);
+    Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            DateTimeZoneBuilder dtzb = new DateTimeZoneBuilder();
+            dtzb.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+            dtzb.setStandardOffset(3600000);
+            dtzb.addRecurring

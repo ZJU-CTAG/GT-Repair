@@ -1,0 +1,13 @@
+public void testIssue11() {
+    SimpleUnivariateValueChecker checker = new SimpleUnivariateValueChecker(1e-12, 1e-12);
+    
+    UnivariatePointValuePair optimum = new BrentOptimizer(checker).optimize(
+        new MaxEval(10000),
+        new UnivariateObjectiveFunction(new SinFunction()),
+        GoalType.MINIMIZE,
+        new SearchInterval(2, 3)
+    );
+    
+    double min = optimum.getValue();
+    assertEquals(0, min, 1e-12);
+}

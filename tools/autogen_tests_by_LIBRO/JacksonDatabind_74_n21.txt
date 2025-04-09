@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    String json = "{\"test\":\"\"}";
+    Issue108 issue = mapper.readValue(json, Issue108.class);
+    assertNull(issue.test);
+}
+
+public static class Issue108 {
+    public String test;
+}

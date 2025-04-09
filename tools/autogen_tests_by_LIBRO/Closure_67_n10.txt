@@ -1,0 +1,15 @@
+public void testAdvancedNoSideEffects() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("input1.js",
+        "function A() { this._x = 1; }\n" +
+        "A.prototype['func1'] = A.prototype.func1;\n" +
+        "A.prototype.func1 = function() { this._x = 2; this.func2(); }\n" +
+        "A.prototype.func2 = function() { this._x = 3; this.func3(); }\n" +
+        "window['A'] = A;"),
+        options);
+    String output = compiler.toSource();
+    assertTrue(output.indexOf("c") == -1);
+    assertTrue(output.indexOf("func2") != -1);
+}

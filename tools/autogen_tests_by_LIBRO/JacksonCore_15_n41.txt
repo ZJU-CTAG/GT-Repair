@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String json = "{\"field1\": \"value1\", \"field2\": \"value2\"}";
+    boolean allowMultipleMatches = true;
+    JsonFactory jf = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(jf);
+    FilteringParserDelegate fpd = new FilteringParserDelegate(mapper.getFactory().createParser(json), new MyFilter(), allowMultipleMatches);
+    assertEquals(allowMultipleMatches, fpd.getAllowMultipleMatches());
+}
+
+public class MyFilter extends TokenFilter {
+    @Override
+    public TokenFilter includeElement(int index) {
+        return this;
+    }
+    @Override
+    protected boolean _includeScalar() {
+        return true;
+    }
+}

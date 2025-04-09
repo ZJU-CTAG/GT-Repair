@@ -1,0 +1,17 @@
+public void testIssue106() {
+    Map<String, Object> customData = new HashMap<String, Object>();
+    customData.put("key", "value");
+
+    assertEquals("value", testRemoveKey("key", customData));
+    assertFalse("key" in customData);
+}
+
+function testRemoveKey(key, dataSlot) {
+    var retval = dataSlot && dataSlot[key],
+    hadKey = dataSlot && (key in dataSlot);
+
+    if (dataSlot)
+        delete dataSlot[key];
+
+    return hadKey ? retval : null;
+};

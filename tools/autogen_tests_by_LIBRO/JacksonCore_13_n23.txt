@@ -1,0 +1,14 @@
+public void testIssue190 ()
+    throws Exception
+{
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    JsonFactory jf = new JsonFactory();
+    UTF8JsonGenerator gen = jf.createUTF8JsonGenerator(baos, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeStringField("foo", "bar");
+    gen.writeEndObject();
+    gen.close();
+
+    String json = new String(baos.toByteArray(), "UTF-8");
+    assertEquals("{\"foo\":\"bar\"}", json);
+}

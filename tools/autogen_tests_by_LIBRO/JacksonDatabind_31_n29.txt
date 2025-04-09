@@ -1,0 +1,10 @@
+public void testContext() {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer();
+
+    JsonStreamContext readContext = mapper.getFactory().createGenerator(new StringWriter()).getOutputContext();
+    JsonStreamContext writeContext = writer.getGenerator().getOutputContext();
+
+    assertTrue(writeContext.toString().contains("/"));
+    assertFalse(readContext.toString().contains("/"));
+}

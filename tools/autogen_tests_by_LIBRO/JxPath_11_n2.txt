@@ -1,0 +1,10 @@
+public void testIssue108() {
+    InputSource inputSource = new InputSource(new StringReader(
+            "<ElementA xmlns:A=\"http://www.foo.com/A\" A:myAttr=\"Mytype\">"+
+            " <B:ElementB xmlns:B=\"http://www.foo.com/B\">MY VALUE</B:ElementB>"+
+            "</ElementA>"));
+    JXPathContext context = JXPathContext.newContext(inputSource);
+    Pointer pointer = context.getPointer("/ElementA");
+    assertNotNull(pointer);
+    assertEquals(1, context.getValue(pointer));
+}

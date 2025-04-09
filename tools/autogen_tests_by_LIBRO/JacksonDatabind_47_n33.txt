@@ -1,0 +1,20 @@
+public void testModelObjects() throws Exception {
+    ObjectWriter writer = new ObjectMapper().writerFor(Foo.class);
+    Foo foo = new Foo();
+    foo.setReference(new AccessionIdentifier() {
+    });
+    String json = writer.writeValueAsString(foo);
+}
+
+public class Foo {
+  @JsonSerialize(as = BaseAccessionIdentifier.class)
+  @JsonDeserialize(as = BaseAccessionIdentifier.class)
+  public AccessionIdentifier getReference() {
+  }
+}
+
+public interface AccessionIdentifier {
+}
+
+public class BaseAccessionIdentifier implements AccessionIdentifier {
+}

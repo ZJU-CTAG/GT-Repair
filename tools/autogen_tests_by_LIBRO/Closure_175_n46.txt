@@ -1,0 +1,11 @@
+public void testErroneousOptimization() throws Exception {
+    String js = "window['anchor'] = function (obj, modifiesProp) {\n" +
+            "  return (function (saved) {\n" +
+            "    return modifiesProp(obj) + saved;\n" +
+            "  })(obj['prop']);\n" +
+            "};";
+
+    Compiler compiler = new Compiler();
+    compiler.compile(ResourceLoader.loadResource("window.js"), js, new CompilerOptions());
+    assertEquals("window.foo=function(a,b){var HOLD$0=a.prop;return b(a)+HOLD$0};\n", compiler.toSource());
+}

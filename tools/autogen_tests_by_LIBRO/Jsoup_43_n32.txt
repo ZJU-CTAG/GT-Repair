@@ -1,0 +1,20 @@
+public void testElementSiblingIndex() {
+    String html = "<table><tr id=1><td>aaa</td></tr><tr id=2><td>bbb</td></tr></table><div id=3>ccc</div>";
+    Document doc = Jsoup.parse(html);
+    Element e1 = doc.getElementById("1");
+    Element e2 = doc.getElementById("2");
+    Element e3 = doc.getElementById("3");
+
+    assertEquals("aaa", e1.text());
+    assertEquals("bbb", e2.text());
+    assertEquals("ccc", e3.text());
+    
+    assertEquals("1", e1.id());
+    assertEquals("2", e2.id());
+    assertEquals("3", e3.id());
+
+    assertEquals(0, e1.elementSiblingIndex());
+    assertEquals(1, e2.elementSiblingIndex());
+    assertEquals(0, e3.elementSiblingIndex());
+
+    assertEquals(e1, e1.parent().child(

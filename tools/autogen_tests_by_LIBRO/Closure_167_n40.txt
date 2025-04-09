@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.EXTERNS_VALIDATION, CheckLevel.WARNING);
+    options.setExterns(Arrays.asList(SourceFile.fromCode("externs.js", "var ns = {};\n/**\n * @constructor\n */\nns.Thing = function() {};\n")));
+    String compile = compile("inloop.js",
+            "/**\n" +
+            " * @param {ns.Thing} thing\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "ns.MyClass = function(thing) {\n" +
+            "/** @type {ns.Thing} */ this.thing_ = thing;\n" +
+            "};\n" +
+            "\n" +
+            "ns.My

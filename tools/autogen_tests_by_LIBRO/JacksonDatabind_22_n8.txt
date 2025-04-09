@@ -1,0 +1,27 @@
+public void testJsonValuePrecedence() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addSerializer(
+            new StdSerializer<Document>(Document.class) {
+                @Override
+                public void serialize(
+                        Document value,
+                        JsonGenerator jgen,
+                        SerializerProvider provider) throws IOException {
+                    jgen.writeStartObject();
+                    jgen.writeStringField("data", "test");
+                    jgen.writeEndObject();
+                }
+            });
+    objectMapper.registerModule(simpleModule);
+
+    Document document = new Document();
+    System.out.println(objectMapper.writeValueAsString(document));
+}
+
+class Document {
+    @JsonValue
+    public Map<String,String> value() {
+        return new HashMap<String, String>();
+    }
+}

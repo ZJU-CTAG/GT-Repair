@@ -1,0 +1,18 @@
+public void testEntriesHashCode() throws IOException {
+    File zipFile = File.createTempFile("test", "zip");
+    ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(zipFile);
+    zipOutputStream.setEncoding("UTF-8");
+    zipOutputStream.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS);
+
+    ZipArchiveEntry entry1 = new ZipArchiveEntry("entry1.txt");
+    entry1.setComment("this is a comment");
+    zipOutputStream.putArchiveEntry(entry1);
+    zipOutputStream.write("hello world".getBytes());
+    zipOutputStream.closeArchiveEntry();
+    zipOutputStream.close();
+
+    ZipFile zip = new ZipFile(zipFile);
+    ZipArchiveInputStream zipInputStream = new ZipArchiveInputStream(new FileInputStream(zipFile));
+
+    assertEquals(zip.getEntries().size(), 1);
+    assertEquals(zip.getEntries().get(zip.getEntry("entry1.txt")), zipInputStream

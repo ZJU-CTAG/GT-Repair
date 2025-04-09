@@ -1,0 +1,11 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.prettyPrint = true;
+    options.optimizationLevel = CompilerOptions.OPTIMIZATION_LEVEL.ADVANCED_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("foo", "function f() { var args = arguments; }"),
+            JSSourceFile.fromCode("bar", "var a = f();"),
+            options);
+    System.out.println(compiler.toSource());
+}

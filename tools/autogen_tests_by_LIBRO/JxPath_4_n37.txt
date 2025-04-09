@@ -1,0 +1,15 @@
+public void testJXpath() throws Exception {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<item>\n" +
+            "  <id>12345</id>\n" +
+            "  <date>2011-12-12</date>\n" +
+            "  <value> 12345 </value>\n" +
+            "</item>\n";
+    InputSource inputSource = new InputSource(new StringReader(xml));
+    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+    JXPathContext jxp = JXPathContext.newContext(document.getDocumentElement());
+
+    assertEquals("12345", jxp.getValue("/item/id"));
+    assertEquals(sdf.parse("2011-12-12"), jxp.getValue("/item/date"));
+    assertEquals("12345", jxp.getValue("/item/value"));

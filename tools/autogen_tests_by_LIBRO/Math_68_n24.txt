@@ -1,0 +1,17 @@
+public void testIgnoresConvergenceChecker() {
+    final double[] params = new double[] { 0.1, 0.2 };
+    final MultivariateVectorialFunction f = new MultivariateVectorialFunction() {
+        @Override
+        public double[] value(double[] params) {
+            return new double[] { params[0] + params[1] };
+        }
+    };
+    final VectorialConvergenceChecker vcc = new VectorialConvergenceChecker() {
+        @Override
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            return true;
+        }
+    };
+    LevenbergMarquardtOptimizer lmo = new LevenbergMarquardtOptimizer(true, new DenseRealMatrix(new double[][] { { 0.1 } }), new DenseRealMatrix(new double[][] { { 0.2 } }), 1e-10, false, vcc);
+    lmo.optimize(f, GoalType.MINIMIZE, params);
+}

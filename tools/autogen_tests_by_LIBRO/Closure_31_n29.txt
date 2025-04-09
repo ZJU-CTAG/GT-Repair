@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String js = "var x = 'foo';";
+    CompilationLevel level = CompilationLevel.WHITESPACE_ONLY;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.dependencyOptions.setDependencySorting(true);
+    options.closurePass = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    Compiler compiler = new Compiler();
+    compiler.initOptions(options);
+    WarningLevel.DEFAULT.setOptionsForWarningLevel(options);
+    List<SourceFile> jsFiles = new ArrayList<SourceFile>();
+    jsFiles.add(SourceFile.fromCode("input.js", js));
+    Result compile = compiler.compile(
+        new JSSourceFile[] {},
+        jsFiles.toArray(new SourceFile[jsFiles.size()]),
+        options);
+    assertFalse(compile.success);
+}

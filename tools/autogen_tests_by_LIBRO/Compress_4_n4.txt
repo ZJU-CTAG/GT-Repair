@@ -1,0 +1,28 @@
+public void testSimple() throws Exception {
+    File file = new File("target/test-output/simple.zip");
+    file.getParentFile().mkdirs();
+    file.delete();
+
+    FileOutputStream fos = null;
+    ZipArchiveOutputStream zos = null;
+    try {
+        fos = new FileOutputStream(file);
+        zos = new ZipArchiveOutputStream(fos);
+
+        ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+        entry.setSize(4);
+        zos.setLevel(Deflater.NO_COMPRESSION);
+        zos.putArchiveEntry(entry);
+        zos.write("TEST".getBytes());
+        zos.closeArchiveEntry();
+
+        zos.finish();
+    } finally {
+        IOUtils.closeQuietly(zos);
+        IOUtils.closeQuietly(fos);
+    }
+
+    // This should work
+    ZipFile zipFile = new ZipFile(file);
+    assertEquals(1, zipFile.size());
+    assertNotNull

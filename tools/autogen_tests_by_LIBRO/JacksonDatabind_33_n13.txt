@@ -1,0 +1,18 @@
+public void testIssue109() {
+    TestJsonUnwrappedShouldMakePrivateFieldsSerializable.Inner inner = new TestJsonUnwrappedShouldMakePrivateFieldsSerializable.Inner();
+    inner.animal = "Zebra";
+
+    TestJsonUnwrappedShouldMakePrivateFieldsSerializable.Outer outer = new TestJsonUnwrappedShouldMakePrivateFieldsSerializable.Outer();
+    outer.inner = inner;
+
+    ObjectMapper sut = new ObjectMapper();
+    try {
+        String actual = sut.writeValueAsString(outer);
+
+        assertTrue(actual.contains("animal"));
+        assertTrue(actual.contains("Zebra"));
+        assertFalse(actual.contains("inner"));
+    } catch (JsonProcessingException e) {
+        fail(e.getMessage());
+    }
+}

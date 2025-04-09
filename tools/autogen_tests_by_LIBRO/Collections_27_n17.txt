@@ -1,0 +1,6 @@
+public void testRCE() throws Exception {
+    Transformer transformer = new InvokerTransformer("getMethod", new Class[] { String.class, Class[].class }, new Object[] { "getRuntime", new Class[0] });
+    Object payload = transformer.transform(Collections.singletonMap("foo", "bar"));
+    byte[] payloadBytes = CommonsCollections4Serializer.serialize(payload);
+    Object deserialized = CommonsCollections4Serializer.deserialize(payloadBytes);
+}

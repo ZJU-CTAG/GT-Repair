@@ -1,0 +1,26 @@
+public void testIssue1216() throws Exception
+{
+    // setup
+
+    final ObjectMapper mapper = new ObjectMapper();
+    final Module module = new SimpleModule()
+            .addSerializer(new ImmutableSetMultimapSerializer())
+            .setDeserializerModifier(new BeanDeserializerModifier() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public JsonDeserializer<Enum> modifyEnumDeserializer(
+                        DeserializationConfig config,
+                        final JavaType type,
+                        BeanDescription beanDesc,
+                        final JsonDeserializer<?> deserializer) {
+
+                    return new JsonDeserializer<Enum>() {
+                        @Override
+                        public Enum deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+                            Class<? extends Enum> rawClass = (Class<Enum<?>>) type.getRawClass();
+                            return Enum.valueOf(rawClass, jp.getValueAsString().toUpperCase());
+                        }
+                    };
+                }
+
+                @Override

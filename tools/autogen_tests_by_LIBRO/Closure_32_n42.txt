@@ -1,0 +1,17 @@
+public void testPreserve() throws Exception {
+    Reader input = new StringReader("/**\n * @preserve\n\n  This\n\t was\n\t\t ASCII\n\t\t\t Art\n\n*/");
+    StringWriter output = new StringWriter();
+    JavaScriptCompressor compressor = new JavaScriptCompressor(input, new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[ERROR] " + line + ':' + lineOffset + '

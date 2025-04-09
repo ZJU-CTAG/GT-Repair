@@ -1,0 +1,12 @@
+public void testIssueJsonUnwrapped() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    final Bean bean = mapper.readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}", Bean.class);
+    assertEquals(1, bean.x);
+    assertEquals(2, bean.w.a);
+    assertEquals(3, bean.y);
+    assertEquals(4, bean.w.b);
+}

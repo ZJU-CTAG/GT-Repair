@@ -1,0 +1,12 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    Authentication authentication = new Authentication();
+    authentication.setAuthorities(new ArrayList<GrantedAuthority>());
+
+    String json = mapper.writeValueAsString(authentication);
+
+    Authentication authentication2 = mapper.readValue(json, Authentication.class);
+    assertEquals(authentication.getAuthorities(), authentication2.getAuthorities());
+}

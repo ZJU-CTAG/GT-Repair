@@ -1,0 +1,12 @@
+public void testIssue106() throws Exception {
+    final String[] columns = { "あ", "い", "う" };
+    final List<String[]> rows = new ArrayList<String[]>();
+    rows.add(columns);
+    final FileWriter outfile = new FileWriter("out.csv");
+    final CSVFormat format = CSVFormat.EXCEL;
+    final CSVPrinter printer = new CSVPrinter(outfile, format);
+    printer.printRecords(rows);
+    printer.close();
+    final String[] lines = FileUtils.readLines(new File("out.csv"));
+    assertEquals("\"あ\",い,う", lines[0]);
+}

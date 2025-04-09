@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception
+{
+    // for [databind#475]
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+
+    // test with polymorphic type
+    mapper.addMixInAnnotations(DateTime.class, ObjectConfiguration.class);
+    DateTime value = new DateTime(2012, 5, 30, 0, 0, DateTimeZone.UTC);
+    assertEquals("{\"value\":{\"type\":\"org.joda.time.DateTime\",\"value\":[2012,5,30,0,0,\"UTC\"]}}",
+            mapper.writeValueAsString(new Wrapper(value)));
+    Wrapper result = mapper.readValue("{\"value\":{\"type\":\"org.joda.time.DateTime\",\"value\":[2012,5,30,0,0,\"UTC\"]}}", Wrapper.class);
+    assertNotNull(result);
+    assertNotNull(result.value);
+    assertTrue(result.value instanceof DateTime);
+    assertEquals(

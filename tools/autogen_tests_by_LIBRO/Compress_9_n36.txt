@@ -1,0 +1,15 @@
+public void testTarArchiveOutputStreamGetBytesWritten() throws Exception {
+    final InputStream in = new ByteArrayInputStream(new byte[] {'a'});
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final ArchiveOutputStream tarOut = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, out);
+    final TarArchiveEntry entry = new TarArchiveEntry("test");
+    tarOut.putArchiveEntry(entry);
+    IOUtils.copy(in, tarOut);
+    in.close();
+    tarOut.closeArchiveEntry();
+    tarOut.close();
+    assertTrue(tarOut.getBytesWritten() > 0);
+    final TarArchiveInputStream tarIn = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.TAR, new ByteArrayInputStream(out.toByteArray()));
+    assertNotNull(tarIn.getNextTarEntry());
+    tarIn.close();
+}

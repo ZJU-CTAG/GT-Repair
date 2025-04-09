@@ -1,0 +1,10 @@
+public void testTarArchiveOutputStream() throws IOException {
+    File file = new File("target/test.tar");
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(new FileOutputStream(file));
+    tos.putArchiveEntry(new TarArchiveEntry("entry"));
+    tos.write("test".getBytes());
+    tos.closeArchiveEntry();
+    tos.close();
+    assertEquals("wrong size", 4, tos.getBytesWritten());
+    assertEquals("wrong file size", 4, file.length());
+}

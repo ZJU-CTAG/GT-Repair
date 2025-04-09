@@ -1,0 +1,26 @@
+public void testOptionBuilder() throws ParseException {
+    Option opt1 = OptionBuilder.withLongOpt("option1")
+            .withDescription("the first option")
+            .hasArg()
+            .create('1');
+    Option opt2 = null;
+    try {
+        opt2 = OptionBuilder.withLongOpt("option2")
+                .withDescription("the second option")
+                .hasArg()
+                .create('2');
+        fail("An IllegalArgumentException should be thrown");
+    } catch (IllegalArgumentException iae) {
+        // Expected
+    }
+    opt2 = OptionBuilder.withLongOpt("option2")
+            .withDescription("the second option")
+            .hasArg()
+            .create('2');
+    Options opts = new Options();
+    opts.addOption(opt1);
+    opts.addOption(opt2);
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[]{"-1", "foo", "-2", "bar"};
+    CommandLine cmd = parser.parse(opts, args);
+    assertEqu

@@ -1,0 +1,14 @@
+public void testOptionRequired() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().create('a'));
+    options.addOption(OptionBuilder.hasArg().create('b'));
+    options.addOption(OptionBuilder.hasArg().create('c'));
+    CommandLineParser parser = new PosixParser();
+    parser.parse(options, new String[] { "-a", "-b", "bval" });
+    try {
+        parser.parse(options, new String[] { "-b", "bval" });
+        fail("Expected MissingOptionException");
+    } catch (MissingOptionException e) {
+        // expected
+    }
+}

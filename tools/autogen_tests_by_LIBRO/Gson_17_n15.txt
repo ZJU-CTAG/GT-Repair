@@ -1,0 +1,11 @@
+public void testNullabilityIssue() {
+    Type type = new TypeToken<Date>() {}.getType();
+    Date date = new Date();
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+
+    assertTrue(gson.toJson(date, type) instanceof String);
+    assertTrue(gson.toJson(null, type) instanceof String);
+
+    assertTrue(gson.fromJson(gson.toJson(date, type), type) instanceof Date);
+    assertNull(gson.fromJson(gson.toJson(null, type), type));
+}

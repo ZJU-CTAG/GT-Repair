@@ -1,0 +1,19 @@
+public void testIssue140() {
+    // note: this test requires running the compiler with --compilation_level SIMPLE_OPTIMIZATIONS
+    String source = "" +
+    "var isFunction = function(functionToCheck) {" +
+    "  var getType;" +
+    "  getType = {}; //just an object" +
+    "  return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]';" +
+    "};";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("input.js", source),
+            SourceFile.fromCode("externs.js", ""));
+    assertTrue(result.success);
+    String compiled = result.compiledCode;
+    assertFalse(compiled.contains("apply"));
+    int index = compiled.indexOf("return");
+    compiled = compiled.substring(index);
+    index = compiled.indexOf(";");
+    compiled = compiled.substring(0, index + 1);
+    assertEquals("return a && \"[object Function]

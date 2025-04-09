@@ -1,0 +1,10 @@
+public void testIssue109() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    CsvMapper csvMapper = mapper.registerModule(new CsvModule());
+    CsvSchema schema = CsvSchema.builder().addColumn("businessAddress.street").addColumn("businessAddress.addon").addColumn("businessAddress.zip").addColumn("businessAddress.town").addColumn("businessAddress.country").build();
+    CsvParser csvParser = csvMapper.readerFor(Person.class).with(schema).readValues(new StringReader("\"St. 1\",\"\",\"1234\",\"Town\",\"Country\""));
+    Person p = csvParser.nextValue();
+    assertEquals("Country", p.businessAddress.country);
+}

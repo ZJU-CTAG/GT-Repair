@@ -1,0 +1,17 @@
+public void testOptimize() {
+    UnivariateRealFunction f = new QuadraticFunction();
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(EPSILON, EPSILON);
+    checkOptimizer(optimizer, f, 1.0e-13);
+}
+
+private void checkOptimizer(UnivariateRealOptimizer optimizer, UnivariateRealFunction f, double tolerance) {
+    double result;
+    for (double lower = -10; lower < 10; lower += 1.0) {
+        for (double upper = lower + 1; upper < 10; upper += 1.0) {
+            result = optimizer.optimize(100, f, GoalType.MINIMIZE, lower, upper);
+            if (!Precision.equals(result, 0.0, tolerance)) {
+                Assert.fail("using interval [" + lower + "," + upper + "], result=" + result + " should be 0.0");
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+public void testIssue() {
+    final double[] lower = new double[2];
+    final double[] upper = new double[2];
+    final double[] start = new double[2];
+    final double[] target = new double[2];
+    for (int i = 0; i < 2; i++) {
+        lower[i] = 0.1;
+        upper[i] = 0.9;
+        start[i] = 0.25;
+        target[i] = 0.75;
+    }
+    final MultivariateFunction function = new MultivariateFunction() {
+        public double value(double[] point) {
+            double sum = 0;
+            for (int i = 0; i < 2; i++) {
+                double diff = point[i] - target[i];
+                sum += diff * diff;
+            }
+            return sum;
+        }
+    };
+    final CMAESOptimizer optimizer = new CMAESOptimizer();
+    final OptimizationData[] optData = new OptimizationData[5];
+    optData[0] = new MaxEval(100);
+    optData[

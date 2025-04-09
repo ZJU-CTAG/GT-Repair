@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    String xml = "<ElementA xmlns:A=\"urn:A\" A:myAttr=\"Mytype\">  " +
+            " <B:ElementB xmlns:B=\"urn:B\">MY VALUE</B:ElementB>  " +
+            "</ElementA>";
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new InputSource(new StringReader(xml)));
+    Element root = document.getDocumentElement();
+    DOMNodePointer pointer = new DOMNodePointer(root);
+    System.out.println(pointer.getValue("B:ElementB"));
+}

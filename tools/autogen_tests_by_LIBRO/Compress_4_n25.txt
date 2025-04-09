@@ -1,0 +1,28 @@
+public void testFinish() throws Exception {
+    String base = "";
+    String dir = "test-dir";
+    String name = "test-name";
+    String entryPrefix = "test-entry-prefix";
+    String entryPath = "test-entry-path";
+    String entryName = "test-entry-name";
+
+    File baseDir = new File(base);
+    File testDir = new File(baseDir, dir);
+    testDir.mkdirs();
+    File testFile = new File(baseDir, name);
+    testFile.createNewFile();
+
+    OutputStream os = new FileOutputStream(testFile);
+    ArchiveOutputStream aos = new TarArchiveOutputStream(os);
+
+    ArchiveEntry entry = new TarArchiveEntry(entryPath);
+    aos.putArchiveEntry(entry);
+    aos.closeArchiveEntry();
+
+    entry = new TarArchiveEntry(entryName);
+    aos.putArchiveEntry(entry);
+    aos.closeArchiveEntry();
+
+    assertEquals(2, aos.getBytesWritten());
+
+    aos.finish();

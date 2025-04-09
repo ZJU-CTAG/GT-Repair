@@ -1,0 +1,24 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.removeClosureAsserts = true;
+    options.removeUnusedPrototypeProperties = false;
+    options.removeUnusedPrototypePropertiesInExterns = false;
+    options.removeUnusedVars = CompilerOptions.Reach.LOCAL_ONLY;
+    options.removeUnusedVarsInExterns = CompilerOptions.Reach.LOCAL_ONLY;
+    compiler.initOptions(options);
+
+    JSSourceFile input = JSSourceFile.fromCode("input.js",
+"var foo = function bar(){",
+"var bar;",
+"alert(bar)",
+"};"
+);
+    JSSourceFile[] externs = null;
+    Result result = compiler.compile(externs, input, options);
+    assertTrue(result.success);
+    assertEquals(
+"var foo=function(){alert(void 0)};",
+compiler.toSource()
+);
+}

@@ -1,0 +1,18 @@
+public void testExtendedTimestamp() throws Exception {
+        File tmp = File.createTempFile("test", ".zip");
+        try {
+            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tmp));
+            byte[] byteData = new byte[1];
+            byteData[0] = 'a';
+            ZipEntry ze = new ZipEntry("test");
+            ze.setExtra(new byte[] { 0x5, 0x5, 0x7, 0x8, 0x7, 0x8, 0x7, 0x8, 0x7, 0x8, 0x7, 0x8 });
+            zos.putNextEntry(ze);
+            zos.write(byteData);
+            zos.closeEntry();
+            zos.close();
+            ZipFile zf = new ZipFile(tmp);
+            ZipEntry ze2 = zf.getEntry("test");
+            ZipEntry ze3 = new ZipEntry(ze2);
+            ze3.setExternalAttributes(0x10810000);
+            zf.close();
+            ZipArchiveEntry zae = new ZipArchive

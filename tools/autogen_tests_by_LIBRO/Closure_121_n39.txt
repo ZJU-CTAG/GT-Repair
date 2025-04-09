@@ -1,0 +1,29 @@
+public void testIssue108() {
+    // ==ClosureCompiler==
+    // @compilation_level ADVANCED_OPTIMIZATIONS
+    // ==/ClosureCompiler==
+    final AtomicInteger uid = new AtomicInteger();
+    final AtomicBoolean reset = new AtomicBoolean(false);
+
+    final Runnable runnable = new Runnable() {
+        public void run() {
+            uid.set((int) (Math.random() * 10));
+            reset.set(true);
+        }
+    };
+
+    final Runnable doStuff = new Runnable() {
+        public void run() {
+            final int _uid = uid.get();
+            if (uid.get() < 5) {
+                uid.set(0);
+                runnable.run();
+            }
+            if (_uid != uid.get()) {
+                throw new IllegalStateException("reset() was called");
+            }
+        }
+    };
+
+    doStuff.run();
+}

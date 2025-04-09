@@ -1,0 +1,24 @@
+public void testPrivateProp() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    
+    
+    SourceFile extern = SourceFile.fromCode("externs.js",
+            "var test_extern = function() {};");
+    
+
+    SourceFile input1 = SourceFile.fromCode("input1.js",
+            "/** @constructor */ function Foo() {\n"
+          + "  /** @private */ this.x_ = 3;\n"
+          + "}\n");
+    SourceFile input2 = SourceFile.fromCode("input2.js",
+            "/**\n"
+          + " * @constructor\n"
+          + " * @extends {

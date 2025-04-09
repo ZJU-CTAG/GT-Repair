@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String script = "function f() { }\n" +
+            "alert(f());";
+
+    ScriptEngineManager sem = new ScriptEngineManager();
+    ScriptEngine engine = sem.getEngineByName("JavaScript");
+    try {
+        engine.eval(script);
+    } catch (ScriptException e) {
+        assertEquals(e.getMessage(), "ReferenceError: \"alert\" is not defined.");
+    }
+}

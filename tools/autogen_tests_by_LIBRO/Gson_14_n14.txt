@@ -1,0 +1,10 @@
+public void testIssue_608() {
+    Gson gson = new Gson();
+    Foo1<String> foo1 = new Foo1<String>();
+    Foo2<Integer> foo2 = new Foo2<Integer>();
+    foo1.foo2 = foo2;
+    foo2.foo1 = foo1;
+    String json = gson.toJson(foo1);
+    Foo1<String> foo1_2 = gson.fromJson(json, new TypeToken<Foo1<String>>() { }.getType());
+    assertEquals(json, gson.toJson(foo1_2));
+}

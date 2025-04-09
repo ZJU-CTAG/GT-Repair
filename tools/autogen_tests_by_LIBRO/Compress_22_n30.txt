@@ -1,0 +1,15 @@
+public void testReadTruncated() throws IOException {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 10240; i++) {
+        sb.append('a');
+    }
+    String data = sb.toString();
+    String file = TestCase.TMPDIR + "/test_read_truncated.bz2";
+    BZip2CompressorOutputStream out = new BZip2CompressorOutputStream(new FileOutputStream(file));
+    out.write(data.getBytes());
+    out.close();
+    BZip2CompressorInputStream in = new BZip2CompressorInputStream(new FileInputStream(file));
+    byte[] buffer = new byte[1024];
+    int read = in.read(buffer);
+    assertEquals(770, read);
+}

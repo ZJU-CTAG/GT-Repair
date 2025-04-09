@@ -1,0 +1,15 @@
+public void testIssue103() throws Exception {
+	CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+			.withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+	
+	FileReader fileReader = new FileReader("src/test/resources/testIssue103.csv");
+	CSVParser parser = new CSVParser(fileReader, myFormat);
+	
+	Map<String, Integer> headerMap = parser.getHeaderMap();
+	
+	assertEquals(4, headerMap.size());
+	assertEquals(new Integer(0), headerMap.get("Col1"));
+	assertEquals(new Integer(1), headerMap.get("Col2"));
+	assertEquals(new Integer(3), headerMap.get("Col3"));
+	assertEquals(new Integer(4), headerMap.get("Col4"));
+}

@@ -1,0 +1,22 @@
+public void testModelObjects() throws IOException {
+    Foo foo = new Foo();
+    foo.setReference(new AccessionIdentifier() {});
+    String output = m_mapper.writeValueAsString(foo);
+    assertEquals(output, "{}");
+}
+
+public static class Foo {
+    @JsonSerialize(as = BaseAccessionIdentifier.class)
+    @JsonDeserialize(as = BaseAccessionIdentifier.class)
+    public AccessionIdentifier getReference() {
+        return null;
+    }
+    public void setReference(AccessionIdentifier reference) {
+    }
+}
+
+public interface AccessionIdentifier {
+}
+
+public class BaseAccessionIdentifier implements AccessionIdentifier {
+}

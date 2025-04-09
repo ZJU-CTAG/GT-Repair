@@ -1,0 +1,24 @@
+public void testIssue145() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDeserializationConfig(mapper.getDeserializationConfig().with(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES));
+    mapper.registerModule(new MyModule());
+    Map<MyEnum, String> value = mapper.readValue("{UPPER: 'bar', lower: 'foo'}",
+            new TypeReference<Map<MyEnum, String>>() { });
+    assertNotNull(value);
+    assertEquals(2, value.size());
+    assertEquals("foo", value.get(MyEnum.LOWER));
+    assertEquals("bar", value.get(MyEnum.UPPER));
+}
+
+public static class MyModule extends SimpleModule
+{
+    private static final long serialVersionUID = 1L;
+
+    public MyModule() {
+        super("mymodule", Version.unknownVersion());
+    }
+
+    @Override
+    public void setupModule(SetupContext context) {
+        context.setDeserializerModifier

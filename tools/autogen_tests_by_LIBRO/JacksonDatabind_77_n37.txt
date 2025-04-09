@@ -1,0 +1,24 @@
+public void testDeserializationWithCVE()
+        throws IOException {
+    // construct class
+    String classDefinition = "import java.io.*;"
+            + "class MyClass implements Serializable {"
+            + "  public String getUserName() { return \"jackson\"; }"
+            + "  public String getPassword() { return \"vulnerability\"; }"
+            + "}";
+    File sourceFile = new File("MyClass.java");
+    FileOutputStream fos = new FileOutputStream(sourceFile);
+    Writer writer = new OutputStreamWriter(fos);
+    writer.write(classDefinition);
+    writer.close();
+
+    JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    compiler.run(null, null, null, sourceFile.getPath());
+    ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+    try {
+        Class myClass = classLoader.loadClass("MyClass");
+
+        // create serialized object for MyClass
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping();
+        byte[] serializedData = mapper

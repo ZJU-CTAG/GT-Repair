@@ -1,0 +1,12 @@
+public void testInvalidFormatException() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.readValue("[1,2,3]",List.class);
+		} catch (InvalidFormatException e) {
+			InvalidFormatException.Reference ref = e.getPath().get(0);
+			assertEquals(ref.getIndex(), -1);
+			assertEquals(ref.getType(), String.class);
+			assertEquals(ref.getValue(), "1");
+			assertEquals(ref.getFieldName(), null);
+		}
+	}

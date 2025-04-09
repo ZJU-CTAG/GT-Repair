@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String html = "<div><table class=xy></table></div>";
+    Document doc = Jsoup.parse(html);
+
+    doc.select("div table[class~=x|y]"); // fails
+    doc.select("div > table[class~=x|y]"); // fails
+    doc.select("div + table[class~=x|y]"); // fails
+    doc.select("div ~ table[class~=x|y]"); // fails
+
+    doc.select("div, table[class~=x|y]"); // does not fail
+}

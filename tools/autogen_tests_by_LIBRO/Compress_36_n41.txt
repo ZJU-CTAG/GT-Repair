@@ -1,0 +1,9 @@
+public void testEmptyEntry() throws Exception {
+        File file = new File(getClass().getResource("/test.7z").toURI());
+        SevenZFile sevenZFile = new SevenZFile(file, new byte[0]);
+        SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+        // entry is empty, so read() should return -1
+        assertEquals(-1, entry.read(new byte[1024]));
+        // the following should not throw a IllegalStateException
+        assertEquals(-1, entry.read(new byte[1024]));
+}

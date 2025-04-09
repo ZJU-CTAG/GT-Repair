@@ -1,0 +1,12 @@
+public void testIssue() {
+    String xml = "<ElementA A:myAttr=\"Mytype\">\n" +
+            " <B:ElementB>MY VALUE</B:ElementB>\n" + "</ElementA>";
+    JXPathContext context = JXPathContext.newContext(null);
+    context.getNamespaceContext().registerNamespace("A", "http://www.example.org/A");
+    context.getNamespaceContext().registerNamespace("B", "http://www.example.org/B");
+    context.setLenient(false);
+    context.setFactory(new DOMFactory());
+
+    Object o = context.getValue("/ElementA/B:ElementB");
+    assertEquals("MY VALUE", o);
+}

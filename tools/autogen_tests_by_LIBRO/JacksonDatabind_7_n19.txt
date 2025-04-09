@@ -1,0 +1,25 @@
+public void testIssue() throws IOException {
+		final Value value = new ObjectMapper().readValue(
+				"{ \"field1\": 1, \"field2\": \"value\" }", Value.class);
+
+		assertEquals(1, value.field1);
+		assertEquals("value", value.field2);
+	}
+
+	@JsonDeserialize(as = Value.class)
+	@JsonSerialize(as = Value.class)
+	public static class Value {
+		@JsonProperty({ "field1" })
+		public int field1;
+
+		@JsonProperty({ "field2" })
+		public String field2;
+
+		@JsonCreator
+		public static Value from(TokenBuffer buffer) throws IOException {
+			final Value value = new Value();
+			value.field1 = buffer.readValueAs(Integer.class);
+			value.field2 = buffer.readValueAs(String.class);
+			return value;
+		}
+	}

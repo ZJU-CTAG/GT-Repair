@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    Bean b = new ObjectMapper()
+            .addHandler(new DeserializationProblemHandler() {
+                @Override
+                public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser jp, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
+                    throw new RuntimeException("Unknown property: " + propertyName);
+                }
+            })
+            .readerFor(Bean.class)
+            .readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}");
+
+    assertEquals(1, b.x);
+    assertEquals(3, b.y);
+    assertEquals(2, b.w.a);
+    assertEquals(4, b.w.b);
+}

@@ -1,0 +1,22 @@
+public void testZipOutputStream_addEntry_removeEntry() throws Exception {
+        File dir = new File("test");
+        dir.mkdir();
+        try {
+            File fileIn = new File(dir, "test1");
+            try (FileOutputStream fos = new FileOutputStream(fileIn)) {
+                fos.write(new byte[] { 1, 2, 3, 4 });
+            }
+
+            File fileOut = new File(dir, "test2");
+            try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(fileOut))) {
+                // add a file entry
+                ZipArchiveEntry entry = new ZipArchiveEntry(fileIn, "test1");
+                zos.putArchiveEntry(entry);
+                try (FileInputStream fis = new FileInputStream(fileIn)) {
+                    IOUtils.copy(fis, zos);
+                    zos.closeArchiveEntry();
+                }
+                // add a directory entry
+                entry = new ZipArchiveEntry(fileIn, "test1/");
+                zos.putArchiveEntry(entry);
+               

@@ -1,0 +1,14 @@
+public void testJSDoc() {
+    String[] js = new String[] {
+        "/** @constructor */" +
+        "function F() {}" +
+        "F.prototype.bar = function() { this.baz(); };" +
+        "F.prototype.baz = function() { };" +
+        "/** @constructor */" +
+        "function G() {}" +
+        "G.prototype.bar = F.prototype.bar;"
+    };
+    ErrorReporter reporter = new ErrorReporterTest();
+    new Compiler(reporter).compile(js, null);
+    assertEquals(1, reporter.getErrorCount());
+}

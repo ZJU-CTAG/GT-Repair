@@ -1,0 +1,11 @@
+public void testSetArgName() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("argName").create('a'));
+
+    HelpFormatter helpFormatter = new HelpFormatter();
+    helpFormatter.setArgName("newArgName");
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    helpFormatter.printHelp(printWriter, 80, "test", "test", options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, "", true);
+    assertFalse(stringWriter.toString().contains("newArgName"));
+}

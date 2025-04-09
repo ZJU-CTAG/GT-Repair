@@ -1,0 +1,12 @@
+public void testIssue117() {
+    MultiValuedMap<String, Object> map = new ArrayListValuedHashMap<>();
+    map.put("A", "a");
+    map.put("A", "b");
+    map.put("B", "c");
+    MultiValuedMap<String, Object> result = MultiMapUtils.extractMulti(map, "A");
+    assertEquals(2, result.size());
+    assertEquals(2, result.getCollection("A").size());
+    assertEquals(2, result.getCollection("A").size());
+    assertEquals(0, result.getCollection("B").size());
+    assertEquals(0, result.getCollection("C").size());
+}

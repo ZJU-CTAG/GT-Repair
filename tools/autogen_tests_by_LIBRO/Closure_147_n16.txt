@@ -1,0 +1,11 @@
+public void testIssue144() {
+    Compiler compiler = new Compiler();
+    compiler.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.WARNING);
+    Result result = compiler.compile(
+            SourceFile.fromCode("testcode",
+                    "var NS = { read : function() { return this.foo; }, write : function() { this.foo = 123; } };  NS.write2 = function() { this.foo = 123; }"));
+    assertTrue(result.success);
+    assertEquals(1, result.warnings.length);
+    assertEquals("JSC_USED_GLOBAL_THIS", result.warnings[0].getType());
+    assertEquals(4, result.warnings[0].getLineno());
+}

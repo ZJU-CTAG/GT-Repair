@@ -1,0 +1,24 @@
+public void testJsoupUnexpectedXMLDeclaration() {
+  // Given
+  String expected = "<?xml encoding='UTF-8' version='1.0'?>\n" +
+      "<html>\n" +
+      " <head>\n" +
+      "  <title></title>\n" +
+      " </head>\n" +
+      " <body>\n" +
+      "  Document content\n" +
+      " </body>\n" +
+      "</html>";
+
+  String input = "<?xml encoding='UTF-8' version='1.0'?>" +
+      "<html>" +
+      "<head><title></title></head>" +
+      "<body>Document content</body>" +
+      "</html>";
+
+  // When
+  String actual = Jsoup.parse(input).outerHtml();
+
+  // Then
+  assertEquals(expected, actual);
+}

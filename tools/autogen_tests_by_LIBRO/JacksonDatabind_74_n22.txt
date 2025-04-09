@@ -1,0 +1,16 @@
+public void testIssue108()
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
+    Foo empty = mapper.readValue("{\"bar\":\"\"}", Foo.class);
+    assertNull(empty.bar);
+
+    Foo nonEmpty = mapper.readValue("{\"bar\":\"foo\"}", Foo.class);
+    assertEquals("foo", nonEmpty.bar);
+}
+
+static class Foo
+{
+    public String bar;
+}

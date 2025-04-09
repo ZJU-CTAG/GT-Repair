@@ -1,0 +1,14 @@
+public void testJsonPointer() throws Exception {
+    JsonNode node = JsonLoader.fromString("{\"00\": \"test\"}");
+    JsonPointer ptr = JsonPointer.compile("/00");
+    assertEquals("test", ptr.get(node).asText());
+    ptr = JsonPointer.compile("/0");
+    assertEquals("test", ptr.get(node).asText());
+    try {
+        ptr = JsonPointer.compile("/0/0");
+        assertEquals("test", ptr.get(node).asText());
+        fail("Expected JsonPointer$MismatchedTokenException");
+    } catch (JsonPointer.MismatchedTokenException e) {
+        // expected
+    }
+}

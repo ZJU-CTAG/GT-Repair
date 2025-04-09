@@ -1,0 +1,25 @@
+public void testTypeChecking() {
+    String code = "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+            "\n" +
+            "/**\n" +
+            " * @param {boolean} success\n" +
+            " */\n" +
+            "myclass.prototype.fn = function(success) {\n" +
+            "}\n" +
+            "\n" +
+            "myclass.prototype.test = function() {\n" +
+            "  this.fn();\n" +
+            "  this.fn = function() { };\n" +
+            "}" +
+            "";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile("test.js", code, new CompilerOptions());
+    JSError[] errors = result.errors;
+    System.out.println(errors.length);
+    assertEquals(2, errors.length);
+}

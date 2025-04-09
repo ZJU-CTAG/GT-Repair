@@ -1,0 +1,17 @@
+public void testFakingAbstractClasses() throws Exception {
+  final AccountService service = mock(AccountService.class);
+  when(service.getAccount("id")).thenReturn(account);
+
+  class MockAccountService extends AccountService {
+    @Override public void getAccount(String id, AsyncCallback<UserAccount> callback) {
+      callback.onSuccess(getAccount(id));
+    }
+    @Override UserAccount getAccount(String id) {
+      return service.getAccount(id);
+    }
+  }
+
+  @Fake private MockAccountService mockService;
+  mockService.getAccount("id", callback);
+  verify(callback).onSuccess(eq(account));
+}

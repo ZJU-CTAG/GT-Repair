@@ -1,0 +1,14 @@
+public void testIssue1148() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.addMixIn(CountryCode.class, CountryCodeMixin.class);
+    mapper.addMixIn(Currency.class, CurrencyMixin.class);
+    mapper.addMixIn(CountryCode.class, CountryCodeMixin.class);
+    final AnnotationIntrospector introspector = new JacksonAnnotationIntrospector();
+    mapper.setAnnotationIntrospector(introspector);
+    final ObjectReader reader = mapper.reader();
+    final ObjectWriter writer = mapper.writer();
+    final Currency currency = new Currency(CurrencyCode.USD, CountryCode.US);
+    final String currencyJson = writer.writeValueAsString(currency);
+    final Currency currencyFromJson = reader.forType(Currency.class).readValue(

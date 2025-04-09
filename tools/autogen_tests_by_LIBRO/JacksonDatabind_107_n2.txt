@@ -1,0 +1,12 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL)
+            .addHandler(new DeserializationProblemHandler() {
+                @Override
+                public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+                    return context.constructType(Void.class);
+                }
+            });
+    TestDataHolder holder = mapper.readValue("{\"@class\":\"com.fasterxml.jackson.databind.deser.HandleUnknownTypeIdTest$TestDataHolder\",\"data\":{\"@class\":\"com.fasterxml.jackson.databind.deser.HandleUnknownTypeIdTest$TestData\",\"id\":\"42\"}}", TestDataHolder.class);
+    assertNotNull(holder);
+}

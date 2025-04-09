@@ -1,0 +1,15 @@
+public void testIssue172() throws TransformerException {
+    TransformerFactory factory = TransformerFactory.newInstance();
+    Transformer transformer = factory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+    StringWriter strWriter = new StringWriter();
+    StreamResult result = new StreamResult(strWriter);
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            " <a xmlns:b=\"http://foo.bar.com\" xmlns:c=\"http://bar.foo.com\">\n" +
+            "  <b:b a=\"b\"/>\n" +
+            "  <c:b a=\"c\"/>\n" +
+            " </a>";
+    StreamSource source = new StreamSource(new StringReader(xml));
+    transformer.transform(source, result);
+    String xsl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<xsl:stylesheet version=\"1.0\" xmlns:

@@ -1,0 +1,10 @@
+public void testIssue124() {
+    abstract class FakeUserAccount implements UserAccount {
+        private final List<String> emails = new ArrayList<String>();
+        @Override public void addEmail(String email) { emails.add(email); }
+        @Override public List<String> getEmails() { return ImmutableList.copyOf(emails); }
+    }
+    @Fake private FakeUserAccount userAccount;
+    userAccount.addEmail("test@example.com");
+    assertEquals(1, userAccount.getEmails().size());
+}

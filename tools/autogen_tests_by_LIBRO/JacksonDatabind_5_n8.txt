@@ -1,0 +1,20 @@
+public void testMixinAnnotationLost() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.AUTO_DETECT_FIELDS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+            .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    // This is the additional line needed to fix the issue
+    //module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    mapper.registerModule(module);
+
+    PersonImpl person = new PersonImpl("city", "street", "code");
+
+    String json = mapper.writeValueAsString(person);
+    System.out.println(json);
+    assertEquals("

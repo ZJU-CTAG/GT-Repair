@@ -1,0 +1,15 @@
+public void testTypeIdCompatibility() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Foo.class, Bar.class);
+
+    // should not be able to deserialize as Foo:
+    try {
+        mapper.readValue("{ \"@class\" : \""+Bar.class.getName()+"\" }", Foo.class);
+    } catch (JsonMappingException e) {
+        verifyException(e, "problem: incompatible types");
+    }
+}
+
+public static class Foo { }
+public static class Bar { }

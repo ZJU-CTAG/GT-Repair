@@ -1,0 +1,11 @@
+public void testDecimalNumber() throws IOException {
+    JsonFactory factory = new JsonFactory();
+    factory.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    ObjectMapper mapper = new ObjectMapper(factory);
+    String json = "{\"null\":null,\"nan\":NaN,\"infinity\":Infinity,\"-infinity\":-Infinity}";
+    Map<String,BigDecimal> result = mapper.readValue(json, new TypeReference<Map<String,BigDecimal>>() {});
+    assertEquals(null, result.get("null"));
+    assertEquals(null, result.get("nan"));
+    assertEquals(null, result.get("infinity"));
+    assertEquals(null, result.get("-infinity"));
+}

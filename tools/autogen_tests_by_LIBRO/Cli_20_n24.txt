@@ -1,0 +1,11 @@
+public void testParseLongOption_stopAtNonOption_nonRecognizedLongOption()  throws Exception {
+        String[] args = new String[] {"--zop", "-abfoo"};
+        Options options = new Options();
+        options.addOption("a", false, "toggle -a");
+        options.addOption("b", true, "set -b option");
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse(options, args, true);
+        assertTrue(cmd.hasOption("a"));
+        assertTrue(cmd.hasOption("b"));
+        assertEquals("foo", cmd.getOptionValue("b"));
+    }

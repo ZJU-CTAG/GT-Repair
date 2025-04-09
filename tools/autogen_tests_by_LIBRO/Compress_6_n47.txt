@@ -1,0 +1,23 @@
+public void testZipWithDuplicateFilenames() throws Exception {
+    File tempFile = File.createTempFile("test", ".zip");
+    try {
+        final ZipArchiveOutputStream zipOutputStream =
+            new ZipArchiveOutputStream(new FileOutputStream(tempFile));
+        zipOutputStream.setMethod(ZipArchiveOutputStream.STORED);
+        try {
+            zipOutputStream.putArchiveEntry(new ZipArchiveEntry("test"));
+            zipOutputStream.write("test".getBytes());
+            zipOutputStream.closeArchiveEntry();
+
+            // ZipArchiveOutputStream.putArchiveEntry() uses the
+            // ZipArchiveEntry.getName() method to determine if an entry
+            // already exists in the zip file, so this entry should
+            // overwrite the existing one.
+            zipOutputStream.putArchiveEntry(new ZipArchiveEntry("test"));
+            zipOutputStream.write("test".getBytes());
+            zipOutputStream.closeArchiveEntry();
+        } finally {
+            zipOutputStream.close();
+        }
+
+        final ZipFile zipFile = new ZipFile(

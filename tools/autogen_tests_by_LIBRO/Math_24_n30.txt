@@ -1,0 +1,16 @@
+public void testBrent() {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            return x[0]*x[0] - x[1]*x[1]*x[1];
+        }
+    };
+    MultivariateRealOptimizer optimizer = new BrentOptimizer();
+    PointValuePair pair = optimizer.optimize(
+            new MaxEval(1000),
+            new ObjectiveFunction(f),
+            GoalType.MINIMIZE,
+            new double[] {1,1}
+    );
+    assertEquals(2,pair.getPoint()[0],1e-10);
+    assertEquals(2,pair.getPoint()[1],1e-10);
+}

@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("x").withLongOpt("foo").create());
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.printHelp(pw, HelpFormatter.DEFAULT_WIDTH, "app", "header", options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, "footer", true);
+    pw.flush();
+
+    assertFalse(baos.toString().contains("[<arg>]"));
+}

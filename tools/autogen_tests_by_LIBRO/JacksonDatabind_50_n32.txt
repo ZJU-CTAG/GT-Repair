@@ -1,0 +1,18 @@
+public void testIssue1255_Part2() {
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Inner.class, new InnerDeserializer());
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(module)
+            .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
+
+    Inner inner = new Inner("inner");
+    Outer outer = new Outer("outer", null, inner);
+    inner.setOuter(outer);
+
+    ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+    String json = writer.writeValueAsString(outer);
+    System.out.println("1. " + json);
+
+    Outer result = mapper.readValue(json, Outer.class);
+    System.out.println("2. " + writer.writeValueAsString(result));
+}

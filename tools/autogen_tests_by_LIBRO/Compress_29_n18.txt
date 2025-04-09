@@ -1,0 +1,28 @@
+public void testArchiveStreamFactory () {
+    File zipFile = getFile("test1.zip");
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    FileInputStream fIn = null;
+    ArchiveInputStream aIn = null;
+    try {
+        fIn = new FileInputStream(zipFile);
+        aIn = factory.createArchiveInputStream("cp437", fIn);
+        ArchiveEntry entry;
+        while ((entry = aIn.getNextEntry()) != null) {
+            if (!entry.isDirectory()) {
+                // assertEquals(entry.getName(), "Тест.txt", "name");
+                assertEquals("name", entry.getName(), "Тест.txt");
+            }
+        }
+    } catch (IOException e) {
+        // ignore
+    } catch (ArchiveException e) {
+        // ignore
+    } finally {
+        if (aIn != null) {
+            try {
+                aIn.close();
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+        if (fIn !=

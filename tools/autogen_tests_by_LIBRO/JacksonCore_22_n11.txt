@@ -1,0 +1,19 @@
+public void testFilteredGeneratorDelegate() throws Exception {
+    String str = "{\"field1\" : \"someValue\", \"field2\" : \"someValue\"}";
+
+    JsonFactory jf = new JsonFactory();
+    JsonParser jp = jf.createParser(str);
+    assertNull(jp.getCurrentToken());
+
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jp, new MatchingPatternFilter("field1"), false, false);
+
+    assertNull(filteringParserDelegate.getCurrentToken());
+
+    assertTrue(filteringParserDelegate.hasCurrentToken());
+    assertEquals(filteringParserDelegate.getCurrentToken(), jp.getCurrentToken());
+
+    // the following call to nextToken() should trigger the filtering mechanism
+    // and the current token should not be the field2
+    assertEquals(filteringParserDelegate.nextToken(), jp.nextToken());
+    assertEquals(filteringParserDelegate.getCurrentToken(), jp.getCurrentToken());
+    assertEquals(filteringParserDelegate.getCurrentName(), JsonToken.

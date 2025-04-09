@@ -1,0 +1,8 @@
+public void testSimplexSolver() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 1 }, 0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 1, 0 }, Relationship.EQ, 1d));
+    SimplexSolver solver = new SimplexSolver();
+    RealPointValuePair solution = solver.optimize(f, new LinearConstraintSet(constraints), GoalType.MINIMIZE, true);
+    assertFalse(solution.getPoint()[1] < 0);
+}

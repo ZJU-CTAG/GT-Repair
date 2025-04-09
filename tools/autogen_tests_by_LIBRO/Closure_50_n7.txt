@@ -1,0 +1,15 @@
+public void testJoin() throws Exception {
+    String input = "var variable = confirm(\"value from user\");\n" +
+            "var array = [ \"constant\", variable ];\n" +
+            "alert( array.join(\",\") );";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setPrintInputDelimiter(true);
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("input.js", input) }, options);
+    System.out.println(compiler.toSource());
+    assertTrue(result.success);
+    assertEquals("var variable=confirm(\"value from user\");\nvar array=[\"constant\",variable];\nalert(array.join(\",\"));\n",
+            compiler.toSource());
+}

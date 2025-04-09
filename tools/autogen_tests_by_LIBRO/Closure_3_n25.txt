@@ -1,0 +1,15 @@
+public void testStackTrace() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("function getStack() {\nvar getErrorObject = function() {\n");
+    sb.append("try {\nthrow Error('');\n");
+    sb.append("} catch(err) {\nreturn err;\n}\n");
+    sb.append("};\nreturn getErrorObject().stack;\n}");
+    sb.append("\nwindow['getStackTrace']=getStack;");
+    Compiler compiler = new Compiler();
+    Result compile = compiler.compile(new JsSource(sb.toString(), "main.js"), new CompilerOptions());
+    if (compile.success()) {
+        System.out.println(compile.getCode());
+    } else {
+        compile.getErrors().forEach(System.out::println);
+    }
+}

@@ -1,0 +1,13 @@
+public void testStringWrite() throws Exception {
+    JsonFactory f = new JsonFactory();
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = f.createJsonGenerator(sw);
+
+    g.writeStartObject();
+    g.writeString("value"); // should throw an exception. instead, writes { "value" : null }
+    g.writeEndObject();
+
+    g.close();
+    g = f.createJsonParser(sw.toString());
+    assertNull(((JsonParser)g.getCodec()).readValueAs(Map.class).get("value"));
+}

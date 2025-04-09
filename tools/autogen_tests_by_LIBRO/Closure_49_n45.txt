@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.INFO);
+    Result result = compiler.compile(
+            SourceFile.fromCode("input", "var foo = function bar(){\n" +
+                    "    var bar;\n" +
+                    "    alert(bar);\n" +
+                    "};"),
+            new CompilerOptions[] { options });
+    System.out.println(result.success);
+    System.out.println(result.errors);
+    System.out.println(result.warnings);
+    System.out.println(compiler.toSource());
+}

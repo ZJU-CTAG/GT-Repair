@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    String csv = "Col1,Col2,Col2,Col3,Col4" + "\r\n" +
+            "1,2,3,4,5" + "\r\n" +
+            "4,5,6,7,8";
+    Reader in = new StringReader(csv);
+    CSVParser parser = new CSVParser(in, CSVFormat.RFC4180);
+    try {
+        assertEquals(5, parser.getHeaderMap().size());
+        assertEquals(0, parser.getHeaderMap().get("Col1"));
+        assertEquals(1, parser.getHeaderMap().get("Col2"));
+        assertEquals(2, parser.getHeaderMap().get("Col3"));
+        assertEquals(3, parser.getHeaderMap().get("Col4"));
+    } finally {
+        parser.close();
+    }
+}

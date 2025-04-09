@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException {
+    JsonMappingException jsonMappingException = expectThrows(JsonMappingException.class, () -> {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.readValue(objectMapper.writeValueAsBytes(new Outer()), Outer.class);
+    });
+    JsonMappingException.Reference reference = jsonMappingException.getPath().get(0);
+    assertEquals("ReferenceChainTest$Outer[\"inner\"]", reference.toString());
+}

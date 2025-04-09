@@ -1,0 +1,14 @@
+public void testInvalid() throws Exception {
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = JSON_F.createJsonGenerator(sw);
+    g.writeStartObject();
+    g.writeFieldName("abc");
+    try {
+        g.writeString("abc");
+    } catch (IllegalStateException e) {
+        fail("Should not get IllegalStateException");
+    }
+    g.writeEndObject();
+    g.close();
+    assertEquals("{\"abc\" abc}", sw.toString());
+}

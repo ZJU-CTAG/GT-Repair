@@ -1,0 +1,12 @@
+public void testIssue1351() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    final String expected = "{\"a\":\"b\"}";
+    final String actual = mapper.writeValueAsString(new TestClass());
+    assertEquals(expected, actual);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+private static class TestClass {
+    @JsonProperty public String a = "b";
+}

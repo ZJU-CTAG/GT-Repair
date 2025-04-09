@@ -1,0 +1,14 @@
+public void testAbstractRealDistributionCloning() throws IOException, ClassNotFoundException {
+    final double alpha = 1.5;
+    final double beta = 1.0;
+    GammaDistribution distribution = new GammaDistribution(alpha, beta);
+    GammaDistribution clone = (GammaDistribution) SerializationUtils.clone(distribution);
+
+    // Some tests to make sure the deserialized version works.
+    assertEquals(distribution.getNumericalMean(), clone.getNumericalMean(), 0);
+    assertEquals(distribution.getNumericalVariance(), clone.getNumericalVariance(), 0);
+    assertEquals(distribution.getSupportLowerBound(), clone.getSupportLowerBound(), 0);
+    assertEquals(distribution.getSupportUpperBound(), clone.getSupportUpperBound(), 0);
+    assertEquals(distribution.isSupportLowerBoundInclusive(), clone.isSupportLowerBoundInclusive());
+    assertEquals(distribution.isSupportUpperBoundInclusive(), clone.isSupportUpperBoundInclusive());
+    assertEquals(distribution.isSupport

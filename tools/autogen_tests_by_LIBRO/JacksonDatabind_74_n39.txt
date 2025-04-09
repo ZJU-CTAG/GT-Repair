@@ -1,0 +1,13 @@
+public void testDeserialization() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.getDeserializationConfig().addMixInAnnotations(Object.class, EmptyStringAsNullMixIn.class);
+    objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+
+    Object nullObject = objectMapper.readValue("\"\"", Object.class);
+    assertThat(nullObject, is(nullValue()));
+}
+
+@JsonCreator
+    public static Object create(String value) {
+        return null;
+    }

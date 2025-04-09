@@ -1,0 +1,16 @@
+public void testIssue () {
+    String[] args = new String[] { "-target", "foobar.com" };
+    Options cmdLineOpts = new Options();
+    Option generateTarget = new Option("t", "target", true, "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+    CommandLineParser parser = new PosixParser();
+    CommandLine parsedLine;
+    try {
+        parsedLine = parser.parse(cmdLineOpts, args);
+    } catch (ParseException pe) {
+        throw new RuntimeException("Invalid command: " + pe.getMessage());
+    }
+    if (parsedLine.hasOption("t")) {
+        assertEquals("processing selected target: foobar.com", "processing selected target: " + parsedLine.getOptionValue("t"));
+    }
+}

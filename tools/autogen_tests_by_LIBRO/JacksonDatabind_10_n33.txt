@@ -1,0 +1,23 @@
+public void testIssue107() throws Exception {
+    Bean bean = new Bean();
+    bean.getParameters().put("foo", "bar");
+    String json = new ObjectMapper().writeValueAsString(bean);
+    assertEquals("{\"foo\":\"BAR\"}", json);
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public static class Bean {
+    Map<String, String> parameters = new HashMap<>();
+    @JsonAnyGetter
+    @JsonSerialize(using = MySerializer.class)
+    public Map<String, String> getParameters(){
+        return parameters;
+    }
+}
+
+public static class MySerializer extends JsonSerializer<String> {
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeString("BAR");
+    }
+}

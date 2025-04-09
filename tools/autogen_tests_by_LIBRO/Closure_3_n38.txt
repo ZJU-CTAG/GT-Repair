@@ -1,0 +1,10 @@
+public void testIssue111() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, new JSSourceFile[] { JSSourceFile.fromCode("x.js", "var f=function(){try{throw Error('');}catch(a){}return a.stack};")}, options);
+    String optimized = compiler.toSource();
+    assertEquals("var f=function(){try{throw Error('');}catch(a$jscomp$0){}return a$jscomp$0.stack};", optimized);
+}

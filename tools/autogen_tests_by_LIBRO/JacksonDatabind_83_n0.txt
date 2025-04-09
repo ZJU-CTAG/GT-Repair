@@ -1,0 +1,24 @@
+public void testUUIDProblemHandler() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg)
+                throws IOException {
+            return null;
+        }
+    });
+    mapper.readValue("{\"id\" : \"I am not a UUID\"}", IdBean.class);
+}
+
+public static final class IdBean {
+    private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+}

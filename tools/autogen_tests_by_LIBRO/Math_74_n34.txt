@@ -1,0 +1,20 @@
+public void testDOP853() throws Exception {
+    final double step = 0.001;
+    final double minStep = 0;
+    final double maxStep = 3600;
+    final double scalAbsoluteTolerance = 1.0e-12;
+    final double scalRelativeTolerance = 0.0;
+    final double stopTime = 20;
+    final double[] vecAbsoluteTolerance = null; 
+    final double[] vecRelativeTolerance = null;
+
+    // Create the ODE equations
+    ODEIntegrator ode = new DormandPrince853Integrator(minStep, maxStep,
+                                                       scalAbsoluteTolerance, scalRelativeTolerance,
+                                                       vecAbsoluteTolerance, vecRelativeTolerance);
+
+    ODEStateAndDerivative initState = new ODEStateAndDerivative(0, new double[] { 1.0 }, new double[] { 0.0 });
+    ODEAdapter equations = new ODEAdapter(new Exp());
+    double t = 0;
+    for (int i = 0; i < stopTime / step; i++) {
+        t += step;

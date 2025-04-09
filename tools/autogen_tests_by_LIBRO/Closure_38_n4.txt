@@ -1,0 +1,25 @@
+public void testIssue111() {
+    StringWriter writer = new StringWriter();
+    ErrorReporter errorReporter = new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            writer.write(message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            writer.write(message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            writer.write(message);
+            return new EvaluatorException(message);
+        }
+    };
+    Compiler compiler = new Compiler(errorReporter);
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("source", "function foo() {var g = -0.2; g--0.0;}")
+    }, getCommandLineConfig());
+    assertEquals("", writer.toString());
+}

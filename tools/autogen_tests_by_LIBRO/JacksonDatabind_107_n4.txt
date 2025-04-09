@@ -1,0 +1,17 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId,
+                                            TypeIdResolver idResolver, String failureMsg) throws IOException {
+            if (baseType.getRawClass().equals(JsonNode.class)) {
+                return Void.class;
+            }
+            return super.handleUnknownTypeId(ctxt, baseType, subTypeId, idResolver, failureMsg);
+        }
+    });
+    ObjectNode node = mapper.createObjectNode();
+    node.put("somekey", "somevalue");
+    mapper.readValue(node.toString(), Object.class);
+}

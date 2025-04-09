@@ -1,0 +1,18 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.addCustomPass(CustomPassExecutionTime.BEFORE_OPTIMIZATIONS, new ReplaceStrings(Collections.singletonList(new ReplaceStrings.ReplacementDefinition("test.VERSION", "1.0.0"))));
+    Compiler compiler = new Compiler();
+    compiler.init(
+            // externs
+            new JSSourceFile[] {},
+            // inputs
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "/** @define {string} */\n" +
+                            "test.VERSION = \"\";\n")
+            },
+            // options
+            options);
+    Result result = compiler.compile(null, null, false);
+    System.out.println(result.success);
+    System.out.println(compiler.toSource());
+}

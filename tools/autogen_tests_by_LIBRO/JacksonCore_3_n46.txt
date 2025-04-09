@@ -1,0 +1,21 @@
+public void testIssue_currInputRowStart() throws Exception {
+    String json = "{ \"x\" : 1 }";
+    // parse it
+    JsonParser jp = createParserUsingStream(json, JsonEncoding.UTF8);
+    try {
+        jp.nextToken();
+        JsonToken t = jp.nextToken();
+        assertToken(JsonToken.VALUE_NUMBER_INT, t);
+        assertEquals(1, jp.getIntValue());
+        assertEquals(JsonParser.NumberType.INT, jp.getNumberType());
+        jp.nextToken();
+        assertEquals(JsonToken.END_OBJECT, jp.nextToken());
+        JsonLocation loc = jp.getCurrentLocation();
+        // column calculation is wrong, the value should be 5 instead of 0
+        assertEquals(0, loc.getColumnNr());
+    } finally {
+        jp.close();
+    }
+}
+public JsonParser createParserUsingStream(String json, JsonEncoding encoding) throws Exception {
+    byte[] data = json.getBytes

@@ -1,0 +1,15 @@
+public void testPosixParser() {
+    String[] args = {"-target", "foobar.com"};
+
+    Option target = new Option("t", "target", true,
+            "Target machine for code generation");
+
+    Options options = new Options();
+    options.addOption(target);
+
+    PosixParser parser = new PosixParser();
+    CommandLine parsedLine = parser.parse(options, args);
+    assertNotNull(parsedLine);
+    assertTrue(parsedLine.hasOption('t'));
+    assertEquals("foobar.com", parsedLine.getOptionValue('t'));
+}

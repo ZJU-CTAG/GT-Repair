@@ -1,0 +1,18 @@
+public void testInvalidDate1() {
+  String invalidDate = "2014-10-03T18:00:00.6-05:00";
+  ObjectMapper mapper = new ObjectMapper();
+  mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+  try {
+     mapper.readValue("{\"invalidDate\":\"" + invalidDate + "\"}", TestClass.class);
+  } catch (IOException e) {
+    e.printStackTrace();
+    fail("Parsing An Invalid Date Should Not Fail");
+  }
+}
+
+public void testInvalidDate2() {
+  String invalidDate = "2014-10-03T18:00:00.61-05:00";
+  ObjectMapper mapper = new ObjectMapper();
+  mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  mapper.configure(Des

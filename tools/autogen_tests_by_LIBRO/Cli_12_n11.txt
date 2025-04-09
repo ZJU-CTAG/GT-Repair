@@ -1,0 +1,23 @@
+public void testIssue132() {
+    Options options = new Options();
+
+    Option o1 = OptionBuilder.withLongOpt("target")
+            .withDescription("Generate files for the specified target machine")
+            .hasArg()
+            .isRequired()
+            .create("t");
+
+    options.addOption(o1);
+
+    String[] args = { "-target", "foobar.com" };
+
+    CommandLineParser parser = new PosixParser();
+
+    try {
+        CommandLine line = parser.parse(options, args);
+
+        assertEquals("foobar.com", line.getOptionValue("target"));
+    } catch (ParseException e) {
+        fail("Should not throw exception: " + e.getMessage());
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue109() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
+
+    TestPojo pojo = new TestPojo();
+    pojo.setFirstName("John");
+    pojo.setLastName("Doe");
+
+    String s = mapper.writeValueAsString(pojo);
+
+    assertTrue(s.contains("\"firstName\":\"John\""));
+    assertTrue(s.contains("\"lastName\":\"Doe\""));
+    assertFalse(s.contains("\"fullName\""));
+
+    TestPojo pojo2 = mapper.readValue(s, TestPojo.class);
+
+    assertEquals(pojo.getFirstName(), pojo2.getFirstName());
+    assertEquals(pojo.getLastName(), pojo2.getLastName());
+}

@@ -1,0 +1,24 @@
+public void testOptimize() throws MathException {
+    double minimum = 10;
+    double maximum = 11;
+    double start = 11;
+
+    ParameterGuesser guesser = new ParameterGuesser(new double[] {start});
+    guesser.guess();
+
+    // Parameterized function with minimum at 10
+    ParameterizedFunction function = new ParameterizedFunction(
+        new MinFunction(10), guesser.getStartPoint());
+
+    CMAESOptimizer optimizer = new CMAESOptimizer(100, 1e-4, false, 0, 0, new MersenneTwister(), false,
+        new SimplePointChecker<PointValuePair>(1e-6, 1e-6));
+
+    // Fit with bounds
+    double[] result = optimizer.optimize(function,
+        GoalType.MINIMIZE,
+        new double[] {minimum},
+        new double[] {maximum},
+        new double[] {start}).getPoint();
+
+    // Fit without bounds
+    optimizer = new CMAESOptimizer(100, 1e-4, false, 0, 0, new Mers

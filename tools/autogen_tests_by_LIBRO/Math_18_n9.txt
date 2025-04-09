@@ -1,0 +1,23 @@
+public void testCMAESOptimizerBounds() {
+    // test with the simplex optimizer, which should work fine
+    testBounds(new SimplexOptimizer(1e-11, 1e-11));
+
+    // test with the CMAESOptimizer, which should perform poorly
+    testBounds(new CMAESOptimizer());
+}
+
+private void testBounds(MultivariateOptimizer optimizer) {
+    // the test function is f(x) = (x-3)^2; the minimum is at x=3
+    MultivariateFunction function = new MultivariateFunction() {
+        public double value(double[] x) {
+            return Math.pow(x[0] - 3, 2);
+        }
+    };
+    MultivariateFunctionMappingAdapter adapter =
+            new MultivariateFunctionMappingAdapter(function, new double[]{0}, new double[]{5});
+
+    // try it out with bounds
+    PointValuePair solution = optimizer.optimize(
+            new ObjectiveFunction(adapter),
+            GoalType.MINIMIZE,
+            new MaxEval(100),

@@ -1,0 +1,19 @@
+public void testIssue108() {
+        String js = "function closureCompilerTest(someNode) {
+            var nodeId;
+            return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);
+        }";
+        CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+        CompilerOptions options = new CompilerOptions();
+        level.setOptionsForCompilationLevel(options);
+        options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT6_STRICT);
+        options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT6_STRICT);
+        options.setPrettyPrint(true);
+
+        ErrorManager errorManager = new BasicErrorManager();
+
+        SourceFile input = SourceFile.fromCode("input.js", js);
+        Result result = Compiler.compile(errorManager, Collections.EMPTY_LIST, Collections.singletonList(input), options);
+        if (result.success) {
+            String output = result.generatedSource;
+            System.out.println("

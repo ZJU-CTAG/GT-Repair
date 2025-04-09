@@ -1,0 +1,16 @@
+public void testIssue123() {
+  String js = "/** @interface */ var OtherType = function() {}\n" +
+      "/** @implements {MyType} @constructor */ var MyType = function() {}\n" +
+      "/** @type {MyType} */ var x = /** @type {!OtherType} */ (new Object());";
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  CompilerOptions options = new CompilerOptions();
+  options.setCodingConvention(new ClosureCodingConvention());
+  compiler.compile(
+      ImmutableList.<SourceFile>of(),
+      ImmutableList.of(SourceFile.fromCode("t.js", js)),
+      options);
+  List<Result> results = compiler.getResult().errors;
+  assertEquals(0, results.size());
+  assertEquals(0, compiler.getResult().infos.size());
+}

@@ -1,0 +1,24 @@
+public void testOptionBuilder() {
+    @SuppressWarnings({"UnusedDeclaration"})
+    class TestCommandLineParser extends PosixParser {
+        TestCommandLineParser() {
+            super();
+        }
+        void test(String[] args) throws ParseException {
+            super.parse(OptionBuilder.withValueSeparator('=').create('o'), args);
+        }
+    }
+    
+    TestCommandLineParser parser = new TestCommandLineParser();
+    try {
+        parser.test(new String[]{"-o", "a=b=c"});
+        fail("Missing expected exception");
+    } catch (ParseException e) {
+        assertEquals("Unrecognized option: -o=a=b=c", e.getMessage());
+    }
+    try {
+        parser.test(new String[]{"-o", "b=c"});
+    } catch (ParseException e) {
+        fail("Unexpected exception: " + e.getMessage());
+    }
+}

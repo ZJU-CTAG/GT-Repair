@@ -1,0 +1,11 @@
+public void testSingleLineMapping() throws Exception {
+    final SourceMapGenerator generator = SourceMapGeneratorFactory.getInstance(SourceMapFormat.V3);
+    generator.addMapping("foo.js", "foo_original.js",  new FilePosition(1, 1), new FilePosition(0, 0), new FilePosition(0, 1));
+    final JSONObject json = new JSONObject(generator.toSource());
+    final JSONArray sources = json.getJSONArray("sources");
+    assertEquals("foo_original.js", sources.get(0));
+    final JSONArray sourcesContent = json.getJSONArray("sourcesContent");
+    assertEquals("", sourcesContent.get(0));
+    final JSONArray mappings = json.getJSONArray("mappings");
+    assertEquals("AAAAA,EAAA,EAAG,CAAH", mappings.get(0));
+}

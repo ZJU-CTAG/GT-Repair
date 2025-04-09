@@ -1,0 +1,15 @@
+public void testIssue117() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setVisibilityChecker(mapper.getSerializationConfig()
+            .getDefaultVisibilityChecker()
+            .withFieldVisibility(Visibility.ANY)
+            .withGetterVisibility(Visibility.NONE)
+            .withSetterVisibility(Visibility.NONE)
+            .withCreatorVisibility(Visibility.NONE));
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, true);
+    mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
+    String json = "{\"cause\":\"Foo\"}";
+    mapper.readValue(json, Exception.class);
+}

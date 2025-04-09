@@ -1,0 +1,18 @@
+public void testIssue120() {
+    String source = "function Test(n) { var i = 0; return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i }\n" +
+            "var dummy = \"6chars\";\n" +
+            "console && console.log( Test(dummy) );";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setLanguageVersion(Context.VERSION_1_5);
+    env.setGenerateDebugInfo(true);
+    ASTParser parser = new ASTParser(env);
+    parser.setCompilerOptions(new CompilerOptions());
+    parser.parse(source, "", 1, null);
+    ScriptNode scriptNode = parser.getScriptNode();
+    NodeVisitor optimizer = new NodeVisitor(scriptNode) {
+        boolean isArgument = false;
+        @Override
+        public boolean visit(AstNode node) {
+            if (node instanceof PropertyGet) {
+                PropertyGet propertyGet = (PropertyGet)node;
+                if (propertyGet.get

@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.withLongOpt("a").create("a"));
+    group.addOption(OptionBuilder.withLongOpt("b").create("b"));
+    options.addOptionGroup(group);
+    Properties props = new Properties();
+    props.setProperty("a", "true");
+    try {
+        parser.parse(options, new String[] {"-b"}, props);
+        fail("Expected exception");
+    } catch (ParseException ex) {
+        // expected
+    }
+}

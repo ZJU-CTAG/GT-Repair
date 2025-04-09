@@ -1,0 +1,13 @@
+public void testPropertyNameQuotedGet() {
+    String code = "var y = { get 'x'() { return 1; } };";
+    ScriptableObject scope = cx.initStandardObjects();
+    Object result = cx.evaluateString(scope, code, "<cmd>", 1, null);
+    assertEquals(1l, scope.get("y", scope).get("x", scope));
+}
+
+public void testPropertyNameNumericGet() {
+    String code = "var y = { get 1() { return 1; } };";
+    ScriptableObject scope = cx.initStandardObjects();
+    Object result = cx.evaluateString(scope, code, "<cmd>", 1, null);
+    assertEquals(1l, scope.get("y", scope).get("1", scope));
+}

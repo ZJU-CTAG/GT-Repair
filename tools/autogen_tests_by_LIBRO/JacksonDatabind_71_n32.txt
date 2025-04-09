@@ -1,0 +1,9 @@
+public void testMissingKeyDeserializerForCharSequence()
+    throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Map<CharSequence,Integer> result = mapper.readValue(
+        "[[\"abc\",2]]",
+        new TypeReference<Map<CharSequence,Integer>>() { });
+    assertEquals(Integer.valueOf(2), result.get("abc"));
+}

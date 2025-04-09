@@ -1,0 +1,21 @@
+public void testIssue1() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckVars(true);
+    options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
+    Result result = compiler.compile(
+        "var makeClass = function(protoMethods) {\n" +
+        "  var clazz = function() {\n" +
+        "    this.initialize.apply(this, arguments);\n" +
+        "  }\n" +
+        "  for (var i in protoMethods) {\n" +
+        "    clazz.prototype[i] = protoMethods[i];\n" +
+        "  }\n" +
+        "  return clazz;\n" +
+        "}\n" +
+        "\n" +
+        "/** @constructor */\n" +
+        "var Person = function(name){};\n" +
+        "Person = makeClass(\n" +
+        "/** @lends Person.prototype */ {\n" +

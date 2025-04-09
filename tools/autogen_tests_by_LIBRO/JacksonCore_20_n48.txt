@@ -1,0 +1,12 @@
+public void testEmbeddedObject() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new ObjectWithEmbedded());
+    assertEquals(aposToQuotes("{'bytes':'AQIDBA=='}"), json);
+}
+
+@JsonSerialize(using=ToStringSerializer.class)
+public static class ObjectWithEmbedded
+{
+    public byte[] bytes = new byte[] { 1, 2, 3, 4 };
+}

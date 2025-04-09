@@ -1,0 +1,11 @@
+public void testIssue107() throws Exception {
+    File file = new File(getClass().getResource("/umlauts.zip").toURI());
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    try (ArchiveInputStream zip = asf.createArchiveInputStream(
+            new BufferedInputStream(new FileInputStream(file)))) {
+        ArchiveEntry entry;
+        while ((entry = zip.getNextEntry()) != null) {
+            assertEquals(entry.getName(), entry.getName().replace('\\', '/'));
+        }
+    }
+}

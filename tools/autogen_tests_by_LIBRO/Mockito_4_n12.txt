@@ -1,0 +1,18 @@
+public void testVerifyZeroInteractions() {
+    
+    @SuppressWarnings("unchecked")
+    final MyClass<MyInterface> mock = mock(MyClass.class, withSettings().defaultAnswer(new ThrowsException(null) {
+        @Override
+        public Object answer(InvocationOnMock invitation) throws Throwable {
+            return invitation.getMethod().getReturnType().newInstance(); // same as RETURNS_DEFAULTS
+        }
+    }));
+    verifyZeroInteractions(mock);
+}
+
+public interface MyInterface{}
+public class MyClass<T extends MyInterface> {
+    public T get(String id) {
+        return null;
+    }
+}

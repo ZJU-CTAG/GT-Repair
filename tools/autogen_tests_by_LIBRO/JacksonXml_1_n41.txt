@@ -1,0 +1,17 @@
+public void testIssue117() {
+    String json = "{\"records\":[{\"fields\":[{\"name\":\"x\",\"value\":\"1\"}]},{\"fields\":[{\"name\":\"x\",\"value\":\"2\"}]},{\"fields\":[]},{\"fields\":[{\"name\":\"x\",\"value\":\"3\"}]}]}";
+    Definition def = new ObjectMapper().readValue(json, Definition.class);
+    assertEquals("1", def.getRecords().get(0).getFields().get(0).getValue());
+    assertEquals("2", def.getRecords().get(1).getFields().get(0).getValue());
+    assertEquals("3", def.getRecords().get(2).getFields().get(0).getValue());
+}
+
+public class Definition {
+    private List<Record> records = new ArrayList<Record>();
+
+    public List<Record> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<Record> records) {
+        this.

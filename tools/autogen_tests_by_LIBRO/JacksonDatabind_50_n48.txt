@@ -1,0 +1,20 @@
+public void testIssue1255() throws Exception
+{
+    String json = "{\"@id\":1,\"name\":\"1\",\"link\":{\"@id\":2,\"name\":\"2\",\"link\":{\"@id\":1,\"name\":\"1\"}}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL));
+    TestObject object = mapper.readValue(json, TestObject.class);
+    assertNotNull(object);
+    assertNotNull(object.link);
+    assertEquals(object, object.link.link);
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "@id")
+static class TestObject {
+    public int id;
+    public String name;
+    public TestObject link;
+    public TestObject() { }
+    @JsonCreator
+    public TestObject(@JsonProperty("@id") int id

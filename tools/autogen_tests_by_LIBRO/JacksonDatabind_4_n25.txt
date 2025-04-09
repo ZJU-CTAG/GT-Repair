@@ -1,0 +1,10 @@
+public void testCollectionDeserializer() throws IOException {
+  ObjectMapper mapper = new ObjectMapper();
+  String json = "[{\"a\":\"a\"},{\"b\":\"b\",\"c\":\"c\"}]";
+  try {
+    mapper.readValue(json, Collection.class);
+  } catch (InvalidFormatException e) {
+    JsonMappingException cause = (JsonMappingException) e.getCause();
+    assertNotNull(cause.getPathReference());
+  }
+}

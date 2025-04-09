@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.setMaxIterations(1000);
+    optimizer.setCheckFeasableCount(1);
+    optimizer.setDimension(2);
+    optimizer.setInitialGuess(new double[] { 1.0, 1.0 });
+    optimizer.setSigma(0.0);
+    optimizer.setStoppingFitness(0.0);
+    optimizer.setGenerationSize(2);
+    optimizer.setPopulationSize(2);
+    double[] lower = new double[] { -1.0, -1.0 };
+    double[] upper = new double[] { 1.0, 1.0 };
+    PointValuePair result = optimizer.optimize(new MaxEval(1000),
+            new ObjectiveFunction(new Circle()), GoalType.MINIMIZE, lower, upper);
+    double[] point = result.getPoint();
+    double[] target = new double[] { 0.0, 0.0 };
+    double[] delta = new double[target.length];

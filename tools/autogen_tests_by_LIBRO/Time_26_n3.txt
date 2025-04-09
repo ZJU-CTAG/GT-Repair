@@ -1,0 +1,10 @@
+public void testIssue60() {
+    DateTimeZone tz = DateTimeZone.forID("America/Chicago");
+    DateTimeZone.setDefault(tz);
+    DateTime utc = new DateTime(2011, 10, 30, 7, 0, 0, 0, DateTimeZone.UTC);
+    DateTime est = utc.withZone(tz);
+    assertEquals(2, est.getHourOfDay());
+    assertEquals(1, est.withHourOfDay(3).getHourOfDay());
+    assertEquals(1, est.withHourOfDay(2).getHourOfDay());
+    assertEquals(1, est.withHourOfDay(1).getHourOfDay());
+}

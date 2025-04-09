@@ -1,0 +1,24 @@
+public void testLargeMultivariateDimension() {
+    int n = 100000;
+    double[] y = new double[n];
+    Arrays.fill(y, 1);
+    Weight w = new Weight(y);
+    MultivariateMatrixFunction m = new MultivariateMatrixFunction() {
+        public double[][] value(double[] point) {
+            double[][] jacobian = new double[1][1];
+            jacobian[0][0] = 1;
+            return jacobian;
+        }
+    };
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] point) {
+            double[] value = new double[1];
+            value[0] = 1;
+            return value;
+        }
+    };
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    double[] params = new double[n];
+    Arrays.fill(params, 1);
+    optimizer.optimize(new MaxEval(100), new ObjectiveFunction(f),
+                       new ObjectiveFunction

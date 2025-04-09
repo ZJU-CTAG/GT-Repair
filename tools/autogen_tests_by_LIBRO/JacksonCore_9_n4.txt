@@ -1,0 +1,22 @@
+public void testGetValueAsString()
+    throws IOException
+{
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = JSON_F.createGenerator(sw);
+    gen.writeStartObject();
+    gen.writeFieldName("myField");
+    gen.writeNumber(123);
+    gen.writeEndObject();
+    gen.close();
+
+    JsonParser p = JSON_F.createParser(sw.toString());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("myField", p.getValueAsString());
+    assertEquals("myField", p.getCurrentName());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals("123", p.getValueAsString());
+    assertEquals(123, p.getValueAsInt());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    p.close();
+}

@@ -1,0 +1,22 @@
+public void testVersionNeededToExtract() throws Exception {
+    final File archive = new File( "target/test.zip" );
+    archive.delete();
+
+    final String entryName = "test.txt";
+    final String entryBody = "test";
+
+    final ZipArchiveOutputStream zipOutput = new ZipArchiveOutputStream( archive );
+    zipOutput.setMethod( ZipArchiveOutputStream.DEFLATED );
+    final ZipArchiveEntry zipEntry = new ZipArchiveEntry( entryName );
+    zipOutput.putArchiveEntry( zipEntry );
+    zipOutput.write( entryBody.getBytes() );
+    zipOutput.closeArchiveEntry();
+    zipOutput.close();
+
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    final InputStream input = new FileInputStream( archive );
+    final ArchiveInputStream archiveInput = factory.createArchiveInputStream( ArchiveStreamFactory.ZIP, input );
+    ArchiveEntry entry;
+    while ( ( entry = archiveInput.getNextEntry() ) != null ) {
+      final byte[] bytes = IOUtils.toByteArray( archiveInput );
+     

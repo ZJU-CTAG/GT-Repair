@@ -1,0 +1,14 @@
+public void testEncodeBase64_byteArr_isChunked_urlSafe_maxResultSize() {
+        byte[] binaryData = "A short string to encode in Base64".getBytes();
+        byte[] encoded;
+        encoded = Base64.encodeBase64(binaryData, false, false, 0);
+        assertNull(encoded);
+        encoded = Base64.encodeBase64(binaryData, false, false, Integer.MAX_VALUE);
+        assertNull(encoded);
+        try {
+            encoded = Base64.encodeBase64(binaryData, false, false, Integer.MIN_VALUE);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }

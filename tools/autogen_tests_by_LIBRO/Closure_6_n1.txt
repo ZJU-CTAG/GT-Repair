@@ -1,0 +1,12 @@
+public void testIssue108() {
+    ClosureCompiler compiler = new ClosureCompiler();
+    Result result = compiler.compile(
+        "/** @constructor */ function F() {}" +
+        "F.prototype.bar = function() { this.baz(); };" +
+        "F.prototype.baz = function() { };" +
+        "/** @constructor */ function G() {}" +
+        "G.prototype.bar = F.prototype.bar;"
+    );
+    assertEquals(Result.ERROR, result);
+    assertTrue(compiler.getWarnings().contains(""));
+}

@@ -1,0 +1,14 @@
+public void testObjectIdAndTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    final AnnotationIntrospector introspector = new JaxbAnnotationIntrospector(mapper.getTypeFactory());
+    mapper.setAnnotationIntrospector(introspector);
+    mapper.setSerializerFactory(mapper.getSerializerFactory().withSerializerModifier(new BeanSerializerModifier() {
+        @Override
+        public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+            if (beanDesc.getBeanClass().equals(IntArr.class)) {
+                return

@@ -1,0 +1,13 @@
+public void testFlag() {
+    String[] args = new String[] {
+        "--js", "src/test/js/before.js",
+        "--compilation_level", "ADVANCED_OPTIMIZATIONS",
+        "--js_output_file", "target/out.js",
+        "--language_in", "ECMASCRIPT5",
+        "--process_closure_primitives", "false",
+    };
+    CommandLineRunner runner = new CommandLineRunner(args);
+    runner.doRun();
+    String output = FileUtils.readFileToString(new File("target/out.js"));
+    assertThat(output, containsString("goog.provide('a.b.c');"));
+}

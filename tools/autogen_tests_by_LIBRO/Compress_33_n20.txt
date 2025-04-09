@@ -1,0 +1,18 @@
+public void testZlibWithHeader () {
+    URL url = getClass().getResource("bla.tar.deflatez");
+    CompressorInputStream cis = null;
+    FileInputStream fis = null;
+    try {
+        fis = new FileInputStream(new File(url.toURI()));
+        cis = new CompressorStreamFactory().createCompressorInputStream(fis);
+    } catch (CompressorException e) {
+        fail("Should not throw CompressorException for zlib file with header");
+    } catch (IOException e) {
+        fail("Should not throw IOException for zlib file with header");
+    } catch (URISyntaxException e) {
+        fail("Should not throw URISyntaxException for zlib file with header");
+    } finally {
+        IOUtils.closeQuietly(cis);
+        IOUtils.closeQuietly(fis);
+    }
+}

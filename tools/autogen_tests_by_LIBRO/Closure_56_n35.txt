@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException {
+    String lines = "alert(foo);\nalert(bar);";
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", lines), options);
+    assertEquals(result.errors.length, 2);
+}

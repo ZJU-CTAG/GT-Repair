@@ -1,0 +1,18 @@
+public void testBaseTypeInclusion() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(Derived.class, "derived"));
+    Base base = new Derived();
+    String result = mapper.writeValueAsString(base);
+    System.out.println(result);
+    ObjectMapper mapper2 = new ObjectMapper();
+    mapper2.registerSubtypes(new NamedType(Derived.class, "derived"));
+    Base readValue = mapper2.readValue(result, Base.class);
+    assertNotNull(readValue);
+    assertEquals(Derived.class, readValue.getClass());
+}
+
+abstract class Base {
+}
+
+class Derived extends Base {
+}

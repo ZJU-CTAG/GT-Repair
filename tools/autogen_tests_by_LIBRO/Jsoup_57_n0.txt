@@ -1,0 +1,17 @@
+public void testRemoveIgnoreCase() {
+    Elements options = element.select("option");
+    assertEquals(2, options.size());
+
+    // this throws ConcurrentModificationException as of commit c8dcf9e6ea2ee6e8f7d1cdd1f29fe715f6a818b6
+    options.first().removeAttr("value").removeAttr("selected");
+
+    // this works
+    for (Iterator<Map.Entry<String, Attribute>> iter = options.first().attributes().entrySet().iterator(); iter.hasNext();) {
+            Map.Entry<String, Attribute> entry = iter.next();
+            if (entry.getKey().equalsIgnoreCase("value") || entry.getKey().equalsIgnoreCase("selected")) {
+                iter.remove();
+            }
+        }
+
+    assertEquals(1, options.first().attributes().size());
+}

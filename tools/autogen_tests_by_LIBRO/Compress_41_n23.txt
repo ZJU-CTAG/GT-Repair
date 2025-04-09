@@ -1,0 +1,19 @@
+public void testIssue_MZIP_16() throws IOException {
+        final byte[] BUF = new byte[1024];
+        try (final ZipArchiveOutputStream out = new ZipArchiveOutputStream(new ByteArrayOutputStream())) {
+            out.setLevel(Deflater.NO_COMPRESSION);
+            final ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+            entry.setSize(1024);
+            out.putArchiveEntry(entry);
+            out.write(BUF);
+            out.closeArchiveEntry();
+            out.putArchiveEntry(new ZipArchiveEntry("bad_entry.txt"));
+            out.write("bad_entry".getBytes());
+            out.closeArchiveEntry();
+        }
+        try (final ZipArchiveInputStream in = new ZipArchiveInputStream(
+                new ByteArrayInputStream(out.toByteArray()))) {
+            ZipArchiveEntry entry = in.getNextZipEntry();
+            assertNotNull(entry);
+            assertEquals("test.txt", entry.getName());
+            assertEquals(1024, entry.

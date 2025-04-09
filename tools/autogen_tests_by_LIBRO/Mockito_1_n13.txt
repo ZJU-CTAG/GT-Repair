@@ -1,0 +1,10 @@
+public void testArgumentCaptorForVarargs() {
+    doAnswer(i -> {
+        Object[] args = i.getArguments();
+        args[0].toString();
+        return null;
+    }).when(mock).foo(anyObjectArray());
+
+    ArgumentCaptor<Object[]> argument = ArgumentCaptor.forClass(Object[].class);
+    verify(mock).foo(argument.capture());
+}

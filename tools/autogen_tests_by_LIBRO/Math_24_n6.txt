@@ -1,0 +1,17 @@
+public void testMismatch() {
+    UnivariateFunction f = new SinFunction();
+    UnivariateOptimizer optimizer = new BrentOptimizer();
+    double result = optimizer.optimize(
+      GoalType.MAXIMIZE, new MaxEval(100),
+      new UnivariateObjectiveFunction(f),
+      new SearchInterval(FastMath.E, 4 * FastMath.PI),
+      new UnivariatePointValuePair(0, 0)
+    ).getPoint();
+    assertEquals(2 * FastMath.PI, result, 1e-10);
+}
+
+private static class SinFunction implements UnivariateFunction {
+    public double value(double x) {
+        return FastMath.sin(x);
+    }
+}

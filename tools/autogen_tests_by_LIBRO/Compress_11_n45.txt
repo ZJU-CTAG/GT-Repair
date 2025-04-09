@@ -1,0 +1,14 @@
+public void testIssue() {
+    // set up test file
+    File testFile = new File("test.txt");
+    testFile.deleteOnExit();
+    FileOutputStream fos = new FileOutputStream(testFile);
+    fos.write("test".getBytes());
+    fos.close();
+
+    // test that file is not detected as tar
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    FileInputStream fis = new FileInputStream(testFile);
+    ArchiveInputStream ais = asf.createArchiveInputStream(fis);
+    assertFalse(ais instanceof TarArchiveInputStream);
+}

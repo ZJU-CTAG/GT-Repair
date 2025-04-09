@@ -1,0 +1,16 @@
+public void testIssue4() throws Exception
+{
+    String json = "{\"value\":NaN}";
+    try {
+        mapper.setConfig(mapper.getDeserializationConfig().with(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS));
+        mapper.readValue(json, TestBean.class);
+        fail("Expection exception");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "NaN");
+        verifyException(e, NumberFormatException.class);
+    }
+}
+
+static class TestBean {
+    public BigDecimal value;
+}

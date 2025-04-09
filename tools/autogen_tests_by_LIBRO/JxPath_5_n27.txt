@@ -1,0 +1,9 @@
+public void testUnionOfVariableAndNode() {
+    JXPathContext context = JXPathContext.newContext(null);
+    context.getVariables().declareVariable("var", "/MAIN/B");
+    context.getVariables().declareVariable("var", "/MAIN/C");
+    List list = context.selectNodes("$var | /MAIN/A");
+    assertEquals(2, list.size());
+    assertEquals("/MAIN/A[1]", ((Pointer) list.get(0)).asPath());
+    assertEquals("/MAIN/B[1]", ((Pointer) list.get(1)).asPath());
+}

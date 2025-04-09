@@ -1,0 +1,20 @@
+public void testWeightMemoryConsumption() {
+    // OK
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] point) {
+            double[] f = new double[point.length];
+            for (int i = 0; i < f.length; i++) {
+                f[i] = point[i] * point[i];
+            }
+            return f;
+        }
+    };
+    double[] start = new double[] { 0.0, 0.0, 0.0 };
+    double[] target = new double[] { 1.0, 1.0, 1.0 };
+    double[] weight = new double[] { 1.0, 1.0, 1.0 };
+    LevenbergMarquardtOptimizer o = new LevenbergMarquardtOptimizer();
+    o.optimize(new MaxEval(100), new InitialGuess(start),
+               new ObjectiveFunction(f),
+               new Target(target),
+               new Weight(weight));
+}

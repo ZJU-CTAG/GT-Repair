@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    // given
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+
+    final JsonGenerator.Feature[] features = JsonGenerator.Feature.values();
+    final List<JsonGenerator.Feature> featuresList = Arrays.asList(features);
+    final Map<String, Object> expectedMap = new HashMap<String, Object>();
+    expectedMap.put("features", featuresList);
+
+    // when
+    final String output = objectWriter.writeValueAsString(expectedMap);
+    // then
+    assertThat(output, containsString("features"));
+    assertThat(output, containsString("WRITE_BIGDECIMAL_AS_PLAIN"));
+}

@@ -1,0 +1,11 @@
+public void testBase64InputStream_read_byteArray() throws Exception {
+    ByteArrayInputStream bin = new ByteArrayInputStream("Zm9v".getBytes());
+    Base64InputStream in = new Base64InputStream(bin, true);
+    assertEquals('f', in.read());
+    assertEquals('o', in.read());
+    assertEquals('o', in.read());
+    // This is what fails.
+    int len = in.read(new byte[10]);
+    assertEquals(0, len);
+    in.close();
+}

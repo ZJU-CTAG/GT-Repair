@@ -1,0 +1,12 @@
+public void testIssue110() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("input", "/** @constructor */function C2() {}"
+                + "/** @constructor */function C3(c2) {"
+                + "/** @type {C2} \n @private */this.c2_;"
+                + "use(this.c2_.prop); }")
+        });
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

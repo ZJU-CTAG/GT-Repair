@@ -1,0 +1,22 @@
+public void testGsonNullAdapter() {
+    TypeAdapter<Void> nullAdapter = new TypeAdapter<Void>() {
+        @Override
+        public void write(JsonWriter out, Void value) {
+        }
+        @Override
+        public Void read(JsonReader in) {
+            return null;
+        }
+    };
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new AdapterFactory() {
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (type.getRawType() == Void.class) {
+                return (TypeAdapter<T>) nullAdapter;
+            }
+            return null;
+        }
+    }).create();
+    Void value = gson.fromJson("null", Void.class);
+    assertNull(value);
+}

@@ -1,0 +1,20 @@
+public void testIssue72() throws IOException
+{
+  JsonFactory jf = new JsonFactory();
+  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+  JsonGenerator jg = jf.createGenerator(baos);
+  jg.writeStartObject();
+
+  jg.writeObjectFieldStart("bytes");
+  jg.writeEmbeddedObject(new byte[] {1, 2, 3});
+  jg.writeEndObject();
+
+  jg.writeObjectFieldStart("bytes");
+  jg.writeEmbeddedObject(null);
+  jg.writeEndObject();
+
+  jg.writeEndObject();
+  jg.close();
+
+  assertEquals("{\"bytes\":{\"bytes\":[1,2,3]},\"bytes\":null}", baos.toString());
+}

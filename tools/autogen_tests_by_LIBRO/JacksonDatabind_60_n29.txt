@@ -1,0 +1,9 @@
+public void testTyping() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    CommandAPDU apdu = new CommandAPDU(new byte[] {0x00, 0x00});
+    String json = mapper.writeValueAsString(apdu);
+    CommandAPDU apdu2 = mapper.readValue(json, CommandAPDU.class);
+    assertEquals(apdu.getBytes(), apdu2.getBytes());
+}

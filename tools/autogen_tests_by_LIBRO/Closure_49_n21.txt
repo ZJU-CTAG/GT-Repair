@@ -1,0 +1,17 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    options.setGeneratePseudoNames(true);
+    final Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager() {
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            System.out.println(error.toString());
+        }
+    });
+    Result result = compiler.compile(SourceFile.fromCode("input", "var foo = function bar(){ var bar; alert(bar); };"), options);
+    assertTrue(result.success);
+    System.out.println(compiler.toSource());
+}

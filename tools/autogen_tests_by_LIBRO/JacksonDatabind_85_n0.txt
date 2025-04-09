@@ -1,0 +1,14 @@
+public void testDateTimeSerializer() throws JsonProcessingException {
+    TestObject testObject = new TestObject();
+    testObject.setDate(new Date());
+    testObject.setLocalDate(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    testObject.setLocalDateTime(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+    testObject.setLocalTime(new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+    testObject.setOffsetDateTime(new Date().toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime());
+    testObject.setOffsetTime(new Date().toInstant().atZone(ZoneId.systemDefault()).toOffsetTime());
+    testObject.setZonedDateTime(new Date().toInstant().atZone(ZoneId.systemDefault()));
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    String serialized = objectMapper.writeValueAsString(testObject);
+
+    TestObject deserialized = objectMapper.read

@@ -1,0 +1,17 @@
+public void testTarInputStream() throws Exception {
+    // create tar file using tar -cvf test.tar test.txt
+    // encrypt it using openssl
+    // encrypt -aes-256-cbc -in test.tar -out test.tar.enc
+    // in this example, use password "password"
+    // use the latest commons-codec from subversion
+    // mvn -DskipTests=true install
+    FileInputStream fis = new FileInputStream("target/test.tar.enc");
+    // skip the first 18 bytes
+    fis.skip(18);
+    BufferedInputStream bis = new BufferedInputStream(fis);
+    SecretKeySpec key = new SecretKeySpec("password".getBytes(), "AES");
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(new byte[16]));
+    CipherInputStream cis = new CipherInputStream(bis, cipher);
+    TarInputStream tis = new TarInputStream(cis);
+    Tar

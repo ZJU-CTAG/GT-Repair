@@ -1,0 +1,14 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    options.setCollapsePropertiesLevel(PropertyCollapseLevel.ALL);
+    compiler.compile(SourceFile.fromCode("foo.js",
+            "var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};"),
+            options);
+    System.out.println(compiler.getResult().toSource());
+}

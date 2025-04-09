@@ -1,0 +1,23 @@
+public void testExcludeInt() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.addMixInAnnotations(SimpleBean.class, SimpleBeanMixIn.class);
+
+    final SimpleBean bean = new SimpleBean(4, null);
+    final String json = mapper.writeValueAsString(bean);
+
+    assertEquals("{\"x\":4}", json);
+}
+
+public void testExcludeIntWithAfterburner() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.addMixInAnnotations(SimpleBean.class, SimpleBeanMixIn.class);
+
+    final SimpleBean bean = new SimpleBean(4, null);
+    final String json = mapper.writeValueAsString(bean);
+
+    assertEquals("{

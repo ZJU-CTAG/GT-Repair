@@ -1,0 +1,17 @@
+public void testPrototypes() {
+    String source = ""
+        + "/** @constructor */\n"
+        + "function MyClass() {};\n"
+        + "MyClass.prototype[\"MyMethod\"] = function(a) {"
+        + "this.a = a;"
+        + "};\n"
+        + "window[\"MyClass\"] = MyClass;\n";
+
+    // Compile with advanced optimizations and verbose warnings
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    compiler.compile(
+        SourceFile.fromCode("source", source),
+        options);
+}

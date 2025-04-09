@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    Transformer[] transformers = new Transformer[] {
+            new ConstantTransformer(URLClassLoader.class),
+            new InvokerTransformer("getConstructor", new Class[] { Class[].class }, new Object[] { new Class[] { URL[].class } }),
+            new InvokerTransformer("newInstance", new Class[] { Object[].class }, new Object[] { new Object[] { new URL[] { new File(".").toURI().toURL() } } }),
+            new InvokerTransformer("loadClass", new Class[] { String.class }, new Object[] { "java.lang.Runtime" }),
+            new InvokerTransformer("getMethod", new Class[] { String.class, Class[].class }, new Object[] { "getRuntime", new Class[0] }),
+            new InvokerTransformer("invoke", new Class[] { Object.class, Object[].class }, new Object[] { null, new Object[0] }),
+            new InvokerTransformer("exec", new Class[] { String.class }, new Object[] { "touch test.txt" }),

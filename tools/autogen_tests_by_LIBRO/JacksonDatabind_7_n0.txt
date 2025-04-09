@@ -1,0 +1,30 @@
+public void testIssue9() {
+
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{ \"a\":1 }", Value.class);
+    assertEquals(1, value.a);
+    assertEquals(null, value.b);
+}
+
+static class Value {
+    public Value() {
+    }
+
+    public Value(int a) {
+        this.a = a;
+    }
+
+    public int a;
+    public String b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value result = new Value();
+        JsonParser parser = buffer.asParser();
+        // expecting [START_OBJECT, FIELD_NAME, VALUE_NUMBER_INT, FIELD_NAME, VALUE_NULL, END_OBJECT]
+        // but actually getting [FIELD_NAME, VALUE_NUMBER_INT], because of FIELD_NAME token
+        parser.nextToken();
+        parser.nextToken();
+        result.a = parser.getIntValue();
+        parser.nextToken();
+        result.b =

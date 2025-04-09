@@ -1,0 +1,22 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setExtraAnnotationNames(
+        ImmutableSet.of(
+            SuppressWarnings.class.getName()));
+    options.setRemoveDeadCode(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(
+        options);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        SourceFile.fromCode("in.js", "function f(param) {\n" +
+            "  var fn;\n" +
+            "  if (param) {\n" +
+            "    fn = function() { return true; };\n" +
+            "  }\n" +
+            "  return {\n" +
+            "    method1: function() {\n" +
+            "      if (fn) fn();\n" +
+            "      return true;\n" +
+            "    },\n

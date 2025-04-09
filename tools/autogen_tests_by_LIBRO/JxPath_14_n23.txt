@@ -1,0 +1,21 @@
+public void testFloor() throws JaxenException {
+    Navigator nav = getNavigator();
+    String url = "xml/floor.xml";
+    log("Document [" + url + "]");
+    Object document = nav.getDocument(url);
+    XPath contextpath = new BaseXPath("/", nav);
+    log("Initial Context :: " + contextpath);
+    List list = contextpath.selectNodes(document);
+    Iterator iter = list.iterator();
+    while (iter.hasNext()) {
+        Object context = iter.next();
+        assertXPathValue(context, "floor('NaN')", new Double(Double.NaN));
+        
+        assertXPathValue(context, "floor(-2 div 0)", new Double(Double.NEGATIVE_INFINITY));
+        
+        assertXPathValue(context, "floor(2 div 0)", new Double(Double.POSITIVE_INFINITY));
+        
+        
+        assertXPathValue(context, "ceiling('NaN')", new Double(Double.NaN));
+        
+        assertXPathValue(context, "ceiling

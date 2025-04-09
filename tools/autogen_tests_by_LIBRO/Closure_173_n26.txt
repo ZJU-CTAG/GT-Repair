@@ -1,0 +1,19 @@
+public void testPrecedence() {
+    String js = "x = a % b / b * c * 2;";
+    String min = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Warning: " + message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Error: " + message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);
+        }
+    }).compress(new StringWriter(), 1).toString();
+    assertEquals("x=2*a%b/b*c;", min);
+}

@@ -1,0 +1,18 @@
+public void testObjectIdWithTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_OBJECT);
+
+    ObjectIdGenerator<Long> generator = new ObjectIdGenerators.LongIdGenerator();
+
+    MyObjectWithId myObject = new MyObjectWithId(1L);
+    myObject.objectId = generator.generateId(myObject);
+
+    String jsonString = mapper.writeValueAsString(myObject);
+
+    // fails here with:
+    // com.fasterxml.jackson.databind.JsonMappingException:
+    // No serializer found for class org.joda.time.DateTime and no properties discovered to create BeanSerializer
+    // (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) )
+    MyObjectWithId myObject2 = mapper.readValue(jsonString, MyObjectWithId

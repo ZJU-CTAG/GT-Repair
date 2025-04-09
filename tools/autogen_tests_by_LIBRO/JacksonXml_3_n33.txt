@@ -1,0 +1,17 @@
+public void testIssue() {
+    String document = "<doc><elem attr=\"attrvalue\">textvalue</elem></doc>";
+    StringReader reader = new StringReader(document);
+    
+    XmlMapper mapper = new XmlMapper();
+    FromXmlParser parser = mapper.getFactory().createParser(reader);
+    
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("elem", parser.currentName());
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.currentName());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+    assertEquals("attrvalue", parser.getText());
+    assertEquals("attrvalue", parser.nextTextValue());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());

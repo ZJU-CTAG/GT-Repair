@@ -1,0 +1,14 @@
+public void testIssue() throws IOException {
+  ObjectMapper mapper = new ObjectMapper();
+  Map<String, Object> mapTest = new HashMap<>();
+  mapTest.put("data", new Data());
+
+  ObjectNode treeTest = mapper.createObjectNode();
+  treeTest.putPOJO("data", new Data());
+
+  String mapOut = mapper.writer().withAttribute("myAttr", "Hello!").writeValueAsString(mapTest);
+  assertTrue(mapOut.contains("\"The value is: Hello!\""));
+
+  String treeOut = mapper.writer().withAttribute("myAttr", "Hello!").writeValueAsString(treeTest);
+  assertTrue(treeOut.contains("\"The value is: Hello!\""));
+}

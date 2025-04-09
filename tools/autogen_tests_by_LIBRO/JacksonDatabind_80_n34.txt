@@ -1,0 +1,27 @@
+public void testIssue135() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"baseType\":1,\"a\":{\"name\":\"a\"}}";
+    TypeWithAbstractBase type = mapper.readValue(json, TypeWithAbstractBase.class);
+    assertEquals(TypeWithAbstractBase.BaseType.A, type.baseType);
+}
+
+abstract class BaseType {
+    public String name;
+}
+
+class TypeWithAbstractBase {
+    public enum BaseType {
+        A,
+        B
+    }
+    
+    public BaseType baseType;
+    public A a = new A();
+}
+
+class A extends BaseType {
+    public A() {
+        name = "a";
+    }
+}

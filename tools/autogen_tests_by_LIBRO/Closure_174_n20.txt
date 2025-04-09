@@ -1,0 +1,9 @@
+public void testIssue109() {
+    Compiler compiler = new Compiler();
+    try {
+        compiler.compile(new ArrayList<SourceFile>(), Lists.newArrayList(SourceFile.fromCode("t", "goog.provide(\"main\");\ngoog.scope (function (){ var a = foo, b, c = 1;})")));
+        fail();
+    } catch (RuntimeException e) {
+        assertEquals("JSC_PARSE_ERROR. Parse error. missing name after . operator at t line 2 character 57", e.getMessage());
+    }
+}

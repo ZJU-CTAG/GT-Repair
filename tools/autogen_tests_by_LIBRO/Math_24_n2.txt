@@ -1,0 +1,17 @@
+public void testIssue() {
+    double func(double x) {
+        return x;
+    }
+    double best = Double.MAX_VALUE;
+    for (int i = 0; i < 100; i++) {
+        UnivariatePointValuePair p = new BrentOptimizer(1e-14, 1e-14).optimize(
+                GoalType.MINIMIZE,
+                new MaxEval(1e5),
+                new UnivariateObjectiveFunction(func),
+                new UnivariatePointValuePair(0, 0),
+                new UnivariatePointValuePair(100, 1));
+        best = Math.min(best, p.getValue());
+        assertEquals(0, p.getValue(), 1e-10);
+    }
+    System.out.println(best);
+}

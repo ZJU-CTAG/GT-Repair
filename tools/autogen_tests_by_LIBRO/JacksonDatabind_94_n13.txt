@@ -1,0 +1,22 @@
+public void testIssue1737() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final byte[] data = mapper.writeValueAsBytes(new Pojo());
+
+    final ClassLoader classLoader = new TestClassLoader();
+    final TestConfig config = new TestConfig(classLoader, data,
+            "com.mchange.v2.c3p0.jboss.C3P0PooledDataSource"
+            );
+    final TestResult result = execute(config);
+    assertEquals("com.mchange.v2.c3p0.jboss.C3P0PooledDataSource", result.payload.getClass().getCanonicalName());
+}
+
+private class TestClassLoader extends ClassLoader {
+
+    TestClassLoader() {
+        super(Thread.currentThread().getContextClassLoader());
+    }
+
+    @Override
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
+        if ("com.mchange.v2.c3p0.jboss.C3P0PooledDataSource".equals(name)) {
+            return findClass

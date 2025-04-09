@@ -1,0 +1,13 @@
+public void testIssue123() throws Exception {
+    String archivePath = "src/test/resources/test.tar.bz2";
+    TarArchiveInputStream input = null;
+    input = new TarArchiveInputStream(
+            new BZip2CompressorInputStream(
+                    new FileInputStream(archivePath), true));
+    ArchiveEntry nextMatchedEntry = input.getNextEntry();
+    while (nextMatchedEntry != null) {
+        System.out.println(nextMatchedEntry.getName());
+        nextMatchedEntry = input.getNextEntry();
+    }
+
+}

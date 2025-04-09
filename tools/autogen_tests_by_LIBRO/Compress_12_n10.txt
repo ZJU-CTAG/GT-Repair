@@ -1,0 +1,17 @@
+public void testTarArchiveWithError() throws Exception {
+    File src = null;
+    File dest = null;
+    try {
+        src = new File(getClass().getResource("/data/test-error.tar").toURI());
+        dest = new File(System.getProperty("java.io.tmpdir"), UUID.randomUUID().toString());
+        dest.mkdirs();
+        try (TarArchiveInputStream is = new TarArchiveInputStream(new FileInputStream(src))) {
+            IOUtils.copy(is, new FileOutputStream(new File(dest, "test.tar")));
+        }
+        fail("Expected IOException to be thrown.");
+    } catch (IOException e) {
+        // expected
+    } finally {
+        FileUtils.deleteDirectory(dest);
+    }
+}

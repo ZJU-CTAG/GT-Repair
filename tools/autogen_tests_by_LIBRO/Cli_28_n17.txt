@@ -1,0 +1,24 @@
+public void testDefaultOptions() throws Exception {
+    Properties properties;
+    Parser parser = new PosixParser();
+    CommandLine cmd;
+    Options opts;
+
+	// Create an Options instance
+    opts = new Options();
+	opts.addOption("a", "toggle -a");
+	opts.addOption("b", "toggle -b");
+	opts.addOption(OptionBuilder.withArgName("file").create('c'));
+	opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+
+	// Create a Properties instance to be used as defaults and populate it
+	properties = new Properties();
+	properties.setProperty( "b", "true" );
+	properties.setProperty( "c", "foo" );
+	properties.setProperty( "e", "0" );
+
+	// Parse the command line and check that the properties are correctly handled
+	cmd = parser.parse(opts, null, properties);
+	assertTrue( cmd.hasOption("b") );
+	assertEquals("foo", cmd.getOptionValue("c"));
+	assertEquals("0", cmd

@@ -1,0 +1,14 @@
+public void testIssue111() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addMixInAnnotations(Node.class, NodeMixIn.class);
+
+    Node node = new Node();
+    node.id = "id";
+    node.children.add(node);
+
+    String json = mapper.writeValueAsString(node);
+    assertEquals("{\"id\":\"id\",\"children\":[\"id\"]}", json);
+}
+

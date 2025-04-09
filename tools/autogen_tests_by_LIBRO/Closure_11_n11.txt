@@ -1,0 +1,23 @@
+public void testRecordTypeInvalidProperty() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile("/**"
+        + "* @constructor"
+        + "* @param {{name: string, height: number}} options"
+        + "*/"
+        + "var Person = function(options){};"
+        + "Person = makeClass(/** @lends Person.prototype */ {"
+        + "/**"
+        + "* @this {Person}"
+        + "* @param {{name: string, height: number}} options"
+        + "*/"
+        + "initialize: function(options) {"
+        + "/** @type {string} */ this.name_ = options.thisPropDoesNotExist;"
+        + "},"
+        + "/**"
+        + "* @param {string} message"
+        + "* @this {Person}"
+        + "*/"
+        + "say: function(message) {"
+        + "window.console.log(this.name_ + ' says: ' + message);"
+        + "}});"
+        + "var jo

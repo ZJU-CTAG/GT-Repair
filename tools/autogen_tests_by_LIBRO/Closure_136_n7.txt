@@ -1,0 +1,10 @@
+public void testIssueSuper() {
+    String source = "(function(){Class = function(){};Class.prototype = { initialise: function() {} };var SubClass = new Class();SubClass.prototype = { initialise: function($super) { this.setName('subclass');$super(); } };SubClass.prototype.setName = function($super, name) {$super(); this.name = name; };var subclass = new SubClass();subclass.initialise();subclass.setName('subclassname');subclass.name;})()";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initCompilerOptionsIfTesting();
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test.js", source)
+    });
+    assertEquals("subclassname", compiler.toSource());
+}

@@ -1,0 +1,10 @@
+public void testIssue() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = new JsonFactory().createJsonGenerator(sw);
+    gen.writeStartObject();
+    gen.writeStringField("bad", "value");
+    gen.writeEndObject();
+    gen.close();
+    String json = sw.toString();
+    assertEquals("{\"bad\":value}", json); // should fail instead
+}

@@ -1,0 +1,17 @@
+public void testAddMoreThan2SlackVariables() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { -3, -2 }, 0);
+
+    Collection constraints = new ArrayList();
+    constraints.add(new LinearConstraint(new double[] { -1, 1 }, Relationship.LEQ, 0));
+    constraints.add(new LinearConstraint(new double[] { 1, -1 }, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] { -1, 0 }, Relationship.LEQ, 0));
+
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE,
+                                              true);
+
+    assertNotNull(solution);
+
+    double eps = 1e-6;
+    assertEquals(0, (solution.getValue() + 3 * solution.getPoint()[0] + 2 * solution.getPoint()[1]), eps);
+    assertTrue(solution.getPoint()[0] >= -eps);

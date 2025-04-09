@@ -1,0 +1,20 @@
+public void test_addSingletonGetter() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setTrustedStrings(true);
+    options.setDependencyOptions(new DependencyOptions()
+        .setDependencySorting(true).setMoocherDropping(true));
+
+    Compiler compiler = new Compiler(new TestErrorManager(TestErrorManager.THROW));
+
+    SourceFile test = SourceFile.fromCode("test",
+        Joiner.on('\n').join(
+            "goog.provide('foo');

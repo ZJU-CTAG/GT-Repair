@@ -1,0 +1,8 @@
+public void testZlibHeader1() throws Exception {
+    InputStream is = new FileInputStream(getFile("bla.tar.deflatez"));
+    CompressorInputStream in = new CompressorStreamFactory().createCompressorInputStream(is);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    IOUtils.copy(in, baos);
+    in.close();
+    assertEquals(COMPRESSED_TAR, baos.toByteArray());
+}

@@ -1,0 +1,16 @@
+public void testAIFFDetection() throws Exception {
+    InputStream is =
+            getClass().getResourceAsStream("test-documents/testAIFF.aif");
+    
+    assertNotNull(is);
+    
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    
+    try {
+        ArchiveInputStream ais = factory.createArchiveInputStream(is);
+        ais.close();
+        fail("Detected an AIFF file as tar archive");
+    } catch (ArchiveException ex) {
+        assertTrue(ex.getMessage().startsWith("No ArchiveStream"));
+    }
+}

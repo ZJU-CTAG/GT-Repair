@@ -1,0 +1,21 @@
+public void testWriteEmbeddedObject() throws IOException
+{
+    byte[] b = new byte[] { 1, 2, -3, 4, 5 };
+
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = createGenerator(ObjectWriteContext.empty(), sw);
+
+    // first: should be ok to write null
+    g.writeEmbeddedObject(null);
+    assertEquals("null", sw.toString());
+
+    // then: should be able to write binary data
+    sw = new StringWriter();
+    g = createGenerator(ObjectWriteContext.empty(), sw);
+    g.writeStartObject();
+    g.writeFieldName("a");
+    g.writeEmbeddedObject(b);
+    g.writeEndObject();
+    g.close();
+    assertEquals(aposToQuotes("{'a':[1,2,-3,4,5]}"), sw.toString());
+}

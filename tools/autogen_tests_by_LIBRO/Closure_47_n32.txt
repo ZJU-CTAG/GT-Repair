@@ -1,0 +1,19 @@
+public void testIssueWithSourceMap() {
+    String code = "public class Test {\n" +
+            "\n" +
+            "    public void test() {\n" +
+            "        int x = 1 + 2;\n" +
+            "    }\n" +
+            "}";
+    ClassCode classCode = new ClassCode(new ClassName("Test"));
+    classCode.setSourceCode(code);
+    classCode.setSourceMap(true);
+    Class<?> clazz = classCode.compile().loadClass("Test");
+    StackTraceElement[] stackTrace = new Exception().getStackTrace();
+    for (StackTraceElement ste : stackTrace) {
+        if (ste.getClassName().equals(clazz.getName())) {
+            assertEquals(2, ste.getLineNumber());
+            break;
+        }
+    }
+}

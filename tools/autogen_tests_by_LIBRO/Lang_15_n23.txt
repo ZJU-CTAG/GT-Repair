@@ -1,0 +1,13 @@
+public void testTypeVarAssigns() {
+    TypeVariable<Class<Other>>[] var = Other.class.getTypeParameters();
+
+    Map<TypeVariable<?>, Type> typeVarAssigns = TypeUtils.getTypeArguments(Other.class, var[0]);
+    Assert.assertEquals(1, typeVarAssigns.size());
+    Assert.assertEquals(Object.class, typeVarAssigns.get(var[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(Other.class, This.class);
+    Assert.assertEquals(2, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(This.class.getTypeParameters()[0]));
+    Assert.assertEquals(Other.class.getTypeParameters()[0], typeVarAssigns.get(This.class.getTypeParameters()[1]));
+}
+

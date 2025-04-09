@@ -1,0 +1,10 @@
+public void testTypeHierarchyAdapters() {
+    GsonBuilder gb = new GsonBuilder();
+    gb.registerTypeHierarchyAdapter(Vehicle.class, new VehicleTypeAdapter());
+    Gson gson = gb.create();
+    Car c = new Car();
+    c.setWheels(4);
+    String json = gson.toJson(c);
+    Vehicle v = gson.fromJson(json, Car.class);
+    assertEquals(4, v.getWheels());
+}

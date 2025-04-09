@@ -1,0 +1,22 @@
+public void testX5455ExtendedTimestamp() {
+    // this test is failing under JDK 9.
+    // It's failing because the JDK9 change to the ZipEntry changes the
+    // the behaviour of this test, which is expecting the value returned by
+    // getTime() to be the value returned by getTime().
+    // The change to ZipEntry appears to be a result of this bug:
+    //  https://bugs.openjdk.java.net/browse/JDK-8073497
+    //
+    // I'm unsure if there is a workaround for this, since it seems like
+    // getTime() is explicitly setting the value of the time field
+    // and the test is expecting that value to be returned.
+    //
+    // this test might not be written correctly.
+    //
+    // it might be better to use JodaTime to pull apart the timestamp,
+    // and then run the test from there.
+    //
+
+    long time = System.currentTimeMillis();
+    ZipEntry ze = new ZipEntry("test");
+    ze.setTime(time);
+    assertEquals(time, ze.get

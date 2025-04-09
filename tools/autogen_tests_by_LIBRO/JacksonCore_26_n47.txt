@@ -1,0 +1,15 @@
+public void testNonBlockingByteArrayParser() throws Exception {
+    String json = "[[[";
+    JsonFactory factory = new JsonFactory();
+    JsonParser parser = factory.createNonBlockingByteArrayParser();
+    ByteArrayFeeder feeder = (ByteArrayFeeder) parser.getNonBlockingInputFeeder();
+    byte[] bytes = json.getBytes(Charset.forName("UTF-8"));
+    feeder.feedInput(bytes, 2, 3);
+    assertEquals(JsonToken.START_ARRAY, parser.nextToken());
+    assertEquals(1, parser.getCurrentLocation().getByteOffset());
+    assertEquals(1, parser.getTokenLocation().getByteOffset());
+    feeder.feedInput(bytes, 0, 1);
+    assertEquals(JsonToken.START_ARRAY, parser.nextToken());
+    assertEquals(2, parser.getCurrentLocation().getByteOffset());
+    assertEquals(2, parser.getTokenLocation().getByteOffset());
+}

@@ -1,0 +1,14 @@
+public void testClosure() {
+    String code = "Math.blah = function(test) { test.a = 5; };" +
+            "var test = new Object();" +
+            "Math.blah(test);";
+    String[][] flags = new String[][] { { "compilation_level", "SIMPLE_OPTIMIZATIONS" }, { "language_in", "ECMASCRIPT5" } };
+    Output output = new Output();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("code", code) },
+            new JSSourceFile[] { JSSourceFile.fromCode("externs", "") }, options);
+    if (!result.success) {

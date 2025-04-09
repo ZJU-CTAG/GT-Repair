@@ -1,0 +1,11 @@
+public void testImplicitCtorArgName() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
+            .setPropertyNamingStrategy(new PropertyNamingStrategy.SnakeCaseStrategy());
+    String json = mapper.writeValueAsString(new NumberUtilsTest.TestBean(0));
+    assertEquals("{\"index\":0}", json);
+    NumberUtilsTest.TestBean result = mapper.readValue(json, NumberUtilsTest.TestBean.class);
+    assertEquals(0, result.getIndex());
+}

@@ -1,0 +1,17 @@
+public void testIssue60 () {
+    DateTimeZone tz = DateTimeZone.forID("Australia/NSW");
+    // Check that the change happens at 2am standard time
+    DateTime dt1 = new DateTime(2010, 4, 4, 1, 0, 0, 0, tz);
+    DateTime dt2 = new DateTime(2010, 4, 4, 3, 0, 0, 0, tz);
+    assertEquals(1, dt1.getHourOfDay());
+    assertEquals(3, dt2.getHourOfDay());
+    assertEquals(0, tz.getOffset(dt1));
+    assertEquals(3600000, tz.getOffset(dt2));
+    // Now check that setting the hour of day to 2am is an error
+    try {
+        dt1.withHourOfDay(2);
+        fail();
+    } catch (IllegalFieldValueException ex) {
+        // expected - 2am does not exist
+    }
+}

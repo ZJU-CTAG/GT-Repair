@@ -1,0 +1,20 @@
+public void testSolve() {
+    final double min = -1.0;
+    final double max = 1.0;
+    final double initial = 0.0;
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x;
+        }
+    };
+
+    final double root = FastMath.sqrt(0.5);
+    final double yMin = f.value(min);
+    final double yMax = f.value(max);
+    final double yInitial = f.value(initial);
+
+    final UnivariateRealSolver solver = new BrentSolver();
+    final double result = solver.solve(f, min, max, initial);
+
+    assertEquals(min, result, 0.0);
+}

@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    UTF8JsonGenerator jsonGenerator = new UTF8JsonGenerator( baos, 
+                    JsonEncoding.UTF8, 
+                    new ObjectMapper().getJsonFactory().getCodec());
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeStringField("name", "John");
+    jsonGenerator.writeEndObject();
+    jsonGenerator.close();
+    String json = baos.toString();
+    assertEquals("{\"name\":\"John\"}", json);
+}

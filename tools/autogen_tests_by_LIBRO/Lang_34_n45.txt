@@ -1,0 +1,16 @@
+public void testToStringStyleMemoryLeak() {
+    ClassLoader cl = new URLClassLoader(new URL[0], Thread.currentThread().getContextClassLoader());
+    Thread t = new Thread(new Runnable() {
+        public void run() {
+            new ToStringStyle();
+        }
+    });
+    t.setContextClassLoader(cl);
+    t.start();
+    try {
+        t.join();
+    } catch (InterruptedException e) {
+        fail(e.getMessage());
+    }
+    assertEquals(0, cl.getReferences().size());
+}

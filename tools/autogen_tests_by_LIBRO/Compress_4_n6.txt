@@ -1,0 +1,18 @@
+public void testFinish() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos = new TarArchiveOutputStream(baos);
+    final String content = "test";
+    final ArchiveEntry ae = new TarArchiveEntry("test.txt");
+    ae.setSize(content.length());
+    aos.putArchiveEntry(ae);
+    IOUtils.write(content, aos);
+    aos.closeArchiveEntry();
+    aos.finish();
+    aos.close();
+    final ArchiveInputStream ais = new TarArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    final ArchiveEntry ae1 = ais.getNextEntry();
+    assertEquals("test.txt", ae1.getName());
+    assertEquals(content.length(), ae1.getSize());
+    assertNotNull(ais.getNextEntry());
+    ais.close();
+}

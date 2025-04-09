@@ -1,0 +1,15 @@
+public void testIssue108() {
+    final DateTimeSerializer serializer = new DateTimeSerializer(DateTimeZone.UTC);
+
+    final SimpleModule module = new SimpleModule("mymodule");
+    module.addSerializer(DateTime.class, serializer);
+    module.addDeserializer(DateTime.class, serializer);
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+
+    final DateTime dt = DateTime.now();
+    final String actual = mapper.writeValueAsString(dt);
+    final DateTime parsed = mapper.readValue(actual, DateTime.class);
+    Assert.assertEquals(dt, parsed);
+}

@@ -1,0 +1,21 @@
+public void testInnerGroupMinConstraint() {
+    Options options = new Options();
+
+    Group groupA = new GroupBuilder().withOption(Option.builder().withShortName("a").withDescription("a").create()).create();
+    Group groupB = new GroupBuilder().withOption(Option.builder().withShortName("b").withDescription("b").create()).create();
+    Group groupC = new GroupBuilder().withOption(Option.builder().withShortName("c").withDescription("c").create()).create();
+    Group group = new GroupBuilder().withOption(groupA).withOption(groupB).withOption(groupC).withMinimum(2).create();
+
+    options.addOptionGroup(group);
+
+    CommandLineParser clp = new DefaultParser();
+
+    try {
+        CommandLine cl = clp.parse(options, new String[]{"-a", "-b", "-c"});
+        fail("Should have thrown an exception");
+    } catch (ParseException e) {
+        // expected
+    }
+
+    try {
+        CommandLine cl = clp.parse(options, new String[]{"-a"}

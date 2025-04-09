@@ -1,0 +1,21 @@
+public void testIssue() {
+    String code = "window[\"foo\"] = function (obj, modifiesProp) {\n" +
+        "  return (function (saved) {\n" +
+        "    return modifiesProp(obj) + saved;\n" +
+        "  })(obj[\"prop\"]);\n" +
+        "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+        options);
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+        SourceFile.fromCode("input.js", code),
+        SourceFile.fromCode("window.js", "window = {};"),
+        options);
+    for (JSError error : result.errors) {
+      System.err.println(error.toString());
+    }
+    String compiled = compiler.toSource();
+    System.out.println(compiled);
+}

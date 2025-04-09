@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    File archive = new File("COMPRESS-262.tar.gz");
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(
+            new GzipCompressorInputStream(new FileInputStream(archive)))) {
+        TarArchiveEntry entry;
+        while ((entry = tais.getNextTarEntry()) != null) {
+            System.out.println(entry.getName());
+            System.out.println(entry.getUserName()+"/"+entry.getGroupName());
+        }
+    }
+}

@@ -1,0 +1,28 @@
+public void testDeserialization() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    String json = "{}";
+    ObjectNode de1 = om.readValue(json, ObjectNode.class);
+    assertNotNull(de1);
+}
+
+public void testDeserializationOfEmpty() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    String json = "{}";
+    ObjectNode de1 = om.readValue(json, ObjectNode.class);
+    assertNotNull(de1);
+    MyValue de2 = om.readValue(json, MyValue.class);
+    assertNotNull(de2);
+}
+
+public static class MyValue
+{
+    private final ObjectNode object;
+
+    @JsonCreator
+    public MyValue(ObjectNode object) { this.object = object; }
+
+    @JsonValue
+    public ObjectNode getObject() { return object; }
+}

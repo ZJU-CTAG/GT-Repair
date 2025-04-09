@@ -1,0 +1,17 @@
+public void testRecordTypeDefinition() {
+    CompilerOptions options = new CompilerOptions();
+
+    options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setClosurePass(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(getCompilerInput("RecordType1.js"), getCompilerInput("RecordType2.js"), options);
+    assertTrue(result.success);
+
+    assertEquals(0, result.warnings.length);
+    assertEquals(0, result.errors.length);
+}

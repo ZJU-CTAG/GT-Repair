@@ -1,0 +1,21 @@
+public void testIssue108() {
+    double[][] obs = new double[][] {
+        { 1, 2 }, { 2, 4 }, { 3, 6 }, { 4, 8 },
+        { 5, 10 }, { 6, 12 }, { 7, 14 }, { 8, 16 },
+        { 9, 18 }, { 10, 20 }, { 11, 22 }, { 12, 24 },
+        { 13, 26 }, { 14, 28 }, { 15, 30 }, { 16, 32 }
+    };
+
+    PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+    for (int i = 0; i < obs.length; ++i) {
+        fitter.addObservedPoint(obs[i][0], obs[i][1]);
+    }
+
+    int rows = obs.length;
+    double[] residuals = new double[rows];
+    double[] weights = new double[rows];
+    for (int i =0; i < rows; i++) {
+        residuals[i] = 1;
+        weights[i] = 2;
+    }
+    double chiSquare = 0;

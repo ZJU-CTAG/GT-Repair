@@ -1,0 +1,25 @@
+public void testImplicitConstructorPropertyName() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.SnakeCaseStrategy());
+    String json = "{\"firstName\": \"Bob\", \"lastName\": \"Smith\"}";
+    Person p = mapper.readValue(json, Person.class);
+    assertEquals("Bob", p.getFirstName());
+    assertEquals("Smith", p.getLastName());
+}
+
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+public static final class Person {
+    private String firstName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    private String lastName;
+    public String getLastName() {
+        return lastName;
+    }
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}

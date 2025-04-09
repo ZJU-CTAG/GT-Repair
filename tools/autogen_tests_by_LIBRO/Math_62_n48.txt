@@ -1,0 +1,22 @@
+public void testMisc() {
+    final MultivariateDifferentiableFunction f = new MultivariateDifferentiableFunction() {
+        @Override
+        public double[] value(double[] point) {
+            return new double[] { point[0] * point[0] + point[1] * point[1] };
+        }
+
+        @Override
+        public MultivariateMatrixFunction jacobian() {
+            return new MultivariateMatrixFunction() {
+                @Override
+                public double[][] value(double[] point) {
+                    return new double[][] { { 2 * point[0], 2 * point[1] } };
+                }
+            };
+        }
+    };
+
+    final NonLinearConjugateGradientOptimizer optimizer = new NonLinearConjugateGradientOptimizer(
+            NonLinearConjugateGradientOptimizer.Formula.FLETCHER_REEVES, 1e-8, 1e-8, 1e-8);
+
+    final RealPointValuePair optimum1 = optimizer.optimize(f, GoalType.MINIMIZE, new double[] { 2, 1 });

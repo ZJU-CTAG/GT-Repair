@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    String json = "{\"records\":[{\"fields\":[{\"fieldName\":\"name\",\"fieldValue\":\"John Doe\"}]},{\"fields\":[{\"fieldName\":\"name\",\"fieldValue\":\"Jane Doe\"}]}]}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);
+
+    DefinitionDTO definitionDTO = mapper.readValue(json, DefinitionDTO.class);
+    System.out.println(definitionDTO);
+
+    // now with an empty inner list, and see what happens:
+
+    json = "{\"records\":[{\"fields\":[{\"fieldName\":\"name\",\"fieldValue\":\"John Doe\"}]},{\"fields\":[]}]}";
+    definitionDTO = mapper.readValue(json, DefinitionDTO.class);
+    System.out.println(definitionDTO

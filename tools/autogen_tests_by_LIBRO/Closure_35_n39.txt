@@ -1,0 +1,15 @@
+public void testInconsistentReturnType() {
+    Function<Boolean, Function<Boolean, Object>> func = a -> b -> {
+        Object results;
+        if (a) {
+            results = new Object();
+        }
+        if (b) {
+            results = results != null ? results : new Object();
+        } else {
+            results = results != null ? results : new Object();
+        }
+        return results;
+    };
+    System.out.println(func.apply(false).apply(false).getClass());
+}

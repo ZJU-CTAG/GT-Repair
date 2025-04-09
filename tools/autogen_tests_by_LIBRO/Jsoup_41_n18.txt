@@ -1,0 +1,15 @@
+public void testHashCode() {
+    String html = "<p>One</p><p>Two</p>";
+    Document doc = Jsoup.parse(html);
+
+    Elements ps = doc.select("p");
+    assertEquals(2, ps.size());
+
+    Set<Integer> hashCodes = new HashSet<Integer>();
+    for (Element p : ps) {
+        hashCodes.add(p.hashCode());
+    }
+
+    // We expect all hash codes to be different (so set size should be 2)
+    assertEquals(2, hashCodes.size());
+}

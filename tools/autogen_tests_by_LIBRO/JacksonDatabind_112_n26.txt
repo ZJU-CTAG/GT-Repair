@@ -1,0 +1,12 @@
+public void testStringCollection() throws JsonProcessingException {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new Jdk8Module());
+    String json = om.writeValueAsString(ImmutableSet.of("a", "b", "c"));
+    assertEquals("[\"a\",\"b\",\"c\"]", json);
+    Collection<String> col = om.readValue(json, new TypeReference<Collection<String>>() {});
+    assertEquals(ImmutableList.of("a", "b", "c"), col);
+    col = om.readValue(json, new TypeReference<ImmutableSet<String>>() {});
+    assertEquals(ImmutableList.of("a", "b", "c"), col);
+    col = om.readValue(json, new TypeReference<ImmutableList<String>>() {});
+    assertEquals(ImmutableList.of("a", "b", "c"), col);
+}

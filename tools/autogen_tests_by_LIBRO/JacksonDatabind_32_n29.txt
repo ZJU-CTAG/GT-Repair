@@ -1,0 +1,18 @@
+public void testIssueDeserializationFromEmptyObject() throws Exception {
+    final String json = "{}";
+    ObjectMapper mapper = new ObjectMapper();
+    SomeObjectThatCanBeAggregated someObjectThatCanBeAggregated = mapper.readValue(json, SomeObjectThatCanBeAggregated.class);
+    assertEquals(EmptyObject.class, someObjectThatCanBeAggregated.obj.getClass());
+}
+
+public class SomeObjectThatCanBeAggregated {
+    public Object obj;
+
+    @JsonCreator
+    public SomeObjectThatCanBeAggregated(Object obj) {
+        this.obj = obj;
+    }
+}
+
+public class EmptyObject {
+}

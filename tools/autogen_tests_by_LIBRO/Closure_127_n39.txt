@@ -1,0 +1,7 @@
+public void testIssue108() {
+    String s = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');";
+    String expected = "console.log('ok then...');";
+    Optimizer o = new Optimizer();
+    String optimized = o.optimize(s).toSource();
+    assertEquals(expected, optimized);
+}

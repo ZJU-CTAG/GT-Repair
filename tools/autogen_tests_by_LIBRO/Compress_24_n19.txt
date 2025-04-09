@@ -1,0 +1,19 @@
+public void testTarArchiveInputStream() throws Exception {
+    byte[] bytes = new byte[512];
+    ByteArrayOutputStream data = new ByteArrayOutputStream();
+    data.write("foo/bar/baz".getBytes("US-ASCII"));
+    for (int i = 0; i < bytes.length - 13; i++) {
+        data.write(65);
+    }
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(baos);
+    TarArchiveEntry entry = new TarArchiveEntry("foo/bar/baz");
+    entry.setSize(15);
+    entry.setUserId(0xffffffff);
+    entry.setUserName("user");
+    tos.putArchiveEntry(entry);
+    tos.write(data.toByteArray(), 0, 15);
+    tos.closeArchiveEntry();
+    tos.close();
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    entry

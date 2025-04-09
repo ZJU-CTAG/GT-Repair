@@ -1,0 +1,12 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    String json = "{\"@type\":\"com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$UnknownClass\",\"id\":\"id\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_CREATORS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_GETTERS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_IS_GETTERS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_SETTERS, false);
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId

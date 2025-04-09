@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Document doc = Jsoup.parse("<body><div1></div1><div2></div2><div3></div3><div4></div4></body>");
+
+    List<Element> toMove = new ArrayList<Element>() {{
+        add(doc.body().child(2));
+        add(doc.body().child(3));
+    }};
+
+    doc.body().insertChildren(0, toMove);
+    assertEquals("<body><div3></div3><div4></div4><div1></div1><div2></div2></body>", doc.body().html());
+
+}

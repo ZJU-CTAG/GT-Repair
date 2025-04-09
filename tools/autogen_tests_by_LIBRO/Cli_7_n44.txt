@@ -1,0 +1,15 @@
+public void testRequiredOptions() {
+    CommandBuilder a = new CommandBuilder();
+    a.withName("a");
+    a.withOption(new OptionBuilder().withLongName("help").create());
+    a = new CommandBuilder();
+    a.withName("b");
+    a.withOption(new OptionBuilder().withLongName("c").withArgument(new ArgumentBuilder().withName("arg").create()).create());
+    a = new CommandBuilder();
+    a.withName("c");
+    a.withOption(new OptionBuilder().withLongName("d").create());
+    Group g = new GroupBuilder().withOption(new OptionBuilder().withLongName("help").create()).withCommand(new CommandBuilder().withName("a").create()).withCommand(new CommandBuilder().withName("b").create()).withCommand(new CommandBuilder().withName("c").create()).create();
+    CommandLine cl = new CommandLine(g);
+    String[] args = new String[] { "-h" };
+    cl.parse(args);
+    assertEquals(Arrays.asList(new String[] { "-h"

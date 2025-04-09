@@ -1,0 +1,24 @@
+public void testPossiblyWrongTokenBufferDelegation() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String json = "{\"a\":1, \"b\":null}";
+    Value value = objectMapper.readValue(json, Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+class Value {
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        JsonParser jsonParser = buffer.asParser();
+        try {
+            while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+                if (jsonParser.getCurrentToken() == JsonToken.FIELD_NAME) {
+                    switch(jsonParser.getCurrentName()) {
+                        case "a":
+                            jsonParser.nextToken();
+                            value.a = jsonParser.getIntValue();
+                            break;
+                        case "b":
+                            jsonParser.nextToken();
+                            value.b = jsonParser.getValueAsString();
+                           

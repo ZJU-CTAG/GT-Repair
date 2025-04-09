@@ -1,0 +1,17 @@
+public void testPartial() {
+    Partial a = new Partial(new DateTimeFieldType[]{ hourOfDay() }, new int[]{ 1 });
+    assertEquals(a, new Partial(hourOfDay(), 1));
+}
+
+public void testIssue() {
+    try {
+        new Partial(new DateTimeFieldType[]{ clockhourOfDay(), hourOfDay() }, new int[]{ 1, 1 });
+        fail("Construtctor should throw IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // ok
+    }
+
+    assertEquals(new Partial(clockhourOfDay(), 1), new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1));
+
+    assertEquals(new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1), new Partial(hourOfDay(), 1).with(clockhourOfDay(), 1));
+}

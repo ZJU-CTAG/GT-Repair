@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final int n = 10;
+    final double sigma = 0.1;
+    final double[] residuals = new double[n];
+    final double[] weights = new double[n];
+    for (int i = 0; i < n; ++i) {
+        residuals[i] = sigma * i;
+        weights[i] = i;
+    }
+    final double rms = new AbstractLeastSquares() {
+        public int getNobs() { return n;}
+        public int getNRes() { return n;}
+        public double[] getResiduals() { return residuals; }
+        public double[] getResidualsWeights() { return weights; }
+    }.getRMS();
+    final double chiSquare = new AbstractLeastSquares() {
+        public int getNobs() { return n;}
+        public int getNRes() { return n;}
+        public double[] getResiduals() { return residuals; }
+        public double[] getResidualsWeights() { return weights; }
+    }.getChiSquare();

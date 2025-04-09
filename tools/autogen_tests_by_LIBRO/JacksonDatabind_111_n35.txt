@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    final ObjectMapper om = new ObjectMapper();
+    final ObjectReader or = om.readerFor(Issue108Bean.class);
+    final Issue108Bean intRef = or.readValue(" {\"refRef\": 2 } ");
+    assertNotNull(intRef.refRef);
+    assertNotNull(intRef.refRef.get());
+    assertEquals(intRef.refRef.get().get(), new Integer(2));
+
+    final Issue108Bean nullRef = or.readValue(" {\"refRef\": null } ");
+    assertNotNull(intRef.refRef);
+    assertNull(intRef.refRef.get());
+    assertNull(intRef.refRef.get().get());
+}
+
+public static class Issue108Bean {
+    private AtomicReference<AtomicReference<Integer>> refRef;
+    public AtomicReference<AtomicReference<Integer>> getRefRef() {
+        return refRef;
+    }
+    public void setRefRef(AtomicReference<AtomicReference<Integer>> refRef) {
+        this.refRef

@@ -1,0 +1,21 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(SerializationFeature.INDENT_OUTPUT, true);
+    om.setFilterProvider(new SimpleFilterProvider().addFilter("test", new PathFilter("$.test")));
+    
+    String expected = "{\"test\":\"filter-this\"}";
+    String actual = om.writeValueAsString(new Test());
+    assertEquals(expected, actual);
+    
+    expected = "{\"test\":\"filter-this\"}";
+    ObjectWriter ow = om.writer();
+    actual = ow.writeValueAsString(new Test());
+    assertEquals(expected, actual);
+    
+    expected = "{\"test\":\"filter-this\"}";
+    ow = om.writer(new SimpleFilterProvider().addFilter("test", new PathFilter("$.test")));
+    actual = ow.writeValueAsString(new Test());
+    assertEquals(expected, actual);
+    
+    expected = "{\"test\":\"filter-this\"}";
+    actual = om.convertValue(

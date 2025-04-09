@@ -1,0 +1,30 @@
+public void testTokenBufferDelegate() throws Exception {
+    String json = "{ \"a\":1, \"b\":null }";
+    ObjectMapper mapper = new ObjectMapper();
+
+    // deserializes to Value object 
+    Value v1 = mapper.readValue(json, Value.class);
+
+    // deserializes to TokenBuffer, then to Value object.
+    TokenBuffer tb = mapper.readValue(json, TokenBuffer.class);
+    Value v2 = mapper.readValue(tb.asParser(), Value.class);
+
+    assertEquals(v1, v2);
+}
+
+public static class Value {
+    private String a;
+    private Integer b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value v = new Value();
+        buffer.writeTo(v);
+        return v;
+    }
+
+    @JsonAnySetter
+    public void set(String name, Integer val) {
+        if (val != null) {
+            if ("a".equals(name)) {
+                a = val.toString();

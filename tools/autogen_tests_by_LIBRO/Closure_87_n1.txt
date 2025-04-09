@@ -1,0 +1,17 @@
+public void testClosure() {
+    VariableReference vr = new VariableReference("e");
+    Expression expr = new Expression(vr, "onchange");
+    Statement stmt = new IfStatement(expr, new Block(new Statement[] {
+            new ExpressionStatement(new FunctionCall(new Property(vr, "onchange"),
+                    new Expression[] { new ObjectLiteral(new String[] { "_extendedByPrototype" }, new Expression[] {
+                            new FunctionCall(new Property(new Global("Prototype"), "emptyFunction"), new Expression[0]) },
+                            false) })), }));
+    OutputStream out = new ByteArrayOutputStream();
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setLanguageVersion(170);
+    env.setRecoverFromErrors(true);
+    env.setOptimizationLevel(-1);
+    env.setReservedKeywordAsIdentifier(true);
+    CodeGenerator cgen = new CodeGenerator(out, "", env);
+    cgen.add(new Node[] { stmt });
+    System.out.println(out.toString());

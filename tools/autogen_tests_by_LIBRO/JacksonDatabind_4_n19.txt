@@ -1,0 +1,7 @@
+public void testJsonMappingException() {
+    ObjectMapper mapper = new ObjectMapper();
+    AnnotatedClass ac = mapper.getDeserializationConfig().introspect(mapper.constructType(MyPage.class));
+    JavaType type = mapper.constructType(MyPage.class);
+    JsonDeserializer<?> deser = mapper.getDeserializationConfig().introspect(type).findBeanDeserializer(mapper.getDeserializationConfig(), type, ac);
+    MyPage readValue = (MyPage) mapper.readValue("{\"items\":[{\"label\":\"toto\"},{\"label\": 1}]}", type);
+}

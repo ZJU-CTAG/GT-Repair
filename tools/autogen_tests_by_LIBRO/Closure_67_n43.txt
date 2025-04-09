@@ -1,0 +1,18 @@
+public void testIssue115() {
+    String code = "function A() { this._x = 1; }" +
+                  "A.prototype['func1'] = " + // done to save public reference to func1
+                  "A.prototype.func1 = function() { this._x = 2; this.func2(); };" +
+                  "A.prototype.func2 = function() { this._x = 3; this.func3(); };" +
+                  "window['A'] = A;";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setReservedKeywordAsIdentifier(true);
+    env.setLanguageVersion(Context.VERSION_1_8);
+    Parser parser = new Parser(env, new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+        @

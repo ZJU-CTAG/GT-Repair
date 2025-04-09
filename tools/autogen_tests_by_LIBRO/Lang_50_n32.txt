@@ -1,0 +1,18 @@
+public void testFastDateFormat() {
+    Locale defaultLocale = Locale.getDefault();
+    Locale otherLocale = Locale.CANADA;
+
+    try {
+        FastDateFormat fdf = FastDateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        assertEquals(defaultLocale, fdf.getLocale());
+
+        Locale.setDefault(otherLocale);
+        fdf = FastDateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        assertEquals(otherLocale, fdf.getLocale());
+
+        fdf = FastDateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, null);
+        assertEquals(otherLocale, fdf.getLocale());
+    } finally {
+        Locale.setDefault(defaultLocale);
+    }
+}

@@ -1,0 +1,22 @@
+public void testIssue117_1() {
+    String script = "var uid;\n" +
+            "function reset() {\n" +
+            "  uid = Math.random();\n" +
+            "}\n" +
+            "function doStuff() {\n" +
+            "  reset();\n" +
+            "  var _uid = uid;\n" +
+            "\n" +
+            "  if (uid < 0.5) {\n" +
+            "    doStuff();\n" +
+            "  }\n" +
+            "\n" +
+            "  if (_uid !== uid) {\n" +
+            "    throw 'reset() was called';\n" +
+            "  }\n" +
+            "}\n" +
+            "doStuff();";
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecoverFromErrors(true);
+    compilerEnv.setOptimizationLevel(9);
+    compilerEnv.setGenerateDebugInfo(false);

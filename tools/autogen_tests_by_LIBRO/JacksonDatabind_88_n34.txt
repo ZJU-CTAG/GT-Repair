@@ -1,0 +1,22 @@
+public void testPolymorphicTypeProblem() throws Exception
+{
+    final ObjectMapper m = new ObjectMapper();
+    m.registerSubtypes(PolymorphicTypeProblem.B.class);
+    m.readValue("{\"a\":{\"@type\":\"C\"}}", PolymorphicTypeProblem.A.class);
+}
+
+public static class PolymorphicTypeProblem
+{
+    public static class A
+    {
+        private B b;
+        public B getB() {
+            return b;
+        }
+        public void setB(B b) {
+            this.b = b;
+        }
+    }
+    public static class B {}
+    public static class C extends B {}
+}

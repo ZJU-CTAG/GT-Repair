@@ -1,0 +1,24 @@
+public void testIssueIndexIsNeverSetForCollection() throws Exception {
+    FailingCollectionDeserializer failingDeserializer = new FailingCollectionDeserializer();
+    ObjectMapper mapper = createMapper(Collection.class, failingDeserializer);
+    String goodJson = "[\"a\",\"b\",\"c\",\"d\",\"e\"]";
+    try {
+        mapper.readValue(goodJson, Collection.class);
+    } catch (InvalidFormatException e) {
+        assertEquals(failingDeserializer.deserIndex, e.getPath().get(0).getIndex());
+        assertEquals(failingDeserializer.deserIndex, e.getPathReference().getIndex());
+        return;
+    }
+    fail("InvalidFormatException was expected");
+}
+
+private static class FailingCollectionDeserializer extends StdDeserializer<Collection> {
+    private static final long serialVersionUID = 1L;
+    int deserIndex = 1;
+
+    private FailingCollectionDeserializer() {
+        super(Collection.class);
+    }
+
+    @Override
+    public Collection des

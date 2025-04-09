@@ -1,0 +1,10 @@
+public void testJavaBeanSerialization() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "@class");
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_CONCRETE_AND_ARRAYS);
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    String json = mapper.writeValueAsString(new javax.print.attribute.standard.PrinterMoreInfoManufacturer());
+    mapper.readValue(json, Object.class);
+}

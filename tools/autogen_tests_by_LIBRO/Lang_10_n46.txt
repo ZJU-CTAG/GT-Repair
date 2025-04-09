@@ -1,0 +1,16 @@
+public void testFastDateParser() throws Exception {
+    String pattern = "yyyy-MM-dd";
+    String dateString = "2011-10-01";
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    Date date = sdf.parse(dateString);
+
+    FastDateFormat fdf = FastDateFormat.getInstance(pattern);
+    Date date2 = fdf.parse(dateString);
+
+    assertEquals(fdf.format(date), dateString);
+    assertEquals(date, date2);
+
+    dateString = "2011-10-01 ";
+    date2 = fdf.parse(dateString);
+    assertEquals(date, date2);
+}

@@ -1,0 +1,9 @@
+public void testIssue114() throws Exception {
+    final TarArchiveInputStream input = new TarArchiveInputStream(new GZIPInputStream(
+            GoogleFile.SYSTEM.newInputStream(PathUtil.join(testdataDir, "test.tar.gz"))));
+    ArchiveEntry nextMatchedEntry = input.getNextEntry();
+    while (nextMatchedEntry != null) {
+        log.fine(nextMatchedEntry.getName());
+        nextMatchedEntry = input.getNextEntry();
+    }
+}

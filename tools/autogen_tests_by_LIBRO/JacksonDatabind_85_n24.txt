@@ -1,0 +1,26 @@
+public void testDateTimeSerializer() throws Exception {
+    DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("MyModule", new Version(0, 0, 0, null, null, null));
+    module.addSerializer(DateTime.class, new DateTimeSerializer(dateFormatter));
+    mapper.registerModule(module);
+
+
+    DateTime date = new DateTime(2011, 1, 1, 0, 0);
+
+    String json = mapper.writeValueAsString(date);
+    assertEquals("\"2011-01-01\"", json);
+
+
+    DateTime date2 = mapper.readValue(json, DateTime.class);
+    assertEquals(date, date2);
+}
+
+public static class DateTimeSerializer extends DateTimeSerializerBase<DateTime> {
+    public DateTimeSerializer(DateTimeFormatter formatter) {
+        super(DateTime.class, formatter);
+    }
+
+    @Override
+    public DateTimeSerializer with

@@ -1,0 +1,10 @@
+public void testIssue108() {
+    final Set<String> set = new HashSet<String>();
+    final List<String> list = new ArrayList<String>();
+
+    ArgumentCaptor<String[]> argument = ArgumentCaptor.forClass(String[].class);
+    set.addAll(list);
+    verify(set).addAll(argument.capture());
+
+    assertTrue(Arrays.asList(argument.getValue()).isEmpty());
+}

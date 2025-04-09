@@ -1,0 +1,8 @@
+public void testAllowMultipleMatches() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer(new SimpleFilterProvider().setFailOnUnknownId(true).addFilter(
+            "myFilter", SimpleBeanPropertyFilter.serializeAllExcept("intValue")));
+    String json = writer.writeValueAsString(new TestDomainObject());
+    assertNotNull(json);
+    assertEquals(json, "{\"stringValue\":\"stringValue\",\"booleanValue\":true}");
+}

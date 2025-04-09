@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Options options = new Options()
+        .addOption(new Option("a", "option a"))
+        .addOption(new Option("b", "option b"));
+    Group group = new GroupBuilder()
+        .withOption(new Option("a", "option a"))
+        .withOption(new Option("b", "option b"))
+        .withMinimum(1)
+        .create();
+    options.addOptionGroup(group);
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[] {"-a", "-b"});
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+}

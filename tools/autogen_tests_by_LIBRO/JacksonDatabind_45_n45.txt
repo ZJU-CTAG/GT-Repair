@@ -1,0 +1,13 @@
+public void testIssue1154() {
+    ObjectMapper mapper = new ObjectMapper();
+    DateTime dt = new DateTime(0);
+    assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
+    assertEquals("1970-01-01T00:00:00.000Z", mapper.writeValueAsString(dt));
+
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    assertEquals("\"1970-01-01T00:00:00.000Z\"", mapper.writeValueAsString(dt));
+
+    mapper.setLocale(Locale.FRANCE);
+    mapper.setTimeZone(TimeZone.getTimeZone("UTC"));
+    assertEquals("\"01/01/1970 00:00:00\"", mapper.writeValueAsString(dt));
+}

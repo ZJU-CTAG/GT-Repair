@@ -1,0 +1,22 @@
+public void testOverwriteExistingOption() throws Exception {
+        final DefaultOptionBuilder obuilder = new DefaultOptionBuilder();
+        final ArgumentBuilder abuilder = new ArgumentBuilder();
+        final GroupBuilder gbuilder = new GroupBuilder();
+
+        final Option opt = obuilder.withShortName("o").withArgument(
+                abuilder.withName("opt").create()).withDescription(
+                "a test option").withLongName("option").create();
+
+        final Group group = gbuilder.withName("testgroup").withOption(opt)
+                .create();
+
+        final CommandLine line = new CommandLine();
+
+        line.addOption(opt, "foo");
+
+        final Parser parser = new Parser();
+        parser.setGroup(group);
+        parser.parse(new String[]{"--option", "bar"});
+
+        assertEquals("bar", line.getOptionValue("option"));
+    }

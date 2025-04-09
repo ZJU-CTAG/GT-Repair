@@ -1,0 +1,10 @@
+public void testArguments() {
+    String source = "function f() { var args = arguments; setTimeout(function() { alert(args); }, 0); }";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("name", source), options);
+    assertEquals(
+            "function f(){setTimeout(function(){alert(args)},0)};",
+            compiler.toSource());
+}

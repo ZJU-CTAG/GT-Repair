@@ -1,0 +1,26 @@
+public void testCompare() {
+    final ChangeSummary c = new ChangeSummary(
+        new Changes(
+            Arrays.asList(
+                new Change(Change.Type.RENAME, "file1", "file2"),
+                new Change(Change.Type.COPY, "file3", "file4"),
+                new Change(Change.Type.DELETE, "file5", "file5"),
+                new Change(Change.Type.ADD, "file6", "file6")
+            ),
+            "My label"
+        ),
+        new Changes(
+            Arrays.asList(
+                new Change(Change.Type.RENAME, "file1", "file2"),
+                new Change(Change.Type.DELETE, "file3", "file3"),
+                new Change(Change.Type.ADD, "file4", "file4")
+            ),
+            "My other label"
+        )
+    );
+
+    final String output = c.toString();
+
+    assertTrue(output.contains("Rename"));
+    assertTrue(output.contains("Copy"));
+    assertTrue(output

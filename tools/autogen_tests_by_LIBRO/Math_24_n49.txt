@@ -1,0 +1,12 @@
+public void testBrentOptimizer() {
+    OptimizationData[] optData = new OptimizationData[2];
+    optData[0] = new MaxEval(100);
+    optData[1] = new Target(0);
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x;
+        }
+    };
+    UnivariateRealPointValuePair pair = new BrentOptimizer(1E-10, 1E-14).optimize(optData, new UnivariateRealFunction[] { f }, GoalType.MINIMIZE, -10, 10);
+    assertEquals(0, pair.getPoint(), 1E-10);
+}

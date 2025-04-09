@@ -1,0 +1,10 @@
+public void testIssue106() {
+    JsonFactory jf = new JsonFactory();
+    String json = "{\"array\":[\"foo\"]}";
+    JsonPointer p = JsonPointer.compile("/array/0");
+    JsonNode n = jf.createParser(json).readValueAsTree();
+    assertEquals("foo", p.getValue(n).asText());
+
+    p = JsonPointer.compile("/array/00");
+    assertNull(p.getValue(n)); // should fail
+}

@@ -1,0 +1,10 @@
+public void testRequiredOptions() {
+    final Group command = new GroupBuilder().withOption(new OptionBuilder().withShortName("h").create())
+                                            .withRequired(true)
+                                            .withOption(new OptionBuilder().withShortName("c").withArgument(new ArgumentBuilder().withName("arg").withMinimum(1).withMaximum(1).create()).create())
+                                            .create();
+    final String[] args = { "-c", "arg" };
+    final CommandLine cl = new CommandLine(command);
+    assertTrue(cl.parse(args));
+    assertEquals("-c <arg>", cl.usage());
+}

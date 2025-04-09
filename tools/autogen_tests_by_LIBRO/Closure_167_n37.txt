@@ -1,0 +1,17 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+
+    compiler.initOptions(new CompilerOptions());
+    compiler.getOptions().setPrettyPrint(true);
+    compiler.getOptions().setCheckTypes(true);
+    compiler.getOptions().setCheckGlobalThisLevel(CheckLevel.WARNING);
+    compiler.getOptions().setProcessCommonJSModules(true);
+    compiler.getOptions().setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    compiler.getOptions().setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    compiler.getOptions().setLanguageIn(LanguageMode.ECMASCRIPT5);
+
+    SourceFile in = SourceFile.fromCode("in", "var thing = {subthing: {prop: 3}};\n" +
+            "function doIt(thing) {\n" +
+            "  var subthing = thing.subthing;\n" +
+            "  for (var i = 0; i < subthing.noprop; i++) {\n" +
+            "

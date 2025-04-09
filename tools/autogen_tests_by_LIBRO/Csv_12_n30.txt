@@ -1,0 +1,9 @@
+public void testEmptyColumnName() throws Exception {
+    Reader in = new StringReader("A,B,C,,\na,b,c,d,e\n");
+    Iterator<CSVRecord> records = CSVFormat.EXCEL.parse(in).iterator();
+    CSVRecord record = records.next();
+    assertEquals(Arrays.asList("A", "B", "C", "", ""), record.toList());
+    record = records.next();
+    assertEquals(Arrays.asList("a", "b", "c", "d", "e"), record.toList());
+    assertEquals(false, records.hasNext());
+}

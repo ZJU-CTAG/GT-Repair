@@ -1,0 +1,17 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("format").hasArg().withArgName("format").isRequired().create());
+    options.addOption(OptionBuilder.withLongOpt("source").hasArg().withArgName("source").isRequired().create());
+    options.addOption(OptionBuilder.withLongOpt("properties").hasArg().withArgName("properties").isRequired().create());
+
+    HelpFormatter helpFormatter = new HelpFormatter();
+    helpFormatter.printHelp("java org.apache.commons.cli.BugCLI", options);
+
+    try {
+        CommandLineParser parser = new GnuParser();
+        parser.parse(options, new String[0]);
+        fail("MissingOptionException expected");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format -source -properties", e.getMessage());
+    }
+}

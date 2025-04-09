@@ -1,0 +1,13 @@
+public void testNestedUnwrappedListDeserialization() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.setSerializationInclusion(Include.NON_EMPTY);
+    om.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, false);
+    om.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    om.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
+
+    String json = "{\"records\":[[{\"fields\":[]}]]}";
+    Definition o = om.readValue(json, Definition.class);
+    assertEquals(1, o.records.size());
+    assertEquals(1, o.records.get(0).fields.size());
+    assertEquals(0, o.records.get(0).fields.get(0).fields.size());
+}

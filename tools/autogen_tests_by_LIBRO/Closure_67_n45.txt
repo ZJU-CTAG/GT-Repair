@@ -1,0 +1,12 @@
+public void testIssue110() throws Exception {
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String result = compile("function A() {this._x = 1;}\n" +
+                    "A.prototype['func1'] = // done to save public reference to func1\n" +
+                    "A.prototype.func1 = function() {this._x = 2; this.func2();};\n" +
+                    "A.prototype.func2 = function() {this._x = 3; this.func3();};\n" +
+                    "window['A'] = A;");
+    assertEquals("function a(){this.a=1}\n" +
+            "a.prototype.func1=a.prototype.b=function(){this.a=2;this.c()};\n" +
+            "window.A=a;", result);
+
+}

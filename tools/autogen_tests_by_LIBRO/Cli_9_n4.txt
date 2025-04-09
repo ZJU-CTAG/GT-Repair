@@ -1,0 +1,13 @@
+public void testIssue107() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("format", false, "format properties files");
+    options.addOption("source", false, "source properties files");
+    options.addOption("properties", true, "properties files");
+    String[] args = { "-format", "-source", "-properties", "test/resources/test_nl.properties" };
+    try {
+        parser.parse(options, args);
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format -source -properties", e.getMessage());
+    }
+}

@@ -1,0 +1,10 @@
+public void testIssue107() throws Exception
+{
+    final String json = "{\"a\":{\"b\":[1,2,3,{\"c\":\"foo\"}], \"d\": 123}";
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Map<String,Object>> it = mapper.readValues(mapper.getFactory()
+            .createParser(ObjectReadContext.empty(), json), Map.class);
+    assertTrue(it.hasNextValue());
+    // will fail as there is no closing '}' for Object
+    Map<String,Object> first = it.nextValue();
+}

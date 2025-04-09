@@ -1,0 +1,14 @@
+public void testIssue108() {
+    try {
+        new Partial(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1});
+        fail();
+    } catch (IllegalArgumentException e) {
+        assertEquals("Types array must not contain duplicate field types", e.getMessage());
+    }
+    try {
+        new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1).isEqual(new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1));
+        fail();
+    } catch (IllegalArgumentException e) {
+        assertEquals("Objects must have matching field types", e.getMessage());
+    }
+}

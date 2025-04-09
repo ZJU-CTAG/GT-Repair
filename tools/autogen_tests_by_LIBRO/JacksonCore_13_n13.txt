@@ -1,0 +1,13 @@
+public void testUTF8JsonGenerator() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = mapper.getJsonFactory().createJsonGenerator(sw);
+    g.writeStartObject();
+    g.writeFieldName("abc");
+    g.writeString("def");
+    g.writeEndObject();
+    g.close();
+    sw.close();
+    assertEquals("{abc:\"def\"}", sw.toString());
+}

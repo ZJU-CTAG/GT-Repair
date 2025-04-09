@@ -1,0 +1,31 @@
+public void testSuper() {
+    String js = "function A() {};
+A.prototype.test = function() {
+    this.foo = 'bar';
+    return this.foo;
+};
+function B() {};
+B.prototype = new A();
+B.prototype.test = function() {
+    return $super(B).test.call(this);
+};
+var b = new B();
+b.test();
+";
+    ParsedResult expected = new ParsedResult()
+        .withResult(b.e("b"))
+        .withSymbol("A", new JsFunction(
+            "A",
+            new JsPropertyMap(
+                new JsProperty("prototype", new JsObject(
+                    new JsProperty("test", new JsFunction("test", new JsPropertyMap(
+                        new JsProperty("foo", str("bar"))
+                    )))
+                ))
+            )
+        ))
+        .withSymbol("B", new JsFunction(
+            "B",
+            new JsPropertyMap(
+                new JsProperty("prototype", new JsObject(
+                    new JsProperty

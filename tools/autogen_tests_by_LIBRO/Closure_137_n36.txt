@@ -1,0 +1,22 @@
+public void testIssue() {
+    String jsCode = "var t = null;\n" +
+                    "window.test = function()\n" +
+                    "{\n" +
+                    " if (t != null)\n" +
+                    " {\n" +
+                    " t = null;\n" +
+                    " }\n" +
+                    "\n" +
+                    " t = 1;\n" +
+                    "};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckDeterminism(true);
+    options.setSkipAllCompilerPasses(false);
+    Result result = compiler.compile(
+        SourceFile.fromCode("code", jsCode),
+        options
+    );
+    assertTrue(result.success);
+}

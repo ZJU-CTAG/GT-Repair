@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    InvokerTransformer transformer = new InvokerTransformer("get", new Class[] { String.class }, new Object[] { "foo" });
+    Map map = new HashMap();
+    map.put("foo", transformer);
+
+    MapTransformer mapTransformer = new MapTransformer("foo", new ConstantTransformer(Runtime.getRuntime()));
+    Map map2 = (Map) mapTransformer.transform(map);
+    assertEquals("bar", map2.get("foo"));
+}

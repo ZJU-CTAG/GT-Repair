@@ -1,0 +1,18 @@
+public void testTarArchiveEntry() throws IOException {
+    TarArchiveEntry entry = new TarArchiveEntry("/dev/null");
+    entry.getHeader().name = "filename".getBytes("ASCII");
+    entry.getHeader().size = 0x20000000000L;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    entry.writeEntryHeader(baos);
+
+    baos.close();
+    byte[] bytes = baos.toByteArray();
+    // the last byte is " " rather than NUL
+    assertEquals(512, bytes.length);
+    assertEquals(512, TarArchiveEntry.DEFAULT_RCDSIZE);
+
+    TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(bytes));
+    TarArchiveEntry entry2 = tais.getNextTarEntry();
+    assertEquals(512, entry2.getSize());
+    assertEquals(0x200000000, entry2.getMode());
+}

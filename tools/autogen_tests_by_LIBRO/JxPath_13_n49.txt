@@ -1,0 +1,14 @@
+public void testIssue27() throws Exception {
+    // create a DOM Document
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    doc.appendChild(doc.createElementNS("http://apache.org/test", "root"));
+    // create a JXPath Context
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.registerNamespace("t", "http://apache.org/test");
+    context.createPathAndSetValue("/t:root/@t:attr", "value");
+
+    context.getValue("/t:root/@t:attr");
+}

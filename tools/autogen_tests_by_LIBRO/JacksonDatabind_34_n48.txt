@@ -1,0 +1,12 @@
+public void testBigDecimal() throws Exception
+{
+    BigDecimal value = new BigDecimal("3.1415926535897932384626433832795028841971");
+    BigDecimal result = MAPPER.readValue("3.1415926535897932384626433832795028841971", BigDecimal.class);
+    assertEquals(value, result);
+}
+
+public void testBigDecimalSchema() throws Exception
+{
+    JsonNode schema = MAPPER.generateJsonSchema(BigDecimal.class);
+    assertEquals(JsonSchema.ValueType.NUMBER, schema.get("type").asEnum());
+}

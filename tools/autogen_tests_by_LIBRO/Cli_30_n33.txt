@@ -1,0 +1,18 @@
+public void testIssue125() {
+    Options options = new Options();
+    Option a = new Option("a");
+    options.addOption(a);
+    Option b = new Option("b");
+    options.addOption(b);
+    OptionGroup group = new OptionGroup();
+    group.addOption(a);
+    group.addOption(b);
+    options.addOptionGroup(group);
+    Properties properties = new Properties();
+    properties.setProperty("b", "true");
+    CommandLineParser parser = new PosixParser();
+    String[] args = {"-a"};
+    CommandLine commandLine = parser.parse(options, args, properties);
+    assertTrue(commandLine.hasOption("a"));
+    assertTrue(commandLine.hasOption("b"));
+}

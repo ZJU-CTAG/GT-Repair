@@ -1,0 +1,9 @@
+public void testIssue114() {
+    DateTimeZone zone = DateTimeZone.forID("Asia/Tokyo");
+    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd'T'HH:mm:ss.SSS") //
+            .appendTimeZoneOffset(null, true, 2, 4).toFormatter();
+    DateTime dateTime = new DateTime(2011, 2, 11, 0, 0, 0, 0, zone);
+    String actual = formatter.print(dateTime);
+    String expected = "2011-02-11T00:00:00.000+09:00";
+    assertEquals(expected, actual);
+}

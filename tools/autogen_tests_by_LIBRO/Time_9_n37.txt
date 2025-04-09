@@ -1,0 +1,13 @@
+public void testMaxOffset() {
+    long local = System.currentTimeMillis();
+    long utc = local + DateTimeZone.getDefault().getOffset(local);
+    long offset = 24 * 60 * 60 * 1000;
+    DateTimeZone zone = DateTimeZone.forOffsetMillis((int)offset);
+    long local1 = zone.convertUTCToLocal(utc);
+    assertEquals(local + offset, local1);
+
+    offset = 24 * 60 * 60 * 1000 + 1;
+    zone = DateTimeZone.forOffsetMillis((int)offset);
+    local1 = zone.convertUTCToLocal(utc);
+    assertEquals(local, local1);
+}

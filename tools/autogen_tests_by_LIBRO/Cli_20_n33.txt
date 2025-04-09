@@ -1,0 +1,11 @@
+public void testKeepTokenAfterNonRecognizedOption() throws Exception {
+    PosixParser parser = new PosixParser();
+    parser.setStopAtNonOption(true);
+    Options options = new Options();
+    options.addOption(new Option("a", "alpha", false, "option a"));
+    options.addOption(new Option("b", "beta", true, "option b"));
+    CommandLine cmd = parser.parse(options, new String[] { "--zop", "-abfoo" });
+    assertTrue(cmd.hasOption("zop"));
+    assertEquals(1, cmd.getArgList().size());
+    assertEquals("-abfoo", cmd.getArgList().get(0));
+}

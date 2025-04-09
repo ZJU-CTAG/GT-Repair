@@ -1,0 +1,22 @@
+public void testZipFile() throws Exception {
+    File testDir = new File(System.getProperty("test.dir", "."));
+    File testData = new File(testDir, "test.zip");
+    if (!testData.isFile()) {
+        fail("Unable to find testdata at " + testData.getAbsolutePath());
+    }
+    ZipFile zipFile = new ZipFile(testData);
+    Enumeration<? extends ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        if(entry.getName().toLowerCase().endsWith(".txt")) {
+            InputStream in = null;
+            try {
+                in = zipFile.getInputStream(entry);
+                byte[] buffer = new byte[1024];
+                while (in.read(buffer) > 0) {
+                    // read contents to clear the archive, but don't do anything with it
+                }
+            } finally {
+                IOUtils.closeQuietly(in);
+            }
+        }

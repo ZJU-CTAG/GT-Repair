@@ -1,0 +1,14 @@
+public void testIssue109() throws Exception {
+    Bundle bundle = new Bundle().add(new Entry("test", "SourceMap.js", "SourceMap.js"));
+    bundle.setSourceMapDestPath("SourceMap.map");
+    bundle.setSourceMapIncludeContent(true);
+    bundle.setSourceMapOutputPrefix("");
+    bundle.setSourceMapSourceRoot("/src/main/webapp");
+    bundle.setSourceMapUrl("SourceMap.map");
+    FileUtils.writeStringToFile(new File("SourceMap.js"), "var x;\n");
+    bundle.writeTo(new File("/src/main/webapp/js"));
+    String sourceMap = FileUtils.readFileToString(new File("/src/main/webapp/js/SourceMap.map"));
+    System.out.println(sourceMap);
+    JSONObject sourceMapJson = new JSONObject(sourceMap);
+    assertEquals(1, sourceMapJson.getJSONArray("sources").length());
+    assertEquals(1, sourceMapJson.getJSONArray("names").

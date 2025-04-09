@@ -1,0 +1,13 @@
+public void testLongDirectoryName() throws IOException {
+    TarArchiveOutputStream tar = new TarArchiveOutputStream(new FileOutputStream("test.tar"));
+    tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    File f = new File("foo");
+    f.mkdir();
+    TarArchiveEntry entry = new TarArchiveEntry("foobar/");
+    entry.setModTime(f.lastModified());
+    entry.setSize(0);
+    entry.setMode(TarArchiveEntry.DEFAULT_DIR_MODE);
+    tar.putArchiveEntry(entry);
+    tar.closeArchiveEntry();
+    tar.close();
+}

@@ -1,0 +1,19 @@
+public void testSimpleType() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType simpleType = mapper.constructType(TestClass.class);
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    JavaType parameterizedType = typeFactory.constructParametrizedType(TestClass.class, TestClass.class, String.class);
+    assertEquals(simpleType, parameterizedType);
+}
+
+class TestClass {
+    String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+}

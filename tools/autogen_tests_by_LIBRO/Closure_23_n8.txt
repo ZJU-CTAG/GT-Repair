@@ -1,0 +1,17 @@
+public void testFoldArrayAccess() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            "function f() {alert(['a', f()][1]);}",
+            "function g() {alert(['a', 1][1]);}",
+            "function h() {alert([1, 2, 3][1]);}",
+            "function i() {alert(['a', 'b', 'c', 'd', 'e'][1]);}"
+    );
+    assertFalse(result.success);
+    assertEquals(4, result.errors.length);
+    assertEquals(CheckLevel.ERROR, result.errors[0].level);
+    assertEquals(CheckLevel.ERROR, result.errors[1].level);
+    assertEquals(CheckLevel.ERROR, result.errors[2].level);
+    assertEquals(CheckLevel.ERROR, result.errors[3].level);
+    assertEquals(TYPE_MISMATCH_WARNING, result.errors[0].type);
+    assertEquals(TYPE_MISMATCH_WARNING

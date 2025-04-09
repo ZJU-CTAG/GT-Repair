@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModules(new Jdk8Module());
+    String json = "{ \"first_name\": \"Bob\" }";
+    Person p = mapper.readValue(json, Person.class);
+    assertEquals("Bob", p.firstName);
+}
+
+@JsonPropertyOrder(alphabetic = true)
+public static class Person {
+    public final String firstName;
+
+    public Person(@JsonProperty("first_name") String firstName) {
+        this.firstName = firstName;
+    }
+}

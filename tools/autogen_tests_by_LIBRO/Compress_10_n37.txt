@@ -1,0 +1,9 @@
+public void testUTF8Zip() throws Exception {
+    File file = getFile("utf8.zip");
+    ZipFile zf = new ZipFile(file);
+    ZipArchiveEntry entry = zf.getEntry("\u0105\u0107");
+    assertEquals("\u0105\u0107", entry.getName());
+    InputStream inputStream = zf.getInputStream(entry);
+    assertNotNull(inputStream);
+    inputStream.close();
+}

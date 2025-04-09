@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<a href='www.google.com'>Link<p>Error link</a>");
+    Element body = doc.body();
+    Elements aTags = body.select("a");
+    assertEquals(2, aTags.size());
+    Element a1 = aTags.get(0);
+    assertEquals("www.google.com", a1.attr("href"));
+    assertEquals("Link", a1.text());
+    Element a2 = aTags.get(1);
+    assertEquals("Error link", a2.text());
+    assertEquals("www.google.com", a2.attr("href"));
+    assertEquals("<a href=\"www.google.com\">Link</a>\n<p><a href=\"www.google.com\">Error link</a></p>", body.html());
+}

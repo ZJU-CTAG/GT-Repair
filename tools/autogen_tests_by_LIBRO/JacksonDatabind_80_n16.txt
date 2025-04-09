@@ -1,0 +1,17 @@
+public void testName() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(SimpleBase.class);
+    assertEquals("{\"simple\":{\"value\":\"abc\"}}", mapper.writeValueAsString(new Simple()));
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+public static class SimpleBase
+{
+    public String value;
+}
+
+@JsonTypeName("simple")
+public static class Simple extends SimpleBase
+{
+}

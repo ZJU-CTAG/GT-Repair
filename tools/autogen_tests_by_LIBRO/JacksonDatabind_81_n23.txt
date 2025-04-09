@@ -1,0 +1,13 @@
+public void testPrimitiveRefinements() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    mapper.enable(MapperFeature.USE_STD_BEAN_NAMING);
+    String json = mapper.writeValueAsString(new MyBean());
+    assertEquals("{\"intValue\":12}", json);
+    assertEquals(MyBean.class, mapper.readValue(json, MyBean.class).getClass());
+}
+
+public class MyBean {
+    public Integer getIntValue() { return 12; }
+}

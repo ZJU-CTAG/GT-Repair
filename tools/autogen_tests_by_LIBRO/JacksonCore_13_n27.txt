@@ -1,0 +1,18 @@
+public void testIssue110() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    // test with empty config
+    CharArrayWriter out = new CharArrayWriter();
+    JsonGenerator jsonGenerator = jsonFactory.createGenerator(out);
+    jsonGenerator.writeFieldName("fieldName");
+    jsonGenerator.writeString("value");
+    jsonGenerator.close();
+    assertEquals("{\"fieldName\":\"value\"}", out.toString());
+    // test with disabled QUOTE_FIELD_NAMES
+    out = new CharArrayWriter();
+    jsonGenerator = jsonFactory.createGenerator(out);
+    jsonGenerator.setConfig(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    jsonGenerator.writeFieldName("fieldName");
+    jsonGenerator.writeString("value");
+    jsonGenerator.close();
+    assertEquals("{fieldName:\"value\"}", out.toString());
+}

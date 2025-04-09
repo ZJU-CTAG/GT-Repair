@@ -1,0 +1,15 @@
+public void testIssue107() {
+    String testString = StringUtils.repeat("a", 200);
+    String test = "./" + testString + "/";
+
+    try {
+        FileOutputStream out = new FileOutputStream("test.tar");
+        TarArchiveOutputStream tarOut = new TarArchiveOutputStream(out);
+        tarOut.putArchiveEntry(new TarArchiveEntry(test));
+        tarOut.closeArchiveEntry();
+        tarOut.close();
+    } catch (IOException e) {
+        fail("Failed to create test tar file: " + e.getMessage());
+    }
+
+}

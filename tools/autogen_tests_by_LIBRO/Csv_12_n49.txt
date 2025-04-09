@@ -1,0 +1,9 @@
+public void testIssue182() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("A,B,C,,\n");
+    sb.append("a,b,c,d,e");
+    Reader in = new StringReader(sb.toString());
+    CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
+    assertEquals(3, csvParser.getHeaderMap().size());
+    assertEquals(5, csvParser.getRecords().get(0).size());
+}

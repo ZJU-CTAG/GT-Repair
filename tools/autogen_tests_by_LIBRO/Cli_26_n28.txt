@@ -1,0 +1,18 @@
+public void testOptionBuilderWithIAE() {
+  String[] args = new String[] { "-b", "-c", "create", "-x", "--foo" };
+  Options options = new Options();
+  OptionBuilder.withLongOpt("foo");
+  options.addOption(OptionBuilder.create());
+  CommandLineParser parser = new PosixParser();
+  try {
+    parser.parse(options, args);
+  } catch (ParseException e) {
+    assertTrue(e.getMessage().indexOf("Missing argument for option: f") >= 0);
+  }
+  try {
+    OptionBuilder.create();
+    fail("OptionBuilder should have been resetted in case of an IllegalArgumentException");
+  } catch (IllegalArgumentException e) {
+    // expected
+  }
+}

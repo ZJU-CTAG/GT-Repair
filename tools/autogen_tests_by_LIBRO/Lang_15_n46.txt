@@ -1,0 +1,13 @@
+public void testGetTypeArguments() {
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.ChildOfParameterizedType.class, TestTypes.ParameterizedType.class);
+    Assert.assertEquals(1, typeVarAssigns.size());
+    Assert.assertEquals(Integer.class, typeVarAssigns.get(TestTypes.ParameterizedType.class.getTypeParameters()[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.ChildOfRawType.class, TestTypes.RawType.class);
+    Assert.assertNull(typeVarAssigns);
+
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.ChildOfWildcardType.class, TestTypes.WildcardType.class);
+    Assert.assertNull(typeVarAssigns);
+}

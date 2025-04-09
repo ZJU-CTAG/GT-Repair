@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVParser parser = new CSVParser(new StringReader("a,b,c\n1,2,3"), format);
+    CSVRecord rec = parser.iterator().next();
+    Map<String, String> map = rec.toMap();
+    assertEquals("1", map.get("a"));
+    assertEquals("2", map.get("b"));
+    assertEquals("3", map.get("c"));
+}
+public void testIssue108b() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVParser parser = new CSVParser(new StringReader("a,b,c\n1,2,3"), format);
+    CSVRecord rec = parser.iterator().next();
+    rec.toMap();
+}
+public void testIssue108c() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT;
+    CSVParser parser = new CSVParser(new StringReader("a,b,c\n1,2,3

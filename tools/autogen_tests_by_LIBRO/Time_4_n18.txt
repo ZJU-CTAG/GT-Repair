@@ -1,0 +1,17 @@
+public void testIssue108() {
+    // The code in the Description section won't compile
+    // because hourOfDay() is a static method, not a static field.
+    // So, I'm writing test cases in a more "Java" style.
+    Partial a = new Partial(new DateTimeFieldType[] { DateTimeFieldType.year(), DateTimeFieldType.hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(DateTimeFieldType.year(), 1).with(DateTimeFieldType.hourOfDay(), 1);
+    assertEquals(a, b);
+    try {
+        new Partial(new DateTimeFieldType[] { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() }, new int[] { 1, 1});
+        fail();
+    } catch (IllegalArgumentException e) {
+        // Expected exception.
+    }
+    try {
+        assertEquals(
+                new Partial(DateTimeFieldType.clockhourOfDay(), 1).with(DateTimeFieldType.hourOfDay(), 1),
+                new Partial(DateTimeFieldType.hourOf

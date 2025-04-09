@@ -1,0 +1,15 @@
+public void testTypes() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setUseTypesForLocalOptimization(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Result result = new Compiler(new PrintStreamErrorManager(System.err))
+        .compile(SourceFile.fromCode("v.js", "var a = 'a';"),
+                 SourceFile.fromCode("compiled.js", "var b = 'b';"),
+                 options);
+
+    assertEquals("Expect no errors", 0, result.errors.length);
+    assertEquals("Expect no warnings", 0, result.warnings.length);
+    assertEquals("Expect 100% typed", 1.0, result.typedPercent, 0.1);
+}

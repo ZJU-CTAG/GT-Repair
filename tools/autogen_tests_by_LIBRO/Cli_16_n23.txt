@@ -1,0 +1,32 @@
+public void testGroup() {
+    final class TestGroup extends Group {
+        private final Group parent;
+
+        public TestGroup(final Group theParent) {
+            super("testGroup");
+            parent = theParent;
+        }
+
+        @Override
+        public String getName() {
+            return getOptionName();
+        }
+
+        @Override
+        public String getOptionName() {
+            return super.getOptionName();
+        }
+
+        @Override
+        public void setSelected(final CommandLine theCommandLine, final boolean theSelected) throws ArgumentException {
+            super.setSelected(theCommandLine, theSelected);
+            parent.setSelected(theCommandLine, theSelected);
+        }
+    }
+
+    final OptionParser parser = new OptionParser();
+    final Group group = new GroupBuilder().withName("group").withMinimum(1).withMaximum(3).create();
+    final ArgumentBuilder builder = new ArgumentBuilder();
+    builder.addOption(new TestGroup(group));
+    parser.addArgument(builder.create());
+    final CommandLine commandLine = parser.parse(new String[]{"--testGroup

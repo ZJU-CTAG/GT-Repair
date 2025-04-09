@@ -1,0 +1,11 @@
+public void testUTF8ZipFiles() throws Exception {
+    for (String zipFile : zipFiles) {
+        ZipFile zf = new ZipFile(new File("src/test/resources/" + zipFile));
+        for (Enumeration e = zf.getEntries(); e.hasMoreElements();) {
+            ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+            InputStream is = zf.getInputStream(ze);
+            is.close();
+        }
+        zf.close();
+    }
+}

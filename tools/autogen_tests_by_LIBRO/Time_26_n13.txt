@@ -1,0 +1,13 @@
+public void testIssue60() {
+    DateTimeZone usCentral = DateTimeZone.forID("America/Chicago");
+    DateTimeZone australiaNSW = DateTimeZone.forID("Australia/NSW");
+    Chronology chronUSCentral = GregorianChronology.getInstance(usCentral);
+    Chronology chronAusNSW = GregorianChronology.getInstance(australiaNSW);
+
+    DateTime usCentralStandardInUSCentral = new DateTime(2008, 11, 2, 1, 0, 0, 0, chronUSCentral);
+    DateTime usCentralDaylightInUSCentral = new DateTime(2008, 11, 2, 1, 0, 0, 0, chronUSCentral);
+    assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
+    assertEquals(usCentralStandardInUSCentral.getHourOfDay(), usCentralDaylightInUSCentral.getHourOfDay());
+    Assert.assertTrue(usCentralStandardInUSCentral.getMillis() != usCentralDaylightInUSCentral.getMillis());
+
+    DateTime australiaNSWStandardInAustraliaNS

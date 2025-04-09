@@ -1,0 +1,18 @@
+public void test() {
+    // Dummy problem, we want to solve x1 = x2
+    LinearProblem problem = new LinearProblem(new double[][]{{1, 1}}, new double[]{1});
+
+    // We use Levenberg-Marquardt
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+
+    // We have to provide an initial guess
+    optimizer.setStartPoint(new double[]{0.5, 0.5});
+    VectorialPointValuePair result = optimizer.doOptimize();
+
+    // The returned value is not the one that minimizes the residuals
+    System.out.println(result.getValue()[0] + " =?= 0");
+    System.out.println(result.getValue()[1] + " =?= 0");
+
+    // The residuals and cost are correct
+    System.out.println(optimizer.computeCost(result.getPoint()));
+    System.out.println(Arrays.toString(optimizer.computeResiduals(result.getPoint

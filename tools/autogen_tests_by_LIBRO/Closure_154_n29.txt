@@ -1,0 +1,16 @@
+public void testInterfaceMembers() {
+    JsDocument doc = JsParser.parse("test", "function I() {};\n" +
+            "/** @type {string} */\n" +
+            "I.prototype.foobar;\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " * @implements {I}\n" +
+            " */\n" +
+            "function C() {\n" +
+            " this.foobar = 2;\n" +
+            "};\n" +
+            "/** @type {I} */\n" +
+            "var test = new C();");
+    doc.getAllByType(JsFunction.class);
+    assertEquals(2, doc.getAllByType(JsFunction.class).size());
+}

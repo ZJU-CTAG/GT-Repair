@@ -1,0 +1,14 @@
+public void testExternalIdWithIdFirst() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    final String json = mapper.writeValueAsString(new ExternalIdWrapper());
+
+    ExternalIdWrapper output = mapper.readValue(json, ExternalIdWrapper.class);
+    assertNotNull(output);
+    assertEquals("foo", output.id);
+}
+
+static class ExternalIdWrapper {
+    public String id = "foo";
+}

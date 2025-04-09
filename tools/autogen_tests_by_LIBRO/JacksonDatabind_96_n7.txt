@@ -1,0 +1,11 @@
+public void testImplicitCreator() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    mapper.registerModule(new Jdk8Module());
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    String json = mapper.writeValueAsString(new TestObject("foobar"));
+    assertEquals("{\n  \"baz_name\" : \"foobar\"\n}", json);
+}

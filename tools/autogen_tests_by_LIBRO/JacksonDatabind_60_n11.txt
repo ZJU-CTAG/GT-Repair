@@ -1,0 +1,7 @@
+public void testJsonValueAnnotation() throws IOException {
+    RemoteCall message = new RemoteCall(new CommandAPDU(new byte[] {(byte) 0x80, 0x00, 0x00, 0x00, 0x08, -1, -1, -1, -1, -1, -1, -1, -1}), new RemoteInstance(UUID.randomUUID(), "com.ubitricity.devices.common.tasks.ResponseReceiver"));
+    String json = mapper.writeValueAsString(message);
+    RemoteCall copy = mapper.readValue(json, RemoteCall.class);
+    assertEquals(message.getArgs()[0], copy.getArgs()[0]);
+}
+

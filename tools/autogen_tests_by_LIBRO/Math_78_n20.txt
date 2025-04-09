@@ -1,0 +1,18 @@
+public void testIssue() {
+    final ODEIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addStepHandler(new StepHandler() {
+        public void init(StepInterpolator interpolator, int n, double t) {
+        }
+        public void handleStep(StepInterpolator interpolator, boolean isLast) {
+            if (Math.abs(interpolator.getCurrentTime() - 135.0) < 1.0e-6) {
+                Assert.assertEquals(1.0, interpolator.getInterpolatedState()[1], 1.0e-10);
+            }
+        }
+    });
+    integrator.integrate(new ODE() {
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = y[1];
+            yDot[1] = -y[0];
+        }
+        public int getDimension() {
+            return 2;

@@ -1,0 +1,12 @@
+public void testWarning() {
+
+        String js = "function writeMethodWithAnnotation() { this._bar = 123; }";
+
+        Compiler compiler = new Compiler();
+        CompilerOptions options = new CompilerOptions();
+        options.setWarningLevel(DiagnosticGroups.DANGEROUS_USAGE, CheckLevel.WARNING);
+        compiler.compile(SourceFile.fromCode("test.js", js), options);
+
+        JSError[] warnings = compiler.getWarnings();
+        assertEquals(0, warnings.length);
+    }

@@ -1,0 +1,16 @@
+public void testIssue() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("target")
+        .withDescription("Generate files for the specified target machine")
+        .hasArg()
+        .create('t'));
+    String[] args = new String[] { "-target", "foobar.com" };
+    try {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse(options, args);
+        assertEquals("foobar.com", cmd.getOptionValue('t'));
+    } catch (ParseException e) {
+        e.printStackTrace();
+        fail("Unexpected exception: " + e.getMessage());
+    }
+}

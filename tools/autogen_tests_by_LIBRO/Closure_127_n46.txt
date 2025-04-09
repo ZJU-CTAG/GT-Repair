@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    try {
+        engine.eval(""
+                + "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; \n"
+                + "console.log('ok then...');"
+                + "");
+    } catch (ScriptException e) {
+        assertFalse("Should not have thrown an exception", true);
+    }
+}

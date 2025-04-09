@@ -1,0 +1,23 @@
+public void testFinish() throws IOException {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new TarArchiveOutputStream(bos);
+
+    aos.putArchiveEntry(new TarArchiveEntry("file1"));
+    aos.write("file1".getBytes());
+    aos.closeArchiveEntry();
+
+    aos.putArchiveEntry(new TarArchiveEntry("file2"));
+    aos.write("file2".getBytes());
+    aos.closeArchiveEntry();
+
+    aos.putArchiveEntry(new TarArchiveEntry("file3"));
+    aos.write("file3".getBytes());
+    aos.closeArchiveEntry();
+
+    aos.finish(); // <-- this completes the file
+    aos.close();
+
+    ArchiveInputStream ais = new TarArchiveInputStream(new ByteArrayInputStream(bos.toByteArray()));
+    TarArchiveEntry entry = ais.getNextTarEntry();
+    assertEquals("file1", entry.getName());
+    assertEquals("file1",

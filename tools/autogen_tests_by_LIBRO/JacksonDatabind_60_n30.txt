@@ -1,0 +1,10 @@
+public void testIssue10() throws Exception {
+    Message message = new Message();
+    message.setArgs(new Object[] { new CommandAPDU(new byte[]{0x00, (byte) 0xA4, 0x04, 0x00, 0x07, 'A', 'P', 'P', 'L', 'E', '.', 'S', 'I', 'M', 0x00}),
+            new RemoteInstance(new UUID(0, 0), "com.ubitricity.devices.common.tasks.ResponseReceiver")});
+    String json = mapper.writeValueAsString(message);
+    System.out.println(json);
+    Message message1 = mapper.readValue(json, Message.class);
+    assertArrayEquals(((CommandAPDU) message.getArgs()[0]).getBytes(), ((CommandAPDU) message1.getArgs()[0]).getBytes());
+}
+

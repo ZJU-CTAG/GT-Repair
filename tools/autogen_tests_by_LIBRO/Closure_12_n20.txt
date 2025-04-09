@@ -1,0 +1,23 @@
+public void testIssue108() {
+    String code = "function a() {" +
+        "var x = '1';" +
+        "try {" +
+        "x += somefunction();" +
+        "} catch(e) {" +
+        "}" +
+        "x += '2';" +
+        "try {" +
+        "x += somefunction();" +
+        "} catch(e) {" +
+        "}" +
+        "document.write(x);" +
+        "}" +
+        "a();" +
+        "a();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("input.js", code)},
+        new CompilerOptions());
+    assertTrue(result.success);
+    assertTrue(result.compiledSource.indexOf("undefined") == -1);
+}

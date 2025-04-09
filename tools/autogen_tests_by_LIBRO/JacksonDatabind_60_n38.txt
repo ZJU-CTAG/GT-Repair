@@ -1,0 +1,29 @@
+public void testPolymorphicTypeLost() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    final Subclass expected = new Subclass(new byte[] { 1, 2, 3 });
+    final Subclass actual = mapper.readValue(mapper.writeValueAsString(expected), Subclass.class);
+    assertArrayEquals(expected.getBytes(), actual.getBytes());
+}
+
+protected static class Superclass {
+    protected final byte[] bytes;
+
+    public Superclass(final byte[] bytes) {
+        this.bytes = bytes;
+    }
+
+    @JsonValue
+    public byte[] getBytes() {
+        return bytes.clone();
+    }
+}
+
+protected static class Subclass extends Superclass {
+    @JsonCreator
+    public Subclass(@JsonProperty(value = "bytes") final byte[] bytes) {
+        super(bytes);
+    }
+}
+

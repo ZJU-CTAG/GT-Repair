@@ -1,0 +1,13 @@
+public void testUTF8JsonGenerator_QUOTE_FIELD_NAMES() throws Exception {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    JsonFactory factory = new JsonFactory();
+    UTF8JsonGenerator jsonGenerator = factory.createUTF8JsonGenerator(byteArrayOutputStream);
+    jsonGenerator.setFeatureValues(new Feature[] { Feature.QUOTE_FIELD_NAMES }, new boolean[] { false });
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeRawFieldName("a");
+    jsonGenerator.writeString("b");
+    jsonGenerator.writeEndObject();
+    jsonGenerator.close();
+    String json = new String(byteArrayOutputStream.toByteArray(), "UTF-8");
+    assertEquals("{a:\"b\"}", json);
+}

@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception
+{
+    // First, configure the mapper for polymorphic type handling
+    ObjectMapper om = new ObjectMapper();
+    om.enableDefaultTyping(DefaultTyping.NON_FINAL);
+    // then serialize using type id
+    Object value = new POJO(1, 2, 3);
+    String json = om.writeValueAsString(new POJO(1, 2, 3));
+    // 11-Oct-2015, tatu: As per [databind#1401] (https://github.com/FasterXML/jackson-databind/issues/1401)
+    //   we should NOT be getting type id here unless explicitly asked for:
+    assertTrue(json.startsWith("{"));
+    // and deserialize
+    POJO result = om.readValue(json, POJO.class);
+    assertEquals(value, result);
+}
+
+public static class POJO {
+    private int _a, _b, _c;
+    public POJO() { }
+    public POJO(int a, int b, int c)

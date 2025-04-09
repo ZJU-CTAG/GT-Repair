@@ -1,0 +1,19 @@
+public void testIssue68() {
+    Global g = new Global();
+    Context c = g.enterContext();
+    Scriptable scope = c.initStandardObjects();
+    ScriptableObject.putProperty(scope, "obj", new MyObject());
+    c.evaluateString(scope, "obj.d3_call(function() { obj.value = this.value; });", "<cmd>", 1, null);
+    assertEquals(1, scope.get("obj", scope).get("value", scope));
+}
+
+static class MyObject extends ScriptableObject {
+    int value;
+    @Override
+    public String getClassName() {
+        return "MyObject";
+    }
+    public void jsFunction_d3_call(Function f) {
+        f.call(Context.getCurrentContext(), this, this, new Object[0]);
+    }
+}

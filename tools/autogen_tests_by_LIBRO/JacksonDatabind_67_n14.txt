@@ -1,0 +1,9 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule());
+    mapper.registerModule(new SimpleModule().addDeserializer(ImmutableMap.class, new MapDeserializer()));
+    String json = "{ \"enum_map\": { \"foo\": \"BAR\" } }";
+    Map<Enum, String> expected = ImmutableMap.of(Enum.FOO, "BAR");
+    Map<Enum, String> actual = mapper.readValue(json, new TypeReference<Map<Enum, String>>() {});
+    assertEquals(expected, actual);
+}

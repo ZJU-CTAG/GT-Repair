@@ -1,0 +1,10 @@
+public void testNamespacedAttributeNotSelectedWithWildcard() {
+    final String xml = "<xml xmlns:x='foo' x:pop='a'/>";
+    final DefaultNamespaceContext nsContext = new DefaultNamespaceContext();
+    nsContext.addNamespace("foo", "x");
+    final Document document = DocumentHelper.parseText(xml);
+    final XPath xpath = DocumentHelper.createXPath("xml/@*");
+    xpath.setNamespaceURIs(nsContext);
+    final Attribute attribute = (Attribute) xpath.selectSingleNode(document);
+    assertEquals(attribute.getName(), "x:pop");
+}

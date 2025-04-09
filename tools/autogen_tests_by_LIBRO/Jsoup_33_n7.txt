@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+
+    // this is a script tag with a closing tag
+    String h = "<script src=\"http://www.google.com/jsapi\"></script>\n" +
+    "<p>This is a test</p>\n";
+
+    StringReader sr = new StringReader(h);
+    StringWriter sw = new StringWriter();
+    new HtmlParser().parse(sr, sw, null, "UTF-8");
+    assertEquals(h, sw.toString());
+
+
+    // this is a self-closing script tag
+    h = "<script src=\"http://www.google.com/jsapi\"/>\n" +
+    "<p>This is a test</p>\n";
+
+    sr = new StringReader(h);
+    sw = new StringWriter();
+    new HtmlParser().parse(sr, sw, null, "UTF-8");
+
+    // the output should be unchanged since the script tag was self-closing
+    assertEquals(h, sw.toString());
+}

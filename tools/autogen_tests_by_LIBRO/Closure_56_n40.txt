@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        ImmutableList.of(SourceFile.fromCode("test.js",
+            "alert(foo);\nalert(bar);\n")),
+        options);
+    assertTrue(result.success);
+    String out = options.getErrorFormat().format(
+        result.errors, result.warnings);
+    assertTrue(out, out.contains("test.js:1: WARNING - variable foo is undefined"));
+    assertTrue(out, out.contains("test.js:2: WARNING - variable bar is undefined"));
+}

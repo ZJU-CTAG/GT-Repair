@@ -1,0 +1,22 @@
+public void testIssue108() {
+    SimplexSolver solver = new SimplexSolver();
+    Variable x = new Variable("x");
+    Variable y = new Variable("y");
+    x.setValue(0);
+    y.setValue(0);
+    Expression exp = new ExpressionBuilder()
+        .add(x)
+        .add(y)
+        .multiply(0.5)
+        .add(x)
+        .add(y)
+        .subtract(1)
+        .build();
+    solver.addConstraint(exp, OperatorType.EQ, 0);
+    solver.addConstraint(x, OperatorType.GE, 0);
+    solver.addConstraint(y, OperatorType.GE, 0);
+    solver.addConstraint(exp, OperatorType.LE, 1);
+    solver.setMaxIterations(1000);
+    solver.solve();
+    assertEquals(0.5, x.getValue(), 0.00001);
+    assertEquals(0.5, y.getValue(), 0.00001

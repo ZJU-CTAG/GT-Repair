@@ -1,0 +1,14 @@
+public void testIssue87() throws IOException {
+    WindSpeed windSpeed = new WindSpeed();
+    windSpeed.setValue(27);
+    windSpeed.setUnits("kt");
+    windSpeed.setSource("forecast");
+    WindSpeed.Radius radius = new WindSpeed.Radius();
+    radius.setUnits("nm");
+    radius.setSector("NE");
+    radius.setValue(20);
+    windSpeed.setRadius(Collections.singletonList(radius));
+    XmlMapper mapper = new XmlMapper();
+    assertEquals("<windSpeed units=\"kt\" source=\"forecast\">27<radius sector=\"NE\" units=\"nm\">20</radius></windSpeed>", mapper.writeValueAsString(windSpeed).replaceAll("\\s+",""));
+    WindSpeed result = mapper.readValue("<windSpeed units=\"kt\" source=\"forecast\">27<radius units=\"nm\" sector=\"NE\">20</radius></windSpeed>".replaceAll("\\s+",""), WindSpeed.class);
+    assertEquals(windSpeed.getValue(), result.

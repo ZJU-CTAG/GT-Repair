@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    Map map = new HashMap();
+    map.put("value", "foo");
+    String command = "ping -c 1 " + InetAddress.getLocalHost().getHostAddress();
+    InvokerTransformer transformer = new InvokerTransformer("exec", new Class[]{String.class}, new Object[]{command});
+    Map transformed = (Map) transformer.transform(map);
+    assertTrue(transformed.containsKey("value"));
+    assertEquals("foo", transformed.get("value"));
+}

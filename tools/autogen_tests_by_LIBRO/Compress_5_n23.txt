@@ -1,0 +1,20 @@
+public void testTruncatedZip() throws IOException {
+    File file = new File("test.zip");
+    ZipFile zip = new ZipFile(file);
+    Enumeration<? extends ZipEntry> entries = zip.entries();
+    while (entries.hasMoreElements()) {
+        ZipEntry ze = entries.nextElement();
+        System.out.println(ze.getName() + " " + ze.getSize() + " " + ze.getCompressedSize());
+    }
+    zip.close();
+    try {
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(1);
+        fos.close();
+        ZipFile zip2 = new ZipFile(file);
+        zip2.entries();
+        fail();
+    } catch (ZipException e) {
+        assertTrue(true);
+    }
+}

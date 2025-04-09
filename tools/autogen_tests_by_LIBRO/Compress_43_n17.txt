@@ -1,0 +1,22 @@
+public void testIssue107() {
+    File temp = File.createTempFile("test", ".zip");
+    temp.deleteOnExit();
+    FileOutputStream fos = null;
+    try {
+        fos = new FileOutputStream(temp);
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+        zos.setMethod(ZipArchiveOutputStream.STORED);
+        zos.setCreateUnicodeExtraFields(UnicodeExtraFieldPolicy.ALWAYS);
+        zos.setFallbackToUTF8(true);
+        ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("test");
+        zos.putArchiveEntry(zipArchiveEntry);
+        zos.write("test".getBytes("UTF-8"));
+        zos.closeArchiveEntry();
+        zos.close();
+    } finally {
+        closeQuietly(fos);
+    }
+    ZipFile zipFile = null;
+    try {
+        zipFile = new ZipFile(temp);
+        ZipArchiveEntry entry = zipFile.getEntry("test");

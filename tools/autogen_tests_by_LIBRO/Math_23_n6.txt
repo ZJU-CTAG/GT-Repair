@@ -1,0 +1,16 @@
+public void testBrentOptimizerIssue() {
+    OptimizationData[] optimData = new OptimizationData[3];
+    optimData[0] = new Target(new MyObjectiveFunction());
+    optimData[1] = new InitialGuess(new double[] { -1 });
+    optimData[2] = new MaxEval(100);
+    BaseOptimizer<PointValuePair> optimizer = new BrentOptimizer();
+    OptimizationResults or = optimizer.optimize(optimData);
+    System.out.println(or);
+}
+
+private static class MyObjectiveFunction extends AbstractUnivariateRealFunction {
+    @Override
+    public double value(double x) {
+        return -1 / (1 + Math.exp(-x));
+    }
+}

@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    String json = "[\"aaa\"]";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, Long[].class);
+    } catch (InvalidFormatException e) {
+        assertNotNull(e.getPath());
+        assertEquals(1, e.getPath().size());
+        assertEquals(0, e.getPath().get(0).getIndex());
+    }
+}

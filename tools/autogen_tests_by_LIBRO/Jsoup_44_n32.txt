@@ -1,0 +1,28 @@
+public void testInvalidTableContents() throws IOException {
+    Document doc = Jsoup.parse("<html><body>"
+            + "<table>"
+            + "<tr>"
+            + "<td>"
+            + "<table>"
+            + "<tr>"
+            + "<!--Comment-->"
+            + "<table>"
+            + "<p>Why am I here?</p>"
+            + "</tr>"
+            + "</table>"
+            + "</td>"
+            + "</tr>"
+            + "</table>"
+            + "</body></html>");
+    doc.outputSettings().prettyPrint(true);
+    assertEquals("<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <table>\n" +
+            "   <tbody>\n" +
+            "    <tr>\n" +
+            "     <td>\n" +
+            "      <table>\n" +
+            "       <tbody>\n" +
+            "        <tr>\n" +
+           

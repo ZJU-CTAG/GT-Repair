@@ -1,0 +1,16 @@
+public void testIssue107() {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    level.setOptionsForCompilationLevel(options);
+    options.setSourceMapOutputPath("default.js.map");
+    options.setSourceMapFormat(SourceMap.Format.V3);
+    options.setSourceMapDetailLevel(SourceMap.DetailLevel.ALL);
+    options.setSourceMapIncludeSourcesContent(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js",
+            "var foreignObject = gfx.parentNode.parentNode;\n" +
+            "var parentContainer = foreignObject.parentNode.parentNode;\n")},
+            new JSSourceFile[]{}, options);
+}

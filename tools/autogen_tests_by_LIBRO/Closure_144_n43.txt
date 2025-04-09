@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String source = "function f() {}\n" +
+        "alert(f());\n";
+    Function f = new Parser(new CompilerEnvirons()).parse(source, "", 1);
+    assertNotNull(f);
+    Scope scope = f.getParentScope();
+    Symbol s = scope.getSymbol("f");
+    assertNotNull(s);
+    assertEquals("f", s.getName());
+    assertEquals(Symbol.FUNCTION, s.getType());
+    Object o = s.getValue();
+    assertNotNull(o);
+    assertTrue(o instanceof Function);
+    Function func = (Function)o;
+    assertEquals("f", func.getName());
+}

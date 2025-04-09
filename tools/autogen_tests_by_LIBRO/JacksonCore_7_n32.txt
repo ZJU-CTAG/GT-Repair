@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonGenerator jgen = new JsonFactory().createJsonGenerator(sw);
+
+    jgen.writeStartObject();
+    jgen.writeStringField("a", "b"); // should throw an exception (or at least not produce output)
+    jgen.writeEndObject();
+    jgen.close();
+
+    String json = sw.toString();
+    assertEquals("{\"a\":\"b\"}", json);
+}

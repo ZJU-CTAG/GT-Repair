@@ -1,0 +1,15 @@
+public void testIssue107() {
+    JsonFactory f = new JsonFactory();
+    String json = "123true";
+    try {
+        JsonParser p = f.createParser(json);
+        p.nextToken();
+        assertEquals(JsonToken.VALUE_NUMBER_INT, p.getCurrentToken());
+        assertEquals(123, p.getIntValue());
+        p.nextToken();
+        assertEquals(JsonToken.VALUE_TRUE, p.getCurrentToken());
+        fail("Should throw JsonParseException");
+    } catch (JsonParseException e) {
+        // expected
+    }
+}

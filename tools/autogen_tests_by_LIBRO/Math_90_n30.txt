@@ -1,0 +1,20 @@
+public void testFrequency() {
+    final Object OBJ = new Object();
+    final Comparable<Object> COMP = new Object();
+    final Integer INT = new Integer(1);
+    final Frequency f = new Frequency();
+    f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    f.addValue(COMP);
+    f.addValue(INT);
+    assertEquals(2, f.getCount());
+
+    assertEquals(1, f.getCount(COMP));
+    assertEquals(1, f.getCount(INT));
+    assertEquals(0, f.getCount(OBJ)); // should be 1
+
+    assertEquals(0.5, f.getPct(COMP), 0.001);
+    assertEquals(0.5, f.getPct(INT), 0.001);
+    assertEquals(0.0, f.getPct(OBJ), 0.001); // should be 0.5
+
+    assertEquals(1, f.getCumFreq(COMP));
+    assertEquals(2

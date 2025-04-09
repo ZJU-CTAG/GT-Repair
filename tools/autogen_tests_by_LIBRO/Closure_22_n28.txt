@@ -1,0 +1,10 @@
+public void testCommaOperator() throws Exception {
+    File testFile = new File(getBasedir(), "src/test/resources/TestCommaOperator.java");
+    assertTrue(testFile.canRead());
+    List<String> messages = new ArrayList<String>();
+    // check that the code will be transformed
+    new TransformProcess(new ReplaceProcess()).process(testFile, messages);
+    assertEquals(1, messages.size());
+    assertTrue(messages.get(0).contains("TestCommaOperator.java:13: warning:"));
+    assertTrue(messages.get(0).contains("The element '2' of expression '1,2,42' is classified as problematic."));
+}

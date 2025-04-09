@@ -1,0 +1,13 @@
+public void testNoHeader() throws Exception {
+    CSVParser parser = CSVParser.parse("value1,value2,value3", CSVFormat.DEFAULT.withHeader());
+    CSVRecord record = parser.iterator().next();
+
+    assertEquals(1, record.size());
+    assertEquals("value1", record.get(0));
+
+    Map<String, String> map = record.toMap();
+    assertEquals(3, map.size());
+    assertEquals("value1", map.get("value1"));
+    assertEquals("value2", map.get("value2"));
+    assertEquals("value3", map.get("value3"));
+}

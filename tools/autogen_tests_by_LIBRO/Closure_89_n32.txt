@@ -1,0 +1,13 @@
+public void testProperties() throws Exception {
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  compiler.disableThreads();
+  Result result = compiler.compile(
+      SourceFile.fromCode("test.js", "function f() {} f.fn = function() {};"),
+      SourceFile.fromCode("externs", ""),
+      options);
+
+  String output = compiler.toSource();
+  assertTrue(output.contains("f.fn = function() {};"));
+}

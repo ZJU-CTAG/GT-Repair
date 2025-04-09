@@ -1,0 +1,30 @@
+public void testModelObjects() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    Foo foo = new Foo();
+    foo.setReference(new AccessionIdentifier() { });
+
+    String json = mapper.writeValueAsString(foo);
+
+    System.out.println(json);
+}
+
+public static class Foo {
+    private AccessionIdentifier reference;
+
+    @JsonSerialize(as = BaseAccessionIdentifier.class)
+    @JsonDeserialize(as = BaseAccessionIdentifier.class)
+    public AccessionIdentifier getReference() {
+        return reference;
+    }
+
+    public void setReference(AccessionIdentifier reference) {
+        this.reference = reference;
+    }
+}
+
+public static interface AccessionIdentifier {
+}
+
+public static class BaseAccessionIdentifier implements AccessionIdentifier {
+}

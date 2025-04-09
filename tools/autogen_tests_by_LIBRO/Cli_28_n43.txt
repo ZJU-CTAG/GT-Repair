@@ -1,0 +1,21 @@
+public void testDefaultOptionProcessing() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasOptionalArg().create('a'));
+    options.addOption(OptionBuilder.hasOptionalArg().create('b'));
+    options.addOption(OptionBuilder.hasOptionalArg().create('c'));
+
+    Properties properties = new Properties();
+    properties.setProperty("a", "a");
+    properties.setProperty("b", "b");
+    properties.setProperty("c", "c");
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, null, properties);
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+    assertTrue(cmd.hasOption("c"));
+
+    assertEquals("a", cmd.getOptionValue("a"));
+    assertEquals("b", cmd.getOptionValue("b"));
+    assertEquals("c", cmd.getOptionValue("c"));
+}

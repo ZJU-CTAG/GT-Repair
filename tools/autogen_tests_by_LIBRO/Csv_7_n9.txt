@@ -1,0 +1,10 @@
+public void test_duplicate_header_names() throws IOException {
+    String[] line = { "Col1", "Col2", "Col2", "Col3", "Col4" };
+    String[] values = { "1", "2", "3", "4", "5" };
+
+    Reader in = new StringReader(StringUtils.join(line, ',') + "\n" + StringUtils.join(values, ','));
+    CSVParser parser = new CSVParser(in, CSVFormat.DEFAULT.withHeader());
+
+    // HeaderMap should have 4 elements, but has 3
+    assertEquals(3, parser.getHeaderMap().size());
+}

@@ -1,0 +1,8 @@
+public void testReferenceChainTest() throws JsonProcessingException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    String json = objectMapper.writeValueAsString(new ReferenceChainTest.Outer());
+
+    JsonMappingException jsonMappingException = expectThrows(JsonMappingException.class, () -> objectMapper.readValue(json, ReferenceChainTest.Outer.class));
+    JsonMappingException.Reference reference = jsonMappingException.getPath().get(0);
+    assertEquals("ReferenceChainTest$Outer[\"inner\"]", reference.toString());
+}

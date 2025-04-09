@@ -1,0 +1,11 @@
+public void testIssue662() {
+    FastDateFormat fdf = FastDateFormat.getInstance("h:mma z");
+    Date d = new Date(0);
+    for (String tzId : TimeZone.getAvailableIDs()) {
+        TimeZone tz = TimeZone.getTimeZone(tzId);
+        GregorianCalendar cal = new GregorianCalendar(tz);
+        cal.setTime(d);
+        String formatted = fdf.format(cal);
+        assertEquals(tzId, formatted.substring(formatted.length() - tzId.length()));
+    }
+}

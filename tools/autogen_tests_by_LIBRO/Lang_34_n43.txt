@@ -1,0 +1,22 @@
+public void testThreadLocalToStringStyle() {
+    // ClassLoader loader =
+    // this.getClass().getClassLoader().getParent();
+    ClassLoader loader = new URLClassLoader(new URL[0], new URLClassLoader(new URL[0], null));
+    try {
+        Class clazz = loader.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+        clazz.getMethod("getDefaultStyle").invoke(null);
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+
+    // destroy the class loader - this should release the inner class loader
+    // which should release the ThreadLocal used in ToStringStyle
+    try {
+        Class clazz = Class.forName("java.lang.ClassLoader");
+        Method method = clazz.getDeclaredMethod("finalize", new Class[0]);
+        method.setAccessible(true);
+        method.invoke(loader, new Object[0]);
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+}

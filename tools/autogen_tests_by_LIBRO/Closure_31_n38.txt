@@ -1,0 +1,19 @@
+public void testDependencyManagement() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.manageClosureDependencies = true;
+    options.setClosurePass(true);
+    SourceFile input = SourceFile.fromCode(
+        "test.js",
+        "");
+    List<SourceFile> externs = new ArrayList<>();
+    List<JSModule> modules = new ArrayList<>();
+    JSModule module = new JSModule("test");
+    module.add(input);
+    modules.add(module);
+    Result result = new Compiler().compileModules(
+        externs,
+        ImmutableList.copyOf(modules),
+        options);
+    assertTrue(result.success);
+}

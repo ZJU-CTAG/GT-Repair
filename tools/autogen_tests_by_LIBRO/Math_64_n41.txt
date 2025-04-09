@@ -1,0 +1,25 @@
+public void test() {
+    int n = 3;
+    double[] target = {1, 2, 3};
+    double[][] points = {
+            {-4.0, 4.0},
+            {-2.0, 2.0},
+            {0.0, 0.0},
+            {2.0, -2.0},
+            {4.0, -4.0}
+    };
+
+    double[] weights = new double[n];
+    Arrays.fill(weights, 1.0);
+
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    for (int i = 0; i < n; i++) {
+        obs.add(points[i][0], points[i][1], weights[i]);
+    }
+
+    System.out.println("---");
+
+    // Levenberg–Marquardt
+    double[] initialGuess = new double[]{2.0, -2.0};
+    ParametricUnivariateFunction f = new Gaussian.Parametric();
+    LevenbergMarquardOptimizer optimizer = new LevenbergMarquardtOpt

@@ -1,0 +1,12 @@
+public void testTarArchiveOutputStreamGetBytesWritten() throws Exception {
+        FileOutputStream fos = new FileOutputStream("target/bytesWritten.tar");
+        ArchiveOutputStream out = new TarArchiveOutputStream(fos);
+        byte[] content = "Hello World".getBytes();
+        TarArchiveEntry entry = new TarArchiveEntry("bytesWritten.txt");
+        entry.setSize(content.length);
+        out.putArchiveEntry(entry);
+        out.write(content);
+        out.closeArchiveEntry();
+        out.close();
+        assertEquals(content.length, ((TarArchiveOutputStream)out).getBytesWritten());
+    }

@@ -1,0 +1,15 @@
+public void testGenericTypeIdFromTypeResolver() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addAbstractTypeMapping(Foo.class, FooImpl.class);
+    module.addAbstractTypeMapping(Bar.class, BarImpl.class);
+    module.setMixInAnnotation(Foo.class, FooMixIn.class);
+    module.setMixInAnnotation(Bar.class, BarMixIn.class);
+    mapper.registerModule(module);
+    TestPojo testPojo = new TestPojo();
+    testPojo.foo = new FooImpl<>(new BarImpl());
+    String json = mapper.writerFor(new TypeReference<TestPojo>() {}).writeValueAsString(testPojo);
+    System.out.println(json);
+    TestPojo result = mapper.readValue(json, new TypeReference<TestPojo>() {});
+    assertEquals(testPojo.foo, result.foo);
+}

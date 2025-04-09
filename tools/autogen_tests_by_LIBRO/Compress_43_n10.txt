@@ -1,0 +1,16 @@
+public void testWrongVersion() throws Exception {
+    File tempFile = File.createTempFile("test", null);
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(tempFile)) {
+        ZipArchiveEntry entry = new ZipArchiveEntry("foo/bar");
+        entry.setMethod(ZipArchiveEntry.DEFLATED);
+        entry.setSize(0);
+        zos.putArchiveEntry(entry);
+        zos.closeArchiveEntry();
+    }
+    try (ZipFile zipFile = new ZipFile(tempFile)) {
+        ZipArchiveEntry entry = zipFile.getEntry("foo/bar");
+        assertEquals(ZipArchiveEntry.DEFLATED, entry.getMethod());
+        assertEquals(0, entry.getSize());
+    }
+}
+

@@ -1,0 +1,18 @@
+public void testIssue_super() {
+  String source = "var x = { foo: function() { return 'foo' } }; \n" +
+      "var y = Object.extend(x, { foo: function($super) { return $super() + 'bar'; } }); \n" +
+      "var z = Object.extend(x, { foo: function($super) { return $super() + 'baz'; } });";
+
+  Compiler compiler = compile(source, new CompilerOptions());
+  Node root = compiler.getRoot().getLastChild();
+
+  // $super should not be replaced.
+  Node y = root.getFirstChild().getNext();
+  Node foo = y.getChildAtIndex(1).getLastChild();
+  Node $super = foo.getFirstChild().getNext().getFirstChild();
+  assertEquals("$super", $super.getString());
+
+  // $super should not be replaced.
+  Node z = root.getFirstChild().getNext().getNext();
+  foo = z.getChildAtIndex(1).getLastChild();
+  $super = foo.get

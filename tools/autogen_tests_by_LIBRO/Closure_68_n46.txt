@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("test.js",
+            "/**\n" +
+            " * @type function\n" +
+            " */\n" +
+            "var callback;\n"));
+    assertEquals(1, result.warnings.length);
+    assertTrue(result.warnings[0].description.contains("Expected '('"));
+}

@@ -1,0 +1,14 @@
+public void testEmptyEntry() throws Exception {
+    Path archive = Paths.get("src/test/resources/COMPRESS-340.7z");
+    try (SevenZFile sevenZFile = new SevenZFile(archive.toFile())) {
+        SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+        while (entry != null) {
+            if (entry.getSize() == 0) {
+                byte[] buffer = new byte[(int) entry.getSize()];
+                int bytesRead = entry.read(buffer, 0, buffer.length);
+                assertEquals(0, bytesRead);
+            }
+            entry = sevenZFile.getNextEntry();
+        }
+    }
+}

@@ -1,0 +1,13 @@
+public void testPolymorphicTypeId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    assertNull(mapper.readValue("{\"type\":\"foo\"}", TypeA.class));
+    assertNull(mapper.readValue("{\"type\":\"foo\"}", TypeB.class));
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({ @JsonSubTypes.Type(name = "foo", value = TypeB.class) })
+static class TypeA {
+}
+
+static class TypeB extends TypeA {
+}

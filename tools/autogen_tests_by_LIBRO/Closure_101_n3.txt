@@ -1,0 +1,20 @@
+public void testProcessClosurePrimitives() {
+    Compiler compiler = new Compiler(new PrintStream(out));
+    CompilerOptions options = new CompilerOptions();
+    String[] args = new String[] {
+            "--language_in", "ECMASCRIPT5",
+            "--process_closure_primitives", "false",
+            "--js", "goog.provide('example');",
+            "--js", "goog.require('goog.string');"};
+    CompilerOptions options = new CompilerOptions();
+    CommandLineRunner runner = new CommandLineRunner(args);
+    runner.parseFlags();
+    runner.setOptionsForCompilationLevel(
+            CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    runner.setOptionsForCompilationLevel(options);
+    List<SourceFile> inputs = new ArrayList<>();
+    for (String filename : runner.getFiles()) {
+        inputs.add(SourceFile.fromFile(filename));
+    }
+    compiler.compile(externs, inputs, options);
+    assertEquals("goog.provide('example');\n"

@@ -1,0 +1,14 @@
+public void testIssue115() {
+    String xml = "<a:doc xmlns:a=\"ns\">"
+        + " <a:elem />"
+        + " <b:elem xmlns:b=\"ns\" />"
+        + "</a:doc>";
+    Document doc = XMLUnit.buildTestDocument(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    Iterator iter = context.iteratePointers("//ns:*");
+    assertTrue(iter.hasNext());
+    assertEquals("a:elem", ((DOMNodePointer) iter.next()).getNode().getNodeName());
+    assertEquals("a:elem", ((DOMNodePointer) iter.next()).getNode().getNodeName());
+    assertFalse(iter.hasNext());
+}

@@ -1,0 +1,24 @@
+public void testCustomSerializerWithJsonValueAnnotation() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new TokenSerializer());
+    module.addDeserializer(Token.class, new TokenDeserializer());
+    mapper.registerModule(module);
+
+    Token token = new Token("foo");
+    String value = mapper.writeValueAsString(token);
+
+    Token deserialized = mapper.readValue(value, Token.class);
+
+    assertEquals("foo", deserialized.value);
+}
+
+public static class TokenSerializer extends JsonSerializer<Token> {
+    public void serialize(Token value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeString("MY_PREFIX_" + value.value);
+    }
+}
+
+public static class TokenDeserializer extends JsonDeserializer<Token> {
+    public Token deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        String str = p.

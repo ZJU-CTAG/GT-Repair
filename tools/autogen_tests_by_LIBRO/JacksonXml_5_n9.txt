@@ -1,0 +1,14 @@
+public void testIssueNo171() throws Exception {
+    ObjectMapper xmlMapper = new XmlMapper();
+    ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    assertEquals("<XMLTest/>", noAnnotationsXmlMapper.writeValueAsString(new XMLTest()));
+    assertEquals("<myname/>", xmlMapper.writeValueAsString(new XMLTest()));
+    assertEquals("<myname/>", noAnnotationsXmlMapper.writeValueAsString(new XMLTest()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+static class XMLTest {
+}

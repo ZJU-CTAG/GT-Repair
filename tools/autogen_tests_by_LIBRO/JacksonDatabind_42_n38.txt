@@ -1,0 +1,11 @@
+public void testLocaleSerialization() throws Exception {
+    Locale root = Locale.ROOT;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream out = new ObjectOutputStream(baos);
+    out.writeObject(root);
+    out.close();
+    ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    Locale actual = (Locale) in.readObject();
+    in.close();
+    Assert.assertEquals(root, actual);
+}

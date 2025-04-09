@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Runnable runnable = Mockito.mock(Runnable.class);
+    Mockito.verify(runnable, Mockito.never()).run(); // passes as expected
+    Mockito.verify(runnable, Mockito.after(1000).never()).run(); // passes as expected
+    try {
+        Mockito.verify(runnable, Mockito.after(-1000).atLeastOnce()).run(); // passes incorrectly
+        throw new AssertionError();
+    } catch (VerificationInOrderFailure e) {
+        // expected
+    } catch (VerificationAfterDelayFailure e) {
+        // expected
+    }
+}

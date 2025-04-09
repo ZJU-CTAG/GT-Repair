@@ -1,0 +1,17 @@
+public void testDormandPrince853Embedded() {
+        final double t0 = 0;
+        final double t1 = 1e-20;
+        final double[] y0 = new double[] { 1.0 };
+        final double[] y =  new double[1];
+        final FirstOrderDifferentialEquations equations = new FirstOrderDifferentialEquations() {
+            public int getDimension() {
+                return 1;
+            }
+            public void computeDerivatives(double t, double[] y, double[] yDot) {
+                yDot[0] = 0;
+            }
+        };
+
+        final DormandPrince853Integrator integrator = new DormandPrince853Integrator(1.0e-10, 100.0, 1.0e-10, 1.0e-10);
+        integrator.integrate(equations, t0, y0, t1, y);
+    }

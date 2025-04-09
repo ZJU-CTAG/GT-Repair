@@ -1,0 +1,18 @@
+public void testFinish() throws Exception {
+    File output = new File("target/testFinish.zip");
+    try (ArchiveOutputStream out = new ArchiveStreamFactory()
+            .createArchiveOutputStream(ArchiveStreamFactory.ZIP, new FileOutputStream(output))) {
+        out.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+        out.write("foo".getBytes(Charsets.UTF_8));
+        out.closeArchiveEntry();
+        out.putArchiveEntry(new ZipArchiveEntry("sub/bar.txt"));
+        out.write("bar".getBytes(Charsets.UTF_8));
+        out.closeArchiveEntry();
+        out.finish();
+        out.putArchiveEntry(new ZipArchiveEntry("sub2/baz.txt"));
+        out.write("baz".getBytes(Charsets.UTF_8));
+        out.closeArchiveEntry();
+        out.finish();
+    }
+
+    try (ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", new FileInputStream

@@ -1,0 +1,12 @@
+public void testIssue23() throws IOException {
+    // forms will retain data even when the form is changed prior to submission
+    Document doc = Jsoup.parse("<form><input name=one value=1><input name=two value=2><input name=three value=3></form>");
+    FormElement form = (FormElement) doc.select("form").first();
+    List<Connection.KeyVal> data = form.formData();
+
+    assertEquals(3, data.size());
+
+    doc.select("[name=two]").remove();
+    data = form.formData();
+    assertEquals(2, data.size());
+}

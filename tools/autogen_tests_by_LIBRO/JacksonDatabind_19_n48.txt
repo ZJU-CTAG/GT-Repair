@@ -1,0 +1,15 @@
+public void test() throws IOException {
+    Properties props = new Properties();
+    props.setProperty("a", "b");
+    props.setProperty("c", "d");
+    ObjectMapper m = new ObjectMapper();
+    Map<String, Object> map = m.convertValue(props, Map.class);
+    System.out.println(map);
+    // {a=b, c=d}
+    assertEquals(2, map.size());
+
+    // however, if we try to read back, it doesn't work:
+    Properties props2 = m.convertValue(map, Properties.class);
+    assertEquals("b", props2.get("a"));
+    assertEquals("d", props2.get("c"));
+}

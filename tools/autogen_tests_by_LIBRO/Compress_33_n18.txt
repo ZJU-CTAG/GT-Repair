@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    CompressorStreamFactory csf = new CompressorStreamFactory();
+    try (InputStream is = getClass().getResourceAsStream("bla.tar.deflatez");
+        CompressorInputStream cis = csf.createCompressorInputStream(is)) {
+        byte[] buffer = new byte[16384];
+        int n = cis.read(buffer);
+        assertTrue(n > 0);
+    }
+}

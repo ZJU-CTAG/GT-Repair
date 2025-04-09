@@ -1,0 +1,14 @@
+public void testPrototype() {
+    String script = "foo = {};"
+            + "foo.bar = { foo2: function() { console.log('bar1'); } };"
+            + "foo.foobar = {};"
+            + "foo.foobar.__proto__ = foo.bar;"
+            + "foo.foobar.foo2();";
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("nashorn");
+    try {
+        engine.eval(script);
+    } catch (ScriptException ex) {
+        ex.printStackTrace();
+    }
+}

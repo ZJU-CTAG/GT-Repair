@@ -1,0 +1,19 @@
+public void testRequiredOptions() throws Exception
+{
+    final CommandLineParser parser = new PosixParser(true);
+    final OptionGroup required = new OptionGroup();
+    final Option optionA = new Option("a","A");
+    final Option optionC = new Option("c","C");
+    optionC.setArgument(new Argument("arg"));
+    required.add(optionA);
+    required.add(optionC);
+    required.setRequired(true);
+    final OptionGroup optgroup = new OptionGroup();
+    optgroup.add(optionA);
+    optgroup.add(optionC);
+    final ArgumentList args = new ArgumentList();
+    args.add(new Argument("arg"));
+    final CommandLine commandline = parser.parse(args, new Options().add(optgroup).add(required));
+    assertEquals("-c <arg>", commandline.toString());
+    assertEquals(args.get(0), commandline.getArgument("arg"));
+}

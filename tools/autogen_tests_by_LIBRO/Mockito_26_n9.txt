@@ -1,0 +1,36 @@
+public void testFinalField() {
+    Foo foo = new Foo();
+    FooService fooService = mock(FooService.class);
+    when(fooService.getFoo()).thenReturn(foo);
+    Bar bar = new Bar();
+    assertNull(bar.foo);
+    InjectMocksTest.injectMocks(bar, fooService);
+
+    assertEquals(foo, bar.foo);
+}
+
+static class Foo {
+    String s;
+}
+
+static class Bar {
+    final Foo foo;
+
+    public Bar(Foo foo) {
+        this.foo = foo;
+    }
+
+    public Bar() {
+        this(null);
+    }
+}
+
+public static class InjectMocksTest {
+    private static Field[] getFields(Class<?> clazz) {
+        Field[] fields = clazz.getDeclaredFields();
+        if (clazz.getSuperclass() != null) {
+            fields = (Field[]) ArrayUtils.addAll(fields, getFields(clazz.getSuperclass()));
+        }
+        return fields;
+    }
+

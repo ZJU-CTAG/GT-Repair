@@ -1,0 +1,21 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper().registerModule(new GuavaModule());
+    SimpleModule module = new SimpleModule("My Module");
+    module.setDeserializerModifier(new BeanDeserializerModifier() {
+        @Override
+        public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config,
+                                                     JavaType type,
+                                                     KeyDeserializer keyDeserializer) {
+            return new KeyDeserializer() {
+                @Override
+                public Object deserializeKey(String key, DeserializationContext context) throws IOException, JsonProcessingException {
+                    return "Hello " + key + "!";
+                }
+            };
+        }
+    });
+    mapper.registerModule(module);
+    Map<String, Object> map = mapper.readValue("{\"key\":\"value\"}", new TypeReference<Map<String, Object>>() {
+    });
+    assertEquals("Hello key!", map.keySet().iterator().next());
+}

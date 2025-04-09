@@ -1,0 +1,18 @@
+public void testSimpleTypeWithClass()
+{
+    @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+    @JsonSubTypes({ @JsonSubTypes.Type(value = ConcreteList.class, name = "list") })
+    class AbstractList<T> extends ArrayList<T> { }
+    
+    class ConcreteList extends AbstractList<String> { }
+    
+    ConcreteList list = new ConcreteList();
+    list.add("a");
+    list.add("b");
+    String json = mapper.writeValueAsString(list).replaceAll("\"", "");
+    System.out.println(json);
+    assertEquals("{type:list,a,b}", json);
+    AbstractList<?> result = mapper.readValue(json, AbstractList.class);
+    assertTrue(result instanceof ConcreteList);
+    assertEquals(2, result.size());
+}

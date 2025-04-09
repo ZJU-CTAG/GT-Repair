@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String source =
+        "(function() {" +
+        "  function name() {" +
+        "    var arguments = Array.prototype.slice.call(arguments, 0);" +
+        "  }" +
+        "}())";
+    String expected =
+        "(function(){function name(){var c=Array.prototype.slice.call(c,0);}}())";
+    String actual = UglifyJS.minify(source, new UglifyJSOptions()).code;
+    assertEquals(expected, actual);
+}

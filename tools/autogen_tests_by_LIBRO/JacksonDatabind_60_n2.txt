@@ -1,0 +1,30 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    final Message message = new Message();
+    message.setName("hello");
+    
+    final String json = mapper.writeValueAsString(message);
+    System.out.println(json);
+    mapper.readValue(json, Message.class);
+}
+
+// This class is a simplified version of the actual class.
+public class Message {
+    @JsonIgnore
+    private String name;
+    @JsonIgnore
+    private byte[] bytes;
+    
+    @JsonCreator
+    public Message(@JsonProperty("name") String name) {
+        this.name = name;
+        this.bytes = name.getBytes();
+    }
+    
+    @JsonValue
+    public byte[] getBytes() {
+        return bytes;
+    }
+}
+

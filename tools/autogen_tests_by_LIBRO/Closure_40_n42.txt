@@ -1,0 +1,19 @@
+public void testSmartNameRemoval() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js",
+            "var goog = {};" +
+            "goog.inherits = function(x, y) {};" +
+            "var ns = {};" +
+            "/** @constructor */ ns.PageSelectionModel = function(){};" +
+            "" +
+            "/** @constructor */ " +
+            "ns.PageSelectionModel.FooEvent = function() {};" +
+            "/** @constructor */ " +
+            "ns.PageSelectionModel.SelectEvent = function() {};" +
+            "goog.inherits(ns.PageSelectionModel.ChangeEvent, ns.PageSelectionModel.FooEvent);"),
+        options);
+    assertTrue(result.success);

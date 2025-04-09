@@ -1,0 +1,16 @@
+public void testGetValueAsString() throws Exception
+{
+    // first, with String
+    String JSON = "{ \"a\" : 1 }";
+    JsonParser p = createParserUsingReader(JSON);
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+
+    // should get field name "a"
+    assertEquals("a", p.getValueAsString());
+
+    // and then value as String
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("1", p.getValueAsString());
+
+    p.close();
+}

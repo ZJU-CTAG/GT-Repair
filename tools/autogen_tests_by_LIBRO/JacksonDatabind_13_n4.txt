@@ -1,0 +1,18 @@
+public void testNullObjectId() {
+    ObjectMapper mapper = new ObjectMapper();
+    TestNullObjectId test = new TestNullObjectId();
+    try {
+        mapper.writeValueAsString(test);
+        fail("Should have throw exception");
+    } catch (Exception e) {
+        // ok, expected
+    }
+    mapper.enable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+    mapper.enable(SerializationFeature.WRITE_NULL_OBJECT_ID);
+    assertEquals("{\"objectId\":null}", mapper.writeValueAsString(test));
+}
+
+public class TestNullObjectId {
+    @JsonIdentityInfo(generator=ObjectIdGenerators.None.class)
+    public TestNullObjectId objectId;
+}

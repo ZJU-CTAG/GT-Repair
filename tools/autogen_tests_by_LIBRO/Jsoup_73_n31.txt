@@ -1,0 +1,10 @@
+public void testInheritingNamespaces() throws IOException, SAXException {
+    String html = "<html><body><p>First<p>Second</body></html>";
+    ByteArrayInputStream is = new ByteArrayInputStream(html.getBytes("UTF-8"));
+    Document doc = Jsoup.parse(is, null, "", Parser.xmlParser());
+    Element p1 = doc.select("p").first();
+    Element p2 = doc.select("p").last();
+    assertFalse(p1.getNamespaceURI().equals(p2.getNamespaceURI()));
+    assertEquals("", p1.getNamespaceURI());
+    assertEquals("", p2.getNamespaceURI());
+}

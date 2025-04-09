@@ -1,0 +1,14 @@
+public void test1() throws EstimationException {
+    // the estimation problem
+    final double[] target = new double[] { 2.0, 0.0, -2.0, 0.0, -11.0, 0.0, -11.0, 0.0 };
+    final ParameterFunction model = new ParameterFunction() {
+        public double value(double t, double[] params) {
+            return params[0] + params[1] * Math.cos(t) + params[2] * Math.sin(t) + params[3] * Math.cos(2 * t) + params[4] * Math.sin(2 * t) + params[5] * Math.cos(3 * t) + params[6] * Math.sin(3 * t);
+        }
+    };
+    final int len = target.length;
+    final double[] sigma = new double[len];
+    Arrays.fill(sigma, 1.0);
+    final WeightedMeasurement[] measurements = new WeightedMeasurement[len];
+    for (int i = 0; i < len; ++i) {
+        measurements

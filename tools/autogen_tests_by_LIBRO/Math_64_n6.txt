@@ -1,0 +1,9 @@
+public void testLm() {
+    LmProblem problem = new LmProblem();
+    LmOptimizer optimizer = new LmOptimizer();
+    VectorialPointValuePair pv = optimizer.optimize(problem.getMaxEvaluations(), problem.getObjectiveFunction(), problem.getObjectiveFunctionGradient(), problem.getTarget(), problem.getWeight(), problem.getStartPoint());
+    double[] residuals = problem.getObjectiveFunction().value(pv.getPoint());
+    double cost = optimizer.computeCost(residuals);
+    assertEquals(cost, pv.getValue(), 0.0000001);
+    assertEquals(0.0, cost, 0.0000001);
+}

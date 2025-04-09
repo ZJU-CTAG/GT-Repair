@@ -1,0 +1,14 @@
+public void testGammaDistributionCloning() throws Exception {
+    GammaDistribution gam1 = new GammaDistribution(1.5, 2);
+    for (int i = 1; i < 20; i++) {
+        assertEquals("bad sample " + i, gam1.sample(), gam1.sample(), 0);
+    }
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    new ObjectOutputStream(bos).writeObject(gam1);
+
+    GammaDistribution gam2 = (GammaDistribution) new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray())).readObject();
+    for (int i = 1; i < 20; i++) {
+        assertEquals("bad sample " + i, gam1.sample(), gam2.sample(), 0);
+    }
+}

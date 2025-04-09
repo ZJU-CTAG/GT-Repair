@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    String code = "/**\n" +
+            " * @param {{func: function()}} obj\n" +
+            " */\n" +
+            "function test1(obj) {}\n" +
+            "var fnStruc1 = {};\n" +
+            "fnStruc1.func = function() {};\n" +
+            "test1(fnStruc1);\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("testFile", code)}, new CompilerOptions());
+    assertTrue(result.success);
+}

@@ -1,0 +1,25 @@
+public void testArchiveStream() throws Exception {
+    File file = new File("target/test.txt");
+    file.delete();
+    assertFalse(file.exists());
+
+    OutputStream out = new FileOutputStream(file);
+    ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.JAR, out);
+
+    // Write an entry to the archive.
+    ArchiveEntry entry = new JarArchiveEntry("test.txt");
+    archive.putArchiveEntry(entry);
+    archive.write(new byte[0]);
+    archive.closeArchiveEntry();
+
+    // This is what the user does, but it's wrong.
+    archive.finish();
+
+    out.close();
+
+    // The file is corrupt.
+    ArchiveInputStream input = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(file));
+    assertNotNull(input.getNextEntry());
+    assertNull(input.getNextEntry());
+    input.close();
+}

@@ -1,0 +1,22 @@
+public void testAr() throws IOException {
+    String[] entries = new String[] { "test1.xml", "test2.xml", "test3.xml" };
+    File file = File.createTempFile("test.", ".ar");
+    file.deleteOnExit();
+    ArchiveOutputStream aos = new ArchiveStreamFactory()
+        .createArchiveOutputStream("ar", new FileOutputStream(file));
+    for (String entry : entries) {
+        aos.putArchiveEntry(aos.createArchiveEntry(new File(entry), entry));
+        aos.closeArchiveEntry();
+    }
+    aos.close();
+    ArchiveInputStream ais = new ArchiveStreamFactory()
+        .createArchiveInputStream("ar", new FileInputStream(file));
+    ArchiveEntry entry = ais.getNextEntry();
+    assertNotNull(entry);
+    for (String entryName : entries) {
+        assertEquals(entryName, entry.getName());
+        entry = ais.getNextEntry();
+    }
+    assertNull(entry);
+    ais.close();
+    // delete test2

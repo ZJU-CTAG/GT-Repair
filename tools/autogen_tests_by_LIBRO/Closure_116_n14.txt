@@ -1,0 +1,21 @@
+public void testOptimization() {
+        Compiler compiler = new Compiler();
+        CompilerOptions options = new CompilerOptions();
+        options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+        options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+        options.setPrettyPrint(true);
+        options.setAggressiveVarCheck(CheckLevel.OFF);
+        options.setAggressiveOptimizations(CheckLevel.OFF);
+        boolean ok = false;
+        try {
+            ok = compiler.compile(
+                    Compiler.getDefaultExterns(),
+                    ImmutableList.of(SourceFile.fromCode("input.js",
+                            "window['anchor'] = function (obj, modifiesProp) {\n" +
+                            "  return (function (saved) {\n" +
+                            "    return modifiesProp(obj) + saved;\n" +
+                            "  })(obj['prop']);\n" +
+                            "};\n")),
+                    options).success;
+        } catch (Throwable e) {
+            e.printStackTr

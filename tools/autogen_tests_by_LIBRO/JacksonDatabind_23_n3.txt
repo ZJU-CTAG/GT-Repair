@@ -1,0 +1,9 @@
+public void testIssueWithExclusion() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    Map<String,Object> result = mapper.readValue("{\"x\": 1, \"y\": null}",
+            new TypeReference<Map<String,Object>>() { });
+    assertEquals(1, result.size());
+    assertEquals(Integer.valueOf(1), result.get("x"));
+}

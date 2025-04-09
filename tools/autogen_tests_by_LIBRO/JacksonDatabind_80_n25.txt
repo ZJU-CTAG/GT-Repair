@@ -1,0 +1,38 @@
+public void testBaseType() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addMixInAnnotations(BaseType.class, BaseTypeMixin.class);
+    BaseType obj = new BaseType(123, "text");
+    String json = mapper.writeValueAsString(obj);
+
+    BaseType result = (BaseType) mapper.readValue(json, BaseType.class);
+    Assert.assertEquals(obj.getNum(), result.getNum());
+}
+
+public class BaseType
+{
+    public final int num;
+    public final String text;
+
+    public BaseType(int num, String text)
+    {
+        this.num = num;
+        this.text = text;
+    }
+
+    public int getNum()
+    {
+        return num;
+    }
+
+    public String getText()
+    {
+        return text;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("BaseType[num=%d, text=%s]", num, text);
+    }

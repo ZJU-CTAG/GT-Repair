@@ -1,0 +1,26 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    CommandAPDU c = new CommandAPDU(new byte[] {(byte)0x00, (byte)0x30, (byte)0x00, (byte)0x00, (byte)0x00});
+    String json = mapper.writeValueAsString(c);
+    CommandAPDU c2 = mapper.readValue(json, CommandAPDU.class);
+    assertEquals(c, c2);
+}
+
+public static class CommandAPDU {
+    /** @serial */
+    private byte[] apdu;
+
+    @JsonValue
+    public byte[] getBytes() {
+        return apdu.clone();
+    }
+
+    @JsonCreator
+    public CommandAPDU(@JsonProperty(value = "bytes") byte[] apdu) {
+        this.apdu = apdu.clone();
+        parse();
+    }
+
+   

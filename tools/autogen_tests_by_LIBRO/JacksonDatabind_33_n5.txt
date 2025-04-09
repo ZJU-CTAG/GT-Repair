@@ -1,0 +1,15 @@
+public void testIssue() throws Exception
+{
+    @JsonUnwrapped(prefix="_")
+    class Bean {
+        public int value = 3;
+        public int _number = 1;
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new Bean());
+    
+    // should produce: {"value":3,"number":1}
+    // instead produces: {"value":3,"_number":1}
+    
+    assertEquals("{\"value\":3,\"number\":1}", json);
+}

@@ -1,0 +1,17 @@
+public void testAdvancedOptimizations() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(
+            SourceFile.fromCode("externs.js", "var window;"),
+            SourceFile.fromCode("input.js", "window['foo'] = function (obj, modifiesProp) {\n" +
+                    "return (function (saved) {\n" +
+                    "return modifiesProp(obj) + saved;\n" +
+                    "})(obj['prop']);\n" +
+                    "}"),
+            options);
+    String output = compiler.toSource();
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;

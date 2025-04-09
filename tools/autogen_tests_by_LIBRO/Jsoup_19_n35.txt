@@ -1,0 +1,8 @@
+public void testCid() {
+    String html = "<img src=\"cid:8A6A3E6C-A6A4-4D45-B4C4-C1F6C0E77F8E@ibm.com\">";
+    String cid = "8A6A3E6C-A6A4-4D45-B4C4-C1F6C0E77F8E@ibm.com";
+    Whitelist w = Whitelist.relaxed().addTags("img").addAttributes(":all", "src");
+    w.addProtocols("img", "src", "cid");
+    String clean = Jsoup.clean(html, w);
+    assertEquals(html, clean);
+}

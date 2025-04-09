@@ -1,0 +1,22 @@
+public void testIssue107() {
+    try {
+        InputStream is = getClass().getResourceAsStream("201101w01.tgz");
+        TarArchiveInputStream tarIn = new TarArchiveInputStream(new GZIPInputStream(new BufferedInputStream(is)));
+        TarArchiveEntry entry = tarIn.getNextTarEntry();
+        while (entry != null) {
+            if (!entry.isDirectory()) {
+                byte[] read = new byte[2048];
+                int len;
+                while ((len = tarIn.read(read)) != -1) {
+                    System.out.print(new String(read, "UTF-8"));
+                }
+                read = null;
+            }
+            entry = tarIn.getNextTarEntry();
+        }
+        tarIn.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+

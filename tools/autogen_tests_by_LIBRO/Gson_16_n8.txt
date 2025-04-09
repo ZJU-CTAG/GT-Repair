@@ -1,0 +1,26 @@
+public void testIssue113() {
+    ParameterizedType superType = new ParameterizedType() {
+        @Override public Type getRawType() {
+            return TestType.class;
+        }
+        @Override public Type getOwnerType() {
+            return null;
+        }
+        @Override public Type[] getActualTypeArguments() {
+            return new Type[] { new WildcardType() {
+                @Override public Type[] getUpperBounds() {
+                    return new Type[] { X.class };
+                }
+                @Override public Type[] getLowerBounds() {
+                    return new Type[0];
+                }
+            } };
+        }
+    };
+    TypeVariable<Class<TestType>> superTypeVariable = TestType.class.getTypeParameters()[0];
+    Type[] bounds = new Type[1];
+    bounds[0] = superTypeVariable;
+    TypeVariable<Class<TestType>> typeVariable = new TypeVariable<Class<TestType>>() {
+        @Override public AnnotatedType[] getAnnotatedBounds() {
+            return new AnnotatedType[0];
+        }

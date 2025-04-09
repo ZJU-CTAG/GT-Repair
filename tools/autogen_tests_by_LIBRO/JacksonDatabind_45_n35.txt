@@ -1,0 +1,22 @@
+public void testIssue1154() {
+    // Given:
+    NumberFormat format = NumberFormat.getNumberInstance() {
+        @Override
+        public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
+            return toAppendTo.append("A");
+        }
+    };
+    FormatFactory factory = new FormatFactory() {
+        @Override
+        public Format getFormat(String name) {
+            return format;
+        }
+    };
+    String template = "${price,number,formatFactory}";
+    String expectedResult = "A";
+    String input = "{\"price\":1.23}";
+    // When:
+    String result = new StrSubstitutor(new ObjectMap(new JsonStringSource(input)), "{", "}", '$', true).replace(template);
+    // Then:
+    assertEquals(expectedResult, result);
+}

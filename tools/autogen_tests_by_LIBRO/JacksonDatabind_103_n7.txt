@@ -1,0 +1,18 @@
+public void testLocationInfo() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"foo\":\"bar\"}", Foo.class);
+    } catch (JsonMappingException e) {
+        assertFalse(e.getMessage(), e.getMessage().contains("at [Source: "));
+    }
+}
+
+@JsonDeserialize(using = FooDeserializer.class)
+public static class Foo { }
+
+public static class FooDeserializer extends JsonDeserializer<Foo> {
+    @Override
+    public Foo deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+        return new Foo();
+    }
+}

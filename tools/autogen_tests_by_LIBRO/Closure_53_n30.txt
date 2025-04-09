@@ -1,0 +1,16 @@
+public void testIssue() throws IOException {
+    Compiler compiler = new Compiler(new PrintWriter(System.err));
+    compiler.setLoggingLevel(Level.INFO);
+    compiler.setErrorManager(new TestErrorManager());
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setAngularPass(true);
+    options.setInlineVariables(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> input = new ArrayList<SourceFile>();
+    input.add(SourceFile.fromCode("closure-compiler/testdata/soundmanager2-nodebug.js", ""
+            + "var soundManager = null; // instance of SoundManager (soundmanager2.js)"));
+    input.add(SourceFile.fromCode("closure-compiler/testdata/flash_sound_objects.js", ""
+            + "var SoundObject = function() {};\n"
+            + "var SoundObject

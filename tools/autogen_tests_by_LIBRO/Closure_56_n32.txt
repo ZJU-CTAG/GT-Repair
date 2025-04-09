@@ -1,0 +1,18 @@
+public void testTruncation() {
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(testErrorReporter);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode("test.js", "alert(foo);\nalert(bar);\n"),
+        new CompilerOptions());
+    List<JSError> errors = testErrorReporter.getErrors();
+    assertEquals(2, errors.size());
+    JSError error = errors.get(0);
+    assertEquals("variable foo is undefined", error.description);
+    assertEquals("test.js", error.sourceName);
+    assertEquals(1, error.lineNumber);
+    assertEquals(1, error.getCharno());
+    error = errors.get(1);
+    assertEquals("variable bar is undefined", error.description);
+    assertEquals("test.js", error.sourceName);
+    assertEquals(2, error

@@ -1,0 +1,22 @@
+public void testTypedefs() {
+    String source =
+    "/** @const */ var a = {};\n" +
+    "/** @const */ a.b = {};\n" +
+    "/** @const */ a.b.c = {};\n" +
+    "/** @typedef {string} */ a.b.c.MyType;\n" +
+    "/** @param {a.b.c.MyType} x The variable. */ a.b.c.myFunc = function(x) {};\n";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT6_TYPED);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js", source),
+        options);
+
+    assertTrue(result.success);
+    assertEquals(
+        "/**\n" +
+        " * @const\n" +
+        " */\n

@@ -1,0 +1,17 @@
+public void testTypeHandler () {
+    TypeHandler handler = new TypeHandler();
+    try {
+        Object value = handler.createValue("test", String.class);
+        assertEquals("test", value);
+        value = handler.createValue("test", Integer.class);
+        assertEquals(new Integer(4), value);
+        try {
+            value = handler.createValue("test", UnknownClass.class);
+            fail("Expected ParseException");
+        } catch (ParseException e) {
+            // OK
+        }
+    } catch (ParseException e) {
+        fail("Unexpected ParseException");
+    }
+}

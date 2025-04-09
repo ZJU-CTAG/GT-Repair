@@ -1,0 +1,8 @@
+public void testIssue107() {
+
+    IOContext context = new IOContext(new BufferRecycler(), null, false);
+    byte[] data = context.allocReadIOBuffer(1024);
+    assertEquals(2048, context.allocReadIOBuffer(1024).length);
+    context.releaseReadIOBuffer(data);
+    assertEquals(1024, context.allocReadIOBuffer(1024).length);
+}

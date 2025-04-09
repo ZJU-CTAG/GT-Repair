@@ -1,0 +1,14 @@
+public void testIssue0107() {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            new JSSourceFile[]{
+                JSSourceFile.fromCode("input.js", "window['anchor'] = function (obj, modifiesProp) {" +
+                                     "return (function (saved) {" +
+                                     "return modifiesProp(obj) + saved;" +
+                                     "})(obj['prop']);" +
+                                     "}")},
+                                     new JSSourceFile[]{JSSourceFile.fromCode("window.js", "var window;")},
+                                     compiler.getDefaultOptions());
+    String result = compiler.toSource();
+    assertEquals("window.anchor=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", result);
+}

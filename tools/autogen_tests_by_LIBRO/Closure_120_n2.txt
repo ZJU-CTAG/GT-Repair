@@ -1,0 +1,14 @@
+public void testIssue() {
+    final TestClass tc = new TestClass();
+    String code = "var uid; function reset() { uid = Math.random(); } function doStuff() { reset(); var _uid = uid; if (uid < 0.5) { doStuff(); } if (_uid !== uid) { throw 'reset() was called'; }} doStuff();";
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    compilerEnv.setAllowSharpComments(true);
+    compilerEnv.setRecoverFromErrors(true);
+    compilerEnv.setStrictMode(false);
+    compilerEnv.setIdeMode(true);
+    compilerEnv.setGenerateDebugInfo(true);
+    ErrorReporter compilationErrorReporter = compilerEnv.getErrorReporter();
+    Parser p = new Parser(compilerEnv, compilationErrorReporter);
+    AstRoot ast = p.parse(code, null, 1);
+    IRFactory irf = new IRFactory(comp

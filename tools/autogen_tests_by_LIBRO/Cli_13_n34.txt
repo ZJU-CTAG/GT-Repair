@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    Option option = new Option("o", "option", true, "");
+    option.setArgs(1);
+    option.setArgName("value");
+    option.setOptionalArg(true);
+    option.setValue("default");
+    option.setType(String.class);
+    CommandLineParser parser = new PosixParser();
+    String[] args = {"-o", "override"};
+    CommandLine line = parser.parse(new Options().addOption(option), args);
+    assertEquals("override", line.getOptionValue("o"));
+}

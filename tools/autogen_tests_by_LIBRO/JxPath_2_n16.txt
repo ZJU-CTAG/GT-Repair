@@ -1,0 +1,13 @@
+public void testIssue126() {
+    JXPathContext context = JXPathContext.newContext(new TestBean());
+    context.registerNamespace("test", TestBean.class);
+    context.registerNamespace("enum", TestBean.class);
+    context.registerNamespace("ems", TestBean.class);
+    context.registerFunction("test:nodeSet", TestBean.class.getName() + ".nodeSet");
+    context.registerFunction("test:nodeSet2", TestBean.class.getName() + ".nodeSet2");
+    context.registerFunction("ems:observations", TestBean.class.getName() + ".observations");
+    assertNotNull(context.selectSingleNode("test:nodeSet()"));
+    assertEquals("baz", context.getValue("test:nodeSet()/name"));
+    assertEquals("baz", context.getValue("test:nodeSet()[1]/name"));
+    assertEquals("qux", context.getValue("test:nodeSet()[2]/name"));
+    assertEquals("

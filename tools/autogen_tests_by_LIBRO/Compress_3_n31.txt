@@ -1,0 +1,13 @@
+public void testZipArchiveOutputStreamFinish() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+    zaos.putArchiveEntry(new ZipArchiveEntry("foo"));
+    zaos.closeArchiveEntry();
+    zaos.finish();
+    try {
+        zaos.putArchiveEntry(new ZipArchiveEntry("bar"));
+        fail("Should have thrown IllegalStateException");
+    } catch (IllegalStateException e) {
+        // expected
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssue112() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = new JsonFactory().createGenerator(sw);
+    try {
+        gen.writeString("foo");
+        fail("Expected an exception");
+    } catch (JsonGenerationException e) {
+        // expected
+    }
+    sw.close();
+    String json = sw.toString();
+    assertEquals("Invalid output: " + json, "\"foo\"", json);
+}

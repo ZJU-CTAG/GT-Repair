@@ -1,0 +1,16 @@
+public void testZipEntries() throws Exception {
+    File tmp = File.createTempFile("test", "zip");
+    OutputStream fos = new FileOutputStream(tmp);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+    ZipArchiveEntry zae = new ZipArchiveEntry("foo");
+    zos.putArchiveEntry(zae);
+    zos.closeArchiveEntry();
+    zos.close();
+    fos.close();
+    FileInputStream fis = new FileInputStream(tmp);
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(fis);
+    ZipArchiveEntry ze = zis.getNextZipEntry();
+    ZipFile zf = new ZipFile(tmp);
+    assertTrue(zf.getEntries().contains(ze));
+    assertTrue(zf.getEntries().contains(zae));
+}

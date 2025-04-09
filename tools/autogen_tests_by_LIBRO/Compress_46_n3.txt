@@ -1,0 +1,13 @@
+public void testZipEntry() throws IOException {
+    try (ZipInputStream zis = new ZipInputStream(new FileInputStream("src/test/resources/ziputils.zip"))) {
+        ZipEntry ze = zis.getNextEntry();
+        assertEquals("ziputils/", ze.getName());
+        assertEquals(0, ze.getSize());
+        ze = zis.getNextEntry();
+        assertEquals(5, ze.getSize());
+        assertEquals("ziputils/test1.txt", ze.getName());
+        ze = zis.getNextEntry();
+        assertEquals(11, ze.getSize());
+        assertEquals("ziputils/test2.txt", ze.getName());
+    }
+}

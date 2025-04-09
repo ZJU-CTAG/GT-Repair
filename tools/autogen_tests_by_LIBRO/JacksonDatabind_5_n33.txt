@@ -1,0 +1,12 @@
+public void testIssues107() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.setMixInAnnotations(Person.class, PersonMixin.class);
+            context.setMixInAnnotations(Contact.class, ContactMixin.class);
+        }
+    });
+    String json = om.writeValueAsString(new PersonImpl("hello", "world"));
+    assertEquals("{\"city\":\"world\"}", json);
+}

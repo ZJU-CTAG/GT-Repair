@@ -1,0 +1,22 @@
+public void testEquals() {
+    final String format = "This is a test format with param {0}";
+    final Locale locale = Locale.US;
+    final Object[] params = new Object[] { "param value" };
+
+    ExtendedMessageFormat extendedMessageFormat = new ExtendedMessageFormat(format, locale);
+    MessageFormat messageFormat = new MessageFormat(format, locale);
+
+    assertEquals(extendedMessageFormat, messageFormat);
+    assertEquals(messageFormat, extendedMessageFormat);
+    assertEquals(messageFormat, new MessageFormat(format, locale));
+
+    assertEquals(extendedMessageFormat.hashCode(), messageFormat.hashCode());
+
+    assertEquals(extendedMessageFormat.toPattern(), messageFormat.toPattern());
+    assertEquals(messageFormat.toPattern(), extendedMessageFormat.toPattern());
+    assertEquals(messageFormat.toPattern(), new MessageFormat(format, locale).toPattern());
+
+    assertEquals(extendedMessageFormat.toPattern(), format);
+    assertEquals(messageFormat.toPattern(), format);
+
+    assertEquals(extendedMessageFormat.format(params), message

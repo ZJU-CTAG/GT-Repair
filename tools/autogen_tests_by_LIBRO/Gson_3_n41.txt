@@ -1,0 +1,14 @@
+public void testIssue507() {
+    Gson gson = new Gson();
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("a", "b");
+    Container container = new Container();
+    container.map = map;
+    String json = gson.toJson(container);
+    Container deserializedContainer = gson.fromJson(json, Container.class);
+    assertEquals(deserializedContainer.map.get("a"), "b");
+}
+
+private static class Container {
+    ConcurrentNavigableMap<String, String> map;
+}

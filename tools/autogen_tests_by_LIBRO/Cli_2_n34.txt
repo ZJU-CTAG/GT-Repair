@@ -1,0 +1,30 @@
+public void testCommandLineParser() {
+    Options options = new Options();
+    options.addOption("t", "test", true, "test");
+    Options options2 = new Options();
+    options2.addOption("t", "test", false, "test");
+    String[] args = new String[] { "-t", "-something" };
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, args);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+    try {
+        parser.parse(options, args);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+    args = new String[] { "-t", "--something" };
+    try {
+        parser.parse(options, args);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+    try {
+        parser.parse(options2, args);
+        fail("Expected ParseException");
+   

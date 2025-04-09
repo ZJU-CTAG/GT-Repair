@@ -1,0 +1,29 @@
+public void testPreserve() throws IOException {
+    File tempFile = File.createTempFile("test", ".js");
+    FileWriter writer = new FileWriter(tempFile);
+    writer.write("/**\n");
+    writer.write(" * @preserve\n");
+    writer.write("\n");
+    writer.write("This\n");
+    writer.write("was\n");
+    writer.write("ASCII\n");
+    writer.write("Art\n");
+    writer.write("\n");
+    writer.write("*/\n");
+    writer.close();
+    StringWriter stringWriter = new StringWriter();
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new FileReader(tempFile), new ErrorReporter() {
+
+        public void warning(String message, String sourceName,
+                            int line, String lineSource, int lineOffset) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public void error(String message, String sourceName,
+                          int line, String lineSource, int lineOffset) {
+            // TODO Auto-generated method stub
+
+        }
+
+       

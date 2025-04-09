@@ -1,0 +1,15 @@
+public void testIssue107HelpFormatter() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasArg(false)
+                                   .withLongOpt("list")
+                                   .withDescription("List all available commands")
+                                   .create());
+
+    StringWriter sw = new StringWriter();
+    HelpFormatter helpFormatter = new HelpFormatter();
+    helpFormatter.printHelp(new PrintWriter(sw), 60, "mycommand", "myheader", options, 0, 2, null, false);
+    String output = sw.toString();
+    assertTrue(output.indexOf("myheader") != -1);
+    assertTrue(output.indexOf("Options:") != -1);
+    assertTrue(output.indexOf("List all available commands") != -1);
+}

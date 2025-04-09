@@ -1,0 +1,15 @@
+public void testIssue() {
+    String input = "var getNum = function() { return 5; };";
+    String output = "var a=function(){return 5};";
+    Compiler compiler = compile(input, output);
+    compiler.disableThreads();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.setCodingConvention(new ClosureCodingConvention());
+    CompilerOptions options = new CompilerOptions();
+    compiler.setPassConfig(new DefaultPassConfig(options));
+    compiler.setOptions(options);
+    compiler.disableThreads();
+    Result result = compiler.compile(JSSourceFile.fromCode("input", input),
+            JSSourceFile.fromCode("output", output));
+}

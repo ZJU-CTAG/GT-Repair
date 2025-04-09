@@ -1,0 +1,28 @@
+public void testAnyGetter()
+{
+ObjectMapper mapper = new ObjectMapper();
+
+try {
+    String test = mapper.writeValueAsString(new Test());
+    System.out.println(test);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+}
+
+@JsonSerialize(using = MySerializer.class)
+public class Test {
+@JsonAnyGetter
+public Map<String, String> getParameters(){
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("a", "b");
+    return params;
+}
+}
+
+public class MySerializer extends JsonSerializer<Object> {
+public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+        JsonProcessingException {
+    jgen.writeString("MySerializer");
+}
+}

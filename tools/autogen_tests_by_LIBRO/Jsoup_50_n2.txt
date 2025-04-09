@@ -1,0 +1,12 @@
+public void testBug() {
+    byte[] utf16be = new byte[] {(byte)0xFE, (byte)0xFF};
+    byte[] utf16le = new byte[] {(byte)0xFF, (byte)0xFE};
+
+    assertEquals("UTF-16BE", DataUtil.getCharsetFromContentType("text/html; charset=utf-16be").displayName());
+    assertEquals("UTF-16LE", DataUtil.getCharsetFromContentType("text/html; charset=utf-16le").displayName());
+
+    assertEquals("UTF-16BE", DataUtil.getCharsetFromContentType(utf16be).displayName());
+    assertEquals("UTF-16LE", DataUtil.getCharsetFromContentType(utf16le).displayName());
+
+    assertEquals("UTF-8", DataUtil.getCharsetFromContentType("text/html; charset=utf-8").displayName());
+}

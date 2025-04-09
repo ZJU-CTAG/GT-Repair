@@ -1,0 +1,26 @@
+public void testZipArchiveInputStream () throws Exception {
+    byte[] data = new byte[100];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = (byte)i;
+    }
+
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(buffer);
+
+    ZipArchiveEntry ze = new ZipArchiveEntry("foo.txt");
+    ze.setSize(data.length);
+    zos.putArchiveEntry(ze);
+    zos.write(data);
+    zos.closeArchiveEntry();
+
+    ze = new ZipArchiveEntry("bar.txt");
+    ze.setSize(data.length);
+    ze.setMethod(ZipEntry.STORED);
+    CRC32 crc = new CRC32();
+    crc.update(data);
+    ze.setCrc(crc.getValue());
+    zos.putArchiveEntry(ze);
+    zos.write(data);
+    zos.closeArchiveEntry();
+
+    zos.close

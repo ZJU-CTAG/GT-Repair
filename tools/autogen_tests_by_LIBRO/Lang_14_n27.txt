@@ -1,0 +1,26 @@
+public void testNameEquals() {
+    Name name = new SimpleName("Bogus");
+    assertEquals(name, "Bogus");
+}
+
+public void testStringUtilsEquals() {
+    assertEquals(true, StringUtils.equals(null, null));
+    assertEquals(true, StringUtils.equals(new SimpleName("Bogus"), "Bogus"));
+}
+
+private class SimpleName implements Name {
+
+    private final String name;
+
+    SimpleName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof CharSequence) {
+            return name.equals(obj.toString());
+        }
+        return false;
+    }
+}

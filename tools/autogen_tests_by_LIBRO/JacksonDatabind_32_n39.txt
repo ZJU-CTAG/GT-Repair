@@ -1,0 +1,14 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.readValue("[]", SomeObjectThatCanBeAggregated.class);
+    mapper.readValue("[{}]", SomeObjectThatCanBeAggregated.class);
+    mapper.readValue("{\"key\":null}", SomeObjectThatCanBeAggregated.class);
+    mapper.readValue("{}", SomeObjectThatCanBeAggregated.class);
+}
+
+class SomeObjectThatCanBeAggregated {
+    @JsonCreator
+    public SomeObjectThatCanBeAggregated(Object obj) {
+        System.out.println(obj + " //" + obj.getClass());
+    }
+}

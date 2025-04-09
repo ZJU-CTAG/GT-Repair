@@ -1,0 +1,17 @@
+public void testIssue148() {
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+
+    CommandLineParser parser = new PosixParser();
+    String[] args = {"-z", "-a", "foo"};
+    try {
+        CommandLine cl = parser.parse(opts, args, true);
+        assertEquals(false, cl.hasOption("z"));
+        assertEquals(true, cl.hasOption("a"));
+        assertEquals(2, cl.getArgs().length);
+        assertEquals("-a", cl.getArgs()[0]);
+        assertEquals("foo", cl.getArgs()[1]);
+    } catch (ParseException e) {
+        fail("Unexpected exception: " + e.getMessage());
+    }
+}

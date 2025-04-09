@@ -1,0 +1,14 @@
+public void testClosure() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test.js", "Math.blah = function(test) { test.a = 5; };\n"
+            + "var test = new Object();\n"
+            + "Math.blah(test);\n") },
+        new CompilerOptions());
+    StringBuilder sb = new StringBuilder();
+    for (JSError error : result.errors) {
+        sb.append(error.toString()).append('\n');
+    }
+    assertEquals("", sb.toString());
+    assertEquals("Math.blah=function(a){a.a=5};var test={}", result.success);
+}

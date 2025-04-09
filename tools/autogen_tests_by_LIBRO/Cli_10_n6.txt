@@ -1,0 +1,28 @@
+public void testMissingRequiredOptions_1() {
+    String[] args = new String[] { "-a", "-b" };
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().create('a'));
+    options.addOption(OptionBuilder.isRequired().create('b'));
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, args);
+    } catch (ParseException e) {
+        fail("Should not throw exception");
+    }
+}
+
+public void testMissingRequiredOptions_2() {
+    String[] args = new String[] { "-a" };
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().create('a'));
+    options.addOption(OptionBuilder.isRequired().create('b'));
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, args);
+        fail("Should throw exception");
+    } catch (ParseException e) {
+        // expected
+    }
+}
+
+public void testMissingRequiredOptions_3() {

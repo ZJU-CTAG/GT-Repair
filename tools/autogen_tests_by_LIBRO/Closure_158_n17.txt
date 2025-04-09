@@ -1,0 +1,11 @@
+public void testCommandLineFlags() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String[] args = {"--jscomp_error", "accessControls", "--jscomp_warning", "accessControls"};
+    CommandLineRunner runner = new CommandLineRunner(args);
+    runner.setRunInBrowser(false);
+    Compiler compiler = runner.createCompiler();
+    compiler.compile(externs, inputs, options);
+    assertTrue(compiler.getResult().success);
+    assertTrue(compiler.getResult().hasWarnings());
+}

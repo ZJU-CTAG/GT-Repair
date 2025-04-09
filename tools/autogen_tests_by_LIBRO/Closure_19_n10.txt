@@ -1,0 +1,14 @@
+public void testThis() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROVIDE, CheckLevel.ERROR);
+
+    final Compiler compiler = new Compiler();
+    final Result result = compiler.compile(
+            SourceFile.fromCode("Input_0",
+                    "goog.isNull(this);"),
+            SourceFile.fromCode("Input_1",
+                    "goog.provide('a.b.c');"),
+            options);
+    assertFalse(result.success);
+}

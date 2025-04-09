@@ -1,0 +1,21 @@
+public void testClosureCompiler() {
+    String code = "'\\v1'";
+    String expected = "!+'\\v1'";
+    String actual = (String) optimizeJavaScript(code);
+    assertEquals(expected, actual);
+}
+
+private Object optimizeJavaScript(String code) {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setCodingConvention(new DefaultCodingConvention());
+    compiler.setUseClosureLibrary(true);
+    compiler.initOptions(new CompilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    options.setPrettyPrint(false);
+    options.setComputeFunctionSideEffects(true);
+    options.setRemoveUnusedPrototypeProperties(true);
+    options.setRemoveUnusedPrototypePropertiesInExterns(true

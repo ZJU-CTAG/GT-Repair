@@ -1,0 +1,13 @@
+public void testOverflowCoercionException() throws Exception
+{
+    String json = String.format(
+            "{\"junk\":1,\"value\":%d}", Integer.MAX_VALUE+1L
+    );
+    try {
+        MAPPER.readValue(json, OverflowBean.class);
+        fail("Should not pass");
+    } catch (InputCoercionException e) {
+        assertEquals(Integer.class, e.getTargetType());
+        assertEquals(JsonToken.VALUE_NUMBER_INT, e.getFailure());
+    }
+}

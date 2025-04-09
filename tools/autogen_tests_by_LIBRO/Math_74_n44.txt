@@ -1,0 +1,19 @@
+public void testEmbeddedRungeKuttaIssue() {
+    final double[] y0 = new double[] {0, 1};
+    final double[] yDot0 = new double[] {1, 0};
+    final FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = y[1];
+            yDot[1] = -y[0];
+        }
+        public int getDimension() {
+            return 2;
+        }
+    };
+    final DormandPrince853Integrator integrator = new DormandPrince853Integrator(0.1, 100.0, 1.0e-10, 1.0e-10);
+    double[] y = y0;
+    double[] yDot = yDot0;
+    double t = 0;
+    double dt = 0.01;
+    for (int i = 0; i < 200; ++i) {
+        integrator.integrate(ode, t, y, t

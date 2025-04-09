@@ -1,0 +1,11 @@
+public void testIssue107() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    String xml = "<a><b/><c/><b/></a>";
+    Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    assertEquals(3, context.selectNodes("//node()").size());
+}
+

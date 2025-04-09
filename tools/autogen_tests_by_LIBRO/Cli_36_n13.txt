@@ -1,0 +1,19 @@
+public void testOptionGroupOrdering() {
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h)
+        .addOption(s)
+        .addOption(b)
+        .addOption(t);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    StringWriter out = new StringWriter();
+    formatter.printHelp(new PrintWriter(out), HelpFormatter.DEFAULT_WIDTH, "cmd", null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null, false);
+    String output = out.toString();
+    assertTrue(output.indexOf("-h, -

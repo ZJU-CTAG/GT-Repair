@@ -1,0 +1,39 @@
+public void testAbstractEstimator() {
+    // create estimator
+    AbstractEstimator estimator = new AbstractEstimator() {
+        protected RealMatrix computeWeightedJacobian(double[] params) {
+            return MatrixUtils.createRealMatrix(2, 2);
+        }
+
+        protected EstimationProblem getProblem() {
+            return problem;
+        }
+
+        protected RealMatrix computeWeightedResiduals(double[] params) {
+            return MatrixUtils.createRealMatrix(2, 1);
+        }
+        
+        @Override
+        protected void estimate(double[] params) throws EstimationException {
+            // do nothing
+        }
+
+        private final EstimationProblem problem =
+            new EstimationProblem() {
+                public int getObservationSize() {
+                    return 2;
+                }
+
+                public int getObservationIndex(int i) {
+                    return i;
+                }
+
+                public double getWeight(int i) {
+                    return 1.0;
+                }
+
+                public double getTheoreticalValue(int i) {
+                    return 0.0;
+                }
+
+                public double getObservedValue(

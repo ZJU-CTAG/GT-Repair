@@ -1,0 +1,10 @@
+public void testUnclosedTag() {
+    String tmp = "<a href='www.google.com'>Link<p>Error link</a>";
+    Document document = Jsoup.parse(tmp);
+    Elements links = document.select("a[href]");
+    assertEquals(2, links.size());
+    assertEquals("a", links.get(0).tagName());
+    assertEquals("www.google.com", links.get(0).attr("href"));
+    assertEquals("a", links.get(1).tagName());
+    assertEquals("www.google.com", links.get(1).attr("href"));
+}

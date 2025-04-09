@@ -1,0 +1,21 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    try {
+        mapper.readValue("{\"test\":\"invalid\"}", TestObject.class);
+        fail("Should have thrown an exception");
+    } catch (JsonMappingException e) {
+        assertEquals("Can not deserialize value of type java.util.Date from String \"invalid\": not a valid representation (error: Failed to parse Date value 'invalid': Unparseable date: \"invalid\")\n" +
+                " at [Source: (String)\"{\"test\":\"invalid\"}\"; line: 1, column: 12] (through reference chain: com.fasterxml.jackson.databind.JsonMappingExceptionTest$TestObject[\"test\"])", e.getMessage());
+    }
+}
+
+public static class TestObject {
+    private Date test;
+
+    public Date getTest() {
+        return test;
+    }
+
+    public

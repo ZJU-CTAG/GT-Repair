@@ -1,0 +1,12 @@
+public void testIssue123() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter sw = new StringWriter();
+    JsonGenerator jg = mapper.getJsonFactory().createJsonGenerator(sw);
+    try {
+        jg.writeString("foobar");
+        fail("Should have gotten an exception (because writeString() not allowed after writeFieldName())");
+    } catch (IllegalStateException e) {
+        // ok
+    }
+}

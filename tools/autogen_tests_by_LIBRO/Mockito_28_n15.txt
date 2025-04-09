@@ -1,0 +1,14 @@
+public void testIssue117() {
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    Mockito.doNothing().when(mock).someMethod(Mockito.anyInt(), captor.capture());
+    mock.someMethod(1, 2);
+    assertEquals(2, captor.getValue());
+    assertEquals("(Integer) 2", captor.getValue().toString());
+}
+public void testIssue117b() {
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    Mockito.doNothing().when(mock).someMethod(Mockito.anyInt(), captor.capture());
+    mock.someMethod(1, "2");
+    assertEquals("2", captor.getValue());
+    assertEquals("2", captor.getValue().toString());
+}

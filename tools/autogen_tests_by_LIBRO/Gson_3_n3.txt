@@ -1,0 +1,12 @@
+public void testDeserializationOfConcurrentNavigableMap() throws Exception {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("k1", "v1");
+    map.put("k2", "v2");
+    map.put("k3", "v3");
+
+    String json = gson.toJson(map, map.getClass());
+    System.out.println(json);
+    ConcurrentNavigableMap<String, String> resultMap = gson.fromJson(json, map.getClass());
+    System.out.println(resultMap);
+    assertEquals(map, resultMap);
+}

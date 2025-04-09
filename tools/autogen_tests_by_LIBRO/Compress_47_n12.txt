@@ -1,0 +1,17 @@
+public void testGetNextZipEntry() throws Exception {
+    ZipArchiveEntry entry = new ZipArchiveEntry("some/entry");
+    entry.setCompressedSize(ArchiveEntry.SIZE_UNKNOWN);
+    entry.setMethod(ZipMethod.BZIP2.getCode());
+    entry.setGeneralPurposeBit(new GeneralPurposeBit(false));
+    entry.setUnixMode(UnixStat.FILE_FLAG | UnixStat.DEFAULT_FILE_PERM);
+    ZipArchiveOutputStream zipOutputStream = new ZipArchiveOutputStream(new ByteArrayOutputStream());
+    zipOutputStream.putArchiveEntry(entry);
+    zipOutputStream.closeArchiveEntry();
+    zipOutputStream.close();
+    ZipArchiveInputStream zipInputStream = new ZipArchiveInputStream(new ByteArrayInputStream(
+            ((ByteArrayOutputStream) zipOutputStream.getStream()).toByteArray()));
+    try {
+        zipInputStream.getNextZipEntry();
+        fail("Should fail with a useful message");
+    } catch (ZipException e) {
+        assertTrue(e.getMessage().contains

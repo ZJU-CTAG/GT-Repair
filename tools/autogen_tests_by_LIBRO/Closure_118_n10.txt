@@ -1,0 +1,14 @@
+public void testRemovePrototypeMethod() {
+    final String expected = "{bar1=function bar1() { console.log('bar1'); }}";
+    final String result = getClosureCompilerResult(
+            "var foo = {};" +
+            "foo.bar = { " +
+            " 'bar1': function() { console.log('bar1'); }" +
+            "}" +
+            "function foobar() {}" +
+            "foobar.prototype = foo.bar;" +
+            "foo.foobar = new foobar;" +
+            "console.log(foo.foobar['bar1']);"
+    );
+    assertEquals(expected, result);
+}

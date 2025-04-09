@@ -1,0 +1,26 @@
+public void testIssue108 () {
+    CompilerOptions options = new CompilerOptions();
+    options.setExtraAnnotationNames(
+        ImmutableSet.of(
+            "type",
+            "type.function",
+            "type.object",
+            "type.nullableObject",
+            "param",
+            "return",
+            "define",
+            "constructor",
+            "enum",
+            "implements",
+            "private",
+            "override"));
+    options.setCheckTypes(true);
+    options.setCheckGlobalNamesLevel(CheckLevel.WARNING);
+    List<SourceFile> inputs = ImmutableList.of(
+        SourceFile.fromCode("test.js", " /**\n * @type function\n */\n var callback;"));
+    List<SourceFile> externs = ImmutableList.of(
+        SourceFile.fromCode("externs.js", ""));
+    Result result =
+        (new Compiler(new TestErrorManager(TestErrorManager.TolerateAll), options)).compile(
+            externs, inputs, options);
+    assertFalse(

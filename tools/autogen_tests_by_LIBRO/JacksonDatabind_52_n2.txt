@@ -1,0 +1,6 @@
+public void testIssueExternalIdNotDeser() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
+    Group group = mapper.readValue("{ \"name\": \"group\", \"externalId\": \"123\" }", Group.class);
+    assertThat(group.externalId, is(notNullValue()));
+}

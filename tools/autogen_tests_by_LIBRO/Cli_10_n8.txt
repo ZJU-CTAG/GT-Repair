@@ -1,0 +1,28 @@
+public void testIssue107() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+    opts.addOption(OptionBuilder.isRequired().create('s'));
+    opts.addOption(OptionBuilder.isRequired().create('p'));
+    opts.addOption(OptionBuilder.isRequired().create('d'));
+    opts.addOption(OptionBuilder.isRequired().create('f'));
+
+    String[] args = {
+            "-v", "1",
+            "-s", "2",
+            "-p", "3",
+            "-d", "4",
+            "-f", "5"
+    };
+
+    GnuParser parser = new GnuParser();
+    CommandLine firstCL = parser.parse(opts, args);
+
+    String[] args2 = {
+            "-v", "1",
+            "-s", "2",
+            "-p", "3"
+    };
+    try {
+        CommandLine secondCL = parser.parse(opts, args2);
+        fail("Should have thrown exception");
+    } catch

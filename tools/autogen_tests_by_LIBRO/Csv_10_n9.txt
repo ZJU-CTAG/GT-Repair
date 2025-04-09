@@ -1,0 +1,20 @@
+public void testWithHeader() {
+    final File csvFile = new File("target/test-classes/testWithHeader.csv");
+    final Path csvPath = csvFile.toPath();
+    final CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("x");
+
+    try (final BufferedWriter writer = Files.newBufferedWriter(csvPath)) {
+        try (final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat)) {
+            csvPrinter.printRecord(42);
+        }
+    } catch (IOException e) {
+        fail(e.toString());
+    }
+
+    try (final BufferedReader reader = Files.newBufferedReader(csvPath)) {
+        assertEquals("x", reader.readLine());
+        assertEquals("42", reader.readLine());
+    } catch (IOException e) {
+        fail(e.toString());
+    }
+}

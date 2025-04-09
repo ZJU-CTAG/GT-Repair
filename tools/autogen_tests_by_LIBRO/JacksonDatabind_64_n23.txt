@@ -1,0 +1,17 @@
+public void testNON_DEFAULT() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final Foo foo = new Foo();
+    foo.name = "";
+    foo.value = null;
+    final String json = objectMapper.writeValueAsString(foo);
+    System.out.println(json);
+    final Foo foo1 = objectMapper.readValue(json, Foo.class);
+    assertEquals("", foo1.name);
+    assertNull(foo1.value);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+public static class Foo {
+    public String name = null;
+    public String value = null;
+}

@@ -1,0 +1,12 @@
+public void testExternalId() throws JsonProcessingException {
+    Foo foo = new Foo();
+    foo.setId("1");
+    Bar bar = new Bar();
+    bar.setId("2");
+    bar.setFoo(foo);
+    foo.setBar(bar);
+    ObjectMapper mapper = new ObjectMapper();
+    String s = mapper.writeValueAsString(bar);
+    Bar barFromJson = mapper.readValue(s, Bar.class);
+    assertEquals(bar, barFromJson);
+}

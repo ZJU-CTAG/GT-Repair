@@ -1,0 +1,18 @@
+public void testCoerceIntOverflow() throws Exception
+{
+    // First, simple case: numeric value too large for int
+    try {
+        MAPPER.readValue("{\"x\":123456789012345678901234567890}", IntResult.class);
+        fail("Should not pass");
+    } catch (JsonProcessingException e) {
+        verifyException(e, "Overflow");
+    }
+
+    // then in array
+    try {
+        MAPPER.readValue("[123456789012345678901234567890]", IntResult.class);
+        fail("Should not pass");
+    } catch (JsonProcessingException e) {
+        verifyException(e, "Overflow");
+    }
+}

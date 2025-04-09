@@ -1,0 +1,19 @@
+public void testInterface() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setExtractPrototypeMemberDeclarations(true);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckSymbols(true);
+    Compiler compiler = new Compiler();
+    CompilerOptions externOptions = new CompilerOptions();
+    externOptions.setCheckTypes(true);
+    compiler.init(
+        new JSSourceFile[] { JSSourceFile.fromCode("externs",
+            "/**@interface */ function MyParent() {}\n" +
+            "/** @param {*} a */ MyParent.prototype.MyMethod = function(a) {};\n") },
+        new JSSourceFile[] { JSSourceFile.fromCode("test",
+            "/**\n" +
+            "* @constructor\n" +
+            "* @implements {MyParent}\n" +
+            "*/\

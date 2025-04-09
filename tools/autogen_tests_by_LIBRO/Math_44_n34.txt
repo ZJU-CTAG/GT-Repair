@@ -1,0 +1,22 @@
+public void testIssue108() {
+    EventManager eventManager = new EventManager();
+    eventManager.declareEvent(EventType.START, String.class);
+    eventManager.declareEvent(EventType.END, String.class);
+
+    Entity entity = new Entity(eventManager, "myEntity");
+    entity.addEventListener(EventType.START, new EventListener() {
+        @Override
+        public void eventRaised(Event event) {
+            System.out.println("start event raised");
+        }
+    });
+    entity.addEventListener(EventType.END, new EventListener() {
+        @Override
+        public void eventRaised(Event event) {
+            System.out.println("end event raised");
+        }
+    });
+
+    entity.fireEvent(eventManager.nextEvent(EventType.START, "start"));
+    entity.fireEvent(eventManager.nextEvent(EventType.END, "end"));
+}

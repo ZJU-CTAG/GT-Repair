@@ -1,0 +1,17 @@
+public void testVarArgs() {
+    ClosureClosureCompiler compiler = new ClosureClosureCompiler();
+    Result result = compiler.compile(
+            "/**\n" +
+            " * @param {...string} var_args\n" +
+            " */\n" +
+            "function foo(var_args) {\n" +
+            " return arguments.length;\n" +
+            "}\n" +
+            "\n" +
+            "foo('hello'); // no warning - ok\n" +
+            "foo(123); // warning - ok\n" +
+            "foo('hello', 123); // no warning! error.\n");
+
+    System.out.println(result.success);
+    System.out.println(Joiner.on("\n").join(result.warnings));
+}

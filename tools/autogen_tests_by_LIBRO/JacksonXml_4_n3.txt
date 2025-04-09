@@ -1,0 +1,9 @@
+public void testSerializerProvider() throws IOException {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    mapper.withRootName(new QName("test"));
+    String xml = mapper.writeValueAsString(new MyBean());
+    Assert.assertEquals(xml, "<?xml version='1.0' encoding='UTF-8'?><test><myBean><myMap><myBean><myMap><myBean/></myMap></myBean></myMap></myBean></test>");
+}

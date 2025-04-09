@@ -1,0 +1,13 @@
+public void testIssue959() {
+    final TableXYDataset dataset = new DefaultTableXYDataset() {
+        public void add(XYSeries s, boolean notify) {
+            super.add(s, notify);
+            fireDatasetChanged();  // ensure the results are updated
+        }
+    };
+    dataset.add(new XYSeries("First", false, new Double[] { new Double(0.0), new Double(3.0) }));
+    dataset.add(new XYSeries("Second", false, new Double[] { new Double(1.0), new Double(4.0) }));
+    dataset.add(new XYSeries("Third", false, new Double[] { new Double(2.0), new Double(5.0) }));
+    dataset.add(new XYSeries("Fourth", false, new Double[] { new Double(3.0), new Double(6.0) }));
+    dataset.add(new XYSeries("Fifth", false, new Double[] { new Double(4.0), new Double(7.0) }));
+    dataset.add(new XYSeries("Sixth", false,

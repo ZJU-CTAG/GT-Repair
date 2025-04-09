@@ -1,0 +1,26 @@
+public void testIssue1436() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    final POJO pojo = new POJO();
+    pojo.setA(null);
+
+    final String json = mapper.writeValueAsString(pojo);
+    System.out.println(json);
+
+    final POJO pojo2 = mapper.readValue(json, POJO.class);
+    assertNull(pojo2.getA());
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+public static class POJO {
+    String a;
+
+    public String getA() {
+        return a;
+    }
+
+    public void setA(String a) {
+        this.a = a;
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue141() throws Exception {
+    InputStream is =  new ByteArrayInputStream(new byte[20000]);
+    Base64InputStream b64stream = new Base64InputStream(is);
+    int count = 0;
+    boolean success = false;
+    while (b64stream.read() != -1) {
+        count++;
+        if (count == 10921) {
+            success = true;
+            break;
+        }
+    }
+    assertTrue(success);
+}

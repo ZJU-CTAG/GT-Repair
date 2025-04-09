@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    ObjectWriter writer = mapper.writer();
+    ObjectReader reader = mapper.reader().forType(BeanWithConstructor.class);
+    String json = writer.writeValueAsString(new BeanWithConstructor("abc", 1, true));
+    System.out.println("json = " + json);
+    BeanWithConstructor result = reader.readValue(json);
+    assertEquals("abc", result.a);
+    assertEquals(1, result.b);
+    assertEquals(true, result.c);
+}
+
+static class BeanWithConstructor {
+    public final String a;
+    public final int b;
+    public final boolean c;
+
+    @JsonCreator
+    public BeanWithConstructor(

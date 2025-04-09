@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    Options options = new Options();
+    Option target = new Option("t", "target", true, "Generate files for the specified target machine");
+    options.addOption(target);
+    String[] args = new String[] { "-t", "foobar.com" };
+    CommandLine cl = new PosixParser().parse(options, args);
+    assertEquals("foobar.com", cl.getOptionValue("t"));
+    
+    args = new String[] { "-t" };
+    cl = new PosixParser().parse(options, args);
+    assertNull("should not be anything", cl.getOptionValue("t"));
+    
+    args = new String[] { "-target" };
+    cl = new PosixParser().parse(options, args);
+    assertNull("should not be anything", cl.getOptionValue("target"));
+    
+    args = new String[] { "-target", "foobar.com" };
+    cl = new PosixParser().parse(options, args);
+    assertEquals("foobar.com", cl.getOptionValue("target")

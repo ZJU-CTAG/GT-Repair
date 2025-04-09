@@ -1,0 +1,18 @@
+public void testTarArchiveOutputStream() throws Exception {
+    final File inputFile = new File("src/test/resources/org/apache/commons/compress/archivers/tar/test.txt");
+    final long inputFileLen = inputFile.length();
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final TarArchiveOutputStream tos = (TarArchiveOutputStream) new ArchiveStreamFactory()
+            .createArchiveOutputStream(ArchiveStreamFactory.TAR, out);
+    final TarArchiveEntry entry = new TarArchiveEntry(inputFile, inputFile.getName());
+    tos.putArchiveEntry(entry);
+    final FileInputStream in = new FileInputStream(inputFile);
+    final byte[] buf = new byte[8192];
+    int len;
+    while ((len = in.read(buf)) > 0) {
+        tos.write(buf, 0, len);
+    }
+    in.close();
+    tos.closeArchiveEntry();
+    tos.close();
+    assertEquals(inputFileLen, tos.getBytesWritten

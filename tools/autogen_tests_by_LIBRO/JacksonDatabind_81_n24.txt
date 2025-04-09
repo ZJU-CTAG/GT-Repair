@@ -1,0 +1,13 @@
+public void testPrimitiveOverrides() {
+    ObjectMapper mapper = new ObjectMapper();
+    JaxbAnnotationModule module = new JaxbAnnotationModule();
+    mapper.registerModule(module);
+    ObjectNode tree = mapper.createObjectNode();
+    tree.put("a", 5);
+    final Node n = tree.get("a");
+    assertTrue(n instanceof NumericNode);
+    JavaType type = mapper.getTypeFactory().constructType(int.class);
+    JavaType refined = module.refineDeserializationType(mapper.getDeserializationConfig(),
+        tree.traverse(), type);
+    assertSame(refined, type);
+}

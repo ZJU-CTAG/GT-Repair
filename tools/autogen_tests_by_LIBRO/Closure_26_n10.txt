@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(CompilationLevel.SIMPLE_OPTIMIZATIONS.shouldGeneratePrettyCode());
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setCheckSymbols(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(Collections.<SourceFile>emptyList(), Lists.newArrayList(SourceFile.fromCode("echo.js", "define(function() { return { echo: function(val) { window.console.log(val); }}});")), options);
+}

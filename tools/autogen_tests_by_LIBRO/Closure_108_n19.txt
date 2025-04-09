@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    BasicErrorManager errorManager = new BasicErrorManager();
+    CompilerOptions options = new CompilerOptions();
+    options.setInlineVariables(Reach.ALL);
+    options.setClosurePass(true);
+    Compiler compiler = new Compiler(errorManager, new JSSourceFile[0]);
+    compiler.init(new JSSourceFile[0], new JSSourceFile[0], options);
+    Node root = compiler.parse("var ns = {}; ns.sub = {}; /** @constructor */ ns.sub.C = function() {}; goog.scope(function() { var sub = ns.sub; /** @type {sub.C} */ var x = null; });");
+    compiler.process(root);
+}

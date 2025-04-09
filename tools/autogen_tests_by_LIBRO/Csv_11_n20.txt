@@ -1,0 +1,9 @@
+public void testNullString() throws Exception {
+    CsvPreference prefs = new CsvPreference.Builder('"', ',', "\n").nullString("").build();
+    StringReader reader = new StringReader("\"\",,\n");
+    CsvListReader clReader = new CsvListReader(reader, prefs);
+    Iterator<String> iter = clReader.read().iterator();
+    assertEquals("", iter.next());
+    assertEquals("", iter.next());
+    assertEquals("", iter.next());
+}

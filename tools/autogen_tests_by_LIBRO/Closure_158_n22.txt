@@ -1,0 +1,18 @@
+public void testFlagOrder() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    options.addWarningsGuard(new DiagnosticGroupWarningsGuard(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING));
+
+    options.addWarningsGuard(new DiagnosticGroupWarningsGuard(
+            DiagnosticGroups.USE_OF_GOOG_BASE, CheckLevel.ERROR));
+
+    options.addWarningsGuard(new DiagnosticGroupWarningsGuard(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR));
+
+    String code = "var x = 1;";
+    JSError[] errors = getCompilerErrors(code, options);
+    assertEquals(1, errors.length);
+    assertEquals(CheckLevel.ERROR, errors[0].level);
+}

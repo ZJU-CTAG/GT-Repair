@@ -1,0 +1,6 @@
+public void testCustomUnmodifiableSetMixin() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.addMixIn(Collections.unmodifiableSet(Collections.emptySet()).getClass(), UnmodifiableSetMixin.class);
+    assertThat(mapper.readValue("[\"java.util.Collections$UnmodifiableSet\",[]]", Set.class)).isEmpty();
+}

@@ -1,0 +1,25 @@
+public void testIssue108() {
+    try {
+        new JsonReader("\"testString\"");
+        fail();
+    } catch (JsonException e) {
+        // expected
+    }
+    
+    JsonReader reader = new JsonReader("\"testString\"", true);
+    assertEquals("testString", reader.nextString());
+    assertEquals(JsonReader.Token.END_DOCUMENT, reader.peek());
+}
+
+public void testIssue108_2() {
+    try {
+        new JsonWriter("\"testString\"");
+        fail();
+    } catch (JsonException e) {
+        // expected
+    }
+    
+    JsonWriter writer = new JsonWriter("\"testString\"", true);
+    assertEquals("testString", reader.nextString());
+    assertEquals(JsonReader.Token.END_DOCUMENT, reader.peek());
+}

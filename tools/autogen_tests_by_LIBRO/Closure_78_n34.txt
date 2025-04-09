@@ -1,0 +1,11 @@
+public void testIssue108() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setPrintAst(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    result = compiler.compile(externs, code, options);
+    assertFalse(result.success);
+    assertEquals(0, result.warnings.length);
+    assertEquals(1, result.errors.length);
+    assertEquals(CheckLevel.ERROR, result.errors[0].level);
+    assertEquals(JSError.make(0, 0, 0, CheckLevel.ERROR, "JSC_DIVIDE_BY_0_ERROR", null), result.errors[0]);
+}

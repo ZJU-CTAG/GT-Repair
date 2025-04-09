@@ -1,0 +1,9 @@
+public void testIssueCsvFormat () {
+    CsvFormat csvFormat = CsvFormat.newFormat('\'').withNullString("\\N").withEscape('\\');
+    CsvSchema schema = csvFormat.getSchema();
+    StringWriter writer = new StringWriter();
+    CsvMapper mapper = new CsvMapper();
+    CsvPrinter printer = mapper.writer().with(csvFormat).withSchema(schema).createPrinter(writer);
+    printer.printRecord(null);
+    assertEquals("\\N", writer.toString());
+}

@@ -1,0 +1,22 @@
+public void test() {
+	String input = "var getNum = function() { return 5; }; alert(getNum());";
+	String expected = "alert(5);";
+	test(expected, input, null);
+	test(expected, input, CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+	test(expected, input, CompilerOptions.LanguageMode.ECMASCRIPT5);
+}
+
+void test(String expected, String input, CompilerOptions.LanguageMode languageIn) {
+	Compiler compiler = new Compiler();
+	CompilerOptions options = new CompilerOptions();
+	options.setLanguageIn(languageIn);
+	options.setWarningLevel(DiagnosticGroups.EXTRA_CHECKS, CheckLevel.WARNING);
+	options.setGenerateExports(true);
+	compiler.setOptions(options);
+	String js = null;
+	try {
+		js = compiler.compile(SourceFile.fromCode("input.js", input), new CompilerOptions());
+	} catch (Exception e) {
+		throw new RuntimeException(e);
+	}
+	

@@ -1,0 +1,13 @@
+public void testIssue624() {
+    Gson gson = new Gson();
+
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("test", "test");
+    TestPojo testPojo = new TestPojo();
+    testPojo.setMap(map);
+
+    String json = gson.toJson(testPojo);
+    TestPojo testPojo2 = gson.fromJson(json, TestPojo.class);
+
+    assertEquals(map, testPojo2.getMap());
+}

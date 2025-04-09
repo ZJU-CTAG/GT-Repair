@@ -1,0 +1,13 @@
+public void testIssue154() throws JsonProcessingException {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializerProvider().setConfig(mapper.getSerializerProvider().getConfig().with(sdf));
+
+    assertEquals("\"2011-11-18T09:47:11.000+0100\"", mapper.writeValueAsString(new Date(1321612031000L)));
+
+    mapper = new ObjectMapper();
+    mapper.getSerializerProvider().setConfig(mapper.getSerializerProvider().getConfig().with(sdf));
+
+    assertEquals("\"2011-11-18T09:47:11.000+0100\"", mapper.writeValueAsString(new DateTime(1321612031000L)));
+}

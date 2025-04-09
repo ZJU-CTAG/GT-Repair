@@ -1,0 +1,11 @@
+public void testHyphensInParameterValues() throws Exception {
+    Options options = new Options();
+    options.addOption(new Option("t", "test", true, "test option"));
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[]{"-t", "-something", "somethingelse"});
+        fail("Expected ParseException due to invalid option");
+    } catch (ParseException e) {
+        assertEquals("Unrecognized option: -o", e.getMessage());
+    }
+}

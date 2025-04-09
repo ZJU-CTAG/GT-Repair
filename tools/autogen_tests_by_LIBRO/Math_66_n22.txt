@@ -1,0 +1,14 @@
+public void testIssue217() {
+    final UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            return x - 1;
+        }
+    };
+
+    BrentOptimizer brentOptimizer = new BrentOptimizer();
+    brentOptimizer.setMaxEvaluations(100);
+    brentOptimizer.setRelativeAccuracy(1E-12);
+    brentOptimizer.setAbsoluteAccuracy(1E-12);
+    UnivariatePointValuePair result = brentOptimizer.optimize(f, GoalType.MINIMIZE, -20, 20);
+    assertEquals(1.0, result.getPoint(), FastMath.ulp(1d));
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.checkSymbols = true;
+    String[] input = new String[] {
+        "alert(1;",
+        "alert(1;\n"
+    };
+    String expected = "Parse error. missing ) after argument list";
+    for (String s : input) {
+        TestErrorReporter testErrorReporter = new TestErrorReporter(
+                TestErrorReporter.DO_NOT_VALIDATE_ALL, expected);
+        Compiler compiler = new Compiler();
+        compiler.setErrorReporter(testErrorReporter);
+        compiler.compile(SourceFile.fromCode("[testcode]", s), options);
+        assertTrue(testErrorReporter.hasEncounteredAllErrors());
+    }
+}

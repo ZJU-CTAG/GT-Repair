@@ -1,0 +1,9 @@
+public void testCharSeq() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Map<CharSequence, String> map = new HashMap<CharSequence, String>();
+    map.put("a", "b");
+    assertEquals("{\"a\":\"b\"}", mapper.writeValueAsString(map));
+    map = mapper.readValue("{\"a\":\"b\"}", new TypeReference<Map<CharSequence, String>>() {});
+    assertEquals("b", map.get("a"));
+}

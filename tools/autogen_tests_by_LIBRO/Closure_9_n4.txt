@@ -1,0 +1,12 @@
+public void testIssue804() {
+    String code = "var module$lib$Foo = function () {};";
+    String expected = "var module$lib$Foo=function(){};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.compile(SourceFile.fromCode("[externs]", ""),
+            new SourceFile[] {SourceFile.fromCode("[testcode]", code)},
+            options);
+    Node node = compiler.getRoot().getLastChild();
+    assertEquals(expected, node.toStringTree());
+}

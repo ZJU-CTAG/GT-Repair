@@ -1,0 +1,18 @@
+public void testAdvancedOptimizations() throws Exception {
+  CompilerOptions options = new CompilerOptions();
+  options.setAdvancedOptimizations(true);
+  options.setCheckGlobalThisLevel(CheckLevel.OFF);
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+  options.setChecksOnly(true);
+  options.setPrettyPrint(true);
+  options.setGenerateExports(true);
+  options.setExportLocalPropertyDefinitions(true);
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+      ImmutableList.<SourceFile>of(
+          SourceFile.fromCode("window.js",
+              "window['foo'] = function (obj, modifiesProp) {\n" +
+              "  return (function (saved) {\n" +
+              "    return modifiesProp(obj) + saved;\n" +

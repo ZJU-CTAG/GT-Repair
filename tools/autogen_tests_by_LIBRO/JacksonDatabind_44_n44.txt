@@ -1,0 +1,20 @@
+public void testIssue1083() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    mapper.registerModule(new Jdk8Module());
+    mapper.findAndRegisterModules();
+    //mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+    //    .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+    //    .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+    //    .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+    //    .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+
+    String json = "{\"name\":\"john\", \"pet\":{\"name\":\"fluffy\"}}";
+
+    // works
+    Owner owner = mapper.readValue(json, Owner.class);
+    assertNotNull(owner.pet);
+
+    // fails
+    json = "{\"name\":\"john

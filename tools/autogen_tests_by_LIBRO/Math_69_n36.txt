@@ -1,0 +1,17 @@
+public void testCorrelationPValues() {
+    int numTreatments = 100;
+    int numObservations = 1000;
+    double[] tValues = new double[numTreatments];
+    RandomDataImpl rdi = new RandomDataImpl(new RandomDataGenerator(new Random()));
+    double[] randomized = rdi.nextPermutation(numObservations, numObservations);
+    for (int i = 0; i < numTreatments; i++) {
+        double[] observations = rdi.nextGaussian(numObservations, 0, 1);
+        for (int j = 0; j < numObservations; j++) {
+            observations[(int) randomized[j]] += Math.pow(0.1, i);
+        }
+        PearsonsCorrelation pc = new PearsonsCorrelation();
+        tValues[i] = pc.correlation(observations, rdi.nextGaussian(numObservations, 0, 1));
+    }
+
+    TDistribution tDistribution = new TDistributionImpl(tValues.length - 2);
+    double[] pValues =

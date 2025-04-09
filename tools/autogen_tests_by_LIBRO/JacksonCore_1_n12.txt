@@ -1,0 +1,14 @@
+public void testBigDecimalWithNan() throws IOException
+{
+    String json = "[null, -1.0, 2.0, -3.0, 4.0, NaN]";
+    JsonFactory jf = new JsonFactory();
+    try (JsonParser p = jf.createParser(json)) {
+        assertToken(JsonToken.START_ARRAY, p.nextToken());
+        assertToken(JsonToken.VALUE_NULL, p.nextToken());
+        assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
+        assertEquals("-1.0", p.getDecimalValue().toString());
+        assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
+        assertEquals("2.0", p.getDecimalValue().toString());
+        assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
+        assertEquals("-3.0", p.getDecimalValue().toString());
+        assertToken(JsonToken.VALUE_NUMBER

@@ -1,0 +1,14 @@
+public void testIssue107() {
+    try {
+        final String json = "{\"map\":{\"a\":1}}";
+        final MapHolder holder = new Gson().fromJson(json, MapHolder.class);
+        assertEquals(1, holder.map.size());
+    }
+    catch (Throwable e) {
+        e.printStackTrace();
+    }
+}
+
+static class MapHolder {
+    public ConcurrentNavigableMap<String, Integer> map = new ConcurrentSkipListMap<>();
+}

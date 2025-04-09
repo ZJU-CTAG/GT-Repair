@@ -1,0 +1,25 @@
+public void testIssue106() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    String json = mapper.writeValueAsString(new Issue106());
+    Issue106 value = mapper.readValue(json, Issue106.class);
+    assertEquals(new Issue106(), value);
+}
+@JsonIgnoreProperties({"field1", "field2", "field3"})
+private static class Issue106 {
+    @JsonValue
+    public byte[] getBytes() {
+        return new byte[]{1,2,3};
+    }
+    @JsonCreator
+    public Issue106(byte[] bytes) {
+        // no-op
+    }
+    @JsonCreator
+    public Issue106() {
+        // no-op
+    }
+    private int field1;
+    private int field2;
+    private int field3;
+}

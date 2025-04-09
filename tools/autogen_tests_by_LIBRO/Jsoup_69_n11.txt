@@ -1,0 +1,10 @@
+public void testIssue() {
+    String html = "<form><input name=alpha></form>";
+    Document doc = Jsoup.parse(html);
+    FormElement form = (FormElement)doc.select("form").first();
+
+    doc.select("input[name=alpha]").first().remove();
+    List<Connection.KeyVal> data = form.formData();
+
+    assertEquals(0, data.size());
+}

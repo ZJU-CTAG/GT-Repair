@@ -1,0 +1,16 @@
+public void testBugInElementInsertChildren() {
+    Document document = Jsoup.parse("<body><div1></div1><div2></div2><div3></div3><div4></div4></body>");
+
+    Element body = document.body();
+    Element div3 = body.child(2);
+    Element div4 = body.child(3);
+
+    ArrayList<Element> toMove = new ArrayList<Element>() {{
+        add(div3);
+        add(div4);
+    }};
+
+    body.insertChildren(0, toMove);
+
+    assertEquals("<body><div3></div3><div4></div4><div1></div1><div2></div2></body>", document.body().html());
+}

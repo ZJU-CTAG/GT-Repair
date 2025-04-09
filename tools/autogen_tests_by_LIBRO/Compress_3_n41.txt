@@ -1,0 +1,21 @@
+public void testZipArchiveOutputStream() throws Exception {
+    File archive = new File(getTestDirectory(), "TEST.zip");
+
+    final File file1 = new File(getTestDirectory(), "TEST1.txt");
+    TestUtils.createStringFile(file1, "blah blah blah");
+
+    final File file2 = new File(getTestDirectory(), "TEST2.txt");
+    TestUtils.createStringFile(file2, "blah blah blah");
+
+    final File file3 = new File(getTestDirectory(), "TEST3.txt");
+    TestUtils.createStringFile(file3, "blah blah blah");
+
+    final File file4 = new File(getTestDirectory(), "TEST4.txt");
+    TestUtils.createStringFile(file4, "blah blah blah");
+
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(archive);
+    zos.setEncoding("UTF8");
+
+    // create first entry
+    ZipArchiveEntry ze = new ZipArchiveEntry("test1.txt");
+    ze.setSize(file1.length());

@@ -1,0 +1,13 @@
+public void testIssue123() throws IOException {
+    String json = "{"
+            + "\"@type\": \"java.beans.beancontext.BeanContextSupport\","
+            + "\"beanContextPeer\": { }"
+            + "}";
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.readValue(json, Object.class);
+        fail("Should have failed with UnrecognizedPropertyException");
+    } catch (UnrecognizedPropertyException e) {
+        verifyException(e, "Unrecognized field \"beanContextPeer\"");
+    }
+}

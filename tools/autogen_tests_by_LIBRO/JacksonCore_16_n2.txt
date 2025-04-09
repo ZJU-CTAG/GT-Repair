@@ -1,0 +1,14 @@
+public void testCursor() throws Exception {
+    JsonParser parser = new JsonFactory().createParser("{\"a\":1}");
+    parser.nextToken();
+
+    JsonParser sequence = JsonParserSequence.createFlattened(parser, parser.getCodec().createParser(new StringReader("{\"b\":2}")));
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals("a", sequence.getText());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals("b", sequence.getText());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, sequence.nextToken());
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+}

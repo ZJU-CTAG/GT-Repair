@@ -1,0 +1,15 @@
+public void testXMLStreamParserNextTextValue() throws Exception {
+    ObjectMapper mapper = new XmlMapper();
+    XmlFactory f = new XmlFactory(mapper);
+    String xml = "<item name='abc'/>";
+    XmlFactory.InputAccessor ia = f.createParser(xml);
+    FromXmlParser xmlParser = (FromXmlParser)ia.createParser(xml);
+
+    xmlParser.nextToken(); // JsonToken.START_OBJECT
+    xmlParser.nextToken(); // JsonToken.FIELD_NAME
+    Assert.assertEquals("name", xmlParser.currentName());
+    Assert.assertEquals("name", xmlParser.getText());
+    Assert.assertEquals("abc", xmlParser.nextTextValue());
+    Assert.assertEquals("abc", xmlParser.getText());
+}
+

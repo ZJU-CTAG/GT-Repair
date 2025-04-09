@@ -1,0 +1,13 @@
+public void testIssue233() throws TooManyEvaluationsException {
+    final double[] startPoint = { 9.0 };
+    final double[] lower = { 0.0 };
+    final double[] upper = { 10.0 };
+    final ObjectiveFunction objectiveFunction = new ObjectiveFunction(new MultivariateFunction() {
+        @Override
+        public double value(double[] variables) {
+            double x = variables[0];
+            return (x - 4.0) * (x - 4.0) + 1.0;
+        }
+    });
+    final CMAESOptimizer optimizer = new CMAESOptimizer(200, 0.001, false, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-6, 1e-6));
+    final PointValuePair optimum = optimizer.optimize(objectiveFunction, GoalType.MINIMIZE, new InitialGuess(startPoint), new CMAESOptimizer.PopulationSize(100), new MaxEval(100), new SimpleBounds(lower, upper), new InitialGuess(startPoint), new CMAESOptimizer.

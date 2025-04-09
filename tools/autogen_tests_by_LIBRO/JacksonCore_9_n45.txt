@@ -1,0 +1,15 @@
+public void testGetValueAsString() throws IOException
+{
+    final String JSON = aposToQuotes("{'a':1,'b':null}");
+
+    JsonParser parser = MAPPER.createParser(JSON);
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("a", parser.getValueAsString());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, parser.nextToken());
+    assertEquals(1, parser.getValueAsInt());
+
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("b", parser.getValueAsString());
+    assertEquals(JsonToken.VALUE_NULL, parser.nextToken());
+}

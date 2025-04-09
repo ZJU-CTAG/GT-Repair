@@ -1,0 +1,13 @@
+public void testPosixParserStopOption() {
+  final Options options = new Options();
+  options.addOption("a", "optionA");
+  options.addOption("b", "optionB");
+  final String[] args = {"-azb"};
+  final CommandLineParser parser = new PosixParser();
+  final CommandLine cmd = parser.parse(options, args, true);
+
+  assertFalse(cmd.hasOption("a"));
+  assertFalse(cmd.hasOption("b"));
+  assertEquals(1, cmd.getArgList().size());
+  assertEquals("-azb", cmd.getArgList().get(0));
+}

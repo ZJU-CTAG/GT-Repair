@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String input = "function a() {" +
+                   " var x = '1';" +
+                   " try {" +
+                   "  x += somefunction();" +
+                   " } catch(e) {" +
+                   " }" +
+                   " x += \"2\";" +
+                   " try {" +
+                   "  x += somefunction();" +
+                   " } catch(e) {" +
+                   " }" +
+                   " document.write(x);" +
+                   "}" +
+                   "a();" +
+                   "a();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(SourceFile.fromCode("test.js", input), CompilerOptions.builder().setClosurePass(true).setPrettyPrint(true).build());
+}

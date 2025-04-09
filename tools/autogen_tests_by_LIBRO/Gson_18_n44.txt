@@ -1,0 +1,25 @@
+public void testGsonWildcards() {
+    Map<String, List<? extends SmallClass>> inBig = new LinkedTreeMap<>();
+    List<SmallClass> smallClasses = new ArrayList<>();
+    smallClasses.add(new SmallClass("hello"));
+    inBig.put("key", smallClasses);
+    BigClass bigClass = new BigClass(inBig);
+    String json = new Gson().toJson(bigClass);
+    SmallClass small = new Gson().fromJson(json, BigClass.class).inBig.get("key").get(0);
+}
+
+class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+
+    BigClass(Map<String, ? extends List<SmallClass>> inBig) {
+        this.inBig = inBig;
+    }
+}
+
+class SmallClass {
+    String inSmall;
+
+    SmallClass(String inSmall) {
+        this.inSmall = inSmall;
+    }
+}

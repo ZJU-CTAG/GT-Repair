@@ -1,0 +1,10 @@
+public void testArchiveStreamFactoryWithTestAiff() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream stream = new FileInputStream(getFile("testAIFF.aif"));
+    try {
+        ArchiveInputStream ais = factory.createArchiveInputStream(stream);
+        fail("Created " + ais + " for AIFF file");
+    } catch (ArchiveException ex) {
+        assertTrue(ex.getMessage(), ex.getMessage().startsWith("No Archiver found"));
+    }
+}

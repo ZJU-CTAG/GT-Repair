@@ -1,0 +1,9 @@
+public void testIssue148() {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("MMM dd HH:mm:ss")
+         .withDefaultYear(2000);
+    DateTime date = dtf.parseDateTime("Mar 01 12:30:00");
+    assertEquals(2000, date.getYear());
+    DateTime date2 = new DateTime(2011, 1, 1, 0, 0, 0, 0);
+    DateTime date3 = dtf.parseInto(date2, "Mar 01 12:30:00", Locale.US);
+    assertEquals(2011, date3.getYear());
+}

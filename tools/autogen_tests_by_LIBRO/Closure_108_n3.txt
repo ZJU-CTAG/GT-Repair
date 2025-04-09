@@ -1,0 +1,21 @@
+public void testIssue() {
+String js = "var goog = {};\n"
++ "goog.scope;\n"
++ "var ns = {};\n"
++ "ns.sub = {};\n"
++ "/** @constructor */ \n"
++ "ns.sub.C = function() {};\n"
++ "\n"
++ "\n"
++ "goog.scope(function() {\n"
++ "var sub = ns.sub;\n"
++ "/** @type {sub.C} */ \n"
++ "var x = null;\n"
++ "});\n";
+
+Compiler compiler = new Compiler(ErrorManager.createThrowaway());
+compiler.compile(SourceFile.fromCode("test", js),
+        CompilerOptions.builder()
+                .setLanguageIn(LanguageMode.ECMASCRIPT5)
+                .build());
+}

@@ -1,0 +1,16 @@
+public void testIssue123() {
+    JsDocTokenizer t = new JsDocTokenizer();
+    t.setSourceInput(new StringReader("@return {@code foo} bar\n * baz."));
+    checkNextToken(t, ANNOTATION, "@return");
+    checkNextToken(t, WHITESPACE, " ");
+    checkNextToken(t, LEFT_CURLY, "{");
+    checkNextToken(t, ANNOTATION, "@code");
+    checkNextToken(t, WHITESPACE, " ");
+    checkNextToken(t, WORD, "foo");
+    checkNextToken(t, RIGHT_CURLY, "}");
+    checkNextToken(t, WHITESPACE, " ");
+    checkNextToken(t, WORD, "bar");
+    checkNextToken(t, WHITESPACE, "\n ");
+    checkNextToken(t, WORD, "baz.");
+    checkNextToken(t, EOF, null);
+}

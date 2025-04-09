@@ -1,0 +1,26 @@
+public void testIssue115() {
+    JXPathContext context = JXPathContext.newContext(new ElementA());
+    context.setLenient(false);
+    context.setNamespaceContextPointer(new SimpleNamespaceContext());
+    context.registerNamespace("A", "http://example.org/A");
+    context.registerNamespace("B", "http://example.org/B");
+    context.getValue("@A:myAttr");
+}
+
+private static class ElementA {
+    private String myAttr;
+
+    @XmlElement(namespace="http://example.org/B")
+    public String getMyElement() {
+        return "MY VALUE";
+    }
+
+    @XmlAttribute(namespace="http://example.org/A")
+    public String getMyAttr() {
+        return myAttr;
+    }
+
+    public void setMyAttr(String myAttr) {
+        this.myAttr = myAttr;
+    }
+}

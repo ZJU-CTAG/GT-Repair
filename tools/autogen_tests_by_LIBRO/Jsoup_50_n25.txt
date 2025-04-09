@@ -1,0 +1,7 @@
+public void testParseByteDataWithUtf16Bom() throws Exception {
+    byte[] input = new byte[] {-2, -1, 0, 'a'};
+    String encoding = DataUtil.getCharsetFromContentType("text/html; charset=UTF-16LE");
+    assertEquals("UTF-16LE", encoding);
+    Document document = DataUtil.parseByteData(input, encoding, "http://www.example.com/", Parser.htmlParser());
+    assertEquals(1, document.select("p").size());
+}

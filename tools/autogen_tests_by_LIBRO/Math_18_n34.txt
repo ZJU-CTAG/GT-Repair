@@ -1,0 +1,9 @@
+public void testCMAESOptimizerWithBounds() {
+    SimpleBounds simpleBounds = new SimpleBounds(new double[] {-10d, 0d}, new double[] {10d, 10d});
+    CMAESOptimizer cmaesOptimizer = new CMAESOptimizer(100, 1e-14, true, 0, 0, null, new MersenneTwister(), false);
+    double[] startPoint = {0d, 0d};
+    double[] startSigma = {10d, 10d};
+    double[] solution = cmaesOptimizer.optimize(new MaxEval(1000), new ObjectiveFunction(new TestObjectiveFunction()), GoalType.MINIMIZE, simpleBounds, new InitialGuess(startPoint), new CMAESOptimizer.Sigma(startSigma), new CMAESOptimizer.PopulationSize(2));
+    System.out.println(Arrays.toString(solution));
+    double[][] covMatrix = cmaesOptimizer.getCovariances();
+    System.out.println(Arrays.deepTo

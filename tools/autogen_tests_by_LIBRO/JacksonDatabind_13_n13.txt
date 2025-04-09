@@ -1,0 +1,20 @@
+public void testNullObjectId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.enable(DeserializationFeature.READ_DATES_AS_TIMESTAMPS);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+
+    // Simple test POJO with an ObjectId
+    POJO pojo = new POJO();
+    pojo.setObjectId(null);
+    pojo.setName("test1");
+    pojo.setStartTime(new DateTime(new Date(123456789L)));
+
+    String json = mapper.writeValueAsString(pojo);
+    POJO pojo2 = mapper.readValue(json, POJO.class);
+
+    assertEquals(pojo, pojo2);
+}

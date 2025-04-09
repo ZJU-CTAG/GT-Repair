@@ -1,0 +1,17 @@
+public void testMain() throws Exception {
+    final CompilerOptions options = new CompilerOptions();
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    assertTrue(runMainAndProcessWarnings("test", options).contains("globalThis"));
+
+    options.setCheckVars(CheckLevel.WARNING);
+    assertTrue(runMainAndProcessWarnings("test", options).contains("variable foo is undefined"));
+
+    options.setCheckVars(CheckLevel.OFF);
+    options.setCheckUndefinedVars(CheckLevel.WARNING);
+    assertTrue(runMainAndProcessWarnings("test", options).contains("variable foo is undefined"));
+
+    options.setCheckVars(CheckLevel.OFF);
+    options.setCheckUndefinedVars(CheckLevel.OFF);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    assertNull(runMainAndProcessWarnings("test", options));
+}

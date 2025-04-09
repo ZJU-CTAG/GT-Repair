@@ -1,0 +1,13 @@
+public void testContextualSerializer() {
+  DateTimeSerializerBase serializer = new DateTimeSerializerBase(DateTime.class, "yyyy") {
+    @Override
+    protected long _timestamp(final DateTime value) {
+      return value.getMillis();
+    }
+  };
+
+  DateTimeSerializerBase serializerContextual = serializer.createContextual(null, null);
+
+  assertEquals("yyyy", serializer.getDateFormatPattern());
+  assertEquals("yyyy", serializerContextual.getDateFormatPattern());
+}

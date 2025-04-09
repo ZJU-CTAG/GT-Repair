@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Document doc;
+    try {
+        doc = Jsoup.parse("<html lang=\"en-US\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <meta http-equiv=\"Content-Type\" content=\"text/html; \" />\n" +
+            "</head>");
+        assertEquals("UTF-8", doc.outputSettings().charset().toString());
+    } catch (IllegalCharsetNameException e) {
+        fail("Bogus META http-equiv charset should be ignored");
+    }
+}

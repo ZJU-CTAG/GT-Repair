@@ -1,0 +1,20 @@
+public void testRequiredOptions() {
+    final ArgumentBuilder ab = ArgumentBuilder.create();
+    final Argument foo = ArgumentBuilder.create().withName("foo").withValue(true).withChildren(
+        ArgumentBuilder.create().withName("bar").withValue(true).withChildren(
+            ArgumentBuilder.create().withName("baz").withValue(true).withChildren(
+                ArgumentBuilder.create().withName("c").withValue(true).getArgument()).getArgument()).getArgument()).getArgument();
+
+    ab.withRequired(foo);
+    
+    final CommandLine cl = new CommandLine(ab);
+    final ParseResult pr = cl.parse("-c", "foo");
+    
+    assertTrue(pr.hasMatchedOption(foo));
+    assertEquals("foo", pr.getMatchedValue(foo));
+    
+    cl.parse("-c", "foo", "-h");
+    
+    final String usage = cl.toString();
+    assertEquals("[-h] -c <arg>", usage);
+}

@@ -1,0 +1,23 @@
+public void testAreFinishMethodsNecessary() throws Exception {
+    File archive = new File("target/test2.zip");
+    File file = new File("target/test.txt");
+    file.getParentFile().mkdirs();
+    try {
+        OutputStream os = new FileOutputStream(archive);
+        try {
+            ArchiveOutputStream aos = new ZipArchiveOutputStream(os);
+            aos.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+            IOUtils.write("Hello", aos);
+            aos.closeArchiveEntry();
+            aos.finish();
+            aos.close();
+        } finally {
+            os.close();
+        }
+        ArchiveStreamFactory asf = new ArchiveStreamFactory();
+        InputStream is = new FileInputStream(archive);
+        try {
+            ArchiveInputStream ais = asf.createArchiveInputStream(is);
+            ArchiveEntry ae = ais.getNextEntry();
+            assertEquals("test.txt", ae.getName());
+            byte[] data = IOUtils.to

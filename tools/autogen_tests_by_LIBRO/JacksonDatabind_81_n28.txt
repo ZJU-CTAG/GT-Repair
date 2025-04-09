@@ -1,0 +1,11 @@
+public void testPrimitiveWrapperDiscrepancy() throws Exception
+{
+    JaxbAnnotationIntrospector ai = new JaxbAnnotationIntrospector();
+    // first, simple check to make sure it does not fail
+    ai.findTypeResolver(null, null, null);
+    // then actually call it
+    JavaType t = TypeFactory.defaultInstance().constructType(String.class);
+    AnnotatedType at = TypeFactory.defaultInstance().constructType(Integer.class).getAnnotatedType();
+    TypeResolverBuilder<?> b = ai.findTypeResolver(null, t, at);
+    assertNull(b);
+}

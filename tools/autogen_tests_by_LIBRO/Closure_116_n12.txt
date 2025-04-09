@@ -1,0 +1,17 @@
+public void testErroneousOptimizationInAdvancedOptimizationsMode() {
+    String inputJs = "window['anchor'] = function (obj, modifiesProp) {\n"
+            + "return (function (saved) {\n"
+            + "return modifiesProp(obj) + saved;\n"
+            + "})(obj['prop']);\n"
+            + "}\n";
+    String windowExterns = "function window() {}\n"
+            + "window.alert = function() {}\n"
+            + "window.crypto = {};\n"
+            + "window.crypto.getRandomValues = function(){};\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compilerOptions.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compilerOptions.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    compilerOptions.setEmitUseStrict(false);
+    compilerOptions

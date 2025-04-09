@@ -1,0 +1,18 @@
+public void testPaxHeaderEndingWithSlash() throws Exception {
+    File source = new File("./src/test/resources/test-data/pax-name-ending-with-slash.tar");
+    try (TarArchiveInputStream tarInput = new TarArchiveInputStream(new FileInputStream(source))) {
+        TarArchiveEntry entry;
+        while ((entry = tarInput.getNextTarEntry()) != null) {
+            if (entry.isDirectory()) {
+                continue;
+            }
+            assertEquals("test.txt", entry.getName());
+            assertEquals(new Date(1442387775000L), entry.getLastModifiedDate());
+            assertEquals(0L, entry.getSize());
+            assertEquals(0L, entry.getModTime().getMillis());
+            assertFalse(entry.isSymbolicLink());
+            assertFalse(entry.isLink());
+            assertFalse(entry.isExtended());
+        }
+    }
+}

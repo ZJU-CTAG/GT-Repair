@@ -1,0 +1,9 @@
+public void testRenameConstructorPropertiesWithPNS() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+
+    final OffsetTime deserialized = mapper.readValue("{\"time_of_day\":\"13:30:00+02:00\"}", OffsetTime.class);
+    assertEquals(OffsetTime.parse("13:30:00+02:00"), deserialized);
+}

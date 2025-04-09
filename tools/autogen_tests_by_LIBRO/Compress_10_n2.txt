@@ -1,0 +1,16 @@
+public void testUTF8ZipFileWithUnicodeExtraFields() throws IOException {
+    final File archive = getFile("utf8_zip_file_with_unicode_extra_fields.zip");
+
+    final ZipFile zf = new ZipFile(archive);
+    try {
+        final Enumeration<ZipArchiveEntry> entries = zf.getEntries();
+        assertTrue(entries.hasMoreElements());
+        final ZipArchiveEntry ze = entries.nextElement();
+        assertEquals(ze.getName(), "sample_file_with_unicode_extra_fields.txt");
+        assertEquals(zf.getEntry(ze.getName()).getName(), ze.getName());
+        assertEquals(zf.getEntry(ze.getName()).getName(), ze.getName());
+        assertNotNull(zf.getInputStream(ze));
+    } finally {
+        zf.close();
+    }
+}

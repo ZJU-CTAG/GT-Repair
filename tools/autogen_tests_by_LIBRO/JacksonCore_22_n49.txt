@@ -1,0 +1,22 @@
+public void testFilterParser() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    final FilterProvider filterProvider = new SimpleFilterProvider().addFilter("SomeFilter",
+            new FilteringParserDelegate() {
+                @Override
+                public boolean includeValue(JsonParser jp) throws IOException {
+                    if (matchCount < 2) {
+                        matchCount++;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+    final String jsonString = "{\"a\": \"foo\", \"b\": \"bar\", \"c\": \"baz\"}";
+    final String filteredJsonString = mapper.filteredWriter(filterProvider).writeValueAsString(new ObjectMapper().readTree(jsonString));
+    assertEquals("{\"a\":\"foo\",\"b\":\"bar\"}", filteredJsonString);
+}

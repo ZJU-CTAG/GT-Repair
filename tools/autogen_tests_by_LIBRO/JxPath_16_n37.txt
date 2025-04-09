@@ -1,0 +1,8 @@
+public void testIssue107() {
+    String domXml = "<doc><element>text</element></doc>";
+    Document document = PARSER_POOL.parse(new InputSource(new StringReader(domXml)));
+    XPath xpath = new DOMXPath("/doc/element/text()/..");
+    List nodes = xpath.selectNodes(document);
+    assertEquals(1, nodes.size());
+    assertEquals("element", ((Element) nodes.get(0)).getName());
+}

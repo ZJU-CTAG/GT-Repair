@@ -1,0 +1,17 @@
+public void testIssue108() throws ParseException {
+    BeanListProcessor<Bean> rowProcessor = new BeanListProcessor<Bean>(Bean.class);
+    CsvParserSettings parserSettings = new CsvParserSettings();
+    parserSettings.setRowProcessor(rowProcessor);
+    parserSettings.setNullValue("");
+    parserSettings.setEmptyValue("");
+    parserSettings.setHeaderExtractionEnabled(true);
+    parserSettings.setMaxCharsPerColumn(1024);
+    parserSettings.setNormalizeLineEndingsWithinQuotes(true);
+
+    String input = "\"\"\n" +
+            "\"\"\n" +
+            "\"\"\n" +
+            "\"\"\n";
+    CsvParser parser = new CsvParser(parserSettings);
+    parser.parse(new StringReader(input));
+}

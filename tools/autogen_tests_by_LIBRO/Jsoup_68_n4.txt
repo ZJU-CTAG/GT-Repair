@@ -1,0 +1,12 @@
+public void testIssue111() throws Exception {
+    String url = "http://www.bhem.gov.cn";
+    Parser parser = new Parser(new URL(url).openConnection());
+    NodeFilter filter = new TagNameFilter("meta");
+    NodeList list = parser.extractAllNodesThatMatch(filter);
+    for (int i = 0; i < list.size(); i++) {
+        MetaTag metaTag = (MetaTag) list.elementAt(i);
+        if (metaTag != null) {
+            System.out.println(metaTag.toPlainTextString());
+        }
+    }
+}

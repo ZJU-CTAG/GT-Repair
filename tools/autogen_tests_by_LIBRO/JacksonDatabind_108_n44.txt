@@ -1,0 +1,11 @@
+public void testIssue107() {
+  ObjectMapper mapper = new ObjectMapper();
+  
+  for (int i = 0; i < 2; ++i) {
+    boolean empty = (i > 0);
+    String json = (empty ? "{ }" : "{\"a\":3}");
+    JsonNode root = mapper.readTree(json);
+    assertNotNull(root);
+    assertEquals(empty, root.isMissingNode());
+  }
+}

@@ -1,0 +1,14 @@
+public void testNewExceptionForNumberOverflow() throws Exception
+{
+    final String INPUT = "{\n" +
+            "  \"name\" : \"test\",\n" +
+            "  \"intValue\" : \"12345678901234567890\"\n" +
+            "}";
+
+    try {
+        _objectReader.readValue(INPUT);
+        fail("Should have gotten exception");
+    } catch (JsonParseException e) {
+        verifyException(e, "Cannot coerce");
+    }
+}

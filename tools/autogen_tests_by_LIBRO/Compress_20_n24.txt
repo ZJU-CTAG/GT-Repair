@@ -1,0 +1,12 @@
+public void testRedline() throws IOException {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream in = getClass().getResourceAsStream("/redline.cpio");
+    ArchiveInputStream archive = factory.createArchiveInputStream("cpio", in);
+    @SuppressWarnings("unused")
+    ArchiveEntry entry;
+    int count = 0;
+    while ((entry = archive.getNextEntry()) != null) {
+        count++;
+    }
+    assertEquals(5, count);
+}

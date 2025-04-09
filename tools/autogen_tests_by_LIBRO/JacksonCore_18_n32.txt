@@ -1,0 +1,9 @@
+public void testIssue107() {
+    BigDecimal bd = new BigDecimal("1.2345678E+123456789");
+    String json = new ObjectMapper()
+        .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN)
+        .writeValueAsString(bd);
+    // The outcome of this call is not specified.
+    // It may throw OutOfMemoryError or return a truncated String
+    System.out.println(json);
+}

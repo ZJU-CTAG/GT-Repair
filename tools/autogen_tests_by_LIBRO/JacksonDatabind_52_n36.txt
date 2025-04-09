@@ -1,0 +1,11 @@
+public void testExternalIdIsNull() {
+    ExternalIdDeserTest.ExternalId id = new ExternalIdDeserTest.ExternalId();
+    id.setValue("123");
+    ExternalIdDeserTest.ExternalIdType type = new ExternalIdDeserTest.ExternalIdType();
+    type.setValue("foo");
+    id.setType(type);
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(id);
+    ExternalIdDeserTest.ExternalId deserId = mapper.readValue(json, ExternalIdDeserTest.ExternalId.class);
+    Assert.assertNotNull(deserId.getType());
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+        Compiler compiler = new Compiler();
+        Result result = compiler.compile(
+                SourceFile.fromCode(
+                        "externs.js",
+                        "var window;"),
+                SourceFile.fromCode(
+                        "input.js",
+                        "window[\"foo\"] = function (obj, modifiesProp) {\n" +
+                        " return (function (saved) {\n" +
+                        " return modifiesProp(obj) + saved;\n" +
+                        " })(obj[\"prop\"]);\n" +
+                        " };")
+        );
+        assertTrue(result.success);
+        assertTrue(compiler.toSource().contains("HOLD"));
+}

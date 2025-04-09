@@ -1,0 +1,10 @@
+public void testParseInputStream() throws IOException {
+    byte[] bytes = {(byte)0xef, (byte)0xbb, (byte)0xbf, (byte)0x00, (byte)0x00, (byte)0xfe, (byte)0xff, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x3c};
+    InputStream is = new ByteArrayInputStream(bytes);
+    assertTrue(DataUtil.isBomPresent(is));
+    Map<String, String> meta = DataUtil.getCharsetFromContentType("text/html; charset=UTF-16");
+    String charset = meta.get("charset");
+    assertEquals("UTF-16BE", charset);
+    String txt = DataUtil.getString(bytes, charset);
+    assertEquals("<", txt.trim());
+}

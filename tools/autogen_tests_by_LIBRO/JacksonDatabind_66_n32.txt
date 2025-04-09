@@ -1,0 +1,22 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addDeserializer(SuperTypeEnum.class, new JsonDeserializer<SuperTypeEnum>() {
+        @Override
+        public SuperTypeEnum deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                throws IOException {
+
+            return SuperTypeEnum.valueOf(jsonParser.getText());
+        }
+    });
+    mapper.registerModule(simpleModule);
+
+    {
+        String json = "{\"someMap\": {\"FOO\": \"bar\"}}";
+        SuperType superType = mapper.readValue(json, SuperType.class);
+        assertEquals("Deserialized someMap.FOO should equal bar", "bar", superType.getSomeMap().get(SuperTypeEnum.FOO));
+    }
+
+    {
+        String json = "{\"@type\": \"TestDeserializeType$SubType\", \"someMap\": {\"FOO\": \"bar\"}}";
+        SuperType superType

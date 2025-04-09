@@ -1,0 +1,13 @@
+public void testDateSerializer() {
+    String json = "{\"date\":\"2018-10-23\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    MyObject myObject = mapper.readValue(json, MyObject.class);
+    assertEquals(23, myObject.date.getDate());
+    assertEquals(10, myObject.date.getMonth() + 1);
+    assertEquals(2018, myObject.date.getYear() + 1900);
+}
+
+private static class MyObject {
+    public java.sql.Date date;
+}

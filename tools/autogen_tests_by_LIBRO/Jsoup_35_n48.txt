@@ -1,0 +1,11 @@
+public void testIssue107() {
+    String tmp = "<a href='www.google.com'>Link<p>Error link</a>";
+    Document doc = Jsoup.parse(tmp);
+    assertEquals("<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <a href=\"www.google.com\">Link</a> <p><a>Error link</a></p>\n" +
+            " </body>\n" +
+            "</html>", doc.html());
+    assertEquals("<a href=\"www.google.com\">Link</a> <p><a href=\"www.google.com\">Error link</a></p>", doc.body().html());
+}

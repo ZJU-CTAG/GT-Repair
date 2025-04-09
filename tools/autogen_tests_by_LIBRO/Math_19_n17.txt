@@ -1,0 +1,21 @@
+public void testCMAES() {
+    SimpleScalarFitnessFunction fitnessFunction = new SimpleScalarFitnessFunction();
+    CMAParameters cmaParams = new CMAParameters();
+    cmaParams.setPopulationSize(20);
+    CMAESOptimizer cmaes = new CMAESOptimizer(cmaParams, -Double.MAX_VALUE, Double.MAX_VALUE, fitnessFunction);
+    double[] result = cmaes.optimize();
+    fitnessFunction.fitness(result);
+}
+
+class SimpleScalarFitnessFunction implements FitnessFunction {
+
+    @Override
+    public double fitness(double[] values) {
+        for (double value : values) {
+            if (Double.isNaN(value)) {
+                throw new RuntimeException("NaN values detected.");
+            }
+        }
+        return 1;
+    }
+}

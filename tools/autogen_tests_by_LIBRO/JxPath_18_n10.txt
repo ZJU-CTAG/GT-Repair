@@ -1,0 +1,18 @@
+public void testCountAttributeNode() {
+  Context context = new Context();
+  context.setNamespacePrefix("foo", "http://foo");
+  context.setNamespacePrefix("bar", "http://bar");
+  context.setNamespacePrefix("", "http://default");
+  Value value = context.getContextNode();
+  Expr expr = createExpression("count(attribute::*)");
+  assertEquals(4, expr.eval(context).asNumber());
+  expr = createExpression("count(attribute::foo:*)");
+  assertEquals(1, expr.eval(context).asNumber());
+  expr = createExpression("count(attribute::bar:*)");
+  assertEquals(3, expr.eval(context).asNumber());
+  expr = createExpression("count(attribute::\*)");
+  assertEquals(4, expr.eval(context).asNumber());
+  expr = createExpression("count(attribute::)");
+  assertEquals(1, expr.eval(context).asNumber());
+  expr = createExpression("count(attribute::*)");
+  assertEquals

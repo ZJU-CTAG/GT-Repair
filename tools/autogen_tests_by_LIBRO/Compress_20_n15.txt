@@ -1,0 +1,16 @@
+public void testIssue110() {
+    File testFile = new File("src/test/resources/testdata/issue-110.cpio");
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("cpio",
+            new FileInputStream(testFile));
+
+    assertTrue(ais instanceof CpioArchiveInputStream);
+
+    CpioArchiveEntry entry;
+    while ((entry = (CpioArchiveEntry) ais.getNextEntry()) != null) {
+        assertFalse(entry.isDirectory());
+        assertEquals("issue-110.txt", entry.getName());
+        assertEquals(0, entry.getGroupId());
+        assertEquals(0, entry.getUserId());
+        assertEquals(0, entry.getSize());
+    }
+}

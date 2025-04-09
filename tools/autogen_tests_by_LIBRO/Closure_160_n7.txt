@@ -1,0 +1,11 @@
+public void testCommandLine() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("foo.js", "foo = {};"),
+        SourceFile.fromCode("bar.js", "foo.bar = function() { alert(this.baz); };"),
+        new CompilerOptions());
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(1, compiler.getWarningCount());
+    assertEquals("variable foo is undefined",
+        result.warnings.get(0).description);
+}

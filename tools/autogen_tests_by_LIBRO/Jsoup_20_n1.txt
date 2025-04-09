@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Document doc = Jsoup.parse(new File("test.html"), "UTF-8");
+    Element head = doc.head();
+    assertNotNull(head);
+    assertEquals(4, head.children().size());
+    Element meta = head.child(0);
+    assertEquals("meta", meta.tagName());
+    assertTrue(meta.hasAttr("http-equiv"));
+    assertEquals("Content-Type", meta.attr("http-equiv"));
+    assertTrue(meta.hasAttr("content"));
+    assertEquals("text/html; charset=UTF-8", meta.attr("content"));
+}

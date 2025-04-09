@@ -1,0 +1,22 @@
+public void testIssue() {
+    String sourceCode = "function a() {" +
+    " var x = '1';" +
+    " try {" +
+    " x += somefunction();" +
+    " } catch(e) {" +
+    " }" +
+    " x += '2';" +
+    " try {" +
+    " x += somefunction();" +
+    " } catch(e) {" +
+    " }" +
+    " document.write(x);" +
+    "}" +
+    "a();" +
+    "a();";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(sourceCode, new CompilerOptions());
+    String minified = result.toSource();
+    assertEquals("function a(){var b;try{b=\"1\"+somefunction()}catch(d){}try{b=b+\"2\"+somefunction()}catch(e){}document.write(b)}a();a();", minified);
+}

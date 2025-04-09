@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String js = "function f(){};\nfunction g(){}";
+    SourceMapGeneratorV3 sourceMapGenerator = new SourceMapGeneratorV3();
+    for (int i = 0; i < js.length(); i++) {
+        sourceMapGenerator.addMapping(new SourceMapGeneratorV3.Location(0, i, "test.js", 0, i));
+    }
+    SourceMapConsumerV3 consumer = new SourceMapConsumerV3();
+    consumer.parse(sourceMapGenerator.toJson());
+    SourceMapConsumerV3.Entry entry = consumer.getMappingForLine(1, 0);
+    assertNotNull(entry);
+    assertEquals(0, entry.getLineNumber());
+    assertEquals(0, entry.getColumnPosition());
+    assertEquals("test.js", entry.getSourceName());
+    assertEquals(0, entry.getSourceLineNumber());
+    assertEquals(0, entry.getSourceColumnPosition());
+}

@@ -1,0 +1,22 @@
+public void testIssue() {
+    String code = "var NS = {};\n" +
+            "/**\n" +
+            " * @enum {number}\n" +
+            " */\n" +
+            "NS.keys = {\n" +
+            "  a: 1,\n" +
+            "  b: 2,\n" +
+            "  c: 3\n" +
+            "};\n" +
+            "/**\n" +
+            " * @enum\n" +
+            " */\n" +
+            "window['gKEYS'] = NS.keys;\n";
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            externs, ImmutableList.of(SourceFile.fromCode("testcode", code)),
+            CompilerOptions.builder()
+                    .setOutputCharset("utf8")
+                    .setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING)
+                    .setSummaryDetailLevel(3)
+                    .setCompilationLevel(CompilationLevel.ADVANC

@@ -1,0 +1,16 @@
+public void testClosureCompiledSwfobject() {
+    String code = "function urlEncodeIfNecessary(s) {" +
+            " var regex = /[\\\"<>\.;]/;" +
+            " var hasBadChars = regex.exec(s) != null;" +
+            " return hasBadChars && typeof encodeURIComponent != UNDEF ? encodeURIComponent(s) : s;" +
+            "}";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            Code.fromString(code),
+            new CompilerOptions(),
+            new DiagnosticGroups());
+
+    String compiledCode = result.getCompiledCode();
+    System.out.println(compiledCode);
+}

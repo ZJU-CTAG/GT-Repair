@@ -1,0 +1,21 @@
+public void testOptimization() {
+    String source = "function getStack() {\n"
+        + " var getErrorObject = function() {\n"
+        + " try {\n"
+        + " throw Error(\"\");\n"
+        + " } catch(err) {\n"
+        + " return err;\n"
+        + " }\n"
+        + " };\n"
+        + " return getErrorObject().stack;\n"
+        + "}\n"
+        + "window['getStackTrace']=getStack;\n";
+    String opt = Compiler.compile(source, CompilerOptions.newOptions().setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5));
+    String expected = "function getStack() {\n"
+        + " try {\n"
+        + " throw Error(\"\");\n"
+        + " } catch (err) {\n"
+        + " }\n"
+        + " return err.stack\n"
+        + "} window.getStackTrace = getStack;";
+    assertEquals(expected

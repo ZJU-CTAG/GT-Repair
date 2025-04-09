@@ -1,0 +1,21 @@
+public void testIssue108() {
+    String js =
+        "/** @constructor */ function MyClass() {}\n" +
+        "MyClass.prototype[\"MyMethod\"] = function(a) {\n" +
+        " this.a = a;\n" +
+        "}\n" +
+        "window[\"MyClass\"] = MyClass;";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Result result = compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("externs", "")),
+        ImmutableList.of(SourceFile.fromCode("test", js)),
+        options);
+
+    JSError[] errors = result.errors;
+    assertEquals(0, errors.length);
+    JSError[] warnings = result.warnings;
+    assertEquals(0, warnings.length);
+}

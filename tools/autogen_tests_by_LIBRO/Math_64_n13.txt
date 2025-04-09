@@ -1,0 +1,16 @@
+public void testLevenbergMarquardt() {
+    RealPointValuePair rpvp;
+    double[] data = new double[17];
+    Arrays.fill(data, 1.0);
+    rpvp = new LevenbergMarquardtOptimizer().optimize(
+        new MaxEval(100),
+        new InitialGuess(new double[]{0,0,0}),
+        new Target(data),
+        new Weight(new DiagonalMatrix(data.length, 1.0)),
+        new ModelFunction(new double[]{1,1,1}, null),
+        new ModelFunctionJacobian(new double[]{1,1,1}, null)
+        );
+    assertEquals(data[0], rpvp.getResiduals()[0], 1.0e-10);
+    assertEquals(data[16], rpvp.getResiduals()[16], 1.0e-10);
+    assertEquals(17.0, rpvp.getValue(), 1.0e-10);
+}    

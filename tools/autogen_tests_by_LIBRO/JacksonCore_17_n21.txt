@@ -1,0 +1,15 @@
+public void testIssue107() {
+    StringBuilder x = new StringBuilder(800);
+    for (int i = 0; i < 800; i++) {
+        x.append("x");
+    }
+    String json = "{\"msg\":\"" + x.toString() + "\\uD834\\uDD1E\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    JsonFactory f = new JsonFactory();
+    JsonGenerator g = f.createGenerator(System.out);
+    g.writeStartObject();
+    g.writeFieldName("msg");
+    g.writeRaw(json);
+    g.writeEndObject();
+    g.close();
+}

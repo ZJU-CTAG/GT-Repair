@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = newObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    final ObjectReader reader = mapper.readerFor(Person.class);
+    
+    final Person result = reader.readValue(MAPPER.writeValueAsString(new Person()));
+    assertNotNull(result);
+    assertNotNull(result.businessAddress);
+}

@@ -1,0 +1,7 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(SourceFile.fromCode("externs.js", "function Foo() { this.x_ = 3; }"), SourceFile.fromCode("src.js", "/** @constructor @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }"), options);
+    assertEquals(1, result.errors.length);
+}

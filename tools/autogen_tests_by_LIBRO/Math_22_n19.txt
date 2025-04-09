@@ -1,0 +1,16 @@
+public void testIssue() {
+    RealDistribution[] distributions = {
+        new NormalDistribution(), new BetaDistribution(2, 3), new CauchyDistribution(5, 2),
+        new ChiSquaredDistribution(15), new ExponentialDistribution(1.5), new FDistribution(1, 3),
+        new GammaDistribution(3, 5), new LogNormalDistribution(1, 1.5), new TDistribution(5),
+        new WeibullDistribution(3, 5)
+    };
+    for (RealDistribution distribution : distributions) {
+        if (distribution.isSupportConnected()) {
+            assertFalse("Distribution " + distribution + " has infinite density at lower bound.",
+                Double.isInfinite(distribution.density(distribution.getSupportLowerBound())));
+            assertFalse("Distribution " + distribution + " has infinite density at upper bound.",
+                Double.isInfinite(distribution.density(distribution.getSupportUpperBound())));
+        }
+    }
+}

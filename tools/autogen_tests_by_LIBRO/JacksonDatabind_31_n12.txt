@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+    FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter",
+            new AntPathPropertyFilter("$.a"));
+    mapper.setFilters(filters);
+
+    String json = mapper.writeValueAsString(new Pojo());
+    assertEquals("{\"a\":\"1\"}", json);
+
+    json = mapper.convertValue(new Pojo(), String.class);
+    assertEquals("{\"a\":\"2\"}", json);
+}
+
+public static class Pojo {
+    public String a = "1";
+    public String b = "2";
+}

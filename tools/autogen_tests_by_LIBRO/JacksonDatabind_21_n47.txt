@@ -1,0 +1,26 @@
+public void testEnumValueSerialization() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+
+    TestObject testObject = new TestObject();
+    testObject.setTestEnum(TestEnum.VALUE_ONE);
+
+    assertEquals("{\"testEnum\":\"value1\"}", objectMapper.writeValueAsString(testObject));
+    assertEquals(testObject, objectMapper.readValue("{\"testEnum\":\"value1\"}", TestObject.class));
+}
+
+private static class TestObject {
+    private TestEnum testEnum;
+
+    public TestEnum getTestEnum() {
+        return testEnum;
+    }
+
+    public void setTestEnum(TestEnum testEnum) {
+        this.testEnum = testEnum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass()

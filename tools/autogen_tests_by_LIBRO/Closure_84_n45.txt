@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+    try {
+        engine.eval("var x=0,y=1;x||y=8");
+        fail("Should have thrown exception");
+    } catch (ScriptException e) {
+        assertEquals("Invalid left hand side of assignment: y=8", e.getMessage());
+    }
+}

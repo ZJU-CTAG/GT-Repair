@@ -1,0 +1,8 @@
+public void testPropertyNamingStrategy() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    final ClassWithObjectNodeField json = mapper.readValue("{\"id\":\"1\",\"json\":{\"foo\":\"bar\",\"baz\":\"bing\"}}", ClassWithObjectNodeField.class);
+    Assert.assertEquals("1", json.id);
+    Assert.assertNotNull(json.json);
+    Assert.assertEquals("bar", json.json.get("foo").textValue());
+}

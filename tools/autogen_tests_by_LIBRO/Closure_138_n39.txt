@@ -1,0 +1,20 @@
+public void test() {
+    // ==ClosureCompiler==
+    // @output_file_name default.js
+    // @compilation_level ADVANCED_OPTIMIZATIONS
+    // ==/ClosureCompiler==
+
+    String js = "var t = null;\n" +
+            "window.test = function() {\n" +
+            "    if (t != null) {\n" +
+            "        t = null;\n" +
+            "    }\n" +
+            "    t = 1;\n" +
+            "};";
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    List<SourceFile> externs = Arrays.<SourceFile> asList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> sourceFiles = Arrays.<SourceFile> asList(SourceFile.fromCode("source", js));
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, sourceFiles, options);
+}

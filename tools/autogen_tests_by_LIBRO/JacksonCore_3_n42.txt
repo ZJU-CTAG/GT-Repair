@@ -1,0 +1,18 @@
+public void testUTF8StreamJsonParserWithPositionInfo() throws IOException {
+    final String JSON = "{\"key\":\"value\"}";
+    InputStream in = new ByteArrayInputStream(JSON.getBytes(StandardCharsets.UTF_8));
+    UTF8StreamJsonParser parser = new UTF8StreamJsonParser(
+            JSONFactory.DEFAULT_IO_CONTEXT,
+            JSONFactory.DEFAULT_PARSER_FEATURE_FLAGS,
+            in,
+            JSONFactory.DEFAULT_OBJECT_CODEC,
+            JSONFactory.DEFAULT_SYMBOL_TABLE,
+            new byte[JSON.length() + 1], 0, JSON.length() - 1, true);
+
+    JsonToken token = parser.nextToken();
+    assertNotNull(token);
+    assertEquals(JsonToken.FIELD_NAME, token);
+    JsonLocation location = parser.getCurrentLocation();
+    assertEquals(1, location.getLineNr());
+    assertEquals(2, location.getColumnNr());
+}

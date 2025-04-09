@@ -1,0 +1,17 @@
+public void testIssue() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    final Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("externs.js", ""),
+            ImmutableList.of(SourceFile.fromCode("input.js", "function Foo() {\n" +
+                    " var self = this;\n" +
+                    " window.setTimeout(function() {\n" +
+                    " window.location = self.location;\n" +
+                    " }, 0);\n" +
+                    "}\n" +
+                    "\n" +

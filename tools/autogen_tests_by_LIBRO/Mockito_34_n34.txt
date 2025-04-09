@@ -1,0 +1,13 @@
+public void testSourceFilesInBinaryJar() throws Exception {
+    // Given an extracted binary jar
+    File mockitoCoreDir = new File(MockitoCore.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+    assertTrue(mockitoCoreDir.isDirectory());
+
+    // When I look in there
+    File[] files = mockitoCoreDir.listFiles();
+
+    // Then there should not be any java files
+    for (File file : files) {
+        assertFalse(file.getName().endsWith(".java"));
+    }
+}

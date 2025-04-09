@@ -1,0 +1,24 @@
+public void testTarArchiveInputStream() throws IOException {
+    String entryName = "test.txt";
+    String entryContent = "test content";
+
+    String entryName2 = "test2.txt";
+    String entryContent2 = "test content 2";
+
+    FileOutputStream fos = new FileOutputStream(new File("test.tar"));
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(fos);
+
+    TarArchiveEntry entry = new TarArchiveEntry(entryName);
+    entry.setSize(entryContent.getBytes().length);
+    entry.setUserId(62410554);
+    taos.putArchiveEntry(entry);
+
+    taos.write(entryContent.getBytes());
+    taos.closeArchiveEntry();
+
+    TarArchiveEntry entry2 = new TarArchiveEntry(entryName2);
+    entry2.setSize(entryContent2.getBytes().length);
+    entry2.setUserId(62410554);
+    taos.putArchiveEntry(entry2);
+
+    taos.write(entryContent2.getBytes());

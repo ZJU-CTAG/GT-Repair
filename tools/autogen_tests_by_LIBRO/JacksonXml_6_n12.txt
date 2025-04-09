@@ -1,0 +1,19 @@
+public void testWriteBinary() throws IOException {
+    final int LENGTH = 10000; //10K
+    final byte[] data = new byte[LENGTH];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = (byte) (i % Byte.MAX_VALUE);
+    }
+    InputStream is = new ByteArrayInputStream(data);
+
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator gen = new ToXmlGenerator(sw, JsonEncoding.UTF8, new JsonFactory());
+    gen.writeStartObject();
+    gen.writeFieldName("myfield");
+    gen.writeBinary(Base64Variants.getDefaultVariant(), is, data.length);
+    gen.writeEndObject();
+    gen.close();
+
+    //XML output is in sw.
+    System.out.println(sw.toString());
+}

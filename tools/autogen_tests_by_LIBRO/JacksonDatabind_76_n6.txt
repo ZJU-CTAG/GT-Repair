@@ -1,0 +1,10 @@
+public void testMissingProperties() throws Exception {
+    Employee e = MAPPER.readValue(
+            MAPPER.writeValueAsString(
+                    new Employee.Builder(1234L).setName(new Name("John", "Doe")).setAge(30).build()),
+            Employee.class);
+    assertEquals(1234, e.getId());
+    assertEquals(30, e.getAge());
+    assertEquals("John", e.getName().getFirst());
+    assertEquals("Doe", e.getName().getLast());
+}

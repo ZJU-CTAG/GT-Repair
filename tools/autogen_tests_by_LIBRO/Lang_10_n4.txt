@@ -1,0 +1,12 @@
+public void testWhiteSpace() {
+    FastDateParser parser = new FastDateParser("yyyy MM dd");
+    assertEquals(parser.parse("2011 01 02"), parser.parse("2011 01 02"));
+    assertEquals(parser.parse("2011 0102"), parser.parse("2011 \t01 02"));
+    assertEquals(parser.parse("2011 0102"), parser.parse("2011 \n01 02"));
+    assertEquals(parser.parse("2011 0102"), parser.parse("2011 \r01 02"));
+    assertEquals(parser.parse("2011 0102"), parser.parse("2011 \f01 02"));
+    assertEquals(parser.parse("2011 0102"), parser.parse("2011 \u00a01 02"));
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy MM dd");
+    assertEquals(sdf.parse("2011 01 02"), sdf.parse("2011 01 02"));
+    assertFalse(sdf.parse("2011 01 02").equals(sdf.parse("2011 \t01 02")));
+    assertFalse(sdf.parse("2011 01

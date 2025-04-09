@@ -1,0 +1,22 @@
+public void testIssue() throws IOException {
+    String[] files = new String[]{"test1.xml","test2.xml"};
+    String archive = "bla.ar";
+    File dir = getTestDirectory();
+    
+    ArArchiveOutputStream st = new ArArchiveOutputStream(new FileOutputStream(new File(dir, archive)));
+    try {
+        addFilesToArchive(st, files, dir);
+        st.close();
+        
+        ArArchiveInputStream is = new ArArchiveInputStream(new FileInputStream(new File(dir, archive)));
+        assertEquals("test1.xml", is.getNextEntry().getName());
+        assertEquals("test2.xml", is.getNextEntry().getName());
+        assertNull(is.getNextEntry());
+        is.close();
+    } finally {
+        st.close();
+    }
+    
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(new File(dir, archive)));
+    try {
+        ArArchiveEntry entry = new ArArchiveEntry("test2

@@ -1,0 +1,15 @@
+public void testFormatWithUnterminatedQuotes() {
+    try {
+        new FastDateParser("d'd'", TimeZone.getDefault(), Locale.ENGLISH);
+        fail();
+    } catch (IllegalArgumentException iae) {
+        // expected
+    }
+}
+
+public void testFormatWithUnterminatedQuotes2() throws ParseException {
+    FastDateParser fdp = new FastDateParser("d'd'", TimeZone.getDefault(), Locale.ENGLISH);
+    ParsePosition pp = new ParsePosition(0);
+    fdp.parse("d3", pp);
+    assertEquals(-1, pp.getErrorIndex());
+}

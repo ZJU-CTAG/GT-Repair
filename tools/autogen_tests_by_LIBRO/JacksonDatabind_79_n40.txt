@@ -1,0 +1,14 @@
+public void testIdentitySerialization() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+
+    @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
+    class Wrapper {
+        @JsonIdentityReference(alwaysAsId=true)
+        public Object o = new Object();
+    }
+
+    String json = mapper.writeValueAsString(new Wrapper());
+    assertEquals("{\"o\":1}", json);
+}

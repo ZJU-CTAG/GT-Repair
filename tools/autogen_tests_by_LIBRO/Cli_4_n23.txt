@@ -1,0 +1,25 @@
+public void testIssue107() {
+    Options opts = new Options();
+    opts.addOption("t", "target", true, "Generate files for the specified target machine");
+    PosixParser parser = new PosixParser();
+    try
+    {
+        CommandLine cmd = parser.parse(opts, new String[] {"-target", "foobar.com"});
+        String target = cmd.getOptionValue("target");
+        assertEquals("foobar.com", target);
+    }
+    catch (ParseException e)
+    {
+        fail("Should not throw exception");
+    }
+    try
+    {
+        CommandLine cmd = parser.parse(opts, new String[] {"-t", "foobar.com"});
+        String target = cmd.getOptionValue("target");
+        assertEquals("foobar.com", target);
+    }
+    catch (ParseException e)
+    {
+        fail("Should not throw exception");
+    }
+}

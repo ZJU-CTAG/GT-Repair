@@ -1,0 +1,20 @@
+public void test() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.PUBLIC_ONLY);
+    String json = mapper.writeValueAsString(new Issue55Bean(null, -2));
+    assertEquals("{\"b\":-2}", json);
+}
+
+public static class Issue55Bean
+{
+    public int a;
+    public int b;
+
+    public Issue55Bean(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+}

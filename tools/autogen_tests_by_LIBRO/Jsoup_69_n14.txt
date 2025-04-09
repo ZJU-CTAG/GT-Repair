@@ -1,0 +1,20 @@
+public void testIssue107() {
+    Connection.Response response = Jsoup.connect("http://example.com")
+            .execute();
+
+    Document doc = response.parse();
+    System.out.println("---before---");
+    System.out.println(doc.toString());
+
+    doc.select("input[name=alpha]").first().remove();
+    System.out.println("---after---");
+    System.out.println(doc.toString());
+
+    FormElement form = (FormElement) doc.select("form").first();
+    System.out.println("---form toString()---");
+    System.out.println(form.toString());
+
+    List<Connection.KeyVal> data = form.formData();
+    System.out.println("---form data---");
+    System.out.println(data.toString());
+}

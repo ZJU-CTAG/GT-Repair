@@ -1,0 +1,12 @@
+public void testIssue108() {
+    InjectableValues inject = new InjectableValues();
+    inject.addValue(Inner.class, new Inner("Zebra"));
+    ObjectMapper mapper = new ObjectMapper();
+
+    String json = mapper.writerWithDefaultPrettyPrinter().with(inject).writeValueAsString(new Outer());
+    System.out.println(json);
+
+    Outer result = mapper.reader(inject).forType(Outer.class).readValue(json);
+    assertNotNull(result);
+    assertEquals("Zebra", result.inner.animal);
+}

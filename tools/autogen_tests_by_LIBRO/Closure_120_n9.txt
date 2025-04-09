@@ -1,0 +1,25 @@
+public void testOptimization() {
+    String orgCode = ""
+        + "var uid;"
+        + "function reset() {"
+        + "    uid = Math.random();"
+        + "    if (uid < 0.5) {"
+        + "        reset();"
+        + "    }"
+        + "}"
+        + "function doStuff() {"
+        + "    reset();"
+        + "    var _uid = uid;"
+        + "    if (_uid !== uid) {"
+        + "        throw 'reset() was called';"
+        + "    }"
+        + "}"
+        + "doStuff();";
+    CompilationLevel compilationLevel = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    compilationLevel.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS,
+        getSourceFile("test", orgCode), options);
+    //System.out.println(result.errors);
+    assertEqu

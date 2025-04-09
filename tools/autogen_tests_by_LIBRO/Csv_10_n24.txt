@@ -1,0 +1,16 @@
+public void testWithHeader() throws Exception {
+    try (
+        Writer writer = Files.newBufferedWriter(Paths.get("data.csv"));
+        CSVPrinter printer = CSVFormat.TDF.withHeader("x").print(writer)
+    ) {
+        printer.printRecord(42);
+    }
+    try (
+        Reader reader = Files.newBufferedReader(Paths.get("data.csv"));
+        CSVParser parser = CSVFormat.TDF.withHeader().parse(reader)
+    ) {
+        assertEquals(1, parser.getHeaderMap().size());
+        assertEquals(0, parser.getHeaderMap().get("x").intValue());
+        assertEquals(Arrays.asList("42"), parser.getRecords().get(0));
+    }
+}

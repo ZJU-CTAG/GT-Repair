@@ -1,0 +1,25 @@
+public void testInts() throws Exception
+{
+    IntsBean input = new IntsBean();
+    input.setA(3);
+    input.setB(2);
+    input.setC(1);
+    input.setD(0);
+    input.setE(-1);
+    input.setF(-2);
+    input.setG(-3);
+    input.setValue(100);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    String json = mapper.writeValueAsString(input);
+
+    assertEquals("{\"a\":3,\"b\":2,\"e\":-1,\"f\":-2,\"g\":-3,\"value\":100}", json);
+
+    json = mapper.writeValueAsString(input);
+
+    assertEquals("{\"a\":3,\"b\":2,\"e\":-1,\"f\":-2,\"g\":-3,\"value\":100}", json);
+}
+
+public void testStrings() throws Exception
+{

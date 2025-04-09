@@ -1,0 +1,15 @@
+public void testHtml() {
+    String html = "<html>"
+        + "<body>"
+        + "<script type=\"text/javascript\">\n"
+        + "var inside = true;\n"
+        + "</script>\n"
+        + "this should be outside.\n"
+        + "</body>"
+        + "</html>";
+    HtmlCleaner cleaner = new HtmlCleaner();
+    TagNode node = cleaner.clean(html);
+    Serializer ser = new SimpleXmlSerializer(cleaner.getProperties());
+    String html2 = ser.getAsString(node);
+    assertEquals(html, html2);
+}

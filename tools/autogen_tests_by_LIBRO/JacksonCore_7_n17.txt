@@ -1,0 +1,23 @@
+public void testWrite() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    // Let's verify that without this check, invalid output is produced:
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator generator = mapper.getFactory().createGenerator(out);
+    generator.writeFieldName("foo");
+    generator.writeString("bar");
+
+    String s = out.toString("UTF-8");
+    assertEquals("{\"foo\":\"bar\"}", s);
+
+    // But with this check, it should throw an exception
+    out = new ByteArrayOutputStream();
+    generator = mapper.getFactory().createGenerator(out);
+    generator.writeFieldName("foo");
+    try {
+        generator.writeString("bar");
+        fail("Should not have passed");
+    } catch (JsonGenerationException e) {
+        // ok
+    }
+}

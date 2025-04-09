@@ -1,0 +1,16 @@
+public void testDependencySorting() throws Exception{
+		String code = "goog.provide('a');goog.require('b');goog.provide('b');";
+		String expected = "'use strict'; var b=null;var a=0;";
+		test(code, expected, null, null, null, true);
+	}
+	
+	private void test(String code, String expected,
+			List<SourceFile> externs, List<SourceFile> inputs,
+			List<JSModule> modules, boolean sortDependencies) throws Exception{
+		Compiler compiler = new Compiler();
+		CompilerOptions options = new CompilerOptions();
+		options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+		options.setCheckSymbols(true);
+		options.setWrapGoogModulesForWhitespaceOnly(true);
+		options.setClosurePass(false); //Don't remove the goog.require/provide calls
+		options.setManageClosureDependencies(sortDependencies); //Sort

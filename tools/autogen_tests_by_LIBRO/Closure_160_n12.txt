@@ -1,0 +1,22 @@
+public void testCommandLine() {
+    Compiler.setLoggingLevel(Level.ALL);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "foo={bar:function(){alert(this.baz)}};")
+            }, options);
+    assertTrue(result.success);
+    assertEquals(2, compiler.getWarnings().length);
+    
+    
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode

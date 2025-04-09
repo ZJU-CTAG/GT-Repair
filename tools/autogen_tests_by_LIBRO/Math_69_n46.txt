@@ -1,0 +1,15 @@
+public void testPearsonCorrelationGetCorrelationPValues() {
+    final MersenneTwister rng = new MersenneTwister(RandomUtils.nextLong());
+    final NormalDistribution normal = new NormalDistribution(rng, 0.0, 1.0, NormalDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY);
+    final int numTreatments = 1000;
+    final int numSamples = 3000;
+    final double[][] observations = new double[numTreatments][numSamples];
+    for (int i = 0; i < numTreatments; i++) {
+        for (int j = 0; j < numSamples; j++) {
+            observations[i][j] = normal.sample();
+        }
+    }
+    final double[] correlationPValues = new PearsonsCorrelation(observations).getCorrelationPValues();
+    for (int i = 0; i < correlationPValues.length; i++) {
+        // we have to check for NaN because the diagonal is undefined
+        if (!Double.isNaN(correlationPValues[i

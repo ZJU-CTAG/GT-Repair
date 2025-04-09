@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String code =
+            "var arguments = null;\n" +
+             "function test() {\n" +
+             "  return arguments;\n" +
+             "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    compiler.compile(
+        JSSourceFile.fromCode("a.js", code),
+        JSSourceFile.fromCode("b.js", code),
+        options);
+    assertEquals(code, compiler.toSource());
+}

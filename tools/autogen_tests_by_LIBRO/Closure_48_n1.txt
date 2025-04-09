@@ -1,0 +1,17 @@
+public void testIssue() {
+    String code = "/** @constructor */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { }\n" +
+            "\n" +
+            "myclass.prototype.test = function() {\n" +
+            "  this.fn();\n" +
+            "  this.fn = function() { };\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs,
+            js(fromString(code)),
+            options);
+    assertTrue(result.success);
+}

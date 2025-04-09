@@ -1,0 +1,11 @@
+public void testOptimizer() throws Exception {
+    SimpleBounds b = new SimpleBounds(new double[] {0, 0}, new double[] {1, 1});
+    MultivariateFunction f = new MultivariateFunction() {
+        public double value(double[] point) {
+            return point[0] + point[1];
+        }
+    };
+    CMAESOptimizer o = new CMAESOptimizer();
+    PointValuePair p = o.optimize(20, f, GoalType.MAXIMIZE, b, new MaxEval(100), new InitialGuess(new double[] {0.5, 0.5}));
+    assertTrue(b.isFeasible(p.getPoint()));
+}

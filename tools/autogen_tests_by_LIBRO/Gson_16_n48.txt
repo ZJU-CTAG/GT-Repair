@@ -1,0 +1,13 @@
+public void testRecursiveTypeVariable() {
+    String json = "{\"superType\":{\"superType\":{\"superType\":null}}}";
+    Type type = new TypeToken<TestType<X>>() {}.getType();
+    TestType<X> test = new Gson().fromJson(json, type);
+    assertNull(test.superType);
+}
+
+private static class TestType<T> {
+    TestType<? super T> superType;
+}
+
+private static class X {
+}

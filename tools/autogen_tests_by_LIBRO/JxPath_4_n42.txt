@@ -1,0 +1,9 @@
+public void testIssue108() throws FileNotFoundException, DocumentException {
+    File file = ResourceUtils.getFile("classpath:org/apache/commons/lang3/StringUtilsTest.xml");
+    SAXReader reader = new SAXReader(false);
+    reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    Document document = reader.read(new FileInputStream(file));
+    JXPathContext context = JXPathContext.newContext(document);
+    String value = (String) context.getValue("/testcase/TestStringUtils/testEndsWithIgnoreCase/value");
+    assertEquals(" 12324 56 ", value);
+}

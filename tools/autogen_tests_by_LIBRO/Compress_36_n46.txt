@@ -1,0 +1,16 @@
+public void testEmptyEntryRead() throws IOException {
+    final String text = "";
+    final String entryName = "test.txt";
+
+    SevenZOutputFile sevenZOutput = new SevenZOutputFile(testFile);
+    SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(new ByteArrayInputStream(text.getBytes()), entryName);
+    sevenZOutput.putArchiveEntry(entry);
+    sevenZOutput.closeArchiveEntry();
+    sevenZOutput.close();
+
+    SevenZFile sevenZFile = new SevenZFile(testFile);
+    entry = sevenZFile.getNextEntry();
+    assertEquals(entryName, entry.getName());
+    assertEquals(0, entry.getSize());
+    entry.read(new byte[1]);
+}

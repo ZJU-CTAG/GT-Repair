@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String source = "function () { " +
+                    "    return function () {" +
+                    "        var arg = arguments;" +
+                    "        setTimeout(function() { alert(arg); }, 0);" +
+                    "    }" +
+                    "}";
+    String expected = "function(){return function(){setTimeout(function(){alert(arguments)},0)}}";
+    String compiled = compile(source, options);
+    assertEquals(expected, compiled);
+}

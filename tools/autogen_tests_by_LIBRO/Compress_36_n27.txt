@@ -1,0 +1,10 @@
+public void testEmpty7zEntry() throws Exception {
+    byte[] archive = ArchiveStreamFactoryTest.toByteArray(getClass().getResourceAsStream("/org/apache/commons/compress/utils/empty.7z"));
+    SevenZFile szf = new SevenZFile(new ByteArrayInputStream(archive));
+    SevenZArchiveEntry entry = null;
+    while ((entry = szf.getNextEntry()) != null) {
+        assertEquals(0, entry.getSize());
+        assertEquals(-1, entry.read(new byte[0]));
+    }
+    szf.close();
+}

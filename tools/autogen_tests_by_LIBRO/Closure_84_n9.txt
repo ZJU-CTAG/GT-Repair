@@ -1,0 +1,23 @@
+public void testIssue() {
+    final ArrayList<String> warnings = new ArrayList<String>();
+    Context context = Context.enter();
+    context.setErrorReporter(new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("warning: " + message + " at " + line + ":" + lineOffset);
+            warnings.add(message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("error: " + message + " at " + line + ":" + lineOffset);
+            return new EvaluatorException(message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("error: " + message + " at " + line + ":" + lineOffset);
+            warnings.add(message);
+        }
+    });
+    context

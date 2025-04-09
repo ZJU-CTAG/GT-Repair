@@ -1,0 +1,16 @@
+public void testIssue4() throws Exception
+{
+    String json = "NaN";
+    JsonFactory jsonFactory = new JsonFactory();
+    jsonFactory.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    JsonParser jsonParser = jsonFactory.createJsonParser(new StringReader(json));
+    assertNull(jsonParser.nextToken());
+    try {
+        jsonParser.getDecimalValue();
+        fail("Should have thrown an exception");
+    } catch (NullPointerException e) {
+        // good
+    } catch (Exception e) {
+        fail("Should have thrown NullPointerException, but threw "+e);
+    }
+}

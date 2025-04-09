@@ -1,0 +1,19 @@
+public void testOptionGroupSelect() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.create("a"));
+    opts.addOption(OptionBuilder.create("b"));
+    opts.addOption(OptionBuilder.create("c"));
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.create(null, "d").create());
+    group.addOption(OptionBuilder.create(null, "e").create());
+    group.addOption(OptionBuilder.create(null, "f").create());
+    opts.addOptionGroup(group);
+
+    PosixParser parser = new PosixParser();
+    CommandLine cl = parser.parse(opts, new String[] {"-a", "--e"});
+    assertTrue(cl.hasOption('a'));
+    assertFalse(cl.hasOption('b'));
+    assertFalse(cl.hasOption('c'));
+    assertFalse(cl.hasOption('d'));
+    assertTrue(cl.hasOption('e'));
+    assertFalse(cl.hasOption('f'));

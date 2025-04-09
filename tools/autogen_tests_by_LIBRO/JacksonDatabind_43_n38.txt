@@ -1,0 +1,23 @@
+public void testObjectId() throws Exception {
+    Root root = new Root();
+    root.setId("1");
+    root.setName("John Doe");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    String json = mapper.writeValueAsString(root);
+
+    Root root2 = mapper.readValue(json, Root.class);
+    assertEquals("1", root2.getId());
+    assertEquals("John Doe", root2.getName());
+}
+static class Root {
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = FromStringDeserializer.class)
+    public String id;
+    public String name;
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}

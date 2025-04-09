@@ -1,0 +1,22 @@
+public void testNanAsBigDecimal() throws IOException
+{
+    // first: should be ok if ALLOW_NON_NUMERIC_NUMBERS is not enabled
+    try {
+        _smileMapper.readValue(new SmileFactory().createGenerator(_smileMapper
+                .getFactory()._getBufferRecycler(), OutputStream.nullOutputStream()),
+                BigDecimal.class);
+        fail("Should not pass");
+    } catch (InvalidFormatException e) {
+        verifyException(e, "Can not construct");
+    }
+
+    // but then fail if enabled
+    try {
+        SmileFactory f = new SmileFactory();
+        f.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+        ObjectMapper mapper = new ObjectMapper(f);
+        mapper.readValue(new SmileFactory().createGenerator(_smileMapper
+                .getFactory()._getBufferRecycler(), OutputStream.nullOutputStream()),
+                BigDecimal.class);
+        fail("Should not pass");
+    } catch (

@@ -1,0 +1,14 @@
+public void testClosure() {
+    String script = "Math.blah = function(test) { test.a = 5; };\n" +
+            "var test = new Object();\n" +
+            "Math.blah(test);\n";
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("JavaScript");
+    try {
+        String result = engine.eval(script).toString();
+        assertTrue(result.contains("var test={};"));
+        assertTrue(result.contains("Math.blah(test)"));
+    } catch (ScriptException e) {
+        e.printStackTrace();
+    }
+}

@@ -1,0 +1,12 @@
+public void testExternExportTypedef() {
+  CompilerOptions options = new CompilerOptions();
+  CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+  ErrorManager errors = new BasicErrorManager(){
+    @Override
+    protected void printSummary() {
+
+    }
+  };
+  ExternExportsPass pass = new ExternExportsPass(options, errors);
+  pass.process(null, SourceFile.fromCode("", "var k = new A.B.C().foo(1);"));
+  assertEquals("/**\n * @typedef {{\n *   a:string,\n *   b:string,\n *   c:string,\n *   d:string,\n *   e:string,\n *   f:string,\n *   g:string,\n *   h:string,\n *   i:string,\n *   j:string,\n *   k:string,\n *   l:string,\n *   m:string,\n *   n:string,\n *

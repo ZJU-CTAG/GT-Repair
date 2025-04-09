@@ -1,0 +1,20 @@
+public void testIssue404() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.readerFor(Map.class);
+    MappingIterator<Map<?,?>> iterator = reader.readValues(
+            "{\"a\": 3}"
+            );
+    assertTrue(iterator.hasNext());
+    try {
+        iterator.next();
+    } catch (MismatchedInputException e) {
+        // ok
+    }
+    // should be able to continue, even though last read failed
+    assertTrue(iterator.hasNext());
+    Map<?,?> value = iterator.next();
+    assertEquals(1, value.size());
+    assertEquals(Integer.valueOf(3), value.get("a"));
+    assertFalse(iterator.hasNext());
+}

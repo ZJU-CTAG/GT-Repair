@@ -1,0 +1,26 @@
+public void testBadOptimizerResult() {
+    Webcam.init(null);
+    final Webcam webcam = Webcam.getDefault();
+    webcam.setViewSize(new Dimension(640, 480));
+
+    webcam.open();
+    webcam.setImageTransformer(new ImageTransformer() {
+        @Override
+        public BufferedImage transform(BufferedImage image) {
+            // computing here
+            return webcam.getImage();
+        }
+    });
+
+    JFrame frame = new JFrame("Test webcam panel");
+    frame.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            webcam.close();
+        }
+    });
+
+    frame.add(webcam);
+    frame.pack();
+    frame.setVisible(true);
+}

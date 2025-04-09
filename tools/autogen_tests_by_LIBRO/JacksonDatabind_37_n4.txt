@@ -1,0 +1,8 @@
+public void testRead() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(JsonMapSchema.class);
+    final JsonRoot root = mapper.readValue(
+        new File(new File("target"), "model-test.json"), JsonRoot.class);
+    assertEquals("JsonRoot(schemas=[JsonMapSchema(tables=[JsonTable(columns=[JsonColumn(name=time_id)], name=time_by_day), JsonTable(columns=[JsonColumn(name=time_id)], name=sales_fact_1997)], name=FoodMart)], version=1.0)",
+        root.toString());
+}

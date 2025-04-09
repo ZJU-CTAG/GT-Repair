@@ -1,0 +1,29 @@
+public void testWithTypeIdOrder() throws IOException {
+    _testWithTypeIdOrder(true);
+    _testWithTypeIdOrder(false);
+}
+
+private void _testWithTypeIdOrder(boolean withTypeInfo) throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addMixInAnnotations(Object.class, ObjectConfiguration.class);
+    final Object obj = new Object();
+
+    final StringWriter writer = new StringWriter();
+    final JsonGenerator generator = mapper.getFactory().createGenerator(writer);
+    generator.writeStartObject();
+    generator.writeStringField("@type", "java.lang.Object");
+    generator.writeFieldName("value");
+    if (withTypeInfo) {
+        generator.writeTypeId(obj);
+    }
+    generator.writeObject(obj);
+    generator.writeEndObject();
+    generator.close();
+
+    final String json = writer.toString();
+
+    System.out.println(json);
+
+    final JsonNode tree = mapper.readTree

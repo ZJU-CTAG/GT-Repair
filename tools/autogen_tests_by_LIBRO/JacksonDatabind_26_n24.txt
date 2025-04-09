@@ -1,0 +1,14 @@
+public void testObjectReaderSerialization() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    ObjectReader r = mapper.reader(Map.class).with(Locale.US);
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+    ObjectOutputStream oos = new ObjectOutputStream(bos);
+    oos.writeObject(r);
+
+    ObjectInputStream ois = new ObjectInputStream(
+            new ByteArrayInputStream(bos.toByteArray()));
+    ObjectReader r2 = (ObjectReader) ois.readObject();
+    Map<String,Object> result = r2.readValue("{\"a\":1}");
+    assertEquals(1, result.get("a"));
+}

@@ -1,0 +1,19 @@
+public void testSiblingElements() throws JDOMException, IOException {
+    String xml = "<root><foo><bar/><baz/></foo></root>";
+
+    SAXBuilder builder = new SAXBuilder();
+    Document doc = builder.build(new StringReader(xml));
+
+    Element root = doc.getRootElement();
+    Element foo = root.getChild("foo");
+    Element bar = foo.getChild("bar");
+
+    assertNotNull(bar.getParentElement());
+    assertNotNull(bar.getDocument());
+
+    List<Element> siblings = bar.siblingElements();
+    assertEquals(1, siblings.size());
+    assertEquals("baz", siblings.get(0).getName());
+
+    assertNull(bar.detach().siblingElements());
+}

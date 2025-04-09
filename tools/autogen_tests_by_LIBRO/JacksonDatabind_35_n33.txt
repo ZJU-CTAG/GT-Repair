@@ -1,0 +1,16 @@
+public void testJacksonWrapperObjectTypeWithObjectId() throws Exception {
+    // This is the "before" case, which works as expected
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    String json = "{\"@id\":\"1\",\"@type\":\"TestClass\",\"id\":\"123\"}";
+    TypeReference<Map<String,Object>> typeReference = new TypeReference<Map<String,Object>>() {};
+    Map<String,Object> map = mapper.readValue(json, typeReference);
+    assertEquals("1", map.get("@id"));
+    assertEquals("123", map.get("id"));
+    
+    // This is the "after" case, which is broken
+    mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    json = "{\"TestClass\":{\"@id\":\"1\",\"id\":\"123\"}}";
+   

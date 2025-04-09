@@ -1,0 +1,17 @@
+public void testPosixParser() throws ParseException {
+    Options cmdLineOpts = new Options();
+    Option generateTarget = new Option("t", "target", true,
+            "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+    PosixParser parser = new PosixParser();
+    
+    CommandLine parsedLine = null;
+    try {
+    parsedLine = parser.parse(cmdLineOpts, new String[] { "-target",
+            "foobar.com" });
+    } catch (ParseException pe) {
+        fail("Exception thrown");
+    }
+
+    assertEquals("foobar.com", parsedLine.getOptionValue("target"));
+}

@@ -1,0 +1,14 @@
+public void testTarGzFile() throws Exception {
+    File file = FileUtils.toFile(getClass().getResource("/test.tgz"));
+    TarArchiveInputStream tis = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BoundedInputStream(
+                            new BufferedInputStream(
+                                    new FileInputStream(file)),
+                            file.length())));
+    TarArchiveEntry entry = tis.getNextTarEntry();
+    assertEquals("test.txt", entry.getName());
+    byte[] read = new byte[10];
+    assertEquals(10, tis.read(read));
+    assertArrayEquals(new byte[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'}, read);
+}

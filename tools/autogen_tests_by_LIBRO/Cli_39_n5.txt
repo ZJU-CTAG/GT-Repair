@@ -1,0 +1,10 @@
+public void testFileExist() throws ParseException {
+    Options options = new Options();
+
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+
+    CommandLine cline = new DefaultParser().parse(options, new String[] {"-f", "pom.xml"});
+
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    assertTrue(file.getFD().valid());
+}

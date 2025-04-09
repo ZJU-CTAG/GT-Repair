@@ -1,0 +1,30 @@
+public void testReturDeepStubs() {
+    ToBeMocked mock = mock(ToBeMocked.class, RETURNS_DEEP_STUBS);
+    mock.getSomething().getSomethingElse();
+}
+
+public class ToBeMocked {
+
+    NotSerializableReturnValue field1;
+
+    public ToBeMocked(NotSerializableReturnValue field1) {
+        this.field1 = field1;
+    }
+
+    public NotSerializableReturnValue getSomething() {
+        return field1;
+    }
+}
+
+public class NotSerializableReturnValue {
+
+    String field1 = "";
+
+    public NotSerializableReturnValue(String field1) {
+        this.field1 = field1;
+    }
+
+    public String getSomethingElse() {
+        return field1;
+    }
+}

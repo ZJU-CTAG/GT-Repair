@@ -1,0 +1,23 @@
+public void testUnboundedSolutionException() {
+    final int ENTITIES_COUNT = 15;
+    final int SCENARIOS_COUNT = 15;
+
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[]{1d, 0d}, 0d);
+    List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+
+    double[][] Q = new double[ENTITIES_COUNT][SCENARIOS_COUNT];
+    Random random = new Random();
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        for (int j = 0; j < SCENARIOS_COUNT; j++) {
+            Q[i][j] = random.nextDouble();
+        }
+    }
+
+    int i = 0;
+    for (double[] q : Q) {
+        LinearConstraint constraint = new LinearConstraint(q, Relationship.GEQ, -1d);
+        constraints.add(constraint);
+        i++;
+    }
+
+    double[][] X = new double[ENTITIES_COUNT][

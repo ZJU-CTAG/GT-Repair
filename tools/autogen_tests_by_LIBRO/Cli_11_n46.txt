@@ -1,0 +1,18 @@
+public void testPosixParserInterupts() {
+    // create the command line parser
+    CommandLineParser parser = new PosixParser();
+    // create the Options
+    Options options = new Options();
+    Option optionTarget = new Option("t", "target", true, "Generate files for the specified target machine");
+    optionTarget.setRequired(false);
+    options.addOption(optionTarget);
+    // parse the command line arguments
+    CommandLine line = null;
+    try {
+        line = parser.parse(options, new String[] { "-target", "foobar.com" });
+    }
+    catch (ParseException exp) {
+        fail("Unexpected exception: " + exp.getMessage());
+    }
+    assertTrue("Expected option target", line.hasOption("target"));
+}

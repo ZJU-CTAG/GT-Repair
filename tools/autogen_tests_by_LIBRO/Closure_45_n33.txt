@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String js = "function f() {\n" +
+            " var a = [], b;\n" +
+            " a.push(b = []);\n" +
+            " b[0] = 1;\n" +
+            " return a;\n" +
+            " }\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.ES5_STRICT, CheckLevel.OFF);
+
+    compiler.compile(SourceFile.fromCode("input.js", js),
+            SourceFile.fromCode("externs.js", "" ),
+            options

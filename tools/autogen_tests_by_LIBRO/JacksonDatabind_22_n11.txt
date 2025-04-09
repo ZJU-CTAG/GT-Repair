@@ -1,0 +1,30 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+        @Override
+        public void serialize(Object value, JsonGenerator jgen,
+                SerializerProvider provider) throws IOException,
+                JsonProcessingException {
+            jgen.writeString("<null>");
+        }
+    });
+    assertEquals("\"<null>\"", mapper.writeValueAsString(new User()));
+    assertEquals("{\"name\":\"<null>\"}", mapper.writeValueAsString(new NamedUser()));
+}
+
+@JsonSerialize(using = ToStringSerializer.class)
+public class User {
+    public String toString() {
+        return null;
+    }
+}
+
+@JsonSerialize(using = ToStringSerializer.class)
+public class NamedUser {
+    public String toString() {
+        return null;
+    }
+
+    @JsonValue
+    public String getName() {
+       

@@ -1,0 +1,20 @@
+public void testIssue108a() {
+  assertEquals("value", testRemoveKey("key"));
+}
+public void testIssue108b() {
+  testRemoveKey("key");
+  assertFalse("key" in customData);
+}
+
+var customData = { key: 'value' };
+
+function testRemoveKey( key ) {
+  var dataSlot = customData,
+      retval = dataSlot && dataSlot[ key ],
+      hadKey = dataSlot && ( key in dataSlot );
+  
+  if ( dataSlot )
+    delete dataSlot[ key ];
+  
+  return hadKey ? retval : null;
+};

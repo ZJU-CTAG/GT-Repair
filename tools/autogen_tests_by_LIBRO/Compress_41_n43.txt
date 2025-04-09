@@ -1,0 +1,22 @@
+public void testZipInputStream() throws IOException {
+    final int ZIPENTRY_COUNT = 10;
+    final String ZIPENTRY_PREFIX = "zipentry_";
+    final String ZIPENTRY_NAME_INVALID = "invalid";
+
+    // Create a ZIP file with 10 entries and an invalid entry
+    File tempFile = File.createTempFile("temp", ".zip");
+    ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)));
+    for (int i = 0; i < ZIPENTRY_COUNT; i++) {
+        ZipEntry entry = new ZipEntry(ZIPENTRY_PREFIX + i);
+        zos.putNextEntry(entry);
+        zos.closeEntry();
+    }
+    // Invalid entry
+    ZipEntry entry = new ZipEntry(ZIPENTRY_NAME_INVALID);
+    zos.putNextEntry(entry);
+
+    zos.close();
+
+    // Read the ZIP file entries
+    ZipFile zf = new ZipFile(tempFile);
+    Enumeration<ZipArchiveEntry

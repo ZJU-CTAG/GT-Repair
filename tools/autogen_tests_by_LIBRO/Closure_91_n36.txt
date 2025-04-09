@@ -1,0 +1,18 @@
+public void testLends() {
+    String js = "/**\n"
+            + " * @name MyClass\n"
+            + " * @class\n"
+            + " * @extends superClass1\n"
+            + " * @extends superClass2\n"
+            + " */\n"
+            + "dojo.declare('MyClass', [superClass1, superClass2], /** @lends MyClass.prototype */\n {"
+            + "  foo: function(){ ... }\n"
+            + "  bar: function(){ ... }\n"
+            + "});\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", js.toString()),
+            new CompilerOptions());
+    List<JSError> errors = result.errors;
+    assertEquals(0, errors.size());
+}

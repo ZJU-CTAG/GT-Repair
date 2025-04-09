@@ -1,0 +1,26 @@
+public void testCMAESOptimizer() {
+    // Create a simple parabola.
+    final double x0 = 3.2;
+    final double y0 = -2.1;
+    final double a = 0.1;
+    ParametricUnivariateFunction function = new ParametricUnivariateFunction() {
+        public double value(double x, double[] parameters) {
+            return parameters[0] + (x - x0)*(x - x0)*parameters[1];
+        }
+
+        public double[] gradient(double x, double[] parameters) {
+            double[] gradient = new double[2];
+            gradient[0] = 1;
+            gradient[1] = (x - x0)*(x - x0);
+            return gradient;
+        }
+    };
+
+    // Create a sampler.
+    final double sigma = 0.1;
+    UnivariateFunction errorFunction = new UnivariateFunction() {
+        public double value(double x) {
+            return sigma * sigma;
+        }
+    };
+    GaussianRandomSampler sampler = new GaussianRandomSampler(0, errorFunction);

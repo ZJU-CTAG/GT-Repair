@@ -1,0 +1,18 @@
+public void testDSTSavings() throws Exception {
+    DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
+    final DateTimeZoneBuilder.Recurrence recurrence = builder.new Recurrence()
+        .dayOfWeek("Mon")
+        .secondOfDay(0)
+        .monthOfYear("Jan");
+    DateTimeZoneBuilder.Recurrence endingRecurrence = null;
+    builder.addRecurringSavings("Test", 0, 2010, 2011, recurrence, endingRecurrence);
+
+    DateTimeZone tz = builder.toDateTimeZone("Test", true);
+
+    assertEquals("Test", tz.getID());
+
+    assertEquals("Test", tz.getNameKey(0));
+    assertEquals("Test", tz.getNameKey(123456789));
+    assertEquals("Test", tz.getNameKey(123456789 + DateTimeConstants.MILLIS_PER_HOUR));
+    assertEquals("Test", tz.getNameKey(123456789 + DateTimeConstants.MILLIS_PER_DAY));
+    assertEquals("Test", tz

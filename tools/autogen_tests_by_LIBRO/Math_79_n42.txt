@@ -1,0 +1,20 @@
+public void testAssignPointsToClusters() {
+    // setup
+    final Clusterable<T>[] points = new Clusterable[] {
+            new EuclideanIntegerPoint(new int[] { 1 }),
+            new EuclideanIntegerPoint(new int[] { 2 }),
+            new EuclideanIntegerPoint(new int[] { 3 }),
+            new EuclideanIntegerPoint(new int[] { 4 })
+    };
+    final Random random = new Random(1746432956321l);
+    final List<Cluster<T>> clusters = new ArrayList<Cluster<T>>();
+    clusters.add(new Cluster<T>(points[0]));
+    clusters.add(new Cluster<T>(points[1]));
+    final KMeansPlusPlusClusterer<T> kMeansPlusPlusClusterer = new KMeansPlusPlusClusterer<T>(random);
+
+    // execute
+    kMeansPlusPlusClusterer.assignPointsToClusters(points, clusters);
+
+    // verify
+    assertEquals(points[2], clusters.get(0).getCenter().getPoint());
+   

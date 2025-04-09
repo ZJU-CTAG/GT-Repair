@@ -1,0 +1,24 @@
+public void testEventIgnoredAtStepEnd() throws Exception {
+    double t0 = 0.0;
+    double dt = 1.0;
+    double tMax = 10.0;
+
+    double[] events = new double[(int) Math.ceil(tMax / dt)];
+    int offset = 0;
+
+    EventHandler[] functions = new EventHandler[1];
+    functions[0] = new EventHandler() {
+            private int sign = +1;
+            public double g(double t, double[] y) {
+                return sign;
+            }
+            public void resetState(double t, double[] y) {
+                sign = -sign;
+            }
+            public Action eventOccurred(double t, double[] y, boolean increasing) {
+                return Action.CONTINUE;
+            }
+        };
+    RungeKuttaFehlbergIntegrator rkf45 =
+        new RungeKuttaFehlbergIntegrator(1.0e-1, 100.0, 1.0e-7, 1.0e-7);
+    rkf45.addEventHandler(functions

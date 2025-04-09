@@ -1,0 +1,17 @@
+public void testIssue108() {
+    final double[] lower = new double[] { 0.0 };
+    final double[] upper = new double[] { 1.0 };
+    final double[] start = new double[] { 0.5 };
+    final double[] step = new double[] { 1.0 };
+    final int maxEval = 1000;
+    final double ftol = 1e-4;
+    CMAESOptimizer optimizer = new CMAESOptimizer(maxEval, ftol, true, 0, 0,
+                                                   new MersenneTwister(),
+                                                   false, new SimpleBounds(lower, upper));
+    OptimizationData[] optData = new OptimizationData[4];
+    optData[0] = new Target(new double[] { 1.0 });
+    optData[1] = new InitialGuess(start);
+    optData[2] = new InitialStep(step);
+    optData[3] = new MaxEval(maxEval);
+    PointValuePair optimum = optimizer.optimize(optData);
+    assertTrue(optimum.getFirst()[0

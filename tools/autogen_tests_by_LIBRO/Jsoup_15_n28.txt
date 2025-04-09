@@ -1,0 +1,17 @@
+public void testIssue107() {
+    Document doc = Jsoup
+            .parse("<html><head></head><body><script>\n"
+                    + "   header = jQuery('#header\\_features');\n"
+                    + "   if(header.length){\n"
+                    + "    header\n"
+                    + "     .prepend('<a class=\"prevPage browse left \" />')\n"
+                    + "     .append('<a class=\"nextPage browse right\" />');\n"
+                    + "   }\n"
+                    + "   </script></body></html>");
+    String bodyHtml = doc.select("body").first().html();
+    assertEquals("<script type=\"text/javascript\">\n" + 
+            "   header = jQuery('#header\\_features');\n" + 
+            "   if(header.length){\n" + 
+            "    header\n" + 
+            "     .prepend('<a class=\"prevPage browse left \" />')\n" + 
+            "     .append('<a class=\"next

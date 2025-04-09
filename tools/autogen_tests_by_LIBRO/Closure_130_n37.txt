@@ -1,0 +1,16 @@
+public void testIssue132() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String js = "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.SEVERE);
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", js),
+            options);
+    assertTrue(result.success);
+    assertEquals(
+            "function(){return function(){setTimeout(function(){alert(arguments)},0)}};",
+            compiler.toSource());
+}

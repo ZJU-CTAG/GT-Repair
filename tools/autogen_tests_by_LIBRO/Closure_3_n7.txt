@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    String source = "function getStack() {\n" +
+                    " var getErrorObject = function() {\n" +
+                    " try {\n" +
+                    " throw Error(\"\");\n" +
+                    " } catch(err) {\n" +
+                    " return err;\n" +
+                    " }\n" +
+                    " };\n" +
+                    " return getErrorObject().stack;\n" +
+                    "}\n" +
+                    "window['getStackTrace']=getStack;";
+
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    TestErrorReporter errorReporter = new TestErrorReporter(TestErrorReporter.Behavior.THROW);
+    Compiler compiler = new Compiler

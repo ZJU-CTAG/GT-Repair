@@ -1,0 +1,19 @@
+public void testSourceMapLineNumber() {
+    String js = "s = 'a' + 'b';";
+    ErrorReporter errorReporter = new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message + " " + sourceName + " " + line + " " + lineSource + " " + lineOffset);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message + " " + sourceName + " " + line + " " + lineSource + " " + lineOffset);
+        }
+    };
+    CompilerOptions options = new CompilerOptions();
+    options.setGeneratePseudoNames(true);
+    options.setSourceMapDetailLevel(SourceMap.DetailLevel.ALL);
+    JsSource source = new JsSource(js, "test.js");
+    Compiler compiler = new Compiler(errorReporter, options);
+    compiler.

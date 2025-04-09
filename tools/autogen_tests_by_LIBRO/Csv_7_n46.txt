@@ -1,0 +1,13 @@
+public void testIssue110() throws IOException, URISyntaxException {
+    File file = new File(getClass().getResource("./issue_110.csv").toURI());
+    CSVFormat format = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+            .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    try (Reader reader = new FileReader(file);
+         CSVParser parser = format.parse(reader)) {
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertEquals(Integer.valueOf(0), headerMap.get("Col1"));
+        assertEquals(Integer.valueOf(1), headerMap.get("Col2"));
+        assertEquals(Integer.valueOf(2), headerMap.get("Col2"));
+        assertEquals(Integer.valueOf(3), headerMap.get("Col3"));
+        assertEquals(Integer.valueOf(4), headerMap.get("Col4"));
+    }

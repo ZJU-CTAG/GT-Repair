@@ -1,0 +1,8 @@
+public void testIssueWithNegativeNumber() {
+    ArgParser parser = new ArgParser();
+    Argument<Number> numberArgument = parser.addArgument("num").type(Number.class)
+            .help("Number of items to process.").metavar("NUM").action(Arguments.store());
+
+    parser.parseArgs("--num", "-0.1");
+    assertEquals(-0.1, ((Double) numberArgument.value()), 0.0001);
+}

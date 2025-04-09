@@ -1,0 +1,11 @@
+public void testIssue107() throws Exception {
+  MultiStartUnivariateRealOptimizer optimizer = new PowellOptimizer(1e-10, 1e-10);
+  optimizer.setMaxIterations(50);
+  optimizer.setMaxEvaluations(50);
+  optimizer.optimize(new UnivariateRealFunction() {
+    public double value(double x) {
+      return -x * x;
+    }
+  }, GoalType.MINIMIZE, new SearchInterval(-10, 10));
+  assertEquals(0.0, optimizer.getResult(), 1e-10);
+}

@@ -1,0 +1,14 @@
+public void testPosixParser() throws Exception {
+    final String\_TARGET = "t";
+    final String\_TARGET\_LONG = "target";
+    Options opts = new Options();
+    opts.addOption(new Option(OPTION\_TARGET, OPTION\_TARGET\_LONG, true,
+            "Generate files for the specified target machine"));
+    try {
+        CommandLine cl = new PosixParser().parse(opts, new String[]{
+                "-target", "foobar.com" });
+        assertEquals("foobar.com", cl.getOptionValue(OPTION\_TARGET));
+    } catch (ParseException e) {
+        fail("Exception thrown: " + e.getMessage());
+    }
+}

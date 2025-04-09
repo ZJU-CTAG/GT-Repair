@@ -1,0 +1,11 @@
+public void testJsonPointer() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode root = mapper.createObjectNode();
+    root.put("foo", "bar");
+    root.put("0", 0);
+    mapper.writeValueAsString(root);
+    JsonPointer ptr = JsonPointer.valueOf("/00");
+    JsonNode node = ptr.find(root);
+    assertNull(node);
+}

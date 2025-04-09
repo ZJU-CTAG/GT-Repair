@@ -1,0 +1,19 @@
+public void testIssue143() throws IOException {
+    final int BUFFER_SIZE = 4096;
+    InputStream stream = new ByteArrayInputStream(new byte[BUFFER_SIZE*3]);
+    Base64InputStream b64stream = new Base64InputStream(stream);
+    int totalRead = 0;
+    int totalBytes = 0;
+    while (true) {
+        byte[] buf = new byte[BUFFER_SIZE];
+        int nRead = b64stream.read(buf);
+        if (nRead == -1) {
+            break;
+        }
+        totalRead++;
+        totalBytes += nRead;
+        assertTrue(nRead == BUFFER_SIZE);
+    }
+    assertEquals(3, totalRead);
+    assertEquals(BUFFER_SIZE*3, totalBytes);
+}

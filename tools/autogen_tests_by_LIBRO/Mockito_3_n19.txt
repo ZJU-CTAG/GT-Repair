@@ -1,0 +1,11 @@
+public void testArgumentCaptor() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] arguments = new String[]{"a", "b", "c"};
+    when(mock.someMethod(captor.capture(), eq(arguments))).thenReturn("abc");
+    assertEquals("abc", mock.someMethod("a", arguments));
+    assertEquals("a", captor.getValue());
+}
+
+interface SomeInterface {
+    String someMethod(String s, String... strings);
+}

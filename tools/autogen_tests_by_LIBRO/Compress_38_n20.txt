@@ -1,0 +1,12 @@
+public void testIssue107 () {
+    File testTarFile = new File("");
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(testTarFile));
+    TarArchiveEntry entry = tais.getNextTarEntry();
+    while (entry != null) {
+        if (entry.isDirectory()) {
+            // I would expect this to be false - I can't test the name due to its binary content
+            fail("Entry name isDirectory failed");
+        }
+        entry = tais.getNextTarEntry();
+    }
+}

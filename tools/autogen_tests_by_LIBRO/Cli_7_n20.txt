@@ -1,0 +1,12 @@
+public void testRequiredOptions() throws Exception {
+    Options options = new Options();
+    Option help = OptionBuilder.create("h");
+    options.addOption(help);
+    Option c = OptionBuilder.withArgName("arg")
+        .withDescription("the c option");
+    options.addOption(c);
+    CommandLineParser parser = new PosixParser();
+    CommandLine cl = parser.parse(options, new String[] {"-h", "-c", "foo"});
+    assertEquals("-h", cl.getOptionValue("h"));
+    assertEquals("foo", cl.getOptionValue("c"));
+}

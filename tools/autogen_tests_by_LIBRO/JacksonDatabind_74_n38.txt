@@ -1,0 +1,15 @@
+public void testAsPropertyTypeDeserializer() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    objectMapper.enableDefaultTypingAsProperty(DefaultTyping.OBJECT_AND_NON_CONCRETE, "@class");
+
+    final TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {
+    };
+    final Map<String, Object> map = new LinkedHashMap<String, Object>();
+    map.put("@class", "java.util.HashMap");
+    map.put("value", "");
+    final String json = objectMapper.writeValueAsString(map);
+
+    final Map<String, Object> result = objectMapper.readValue(json, typeRef);
+    assertNull(result.get("value"));
+}

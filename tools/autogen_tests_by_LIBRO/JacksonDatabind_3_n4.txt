@@ -1,0 +1,23 @@
+public void testFull()
+        throws Exception
+{
+    final LoggingEvent event = createEvent();
+    event.setArgumentArray(new Object[] { "foo", null, "bar", "baz" });
+    final String output = encoder.encode(event);
+    System.out.println(output);
+    final LoggingEvent actual = decoder.decode(output);
+    System.out.println(actual);
+    assertEquals(event, actual);
+}
+
+public void testNullArgument()
+        throws Exception
+{
+    final LoggingEvent event = createEvent();
+    event.setArgumentArray(new Object[] { null });
+    final String output = encoder.encode(event);
+    System.out.println(output);
+    final LoggingEvent actual = decoder.decode(output);
+    System.out.println(actual);
+    assertEquals(event, actual);
+}

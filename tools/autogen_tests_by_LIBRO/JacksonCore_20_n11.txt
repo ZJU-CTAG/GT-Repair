@@ -1,0 +1,13 @@
+public void testEmbeddedObjectWrite() throws Exception
+{
+   final ObjectMapper mapper = new ObjectMapper();
+   ByteArrayOutputStream out = new ByteArrayOutputStream();
+   JsonGenerator g = mapper.getFactory().createGenerator(out);
+   g.writeStartObject();
+   g.writeFieldName("field");
+   byte[] bytes = "binary data".getBytes("UTF-8");
+   g.writeEmbeddedObject(bytes);
+   g.writeEndObject();
+   g.close();
+   assertEquals(aposToQuotes("{'field':'YmluYXJ5IGRhdGE='}"), out.toString("UTF-8"));
+}

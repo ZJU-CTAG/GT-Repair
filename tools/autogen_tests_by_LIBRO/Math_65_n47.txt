@@ -1,0 +1,19 @@
+public void testWeight() {
+    double[][] points = new double[5][2];
+    double[] sigma = new double[5];
+    for (int i = 0; i < 5; ++i) {
+        points[i][0] = i;
+        points[i][1] = 2 * i;
+        sigma[i] = 1;
+    }
+    // the model contains one parameter (slope)
+    ModelFunction f = new ModelFunction(1, points);
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    for (int i = 0; i < 5; ++i) {
+        obs.add(points[i][0], points[i][1], sigma[i]);
+    }
+    AbstractLeastSquares problem = new GaussNewtonOptimizer(true, obs, f);
+    double[] chi2 = problem.getChiSquare();
+    //System.out.println(chi2);
+    assertEquals(0, chi2, 1.0e-10);
+}

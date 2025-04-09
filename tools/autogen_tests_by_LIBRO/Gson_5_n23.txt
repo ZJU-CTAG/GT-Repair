@@ -1,0 +1,9 @@
+public void testIssue86() {
+    Gson gson = new GsonBuilder()
+        .registerTypeAdapter(Date.class, new DefaultDateTypeAdapter()).create();
+
+    String json = "\"2016-01-11T11:06:14.000-02\"";
+    Date date = gson.fromJson(json, Date.class);
+
+    assertEquals("2016-01-11T09:06:14.000-02:00", new ISODateTimeFormat().print(date.getTime()));
+}

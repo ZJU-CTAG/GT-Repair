@@ -1,0 +1,19 @@
+public void testIssue123() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    SourceFile file = SourceFile.fromCode("in",
+        "var foo = function bar(){\n" +
+        "var bar;\n" +
+        "alert(bar)\n" +
+        "};");
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, ImmutableList.of(file), options);
+    String output = compiler.toSource();
+    assertEquals(
+        "var foo=function bar(){\n" +
+        "alert(void 0)\n" +
+        "}", output);
+}

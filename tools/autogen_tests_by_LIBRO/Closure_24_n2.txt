@@ -1,0 +1,12 @@
+public void testIssue108() {
+    test("goog.scope(function() { var x = function(){}; });");
+    test("goog.scope(function() { function x() {} });");
+}
+
+void test(String snippet) {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.INFO);
+    compiler.compile(SourceFile.fromCode("externs.js", ""), SourceFile.fromCode("code.js", snippet), options);
+}

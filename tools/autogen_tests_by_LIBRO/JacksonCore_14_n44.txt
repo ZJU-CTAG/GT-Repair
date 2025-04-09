@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    final byte[] input = new byte[4];
+    final byte[] output = new byte[4];
+    IOContext ctxt = new IOContext(new BufferRecycler(), input, false);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4) {
+        @Override
+        public synchronized byte[] toByteArray() {
+            return output;
+        }
+    };
+    new Base64OutputStream(outputStream, false, 0, ctxt);
+}

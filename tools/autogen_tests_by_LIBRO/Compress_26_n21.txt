@@ -1,0 +1,31 @@
+public void testSkip() throws IOException {
+    byte[] buf = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    InputStream is = new ByteArrayInputStream(buf);
+    CipherInputStream cis = new CipherInputStream(is, null) {
+        int index = 0;
+        @Override
+        public int read() throws IOException {
+            if (index < buf.length) {
+                return buf[index++] & 0xff;
+            } else {
+                return -1;
+            }
+        }
+        @Override
+        public long skip(long n) throws IOException {
+            long toSkip = n;
+            long skipped = 0;
+            while (toSkip > 0) {
+                int val = read();
+                if (val == -1) {
+                    break;
+                }
+                toSkip--;
+                skipped++;
+            }
+            return skipped;
+        }
+    };
+    long skipped = IOUtils.skip(cis, 100);
+    assertEquals("Should have skipped 10 bytes", 10, skipped);
+    assertEqu

@@ -1,0 +1,9 @@
+public void testReadValues() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    char[] array = "ab".toCharArray();
+
+    try (JsonParser parser = om.readerFor(String[].class).readValues(array, 1, 1)) {
+        assertEquals(array[1], parser.nextTextValue().charAt(0));
+        assertNull(parser.nextTextValue());
+    }
+}

@@ -1,0 +1,20 @@
+public void testZipArchiveEntry() throws Exception {
+    File out = new File("target/test-output/testZipArchiveEntry.zip");
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(out)) {
+        zos.putArchiveEntry(new ZipArchiveEntry("a"));
+        zos.write("hello".getBytes());
+        zos.closeArchiveEntry();
+        zos.putArchiveEntry(new ZipArchiveEntry("b"));
+        zos.write("world".getBytes());
+        zos.closeArchiveEntry();
+
+        ZipArchiveEntry a = new ZipArchiveEntry("a");
+        ZipArchiveEntry b = new ZipArchiveEntry("b");
+        assertFalse(a.equals(b));
+        assertFalse(b.equals(a));
+        assertFalse(a.hashCode() == b.hashCode());
+
+        ZipArchiveEntry a2 = new ZipArchiveEntry("a");
+        assertTrue(a.equals(a2));
+        assertTrue(a2.equals(a));
+        assertTrue(a

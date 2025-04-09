@@ -1,0 +1,19 @@
+public void testJsonParserSequence() throws Exception {
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("key", "value");
+    ObjectMapper objectMapper = new ObjectMapper();
+    String jsonString = objectMapper.writeValueAsString(map);
+    JsonParser parser1 = objectMapper.getFactory().createParser(jsonString);
+    JsonParser parser2 = objectMapper.getFactory().createParser(jsonString);
+
+    // first parser is at START_OBJECT
+    JsonToken token = parser1.nextToken();
+    assertEquals(JsonToken.START_OBJECT, token);
+    // second parser is at FIELD_NAME
+    token = parser2.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, token);
+
+    JsonParserSequence jsonParserSequence = JsonParserSequence.createFlattened(parser1, parser2);
+    // we expect FIELD_NAME, but we get START_OBJECT
+    token = jsonParserSequence.nextToken();
+    assertEquals(

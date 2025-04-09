@@ -1,0 +1,22 @@
+public void testFilteringParserDelegate() {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.valueToTree("{\"test\": [1,2,3,4,5]}");
+
+    // create filtering and writer
+    ObjectWriter writer = mapper.writer();
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(writer.getGeneratorDelegate(),
+            FilterProvider
+                    .from((Predicate<JsonNode>) jsonNode -> jsonNode.asInt() % 2 == 0,
+                            "even"));
+    writer = writer.with(delegate);
+
+    // create filtering and reader
+    ObjectReader reader = mapper.reader();
+    FilteringParserDelegate readerDelegate = new FilteringParserDelegate(reader.getParserDelegate(),
+            FilterProvider
+                    .from((Predicate<JsonNode>) jsonNode -> jsonNode.asInt() % 2 == 0,
+                            "even"));
+    reader = reader.with(readerDelegate);
+
+    // write, read and write again
+    String json = writer.writeValueAsString(

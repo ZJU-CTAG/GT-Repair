@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "/* @license Foo License */\n alert(\"foo\");")
+            },
+            options
+    );
+    assertEquals(0, result.errors.length);
+    assertEquals(1, result.warnings.length);
+}

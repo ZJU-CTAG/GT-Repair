@@ -1,0 +1,32 @@
+public void testDeprecated()
+    throws IOException
+{
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addDeserializer(MyClass.class, new MyClassDeserializer());
+    simpleModule.addSerializer(MyClass.class, new MyClassSerializer());
+
+    ObjectMapper mapper = JsonMapper.builder()
+            .addModules(simpleModule)
+            .build();
+
+    String json = mapper.writeValueAsString(new MyClass());
+    mapper.readValue(json, MyClass.class);
+}
+
+static final class MyClass {
+    public static final SimpleType TYPE = SimpleType.construct(MyClass.class);
+}
+
+static final class MyClassSerializer extends SerializerBase<MyClass> {
+    protected MyClassSerializer() {
+        super(MyClass.TYPE);
+    }
+
+    @Override
+    public void serialize(MyClass value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+        jgen.writeEndObject();
+    }
+}
+
+static final class My

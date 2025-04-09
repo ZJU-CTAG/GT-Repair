@@ -1,0 +1,15 @@
+public void testUnwantedPojo() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, false);
+    mapper.configure(SerializationConfig.Feature.WRAP_ROOT_VALUE, true);
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    mapper.setVisibilityChecker(mapper.getVisibilityChecker()
+        .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+        .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+        .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+        .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+
+    SimpleModule module = new SimpleModule("ListAttributeModule", new
+Version(1, 0, 0, null));
+    module.addSerializer(new ListAttributeSerial

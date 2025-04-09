@@ -1,0 +1,15 @@
+public void testIssue() {
+    String source = "window['anchor'] = function(obj, modifiesProp) { return (function(saved) { return modifiesProp(obj) + saved; })(obj['prop']); }";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setSourceMapOutputPath("output.js.map");
+    options.setSourceMapDetailLevel(SourceMap.DetailLevel.ALL);
+    options.setSourceMapFormat(SourceMap.Format.V3);
+    options.setSourceMapLocationMappings(ImmutableList.<SourceMap.LocationMapping>of(
+            SourceMap.LocationMapping.forPath("input.js")));
+
+    Compiler compiler = new Compiler();
+    List<SourceFile

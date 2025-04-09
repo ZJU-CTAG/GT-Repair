@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    Writer writer = new FileWriter("target/issue28.csv");
+    CsvPrinter printer = new CsvPrinter(writer, CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE);
+    printer.printRecord(Arrays.asList("A", null));
+    printer.close();
+    File file = new File("target/issue28.csv");
+    assertTrue(file.exists());
+    String content = FileUtils.readFileToString(file, "UTF-8");
+    assertEquals("\"A\",\"\\N\"\n", content);
+}

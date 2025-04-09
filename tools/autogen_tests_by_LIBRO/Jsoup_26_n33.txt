@@ -1,0 +1,11 @@
+public void testIssue109() throws IOException {
+    String html = "<html><head><title>Bad frameset</title></head>" +
+            "<frameset><frame src=\"frame_a.htm\"><frame src=\"frame_b.htm\"></frameset>" +
+            "</html>";
+    try {
+        Document doc = Jsoup.parse(html);
+        new Cleaner(Whitelist.none()).clean(doc);
+    } catch (Exception e) {
+        fail(e.toString());
+    }
+}

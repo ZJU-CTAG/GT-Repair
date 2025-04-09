@@ -1,0 +1,20 @@
+public void testIssue() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element root = doc.createElement("a:doc");
+    root.setAttribute("xmlns:a", "ns");
+    Element e1 = doc.createElement("a:elem");
+    Element e2 = doc.createElement("b:elem");
+    e2.setAttribute("xmlns:b", "ns");
+    root.appendChild(e1);
+    root.appendChild(e2);
+    doc.appendChild(root);
+
+    JXPathContext context = JXPathContext.newContext(doc);
+    String xpath = "/descendant::*[local-name()='elem' and namespace-uri()='ns']";
+    Iterator iter = context.iteratePointers(xpath);
+    while (iter.hasNext()) {
+        Pointer pointer = (Pointer) iter.next();
+        Node node = (

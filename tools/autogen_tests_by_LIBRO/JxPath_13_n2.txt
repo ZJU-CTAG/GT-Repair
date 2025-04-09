@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    String xml = " <ElementA A:myAttr=\"Mytype\">\n" +
+            " <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.registerNamespace("A", "http://www.foo.com/");
+    ctx.registerNamespace("B", "http://www.foo.com/");
+    assertEquals("/ElementA/@A:myAttr", ctx.getValue("//@A:myAttr"));
+    assertEquals("/ElementA/B:ElementB", ctx.getValue("//B:ElementB"));
+}

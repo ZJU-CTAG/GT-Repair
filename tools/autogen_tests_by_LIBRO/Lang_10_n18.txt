@@ -1,0 +1,19 @@
+public void testWhiteSpaceIssue() {
+    Locale locale = Locale.US;
+    String pattern = "yyyy-MM-dd HH:mm:ss";
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern, locale);
+    FastDateParser fdp = new FastDateParser(pattern, TimeZone.getDefault(), locale);
+    String[] formats = { "2011-01-01 00:00:00", "2011-01-01  00:00:00", "2011-01-01   00:00:00", "2011-01-01    00:00:00" };
+    Date expect = new Date();
+    try {
+        expect = sdf.parse("2011-01-01 00:00:00");
+    } catch (ParseException e) {
+        fail("Error trying to parse date");
+    }
+    for (String format : formats) {
+        Date actual = null;
+        try {
+            actual = fdp.parse(format);
+        } catch (ParseException e) {
+            fail("Unable to parse date with format \"" + format + "\"");
+        }

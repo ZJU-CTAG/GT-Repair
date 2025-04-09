@@ -1,0 +1,20 @@
+public void testIssueIssue189(@Mocked ObjectReader objectReader) throws IOException {
+        new Expectations() {{
+            objectReader.readValue(anyString);
+            result = new MyBean();
+            minTimes = 0;
+        }};
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectReader = objectMapper.readerFor(MyBean.class);
+
+        MyBean intRef = objectReader.readValue(" {\"refRef\": 2 } ");
+        assertNotNull(intRef.refRef); // succeeds
+        assertNotNull(intRef.refRef.get()); // succeeds
+        assertEquals(intRef.refRef.get().get(), new Integer(2)); // succeeds
+
+        MyBean nullRef = objectReader.readValue(" {\"refRef\": null } ");
+        assertNotNull(intRef.refRef); // succeeds
+        assertNotNull(intRef.refRef.get()); // fails
+        assertNull(intRef.refRef.get().get()); // fails
+    }

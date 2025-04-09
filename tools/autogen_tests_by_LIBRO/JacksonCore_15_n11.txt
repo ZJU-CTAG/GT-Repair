@@ -1,0 +1,24 @@
+public void testIssue108() throws JsonParseException, IOException {
+    String json = "{ \"a\": { \"b\": { \"c\": [ { \"d\": \"e\" } ] } }, \"a\": { \"b\": { \"c\": [ { \"d\": \"f\" } ] } } }";
+
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonFactory.createParser(json), new Filter() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public boolean include(JsonParser parser) throws IOException {
+            while (parser.getCurrentToken() != JsonToken.START_OBJECT) {
+                parser.nextToken();
+            }
+            parser.nextToken();
+
+            if (parser.getCurrentToken() == JsonToken.FIELD_NAME && "d".equals(parser.getText())) {
+                return true;
+            }
+
+            while (parser.getCurrentToken() != JsonToken.END_OBJECT) {
+                parser.nextToken();
+            }
+
+            parser.nextToken();
+
+            if (parser.getCurrent

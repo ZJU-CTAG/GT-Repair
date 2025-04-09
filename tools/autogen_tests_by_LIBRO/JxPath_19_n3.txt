@@ -1,0 +1,18 @@
+public void testIssue107() {
+    Document doc = null;
+    try {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        doc = db.parse(new ByteArrayInputStream(xml.getBytes()));
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    } catch (SAXException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    List<Pointer> pointers = context.iteratePointers("//*");
+    assertEquals(2, pointers.size());
+}

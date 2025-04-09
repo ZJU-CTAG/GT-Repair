@@ -1,0 +1,10 @@
+public void testClosureCompiler() {
+    String code = "function f() { return false; }\n" +
+            "if (!f()) alert('hi');\n";
+    for (int i = 0; i < 25; i++) {
+        code += "if (!f()) alert('hi');\n";
+    }
+    String expected = "if(!1)alert(\"hi\");for(a=0;25>a;a++)if(!1)alert(\"hi\");";
+    String actual = ClosureCompiler.compile(code, CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    assertEquals(expected, actual);
+}

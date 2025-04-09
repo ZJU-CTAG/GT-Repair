@@ -1,0 +1,15 @@
+public void testBase64InputStream() throws Exception
+{
+    byte[] bytes = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0 };
+    String s = Base64.encodeBase64String(bytes);
+    byte[] encoded = s.getBytes();
+    ByteArrayInputStream in = new ByteArrayInputStream(encoded);
+    InputStreamReader reader = new InputStreamReader(new Base64InputStream(in, true));
+    char[] c = new char[1];
+    for (int i = 0; i < 24; i++)
+    {
+        reader.read(c);
+    }
+    assertEquals(-1, reader.read());
+}

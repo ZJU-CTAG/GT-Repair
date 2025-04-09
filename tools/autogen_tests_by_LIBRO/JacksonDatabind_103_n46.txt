@@ -1,0 +1,24 @@
+public void testIssue1() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    try {
+        mapper.readValue("{\"foo\": \"bar\"}", TestIssue1.class);
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        assertFalse("Should not contain '[source]' twice", msg.contains(" at [Source:"));
+        System.out.println("msg = " + msg);
+        return;
+    }
+    fail("Should not pass");
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+private static class TestIssue1 {
+    @JsonDeserialize(using = IntegerDeserializer.class)
+    private int foo;
+}
+
+private static class IntegerDeserializer extends JsonDeserializer<Integer> {
+    @Override
+    public Integer deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {

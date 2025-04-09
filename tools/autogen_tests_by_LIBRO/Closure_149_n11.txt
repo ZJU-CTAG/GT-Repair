@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String src = "var x = '\u0440\u0443\u0441\u0441\u043a\u0438\u0439';";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, src, options);
+    assertNotEquals(src, compiler.toSource());
+    assertNotEquals(result.errors, null);
+    assertEquals(result.errors.length, 0);
+    assertEquals(result.warnings.length, 0);
+    assertEquals("var x=\"\\u0440\\u0443\\u0441\\u0441\\u043a\\u0438\\u0439\";", compiler.toSource());
+}

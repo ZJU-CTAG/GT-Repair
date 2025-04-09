@@ -1,0 +1,16 @@
+public void testReturnsPage() throws IOException {
+    String[] selectors = new String[]{
+            "div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)",
+            "div.a-row.a-spacing-medium span.a-size-base:contains(I'll Send & Pay)",
+            "div.a-row.a-spacing-medium span.a-color-price:contains(Varies)"
+    };
+
+    // 1.8.3 passed
+    Document doc = Jsoup.parse(new File("src/test/resources/test/amazon-returns.html"), "UTF-8");
+    for (String selector : selectors) {
+        assertEquals("should not find anything", 0, doc.select(selector).size());
+    }
+
+    // 1.10.1 failed
+//    Document doc = Jsoup.connect("https://www.amazon.com/gp/help/customer/display.html?nodeId=508088").get();
+//    for (String selector : selectors) {

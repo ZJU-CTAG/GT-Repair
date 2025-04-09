@@ -1,0 +1,33 @@
+public void testIssue108() throws Exception {
+    String json = "{\"stringValue\":\"value\",\"array\":[{\"stringValue\":\"value\"},{\"stringValue\":\"value\",\"intValue\":\"value\"}]}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, Issue108Bean.class);
+    } catch (InvalidFormatException e) {
+        // index is -1
+        assertEquals(1, e.getPath().getIndex());
+    }
+}
+
+public static class Issue108Bean {
+    
+        private String stringValue;
+
+        private List<Issue108Bean> array;
+
+        public String getStringValue() {
+            return stringValue;
+        }
+
+        public void setStringValue(String stringValue) {
+            this.stringValue = stringValue;
+        }
+
+        public List<Issue108Bean> getArray() {
+            return array;
+        }
+
+        public void setArray(List<Issue108Bean> array) {
+            this.array = array;
+        }
+    }

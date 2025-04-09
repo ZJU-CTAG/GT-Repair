@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String source = "goog.scope(function(){\n"
+        + "var x = function(){};;\n"
+        + "});";
+
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.ERROR);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("source", source), options);
+    assertFalse(result.success);
+}

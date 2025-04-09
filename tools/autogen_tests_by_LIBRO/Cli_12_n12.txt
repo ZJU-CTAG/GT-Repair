@@ -1,0 +1,18 @@
+public void testPosixParser() throws Exception {
+    Options cmdLineOpts = createOptions();
+    String[] args = new String[] { "-t", "foobar.com" };
+    CommandLine parsedLine = new PosixParser().parse(cmdLineOpts, args);
+    assertEquals("foobar.com", parsedLine.getOptionValue("t"));
+    args = new String[] { "-target", "foobar.com" };
+    parsedLine = new PosixParser().parse(cmdLineOpts, args);
+    assertEquals("foobar.com", parsedLine.getOptionValue("target"));
+}
+
+private static final String OPTION_TARGET = "t";
+private static final String OPTION_TARGET_LONG = "target";
+private static Options createOptions() {
+    Options cmdLineOpts = new Options();
+    Option generateTarget = new Option(OPTION_TARGET, OPTION_TARGET_LONG, true, "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+    return cmdLineOpts;
+}

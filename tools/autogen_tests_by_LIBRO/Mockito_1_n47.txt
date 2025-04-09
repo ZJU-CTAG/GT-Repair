@@ -1,0 +1,21 @@
+public void testIssue() {
+    Cap<String> cap = new Cap<>();
+    cap.capture(new String[]{"test"});
+    assertEquals("test", cap.getValue());
+    cap = new Cap<>();
+    cap.capture("test");
+    assertEquals("test", cap.getValue());
+}
+
+public static class Cap<T> implements ArgumentCaptor<T> {
+    private T value;
+
+    @Override
+    public void capture(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+}

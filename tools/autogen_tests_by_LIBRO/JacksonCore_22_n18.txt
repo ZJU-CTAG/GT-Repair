@@ -1,0 +1,21 @@
+public void testIssue108() {
+    JsonGenerator gen = new JsonFactory().createGenerator(System.out);
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(gen,
+            new SimpleBeanPropertyFilter() {
+                @Override
+                public void serializeAsField(
+                        Object pojo, JsonGenerator jgen,
+                        SerializerProvider provider, PropertyWriter writer)
+                throws Exception
+                {
+                    System.out.println("MatchCount: " + delegate.getMatchCount());
+                    super.serializeAsField(pojo, jgen, provider, writer);
+                }
+            }, true, MyClass.class);
+
+    delegate.writeStartObject();
+    delegate.writeStringField("a", "1");
+    delegate.writeStringField("b", "2");
+    delegate.writeEndObject();
+    delegate.close();
+}

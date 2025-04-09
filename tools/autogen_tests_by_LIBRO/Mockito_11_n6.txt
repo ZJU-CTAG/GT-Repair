@@ -1,0 +1,13 @@
+public void testIssue() {
+    final Method method = AbstractList.class.getMethod("size");
+    final DelegatingMethod methodMock = mock(DelegatingMethod.class);
+    final Invocation invocation = new Invocation(null, method, null);
+    
+    when(methodMock.getMethod()).thenReturn(method);
+    assertFalse("is not equal", methodMock.equals(invocation));
+    verify(methodMock).getMethod();
+    
+    when(methodMock.getMethod()).thenReturn(null);
+    assertFalse("is not equal", methodMock.equals(invocation));
+    verify(methodMock).getMethod();
+}

@@ -1,0 +1,32 @@
+public void testIssue108() {
+    // Mockito's spy() doesn't allow spying on abstract classes.
+    // This is a test case to fix this issue.
+    // The test case shows how Mockito's current behavior is not intuitive.
+
+    // Let's say we have an abstract class to be spied on.
+    abstract class Entity {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    // Let's say we have a spy.
+    Entity entity = Mockito.spy(new Entity() {});
+
+    // Let's set the name.
+    entity.setName("test");
+
+    // Let's verify the setName() method was called.
+    Mockito.verify(entity).setName("test");
+
+    // Let's verify the getName() method was called.
+    Mockito.verify(entity).getName();
+
+    // Let's verify the getName() method wasn't called with an argument.
+    Mockito.verify(entity, Mockito.never()).

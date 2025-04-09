@@ -1,0 +1,5 @@
+public void testIssue109() {
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.setDateFormat(new StdDateFormat().setLenient(false));
+    assertEquals(new DateTime(2015, 1, 32, 20, 42, 0, 0).toDate(), objectMapper.readValue("{\"date\":\"2015-01-32T20:42:00Z\"}", HasDate.class).getDate());
+}

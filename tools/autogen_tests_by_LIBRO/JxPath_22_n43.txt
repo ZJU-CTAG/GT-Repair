@@ -1,0 +1,26 @@
+public void testEndlessLoop() {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            docBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            doc = docBuilder.newDocument();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        Element root = doc.createElementNS("test111", "b:foo");
+        root.setAttribute("xmlns:b", "bla");
+        doc.appendChild(root);
+
+        Element bar = doc.createElementNS("bla", "b:bar");
+        bar.setTextContent("a");
+        root.appendChild(bar);
+
+        Element test = doc.createElementNS("", "test");
+        root.appendChild(test);
+
+        DOMNodePointer testNodePtr = new DOMNodePointer(null, test, "/b:foo/test");
+
+        assertEquals(testNodePtr.asPath(), "/b:foo/test");
+    }

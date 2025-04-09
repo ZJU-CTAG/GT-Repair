@@ -1,0 +1,16 @@
+public void testIssue154() throws Exception {
+    byte[] input = new byte[6];
+    input[0] = 'a';
+    input[1] = 'b';
+    input[2] = 'c';
+    input[3] = 'd';
+    input[4] = 'e';
+    input[5] = 'f';
+    String base64 = Base64.encodeBase64String(input);
+    InputStream in = new ByteArrayInputStream(base64.getBytes());
+    assertEquals('a', new InputStreamReader(new Base64InputStream(in, true)).read());
+    assertEquals('b', new InputStreamReader(new Base64InputStream(in, true)).read());
+    assertEquals('c', new InputStreamReader(new Base64InputStream(in, true)).read());
+    assertEquals('d', new InputStreamReader(new Base64InputStream(in, true)).read());
+    assertEquals('e', new InputStreamReader(new Base64InputStream(in, true)).read());
+    assertEquals('f', new InputStreamReader(new Base64InputStream

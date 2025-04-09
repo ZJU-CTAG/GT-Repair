@@ -1,0 +1,12 @@
+public void testCheckEntry() throws IOException {
+    try {
+        TarArchiveInputStream inputStream = new TarArchiveInputStream(new FileInputStream(new File("src/test/resources/testdata/test.tar")));
+        TarArchiveEntry entry = inputStream.getNextTarEntry();
+        entry.checkEntry(false);
+        fail("Should have thrown an IOException");
+    } catch (IllegalArgumentException iae) {
+        fail("should have thrown an IOException");
+    } catch (IOException ioe) {
+        // expected
+    }
+}

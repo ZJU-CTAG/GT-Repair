@@ -1,0 +1,24 @@
+public void testIssue12() {
+    String js =
+            "// ==ClosureCompiler==\n" +
+            "// @output_file_name default.js\n" +
+            "// @compilation_level ADVANCED_OPTIMIZATIONS\n" +
+            "// ==/ClosureCompiler==\n" +
+            "\n" +
+            "var t = null;\n" +
+            "\n" +
+            "window.test = function()\n" +
+            "{\n" +
+            " if (t != null)\n" +
+            " {\n" +
+            " t = null;\n" +
+            " }\n" +
+            "\n" +
+            " t = 1;\n" +
+            "};\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", js),
+           

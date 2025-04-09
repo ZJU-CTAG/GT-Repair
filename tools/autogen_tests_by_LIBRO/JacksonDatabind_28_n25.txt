@@ -1,0 +1,33 @@
+public void testDeserializeEmptyObjectNode()
+        throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+
+    String json = om.writeValueAsString(object);
+    assertEquals("{}", json);
+
+    ObjectNode de1 = om.readValue(json, ObjectNode.class);
+    assertEquals("{}", de1.toString());
+
+    MyValue de2 = om.readValue(json, MyValue.class);
+    assertEquals("{}", de2.getObject().toString());
+}
+
+static class MyValue
+{
+    private final ObjectNode object;
+
+    @JsonCreator
+    public MyValue(ObjectNode object) { this.object = object; }
+
+    @JsonValue
+    public ObjectNode getObject() { return object; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        MyValue other =

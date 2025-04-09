@@ -1,0 +1,19 @@
+public void testWriteString() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = mapper.getJsonFactory().createJsonGenerator(sw);
+    ObjectNode rootNode = mapper.createObjectNode();
+
+    // shouldn't really be able to do this
+    gen.writeString("abc");
+    gen.flush();
+    assertEquals("\"abc\"", sw.toString());
+
+    // should also be an error to do this:
+    gen = mapper.getJsonFactory().createJsonGenerator(sw);
+    rootNode.put("a", "b");
+    gen.writeObject(rootNode);
+    gen.writeString("abc");
+    assertEquals("\"abc\"", sw.toString());
+}

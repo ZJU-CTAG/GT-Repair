@@ -1,0 +1,13 @@
+public void testIssue113() {
+    Document doc = Jsoup.parse("<html lang=en-US><head><meta charset=UTF-8><meta http-equiv=Content-Type content='text/html; ' /></head><body/></html>");
+    assertEquals("UTF-8", doc.outputSettings().charset().name());
+}
+
+public void testEncodingFromContentType() {
+    Document doc = Jsoup.parse("<html lang=en-US><head><meta http-equiv=Content-Type content='text/html; charset=ISO-8859-1' /></head><body/></html>");
+    assertEquals("ISO-8859-1", doc.outputSettings().charset().name());
+}
+
+public void testEncodingFromContentTypeMissingCharset() {
+    Document doc = Jsoup.parse("<html lang=en-US><head><meta http-equiv=Content-Type content='text/html' /></head><body/></html>");
+    assertEquals("UTF-8", doc.outputSettings().chars

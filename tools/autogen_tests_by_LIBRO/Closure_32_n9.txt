@@ -1,0 +1,27 @@
+public void testPreserve() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test",
+                            "/**\n" +
+                            " * @preserve\n" +
+                            " *\n" +
+                            " * This \n" +
+                            " * was \n" +
+                            " * ASCII \n" +
+                            " * Art \n" +
+                            " */\n" +
+                            "\n" +
+                            "var x = 1;")
+            });
+    assertTrue(result.success);
+    assertEquals(
+            "/**\n" +
+            "This \n" +
+            "was \n" +
+            "ASCII \n" +
+            "Art \n" +
+            "*/\n" +
+            "var x=1",
+            result.output);
+}

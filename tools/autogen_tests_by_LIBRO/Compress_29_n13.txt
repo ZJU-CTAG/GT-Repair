@@ -1,0 +1,7 @@
+public void testIssue109() throws Exception {
+    byte[] bytes = "hello".getBytes("UTF-16");
+    ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("zip", input);
+    ZipArchiveEntry zipEntry = ais.getNextZipEntry();
+    assertEquals("UTF-16LE", zipEntry.getName());
+}

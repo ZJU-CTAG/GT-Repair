@@ -1,0 +1,19 @@
+public void testIssue117() throws Exception {
+    final File file = new File("issue117.csv");
+    try {
+        final Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charset.forName("UTF-8"));
+        try {
+            final CSVFormat format = CSVFormat.RFC4180.withQuote('"');
+            final CSVPrinter printer = new CSVPrinter(writer, format);
+            final String[] record = new String[] { "あ", "い", "う" };
+            printer.printRecord(record);
+        } finally {
+            writer.close();
+        }
+        final CSVFormat format = CSVFormat.RFC4180.withQuote('"');
+        final CsvListReader reader = new CsvListReader(new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")), format);
+        try {
+            final List<String> list = reader.read();
+            assertEquals("あ", list.get(0));
+            assertEquals("い", list.get(1));
+            assertEquals("う", list.get(

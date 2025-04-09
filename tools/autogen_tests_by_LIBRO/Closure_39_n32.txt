@@ -1,0 +1,17 @@
+public void testTypedef() throws Exception {
+    String[] inputs = {
+        "typedef.js"
+    };
+    InputStream inputStream = getClass().getResourceAsStream("typedef.js");
+    String code = IOUtils.toString(inputStream);
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    options.setEmitUseStrict(false);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("typedef.js", code)), options);
+    assertTrue(result.success);
+    String externExport = result.externExport;
+    assertTrue(externExport, externExport.contains("/** @typedef {Object.<string, string>} */\n"
+        + "test.test.test.test.test.test.test.test.test

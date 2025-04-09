@@ -1,0 +1,13 @@
+public void testIssue90() {
+    DateTimeZone london = DateTimeZone.forID("Europe/London");
+    DateTimeZone paris = DateTimeZone.forID("Europe/Paris");
+    
+    DateTime dt1 = new DateTime(2006, 10, 29, 2, 0, paris);
+    DateTime dt2 = new DateTime(2006, 10, 29, 2, 30, paris);
+    DateTime dt3 = new DateTime(2006, 10, 29, 3, 0, paris);
+    assertEquals("2006-10-29T01:00:00.000Z", dt1.toString());
+    assertEquals("2006-10-29T01:30:00.000Z", dt2.toString());
+    assertEquals("2006-10-29T03:00:00.000+01:00", dt3.toString());
+    
+    assertEquals("2006-10-29T02:00:00.000+01:00", dt1.toDateTime(london).toString());
+    assertEquals("2006-10

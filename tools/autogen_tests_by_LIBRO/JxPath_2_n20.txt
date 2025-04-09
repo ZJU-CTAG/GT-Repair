@@ -1,0 +1,33 @@
+public void testNodeSet() {
+    JXPathContext ctx = JXPathContext.newContext(new Bean());
+    ctx.setLenient(true);
+    ctx.setFactory(new Factory());
+    //System.out.println("Nodes: " + ctx.selectNodes("nodes()"));
+    assertEquals(new Integer(5), ctx.getValue("nodes().size()"));
+    assertEquals(new Integer(5), ctx.getValue("nodes()[5]"));
+}
+
+public static class Bean {
+    public NodeSet nodes() {
+        return new BeanNodeSet();
+    }
+}
+
+public static class BeanNodeSet implements NodeSet {
+    public Iterator<Pointer> iterator() {
+        return new Iter();
+    }
+
+    private static class Iter implements Iterator<Pointer> {
+        private int next;
+
+        public boolean hasNext() {
+            return next < 5;
+        }
+
+        public Pointer next() {
+            return new BeanPointer(next++);
+        }
+
+        public void remove() {
+            throw new

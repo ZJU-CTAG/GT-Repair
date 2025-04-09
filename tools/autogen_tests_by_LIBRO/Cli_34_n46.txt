@@ -1,0 +1,12 @@
+public void testDefaultOptionType() {
+    CommandLine commandLine = new CommandLine(new Command());
+    commandLine.parse("-f", "foo");
+    Option option = commandLine.getOptions().get(0);
+    assertEquals("Should return a String by default", String.class, option.getType());
+    assertEquals("foo", commandLine.getParsedOptionValue("f"));
+}
+
+private static class Command {
+    @Option(names = "-f")
+    String f;
+}

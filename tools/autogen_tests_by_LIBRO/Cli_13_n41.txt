@@ -1,0 +1,13 @@
+public void testIssueCLI33() {
+    String[] args = { "--port", "8080", "--host", "localhost", "--port", "80" };
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasArg().withArgName("PORT").create("port"));
+    options.addOption(OptionBuilder.hasArg().withArgName("HOST").create("host"));
+    CommandLineParser parser = new GnuParser();
+    try {
+        CommandLine line = parser.parse(options, args);
+        assertEquals(2, line.getOptionValues("port").length);
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

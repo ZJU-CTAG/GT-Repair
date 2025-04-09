@@ -1,0 +1,14 @@
+public void testIssue138() {
+    Parser parser = new Parser();
+    Argument numArg = ArgumentBuilder.create().withName("num").withMinimum(1).withMaximum(1).withValidator(NumberValidator.getNumberInstance()).create();
+    Option numOpt = OptionBuilder.create().withLongName("num").withArgument(numArg).create();
+    Group options = GroupBuilder.withName("").withOption(numOpt).create();
+    
+    parser.setGroup(options);
+    try {
+        parser.parse(new String[] {"--num", "-0.1"});
+        fail();
+    } catch (ArgumentParserException apEx) {
+        // Expected
+    }
+}

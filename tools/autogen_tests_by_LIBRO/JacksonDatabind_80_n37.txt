@@ -1,0 +1,25 @@
+public void testIssue110() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    // should not be needed, but works
+    module.addAbstractTypeMapping(Base.class, Concrete.class);
+    mapper.registerModule(module);
+
+    String json = mapper.writeValueAsString(new Concrete("abc"));
+    assertEquals("{\"@type\":\"Concrete\",\"value\":\"abc\"}", json);
+    // note: mapper does not know about Concrete...
+    Base result = mapper.readValue(json, Base.class);
+    assertNotNull(result);
+    assertEquals("abc", result.value);
+}
+
+// for [JACKSON-110]
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY)
+@JsonAutoDetect(fieldVisibility=Visibility.NONE)
+abstract class Base {
+    public String value;
+
+    protected Base() { }

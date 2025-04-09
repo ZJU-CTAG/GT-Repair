@@ -1,0 +1,23 @@
+public void testMockitoRule() {
+    final String testValue = "test";
+    class TestClass {
+        @InjectMocks
+        TestService testService;
+        @Mock
+        TestDao testDao;
+
+        @Before
+        public void setup() {
+            testService.setTestDao(testDao);
+        }
+
+        @Test
+        public void test() {
+            when(testDao.getValue()).thenReturn(testValue);
+            assertEquals(testValue, testService.getValue());
+        }
+    }
+    TestClass testClass = new TestClass();
+    MockitoRule mockitoRule = new MockitoRule(this);
+    mockitoRule.apply(testClass, null).evaluate();
+}

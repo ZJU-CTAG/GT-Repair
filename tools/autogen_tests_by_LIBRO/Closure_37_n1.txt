@@ -1,0 +1,10 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.setIdeMode(true);
+    Result result = compiler.compile(
+            new Compiler.CodeBuilder().append("f f f;").append("function t").toString(),
+            new CompilerOptions());
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertTrue(result.errors[0].toString().indexOf("INTERNAL COMPILER ERROR")>=0);
+}

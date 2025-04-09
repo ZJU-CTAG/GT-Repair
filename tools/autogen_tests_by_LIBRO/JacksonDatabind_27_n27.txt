@@ -1,0 +1,8 @@
+public void testPolymorphicDeserWithExternalTypeId() throws Exception
+{
+    ObjectMapper mapper = mapperForYAML();
+    // NOTE: with JSON it's ok, but fails with YAML...
+    String json = mapper.writeValueAsString(new ExternalTypeIdBean("abc"));
+    ExternalTypeIdBean result = mapper.readValue(json, ExternalTypeIdBean.class);
+    assertEquals("abc", result.value);
+}

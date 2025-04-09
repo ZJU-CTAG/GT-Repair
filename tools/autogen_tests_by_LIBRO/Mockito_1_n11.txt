@@ -1,0 +1,17 @@
+public void testIssue108() {
+    //given
+    MyService myService = mock(MyService.class);
+
+    //when
+    myService.doStuff(1, "foo", "bar");
+
+    //then
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(myService).doStuff(eq(1), captor.capture(), captor.capture());
+    assertEquals("foo", captor.getAllValues().get(0));
+    assertEquals("bar", captor.getAllValues().get(1));
+}
+
+private interface MyService {
+    void doStuff(int id, String... args);
+}

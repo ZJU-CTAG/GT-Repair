@@ -1,0 +1,15 @@
+public void test_withRootName_null() throws Exception {
+    final XmlMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+
+    final JsonFactory jsonF = mapper.getFactory();
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    try(final JsonGenerator jgen = jsonF.createGenerator(out, JsonEncoding.UTF8)) {
+        mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        mapper.writeValue(jgen, null);
+    }
+
+    final String xml = out.toString("UTF-8");
+    assertEquals("<?xml version='1.0' encoding='UTF-8'?><null/>", xml);
+}

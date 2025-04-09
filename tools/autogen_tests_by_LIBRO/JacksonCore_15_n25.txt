@@ -1,0 +1,9 @@
+public void testFilteringParserDelegate_allowMultipleMatches() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"url\": null, \"email\": null, \"phone\": \"+49 123456789\"}";
+    final FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(mapper.getFactory().createParser(json), new MyFilter());
+    final JsonNode tree = mapper.readTree(filteringParserDelegate);
+    assertNotNull(tree.get("phone"));
+    assertNull(tree.get("url"));
+    assertNull(tree.get("email"));
+}

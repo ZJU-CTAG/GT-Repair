@@ -1,0 +1,10 @@
+public void testLongDirectoryName() throws Exception {
+    File target = new File(System.getProperty("java.io.tmpdir"), "test.tar");
+    File testDir = new File(System.getProperty("java.io.tmpdir"), "PaxHeaders.X/layers/openstreetmap__osm.disy.net/.tiles/1.0.0/openstreetmap__osm.disy.net/default");
+    testDir.mkdirs();
+    BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(target));
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(out);
+    tos.putArchiveEntry(new TarArchiveEntry(testDir, testDir.getName()));
+    tos.closeArchiveEntry();
+    tos.close();
+}

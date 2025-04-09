@@ -1,0 +1,25 @@
+public void testIssue108() {
+    final int n = 5;
+    final ParametricUnivariateFunction f = new ParametricUnivariateFunction() {
+        public double value(double x, double... params) {
+            double y = 0;
+            for (int i = 0; i < n; i++) {
+                y += params[i] * Math.pow(x, i);
+            }
+            return y;
+        }
+        public double[] gradient(double x, double... params) {
+            double[] y = new double[n];
+            for (int i = 0; i < n; i++) {
+                y[i] = Math.pow(x, i);
+            }
+            return y;
+        }
+    };
+    final ParametricUnivariateFunction f2 = new ParametricUnivariateFunction() {
+        public double value(double x, double... params) {
+            double y = params[0] * x * x + params[1] * x + params[2];
+            return y;
+        }
+        public double[] gradient(double x, double... params) {
+            double[] y =

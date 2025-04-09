@@ -1,0 +1,15 @@
+public void testDuplicateBlankHeader() throws IOException {
+    final String data = "A,B,C,\n" + // Blank column name
+                        "a,b,c,d\n";
+
+    try (final BufferedReader in = new BufferedReader(new StringReader(data));
+         final CSVParser parser = new CSVParser(in,
+                                                CSVFormat.EXCEL.withHeader())) {
+        final Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNotNull(headerMap);
+        assertEquals(3, headerMap.size());
+        assertEquals(0, headerMap.get("A").intValue());
+        assertEquals(1, headerMap.get("B").intValue());
+        assertEquals(2, headerMap.get("C").intValue());
+    }
+}

@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    class Arg {
+        @Option(name = "a", description = "option a")
+        boolean a = false;
+        @Option(name = "b", description = "option b")
+        boolean b = false;
+    }
+    Arg arg = new Arg();
+    CommandLineParser parser = new GnuParser();
+    Properties p = new Properties();
+    p.setProperty("a", "false");
+    p.setProperty("b", "true");
+    try {
+        parser.parse(arg, p);
+        fail();
+    } catch (UnrecognizedOptionException ex) {
+        assertEquals("a", ex.getOption());
+    }
+}

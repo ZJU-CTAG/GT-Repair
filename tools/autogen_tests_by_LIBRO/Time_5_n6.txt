@@ -1,0 +1,18 @@
+public void testIssue1111 () {
+    PeriodType yearsAndMonths = PeriodType.forFields(new DurationFieldType[]{
+        DurationFieldType.years(), DurationFieldType.months()});
+    PeriodType monthsOnly = PeriodType.forFields(new DurationFieldType[]{
+        DurationFieldType.months()});
+    PeriodType yearsAndWeeks = PeriodType.forFields(new DurationFieldType[]{
+        DurationFieldType.years(), DurationFieldType.weeks()});
+    PeriodType weeksOnly = PeriodType.forFields(new DurationFieldType[]{
+        DurationFieldType.weeks()});
+
+    DateTime start = new DateTime(2010, 1, 1, 0, 0, 0, 0);
+    DateTime end = new DateTime(2010, 1, 4, 0, 0, 0, 0);
+
+    Period p = new Period(start, end, yearsAndMonths).normalizedStandard(yearsAndMonths);
+    assertEquals(0, p.getYears());
+    assertEquals(0, p.getMonths());
+
+    p = new Period(start, end, monthsOnly).normalized

@@ -1,0 +1,13 @@
+public void testFilteringParserDelegate() throws IOException {
+        String json = "{\"a\":\"b\"}";
+        JsonFactory jsonFactory = new JsonFactory();
+        TokenFilter jsonTokenFilter = JsonPointerBasedFilter.fromResource("/json-pointer-example.json");
+        FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonTokenFilter, new JsonGeneratorDelegate(jsonFactory.createGenerator(new ByteArrayOutputStream())));
+        JsonParser parser = jsonFactory.createParser(json);
+        parser.nextToken();
+        filteringParserDelegate.copyCurrentEvent(parser);
+        parser.nextToken();
+        filteringParserDelegate.copyCurrentEvent(parser);
+        filteringParserDelegate.close();
+        assertEquals(2, filteringParserDelegate.getMatchCount());
+    }

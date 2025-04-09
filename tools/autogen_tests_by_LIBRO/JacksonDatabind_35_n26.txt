@@ -1,0 +1,18 @@
+public void testObjectIdForWrapper() throws JsonProcessingException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enableDefaultTyping();
+
+    JsonValue jsonValue = mapper.writeValueAs(new TestObject());
+    assertEquals("{\"com.fasterxml.jackson.module.jaxb.test.TestObject\":{\"@id\":1,\"test\":\"test\"}}", jsonValue.toString());
+}
+
+@XmlRootElement
+public class TestObject {
+    @JacksonXmlProperty(isAttribute = true)
+    @XmlID
+    public Integer id = 1;
+    public String test = "test";
+}

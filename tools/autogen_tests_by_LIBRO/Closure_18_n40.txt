@@ -1,0 +1,26 @@
+public void testDependencySortingWithClosurePassDisabled() throws Exception {
+        // Create new instance of compiler
+        Compiler compiler = new Compiler();
+
+        // Turn off closurePass to prevent goog.require/goog.provide removal
+        CompilerOptions compilerOptions = new CompilerOptions();
+        compilerOptions.setClosurePass(false);
+
+        // Turn on dependency sorting
+        DependencyOptions dependencyOptions = new DependencyOptions();
+        dependencyOptions.setDependencySorting(true);
+
+        // compile code
+        SourceFile input = SourceFile.fromCode("input.js", "goog.provide('A');" +
+                "goog.require('B');" +
+                "goog.provide('B');");
+
+        Result result = compiler.compile(Lists.<SourceFile>newArrayList(), Lists.newArrayList(input), compilerOptions);
+
+        // Print out compiled code
+        String[] out = result.compiledSource.split(";");
+
+        System.out.println("Compiled JS: " + Arrays.toString(out));
+
+        // Expecting the following:
+        // [goog

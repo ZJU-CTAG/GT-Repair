@@ -1,0 +1,16 @@
+public void testReadUtf8Entry() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipOutputStream zipOut = new ZipOutputStream(baos);
+    zipOut.putNextEntry(new ZipEntry("UNICODE\u00e8"));
+    zipOut.close();
+    baos.close();
+    byte[] content = baos.toByteArray();
+
+    // decompress with zip4j
+    ByteArrayInputStream bais = new ByteArrayInputStream(content);
+    ZipFile zip = new ZipFile(bais);
+    assertEquals(1, zip.getEntries().size());
+    ZipArchiveEntry zae = zip.getEntries().iterator().next();
+    assertEquals("UNICODE\u00e8", zae.getName());
+    assertNotNull(zip.getInputStream(zae));
+}

@@ -1,0 +1,15 @@
+public void testCommonBug3() {
+    Locale defaultLocale = Locale.getDefault();
+    try {
+        Locale.setDefault(new Locale("tr", "TR"));
+        assertEquals("tr", Locale.getDefault().getLanguage());
+        assertEquals("TR", Locale.getDefault().getCountry());
+        assertEquals("i", StringUtils.swapCase("I"));
+        Locale.setDefault(new Locale("az", "AZ"));
+        assertEquals("az", Locale.getDefault().getLanguage());
+        assertEquals("AZ", Locale.getDefault().getCountry());
+        assertEquals("I", StringUtils.swapCase("i"));
+    } finally {
+        Locale.setDefault(defaultLocale);
+    }
+}

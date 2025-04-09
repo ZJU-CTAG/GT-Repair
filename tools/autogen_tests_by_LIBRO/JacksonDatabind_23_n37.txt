@@ -1,0 +1,22 @@
+public void testExclusions() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.registerModule(new AfterburnerModule());
+    // mapper.registerModule(new JodaModule());
+
+    final DateTime dt = DateTime.parse("2015-04-02T23:22:21.980+02:00");
+
+    final TestClass tc = new TestClass();
+    tc.setDateTime(dt);
+    tc.setIntValue(0);
+    tc.setStringValue("");
+
+    final String json = mapper.writeValueAsString(tc);
+
+    System.out.println("json = " + json);
+
+    final TestClass tc

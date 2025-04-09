@@ -1,0 +1,9 @@
+public void testSelfRecursiveGeneric() {
+    class Recursive<T extends Recursive<T>> {
+        T self() { return null; }
+    }
+
+    GenericMetadataSupport genericMetadata = inferFrom(Recursive.class).resolveGenericReturnType(firstNamedMethod("self", Recursive.class));
+
+    assertThat(genericMetadata.rawType()).isEqualTo(Recursive.class);
+}

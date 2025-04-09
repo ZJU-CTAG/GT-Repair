@@ -1,0 +1,11 @@
+public void testPrimitiveProcessed() {
+    String nonPrimitive = "goog.provide('foo.bar.baz');";
+    String primitive = "goog.provide('goog.array');";
+    CompilerOptions options = new CompilerOptions();
+    options.setProcessClosurePrimitives(false);
+    Result result = compile(options, primitive);
+    assertTrue(result.errors.isEmpty());
+    assertTrue(result.warnings.isEmpty());
+    assertTrue(result.success);
+    assertTrue(result.generatedSource.contains(primitive));
+}

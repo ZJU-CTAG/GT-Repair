@@ -1,0 +1,21 @@
+public void testEventDetectionIssue() {
+    // Problem parameters
+    final double g0 = 0.0;
+    final double g1 = 1.0;
+    final double dt = 1.0;
+    final double t0 = 0.0;
+    final double t1 = 100.0;
+
+    // ODE solver
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addStepHandler(new StepHandler() {
+        public boolean requiresDenseOutput() {
+            return false;
+        }
+        public void init(double t0, double[] y0, double t) {
+        }
+        public void handleStep(StepInterpolator interpolator, boolean isLast) throws DerivativeException {
+
+            // the history of the switching function at the beginning and end of each step
+            boolean previous = (interpolator.getPreviousState()[0] * (g0 - g1) < 0.0);
+            boolean current = (interpolator.getCurrentState

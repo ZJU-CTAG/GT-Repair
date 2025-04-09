@@ -1,0 +1,14 @@
+public void testArchiveStreamFactory() throws Exception {
+    // should not be detected as TAR
+    File input = new File(
+        getClass().getResource("testAIFF.aif").toURI());
+    try (ArchiveInputStream in = new ArchiveStreamFactory().
+             createArchiveInputStream(ArchiveStreamFactory.TAR,
+                                      new FileInputStream(input))) {
+        // should not be reached
+        fail();
+    } catch (ArchiveException ex) {
+        assertEquals(ex.getMessage(),
+            "No Archiver found for the stream signature.");
+    }
+}

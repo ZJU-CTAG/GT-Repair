@@ -1,0 +1,40 @@
+public void testSkip() throws IOException {
+    InputStream input = new CipherInputStream(new ByteArrayInputStream(new byte[1024]), new MockCipher());
+    IOUtils.skip(input, 1025);
+    assertEquals(-1, input.read());
+}
+
+private static class MockCipher extends Cipher {
+    @Override
+    public int getBlockSize() {
+        return 64;
+    }
+    @Override
+    public String getAlgorithm() {
+        return "MOCK";
+    }
+    @Override
+    public String getFormat() {
+        return "RAW";
+    }
+    @Override
+    public byte[] getIV() {
+        return null;
+    }
+    @Override
+    public int getOutputSize(int inputLen) {
+        return inputLen;
+    }
+    @Override
+    public byte[] getParameters() {
+        return null;
+    }
+    @Override
+    public AlgorithmParameterSpec getParametersSpec() {
+        return null;
+    }
+    @Override
+    public void init(int mode, Key key) {
+    }
+    @Override
+   

@@ -1,0 +1,21 @@
+public void testInterface() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(
+            DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("testcode",
+            "/**\n" + 
+            " * @interface\n" + 
+            " */\n" + 
+            "function I() {};\n" + 
+            "/** @type {string} */\n" + 
+            "I.prototype.foobar;\n" + 
+            "/**\n" + 
+            " * @constructor\n" + 
+            " * @implements {I}\n" + 
+            " */\n" + 
+            "function C() {\n" + 
+            " // No warning generated here.\n" + 
+            " this.foobar = 2;\n" + 

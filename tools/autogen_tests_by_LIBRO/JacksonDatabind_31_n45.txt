@@ -1,0 +1,8 @@
+public void testConvert() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    AntPathPropertyFilter filter = new AntPathPropertyFilter("/array/0", "/array/1", "/array/2");
+    FilteringObjectMapper fom = new FilteringObjectMapper(om, filter);
+    String json = fom.writeValueAsString(new TestEntity());
+    TestEntity result = fom.readValue(json, TestEntity.class);
+    assertEquals(3, result.getArray().size());
+}

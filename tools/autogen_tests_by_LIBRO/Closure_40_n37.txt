@@ -1,0 +1,23 @@
+public void testIssue() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setSmartNameRemoval(true);
+    options.setExtraSmartNameRemoval(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.ALL, PropertyRenamingPolicy.OFF);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    String input = "var goog = {};"
+            + "goog.inherits = function(x, y) {};"
+            + "var ns = {};" +
+            "/*\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "ns.PageSelectionModel = function() {};\n" +
+            "\n" +
+            "/*\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "ns.PageSelectionModel.FooEvent = function() {};\n" +
+            "/*\n" +
+           

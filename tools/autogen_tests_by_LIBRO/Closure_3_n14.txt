@@ -1,0 +1,24 @@
+public void testOptimizeFunction() throws Exception
+{
+    String script =
+        "function getStack() { \n" +
+        " var getErrorObject = function() { \n" +
+        " try { \n" +
+        " throw Error(''); \n" +
+        " } catch(err) { \n" +
+        " return err; \n" +
+        " } \n" +
+        " }; \n" +
+        " return getErrorObject().stack; \n" +
+        "} \n" +
+        "window['getStackTrace']=getStack; \n";
+    Context cx = Context.enter();
+    cx.setOptimizationLevel(-1);
+    try {
+        ScriptableObject scope = cx.initStandardObjects();
+        Script scriptObject = cx.compileString(script, "testscript", 1, null);
+        scriptObject.exec(cx, scope);
+    } finally {
+        Context.exit();
+    }
+}

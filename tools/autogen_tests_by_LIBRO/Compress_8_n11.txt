@@ -1,0 +1,14 @@
+public void testTarParser() throws Exception {
+    byte[] buf = new byte[512];
+    System.arraycopy(
+        "test.test             \0\0\0\0\0\0\0\0\0\0\0\0\0\0".getBytes(), 0,
+        buf, 0,
+        33);
+    System.arraycopy(
+        "00000000000\0\0\0\0".getBytes(), 0,
+        buf, 124,
+        12);
+    TarArchiveEntry t = new TarArchiveEntry(buf);
+    assertEquals("test.test", t.getName());
+    assertEquals(0, t.getSize());
+}

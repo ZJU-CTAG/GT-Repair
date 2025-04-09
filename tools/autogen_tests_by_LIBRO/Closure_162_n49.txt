@@ -1,0 +1,20 @@
+public void testTypeAliases() throws Exception {
+    ClosureFormatter formatter = new ClosureFormatter();
+
+    formatter.add("goog.provide('foo.Foo');");
+    formatter.add("goog.provide('foo.Foo.Bar');");
+    formatter.add("");
+    formatter.startBlock("goog.scope(function() {");
+    formatter.add("/**");
+    formatter.add(" * @param {Foo.Bar} bar");
+    formatter.add(" * @constructor");
+    formatter.add(" */");
+    formatter.add("foo.Foo = function(bar) {");
+    formatter.add("  this.bar = bar;");
+    formatter.add("};");
+    formatter.add("var Foo = foo.Foo;");
+    formatter.add("");
+    formatter.add("/** @type {Foo.Bar} */");
+    formatter.add("Foo.prototype.bar = null;");
+    formatter.add("");
+    formatter.add("/** @constructor

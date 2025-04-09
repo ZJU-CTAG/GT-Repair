@@ -1,0 +1,20 @@
+public void testIssue108() {
+    GsonBuilder builder = new GsonBuilder();
+    builder.registerTypeHierarchyAdapter(Vehicle.class, new VehicleTypeAdapter());
+    Gson gson = builder.create();
+    try {
+        Car car = gson.fromJson("{'type':'Truck', 'noOfWheels':6, 'model':'Ford'}", Car.class);
+        Assert.fail("Deserializing a truck as a car must fail");
+    } catch (JsonParseException expected) {
+    }
+}
+
+private static class VehicleTypeAdapter implements JsonSerializer<Vehicle>, JsonDeserializer<Vehicle> {
+    @Override
+    public Vehicle deserialize(JsonElement json, Type typeOfT,
+        JsonDeserializationContext context) throws JsonParseException {
+      JsonObject jsonObject = json.getAsJsonObject();
+      String type = jsonObject.get("type").getAsString();
+      JsonElement element = jsonObject.get("properties");
+      try {
+          return context.deserialize(element,

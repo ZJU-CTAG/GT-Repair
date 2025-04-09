@@ -1,0 +1,15 @@
+public void testTypedCoverage() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile("/** * @constructor * @param {!Element} element */ function Example(element) {" +
+                                     "    /** * @param {!string} ns * @param {!string} name * @return {undefined} */ " +
+                                     "    this.appendElement = function appendElement(ns, name) {" +
+                                     "        var e = element.ownerDocument.createElementNS(ns, name);" +
+                                     "        element.appendChild(e);" +
+                                     "    };" +
+                                     "}", CompilerOptions.builder()
+                                                         .setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING)
+                                                         .setSummaryDetailLevel(3)
+                                                         .setCodingConvention(new ClosureCodingConvention())
+                                                         .setCheckTypes(true)
+                                                         .setCheckGlobalNamesLevel(CheckLevel.WARNING)
+                                                         .setCheckSuspiciousCode(true)

@@ -1,0 +1,12 @@
+public void testExternExport() throws IOException {
+    String source = "function f(/** string */msg) {}; /** @typedef {{message: string,  line: number,  column: number,  source: string }} */ var ErrorType;";
+    String expected = "/**\n * @param {{message: string,  line: number,  column: number,  source: string }} msg\n */\nfunction f(msg) {\n};\n";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setGenerateExports(true);
+    Compiler.setLoggingLevel(Level.INFO);
+    Result result = compiler.compile(new JSSourceFile[]{ JSSourceFile.fromCode("foo", source) }, new JSSourceFile[]{}, options);
+    assertEquals(expected, result.externExport);
+}

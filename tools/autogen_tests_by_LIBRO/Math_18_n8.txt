@@ -1,0 +1,24 @@
+public void testBounds() {
+    // Create test function.
+    final double lowerBound = -1;
+    final double upperBound = 1;
+    final double initialGuess = 0;
+    final UnivariateRealFunction function = new UnivariateRealFunction() {
+        public double value(double x) {
+            return (x - lowerBound) * (x - upperBound);
+        }
+    };
+    // Set up minimizer.
+    final CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.setMaxIterations(10000);
+    optimizer.setMaxEvaluations(10000);
+    // Test with bounds.
+    double result = optimizer.optimize(
+        new MaxEval(10000),
+        new ObjectiveFunction(function),
+        GoalType.MINIMIZE,
+        new SearchInterval(lowerBound, upperBound),
+        new InitialGuess(initialGuess)).getPoint()[0];
+    System.out.println("result = " + result);
+    assertTrue("Minimizer does not find minimum near lower bound.",
+               result < lowerBound + 1e-

@@ -1,0 +1,13 @@
+public void testUnsupportedCompression() throws Exception {
+    ZipArchiveEntry ze = new ZipArchiveEntry("test");
+    ze.setCompressedSize(ArchiveEntry.SIZE_UNKNOWN);
+    ze.setMethod(ZipMethod.BZIP2.getCode());
+
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(new byte[0]));
+    try {
+        zis.getNextZipEntry();
+        fail("EOFException expected");
+    } catch (EOFException e) {
+        // expected
+    }
+}

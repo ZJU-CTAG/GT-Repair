@@ -1,0 +1,21 @@
+public void testFinish() throws Exception {
+    final String[] files = {
+            "test1.xml",
+            "test2.xml"
+    };
+
+    final byte[] buf = new byte[8192];
+
+    final File archive = new File("target", "archive.zip");
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, new FileOutputStream(archive));
+    for (final String file : files) {
+        final FileInputStream fis = new FileInputStream(file);
+        final ArchiveEntry entry = aos.createArchiveEntry(new File(file), file);
+        aos.putArchiveEntry(entry);
+        IOUtils.copy(fis, aos, buf);
+        aos.closeArchiveEntry();
+        fis.close();
+    }
+    aos.finish();
+    aos.close();
+}

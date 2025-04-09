@@ -1,0 +1,10 @@
+public void testJsonPointer() throws Exception {
+    JsonNode hello = mapper.readTree("{\"hello\":\"world\", \"hello2\":\"world\"}");
+    JsonPointer pointer = JsonPointer.compile("/hello");
+    assertEquals(hello.get("hello"), pointer.get(hello));
+    assertNull(pointer.get(hello, String.class));
+    pointer = JsonPointer.compile("/hello2");
+    assertEquals("world", pointer.get(hello, String.class));
+    pointer = JsonPointer.compile("/hello2/00/");
+    assertEquals("world", pointer.get(hello, String.class));
+}

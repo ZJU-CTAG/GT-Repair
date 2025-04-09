@@ -1,0 +1,24 @@
+public void testIssue108() {
+    // Ensure we can compile the following code
+    String code = "function makeClass() {\n" + 
+    "\tfunction constructor() {\n" + 
+    "\t\t// ...\n" + 
+    "\t}\n" + 
+    "\n" + 
+    "\t// Add shared methods and properties here\n" + 
+    "\n" + 
+    "\tconstructor.prototype = {\n" + 
+    "\t\tconstructor: constructor\n" + 
+    "\t};\n" + 
+    "\n" + 
+    "\t// ...\n" + 
+    "\n" + 
+    "\treturn constructor;\n" + 
+    "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Result result = compiler.compile(
+            SourceFile

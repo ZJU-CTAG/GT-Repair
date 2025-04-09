@@ -1,0 +1,15 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    SourceFile input1 =
+        SourceFile.fromCode("input1.js", "goog.provide('A'); A=1;");
+    SourceFile input2 =
+        SourceFile.fromCode("input2.js", "goog.require('A'); alert(A);");
+    List<SourceFile> inputs = ImmutableList.of(input1, input2);
+    Result result = compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+    assertEquals(
+        "goog.provide(\"A\");A=1;alert(1)",
+        compiler.toSource());
+}

@@ -1,0 +1,28 @@
+public void testIssue() {
+    /**
+     * @constructor
+     */
+    function Person(name) {
+        this.name = name;
+    }
+
+    /** @lends Person.prototype */
+    function makeClass() {
+        this.getName = function() {
+            return this.name;
+        };
+    };
+
+    makeClass.call(Person.prototype);
+
+    Person.prototype.setName = function(name) {
+        this.name = name;
+    };
+
+    var bob = new Person('Bob');
+    alert(bob.getName()); // 'Bob'
+    alert(bob.name); // 'Bob'
+    bob.setName('Robert');
+    alert(bob.getName()); // 'Robert'
+    alert(bob.name); // 'Robert'
+}

@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String js = IOUtils.toString(getClass().getResourceAsStream("/multicheck.js"));
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.QUIET.setOptionsForWarningLevel(options);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(COMPILER_OPTIONS, new JSSourceFile[]{JSSourceFile.fromCode("multicheck.js", js)});
+    System.out.println(result.errors);
+    assertEquals(0, result.errors.length);
+}

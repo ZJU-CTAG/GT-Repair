@@ -1,0 +1,16 @@
+public void testContextAttributes() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectNode treeTest = mapper.createObjectNode();
+    final TestCase.Data data = new TestCase.Data();
+    data.aStr = "Hello";
+    treeTest.putPOJO("data", data);
+
+    final Map<String, Object> mapTest = new HashMap<>();
+    mapTest.put("data", data);
+
+    final String mapOut = mapper.writer().withAttribute("myAttr", "Hello!").writeValueAsString(mapTest);
+    assertEquals("{\"data\":{\"aStr\":\"The value is: Hello!\"}}", mapOut);
+
+    final String treeOut = mapper.writer().withAttribute("myAttr", "Hello!").writeValueAsString(treeTest);
+    assertEquals("{\"data\":{\"aStr\":\"The value is: Hello!\"}}", treeOut);
+}

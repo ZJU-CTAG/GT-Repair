@@ -1,0 +1,13 @@
+public void testForm() throws IOException {
+    String html = "<html><body>\n" +
+            "<form>\n" +
+            "  <input name=\"alpha\" value=\"foo\">\n" +
+            "  <input name=\"beta\" value=\"bar\">\n" +
+            "</form>\n" +
+            "</body></html>\n";
+
+    Document doc = Jsoup.parse(html);
+    doc.select("input[name=alpha]").first().remove();
+
+    assertEquals("<form> <input name=\"beta\" value=\"bar\"> </form>", doc.select("form").first().html());
+}

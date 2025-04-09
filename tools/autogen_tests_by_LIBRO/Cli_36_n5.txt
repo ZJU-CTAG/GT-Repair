@@ -1,0 +1,22 @@
+public void testIssue107() {
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h)
+        .addOption(s)
+        .addOption(b)
+        .addOption(t);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter out = new StringWriter();
+    formatter.printHelp("cmd", "", options, null, true, out);
+    String result = out.toString();
+    assertTrue(result.contains("-h"));
+    assertTrue(result.contains("-s"));
+    assertTrue(result.contains("-b"));
+    assertTrue(result.contains("-t"));
+    assertTrue(result.contains("-o"));

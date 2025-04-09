@@ -1,0 +1,25 @@
+public void testRead(String path) throws IOException {
+    // Works in 2.6.3, fails in 2.7.0
+    JsonRoot root = new ObjectMapper().readValue(
+                getClass().getResourceAsStream(path),
+                JsonRoot.class);
+}
+
+public static class JsonSchema {}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("custom")
+@JsonType.defaultImpl(JsonMapSchema.class)
+public static class JsonMapSchema extends JsonSchema {
+    public List<JsonMapTable> tables;
+}
+
+public static class JsonMapTable extends JsonTable {
+    public List<JsonMapColumn> columns;
+}
+
+public static class JsonMapColumn extends JsonColumn {
+    public List<JsonMapColumn> columns;
+}
+

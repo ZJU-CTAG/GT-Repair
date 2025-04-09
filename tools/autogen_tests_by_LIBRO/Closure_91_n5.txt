@@ -1,0 +1,21 @@
+public void testLends() {
+   // assumes dojo is available
+    
+    // works with @lends
+    dojo.declare("MyClass", [], /** @lends MyClass.prototype */{
+        foo: function(x) {
+            return x + 1;
+        }
+    });
+    
+    // does not work without @lends,
+    // generates a warning about dangerous use of this
+    dojo.declare("MyClass2", [], {
+        foo: function(x) {
+            return x + 1;
+        }
+    });
+    
+    assertEquals(2, new MyClass().foo(1));
+    assertEquals(2, new MyClass2().foo(1));
+}

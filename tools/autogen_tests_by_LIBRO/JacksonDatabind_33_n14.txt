@@ -1,0 +1,17 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new Issue());
+
+    System.out.println(json);
+    assertThat(json).isEqualTo("{\"inner\":{\"animal\":\"Zebra\"}}");
+}
+
+@SuppressWarnings("unused")
+private static class Issue {
+    @JsonUnwrapped
+    private final Inner inner = new Inner();
+
+    private static class Inner {
+        public String animal = "Zebra";
+    }
+}

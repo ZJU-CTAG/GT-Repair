@@ -1,0 +1,26 @@
+public void test() {
+
+    //initialize the data
+    int treatments = 100;
+    int repetitions = 1000;
+    int measurementCount = treatments * repetitions;
+
+    double[] data = new double[measurementCount];
+    int[] treatmentIndex = new int[measurementCount];
+
+    for (int treatment = 0; treatment < treatments; treatment++) {
+        for (int repetition = 0; repetition < repetitions; repetition++) {
+            int dataIndex = treatment * repetitions + repetition;
+            data[dataIndex] = 1 + treatment + repetition;
+            treatmentIndex[dataIndex] = treatment;
+        }
+    }
+
+    //calculate p-values using PearsonsCorrelation.getCorrelationPValues()
+    PearsonsCorrelation corr = new PearsonsCorrelation();
+    double[] rValues = corr.computeCorrelationMatrix(data).getData();
+    double[] pValues = corr.getCorrelationPValues();
+
+    //calculate p-values using direct calculation
+    TDistribution tDistribution = new TDistribution(measurementCount - 2);
+    double[] p

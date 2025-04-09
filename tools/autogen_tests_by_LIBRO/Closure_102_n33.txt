@@ -1,0 +1,24 @@
+public void testIssue108() {
+    StringWriter sw = new StringWriter();
+    try {
+        CompilerEnvirons env = new CompilerEnvirons();
+        env.setRecordingComments(true);
+        env.setRecordingLocalJsDocComments(true);
+        env.setAllowSharpComments(true);
+        env.setOptimizationLevel(-1);
+        env.setStrictMode(false);
+        env.setGenerateDebugInfo(true);
+        DefaultErrorReporter er = new DefaultErrorReporter(env);
+        Parser p = new Parser(env, er);
+        AstRoot node = p.parse(new StringReader(
+                "function name() {\n" +
+                " var arguments = Array.prototype.slice.call(arguments, 0);\n" +
+                "}\n"), null, 1);
+        node.visit(new NodeVisitor(env) {
+            @Override
+            public boolean visit(AstNode node) {
+                System.out.println(node.debugPrint());
+                return true;
+            }
+        });
+        CodeGenerator cg = new

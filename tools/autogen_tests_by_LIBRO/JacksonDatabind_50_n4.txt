@@ -1,0 +1,19 @@
+public void testCyclicForwardReference() throws Exception {
+
+		ObjectMapper mapper = new ObjectMapper()
+				.registerModule(new SimpleModule().addSerializer(new JsonSerializer<Object>() {
+					@Override
+					public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+							throws IOException, JsonProcessingException {
+						jsonGenerator.writeString("reset for comparison");
+					}
+				}));
+		mapper.enableDefaultTyping();
+		Test1 t1 = new Test1();
+		Test2 t2 = new Test2();
+		t1.setTest2(t2);
+		t2.setTest1(t1);
+		List<Test1> test1List = new ArrayList<Test1>();
+		test1List.add(t1);
+		test1List.add(t2.getTest1());
+		Test3 t3 =

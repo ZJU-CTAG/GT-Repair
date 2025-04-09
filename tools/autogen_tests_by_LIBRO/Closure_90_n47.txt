@@ -1,0 +1,24 @@
+public void testIssue268() throws IOException {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = Lists.newArrayList(
+            SourceFile.fromCode("externs",
+                    "function foo(a) {}\n"
+                    + "/** @this {Thing} */\n"
+                    + "function bar() {}\n"
+                    + "/**\n"
+                    + " * @constructor\n"
+                    + " */\n"
+                    + "function A() {}\n"
+                    + "/**\n"
+                    + " * @constructor\n"
+                    + " */\n"
+                    + "function B() {}\n"
+                    + "/** @typedef {A|B} */\n"
+                    + "var Thing;"));
+
+    List<SourceFile> input = Lists.newArrayList(
+            SourceFile.fromCode("input", "bar.call(new A());"));
+
+    Result result = compiler.compile(externs, input,
+            new CompilerOptions());
+    assertEquals("", result.errors.to

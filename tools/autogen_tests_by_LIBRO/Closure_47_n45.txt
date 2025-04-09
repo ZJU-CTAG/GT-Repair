@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Map<String, Object> options = new HashMap<String, Object>();
+    options.put("sourceMap", true);
+    options.put("sourceMapIncludeContent", true);
+    options.put("sourceMapIn", "src/test/resources/issue108.js");
+    options.put("sourceMapName", "issue108.js.map");
+
+    String result = UglifyJs.uglifyJs(null, "src/test/resources/issue108.js", options);
+
+    assertTrue(result.contains("//# sourceMappingURL=issue108.js.map"));
+
+    SourceMap sourceMap = SourceMap.parse(result);
+    assertEquals("issue108.js", sourceMap.getSourceFile());
+    assertEquals("issue108.js.map", sourceMap.getSourceMapFileInline());
+    assertEquals(1, sourceMap.getSourceRootInline().intValue());
+    assertEquals(1, sourceMap.getLineNumberOffset().intValue());
+    assertEquals(1, sourceMap.getColumnNumberOffset().intValue

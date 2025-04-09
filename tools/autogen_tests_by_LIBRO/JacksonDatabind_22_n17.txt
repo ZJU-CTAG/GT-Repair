@@ -1,0 +1,37 @@
+public void testCustomSerializer() throws JsonProcessingException {
+    final PojoWithValue pojo = new PojoWithValue(new AnotherPojo("value"));
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addSerializer(AnotherPojo.class, new AnotherPojoSerializer()));
+
+    final String json = mapper.writeValueAsString(pojo);
+
+    assertEquals("{\"pojo\":\"another pojo value\"}", json);
+}
+
+static class PojoWithValue {
+    private final AnotherPojo pojo;
+
+    public PojoWithValue(AnotherPojo pojo) {
+        this.pojo = pojo;
+    }
+
+    @JsonValue
+    public AnotherPojo getPojo() {
+        return pojo;
+    }
+}
+
+static class AnotherPojo {
+    private final String value;
+
+    public AnotherPojo(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
+static class AnotherPo

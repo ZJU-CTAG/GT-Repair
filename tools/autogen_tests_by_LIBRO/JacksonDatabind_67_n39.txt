@@ -1,0 +1,17 @@
+public void testIssue1313() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule());
+    mapper.setDeserializerModifier(new BeanDeserializerModifier() {
+        @Override
+        public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config, JavaType type, KeyDeserializer deserializer) {
+            return new KeyDeserializer() {
+                @Override
+                public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+                    return "FOO";
+                }
+            };
+        }
+    });
+    Guava1313 map = mapper.readValue("{\"bar\":\"baz\"}", Guava1313.class);
+    assertEquals("FOO", map.getBar().getKey());
+}

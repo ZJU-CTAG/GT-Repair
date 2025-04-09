@@ -1,0 +1,11 @@
+public void testDuplicatedAttributeParsing() {
+    String html = "<html><body>\n"
+            + "  <a href=\"http://www.google.com\" id=\"google\" id=\"google1\" name=\"google\">Google</a>\n"
+            + "</body></html>";
+
+    Document doc = Jsoup.parse(html);
+    Element link = doc.select("a").first();
+
+    assertEquals("google1", link.attr("id"));
+    assertEquals("google1", link.id());
+}

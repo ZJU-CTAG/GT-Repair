@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should have thrown an exception");
+    } catch (JsonMappingException e) {
+        assertTrue("Wrong message: " + e.getMessage(), e.getMessage().contains("Can not map `\"\"` into type int"));
+    }
+}

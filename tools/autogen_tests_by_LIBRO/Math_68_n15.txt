@@ -1,0 +1,22 @@
+public void testIssue124() {
+    final double[] d1 = new double[] {1.0, 2.0, 3.0};
+    final double[] d2 = new double[] {10.0, 20.0, 30.0};
+    final VectorialPointValuePair expected = new VectorialPointValuePair(d1, d2);
+    final VectorialPointValuePair actual = LevenbergMarquardtOptimizer.optimize(
+        new VectorialDifferentiableMultiStartMultivariateVectorOptimizer() {
+            @Override
+            public VectorialPointValuePair optimize(DifferentiableMultivariateVectorFunction f,
+                                                     MultivariateVectorFunction g, double[] startPoint) {
+                return expected;
+            }
+        },
+        new VectorialConvergenceChecker() {
+            @Override
+            public boolean converged(int iteration, VectorialPointValuePair previous,
+                                     VectorialPointValuePair current) {
+                return true;
+            }
+        },
+        null,
+        new double[][] {d1},
+        new double[][

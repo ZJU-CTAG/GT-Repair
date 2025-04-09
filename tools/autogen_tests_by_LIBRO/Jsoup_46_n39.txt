@@ -1,0 +1,9 @@
+public void testIssue107() {
+    String html = "<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=Shift_JIS\" /></head><body>before&nbsp;after</body></html>";
+    Document doc = Jsoup.parse(html, "http://example.com");
+    doc.outputSettings().escapeMode(EscapeMode.xhtml);
+    doc.outputSettings().charset("Shift_JIS");
+    String htmlOut = doc.html();
+    assertFalse(htmlOut.contains("?"));
+    assertTrue(htmlOut.contains("&nbsp;") || htmlOut.contains("&#xa0;"));
+}

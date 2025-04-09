@@ -1,0 +1,14 @@
+public void testIssueWithNPM() throws IOException {
+    // The following is a jUnit test based on the output of npm pack aws-sdk@2.2.16
+    // to generate a tarball.  This is not a complete test but it does exercise
+    // the bug.
+    TarArchiveEntry entry = new TarArchiveEntry("aws-sdk-2.2.16/README.md");
+    entry.setSize(400);
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    byte[] bytes = byteStream.toByteArray();
+    byteStream.close();
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(new ByteArrayInputStream(bytes));
+    tarIn.getNextTarEntry();
+    TarArchiveEntry e = tarIn.getCurrentEntry();
+    assertNotNull(e);
+}

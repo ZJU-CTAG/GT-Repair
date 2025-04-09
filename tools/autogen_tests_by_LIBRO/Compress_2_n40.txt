@@ -1,0 +1,19 @@
+public void testArchiveDelete() throws IOException {
+    final File archive = new File(getTestDirectory(), "bla.ar");
+    final File firstFile = new File(getTestDirectory(), "test1.xml");
+    final File secondFile = new File(getTestDirectory(), "test2.xml");
+    testArchiveCreate(archive, firstFile, secondFile);
+
+    ArArchiveInputStream aais = new ArArchiveInputStream(new FileInputStream(archive));
+    assertEquals("test1.xml", aais.getNextEntry().getName());
+    assertEquals("test2.xml", aais.getNextEntry().getName());
+    // this returns null
+    assertNull(aais.getNextEntry());
+    aais.close();
+
+    ArArchiveOutputStream aaos = new ArArchiveOutputStream(new FileOutputStream(archive));
+    ArArchiveEntry entry = aaos.getNextArEntry();
+    assertEquals("test1.xml", entry.getName());
+    aaos.closeEntry();
+    entry = aaos.getNextArEntry();
+    assertEquals("

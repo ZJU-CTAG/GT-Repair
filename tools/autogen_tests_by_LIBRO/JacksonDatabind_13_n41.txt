@@ -1,0 +1,18 @@
+public void testNullObjectIdDeserialization() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(TestObject.class, TestObjectMixin.class);
+    String json = "{ \"foo\": \"bar\" }";
+    TestObject actual = mapper.readValue(json, TestObject.class);
+    assertThat(actual.foo, is("bar"));
+}
+ 
+public static class TestObject {
+    @ObjectId
+    public String foo;
+}
+ 
+public static class TestObjectMixin {
+    @JsonCreator
+    public TestObjectMixin(@ObjectId String foo) {
+    }
+}

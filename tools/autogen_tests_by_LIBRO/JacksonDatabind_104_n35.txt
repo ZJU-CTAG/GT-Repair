@@ -1,0 +1,15 @@
+public void testIssue108() {
+    assertEquals(Long.MIN_VALUE, _testDateSerialization(Long.MIN_VALUE));
+    assertEquals(Long.MAX_VALUE, _testDateSerialization(Long.MAX_VALUE));
+}
+
+private long _testDateSerialization(long dateInMillis) throws JsonProcessingException {
+    ObjectMapper m = new ObjectMapper();
+    String s = m.writeValueAsString(new Date(dateInMillis));
+    try {
+        Date d = m.readValue(s, Date.class);
+        return d.getTime();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}

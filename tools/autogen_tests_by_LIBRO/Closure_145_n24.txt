@@ -1,0 +1,12 @@
+public void testIssue108() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            "var i = 0; lab1: do{ lab2: do{ i++; if (1) { break lab2; } else { break lab1; } } while(false); } while(false); console.log(i);",
+            options);
+    assertTrue(result.success);
+    assertFalse(result.errors.length > 0);
+}

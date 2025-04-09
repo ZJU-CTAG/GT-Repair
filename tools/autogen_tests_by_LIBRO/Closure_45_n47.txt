@@ -1,0 +1,7 @@
+public void testIssue108() {
+    String source = "function f() {var a = [], b; a.push(b = []); b[0] = 1; return a;}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, Lists.newArrayList(SourceFile.fromCode("test", source)), options);
+    assertTrue(result.success);
+    assertEquals("function f(){var a=[];a.push([]);return a};", result.compiledCode);
+}

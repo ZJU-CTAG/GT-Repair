@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+    JsTypeReflector reflector = new JsTypeReflector(JsTypeReflector.PARAM_ALL, JsTypeReflector.RETURN_TYPE);
+    JsType jsType = reflector.reflect(getClass().getMethod("m1", new Class[]{String.class, int.class}));
+    assertEquals("function(string, number): boolean;", jsType.getJsType());
+    assertEquals("function(string, number): boolean", jsType.getJsTypeDescription());
+    jsType = reflector.reflect(getClass().getMethod("m2", new Class[]{String.class}));
+    assertEquals("function(string): boolean;", jsType.getJsType());
+    assertEquals("function(string): boolean", jsType.getJsTypeDescription());
+}
+
+/** @param {function(string,number):boolean} param */
+public void func(JsType param) {}
+
+public void test() {
+    func(m1);
+    func(m2); // should not compile
+}
+
+/** @type

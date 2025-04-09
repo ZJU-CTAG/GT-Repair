@@ -1,0 +1,30 @@
+public void testEnumMapWithJsonProperty()
+        throws IOException {
+    // given
+    EnumMap<FooEnum, Integer> enumMap = new EnumMap<>(FooEnum.class);
+    enumMap.put(FooEnum.A, 1);
+    enumMap.put(FooEnum.B, 2);
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // when
+    String json = objectMapper.writeValueAsString(enumMap);
+
+    // then
+    assertThat(json, is(equalTo("{\"A\":1,\"B\":2}")));
+}
+
+public static enum FooEnum {
+    A(1),
+    B(2);
+
+    private final int id;
+
+    FooEnum(int id) {
+        this.id = id;
+    }
+
+    @JsonValue
+    public int getId() {
+        return id;
+    }
+}

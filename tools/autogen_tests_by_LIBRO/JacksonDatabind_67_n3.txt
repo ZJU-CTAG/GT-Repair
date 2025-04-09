@@ -1,0 +1,23 @@
+public void testMapKeyDeserializerModifiers() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new GuavaModule())
+            .setSerializationInclusion(Include.NON_NULL)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    mapper.registerModule(new Module() {
+        @Override
+        public String getModuleName() {
+            return "test";
+        }
+
+        @Override
+        public Version version() {
+            return new Version(1, 0, 0, null, "com.scapelog", "scapelog-api");
+        }
+
+        @Override
+        public void setupModule(SetupContext context) {
+            context.setDeserializerModifier(new BeanDeserializer

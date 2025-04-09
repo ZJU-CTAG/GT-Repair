@@ -1,0 +1,27 @@
+public void testTypeVariableRecursion() {
+    TypeVariable<?> typeVariable = new TypeVariable<Class<A>>() {
+    };
+    ParameterizedTypeImpl parameterizedType = new ParameterizedTypeImpl(new Type[] { typeVariable }, A.class, null);
+    TypeVariable<?>[] types = parameterizedType.getRawType().getTypeParameters();
+    new Gson().getAdapter(parameterizedType);
+}
+
+public static class ParameterizedTypeImpl implements ParameterizedType {
+    private final Type[] actualTypeArguments;
+    private final Class<?> rawType;
+    private final Type ownerType;
+
+    public ParameterizedTypeImpl(Type[] actualTypeArguments, Class<?> rawType, Type ownerType) {
+        this.actualTypeArguments = actualTypeArguments;
+        this.rawType = rawType;
+        this.ownerType = ownerType;
+    }
+
+    @Override
+    public Type[] getActualTypeArguments() {
+        return actualTypeArguments;
+    }
+
+    @Override
+    public Class<?> getRawType() {
+        return rawType;

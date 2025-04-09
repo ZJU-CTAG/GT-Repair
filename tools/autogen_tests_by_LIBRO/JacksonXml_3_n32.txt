@@ -1,0 +1,16 @@
+public void testIssueXML() throws IOException
+{
+    final XmlMapper xmlMapper = new XmlMapper();
+    final JsonParser jp = xmlMapper.createParser(
+            "<Test><Child value=\"test\"/></Test>");
+    jp.nextToken(); // Start Object.
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("Child", jp.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("value", jp.getCurrentName());
+    assertEquals(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, jp.getCurrentToken());
+    assertEquals("test", jp.getText());
+    assertEquals("test", jp.nextTextValue());

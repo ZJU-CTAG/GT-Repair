@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+    
+    Properties properties = new Properties();
+    properties.setProperty( "a", "false" );
+    properties.setProperty( "c", "no" );
+    properties.setProperty( "e", "0" );
+    
+    Parser parser = new PosixParser();
+    CommandLine cmd = parser.parse(opts, null, properties);
+    assertTrue( !cmd.hasOption("a") );
+    assertTrue( !cmd.hasOption("c") );
+    assertTrue( cmd.hasOption("e") ); // Wrong, this option accepts an argument and should receive the value "0"
+    
+    properties = new Properties();
+    properties.setProperty( "a", "just a string" );
+    properties.setProperty( "e", "" );
+    
+    cmd = parser.parse

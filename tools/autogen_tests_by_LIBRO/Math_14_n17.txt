@@ -1,0 +1,20 @@
+public void testissue() {
+    MultivariateVectorFunction mvf = new MultivariateVectorFunction() {
+        public double[] value(double[] params) {
+            return new double[] {params[0]};
+        }
+    };
+    MultivariateMatrixFunction mdf = new MultivariateMatrixFunction() {
+        public double[][] value(double[] params) {
+            double[][] jacobian = new double[1][1];
+            jacobian[0][0] = 1;
+            return jacobian;
+        }
+    };
+
+    double[] startPoint = new double[] {1.0};
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    optimizer.optimize(new MaxEval(100), new ObjectiveFunction(mvf),
+            new ObjectiveFunctionGradient(mdf), GoalType.MINIMIZE,
+            new InitialGuess(startPoint));
+}

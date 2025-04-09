@@ -1,0 +1,10 @@
+public void testError() throws Exception {
+    File file = new File("src/test/resources/issues/IssueTest_114.tar");
+    TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(file));
+    TarArchiveEntry entry = tis.getNextTarEntry();
+    assertNotNull(entry);
+    assertEquals("a.txt", entry.getName());
+    byte[] b = new byte[(int) entry.getSize()];
+    IOUtils.readFully(tis, b);
+    assertEquals("a", new String(b));
+}

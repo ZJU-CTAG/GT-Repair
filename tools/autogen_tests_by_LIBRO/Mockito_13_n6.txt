@@ -1,0 +1,19 @@
+public void testIssue114() {
+  DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
+  DateTimeZone.setDefault(zone);
+  DateTime dt1 = new DateTime(2008, 1, 1, 0, 0, 0, 0);
+  DateTime dt2 = dt1.plusMonths(1);
+  MutableDateTime mdt = dt1.toMutableDateTime();
+  mdt.addMonths(1);
+  assertEquals(dt2, mdt);
+  assertEquals(dt2.getMillis(), mdt.getMillis());
+
+  // test for a bug that is fixed in 2.4
+  dt1 = new DateTime(2008, 2, 29, 0, 0, 0, 0);
+  dt2 = dt1.plusMonths(1);
+  mdt = dt1.toMutableDateTime();
+  mdt.addMonths(1);
+  assertEquals(dt2, mdt);
+  assertEquals(dt2.getMillis(), mdt.getMillis());
+}
+``

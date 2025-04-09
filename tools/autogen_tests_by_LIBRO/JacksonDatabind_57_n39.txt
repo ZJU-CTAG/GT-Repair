@@ -1,0 +1,13 @@
+public void testJsonReader() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final ObjectReader objectReader = objectMapper.reader();
+    final JsonParser parser = objectMapper.getFactory().createParser(new File("/home/sgr/tmp/test.json"));
+    final JsonReader<String> jsonReader = new JsonReader<String>(objectReader, "test", String.class);
+    parser.nextFieldName();
+    parser.nextFieldName();
+    final char[] fieldValue = parser.getTextCharacters();
+    final int offset = parser.getTextOffset();
+    final int len = parser.getTextLength();
+    final String test2 = jsonReader.readValue(fieldValue, offset, len);
+    System.out.println(test2);
+}

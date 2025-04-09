@@ -1,0 +1,18 @@
+public void testUTF8ZipFile() throws Exception {
+    File zipFile = getFile("/test-data/test-unicode.zip");
+    ZipFile zf = new ZipFile(zipFile);
+    try {
+        ZipArchiveEntry zae = zf.getEntry("test-unicode.txt");
+        InputStream is = zf.getInputStream(zae);
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            IOUtils.copy(is, baos);
+            String s = new String(baos.toByteArray(), "UTF-8");
+            assertEquals("\u00c0\u00c1\u00c2\u00c3", s);
+        } finally {
+            is.close();
+        }
+    } finally {
+        zf.close();
+    }
+}

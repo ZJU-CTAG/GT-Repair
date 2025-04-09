@@ -1,0 +1,26 @@
+public void testIssue() {
+    try {
+            File file = new File("/tmp/test.js");
+            FileWriter writer = new FileWriter(file);
+            writer.write("var t = null;\n" +
+                    "\n" +
+                    "window.test = function()\n" +
+                    "{\n" +
+                    " if (t != null) {\n" +
+                    "   t = null;\n" +
+                    " }\n" +
+                    "\n" +
+                    " t = 1;\n" +
+                    "};\n");
+            writer.close();
+            String[] args = new String[]{
+                    "--compilation_level", "ADVANCED_OPTIMIZATIONS",
+                    "--js", "/tmp/test.js",
+                    "--js_output_file", "/tmp/output.js"
+            };
+
+            Compiler.main(args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+}

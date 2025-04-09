@@ -1,0 +1,22 @@
+public void testRelationalOperations() {
+    JXPathContext context = JXPathContext.newContext(new Bean());
+    context.setLenient(true);
+    context.getVariables().declareVariable("var1", 0);
+    context.getVariables().declareVariable("var2", 0);
+    context.getVariables().declareVariable("var3", 1);
+    assertTrue((Boolean) context.getValue("$var1 + $var2 <= $var3"));
+}
+
+public static class Bean {
+    private List<String> strings;
+
+    public Bean() {
+        strings = new ArrayList<String>();
+        strings.add("Hello");
+        strings.add("World");
+    }
+
+    public List getStrings() {
+        return strings;
+    }
+}

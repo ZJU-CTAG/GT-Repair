@@ -1,0 +1,28 @@
+public void testReinitialize() {
+    EventHandler eh1 = new EventHandler() {
+        public void reset(long time) {
+            System.out.println("reset1");
+        }
+
+        public Action eventOccurred(Environment environment, Event event) {
+            System.out.println("event1");
+            return Action.ACCEPT;
+        }
+    };
+
+    EventHandler eh2 = new EventHandler() {
+        public void reset(long time) {
+            System.out.println("reset2");
+        }
+
+        public Action eventOccurred(Environment environment, Event event) {
+            System.out.println("event2");
+            return Action.ACCEPT;
+        }
+    };
+
+    Simulator s = new Simulator();
+    s.scheduleEvent(new Event(0, eh1));
+    s.scheduleEvent(new Event(0, eh2));
+    s.run();
+}

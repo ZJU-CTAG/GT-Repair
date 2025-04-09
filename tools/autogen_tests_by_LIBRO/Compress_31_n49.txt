@@ -1,0 +1,16 @@
+public void testTarGz() throws IOException {
+    String tarGzPath = getClass().getResource("/pom.tar.gz").getPath();
+    File tarGzFile = new File(tarGzPath);
+    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(tarGzFile))))) {
+
+        TarArchiveEntry entry = tarIn.getNextTarEntry();
+
+        while (entry != null) {
+            System.out.println(entry.getName());
+            entry = tarIn.getNextTarEntry();
+        }
+    }
+}

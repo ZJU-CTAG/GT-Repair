@@ -1,0 +1,16 @@
+public void testCSVRecord() throws Exception {
+    String csv = "Bob,Smith,bob@example.com\n" +
+                 "Alice,Jones,alice@example.com\n" +
+                 "\"John, Jr.\",Doe,john@example.com\n" +
+                 "\"\"\"Madonna\"\"\",\"\"\"Starbuck\"\"\"\"\"\"\",madonna@example.com\n";
+    
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    for (CSVRecord rec : format.parse(new StringReader(csv))) {
+        System.out.println(rec.toMap());
+    }
+
+    format = CSVFormat.DEFAULT.withSkipHeaderRecord();
+    for (CSVRecord rec : format.parse(new StringReader(csv))) {
+        System.out.println(rec.toMap());
+    }
+}

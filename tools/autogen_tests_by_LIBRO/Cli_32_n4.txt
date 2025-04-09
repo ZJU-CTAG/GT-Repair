@@ -1,0 +1,20 @@
+public void testHelpFormatter() {
+
+    Option option = new Option("b", "block-size", true, "use SIZE-byte blocks");
+    option.setArgName("SIZE");
+    Options options = new Options();
+    options.addOption(option);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[] { "-b", "1.1" });
+
+    HelpFormatter formatter = new HelpFormatter();
+
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(bout);
+
+    formatter.printHelp(pw, 100, "test", "header", options, 4, 4, "footer", true);
+    pw.flush();
+    String output = bout.toString();
+    assertTrue(output.length() > 0);
+}

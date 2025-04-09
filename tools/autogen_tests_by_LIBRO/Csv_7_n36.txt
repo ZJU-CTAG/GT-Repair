@@ -1,0 +1,16 @@
+public void testDuplicateHeader() throws IOException {
+    String expected = "1,2,3,4,5";
+    String csv = "Col1,Col2,Col2,Col3,Col4";
+    csv += System.lineSeparator();
+    csv += expected;
+    csv += System.lineSeparator();
+    csv += "4,5,6,7,8";
+    csv += System.lineSeparator();
+    Reader reader = new StringReader(csv);
+    CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+    boolean foundExpected = false;
+    for (CSVRecord record : parser) {
+        foundExpected |= expected.equals(record.toString());
+    }
+    assertTrue("Expected record not found", foundExpected);
+}

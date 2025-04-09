@@ -1,0 +1,20 @@
+public void testClosureCompiler() {
+    String js = "var foo = {};\n" +
+            "foo.bar = {\n" +
+            " 'bar1': function() { console.log('bar1'); }\n" +
+            "}\n" +
+            "\n" +
+            "function foobar() {}\n" +
+            "foobar.prototype = foo.bar;\n" +
+            "\n" +
+            "foo.foobar = new foobar;\n" +
+            "\n" +
+            "console.log(foo.foobar['bar1']);";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(Collections.<SourceFile>emptyList(),
+            Collections.singletonList(SourceFile.fromCode("in.js", js)),
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals(0, result.warnings.length);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.statistics.get("EXTERNS_MODIFIED"));

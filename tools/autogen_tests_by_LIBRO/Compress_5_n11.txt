@@ -1,0 +1,22 @@
+public void testZipArchiveInputStream() throws Exception {
+    File temp = File.createTempFile("archive", ".zip");
+    temp.deleteOnExit();
+    try {
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(temp);
+        ZipArchiveEntry entry = new ZipArchiveEntry("first");
+        zos.putArchiveEntry(entry);
+        zos.write("some data".getBytes());
+        zos.closeArchiveEntry();
+        entry = new ZipArchiveEntry("second");
+        zos.putArchiveEntry(entry);
+        zos.write("some more data".getBytes());
+        zos.closeArchiveEntry();
+        zos.close();
+
+        ZipArchiveInputStream zin = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(temp)));
+        // skip the first entry
+        zin.read();
+        zin.getNextEntry();
+        byte[] data = IOUtils.toByteArray(zin);
+        zin.close();
+        assertEquals("some more data", new String(data));

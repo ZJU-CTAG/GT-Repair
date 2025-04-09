@@ -1,0 +1,9 @@
+public void testNumberOverflow() {
+    // see http://www.w3.org/TR/REC-xml/#dt-charref
+    // char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+    // (any Unicode character, excluding the surrogate blocks, FFFE, and FFFF)
+    assertEquals("&#12345678;", StringEscapeUtils.unescapeXml("&#12345678;"));
+    assertEquals("x&#12345678;y", StringEscapeUtils.unescapeXml("x&#12345678;y"));
+    assertEquals("&#x12345678;", StringEscapeUtils.unescapeXml("&#x12345678;"));
+    assertEquals("x&#x12345678;y", StringEscapeUtils.unescapeXml("x&#x12345678;y"));
+}

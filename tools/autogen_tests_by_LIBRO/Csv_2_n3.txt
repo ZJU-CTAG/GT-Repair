@@ -1,0 +1,12 @@
+public void testIssue112() throws Exception {
+    //final CSVParser parser = new CSVParser("a,b", CSVFormat.newBuilder().withHeader("A", "B", "C").build());
+    CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C");
+    CSVParser parser = CSVParser.parse("a,b", format);
+    CSVRecord record = parser.iterator().next();
+    try {
+        record.get("C");
+        fail("Expected exception");
+    } catch (Exception e) {
+        assertEquals(ArrayIndexOutOfBoundsException.class, e.getClass());
+    }
+}

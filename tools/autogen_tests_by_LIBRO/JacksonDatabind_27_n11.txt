@@ -1,0 +1,14 @@
+public void testExternalIdAfterNonPOJO() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    m.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    Map<String,Object> input = new HashMap<String,Object>();
+    input.put("@com.fasterxml.jackson.annotation.JsonTypeInfo.Id", "x");
+    input.put("a", "b");
+    String json = m.writeValueAsString(input);
+    // note: should trigger exception here
+    Map<?,?> result = m.readValue(json, Map.class);
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("b", result.get("a"));
+}

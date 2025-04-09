@@ -1,0 +1,16 @@
+public void testArchiveStreamFinish() throws Exception {
+    final String data = "test data";
+    File destFile = new File(System.getProperty("java.io.tmpdir"), "testArchiveStreamFinish.zip");
+    OutputStream fos = new FileOutputStream(destFile);
+    ArchiveOutputStream aos = new ZipArchiveOutputStream(fos);
+    ArchiveEntry entry = aos.createArchiveEntry(new File("test.txt"), "test.txt");
+    aos.putArchiveEntry(entry);
+    aos.write(data.getBytes());
+    aos.closeArchiveEntry();
+    aos.flush();
+    aos.finish();
+    fos.flush();
+    fos.close();
+    assertTrue(destFile.exists());
+    destFile.delete();
+}

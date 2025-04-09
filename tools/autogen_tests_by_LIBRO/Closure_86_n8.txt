@@ -1,0 +1,16 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.compile(JSSourceFile.fromCode("test.js", "var Foo = function() {" +
+      "var self = this;" +
+      "window.setTimeout(function() {" +
+      "window.location = self.location;" +
+      "}, 0); };" +
+      "Foo.prototype.setLocation = function(loc) {" +
+      "this.location = loc;" +
+      "};" +
+      "var foo = new Foo();" +
+      "foo.setLocation('http://www.google.com/');"), options);
+}

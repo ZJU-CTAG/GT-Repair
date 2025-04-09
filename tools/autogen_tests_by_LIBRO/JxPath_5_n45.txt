@@ -1,0 +1,12 @@
+public void testUnionOfVariableAndNode() {
+    Document doc = readDocument();
+
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    context.getVariables().declareVariable("var", "/MAIN/B");
+    Object object = context.getValue("$var | /MAIN/A");
+
+    assertNotNull(object);
+    assertTrue(object instanceof Collection);
+    assertEquals(2, ((Collection)object).size());
+}

@@ -1,0 +1,13 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    JaxbAnnotationIntrospector jai = new JaxbAnnotationIntrospector();
+    AnnotatedClass ac = AnnotatedClass.construct(ClassWithInt.class, mapper.getDeserializationConfig(), jai);
+    for (BeanPropertyDefinition propDef : ac.findProperties()) {
+        System.out.println("propDef.getPrimaryMember() = " + propDef.getPrimaryMember());
+        System.out.println("propDef.getGetter() = " + propDef.getGetter());
+        System.out.println("propDef.getSetter() = " + propDef.getSetter());
+        System.out.println("propDef.getField() = " + propDef.getField());
+
+        AnnotatedMember acc = propDef.getAccessor();
+        System.out.println("acc.getAnnotated() = " + acc.getAnnotated());
+        System.out.println("acc.getAnnotation(javax.xml.bind.annotation

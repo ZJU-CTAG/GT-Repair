@@ -1,0 +1,16 @@
+public void testArNotDeleting() throws Exception {
+    final File archiveFile = new File(getTestDirectory(), TEST_ARCHIVE_NAME);
+    final File originalFile = new File(getTestDirectory(), TEST_FILE_NAME);
+    final ArchiveOutputStream archiveOutputStream = new ArArchiveOutputStream(new FileOutputStream(archiveFile));
+    final ArchiveInputStream archiveInputStream = new ArArchiveInputStream(new FileInputStream(archiveFile));
+    final ArchiveEntry archiveEntry1 = archiveInputStream.getNextEntry();
+    assertNotNull(archiveEntry1);
+    assertEquals(TEST_FILE_NAME, archiveEntry1.getName());
+    final ArchiveEntry archiveEntry2 = archiveInputStream.getNextEntry();
+    assertNotNull(archiveEntry1);
+    assertEquals(TEST_FILE_NAME, archiveEntry1.getName());
+    assertNull(archiveInputStream.getNextEntry());
+    archiveInputStream.close();
+    archiveOutputStream.close();
+    final ArArchiveEntry entry = new ArArchiveEntry(TEST_FILE_NAME);
+    final ArArchiveEntry entry2 =

@@ -1,0 +1,20 @@
+public void testPropertyNamingStrategy() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configOverride(LocalDate.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    String json = "{\"foo_bar\":\"2018-01-01\",\"baz\":\"baz\"}";
+    testObject result = mapper.readValue(json, testObject.class);
+    assertEquals(LocalDate.of(2018, 1, 1), result.getFooBar());
+    assertEquals("baz", result.getBaz());
+}
+
+public static class testObject {
+    private final LocalDate fooBar;
+    private final String baz;
+
+    public testObject(LocalDate fooBar, String baz) {
+        this.fooBar = fooBar;
+        this.b

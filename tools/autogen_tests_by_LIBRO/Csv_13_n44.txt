@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    CsvFormat format = new CsvFormat();
+    format.setNullString("\\N");
+    format.setEscape('\\');
+    StringWriter w = new StringWriter();
+    CsvPrinter p = new CsvPrinter(w, format);
+    p.printRecord("a", null, "b");
+    p.flush();
+    assertEquals(w.toString(), "a,\\N,b\r\n");
+}

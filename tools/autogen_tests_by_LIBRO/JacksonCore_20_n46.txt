@@ -1,0 +1,14 @@
+public void testByteArray() throws Exception
+{
+  final ObjectMapper mapper = new ObjectMapper();
+  mapper.getJsonFactory().enable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+  final ByteArrayOutputStream out = new ByteArrayOutputStream();
+  final JsonGenerator g = mapper.getJsonFactory().createJsonGenerator(out);
+  g.writeStartObject();
+  // g.writeObject(new byte[] { (byte)0x00, (byte)0xFF });
+  g.writeObject("foobar");
+  g.writeEndObject();
+  g.flush();
+  final byte[] bytes = out.toByteArray();
+  assertEquals("{\"foobar\":\"foobar\"}", new String(bytes, StandardCharsets.UTF_8));
+}

@@ -1,0 +1,21 @@
+public void testSimplexSolver() {
+    // Create a model object
+    SimplexModel model = new SimplexModel(true);
+    model.setMaximization(false);
+    // Create the solver
+    SimplexSolver solver = new SimplexSolver();
+    // Total number of entities (subjects)
+    final int ENTITIES_COUNT = 15;
+    IntVar[] t = new IntVar[ENTITIES_COUNT];
+    IntVar[] L = new IntVar[ENTITIES_COUNT];
+    // Create variables of the model
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        t[i] = new IntVar(model, "T" + i, 0, 100);
+        L[i] = new IntVar(model, "L" + i, 0, 10);
+    }
+    // Create a constraint for every subject
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        model.addConstraint(new Sum(
+            new IntVar[] {
+                t[i],
+                new IntVar(model

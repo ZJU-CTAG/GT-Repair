@@ -1,0 +1,10 @@
+public void testUnwrapped() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Person p = new Person();
+    p.businessAddress = new Address();
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(p);
+    System.out.println(json);
+    Person res = mapper.readValue(json, Person.class);
+    assertNotNull(res.businessAddress);
+}

@@ -1,0 +1,18 @@
+public void testGetOffsetFromLocal() {
+    DateTimeZone london = DateTimeZone.forID("Europe/London");
+    DateTimeZone berlin = DateTimeZone.forID("Europe/Berlin");
+    DateTimeZone paris = DateTimeZone.forID("Europe/Paris");
+    DateTimeZone losAngeles = DateTimeZone.forID("America/Los_Angeles");
+    
+    // This is the interesting test case
+    DateTime ambiguous = new DateTime(2007, 10, 28, 1, 30, 0, 0, losAngeles);
+    // This is in the gap
+    DateTime gap = new DateTime(2007, 10, 28, 2, 30, 0, 0, losAngeles);
+    // This is valid
+    DateTime valid = new DateTime(2007, 10, 28, 3, 30, 0, 0, losAngeles);
+    
+    assertEquals(false, ambiguous.isBefore(gap));
+    assertEquals(0, ambiguous.compareTo(gap));
+    
+    assertEquals(false, ambiguous.isBefore(valid));
+    assertEquals(0, ambiguous

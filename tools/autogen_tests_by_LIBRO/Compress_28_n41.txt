@@ -1,0 +1,15 @@
+public void testCorruptedTar() throws IOException {
+    String archivePath = PathUtil.join(testdataDir, "test.tar");
+    TarArchiveInputStream input = null;
+    input = new TarArchiveInputStream(new FileInputStream(archivePath));
+    ArchiveEntry nextMatchedEntry = input.getNextEntry();
+    while (nextMatchedEntry != null) {
+        logger.debugfmt("Extracting %s", nextMatchedEntry.getName());
+        String outputPath = PathUtil.join("target", "test-output", nextMatchedEntry.getName());
+        PathUtil.mkdirs(PathUtil.dirname(outputPath));
+        OutputStream out = new FileOutputStream(outputPath);
+        ByteStreams.copy(input, out);
+        out.close();
+        nextMatchedEntry = input.getNextEntry();
+    }
+}

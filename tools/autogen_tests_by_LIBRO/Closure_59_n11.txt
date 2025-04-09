@@ -1,0 +1,20 @@
+public void testIgnoreGlobalThis() {
+    String[] js = new String[] {
+        "/* @constructor */",
+        "var Foo = function() {",
+        "    this.bar = 5;",
+        "}",
+        "var foo = new Foo();",
+        "foo.bar = 6;",
+        "var a = foo.bar;"
+    };
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    List<SourceFile> input = new ArrayList<>();
+    for (String str : js) {
+        input.add(SourceFile.fromCode("foo.js", str));
+    }
+    Result result = new Compiler(new BlackHoleErrorManager()).compile(EMPTY_EXTERNS, input, options);
+    assertTrue(result.success);
+}

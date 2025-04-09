@@ -1,0 +1,17 @@
+public void testParse() {
+        File file = new File("./test-data/test-js/test.js");
+        JsDocInfoParser parser = new JsDocInfoParser(file, Charset.forName("UTF-8"));
+        JsDocInfo info = parser.parse();
+        assertTrue(info.hasRestrictions());
+        assertEquals(Restriction.RESTRICT_MODULE, info.getRestrictions().iterator().next());
+        assertTrue(info.hasCompilerOptions());
+        assertTrue(info.getCompilerOptions().contains(CompilerOption.CHECK_TYPES));
+        assertTrue(info.hasDescription());
+        assertTrue(info.hasDeprecated());
+        assertTrue(info.hasAuthor());
+        assertTrue(info.hasVisibility());
+        assertTrue(info.hasEnumParameterType());
+        assertTrue(info.hasEnumReturnType());
+        assertEquals("foo", info.getEnumParameterType().iterator().next());
+        assertEquals("foo", info.getEnumReturnType().iterator().next());
+        assert

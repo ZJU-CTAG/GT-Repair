@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
+            new InputSource(new StringReader("<ElementA A:myAttr=\"Mytype\">" +
+                    "  <B:ElementB>MY VALUE</B:ElementB>" +
+                    "  </ElementA>")));
+    XPath xpath = new DOMXPath("//*[@A:myAttr='Mytype']");
+    xpath.registerNamespace("A", "http://www.A.com");
+    xpath.registerNamespace("B", "http://www.B.com");
+    List result = xpath.selectNodes(doc);
+    assertEquals(1, result.size());
+}

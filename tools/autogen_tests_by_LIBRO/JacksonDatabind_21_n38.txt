@@ -1,0 +1,25 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    assertEquals("{\"value\":\"value1\"}", mapper.writeValueAsString(TestClass.getInstance()));
+    assertEquals(TestClass.getInstance(), mapper.readValue("{\"value\":\"value1\"}", TestClass.class));
+}
+
+static class TestClass {
+    private TestEnum value;
+
+    public static TestClass getInstance() {
+        TestClass testClass = new TestClass();
+        testClass.value = TestEnum.VALUE\_ONE;
+        return testClass;
+    }
+}
+
+enum TestEnum {
+    VALUE\_ONE("value1");
+
+    private String valueInJson;
+
+    private TestEnum(String valueInJson) {
+        this.valueInJson = valueInJson

@@ -1,0 +1,15 @@
+public void testInvalidFormatException() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"data\":[\"a\",\"b\"]}";
+    try {
+        mapper.readValue(json, MyBean.class);
+        fail("Should have failed");
+    } catch (Exception e) {
+        assertTrue(e instanceof InvalidFormatException);
+        InvalidFormatException exception = (InvalidFormatException)e;
+        assertEquals(1, exception.getPath().size());
+        assertTrue(exception.getPath().get(0) instanceof JsonMappingException.Reference);
+        assertEquals("data", ((JsonMappingException.Reference)exception.getPath().get(0)).getFieldName());
+        assertEquals(-1, ((JsonMappingException.Reference)exception.getPath().get(0)).getIndex());
+    }
+}

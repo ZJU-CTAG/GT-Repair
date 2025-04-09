@@ -1,0 +1,7 @@
+public void testIssueWithTableRow() {
+  final String html = "<table id='logTable'><tr><th>Header1</th><tr><tr><th>Header2</th></tr></table>";
+  final Document doc = Jsoup.parseBodyFragment(html);
+  final Element logTable = doc.getElementById("logTable");
+  logTable.append("<tr><td>Data</td></tr>");
+  assertEquals("<table id=\"logTable\">\n <tr> <th>Header1</th> </tr>\n <tr> <th>Header2</th> </tr>\n <tr> <td>Data</td></tr></table>", doc.body().html());
+}

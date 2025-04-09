@@ -1,0 +1,15 @@
+public void testIssue109() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> input = ImmutableList.of(SourceFile.fromCode("in.js", "var goog = {};\n"
+            + "goog.scope;\n"
+            + "var ns = {};\n"
+            + "ns.sub = {};\n"
+            + "/** @constructor */\n"
+            + "ns.sub.C = function() {};\n"
+            + "goog.scope(function() {\n"
+            + " var sub = ns.sub;\n"
+            + " /** @type {sub.C} */\n"
+            + " var x = null;\n"
+            + "});"));
+    compiler.compile(Collections.<SourceFile>emptyList(), input, new CompilerOptions());
+}

@@ -1,0 +1,23 @@
+public void testFoo() {
+    String original = "function reduction() {\n" +
+        " var a, b;\n" +
+        " if (echo(b = true) || echo(b = false))\n" +
+        " a = b;\n" +
+        " else\n" +
+        " a = null;\n" +
+        " return a;\n" +
+        "}\n";
+
+    String compiled = "function reduction() {\n" +
+        " var a;\n" +
+        " return echo(true) || echo(a = false) ? a: null\n" +
+        "}\n";
+
+    System.out.println("Original:\n" + original);
+    System.out.println("Compiled:\n" + compiled);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("original", original) },
+        new JSSourceFile[] { JSSourceFile.fromCode("compiled", compiled) },
+        new CompilerOptions());
+    assert

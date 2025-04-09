@@ -1,0 +1,17 @@
+public void testReadEntry() throws Exception {
+    ZipFile zipFile =
+        new ZipFile(
+            getFile("/archive.zip"),
+            ZipFile.OPEN_READ | ZipFile.ENCODING_UTF_8);
+    final ZipArchiveEntry entry = zipFile.getEntry("file");
+    assertNotNull(entry);
+    InputStream is = zipFile.getInputStream(entry);
+    assertNotNull(is);
+    byte[] buffer = new byte[2048];
+    int read = is.read(buffer);
+    assertEquals(2, read);
+    assertEquals(0x31, buffer[0]);
+    assertEquals(0x0a, buffer[1]);
+    is.close();
+    zipFile.close();
+}

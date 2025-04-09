@@ -1,0 +1,16 @@
+public void testWriteEmbedded() throws Exception
+{
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator g = JSON_F.createGenerator(ObjectWriteContext.empty(), out);
+    g.writeEmbeddedObject(null);
+    g.writeEmbeddedObject(new byte[0]);
+    g.writeEmbeddedObject(new byte[1]);
+    g.writeEmbeddedObject(new byte[2]);
+    g.close();
+    JsonParser p = JSON_F.createParser(ObjectReadContext.empty(), out.toByteArray());
+    assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+    assertNull(p.getEmbeddedObject());
+    assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+    assertArrayEquals(new byte[0], (byte[]) p.getEmbeddedObject());
+    assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
+    assertArrayEquals(new byte[1], (byte

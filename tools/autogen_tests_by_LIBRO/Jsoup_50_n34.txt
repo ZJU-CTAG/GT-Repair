@@ -1,0 +1,8 @@
+public void testIssue117() throws IOException {
+    // raw BOM bytes for UTF-16LE
+    byte[] bytes = new byte[]{(byte) 0xFF, (byte) 0xFE, (byte) 0x61, (byte) 0x00};
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+    String encoding = DataUtil.getCharsetFromContentType(new String(bytes, "UTF-16LE"));
+    String charset = DataUtil.getCharsetFromStream(inputStream, encoding);
+    assertEquals("UTF-16LE", charset);
+}

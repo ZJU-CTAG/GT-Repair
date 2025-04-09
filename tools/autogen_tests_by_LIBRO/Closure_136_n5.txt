@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String js = "var child = Class.create(parent, {\n"
+            + "    initialize: function($super) {\n"
+            + "        $super('argument');\n"
+            + "    }\n"
+            + "});";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.ideMode = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setSourceMapOutputPath("a.js.map");
+    options.setSourceMapFormat(SourceMap.Format.V3);
+    options.setCodingConvention(new ClosureCodingConvention());
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    Result result = compiler.compile(SourceFile.fromCode("a.js", js),
+            SourceFile.fromCode("b.js", js), options);
+    assertEquals(result.success,

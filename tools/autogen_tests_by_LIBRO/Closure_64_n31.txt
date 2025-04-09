@@ -1,0 +1,18 @@
+public void testLanguageIn() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    List<SourceFile> externs = Arrays.asList(
+        SourceFile.fromCode("externs", "")
+    );
+    List<SourceFile> sources = Arrays.asList(
+        SourceFile.fromCode("get_num.js", "var getNum = function() { return 5; }"),
+        SourceFile.fromCode("alert.js", "alert(getNum());")
+    );
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, sources, options);
+    String result = compiler.toSource();
+    System.out.println("result=" + result);
+    assertEquals("alert(5);", result);
+}

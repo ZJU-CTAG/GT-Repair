@@ -1,0 +1,25 @@
+public void testIssue108() {
+    String code = ""
+        +"/** @constructor */"
+        +"function Foo() {"
+        +"  var self = this;"
+        +"  window.setTimeout(function() {"
+        +"    window.location = self.location;"
+        +"  }, 0);"
+        +"}"
+        +""
+        +"Foo.prototype.setLocation = function(loc) {"
+        +"  this.location = loc;"
+        +"};"
+        +""
+        +"(new Foo()).setLocation('http://www.google.com/');"
+        +"";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setExtraAnnotationNames(
+        Lists.newArrayList("jsdoc"));
+    options.setCheckTypes(true);
+    options.setRemoveUnusedPrototypeProperties(true);
+    options.setRemove

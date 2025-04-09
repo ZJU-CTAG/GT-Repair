@@ -1,0 +1,29 @@
+public void testIssue108() {
+    LocalSearchSolver solver = new LocalSearchSolver();
+    solver.setSelector(new MoveSelector() {
+        @Override
+        public Iterator<Move> moveIterator(ScoreDirector scoreDirector) {
+            return new CompositeIterator<Move>(
+                new MoveIterator(new Move() {
+                    @Override
+                    public void doMove(ScoreDirector scoreDirector) {
+                        if (scoreDirector.getWorkingSolution().getValue() != 0) {
+                            throw new IllegalStateException("It's not initialized correctly.");
+                        }
+                        scoreDirector.getWorkingSolution().setValue(1);
+                    }
+                }),
+                new MoveIterator(new Move() {
+                    @Override
+                    public void doMove(ScoreDirector scoreDirector) {
+                        if (scoreDirector.getWorkingSolution().getValue() != 0) {
+                            throw new IllegalStateException("It's not initialized correctly.");
+                        }
+                        scoreDirector.getWorkingSolution().setValue(2);
+                    }
+                })
+            );
+        }
+    });
+    Solution solution = new Solution();
+    solution.set

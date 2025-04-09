@@ -1,0 +1,15 @@
+public void testIssue108() {
+    final double[] target = {1.0, 2.0, 3.0};
+    final VectorialPointValuePair result = new LevenbergMarquardtOptimizer(new VectorialConvergenceChecker() {
+        @Override
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            return Arrays.equals(target, current.getValueRef());
+        }
+    }).optimize(new InitialGuess(new double[] {0.0, 0.0, 0.0}), new ObjectiveFunction(new MultivariateVectorFunction() {
+        @Override
+        public double[] value(double[] variables) {
+            return variables;
+        }
+    }), GoalType.MINIMIZE, new Target(target));
+    assertTrue(Arrays.equals(target, result.getValueRef()));
+}

@@ -1,0 +1,21 @@
+public void testIssue108() {
+    String script =
+        "/** @const */\n" +
+        "var foo = {};\n" +
+        "foo.bar = {\n" +
+        " 'bar1': function() { console.log('bar1'); }\n" +
+        "}\n" +
+        "/** @constructor */\n" +
+        "function foobar() {}\n" +
+        "foobar.prototype = foo.bar;\n" +
+        "foo.foobar = new foobar;\n" +
+        "console.log(foo.foobar['bar1']);\n";
+    ScriptableObject scope = cx.initStandardObjects();
+    cx.evaluateString(scope, script, "<cmd>", 1, null);
+    Object result = scope.get("foo", scope);
+    assertNotNull(result);
+    assertTrue(result instanceof NativeObject);
+    result = ((Scriptable) result).get("foobar", scope);
+    assertNotNull(result);
+    assertTrue(result instanceof NativeObject);
+    result = ((Scriptable

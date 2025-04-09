@@ -1,0 +1,18 @@
+public void testIssue103() {
+    String extern = "var window = {};";
+    String source = "var foreignObject = gfx.parentNode.parentNode;\n" +
+                    "var parentContainer = foreignObject.parentNode.parentNode;\n" +
+                    "if (parentContainer != null)\n" +
+                    "    parentContainer.appendChild(foreignObject);";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(extern, SourceFile.fromCode("extern", extern),
+                     options);
+    compiler.compile(source, SourceFile.fromCode("source", source),
+                     options);
+    String

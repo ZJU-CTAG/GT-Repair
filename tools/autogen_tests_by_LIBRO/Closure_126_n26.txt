@@ -1,0 +1,10 @@
+public void testBreakInFinally() throws Exception {
+    Context cx = Context.enter();
+    try {
+        cx.setOptimizationLevel(-1);
+        Scriptable scope = cx.initStandardObjects();
+        cx.evaluateString(scope, "var b=true;try{throw 'throw me'}finally{if(b)break b;console.log('ok then...')}", "test", 1, null);
+    } finally {
+        Context.exit();
+    }
+}

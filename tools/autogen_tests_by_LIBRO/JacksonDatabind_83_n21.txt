@@ -1,0 +1,26 @@
+public void testUUID_DeserializationProblemHandler() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper().addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(final DeserializationContext ctxt,
+                final Class<?> targetType,
+                final String valueToConvert,
+                final String failureMsg) throws IOException {
+            return null;
+        }
+    });
+    ObjectReader r = mapper.readerFor(IdBean.class);
+    try {
+        r.readValue("{\"id\" : \"I am not a UUID\"}");
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "not a valid textual representation");
+    }
+
+    try {
+        r.readValue("{\"id\" : \"I am not a UUID either\"}");
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "not a valid textual representation");
+    }
+}

@@ -1,0 +1,17 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    solver.setMaxIterations(10000);
+    solver.setTolerance(1e-6);
+    double[] result = solver.optimize(
+        new LinearObjectiveFunction(new double[] { 5, 6 }, 0),
+        new LinearConstraintSet(new LinearConstraint[] {
+            new LinearConstraint(new double[] { 1, 1 }, Relationship.EQ, 100),
+            new LinearConstraint(new double[] { 10, 4 }, Relationship.LEQ, 320),
+            new LinearConstraint(new double[] { 1, 0 }, Relationship.GEQ, 0),
+            new LinearConstraint(new double[] { 0, 1 }, Relationship.GEQ, 0)
+        }),
+        GoalType.MAXIMIZE
+    ).getPoint();
+    assertEquals(20.0, result[0], 1e-6);
+    assertEquals(80.0, result[1], 1e-6);
+}

@@ -1,0 +1,13 @@
+public void testIssueIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"a\":2147483648}", Map.class);
+        fail("Should not pass");
+    } catch (JsonParseException e) {
+        fail("Should not be JsonParseException");
+    } catch (JsonMappingException e) {
+        assertEquals("Cannot coerce `2147483648` into `java.lang.Integer`: numeric value (`2147483648`) out of range of `java.lang.Integer` (numeric value too large)", e.getMessage());
+        assertEquals(JsonToken.VALUE_NUMBER_INT, e.getPath().getFieldNode().getValueNode().asToken());
+        assertEquals(Integer.class, e.getPath().getFieldNode().getValueNode().getNumericType());
+    }
+}

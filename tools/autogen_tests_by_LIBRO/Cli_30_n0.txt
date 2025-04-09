@@ -1,0 +1,13 @@
+public void testDefaultOptionsInOptionGroup() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(new Option("a", "enable-a"));
+    group.addOption(new Option("b", "enable-b"));
+    options.addOptionGroup(group);
+    Properties defaults = new Properties();
+    defaults.setProperty("b", "true");
+    CommandLine cmd = parser.parse(options, new String[]{"-a"}, defaults);
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+}

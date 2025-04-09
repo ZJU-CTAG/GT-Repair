@@ -1,0 +1,17 @@
+public void testPrototype() {
+    Object foo = new Object();
+    Map<String, Object> bar = new HashMap<String, Object>();
+    bar.put("bar1", new Function() {
+        public Object call(Object... params) {
+            return "bar1";
+        }
+    });
+
+    foo.put("bar", bar);
+
+    ScriptableObject foobar = new ScriptableObject();
+    foobar.setPrototype(bar);
+    foo.put("foobar", foobar);
+
+    assertEquals("bar1", foo.get("foobar").get("bar1"));
+}

@@ -1,0 +1,14 @@
+public void testNoQuotes() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator generator = mapper.getJsonFactory().createJsonGenerator(out, JsonEncoding.UTF8);
+    generator.writeStartObject();
+    generator.writeStringField("test", "foo");
+    generator.writeEndObject();
+    generator.close();
+
+    assertEquals("{test:foo}", out.toString("UTF-8"));
+}

@@ -1,0 +1,12 @@
+public void testIssue109() {
+    Document doc = DocumentHelper.createDocument();
+    Element root = doc.addElement("foo").addAttribute("xmlns", "test111");
+    Element bar = root.addElement("bar");
+    bar.addNamespace("b", "bla");
+    bar.setText("a");
+    root.addElement("test");
+    JXPathContext context = JXPathContext.newContext(root);
+    Pointer ptr = context.getPointer("/test");
+    assertEquals(root.selectSingleNode("test"), ((NodePointer) ptr).getNode());
+    assertEquals("/test", ptr.asPath());
+}

@@ -1,0 +1,10 @@
+public void testCheckSourceFilesInBinaryJar() throws IOException {
+    JarFile jarFile = new JarFile(new File("D:/mockito/libs/mockito-core-1.9.5.jar"));
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry entry = entries.nextElement();
+        if (entry.getName().endsWith(".java")) {
+            fail("Java files should not be in binary jar: " + entry.getName());
+        }
+    }
+}

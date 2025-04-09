@@ -1,0 +1,18 @@
+public void testFilteringParserDelegateAllowMultipleMatches() throws IOException {
+    final String input = "{ \"a\": 1, \"b\": 2 }";
+    final String output = "{ \"a\": 1 }";
+    final ObjectMapper om = new ObjectMapper();
+    om.setSerializationInclusion(Include.NON_NULL);
+    final JsonFactory jf = new JsonFactory(om);
+    final JsonParser jp = jf.createParser(input);
+    final FilteringParserDelegate filterDelegate = new FilteringParserDelegate(jp, new SimpleBeanPropertyFilter() {
+        @Override
+        protected boolean include(BeanPropertyWriter writer) {
+            return "a".equals(writer.getName());
+        }
+    }, true, false);
+    filterDelegate.nextToken();
+    final JsonGenerator jg = jf.createGenerator(System.out, JsonEncoding.UTF8);
+    jg.copyCurrentStructure(filterDelegate);
+    jg.close();
+}

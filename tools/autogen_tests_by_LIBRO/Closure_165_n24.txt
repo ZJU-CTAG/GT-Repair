@@ -1,0 +1,17 @@
+public void testIssue116() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("test.js", "var x = {};\n"
+                    + "/** @param {!Object} rec */\n"
+                    + "var func = function(rec) {\n"
+                    + "  alert(rec.name2);\n"
+                    + "};\n"
+                    + "func({name: 'jim', id: 0});") },
+            new CompilerOptions());
+    assertEquals(
+            "JSC_PROPERTY_ACCESS_ON_NONOBJECT\n"
+            + "test.js:4: ERROR - Property name2 never defined on rec\n"
+            + "  alert(rec.name2);\n"
+            + "            ^^^\n",
+            result.errors[0].toString());
+}

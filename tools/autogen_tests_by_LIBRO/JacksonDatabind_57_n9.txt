@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    char[] input = "{\"a\":1,\"b\":2}".toCharArray();
+    char[] input2 = "{\"a\":3,\"b\":4}".toCharArray();
+    JsonParser jsonParser = mapper.getFactory().createParser(new CharArrayReader(input));
+    ObjectReader reader = mapper.reader();
+    JsonNode node = reader.readTree(jsonParser);
+    assertEquals(1, node.get("a").intValue());
+    assertEquals(2, node.get("b").intValue());
+    jsonParser = mapper.getFactory().createParser(new CharArrayReader(input2));
+    ObjectNode node2 = reader.readValue(jsonParser, ObjectNode.class);
+    assertEquals(3, node2.get("a").intValue());
+    assertEquals(4, node2.get("b").intValue());
+}

@@ -1,0 +1,22 @@
+public void testNullTypeId() throws Exception
+{
+    String json = "{\"value\" : null}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(Root.class, MixIn.class);
+    Root root = mapper.readValue(json, Root.class);
+    assertNull(root.value);
+}
+
+interface MixIn {
+    @JsonTypeInfo(use = Id.NONE)
+    @JsonSubTypes({ @Type(None.class) })
+    static class Root {
+    }
+}
+
+static class Root {
+    public None value;
+}
+
+static class None {
+}

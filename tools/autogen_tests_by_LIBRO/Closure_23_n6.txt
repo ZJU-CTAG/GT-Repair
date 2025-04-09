@@ -1,0 +1,11 @@
+public void testIssue108() {
+    assertEquals(1, fold("console.log([console.log('hello, '), 'world!'][1]);"));
+}
+
+private int fold(String js) {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    Node root = compiler.parseTestCode(js);
+    new PeepholeFoldConstants(compiler, new DefaultErrorManager(ErrorManager.DO_NOTHING_HANDLER)).process(null, root);
+    return compiler.toSource().split("\n").length;
+}

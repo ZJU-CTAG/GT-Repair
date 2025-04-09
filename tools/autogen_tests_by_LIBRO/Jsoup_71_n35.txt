@@ -1,0 +1,12 @@
+public void testSelectTextNode() {
+    final String html = "<html><head/><body>" +
+                        "<div id='mydiv'>Hello <span>World!</span></div>" +
+                        "</body></html>";
+    final HtmlPage page = loadPage(html);
+    final HtmlElement element = page.getHtmlElementById("mydiv");
+    final HtmlElement span = (HtmlElement) element.getFirstChild();
+    final HtmlTextNode text = (HtmlTextNode) span.getPreviousSibling();
+    assertNotNull(text);
+    assertEquals("Hello ", text.asText());
+    assertEquals(element, text.getParentNode());
+}

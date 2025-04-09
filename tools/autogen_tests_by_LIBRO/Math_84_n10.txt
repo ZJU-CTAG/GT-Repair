@@ -1,0 +1,27 @@
+public void testMultiDirectionalCorrectStart() {
+    // create the optimisation problem
+    final MultivariateFunction function = new MultivariateFunction() {
+        public double value(double[] point) {
+            final double x = point[0];
+            final double y = point[1];
+            return 10 * (x - 1) * (x - 1) + 20 * (y - 2) * (y - 2) + 30;
+        }
+    };
+    final MultivariateRealFunction functionGradient = new MultivariateRealFunction() {
+        public double value(double[] point) {
+            final double x = point[0];
+            final double y = point[1];
+            return new double[] {
+                    20 * (x - 1),
+                    40 * (y - 2)
+            };
+        }
+    };
+    OptimizationData[] optData = new OptimizationData[] {
+            new Target(function),
+            new InitialGuess(new double[] { 1, 2 }),
+            new ObjectiveFunctionGradient(functionGradient),
+            new MaxIter(1000),
+            new MaxEval(1000)
+    };
+   

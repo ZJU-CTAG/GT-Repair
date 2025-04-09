@@ -1,0 +1,16 @@
+public void testOptionGroupState() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.withLongOpt("foo").create("f"));
+    group.addOption(OptionBuilder.withLongOpt("bar").create("b"));
+    options.addOptionGroup(group);
+    CommandLineParser parser = new PosixParser();
+    Properties defaults = new Properties();
+    defaults.setProperty("b", "true");
+    try {
+        parser.parse(options, new String[] {"-f"}, defaults);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+}

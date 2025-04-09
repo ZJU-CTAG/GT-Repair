@@ -1,0 +1,7 @@
+public void testJsoupBug() {
+    Document doc = Jsoup.parse("<body><p>Hello World</p><p>Hello World 2</p><p>Hello World</p></body>");
+    Element body = doc.body();
+    Elements toMove = body.select("p:contains(2)");
+    body.insertChildren(0, toMove);
+    assertEquals("<body><p>Hello World 2</p><p>Hello World</p><p>Hello World</p></body>", body.html());
+}

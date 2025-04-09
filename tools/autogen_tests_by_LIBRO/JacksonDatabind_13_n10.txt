@@ -1,0 +1,8 @@
+public void testIdSerialization() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    final ObjectIdGenerator.IdKey key1 = new ObjectIdGenerator.IdKey("test", "123");
+    final ObjectIdGenerator.IdKey key2 = new ObjectIdGenerator.IdKey("test", new Long(123));
+    assertEquals("\"123\"", mapper.writeValueAsString(key1));
+    assertEquals("\"123\"", mapper.writeValueAsString(key2));
+    assertEquals(key1, mapper.readValue("\"123\"", ObjectIdGenerator.IdKey.class));
+}

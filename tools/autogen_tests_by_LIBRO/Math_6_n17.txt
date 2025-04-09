@@ -1,0 +1,29 @@
+public void testMinimizeParameterlessCostFunction() {
+        // setup
+        CostFunction func = new CostFunction() {
+
+            @Override
+            public double cost(double[] x) {
+                return x[0] * x[0];
+            }
+
+            @Override
+            public double[] gradient(double[] x) {
+                return new double[] { 2 * x[0] };
+            }
+
+            @Override
+            public double[][] hessian(double[] x) {
+                return new double[][] { { 2 } };
+            }
+
+        };
+
+        // action
+        PointVectorValuePair optimum = new LevenbergMarquardtOptimizer().optimize(100, func, GoalType.MINIMIZE,
+                new double[] { 1 });
+
+        // verify
+        assertEquals(0, optimum.getPoint()[0], 1e-10);
+        assertEquals(0, optimum.getValue()[0], 1e-10);
+    }

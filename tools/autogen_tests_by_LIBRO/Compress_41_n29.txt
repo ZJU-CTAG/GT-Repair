@@ -1,0 +1,9 @@
+public void testInvalidEntry() throws Exception {
+    final ZipArchiveInputStream zais = new ZipArchiveInputStream(new ByteArrayInputStream(new byte[] {0, 0, 0, 0}));
+    try {
+        final ZipArchiveEntry entry = zais.getNextZipEntry();
+        assertNull(entry);
+    } catch (final IOException e) {
+        assertEquals("Invalid entry in the zip file", e.getMessage());
+    }
+}

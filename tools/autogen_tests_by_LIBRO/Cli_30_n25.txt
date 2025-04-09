@@ -1,0 +1,17 @@
+public void testIssue142() {
+    try {
+        CommandLineParser parser = new GnuParser();
+        Options options = new Options();
+        OptionGroup group = new OptionGroup();
+        group.addOption(new Option("a", "a", false, "toggle -a"));
+        group.addOption(new Option("b", "b", false, "toggle -b"));
+        options.addOptionGroup(group);
+        Properties defaults = new Properties();
+        defaults.put("a", "true");
+        defaults.put("b", "true");
+        parser.parse(options, new String[]{"-b"}, defaults);
+        fail("Expected ParseException: conflicting options");
+    } catch (ParseException expected) {
+        assertTrue(expected.getMessage().indexOf("conflicting") >= 0);
+    }
+}

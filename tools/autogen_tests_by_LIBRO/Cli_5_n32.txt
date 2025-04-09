@@ -1,0 +1,14 @@
+public void testHasOption() {
+   Options options = new Options();
+   options.addOption("a", "enable-a", false, "turn [a] on or off");
+   options.addOption("b", "bfile", true, "set the value of [b]");
+   options.addOption("c", "copt", false, "turn [c] on or off");
+
+   CommandLineParser parser = new PosixParser();
+   CommandLine cmd = parser.parse(options, new String[] {"-a", "-b", "toast"});
+   assertTrue(cmd.hasOption("a"));
+   assertTrue(cmd.hasOption("b"));
+   assertFalse(cmd.hasOption("c"));
+   assertFalse(cmd.hasOption("d")); // should be false
+   assertFalse(cmd.hasOption(null)); // should be false
+}

@@ -1,0 +1,18 @@
+public void testTooLargeFirstStep() throws Exception {
+    double minStep = 0.1 * (1 - 0.5) * Precision.EPSILON;
+    double maxStep = 0.1 * (1 - 0.5) * Precision.SAFE_MIN;
+    ContinuousOutputModel integrator = new DormandPrince853Integrator(minStep, maxStep,
+                                                                      1.0e-10, 1.0e-10);
+    integrator.addStepHandler(new ContinuousOutputModel.Listener() {
+        public void init(double t0, double[] y0, double t) {
+            // do nothing
+        }
+        public void handleStep(ContinuousOutputModel interpolator,
+                               boolean isLast) {
+            double   stopTime = 1.0;
+            interpolator.setInterpolatedTime(stopTime);
+        }
+    });
+    double[] y = new double[] { 1.0 };
+    integrator.integrate(new Exp(), 0.0, y, 0.5, y);  // initial time
+}

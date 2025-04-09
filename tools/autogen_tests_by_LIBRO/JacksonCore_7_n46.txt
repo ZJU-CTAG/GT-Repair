@@ -1,0 +1,10 @@
+public void testWriteStringAfterName() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final JsonGenerator generator = mapper.getJsonFactory().createJsonGenerator(out);
+    generator.writeStartObject();
+    generator.writeFieldName("test");
+    generator.writeString("hello");
+    generator.close();
+    assertEquals("{\"test\":\"hello\"}", out.toString());
+}

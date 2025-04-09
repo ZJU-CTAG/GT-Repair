@@ -1,0 +1,32 @@
+public void testIssue108() {
+    String expr = "jxpath:observations()";
+    Map<String, String> ns = new HashMap<String, String>();
+    ns.put("jxpath", "jxpath");
+    JXPathContext jxpath = JXPathContext.newContext(new Bean());
+    jxpath.setNamespaceContextPointer(new SimpleNamespaceContext(ns));
+    assertEquals(1, jxpath.iterate(expr).getLength());
+}
+
+public static class Bean {
+    public static NodeSet observations() {
+        BasicNodeSet result = new BasicNodeSet();
+        result.add(new BeanPointer(new Bean()));
+        return result;
+    }
+}
+public static class BeanPointer extends AbstractFactory.Pointer {
+
+    public BeanPointer(Object bean) {
+        super(null, null, bean);
+    }
+
+    public QName getName() {
+        return null;
+    }
+
+    public Object getBaseValue() {
+        return getImmediateNode();
+    }
+
+    public boolean isCollection() {
+       

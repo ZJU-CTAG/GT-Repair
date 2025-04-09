@@ -1,0 +1,10 @@
+public void testTypeResolution() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(String.class, "string"));
+    mapper.registerSubtypes(new NamedType(Integer.class, "integer"));
+
+    String json = mapper.writeValueAsString(new StringWrapper());
+
+    StringWrapper sw = mapper.readValue(json, StringWrapper.class);
+    assertEquals(String.class, sw.getValue().getClass());
+}

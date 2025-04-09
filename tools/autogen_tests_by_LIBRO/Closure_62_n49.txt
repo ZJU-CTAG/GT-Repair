@@ -1,0 +1,24 @@
+public void testIssue108() {
+  String code1 = "alert(1;";
+  String code2 = "alert(1;\n";
+  String code3 = "alert(1;\n\n";
+  String code4 = "alert(1;\n\n\n";
+  String code5 = "alert(1;\n\n\n\n";
+  String code6 = "alert(1;\n\n\n\n\n";
+  
+  TestErrorManager errorManager = new TestErrorManager();
+  Compiler.setLoggingLevel(Level.OFF);
+  
+  testCode(code1, errorManager);
+  assertTrue(errorManager.getOutput().contains("^"));
+  
+  errorManager.reset();
+  testCode(code2, errorManager);
+  assertTrue(errorManager.getOutput().contains("^"));
+  
+  errorManager.reset();
+  testCode(code3, errorManager);
+  assertTrue(errorManager.getOutput().contains("^"));
+  
+  errorManager.reset();
+  testCode(code4

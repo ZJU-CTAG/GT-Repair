@@ -1,0 +1,13 @@
+public void testIssue106() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("test", Version.unknownVersion())
+            .addSerializer(new CustomSerializer()));
+    ObjectWriter objectWriter = mapper.writer().withType(PojoWithJsonValue.class);
+    String json = objectWriter.writeValueAsString(new PojoWithJsonValue());
+    assertEquals("{\"name\":\"mapper\"}", json);
+}
+
+@JsonValue
+public Map<String, Object> getValue() {
+    return Collections.singletonMap("name", "mapper");
+}

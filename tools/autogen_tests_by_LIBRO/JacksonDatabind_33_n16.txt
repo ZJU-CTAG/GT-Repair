@@ -1,0 +1,19 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    Pojo input = new Pojo();
+    input.a = new A();
+    input.a.date = new DateTime(2012, 3, 14, 15, 9, 26, 789, DateTimeZone.UTC);
+    input.a.i = 42;
+    input.b = new B();
+    input.b.date = new LocalDate(2012, 3, 14);
+    input.b.i = 43;
+    String actual = mapper.writeValueAsString(input);
+    String expected = "{\n" +
+            "  \"a\" : {\n" +
+            "    \"i\" : 42,\n" +
+            "    \"date\" : \"2012-03-14T15:09:26.789Z\"\n" +
+            "  },\n" +
+            "  \"b\" : {\n" +
+            "    \"i\" : 43,\n" +
+            "    \"date\" : \"2012-03

@@ -1,0 +1,12 @@
+public void testOnlyAssignmentToThis() throws Exception {
+    String code = IOUtils.toString(getClass().getResourceAsStream("/issue_107.js"));
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("issue_107.js", code)
+        },
+        new CompilerOptions()
+    );
+    assertEquals("", result.errors[0].toString());
+    assertEquals("", result.warnings[0].toString());
+}

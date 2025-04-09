@@ -1,0 +1,11 @@
+public void testContextualSerializer() throws Exception {
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(DateTime.class, new DateTimeSerializer(DateTimeZone.UTC, DateTimeFieldType.secondOfDay()));
+    SimpleObjectMapper mapper = new SimpleObjectMapper();
+    mapper.registerModule(module);
+
+    assertEquals("\"0\"", mapper.writeValueAsString(new DateTime(0L)));
+
+    assertEquals("\"0\"", mapper.writeValueAsString(new WithField(new DateTime(0L))));
+    assertEquals("\"0\"", mapper.writeValueAsString(new WithGetter(new DateTime(0L))));
+}

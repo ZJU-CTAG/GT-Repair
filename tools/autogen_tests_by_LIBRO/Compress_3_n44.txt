@@ -1,0 +1,16 @@
+public void testFinish() {
+    final ByteArrayOutputStream baout = new ByteArrayOutputStream();
+    final TarArchiveOutputStream taos = new TarArchiveOutputStream(baout);
+    final TarArchiveEntry tae = new TarArchiveEntry("foo");
+    tae.setSize(0);
+    try {
+        taos.putArchiveEntry(tae);
+        taos.closeArchiveEntry();
+        taos.finish();
+        assertTrue(baout.size() > 0);
+        taos.finish();
+        assertEquals(baout.size(), baout.size());
+    } catch (final IOException ioe) {
+        fail(ioe.getMessage());
+    }
+}

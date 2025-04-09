@@ -1,0 +1,14 @@
+public void testTypeCheck() {
+    String schema = "{ \"type\": \"record\", \"name\": \"A\", \"fields\": [ { \"name\": \"f\", \"type\": \"B\" } ] }";
+    String schema2 = "{ \"type\": \"record\", \"name\": \"B\", \"fields\": [ { \"name\": \"f\", \"type\": \"int\" } ] }";
+    Schema sc = new Schema.Parser().parse(schema);
+    Schema sc2 = new Schema.Parser().parse(schema2);
+    Type type = new SchemaAsType().getType(sc);
+    Type type2 = new SchemaAsType().getType(sc2);
+    Type type3 = new NamedType("B", type2);
+    Type type4 = new NamedType("A", type);
+    Schema sc3 = type4.getSchema();
+    Schema sc4 = type3.getSchema();
+    Type type5 = new SchemaAsType().getType(sc4);
+    Type type6 = new SchemaAsType().getType(sc3);
+}

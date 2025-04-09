@@ -1,0 +1,17 @@
+public void testHelpFormatter() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("a", "all", false, "do not hide entries starting with .");
+    options.addOption("A", "almost-all", false, "do not list implied . and ..");
+    options.addOption("b", "escape", false, "print octal escapes for nongraphic "
+            + "characters");
+    // create the argument list
+    String[] args = new String[] {"-a"};
+    try {
+        CommandLine line = parser.parse(options, args);
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("ls", options);
+    } catch (ParseException e) {
+        fail("Exception thrown: " + e.getMessage());
+    }
+}

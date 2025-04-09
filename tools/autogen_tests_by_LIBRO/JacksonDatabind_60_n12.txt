@@ -1,0 +1,12 @@
+public void testJsonValue() throws IOException {
+    final JsonFilter f = new JsonFilter();
+
+    final RemoteInstance ri = new RemoteInstance(UUID.randomUUID(), ResponseReceiver.class.getCanonicalName());
+    final CommandAPDU cmd = new CommandAPDU(new byte[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
+    final RemoteCall rc = new RemoteCall(ri, "test", new Object[] { cmd, ri }, new Class[] { CommandAPDU.class, RemoteInstance.class });
+
+    final byte[] bytes = f.toBytes(rc);
+    final RemoteCall rcc = f.fromBytes(bytes);
+    assertEquals(rc, rcc);
+}
+

@@ -1,0 +1,24 @@
+public void testRequiredOptions() throws Exception {
+    final Group arguments = new GroupBuilder()
+        .withOption(OptionBuilder
+            .hasArgument()
+            .withDescription("The config file")
+            .withShortName("c")
+            .withRequired(true)
+            .create())
+        .withOption(new GroupBuilder()
+            .withOption(OptionBuilder
+                .isRequired()
+                .withDescription("Print help for this application")
+                .withShortName("h")
+                .create())
+            .create())
+        .create();
+
+    final CommandLineParser parser = new PosixParser();
+    final CommandLine cmdLine = parser.parse(arguments, new String[] {"-c", "foo.xml" });
+
+    final Option[] reqOpts = cmdLine.getRequiredOptions();
+    assertEquals(1, reqOpts.length);
+    assertEquals(OptionBuilder.create("c"), reqOpts[0]);
+}

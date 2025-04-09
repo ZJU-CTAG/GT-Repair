@@ -1,0 +1,13 @@
+public void testJsoupClean() {
+    String html = "<p>An <a href='http://example.com/'><b>example</b></a> link.</p>";
+    String html2 = "<wbr/><wbr/><wbr/><wbr/><wbr/>";
+    String html3 = "<div><table></table></div>";
+    for (int i = 0; i < 100; i++) {
+        html2 += html2;
+    }
+    html = html2;
+    System.out.println(html);
+    Document dirty = Jsoup.parse(html);
+    Document clean = new Cleaner(Whitelist.relaxed()).clean(dirty);
+    System.out.println(clean);
+}

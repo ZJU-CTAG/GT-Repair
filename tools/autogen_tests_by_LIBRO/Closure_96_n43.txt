@@ -1,0 +1,14 @@
+public void testVarArgs() {
+    String code = "/**\n * @param {...string} var_args\n */\n" +
+            "function foo(var_args) {\n return arguments.length;\n}\n\n" +
+            "foo('hello'); // no warning - ok\n" +
+            "foo(123); // warning - ok\n" +
+            "foo('hello', 123); // no warning! error.\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, code, options);
+    if (!result.success) {
+        System.out.println(result.errors);
+        System.out.println(result.warnings);
+    }
+    assertTrue(result.success);
+}

@@ -1,0 +1,11 @@
+public void testZipArchiveInputStreamAndZipFileEquality() throws Exception {
+    final File zipFile = new File("src/test/resources/test-documents.zip");
+    assertTrue(zipFile.exists());
+
+    final ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(zipFile));
+    final ZipArchiveEntry entry = in.getNextZipEntry();
+    assertFalse(in.canReadEntryData(entry));
+
+    final ZipFile zip = new ZipFile(zipFile);
+    assertTrue(zip.canReadEntryData(entry));
+}

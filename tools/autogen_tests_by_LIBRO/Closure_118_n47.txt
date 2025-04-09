@@ -1,0 +1,7 @@
+public void testIssue108() {
+    String code = "var foo = {}; foo.bar = { 'bar1': function() { console.log('bar1'); }}; function foobar() {} foobar.prototype = foo.bar; foo.foobar = new foobar; console.log(foo.foobar['bar1']);";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(null, new JSSourceFile[] {JSSourceFile.fromCode("[test code]", code)}, new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("foobar.prototype.bar1=function(){console.log(\"bar1\")};", result.compiledCode);
+}

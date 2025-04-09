@@ -1,0 +1,12 @@
+public void testMultiplePrefixes() {
+    Document doc = buildDocument("a:doc", "ns", "  <a:elem />\n" +
+            "  <b:elem xmlns:b=\"ns\" />");
+    JXPathContext ctx = JXPathContext.newContext(doc);
+
+    int count = 0;
+    for (Iterator iter = ctx.iteratePointers("//*"); iter.hasNext();) {
+        Pointer pointer = (Pointer) iter.next();
+        System.out.println("Found: " + pointer);
+        count++;
+    }
+    assertEquals("Should have found both elements:", 2, count);

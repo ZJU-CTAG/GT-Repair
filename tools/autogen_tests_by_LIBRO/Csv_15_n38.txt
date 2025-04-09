@@ -1,0 +1,23 @@
+public void testCsvFormat() throws Exception {
+    CSVFormat csvFormat = CSVFormat.EXCEL;
+    csvFormat.setQuote((char)0x0022);
+    csvFormat.setQuoteMode(QuoteMode.ALL);
+    String expected = "" +
+            "あ,い,う\n" +
+            "1,2,3\n" +
+            "4,5,6\n" +
+            "7,8,9\n" +
+            "";
+    String actual = stringify(csvFormat, new String[][] {
+            new String[] { "あ", "い", "う" },
+            new String[] { "1", "2", "3" },
+            new String[] { "4", "5", "6" },
+            new String[] { "7", "8", "9" },
+    });
+    assertEquals(expected, actual);
+}
+
+private static String stringify(CSVFormat csvFormat, final String[][] data) {
+    StringWriter writer = new StringWriter();
+    try (
+            CSVPrinter printer = new CSVPr

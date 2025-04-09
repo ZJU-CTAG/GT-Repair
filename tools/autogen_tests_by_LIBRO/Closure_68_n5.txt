@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler(TestErrorManager.getTestErrorManager(), new SilentEnvironment());
+    compiler.initOptions(new CompilerOptions());
+    SourceFile extern = SourceFile.fromCode("externs.js",
+            "/** @type function */\n" +
+            "var callback;");
+    SourceFile[] inputs = new SourceFile[] {
+            SourceFile.fromCode("input.js", "")
+    };
+    compiler.compile(extern, inputs, new CompilerOptions());
+}

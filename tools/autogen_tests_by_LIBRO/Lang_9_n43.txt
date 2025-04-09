@@ -1,0 +1,16 @@
+public void testUnterminatedQuote() {
+    parsePattern("'d'd'");
+    parsePattern("'d'd");
+}
+
+private void parsePattern(String pattern) {
+    boolean ok;
+    try {
+        FormatParser parser = new FormatParser(new String[] {pattern});
+        parser.parse();
+        ok = true;
+    } catch (IllegalArgumentException e) {
+        ok = false;
+    }
+    assertFalse(ok);
+}

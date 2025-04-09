@@ -1,0 +1,20 @@
+public void testFilteringParserDelegate() throws Exception {
+    String json = "{\"key1\": {\"key2\": {\"key3\": \"value\"}}}";
+
+    JacksonJsonProvider jacksonJsonProvider = new JacksonJsonProvider();
+
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonParser parser = jsonFactory.createParser(json);
+    JsonToken jsonToken = parser.nextToken();
+
+    List<String> pathsToInclude = new ArrayList<>();
+    pathsToInclude.add("key1/key2/key3");
+
+    FilteringParserDelegate filteringParserDelegate =
+        new FilteringParserDelegate(parser, pathsToInclude, false, true);
+
+    Map<String, Object> map = jacksonJsonProvider.readValue(filteringParserDelegate, Map.class);
+    assertEquals(1, map.size());
+    assertTrue(map.containsKey("key1"));
+    assertEquals(1, ((Map<String, Object>)map.get("key1")).size());
+    assertTrue(((Map<String, Object>)map.

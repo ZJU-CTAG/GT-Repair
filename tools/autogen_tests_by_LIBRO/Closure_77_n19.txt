@@ -1,0 +1,14 @@
+public void testNull() throws Exception
+{
+    Script script = Script.create(
+            "var x = '\\0';",
+            "var y = '\\x00';",
+            "var z = '\\u0000';",
+            "println(x);",
+            "println(y);",
+            "println(z);");
+    script.execute();
+    assertEquals("\0", script.getVariable("x"));
+    assertEquals("\0", script.getVariable("y"));
+    assertEquals("\0", script.getVariable("z"));
+}

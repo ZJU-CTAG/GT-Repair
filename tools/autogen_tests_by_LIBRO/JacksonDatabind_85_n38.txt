@@ -1,0 +1,25 @@
+public void testContextual() {
+    TimeZone tz = TimeZone.getTimeZone("Europe/Paris");
+    TimeZone.setDefault(tz);
+    StdDateFormat dateFormat = new StdDateFormat();
+    dateFormat.setTimeZone(tz);
+    dateFormat.setLenient(false);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(dateFormat);
+
+    Person person = new Person("John", "Doe", new DateTime(2011, 10, 21, 11, 0, 0, 0).toDate());
+
+    String json = mapper.writeValueAsString(person);
+    assertEquals("{\"firstName\":\"John\",\"lastName\":\"Doe\",\"birthDate\":\"2011-10-21T11:00:00.000+02:00\"}", json);
+
+    Person person2 = mapper.readValue(json, Person.class);
+    assertEquals(person, person2);
+}
+
+static class Person {
+
+    private String firstName;
+    private String lastName;
+
+    @JsonFormat(shape=Json

@@ -1,0 +1,16 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    SourceFile extern = SourceFile.fromCode("<extern>",
+            "function assert(cond) {}"
+            + "function __log(message) {}"
+            + "function __logError(message) {}"
+            + "function __logWarning(message) {}");
+    SourceFile input = SourceFile.fromCode("input",
+        "var Bullet = function(bullet) {\n"
+        + "    var g = bullet.speedY;\n"
+        + "    var t = bullet.timeAlive;\n"
+        + "    bullet.y += t * g--0.0;\n"
+        + "}");
+    compiler.compile(extern, input);
+}

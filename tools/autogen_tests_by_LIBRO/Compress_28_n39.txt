@@ -1,0 +1,23 @@
+public void testTarArchiveInputStream() throws IOException {
+    String resourceName = "commons-compress.tar.gz";
+    ClassLoader loader = getClass().getClassLoader();
+    InputStream stream = loader.getResourceAsStream(resourceName);
+    InputStream in = stream;
+    ArchiveInputStream i = new ArchiveStreamFactory()
+        .createArchiveInputStream("tar", in);
+    ArchiveEntry entry = i.getNextEntry();
+    boolean found = false;
+    while (entry != null) {
+        if (entry.getSize() == 0) {
+            found = true;
+            break;
+        }
+        entry = i.getNextEntry();
+    }
+    assertTrue(found);
+    try {
+        i.read();
+        fail("expected EOFException");
+    } catch (EOFException expected) {
+    }
+}

@@ -1,0 +1,26 @@
+public void testIssue() {
+    String source = "if( es[--esi][ es[esi+1] ] === 1)
+                     {
+                       es[esi] = 0;
+                     }
+                     else
+                     {
+                       es[esi] = 1;
+                     }";
+    String expected = "es[--esi] = 1 === es[esi][es[esi + 1]] ? 0 : 1;";
+
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setGenerateDebugInfo(true);
+    env.setIdeMode(true);
+    env.setStrictMode(false);
+
+    ErrorReporter compilationErrorReporter = new ToolErrorReporter(env, true);
+
+    Parser p = new Parser(env, compilationErrorReporter);
+    AstRoot ast = p.parse(source, "", 0);
+    ast.visit(new NodeVisitor() {
+        @Override
+        public boolean visit(AstNode node) {
+            if(node instanceof IfStatement) {
+                IfStatement ifStatement = (IfStatement)

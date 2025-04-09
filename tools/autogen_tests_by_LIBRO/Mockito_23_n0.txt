@@ -1,0 +1,35 @@
+public void testIssue() {
+    class AbstractClass {
+        public abstract Long lol();
+        public abstract String wow();
+        public String give() {
+            wow();
+            lol();
+            return "give";
+        }
+    }
+    class ClassExtendsAbstractClass extends AbstractClass {
+        @Override
+        Long lol() {
+            return 2L;
+        }
+        @Override
+        String wow() {
+            return "WOW";
+        }
+    }
+    class A {
+        private ClassExtendsAbstractClass classExtendsAbstractClass;
+        public A(ClassExtendsAbstractClass classExtendsAbstractClass) {
+            this.classExtendsAbstractClass = classExtendsAbstractClass;
+        }
+        public String doSomeThing(){
+            return classExtendsAbstractClass.wow();
+        }
+    }
+    ClassExtendsAbstractClass classExtendsAbstractClass = mock(ClassExtendsAbstractClass.class);
+    when(classExtendsAbstractClass.give()).thenReturn("aaa");
+
+    A a = new A(classExtendsAbstractClass);
+    a.doSomeThing();
+    verify(classExt

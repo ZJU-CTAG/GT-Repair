@@ -1,0 +1,15 @@
+public void testIssue146() {
+    String xml =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        "<ElementA A:myAttr=\"Mytype\">\n" +
+        "    <B:ElementB>MY VALUE</B:ElementB>\n" +
+        "</ElementA>\n";
+    DOMParser parser = new DOMParser();
+    parser.setNamespaceAware(true);
+    parser.parse( new InputSource( new StringReader(xml ) ) );
+    Document doc = parser.getDocument();
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.registerNamespace("A", "http://www.foo.com/A");
+    context.registerNamespace("B", "http://www.foo.com/B");
+    assertEquals("MY VALUE", context.getValue("//B:ElementB"));
+}

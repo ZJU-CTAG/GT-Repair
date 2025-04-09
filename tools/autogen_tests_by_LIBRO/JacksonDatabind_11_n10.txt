@@ -1,0 +1,8 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper(new SmileFactory());
+    mapper.registerModule(new JodaModule());
+    final String json = "{\"entity\":{\"@type\":\"dateTime\",\"value\":\"2011-01-03T10:15:30.000Z\"}}";
+    final Something s = mapper.reader(Something.class).readValue(json);
+    assertNotNull(s.getEntity());
+    assertEquals(DateTime.class, s.getEntity().getClass());
+}

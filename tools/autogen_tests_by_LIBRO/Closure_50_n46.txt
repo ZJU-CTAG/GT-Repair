@@ -1,0 +1,9 @@
+public void testOptimisation1() {
+    String js = "var variable = confirm(\"value from user\");" +
+                "var array = [ \"constant\", variable ];" +
+                "alert( array.join(\",\") );";
+    String out = "var a=[\"constant\",confirm(\"value from user\")];alert(a.join(\",\"));";
+    String expected = "var a=[\"constant\",confirm(\"value from user\")];alert(a.join());";
+    Result result = compiler.compile(js);
+    assertEquals(expected, result.getCompiledCode());
+}

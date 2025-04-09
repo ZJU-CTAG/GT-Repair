@@ -1,0 +1,16 @@
+public void testNullMap() throws Exception {
+    String test = "value1,value2\n" +
+            "value3,value4\n" +
+            "value5,value6";
+    CSVParser parser = CSVParser.parse(test, CSVFormat.DEFAULT.withHeader());
+
+    for(CSVRecord csvRecord : parser){
+        assertNotNull(csvRecord.toMap());
+    }
+
+    parser = CSVParser.parse(test, CSVFormat.DEFAULT);
+
+    for(CSVRecord csvRecord : parser){
+        assertNull(csvRecord.toMap());
+    }
+}

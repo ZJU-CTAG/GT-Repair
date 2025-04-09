@@ -1,0 +1,14 @@
+public void testIssue108() {
+    byte[] header = new byte[512];
+    Arrays.fill(header, (byte)' ');
+    System.arraycopy("00000000001".getBytes(), 0, header, 124, 11);
+    TarArchiveEntry entry = new TarArchiveEntry();
+    try {
+        entry.parseTarHeader(header);
+        fail("Should have failed with IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+    }
+    System.arraycopy("00000000001\0".getBytes(), 0, header, 124, 12);
+    entry.parseTarHeader(header);
+    assertEquals(1, entry.getSize());
+}

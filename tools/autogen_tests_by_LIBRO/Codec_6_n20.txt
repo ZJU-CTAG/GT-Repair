@@ -1,0 +1,20 @@
+public void testBase64InputStream() {
+    String originalString = "Some string";
+    byte[] originalBytes = originalString.getBytes();
+    String base64String = Base64.encodeBase64String(originalBytes);
+    byte[] base64Bytes = base64String.getBytes();
+    try {
+        InputStream base64InputStream = new ByteArrayInputStream(base64Bytes);
+        InputStreamReader reader = new InputStreamReader(new Base64InputStream(
+                base64InputStream, true));
+        int read;
+        int count = 0;
+        while ((read = reader.read()) != -1) {
+            count++;
+        }
+        reader.close();
+        assertEquals(originalBytes.length, count);
+    } catch (IOException e) {
+        fail("Unexpected exception");
+    }
+}

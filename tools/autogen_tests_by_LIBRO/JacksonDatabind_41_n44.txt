@@ -1,0 +1,19 @@
+public void testIssue1105() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first, try with "empty" context, and no polymorphic type info:
+    try {
+        mapper.readerFor(List.class)
+            .with(null)
+            .readValue("[1]");
+        fail("Expected an exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "for deserialization");
+    }
+
+    // but with polymorphic type info, should work ok
+    mapper.readerFor(List.class)
+        .with(null)
+        .withType(new TypeReference<List<Integer>>() { })
+        .readValue("[1,2,3]");
+}

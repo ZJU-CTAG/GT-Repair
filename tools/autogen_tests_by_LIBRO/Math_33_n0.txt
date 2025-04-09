@@ -1,0 +1,11 @@
+public void testSimpleProblem() {
+    double [] c = new double []{-10, -3};
+    double [] b = new double []{-50};
+    double [][] A = new double[][]{new double[]{10, 6}, new double[]{8, 10}};
+    double [] min = new double[]{0, 0};
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(new MaxIter(10000), new ObjectiveFunction(new LinearObjectiveFunction(c, 0)),
+            new LinearConstraintSet(A, Relationship.GEQ, b), GoalType.MINIMIZE, new NonNegativeConstraint(true), new LinearConstraintSet(new double[][]{new double[]{1, 1}}, Relationship.EQ, new double[]{1}), new NonNegativeConstraint(true));
+    System.out.println(solution.getPoint()[0]);
+    System.out.println(solution.getPoint()[1]);
+    System.out.println(solution.getValue());

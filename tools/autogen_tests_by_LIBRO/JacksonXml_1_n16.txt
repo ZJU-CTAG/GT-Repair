@@ -1,0 +1,21 @@
+public void testRecords() throws Exception {
+    final String json = "[{\n" +
+        "  \"records\": [{\n" +
+        "    \"fields\": [{\n" +
+        "      \"name\": \"foo\",\n" +
+        "      \"value\": \"bar\"\n" +
+        "    }]\n" +
+        "  }, {\n" +
+        "    \"fields\": [{\n" +
+        "      \"name\": \"foo2\",\n" +
+        "      \"value\": \"bar2\"\n" +
+        "    }]\n" +
+        "  }]\n" +
+        "}]";
+    final ObjectMapper mapper = new ObjectMapper();
+    final List<Definition> ds = mapper.readValue(json, new TypeReference<List<Definition>>() { });
+    assertEquals(1, ds.size());
+    final Definition d = ds.get(0);
+    assertEquals(2, d.records.size());
+    {
+        final Record r = d.records.

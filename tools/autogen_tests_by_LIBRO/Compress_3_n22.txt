@@ -1,0 +1,14 @@
+public void testFinishOnlyCalledByClose() throws Exception {
+    File testFile = new File("src/test/resources/testFinishOnlyCalledByClose.txt");
+    testFile.deleteOnExit();
+
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    try (ArchiveOutputStream os = factory.createArchiveOutputStream(ArchiveStreamFactory.ZIP, new FileOutputStream(testFile))) {
+        os.finish();
+    }
+
+    try (ZipFile zipFile = new ZipFile(testFile)) {
+        Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+        assertFalse(entries.hasMoreElements());
+    }
+}

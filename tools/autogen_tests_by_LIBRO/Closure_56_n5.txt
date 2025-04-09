@@ -1,0 +1,29 @@
+public void testLastWarningOrErrorNotTruncated() {
+    Compiler.setLoggingLevel(Level.ALL);
+    Compiler.setErrorManager(new TestErrorManager());
+    Compiler.compile(new String[] {"testfiles/testIssue200.js"});
+}
+
+static class TestErrorManager implements ErrorManager {
+    boolean hasError = false;
+    boolean hasWarning = false;
+    String message = "";
+    String sourceName = "";
+    int lineNumber = -1;
+    int charno = -1;
+    int errorCode = 0;
+    boolean isWarning = false;
+    boolean isError = false;
+
+    public void report(CheckLevel level, JSError error) {
+        if (level == CheckLevel.ERROR) {
+            hasError = true;
+            isError = true;
+        } else if (level == CheckLevel.WARNING) {
+            hasWarning = true;
+            isWarning = true;
+        }
+        message = error.description;
+        sourceName = error.sourceName;
+        lineNumber = error.lineNumber;
+        charno = error.

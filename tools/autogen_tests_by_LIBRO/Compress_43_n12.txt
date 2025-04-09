@@ -1,0 +1,19 @@
+public void testZip64() throws Exception {
+    File outputFile = new File(System.getProperty("java.io.tmpdir"), "Zip64.zip");
+    ZipArchiveOutputStream out = new ZipArchiveOutputStream(outputFile);
+    out.setLevel(0);
+    out.setMethod(ZipEntry.DEFLATED);
+    out.setUseZip64(Zip64Mode.AsNeeded);
+    out.setCreateUnicodeExtraFields(UnicodeExtraFieldPolicy.ALWAYS);
+    ZipArchiveEntry entry = new ZipArchiveEntry("HelloWorld.txt");
+    out.putArchiveEntry(entry);
+    byte[] buffer = new byte[1024];
+    for (int i = 0; i < 1024 * 1024; i++) {
+        out.write(buffer);
+    }
+    out.closeArchiveEntry();
+    out.close();
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream in = new FileInputStream(outputFile);
+    ArchiveInputStream archive = factory.createArchiveInputStream(ArchiveStreamFactory.ZIP, in);
+    entry =

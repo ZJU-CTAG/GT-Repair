@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    File root = new File(".");
+    List<File> files = new ArrayList<File>();
+    listFiles(files, root);
+    URL[] urls = new URL[files.size()];
+    for (int i = 0; i < urls.length; i++) {
+        urls[i] = files.get(i).toURI().toURL();
+    }
+    URLClassLoader cl = new URLClassLoader(urls, new ClassLoaders.ExcludingClassLoader(getClass().getClassLoader(), "junit", "org.junit"));
+    for (File f : files) {
+        String temp = f.getAbsolutePath().substring(root.getAbsolutePath().length() + 1).replace('/', '.').replace('\\', '.');
+        String className = temp;
+        if (className.endsWith(".class")) {
+            className = className.substring(0, className.length() - 6);
+        } else {
+            continue;
+        }
+        Class<?> c = cl.

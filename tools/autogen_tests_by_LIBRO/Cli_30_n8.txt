@@ -1,0 +1,10 @@
+public void testIssue108(TestUtil.SystemExitCapture sec) throws Exception {
+    sec.expectSystemExitWithStatus(1);
+    class App {
+        @Option(name="-a", required=true) boolean a;
+        @Option(name="-b", required=true) boolean b;
+    }
+    Properties properties = new Properties();
+    properties.setProperty("b", "true");
+    new CommandLine(new App()).parseArgs("-a", properties);
+}

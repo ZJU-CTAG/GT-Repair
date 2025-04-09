@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    String xml =
+        "<a:doc xmlns:a=\"ns\">"
+        + "<a:elem />"
+        + "<b:elem xmlns:b=\"ns\" />"
+        + "</a:doc>";
+
+    JXPathContext context = JXPathContext.newContext(new StringReader(xml));
+    Iterator iter = context.iteratePointers("//*");
+    assertTrue("There should be at least one element", iter.hasNext());
+    assertEquals("a:elem", ((Pointer)iter.next()).getNode().getNodeName());
+    assertTrue("There should be at least two element", iter.hasNext());
+    assertEquals("b:elem", ((Pointer)iter.next()).getNode().getNodeName());
+    assertFalse("There should be just two elements", iter.hasNext());
+}

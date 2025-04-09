@@ -1,0 +1,21 @@
+public void testIssue108() {
+    String js = "/\*\* @constructor \*/\n"
+            + "var myclass = function() {\n"
+            + "}\n"
+            + "\n"
+            + "/\*\* @param {boolean} success \*/\n"
+            + "myclass.prototype.fn = function(success) { }\n"
+            + "\n"
+            + "myclass.prototype.test = function() {\n"
+            + "this.fn();\n"
+            + "this.fn = function() { };\n"
+            + "}\n";
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+    new Compiler().compile(
+            externsInputs,
+            ImmutableList.of(SourceFile.fromCode("input.js", js)),
+            options,
+            testErrorReporter);
+    assertEquals(1

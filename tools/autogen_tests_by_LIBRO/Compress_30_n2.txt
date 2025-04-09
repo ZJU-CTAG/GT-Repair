@@ -1,0 +1,19 @@
+public void testBZip () throws FileNotFoundException, IOException {
+    byte[] sampleData = new byte[1024];
+    new Random().nextBytes(sampleData);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    BZip2CompressorOutputStream bzcos = new BZip2CompressorOutputStream(baos);
+    bzcos.write(sampleData);
+    bzcos.flush();
+    bzcos.close();
+    byte[] compressedData = baos.toByteArray();
+    baos.close();
+    byte[] readData = new byte[1024];
+    byte[] readData2 = new byte[1024];
+    ByteArrayInputStream bais = new ByteArrayInputStream(compressedData);
+    BZip2CompressorInputStream bzcis = new BZip2CompressorInputStream(bais);
+    IOUtils.read(bzcis, readData);
+    bzcis.close();
+    bais = new ByteArrayInputStream(compressedData);
+    bzcis = new BZip2CompressorInputStream(bais);
+   

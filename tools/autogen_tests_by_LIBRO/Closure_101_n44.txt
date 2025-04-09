@@ -1,0 +1,23 @@
+public void testProcessClosurePrimitives() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setClosurePass(false);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js",
+                            "goog.provide('test'); \n" +
+                            "goog.require('goog.array');\n" +
+                            "test = function() {\n" +
+                            "  goog.array.forEach(['a', 'b', 'c'], function(item) {\n" +
+                            "    console.log(item);\n" +
+                            "  });\n" +
+                            "}\n"
+                            )
+            },
+            options);
+
+    assertTrue

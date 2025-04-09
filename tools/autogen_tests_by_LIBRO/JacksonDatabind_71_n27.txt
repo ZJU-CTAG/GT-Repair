@@ -1,0 +1,16 @@
+public void testSimpleKeyDeserializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_FIELDS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_GETTERS, false);
+    mapper.configure(MapperFeature.AUTO_DETECT_IS_GETTERS, false);
+
+    SimpleModule testModule = new SimpleModule("testModule", new Version(1, 0, 0, null, null, null));
+    testModule.addKeyDeserializer(CharSequence.class, new KeyDeserializer() {
+        @Override
+        public Object deserializeKey(String s, DeserializationContext deserializationContext) throws IOException {
+            return s;
+        }
+    });
+    mapper.registerModule(test

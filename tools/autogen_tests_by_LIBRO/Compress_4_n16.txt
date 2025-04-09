@@ -1,0 +1,21 @@
+public void testFinish() throws Exception {
+    File testFile = new File("test.zip");
+    try {
+        testFile.delete();
+        ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(new FileOutputStream(testFile));
+        ZipArchiveEntry ze = new ZipArchiveEntry("entry");
+        zaos.putArchiveEntry(ze);
+        zaos.write(new byte[] { 1, 2, 3, 4 });
+        zaos.closeArchiveEntry();
+        zaos.finish();
+        zaos.close();
+        zaos = new ZipArchiveOutputStream(new FileOutputStream(testFile, true));
+        zaos.putArchiveEntry(ze);
+        zaos.write(new byte[] { 1, 2, 3, 4 });
+        zaos.closeArchiveEntry();
+        zaos.finish();
+        zaos.close();
+    } finally {
+        testFile.delete();
+    }
+}

@@ -1,0 +1,17 @@
+public void testDeserializationWithDeserializationProblemHandler()
+        throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt,
+                JavaType baseType, String subTypeId,
+                TypeIdResolver idResolver, String failureMsg) {
+            return idResolver.typeFromId(ctxt, subTypeId);
+        }
+    });
+    mapper.readValue("[\""
+            + Map.class.getName()
+            + "\",{\"@class\":\"java.util.HashMap\",\"key\":\"value\"}]",
+            Object.class);
+}

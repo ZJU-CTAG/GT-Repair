@@ -1,0 +1,17 @@
+public void testFrequency() {
+    Frequency f = new Frequency();
+    final Integer I1 = new Integer(1);
+    f.addValue(I1);
+    try {
+        f.addValue(new Object());
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+    assertEquals(1, f.getCount(I1));
+    assertEquals(1, f.getCumFreq(I1));
+    assertEquals(100.0, f.getCumPct(I1), 0.1);
+    assertEquals(0, f.getCount(new Object()));
+    assertEquals(0, f.getCumFreq(new Object()));
+    assertEquals(0.0, f.getCumPct(new Object()), 0.1);
+}

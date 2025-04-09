@@ -1,0 +1,20 @@
+public void testPValues() throws Exception {
+    int n = 200;
+    int m = 20;
+    Random rand = new Random(0);
+    RealMatrix matrix = new BlockRealMatrix(n, m);
+    for (int j = 0; j < m; j++) {
+        for (int i = 0; i < n; i++) {
+            matrix.setEntry(i, j, rand.nextDouble());
+        }
+    }
+    PearsonsCorrelation pearson = new PearsonsCorrelation(matrix);
+    double[] pValues = pearson.getCorrelationPValues();
+    for (int j = 0; j < m; j++) {
+        for (int i = 0; i < j; i++) {
+            if (pValues[i + j * (j - 1) / 2] > 1e-15) {
+                System.out.println(i + ", " + j + ": " + pValues[i + j * (j - 1) / 2]);
+            }
+        }
+    }
+}

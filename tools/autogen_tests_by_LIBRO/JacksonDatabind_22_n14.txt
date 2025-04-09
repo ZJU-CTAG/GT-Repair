@@ -1,0 +1,19 @@
+public void testIssue110() {
+    ObjectMapper om = new ObjectMapper();
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addSerializer(new MySerializer());
+    om.registerModule(module);
+    om.writeValueAsString(new MyValue());
+}
+
+class MySerializer extends JsonSerializer<MyValue> {
+    @Override
+    public void serialize(MyValue value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("foo");
+    }
+}
+
+class MyValue {
+    @JsonValue
+    protected String value = "bar";
+}

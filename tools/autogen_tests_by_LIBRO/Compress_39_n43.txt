@@ -1,0 +1,15 @@
+public void testIssue108() throws IOException {
+    File tmp = File.createTempFile("compress.tmp", ".zip");
+    Compress.compressFiles(new File[] {new File("src/main/java/org/apache/commons/compress/archivers/zip")}, tmp);
+    FileInputStream fis = new FileInputStream(tmp);
+    fis.skip(fis.available() - 1000);
+    byte[] data = new byte[fis.available()];
+    fis.read(data);
+    fis.close();
+    tmp.delete();
+    try {
+        Compress.uncompressFile(new ByteArrayInputStream(data), tmp);
+    } catch (IOException ex) {
+        fail("no exception expected");
+    }
+}

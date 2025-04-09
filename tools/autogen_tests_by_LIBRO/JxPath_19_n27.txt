@@ -1,0 +1,16 @@
+public void testIssue4() {
+    Document doc = documentBuilder.newDocument();
+    Element root = doc.createElementNS("ns", "a:doc");
+    doc.appendChild(root);
+    Element elem1 = doc.createElementNS("ns", "a:elem");
+    root.appendChild(elem1);
+    Element elem2 = doc.createElementNS("ns", "b:elem");
+    root.appendChild(elem2);
+    JXPathContext context = JXPathContext.newContext(doc);
+    Iterator<Pointer> iter = context.iteratePointers("//*[namespace-uri()='ns']");
+    assertTrue(iter.hasNext());
+    assertEquals("a:elem", iter.next().asPath().substring(1));
+    assertTrue(iter.hasNext());
+    assertEquals("a:elem", iter.next().asPath().substring(1));
+    assertFalse(iter.hasNext());
+}

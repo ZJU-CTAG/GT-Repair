@@ -1,0 +1,12 @@
+public void testTypeIds() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(PolymorphicTypeMapTest.SimpleString.class);
+    mapper.registerSubtypes(PolymorphicTypeMapTest.SimpleInteger.class);
+
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
+    map.put("@type", "java.lang.String");
+    map.put("name", "Foo");
+
+    // This might blow up in an unanticipated way
+    PolymorphicTypeMapTest.SimpleString simpleString = mapper.convertValue(map, PolymorphicTypeMapTest.SimpleString.class);
+}

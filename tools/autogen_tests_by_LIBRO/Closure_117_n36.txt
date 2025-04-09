@@ -1,0 +1,22 @@
+public void testIssue108() {
+    TypedScopeCheck checker = new TypedScopeCheck(new DefaultErrorManager());
+    checker.suppress(TypeCheck.INEXISTENT_PROPERTY);
+    checker.process(JSCompiler.parse("issue108.js",
+                                     "/**\n" +
+                                     " * @constructor\n" +
+                                     " */\n" +
+                                     "function C2() {}\n" +
+                                     "\n" +
+                                     "/**\n" +
+                                     " * @constructor\n" +
+                                     " */\n" +
+                                     "function C3(c2) {\n" +
+                                     "  /**\n" +
+                                     "   * @type {C2}\n" +
+                                     "   * @private\n" +
+                                     "   */\n" +
+                                     "  this.c2_;\n" +
+                                     "\n" +
+                                     "  use(this.c2_.prop);\n" +
+                                     "}\n"));
+   

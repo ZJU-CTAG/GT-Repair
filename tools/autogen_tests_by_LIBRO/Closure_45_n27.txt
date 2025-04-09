@@ -1,0 +1,8 @@
+public void testIssue98() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.compile(SourceFile.fromCode("test.js", "function f() { var a = [], b; a.push(b = []); b[0] = 1; return a; }"), options);
+    assertEquals("function f(){var a=[];a.push([]);return a};", compiler.toSource());
+}

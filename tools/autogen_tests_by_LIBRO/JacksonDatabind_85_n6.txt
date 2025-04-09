@@ -1,0 +1,16 @@
+public void testDateTimeSerializer() {
+    final String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(pattern);
+    final DateTimeSerializer dateTimeSerializer = new DateTimeSerializer(
+            pattern, dateTimeFormatter, DateTimeZone.UTC);
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+                                  .addSerializer(DateTime.class, dateTimeSerializer));
+
+    final JsonSerializer<DateTime> serializer = mapper.findValueSerializer(DateTime.class);
+    assertEquals(dateTimeSerializer, serializer);
+    final DateTime dateTime = new DateTime(2016, 3, 1, 0, 0, 0, DateTimeZone.UTC);
+
+    final String expected = "\"2016-03-01T00:00:00.000+00:00\"";
+    assertEquals(expected, mapper.writeValueAsString(dateTime));
+}

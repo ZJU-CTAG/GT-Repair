@@ -1,0 +1,9 @@
+public void testCharSequenceKeyDeserializer() throws Exception {
+    final String KEY = "key";
+    final String VALUE = "value";
+    final String json = String.format("{\"%s\": \"%s\"}", KEY, VALUE);
+
+    ObjectMapper mapper = new ObjectMapper();
+    Map<CharSequence, String> map = mapper.readValue(json, new TypeReference<Map<CharSequence, String>>() {});
+    assertEquals(VALUE, map.get(KEY));
+}

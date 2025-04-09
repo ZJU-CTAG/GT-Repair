@@ -1,0 +1,17 @@
+public void testMultiStartUnivariateRealOptimizerResult() {
+    OptimizerTestFunction[] functions = new OptimizerTestFunction[5];
+    functions[0] = new OptimizerTestFunction(new SinFunction());
+    functions[1] = new OptimizerTestFunction(new CosFunction());
+    functions[2] = new OptimizerTestFunction(new QuadraticFunction());
+    functions[3] = new OptimizerTestFunction(new QuinticFunction());
+    functions[4] = new OptimizerTestFunction(new InverseMultiquadricFunction());
+
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(1e-10, 1e-14), 10);
+
+    for (int i = 0; i < functions.length; i++) {
+        try {
+            optimizer.optimize(functions[i], GoalType.MINIMIZE, -10, 10);
+            double min = optimizer.getResult();
+            double minValue = optimizer.getFunctionValue();
+            assertTrue(min == functions[i].getOptimalX());
+            assertTrue(min

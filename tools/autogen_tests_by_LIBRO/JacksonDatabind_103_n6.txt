@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception
+{
+    final String JSON = aposToQuotes("{'value':11}");
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(JSON, Issue108.class);
+    } catch (InvalidFormatException e) {
+        assertFalse(e.getMessage().contains(" at [source:"));
+    }
+}
+
+public class Issue108 {
+    public Issue108Wrapper value;
+}
+
+public class Issue108Wrapper {
+    public int value;
+
+    public Issue108Wrapper(int value) {
+        this.value = value;
+    }
+}

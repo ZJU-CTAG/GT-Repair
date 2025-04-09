@@ -1,0 +1,11 @@
+public void testIssue108() {
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+    try {
+        engine.eval("function name() { var arguments = Array.prototype.slice.call(arguments, 0); }");
+
+        engine.eval("name(1,2,3)");
+    } catch (ScriptException e) {
+        fail(e.getMessage());
+    }
+}

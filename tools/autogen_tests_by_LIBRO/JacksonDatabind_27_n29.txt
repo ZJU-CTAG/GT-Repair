@@ -1,0 +1,8 @@
+public void testDeserializeExternalTypeId() throws Exception
+{
+    final ObjectMapper MAPPER = new ObjectMapper();
+    MAPPER.enableDefaultTyping();
+    final String JSON = MAPPER.writeValueAsString(new TypeWithExternalTypeId(new TypeWithExternalTypeId.TypeExternal()));
+    final TypeWithExternalTypeId result = MAPPER.readValue(JSON, TypeWithExternalTypeId.class);
+    assertEquals(TypeWithExternalTypeId.TypeExternal.class, result.value.getClass());
+}

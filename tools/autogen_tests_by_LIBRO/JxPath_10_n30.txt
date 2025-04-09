@@ -1,0 +1,14 @@
+public void testJiraIssue() throws Exception {
+    JXPathContext pathContext1 = JXPathContext.newContext(DocumentBuilderFactory.newInstance()
+                                                                              .newDocumentBuilder()
+                                                                              .parse(new InputSource(new StringReader(
+                                                                                      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+                                                                                              + "<doc/>"))));
+    Boolean result = (Boolean) pathContext1.getValue("2.0 > child1", Boolean.class);
+    assertFalse(result.booleanValue());
+    JXPathContext pathContext2 = JXPathContext.newContext(DocumentBuilderFactory.newInstance()
+                                                                              .newDocumentBuilder()
+                                                                              .parse(new InputSource(new StringReader(
+                                                                                      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+                                                                                              + "<doc><child1>2.0</child1></doc>"))));
+    Boolean result2 = (Boolean)

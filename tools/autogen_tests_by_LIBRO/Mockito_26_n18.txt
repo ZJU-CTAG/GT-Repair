@@ -1,0 +1,33 @@
+public void testInjectMocks() {
+    MyClass c = new MyClass();
+    c.setB(new B());
+    Mockito.when(c.getB().getValue()).thenReturn(2);
+    // doesn't work anymore
+    // Mockito.injectMocks(c);
+    assertEquals(3, c.add());
+}
+
+private static class MyClass {
+
+    @InjectMocks
+    private B b;
+
+    public B getB() {
+        return b;
+    }
+
+    public void setB(B b) {
+        this.b = b;
+    }
+
+    public int add() {
+        return b.getValue() + 1;
+    }
+}
+
+private static class B {
+
+    public int getValue() {
+        return 1;
+    }
+}

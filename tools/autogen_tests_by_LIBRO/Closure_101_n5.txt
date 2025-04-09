@@ -1,0 +1,9 @@
+public void testProcessClosurePrimitives(boolean process) {
+    CompilerOptions options = new CompilerOptions();
+    options.setProcessClosurePrimitives(process);
+    test(options,
+        "goog.provide('foo'); new goog.Disposable();",
+        process ? 
+        "var foo = {}; goog.Disposable.call(foo)" :
+        "goog.provide('foo'); new goog.Disposable();");
+}

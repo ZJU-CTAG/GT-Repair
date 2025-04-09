@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String html = "function a() {\n var x = '1';\n try {\n x += somefunction();\n } catch(e) {\n }\n x += \"2\";\n try {\n x += somefunction();\n } catch(e) {\n }\n document.write(x);\n}\n\na();\na();\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(null, new JsAst(JsPreprocessor.parse(html)), options);
+    assertTrue(result.success);
+    System.out.println(compiler.toSource());
+}

@@ -1,0 +1,34 @@
+public void testInjectMocks() {
+    @InjectMocks
+    private final TestClass testClass = new TestClass();
+
+    @Mock
+    private final TestInterface testInterface = new TestInterface() {
+
+    };
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void test() {
+        assertNotNull(testClass.getTestInterface());
+    }
+
+    private static class TestClass {
+        private final TestInterface testInterface;
+
+        public TestClass() {
+            testInterface = null;
+        }
+
+        public TestInterface getTestInterface() {
+            return testInterface;
+        }
+    }
+
+    private interface TestInterface {
+    }
+}

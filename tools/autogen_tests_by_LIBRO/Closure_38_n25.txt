@@ -1,0 +1,15 @@
+public void testIssue16() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Result result = compiler.compile(
+            JSSourceFile.fromCode("in.js", "goog.provide('bullet.shapes.collision');\n" +
+                    "goog.require('box2d.Collision');\n" +
+                    "goog.require('box2d.Collision.Shapes');\n" +
+                    "goog.require('box2d.Common');\n" +
+                    "goog.require('box2d.Common.Math');\n" +
+                    "\n" +
+                    "bullet.shapes.collision.polygon_radius = 2.0;\n" +
+                    "\n

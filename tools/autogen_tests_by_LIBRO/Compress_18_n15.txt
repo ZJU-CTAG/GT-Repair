@@ -1,0 +1,13 @@
+public void testLongDirectoryNames() throws Exception {
+    byte[] longDirName = new byte[100];
+    Arrays.fill(longDirName, (byte)65);
+    File longDir = new File(String.valueOf(longDirName));
+    longDir.mkdir();
+    File f = new File("test.tar");
+    f.createNewFile();
+    ArchiveOutputStream aos = new TarArchiveOutputStream(new FileOutputStream(f));
+    aos.putArchiveEntry(new ZipArchiveEntry(longDir,"./" + String.valueOf(longDirName) + "/"));
+    aos.close();
+    longDir.delete();
+    f.delete();
+}

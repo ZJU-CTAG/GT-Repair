@@ -1,0 +1,21 @@
+public void testPosixParser() {
+    Options options = new Options();
+    Option option = new Option("t", "target", true, "specify target machine");
+    options.addOption(option);
+
+    String[] args = new String[1];
+    args[0] = "-target foobar.com";
+
+    try {
+        PosixParser parser = new PosixParser();
+        CommandLine cl = parser.parse(options, args);
+
+        assertTrue(cl.hasOption("t"));
+        assertTrue(cl.hasOption("target"));
+
+        assertEquals("foobar.com", cl.getOptionValue("t"));
+        assertEquals("foobar.com", cl.getOptionValue("target"));
+    } catch (ParseException ex) {
+        fail("Unexpected parse exception");
+    }
+}

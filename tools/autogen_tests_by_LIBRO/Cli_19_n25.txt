@@ -1,0 +1,11 @@
+public void testPosixParser() {
+    PosixParser p = new PosixParser();
+    Options o = new Options();
+    o.addOption("a", false, "Option a");
+    try {
+        p.parse(o, new String[] { "-z", "-a", "foo" }, true);
+        fail("Exception expected");
+    } catch (UnrecognizedOptionException e) {
+        assertEquals("-z", e.getOption());
+    }
+}

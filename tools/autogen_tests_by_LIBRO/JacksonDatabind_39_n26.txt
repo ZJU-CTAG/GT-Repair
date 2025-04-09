@@ -1,0 +1,16 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
+    String json = "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+    try {
+        mapper.readValue(json, CallRecord.class);
+        fail();
+    } catch (JsonMappingException e) {
+    }
+    json = "{\"version\":0.0,\"application\":\"123\"},{\"item\":{\"type\":\"xevent\",\"location\":\"location1\"}";
+    try {
+        mapper.readValue(json, CallRecord.class);
+        fail();
+    } catch (JsonMappingException e) {
+    }
+}

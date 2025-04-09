@@ -1,0 +1,9 @@
+public void testSqlDateSerializer() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    final String serializedSqlDate = mapper.writeValueAsString(new java.sql.Date(0));
+    // This is what I expect, but it's not what I get
+    assertEquals("\"1970-01-01\"", serializedSqlDate);
+    // This is what I get
+    assertEquals("0", serializedSqlDate);
+}

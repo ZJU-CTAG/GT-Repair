@@ -1,0 +1,19 @@
+public void testNullString() throws Exception {
+        CSV csv = CSV
+                .separator(',')
+                .trim()
+                .create();
+
+        String s = csv.format(Arrays.asList("", "", ""));
+
+        System.out.println(s);
+        assertEquals("\"\",\"\",\"\"" + CSVWriter.NEW_LINE, s);
+
+        StringReader reader = new StringReader("a,b\n\"\",\"\",\"\"");
+        Iterator<CSVRecord> iter = CSV.parse(reader).iterator();
+        CSVRecord record = iter.next();
+        assertTrue(record.isConsistent());
+        assertEquals("", record.get(0));
+        assertEquals("", record.get(1));
+        assertEquals("", record.get(2));
+    }

@@ -1,0 +1,17 @@
+public void testIssue138() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(outputStream);
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("test");
+    jsonGenerator.writeNumber(1);
+    jsonGenerator.writeEndObject();
+    jsonGenerator.close();
+    String json = outputStream.toString("UTF-8");
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes("UTF-8"));
+    JsonParser jsonParser = jsonFactory.createJsonParser(inputStream);
+    jsonParser.nextToken();
+    jsonParser.nextValue();
+    jsonParser.nextToken();
+    jsonParser.close();
+}

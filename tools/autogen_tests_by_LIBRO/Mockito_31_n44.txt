@@ -1,0 +1,10 @@
+public void testClassLoaders() {
+    File root = new File(System.getProperty("java.class.path"));
+    ClassLoader cl = new LocalExcludingURLClassLoader(root);
+    try {
+        cl.loadClass("org.mockito.internal.configuration.MockitoConfiguration");
+        fail();
+    } catch (ClassNotFoundException e) {
+        //expected
+    }
+}

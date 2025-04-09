@@ -1,0 +1,9 @@
+public void testIssue109() {
+    String code = "var f = function() {return 1;};";
+    code += "alert(1);";
+    code += "var f = function() {return 2;};";
+    code += "alert(f());";
+    code += "function f() {return 1;};";
+    code += "alert(f());";
+    assertEquals("alert(1);var f=function(){return 2;};alert(f());function f(){return 1};alert(f())", compile(code, CompilationLevel.SIMPLE_OPTIMIZATIONS));
+}

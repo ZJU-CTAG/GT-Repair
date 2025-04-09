@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Option option = new Option("x", "long-description-test", false, "this is a very long description which will cause the line to wrap incorrectly");
+    HelpFormatter helpFormatter = new HelpFormatter();
+    StringWriter stringWriter = new StringWriter();
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    helpFormatter.printHelp(printWriter, 80, "fubar", "header", new Options().addOption(option), 4, 4, "footer", false);
+    // should have 4 lines:
+    // this is a very long description which will cause the line to wrap
+    // incorrectly
+    // 
+    // 
+    System.out.println(stringWriter.toString());
+}

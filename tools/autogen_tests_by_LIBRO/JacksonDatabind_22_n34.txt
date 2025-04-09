@@ -1,0 +1,30 @@
+public void testSerializerPrecedence() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializerFactory(mapper.getSerializerFactory().withSerializerModifier(new MySerializerModifier()));
+
+    SimpleModule testModule = new SimpleModule("TestModule", new Version(1, 0, 0, null));
+    testModule.addSerializer(Foo.class, new FooSerializer());
+    mapper.registerModule(testModule);
+
+    String s = mapper.writeValueAsString(new Bar());
+
+    System.out.println(s);
+
+    assertEquals("\"FOO\"", s);
+}
+
+class Bar {
+    @JsonValue
+    Foo getFoo() {
+        return new Foo();
+    }
+}
+
+class Foo {
+}
+
+class MySerializerModifier extends BeanSerializerModifier {
+    public JsonSerializer<?> modifySerializer(SerializationConfig config,
+                                              BeanDescription beanDesc,
+                                              JsonSerializer<?> serializer) {
+        System.out.println("modifySerializer: "

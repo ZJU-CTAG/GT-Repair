@@ -1,0 +1,11 @@
+public void testClosure() {
+    String source = "function urlEncodeIfNecessary(s) {\n" +
+        " var regex = /[\\\"<>\.;]/;\n" +
+        " var hasBadChars = regex.exec(s) != null;\n" +
+        " return hasBadChars && typeof encodeURIComponent != UNDEF ? encodeURIComponent(s) : s;\n" +
+        "}";
+    String result = new Compiler(new StringReader(source),
+        new PrintWriter(System.out)).compile(true, false, true, true);
+    assertTrue(result.indexOf("return/[\"<>.;]/") == -1);
+    assertTrue(result.indexOf("ie=!1") == -1);
+}

@@ -1,0 +1,31 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    mapper.writeValue(baos, new Child());
+    final byte[] data = baos.toByteArray();
+
+    final Child fromJson = mapper.readValue(data, Child.class);
+    assertEquals(Child.class, fromJson.getClass());
+    assertNotNull(fromJson.name);
+    assertNotNull(fromJson.childName);
+}
+
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    visible = true,
+    defaultImpl = Child.class
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "child", value = Child.class)
+})
+public abstract class Parent {
+    @JsonProperty
+    private String name;
+    public Parent() {
+        name = "parent";
+    }
+}
+
+public

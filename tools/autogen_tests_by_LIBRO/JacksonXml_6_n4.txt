@@ -1,0 +1,14 @@
+public void testWriteBinary() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION);
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final XmlMapper xmlMapper = new XmlMapper();
+    final UTF8XmlGenerator xmlGenerator = xmlMapper.getFactory().createGenerator(out, JsonEncoding.UTF8);
+    final String testString = "This is a test";
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeBinary(Base64Variants.getDefaultVariant(), new ByteArrayInputStream(testString.getBytes()), testString.length());
+    xmlGenerator.writeEndObject();
+    xmlGenerator.close();
+    final String actualString = out.toString(JsonEncoding.UTF8.getJavaName());
+    assertEquals("<object><binary>VGhpcyBpcyBhIHRlc3Q=</binary></object>", actualString);
+}

@@ -1,0 +1,25 @@
+public void testIssue() throws Exception {
+    final String json = "{ \"entity\" : { \"id\" : 1 } }";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    Something something = mapper.readValue(json, Something.class);
+    assertNotNull(something.getEntity());
+}
+
+public class Something {
+    public <T extends Ruleform> T getEntity() {
+        return null;
+    }
+    public <T extends Ruleform> void setEntity(T entity) {
+    }
+}
+
+public class Ruleform {
+    private int id;
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+}

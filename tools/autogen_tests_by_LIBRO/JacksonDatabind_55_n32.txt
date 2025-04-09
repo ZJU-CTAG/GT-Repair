@@ -1,0 +1,24 @@
+public void testEnumMap() {
+    Map<SomeEnum, String> map = new EnumMap<>(SomeEnum.class);
+    map.put(SomeEnum.FOO, "FOO");
+    String json = mapper.writeValueAsString(map);
+    assertEquals(mapper.readTree("{\"FOO\":\"FOO\"}"), mapper.readTree(json));
+}
+
+
+public void testEnumList() {
+    List<SomeEnum> list = new ArrayList<>();
+    list.add(SomeEnum.FOO);
+    list.add(SomeEnum.BAR);
+    String json = mapper.writeValueAsString(list);
+    assertEquals(mapper.readTree("[\"foo\",\"bar\"]"), mapper.readTree(json));
+}
+
+
+public enum SomeEnum {
+    @JsonProperty("foo")
+    FOO,
+
+    @JsonProperty("bar")
+    BAR;
+}

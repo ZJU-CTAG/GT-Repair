@@ -1,0 +1,15 @@
+public void testTopLevelValue() throws IOException {
+    String json = "{\"foo\":\"bar\"}";
+    StringReader reader = new StringReader(json);
+    JsonParser jp = Json.createParser(reader);
+    assertTrue(jp.hasNext());
+    assertEquals(JsonParser.Event.START_OBJECT, jp.next());
+    assertTrue(jp.hasNext());
+    assertEquals(JsonParser.Event.KEY_NAME, jp.next());
+    assertTrue(jp.hasNext());
+    assertEquals(JsonParser.Event.VALUE_STRING, jp.next());
+    assertTrue(jp.hasNext());
+    assertEquals(JsonParser.Event.END_OBJECT, jp.next());
+    assertFalse(jp.hasNext());
+    jp.close();
+}

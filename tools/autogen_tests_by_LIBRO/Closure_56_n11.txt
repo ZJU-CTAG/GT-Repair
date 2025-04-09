@@ -1,0 +1,9 @@
+public void testIssue108 () {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        JSSourceFile.fromCode("test.js",
+                "alert(foo);\n" +
+                "alert(bar);\n"),
+        new CompilerOptions());
+    assertEquals(DiagnosticType.error("", "variable bar is undefined"), result.errors[1].getType());
+}

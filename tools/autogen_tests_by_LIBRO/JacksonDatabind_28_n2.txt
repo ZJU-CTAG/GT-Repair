@@ -1,0 +1,18 @@
+public void testSerializeEmptyObjectNode() throws Exception
+{
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+    String json = MAPPER.writeValueAsString(object);
+    assertEquals("{}", json);
+    ObjectNode result = MAPPER.readValue(json, ObjectNode.class);
+    assertEquals(object, result);
+}
+
+public void testSerializeNonEmptyObjectNode() throws Exception
+{
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+    object.put("k", "v");
+    String json = MAPPER.writeValueAsString(object);
+    assertEquals("{\"k\":\"v\"}", json);
+    ObjectNode result = MAPPER.readValue(json, ObjectNode.class);
+    assertEquals(object, result);
+}

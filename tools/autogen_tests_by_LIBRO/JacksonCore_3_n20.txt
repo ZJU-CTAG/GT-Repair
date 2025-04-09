@@ -1,0 +1,13 @@
+public void testUTF8StreamJsonParser() throws Exception {
+        String json = "{\"name\":\"value\"}";
+        int start = 1;
+        IOContext ctxt = new IOContext(new BufferRecycler(), json, false);
+        ByteArrayInputStream in = new ByteArrayInputStream(json.getBytes("UTF-8"));
+        JsonFactory jsonFactory = new JsonFactory();
+        JsonParser parser = jsonFactory.createJsonParser(in);
+        try {
+            parser.nextToken();
+        } catch (Exception e) {
+            System.out.println("CurrentLocation: " + parser.getCurrentLocation());
+        }
+    }

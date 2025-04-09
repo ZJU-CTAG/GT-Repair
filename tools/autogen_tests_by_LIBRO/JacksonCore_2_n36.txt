@@ -1,0 +1,28 @@
+public void testParserErrors() throws Exception
+{
+    try {
+        JSON_MAPPER.readValue("[1,2,3,]", List.class);
+    } catch (JsonMappingException e) {
+        fail("Unexpected exception: "+e);
+    } catch (JsonParseException e) {
+        fail("Unexpected exception: "+e);
+    } catch (IOException e) {
+        fail("Unexpected exception: "+e);
+    }
+
+    try {
+        JSON_MAPPER.readValue("{a:3}", Map.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        fail("Unexpected exception: "+e);
+    } catch (JsonParseException e) {
+        fail("Unexpected exception: "+e);
+    } catch (IOException e) {
+        fail("Unexpected exception: "+e);
+    }
+
+    try {
+        JSON_MAPPER.readValue("123true", Object.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+       

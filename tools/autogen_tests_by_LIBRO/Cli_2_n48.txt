@@ -1,0 +1,14 @@
+public void testIssue() {
+    String[] options = new String[] { "-t", "-something" };
+
+    Options opts = new Options();
+    opts.addOption("t", false, "test");
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine line = parser.parse(opts, options);
+        assertFalse(line.getOptions().length == 0);
+        assertTrue(line.hasOption("t"));
+    } catch (ParseException e) {
+        fail("Unexpected exception:" + e.getMessage());
+    }
+}

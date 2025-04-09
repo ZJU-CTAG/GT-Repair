@@ -1,0 +1,26 @@
+public void testJsonCreatorDelegate() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{\"a\":1,\"b\":null}", Value.class);
+    assertEquals(1, value.attrs.size());
+    assertEquals("a", value.attrs.get(0).name);
+    assertEquals(1, value.attrs.get(0).value);
+}
+
+static class Value {
+    List<Attr> attrs;
+ 
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value value = new Value();
+        value.attrs = new ArrayList<Attr>();
+        JsonParser parser = buffer.asParser();
+        while (parser.nextToken() != JsonToken.END_OBJECT) {
+            Attr attr = parser.readValueAs(Attr.class);
+            value.attrs.add(attr);
+        }
+        return value;
+    }
+}
+
+static class Attr {
+    String name;

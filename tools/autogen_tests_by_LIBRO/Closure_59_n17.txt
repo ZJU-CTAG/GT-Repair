@@ -1,0 +1,19 @@
+public void testGlobalThisCannotBeExcluded() {
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    // Include source code
+    List<SourceFile> input = new ArrayList<>();
+    input.add(SourceFile.fromCode("1.js", "var foo = this;"));
+
+    // Disable globalThis warning
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+
+    // Compile
+    Result result = new Compiler().compile(EMPTY_EXTERNS, input, options);
+    assertTrue(result.success);
+
+    // Check that globalThis is disabled
+    JSError[] errors = result.errors;
+    assertEquals(errors.length, 0);
+}

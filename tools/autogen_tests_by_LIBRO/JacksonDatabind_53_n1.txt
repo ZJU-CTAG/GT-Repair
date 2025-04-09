@@ -1,0 +1,10 @@
+public void testIssue087() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final Map<UUID, Foo> result = mapper.readValue(json, new TypeReference<Map<UUID, Foo>>() {});
+    assertEquals(1, result.size());
+    final UUID key = result.keySet().iterator().next();
+    assertEquals(UUID.fromString("f8d0b980-7a34-11e0-9a8a-0800200c9a66"), key);
+    final Foo value = result.get(key);
+    assertNotNull(value);
+    assertEquals("foo", value.bar());
+}

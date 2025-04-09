@@ -1,0 +1,17 @@
+public void testSerialization() throws Exception {
+    FastDateFormat df = FastDateFormat.getInstance();
+    assertTrue(df instanceof Serializable);
+    df = (FastDateFormat) serializeAndDeserialize(df);
+    assertNotNull(df);
+}
+
+private Object serializeAndDeserialize(Serializable o)
+throws Exception {
+    ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(bytesOut);
+    oos.writeObject(o);
+    oos.close();
+    ObjectInputStream ois = new ObjectInputStream(
+            new ByteArrayInputStream(bytesOut.toByteArray()));
+    return ois.readObject();
+}

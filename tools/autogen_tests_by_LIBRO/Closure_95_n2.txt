@@ -1,0 +1,17 @@
+public void testPublicTag() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setOutputCharset("UTF-8");
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+
+    final Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[]{JSSourceFile.fromCode("in1.js",
+            "/** @public */\n" +
+            "Glow = {};\n" +
+            "/** @public */\n" +
+            "Glow.versions = [1,2,3];\n" +
+            "Glow.showVersions = function() { alert(Glow.versions); }\n" +

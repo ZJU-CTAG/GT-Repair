@@ -1,0 +1,13 @@
+public void testLongDirectoryNames() throws IOException {
+    final String longDirectoryName = "LongDirectoryName/";
+    while (longDirectoryName.length() < 100) {
+        longDirectoryName += "LongDirectoryName/";
+    }
+    File tar = File.createTempFile("longDirName", ".tar");
+    try (FileOutputStream fileOutputStream = new FileOutputStream(tar);
+            TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(fileOutputStream)) {
+        TarArchiveEntry tarArchiveEntry = new TarArchiveEntry(longDirectoryName);
+        tarArchiveOutputStream.putArchiveEntry(tarArchiveEntry);
+        tarArchiveOutputStream.closeArchiveEntry();
+    }
+}

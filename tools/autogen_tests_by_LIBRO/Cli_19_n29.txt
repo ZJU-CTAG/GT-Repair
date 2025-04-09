@@ -1,0 +1,11 @@
+public void testPosixParser() {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    PosixParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{ "-z", "-a", "foo"});
+    assertNull(cmd.getOptionValue("z"));
+    assertNotNull(cmd.getOptionValue("a"));
+    assertNotNull(cmd.getArgList());
+    assertEquals(cmd.getArgList().size(), 1);
+    assertEquals(cmd.getArgList().get(0), "foo");
+}

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    String json = "{ \"value\" : [\"abc\", \"123\"]}";
+    try {
+        mapper.readValue(json, MyPojo.class);
+    } catch (InvalidFormatException e) {
+        assertEquals(1, e.getPath().get(0).getIndex());
+        return;
+    }
+    fail("exception not thrown");
+}
+
+public static class MyPojo {
+
+    public int[] value;
+}

@@ -1,0 +1,28 @@
+public void testContext() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    JsonFilter filter = new AntPathFilter("/", "/a");
+    mapper.setDefaultPrettyPrinter(new DefaultPrettyPrinter().withFilters(filter));
+
+    B b = new B("bb");
+    String result = mapper.writeValueAsString(b);
+    Assert.assertEquals("{\"a\":\"bb\"}", result);
+
+    b = mapper.convertValue(result, B.class);
+    Assert.assertEquals("bb", b.a);
+}
+
+private class A {
+    public String a;
+
+    public A(String a) {
+        this.a = a;
+    }
+}
+
+private class B extends A {
+
+    public B(String a) {
+        super(a);
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue123() {
+    String js = "function Foo() {\n" +
+            "  var self = this;\n" +
+            "  window.setTimeout(function() {\n" +
+            "    window.location = self.location;\n" +
+            "  }, 0);\n" +
+            "}\n" +
+            "\n" +
+            "Foo.prototype.setLocation = function(loc) {\n" +
+            "  this.location = loc;\n" +
+            "};\n" +
+            "\n" +
+            "(new Foo()).setLocation('http://www.google.com/');\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            externs,
+            ImmutableList.of(SourceFile.fromCode("input", js)),
+            options

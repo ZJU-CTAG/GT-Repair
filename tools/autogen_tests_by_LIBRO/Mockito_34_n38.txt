@@ -1,0 +1,8 @@
+public void testSourceFilesNotInBinaryJar() {
+    JarFile jar = new JarFile("mockito-core.jar");
+    Enumeration<JarEntry> entries = jar.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry entry = entries.nextElement();
+        Assert.assertFalse("Source files should not be in binary jar: " + entry.getName(), StringUtils.endsWith(entry.getName(), ".java"));
+    }
+}

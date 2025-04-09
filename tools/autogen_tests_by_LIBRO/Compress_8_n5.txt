@@ -1,0 +1,18 @@
+public void testIssue108() throws ArchiveException {
+    final String entryName = "test";
+    final long size = -1L;
+    final byte[] header = new byte[512];
+
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(new ByteArrayOutputStream());
+    tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    TarArchiveEntry entry = new TarArchiveEntry(entryName);
+    entry.setSize(size);
+    tos.putArchiveEntry(entry);
+    tos.closeArchiveEntry();
+    tos.close();
+
+    byte[] tarArchive = ((ByteArrayOutputStream) tos.getStream()).toByteArray();
+    System.arraycopy(tarArchive, 0, header, 0, header.length);
+    TarArchiveEntry actual = new TarArchiveEntry(header, entryName.getBytes(), 0);
+    assertEquals(size, actual.getSize());
+}

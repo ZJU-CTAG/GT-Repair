@@ -1,0 +1,21 @@
+public void testProcessCommonJSModules() {
+    String source = "var echo = require('echo');\n" + 
+            "echo.echo('hello world');";
+    String[] args = new String[] {
+            "--formatting=PRETTY_PRINT",
+            "--jscomp_error=checkTypes",
+            "--compilation_level=SIMPLE_OPTIMIZATIONS",
+            "--transform_amd_modules",
+            "--process_common_js_modules",
+            "--js=echo.js",
+            "--js=echo-main.js",
+            "--common_js_entry_module=echo-main.js"
+    };
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(
+            SourceFile.fromCode("echo.js", "define(function() { return {\n" + 
+                    " echo: function(val) {\n" + 
+                    " window.console.log(val);\n" + 
+                    " }\n

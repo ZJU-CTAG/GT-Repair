@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Compiler.setLoggingLevel(Level.FINEST);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    compiler.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(CharStreams.fromString(
+            "function f() {\n" +
+                    "    var a = [], b;\n" +
+                    "    a.push(b = []);\n" +
+                    "    b[0] = 1;\n" +
+                    "    return a;\n" +
+                    "}"),
+            new PrintStream(System.out));
+    assertTrue(result.success);
+}

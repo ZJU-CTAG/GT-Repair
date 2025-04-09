@@ -1,0 +1,26 @@
+public void testPrimitiveWrapperOverride() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    // first, test with missing annotations
+    TypeRef t = mapper.readValue("{\"intValue\":123}", TypeRef.class);
+    assertEquals(Integer.valueOf(123), t.intValue);
+    // then with annotation for wrapper
+    t = mapper.readValue("{\"intValue\":123}", TypeRefWithAnnotation.class);
+    assertEquals(Integer.valueOf(123), t.intValue);
+}
+
+/*
+/**********************************************************
+/* Test classes
+/**********************************************************
+*/
+
+static class TypeRef {
+    public int intValue;
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+static class TypeRefWithAnnotation {
+    public int intValue;
+}

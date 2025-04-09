@@ -1,0 +1,26 @@
+public void testIssue172() throws Exception {
+    VariableContext context = new VariableContext();
+    AttributeContext attContext = new AttributeContext(context);
+    context.setVariable("attr1", "value1");
+    context.setVariable("attr2", "value2");
+    context.setVariable("attr3", "value3");
+
+    Compiler c = new Compiler(0);
+    c.compile("@attr1");
+    NodeTest test = c.getFirstStep().getNodeTest();
+    assertTrue(test.test(attContext, 0));
+
+    c.compile("@*");
+    test = c.getFirstStep().getNodeTest();
+    assertTrue(test.test(attContext, 0));
+
+    c.compile("@attr2");
+    test = c.getFirstStep().getNodeTest();
+    assertTrue(test.test(attContext, 0));
+
+    c.compile("@attr3");
+    test = c.getFirstStep().getNodeTest();
+    assertTrue(test.test(attContext, 0));
+
+    c.compile("text()");
+    test

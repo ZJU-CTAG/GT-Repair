@@ -1,0 +1,9 @@
+public void testGenericTypeIdResolver() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new MyModule());
+
+    String json = "{\"message\":{\"@class\":\"com.example.messages.MyMessage\",\"name\":\"test\"}}";
+    Wrapper wrapper = objectMapper.readValue(json, Wrapper.class);
+
+    assertThat("Message was read correctly", wrapper.message, is(instanceOf(MyMessage.class)));
+}

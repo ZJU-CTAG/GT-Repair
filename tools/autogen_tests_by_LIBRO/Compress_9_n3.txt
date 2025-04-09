@@ -1,0 +1,20 @@
+public void testTarStream() throws Exception {
+    final File testFile = new File("target/simple.tar");
+    // create the archive
+    FileOutputStream out = new FileOutputStream(testFile);
+    ArchiveOutputStream os = new ArchiveStreamFactory().createArchiveOutputStream("tar", out);
+    TarArchiveOutputStream tos = (TarArchiveOutputStream) os;
+    TarArchiveEntry entry = new TarArchiveEntry("simple.txt");
+    tos.putArchiveEntry(entry);
+    byte[] content = "Hello World".getBytes("UTF-8");
+    tos.write(content);
+    tos.closeArchiveEntry();
+    tos.close();
+    out.close();
+    // read it back
+    InputStream is = new FileInputStream(testFile);
+    ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+    TarArchiveInputStream tin = (TarArchiveInputStream) in;
+    TarArchiveEntry e = tin.getNextTarEntry();
+    assertEquals("simple.txt", e.getName());
+   

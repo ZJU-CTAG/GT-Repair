@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "@class");
+    final ObjectWriter writer = mapper.writer();
+
+    final String json = writer.writeValueAsString(new ArrayList<String>());
+    final ObjectReader reader = mapper.reader(Object.class);
+    final Object result = reader.readValue(json);
+}

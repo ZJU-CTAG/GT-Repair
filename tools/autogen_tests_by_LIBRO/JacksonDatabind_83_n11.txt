@@ -1,0 +1,13 @@
+public void testDeserializationProblemHandler() throws Exception {
+        ObjectMapper mapper = new ObjectMapper().addHandler(new DeserializationProblemHandler() {
+            @Override
+            public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
+                if (UUID.class == targetType) {
+                    return UUID.randomUUID();
+                }
+                return super.handleWeirdStringValue(ctxt, targetType, valueToConvert, failureMsg);
+            }
+        });
+
+        mapper.readValue("{\"id\" : \"I am not a UUID\"}", IdBean.class);
+    }

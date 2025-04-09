@@ -1,0 +1,13 @@
+public void testAssignment() {
+    String js = "function closureCompilerTest(someNode) {\n"
+            + " var nodeId;\n"
+            + " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n"
+            + "}";
+    Result result = new Compiler().compile(
+        SourceFile.fromCode("test.js", js),
+        new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals(
+            "function closureCompilerTest(b){var a;return(a=b.id)&&(a=parseInt(a.substr(1)))&&0<a}\n",
+            result.compiledCode);
+}

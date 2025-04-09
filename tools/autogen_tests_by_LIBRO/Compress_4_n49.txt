@@ -1,0 +1,10 @@
+public void testFinishMethod() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+    zaos.putArchiveEntry(new ZipArchiveEntry("foo"));
+    zaos.write(new byte[0]);
+    zaos.closeArchiveEntry();
+    zaos.finish();
+    zaos.close();
+    assertTrue(baos.toString().contains("PK"));
+}

@@ -1,0 +1,9 @@
+public void testIssue41() {
+    try (StringWriter sw = new StringWriter();
+         CSVPrinter csvPrinter = new CSVParserBuilder().withEscapeChar('\\').build().parse(
+                 "\u3042,\u3044,\u3046",
+                 CSVFormat.EXCEL.withQuoteMode(QuoteMode.ALL))) {
+        csvPrinter.printRecords(sw);
+        assertEquals("\"\u3042\",\u3044,\u3046", sw.toString());
+    }
+}

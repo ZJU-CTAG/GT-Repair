@@ -1,0 +1,24 @@
+public void testGetCovariances() {
+    // create an estimator
+    AbstractEstimator estimator = new AbstractEstimator();
+    // create a problem
+    AbstractEstimationProblem problem = new AbstractEstimationProblem(estimator) {
+        private static final long serialVersionUID = 1L;
+        public double[] getResiduals() {
+            return new double[] { 1, 2, 3, 4, 5 };
+        }
+        public double[][] getJacobian() {
+            return new double[][] {
+                { 1, 2, 3, 4, 5 },
+                { 2, 3, 4, 5, 6 },
+                { 3, 4, 5, 6, 7 },
+                { 4, 5, 6, 7, 8 },
+                { 5, 6, 7, 8, 9 }
+            };
+        }
+    };
+    // add some parameters to the problem
+    problem.addParameter("a", 2.0);
+    problem.addParameter("b", 3.0);
+    problem.addParameter("c", 4.0);
+    problem.addParameter("d", 5.0);

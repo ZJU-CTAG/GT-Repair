@@ -1,0 +1,23 @@
+public void testGroupConstraints() throws ParseException {
+    Options options = new Options();
+    options.addOption(OptionBuilder
+            .withArgName("(foo|bar)")
+            .create("a"));
+    options.addOption(OptionBuilder
+            .withArgName("(foo|bar)")
+            .create("b"));
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder
+            .withArgName("(foo|bar)")
+            .create("c"));
+    group.addOption(OptionBuilder
+            .withArgName("(foo|bar)")
+            .create("d"));
+    group.setRequired(true);
+    group.setMaximum(1);
+    group.setMinimum(1);
+    options.addOptionGroup(group);
+    CommandLineParser parser = new GnuParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-a", "foo", "-b", "bar", "-c", "foo"});
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("

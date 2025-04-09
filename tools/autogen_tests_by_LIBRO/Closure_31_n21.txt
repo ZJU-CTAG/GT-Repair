@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String js = "goog.require('foo');";
+    String options = "--compilation_level WHITESPACE_ONLY" +
+        " --manage_closure_dependencies" +
+        " --closure_entry_point foo";
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(compilerOptions);
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("input.js", js)},
+        new JSSourceFile[]{}, compilerOptions);
+}

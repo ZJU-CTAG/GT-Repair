@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+        mapper.readValue("{\"a\": true}", String.class);
+        fail("Should have gotten an exception");
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        System.out.println("Got: " + msg);
+        if (msg.indexOf(" at [source: ") < 0) {
+            fail("Should have had source info in message");
+        }
+        int index1 = msg.indexOf(" at [source: ");
+        int index2 = msg.indexOf(" at [source: ", index1+1);
+        if (index2 >= 0) {
+            fail("Should only have one source reference, not two at "+index1+" and "+index2);
+        }
+    }
+}

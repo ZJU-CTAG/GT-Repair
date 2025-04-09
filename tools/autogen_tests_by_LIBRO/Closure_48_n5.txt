@@ -1,0 +1,17 @@
+public void testIssue107() {
+    RhinoTestCase.expectError(TypeCheck.WRONG_ARGUMENT_COUNT);
+    RhinoTestCase.expectError(TypeCheck.WRONG_ARGUMENT_COUNT);
+    eval("var m = new myclass()\n" +
+            "m.test()");
+}
+/** @constructor */
+var myclass = function() {
+}
+
+/** @param {boolean} success */
+myclass.prototype.fn = function(success) { }
+
+myclass.prototype.test = function() {
+    this.fn();
+    this.fn = function() { };
+}

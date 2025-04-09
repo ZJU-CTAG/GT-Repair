@@ -1,0 +1,13 @@
+public void testByteArrayWrite() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // First, verify that we can't write byte[] (other than as JSON Array, which is not useful):
+    byte[] bytes = new byte[] { 1, 2, 3, 4 };
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator g = mapper.getFactory().createGenerator(ObjectWriteContext.empty(), out);
+    try {
+        g.writeEmbeddedObject(bytes);
+    } catch (UnsupportedOperationException e) {
+        verifyException(e, "no native support for given object");
+    }
+}

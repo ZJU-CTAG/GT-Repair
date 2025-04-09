@@ -1,0 +1,23 @@
+public void testUnboundedSolutionException() {
+    final int ENTITIES_COUNT = 2;//15;
+    final int CONSTRAINTS_COUNT = 5;
+    final int VARIABLES_COUNT = 5;
+
+    LinearObjectiveFunction f = createFunction(ENTITIES_COUNT, VARIABLES_COUNT);
+    List<LinearConstraint> constraints = createConstraints(ENTITIES_COUNT, CONSTRAINTS_COUNT, VARIABLES_COUNT);
+
+    SimplexSolver solver = new SimplexSolver();
+    assertEquals(f.getCoefficients().toArray()[0], -1.0);
+
+    try {
+        PointValuePair solution = solver.optimize(f,
+                new LinearConstraintSet(constraints),
+                GoalType.MINIMIZE,
+                true);
+
+        System.out.println("Solution: " + solution);
+    }
+    catch (NoFeasibleSolutionException e) {
+        e.printStackTrace();
+    }
+    catch (UnboundedSolution

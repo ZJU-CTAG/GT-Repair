@@ -1,0 +1,17 @@
+public void testMatchCount() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+    om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    om.setVisibility(PropertyAccessor.GETTER, Visibility.ANY);
+    om.setVisibility(PropertyAccessor.SETTER, Visibility.ANY);
+    om.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+
+    FilteringGeneratorDelegate test = new FilteringGeneratorDelegate(om.getFactory().createGenerator(System.out, JsonEncoding.UTF8),
+            new SimpleBeanPropertyFilter(),
+            new SimpleFilterProvider().addFilter("test", SimpleBeanPropertyFilter.serializeAllExcept("foo")));
+    test.writeStartObject();
+    test.writeObjectField("foo", "bar");
+    test.writeObjectField("foo", "bar");
+    test.writeObjectField("foo", "bar");
+    test.writeObjectField("foo", "bar");
+   

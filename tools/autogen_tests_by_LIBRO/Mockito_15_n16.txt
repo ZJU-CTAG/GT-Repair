@@ -1,0 +1,10 @@
+public void testCaptorWithVarargs() throws Exception {
+    //GIVEN
+    VarargsService service = mock(VarargsService.class);
+    //WHEN
+    service.doStuff("foo", "bar", "baz");
+    //THEN
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(service).doStuff(captor.capture(), eq("bar"), eq("baz"));
+    assertEquals("foo", captor.getValue());
+}

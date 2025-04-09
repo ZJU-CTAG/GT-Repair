@@ -1,0 +1,14 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    JSSourceFile[] externs = new JSSourceFile[0];
+    JSSourceFile[] inputs = new JSSourceFile[] {JSSourceFile.fromCode("",
+                "var x = {\n"
+                + "    get name() { return 'test'; }\n"
+                + "};")};
+    Result result = compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+}

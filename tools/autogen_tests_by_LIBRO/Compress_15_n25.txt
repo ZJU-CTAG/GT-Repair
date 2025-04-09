@@ -1,0 +1,21 @@
+public void testZipArchiveInputStreamAndZipFile() throws Exception {
+    final File file = File.createTempFile("commons-compress-", ".zip");
+    final FileOutputStream fos = new FileOutputStream(file);
+    final ZipOutputStream zos = new ZipOutputStream(fos);
+
+    zos.putNextEntry(new ZipEntry("foo"));
+    zos.write(new byte[] { 'b', 'a', 'r' });
+    zos.closeEntry();
+
+    zos.close();
+
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(file));
+    final ZipArchiveEntry zae = zis.getNextZipEntry();
+    zis.close();
+
+    final ZipFile zf = new ZipFile(file);
+    final Enumeration<ZipArchiveEntry> e = zf.getEntries();
+    final ZipArchiveEntry ze = e.nextElement();
+
+    assertEquals(zae, ze);
+}

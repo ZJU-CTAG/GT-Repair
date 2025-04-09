@@ -1,0 +1,16 @@
+public void testDeserializationProblemHandlerForUUID() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final DeserializationProblemHandler problemHandler = new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
+            final String msg = String.format("Could not convert \"%s\" to %s: %s", valueToConvert, targetType.getName(), failureMsg);
+            throw new IllegalArgumentException(msg);
+        }
+    };
+    mapper.addHandler(problemHandler);
+    final String json = "{\"id\": \"not a valid UUID\"}";
+    try {
+        final IdBean idBean = mapper.readValue(json, IdBean.class);
+        fail("Should not get here. Deserializing this JSON should fail with an IllegalArgumentException.");
+    } catch (IllegalArgumentException expected) {
+        assertEquals("Could not convert \"not a valid UUID\" to java.

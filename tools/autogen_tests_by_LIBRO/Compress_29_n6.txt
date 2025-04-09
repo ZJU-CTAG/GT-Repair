@@ -1,0 +1,8 @@
+public void testEncoding() throws IOException {
+    byte[] testData = new byte[]{0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48};
+    InputStream is = new ByteArrayInputStream(testData);
+    ArchiveInputStream ais = new ArchiveStreamFactory()
+            .createArchiveInputStream("cpio", is, "UTF-8");
+    ArchiveEntry entry = ais.getNextEntry();
+    assertEquals("ABCDEFGH", IOUtils.toString(ais));
+}

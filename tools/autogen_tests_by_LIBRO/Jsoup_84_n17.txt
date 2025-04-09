@@ -1,0 +1,26 @@
+public void testIssue107() {
+    Document noNsDoc = Jsoup.parse(
+            "<html>" +
+            "  <head>" +
+            "    <title>No ns</title>" +
+            "  </head>" +
+            "  <body>" +
+            "    <fb:like></fb:like>" +
+            "  </body>" +
+            "</html>");
+
+    Document withNsDoc = Jsoup.parse(
+            "<html>" +
+            "  <head>" +
+            "    <title>With ns</title>" +
+            "  </head>" +
+            "  <body>" +
+            "    <fb:like xmlns:fb=\"http://www.facebook.com/2008/fbml\"></fb:like>" +
+            "  </body>" +
+            "</html>");
+
+    Document noNsW3CDoc = new W3CDom().fromJsoup(noNsDoc);
+    Document withNsW3CDoc = new W3CDom().fromJsoup(withNsDoc);
+
+    assertNotNull(noNsW3CDoc);
+   

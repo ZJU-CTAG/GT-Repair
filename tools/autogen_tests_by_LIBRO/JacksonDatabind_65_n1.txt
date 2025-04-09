@@ -1,0 +1,15 @@
+public void testKeyVsField() throws Exception {
+    assertEquals("first.last", ((FullName) mapper.readValue("\"first.last\"", FullName.class)).toString());
+    assertEquals("first.last", ((FullName) mapper.readValue("{\"firstname\":\"first\",\"lastname\":\"last\"}", FullName.class)).toString());
+
+    assertEquals("first.last", mapper.readValue("{\"name\":\"first.last\"}", AsField.class).getName().toString());
+    assertEquals("first.last", mapper.readValue("{\"name\":{\"firstname\":\"first\",\"lastname\":\"last\"}}", AsField.class).getName().toString());
+
+    assertEquals("first.last", ((FullName) mapper.readValue("{\"first.last\": 42}", new TypeReference<Map<FullName, Double>>() {
+    }).keySet().iterator().next()).toString());
+}
+
+public static class AsField {
+    private final FullName _name;
+
+    @JsonCreator

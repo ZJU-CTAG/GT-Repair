@@ -1,0 +1,9 @@
+public void testNegativeTimePeriods() {
+    Runnable runnable = Mockito.mock(Runnable.class);
+    Mockito.verify(runnable, Mockito.never()).run(); // passes as expected
+    Mockito.verify(runnable, Mockito.after(1000).never()).run(); // passes as expected
+    try {
+        Mockito.verify(runnable, Mockito.after(-1000).atLeastOnce()).run(); // passes incorrectly
+        fail("Should have thrown exception");
+    } catch (IllegalArgumentException e) {}
+}

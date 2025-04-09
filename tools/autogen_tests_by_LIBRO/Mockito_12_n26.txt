@@ -1,0 +1,20 @@
+public void testArgumentCaptor() throws Exception {
+    final Consumer<List<Integer>> consumer = mock(Consumer.class);
+
+    final List<Integer> list = new ArrayList<>(3);
+    list.add(1);
+    list.add(2);
+    list.add(3);
+
+    consumer.accept(list);
+
+    final ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+    verify(consumer).accept(captor.capture(list));
+
+    final List<Integer> captured = captor.getAllValues();
+
+    assertEquals(3, captured.size());
+    assertEquals((Integer) 1, captured.get(0));
+    assertEquals((Integer) 2, captured.get(1));
+    assertEquals((Integer) 3, captured.get(2));
+}

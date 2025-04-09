@@ -1,0 +1,21 @@
+public void testIssue108() {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+
+    Compiler compiler = new Compiler(System.err);
+    compiler.compile(
+        SourceFile.fromCode(
+            "source.js",
+            "var customData = { key: 'value' };\n"+
+            "function testRemoveKey( key ) {\n"+
+            "  var dataSlot = customData,\n"+
+            "      retval = dataSlot && dataSlot[ key ],\n"+
+            "      hadKey = dataSlot && ( key in dataSlot );\n"+
+            "\n"+
+            "  if ( dataSlot )\n"+
+            "    delete dataSlot

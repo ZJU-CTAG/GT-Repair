@@ -1,0 +1,16 @@
+public void testElementSiblingIndex() {
+		String html = "<p>Para 1 <span>Span 1</span> Text 1 <span>Span 2</span> Text 2</p> <div>Ignore</div> <p>Para 2</p>";
+		Document doc = Jsoup.parse(html);
+
+		// Test that elementSiblingIndex() is consistent with Java List.indexOf
+		Elements ps = doc.select("p");
+		for (Element p : ps) {
+			int index = p.elementSiblingIndex();
+			assertTrue("Element sibling index for "+p+" should be in range", index >= 0);
+			assertTrue("Element sibling index for "+p+" should be in range", index < ps.size());
+			assertEquals("Element sibling index for "+p+" should equal List.indexOf", index, ps.indexOf(p));
+		}
+
+		// Test that elementSiblingIndex() is consistent with getElementsByTag
+		Elements spans = doc.select("span");
+		for (

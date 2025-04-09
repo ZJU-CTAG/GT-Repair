@@ -1,0 +1,23 @@
+public void testCsvFormatExcelWithJapaneseChars() throws IOException {
+    final String[] header = {
+            "あ",
+            "い",
+            "う"
+    };
+    final String[] line = {
+            "あ",
+            "い",
+            "う"
+    };
+    final CSVFormat csvFormat = CSVFormat.EXCEL;
+
+    final StringWriter sw = new StringWriter();
+    final CSVPrinter csvPrinter = new CSVPrinter(sw, csvFormat);
+    csvPrinter.printRecord(header);
+    csvPrinter.printRecord(line);
+
+    final String expected =
+        "\"あ\",\"い\",\"う\"\r\n" +
+        "\"あ\",\"い\",\"う\"\r\n";
+    assertEquals(expected, sw.getBuffer().toString());
+}

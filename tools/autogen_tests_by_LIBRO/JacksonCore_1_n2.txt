@@ -1,0 +1,15 @@
+public void testNumberFormatForFloat() throws IOException
+    {
+        try {
+            String json = "{\"f\":NaN}";
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+            // this works
+            mapper.readTree(json);
+            // this throws NPE
+            mapper.readValue(json, Issue4Bean.class);
+            fail("Should not pass");
+        } catch (NumberFormatException e) {
+            verifyException(e, "not a valid");
+        }
+    }

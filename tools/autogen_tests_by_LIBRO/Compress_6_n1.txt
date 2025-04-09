@@ -1,0 +1,26 @@
+public void testZip() throws Exception {
+    String[] filenames = {
+        "file1",
+        "file2",
+        "file3",
+        "file4",
+        "file5",
+        "file6",
+        "file7",
+        "file8",
+        "file9"
+    };
+    File f = File.createTempFile("test", ".zip");
+    FileOutputStream out = new FileOutputStream(f);
+    ZipArchiveOutputStream zout = new ZipArchiveOutputStream(out);
+    ZipArchiveEntry ze = new ZipArchiveEntry(filenames[0]);
+    zout.putArchiveEntry(ze);
+    zout.write("test content".getBytes());
+    zout.closeArchiveEntry();
+    for(int i = 1; i < filenames.length; i++) {
+        ze = new ZipArchiveEntry(filenames[i]);
+        zout.putArchiveEntry(ze);
+        zout.write("test content".getBytes());
+        zout.closeArchiveEntry();
+    }
+    zout.close

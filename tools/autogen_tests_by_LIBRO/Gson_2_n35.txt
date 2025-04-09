@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    String json = "{\"type\":\"Truck\",\"weight\":5000}";
+    
+    TypeHierarchyCarAdapter c = new TypeHierarchyCarAdapter();
+    c.registerSubtype(Truck.class, "Truck");
+    TypeHierarchyVehicleAdapter v = new TypeHierarchyVehicleAdapter();
+    v.registerSubtype(Car.class, "Car");
+    Gson gson = new GsonBuilder()
+        .registerTypeAdapter(Vehicle.class, v)
+        .registerTypeAdapter(Car.class, c)
+        .create();
+
+    Truck t = (Truck) gson.fromJson(json, Vehicle.class);
+
+    assertEquals(5000, t.weight);
+}

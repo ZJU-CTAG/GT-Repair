@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setErrorReporter(new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message + " line=" + line + " offset=" + lineOffset);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message + " line=" + line + " offset=" + lineOffset);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message + " line=" + line + " offset=" + lineOffset);
+            return null;
+        }
+    });
+    env.setRecordingLocalJsDocComments(true);
+    env.setRecordingComments(true);
+    env.setLanguageVersion(Context.VERSION_1_6);
+    env.setReservedKeywordAsIdentifier(true

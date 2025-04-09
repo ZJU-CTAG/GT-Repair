@@ -1,0 +1,22 @@
+public void testIssue139() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    mapper.readValue("{\"businessAddress.street\":\"Foo\",\"businessAddress.town\":\"Bar\"}",
+            Person.class);
+}
+
+@JsonRootName("person")
+public class Person {
+    @JsonUnwrapped(prefix = "businessAddress.")
+    public Address businessAddress;
+}
+
+public class Address {
+    public String street;
+    public String addon;
+    public String zip = "";
+    public String town;
+    public String country;
+}

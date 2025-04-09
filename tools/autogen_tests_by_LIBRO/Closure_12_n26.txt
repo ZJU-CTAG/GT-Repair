@@ -1,0 +1,32 @@
+public void testClosureCompilerIssue() {
+    String code = "function a() {" +
+            "var x = '1';" +
+            "try {" +
+            "x += somefunction();" +
+            "} catch(e) {" +
+            "}" +
+            "x += \"2\";" +
+            "try {" +
+            "x += somefunction();" +
+            "} catch(e) {" +
+            "}" +
+            "document.write(x);" +
+            "}" +
+            "a();" +
+            "a();";
+    String expected =
+            "function b() {" +
+            "var a;" +
+            "try {" +
+            "a = \"1\" + somefunction()" +
+            "}catch(c) {" +
+            "}" +
+            "try {" +
+            "a = a + \"2\" + somefunction()" +
+            "}catch(d) {" +
+            "}" +
+            "document.write(a)" +
+            "}" +
+            "b();" +
+            "b();";
+    Compiler compiler =

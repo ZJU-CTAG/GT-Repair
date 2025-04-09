@@ -1,0 +1,22 @@
+public void testRequireProcessing() {
+    String source = "goog.require('my.dep.Class');\n" +
+            "goog.require('dep1.Class1');\n" +
+            "goog.require('dep2.Class2');\n" +
+            "new my.dep.Class();\n" +
+            "new dep1.Class1();\n" +
+            "new dep2.Class2();\n";
+
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new TestErrorManager());
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(JSSourceFile.fromCode("test", source), options);
+}
+
+private class TestErrorManager extends BasicErrorManager {
+    @Override
+    public void report(CheckLevel level, JSError error) {
+        assertNotNull("Error is " + error, error.description);
+        assertNotNull("Source name is " + error, error.sourceName);
+        throw new RuntimeException("Unexpected error: " + error.description);
+    }
+}

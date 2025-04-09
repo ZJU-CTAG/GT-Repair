@@ -1,0 +1,19 @@
+public void testPropertiesDefinedOnAnyRecordTypeApplyingToUnrelatedRecordTypes() {
+    Compiler compiler = new Compiler();
+    compiler.init(
+        ImmutableList.<SourceFile>of(),
+        ImmutableList.of(SourceFile.fromCode("test.js",
+            "/** @typedef {{name: string, id: number}} */\n" +
+            "var RecordType1;\n" +
+            "\n" +
+            "/**\n" +
+            " * @param {RecordType1} rec\n" +
+            " */\n" +
+            "var func = function(rec) {\n" +
+            " alert(rec.name2);\n" +
+            "};\n" +
+            "func({name: 'jim', id: 0});")),
+        new CompilerOptions());
+    Result result = compiler.run();
+    assertFalse(result.success);
+}

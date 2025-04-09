@@ -1,0 +1,20 @@
+public void testEnumMapUsingJsonProperty() {
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    EnumMap exampleMap = new EnumMap<>(ExampleEnum.class);
+
+    exampleMap.put(ExampleEnum.A, "First");
+    exampleMap.put(ExampleEnum.B, "Second");
+
+    String json = mapper.writeValueAsString(exampleMap);
+
+    assertThat(json, is("{\"A\":\"First\",\"B\":\"Second\"}"));
+}
+
+public enum ExampleEnum {
+    @JsonProperty("First")
+    A,
+    @JsonProperty("Second")
+    B
+}

@@ -1,0 +1,20 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.checkTypes = true;
+    options.closurePass = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    compiler.init(ImmutableList.<SourceFile>of(), ImmutableList.of(SourceFile.fromCode("echo-main.js", "var echo = require('echo');echo.echo('hello world');")), options);
+
+    Result result = compiler.transform(new CodeBuffer(
+            "define(function() {\n" +
+                    "    return {\n" +
+                    "        echo: function(val) {\n" +
+                    "            window.console.log(val);\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "});\n"), "echo.js");
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warn

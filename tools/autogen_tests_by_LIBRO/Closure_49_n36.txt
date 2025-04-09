@@ -1,0 +1,10 @@
+public void testVarCollision() {
+    String source = "var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(source, new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("var foo=function(){alert(void 0)};", result.compiledCode);
+}

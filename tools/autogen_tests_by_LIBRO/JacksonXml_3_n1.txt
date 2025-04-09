@@ -1,0 +1,13 @@
+public void testIssue129() throws Exception {
+    FromXMLParser p = new FromXMLParser(new XMLFactory(),
+            new ByteArrayInputStream(xml.getBytes()),
+            ObjectReadContext.empty());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("v", p.getCurrentName());
+    assertToken(JsonToken.VALUE_STRING, p.nextToken());
+    assertEquals("1", p.getText());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    assertNull(p.nextToken());
+    assertFalse(p.hasCurrentToken());
+}

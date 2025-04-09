@@ -1,0 +1,18 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> externs = Collections.emptyList();
+    List<SourceFile> input = Arrays.asList(SourceFile.fromCode("input.js", "goog.provide('a.b.c');" +
+            "goog.scope(function() {" +
+            "var b = a.b;" +
+            "var c = b.c;" +
+            "/\*\* @typedef {string} \*/" +
+            "c.MyType;" +
+            "/\*\* @param {c.MyType} x The variable. \*/" +
+            "c.myFunc = function(x) {};" +
+            "});"));
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, input, options);
+    assertTrue(result.success);
+    assertEquals("goog.prov

@@ -1,0 +1,12 @@
+public void testUnwantedListEmbedded() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    mapper.registerModule(new JodaModule());
+    mapper.getSerializationConfig().addMixInAnnotations(ListAttribute.class, ListAttributeMixin.class);
+    ListAttribute la = new ListAttribute(STRING);
+    la.add(new StringAttribute("one"));
+    la.add(new StringAttribute("two"));
+    JsonNode n = mapper.valueToTree(la);
+    System.out.println("n = " + n);
+}

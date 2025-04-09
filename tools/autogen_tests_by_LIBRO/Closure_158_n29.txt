@@ -1,0 +1,15 @@
+public void testOrder() {
+    JsInput.Builder builder = JsInput.create(SourceFile.fromCode("test.js", "/* @jscomp_warning test1 */ /* @jscomp_warning test2 */ /* @jscomp_off test1 */ /* @jscomp_error test0 */"));
+
+    List<DiagnosticGroup> diagnosticGroups = builder.getDiagnosticGroups();
+    assertEquals(DiagnosticGroups.COMPILED_OUT, diagnosticGroups.get(0));
+    assertEquals(DiagnosticGroups.LINT_CHECKS, diagnosticGroups.get(1));
+    assertEquals(DiagnosticGroups.VISIBILITY, diagnosticGroups.get(2));
+
+    Set<String> whitelist = builder.getWhitelist();
+    assertEquals(1, whitelist.size());
+    assertTrue(whitelist.contains("test2"));
+
+    Map<String, CheckLevel> levels = builder.getDiagnosticGroupsLevels();
+    assertEquals(CheckLevel.WARNING, levels.get("test1"));
+    assertEqu

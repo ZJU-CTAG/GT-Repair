@@ -1,0 +1,21 @@
+public void testIssueAr() throws Exception {
+    File file = new File("target/test.ar");
+    ArArchiveEntry entry = new ArArchiveEntry("test/a.txt");
+    entry.setSize(1);
+    FileOutputStream fos = new FileOutputStream(file);
+    ArArchiveOutputStream os = new ArArchiveOutputStream(fos);
+    os.putArchiveEntry(entry);
+    os.closeArchiveEntry();
+    os.close();
+
+    ArArchiveInputStream is = new ArArchiveInputStream(new FileInputStream(file));
+    Assert.assertNotNull(is.getNextArArchiveEntry());
+    is.close();
+
+    ArArchiveOutputStream os2 = new ArArchiveOutputStream(new FileOutputStream(file, true));
+    os2.deleteArchiveEntry(entry);
+    os2.close();
+
+    ArArchiveEntry entry2 = new ArArchiveEntry("test/b.txt");
+    entry2.setSize(1);
+    ArArchiveOutputStream os3 = new ArArchiveOutputStream(new FileOutputStream(file

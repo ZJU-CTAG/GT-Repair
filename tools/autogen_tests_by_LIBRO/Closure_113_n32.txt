@@ -1,0 +1,9 @@
+public void testIssue() {
+    List<SourceFile> externs = getDefaultExterns();
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<>();
+    inputs.add(SourceFile.fromCode("input.js", "goog.require('someUndefinedClass');\n" +
+            "someUndefinedClass.fun();"));
+    compiler.compile(externs, inputs, new CompilerOptions());
+    assertEquals(1, compiler.getErrors().length);
+}

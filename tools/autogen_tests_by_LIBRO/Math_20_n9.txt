@@ -1,0 +1,13 @@
+public void testIssue108() {
+    CMAESOptimizer optimizer = new CMAESOptimizer(100, 0, true, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(-1, 1));
+    final double[] lB = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    final double[] uB = {1,1,1,1,1,1,1,1,1,1};
+    final double[] startPoint = {0,0,0,0,0,0,0,0,0,0};
+    final double[] sigma = {0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5};
+    double[] res = optimizer.optimize(new ObjectiveFunction(new MultivariateFunction() {
+        public double value(double[] doubles) {
+            double ret = 0;
+            for (double d : doubles) {
+                ret += d*d;
+            }
+            return ret;

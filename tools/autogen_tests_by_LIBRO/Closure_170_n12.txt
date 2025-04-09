@@ -1,0 +1,18 @@
+public void testIssue() {
+    String js = ""
+            + "function Test(a) {"
+            + "  return 0"
+            + "}"
+            + "var dummy = \"6chars\";"
+            + "console && console.log(Test(dummy));";
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setLanguageVersion(Context.VERSION_1_5);
+    ErrorReporter compilationErrorReporter = compilerEnv.getErrorReporter();
+    compilerEnv.setGeneratingSource(true);
+    compilerEnv.setOptimizationLevel(CompilerEnvirons.OPTIMIZATION_LEVEL_SIMPLE);
+    Parser p = new Parser(compilerEnv, compilationErrorReporter);
+    Node n = p.parse(new StringReader(js), null, 1);
+    IRFactory irf = new IRFactory(compilerEnv);
+    ScriptNode sn = irf.transformTree(n);
+    Decompiler d = new Decompiler();
+    System.out.println(d.decompile(sn

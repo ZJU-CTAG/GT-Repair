@@ -1,0 +1,15 @@
+public void testArchiveStreamFactory() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    String testFile = "test.txt";
+    String testMimeType = "text/plain";
+
+    // Create test file
+    PrintStream ps = new PrintStream(new FileOutputStream(testFile));
+    ps.print("I am a test");
+    ps.flush();
+    ps.close();
+
+    InputStream is = new FileInputStream(testFile);
+    assertEquals(testMimeType, factory.detect(is));
+    is.close();
+}

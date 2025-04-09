@@ -1,0 +1,11 @@
+public void testClosure() {
+    String code = "Math.blah = function(test) { test.a = 5; };\n" +
+                  "var test = new Object();\n" +
+                  "Math.blah(test);";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+        SourceFile.fromCode("input", code));
+    assertEquals(code, compiler.toSource());
+}

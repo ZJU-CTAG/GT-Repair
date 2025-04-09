@@ -1,0 +1,11 @@
+public void testIssue54() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("input.js", "if (e.onchange) { e.onchange({ _extendedByPrototype: Prototype.emptyFunction, target: e }); }")}, options);
+    assertTrue(result.success);
+    assertEquals("if(b.onchange){b.onchange({_extendedByPrototype:Prototype.emptyFunction,target:b})}", compiler.toSource());
+}

@@ -1,0 +1,22 @@
+public void testGroupAllowMax() {
+    CommandLine cmd = new CommandLine(new MaxMinGroup());
+    cmd.setOverwrittenOptionsAllowed(true);
+    CommandLine.ParseResult parseResult = cmd.parseArgs("--group1", "--group2");
+
+    assertThat(parseResult.hasMatchedOption("group1"), is(true));
+    assertThat(parseResult.hasMatchedOption("group2"), is(true));
+    assertThat(cmd.hasMatchedOption("group"), is(true));
+}
+
+public void testGroupAllowMinMax() {
+    CommandLine cmd = new CommandLine(new MaxMinGroup());
+    cmd.setOverwrittenOptionsAllowed(true);
+    CommandLine.ParseResult parseResult = cmd.parseArgs("--group1");
+
+    assertThat(parseResult.hasMatchedOption("group1"), is(true));
+    assertThat(cmd.hasMatchedOption("group"), is(true));
+}
+
+public void testGroupAllowMin() {
+    CommandLine cmd = new CommandLine(new MaxMinGroup());
+    cmd.setOverwrittenOptionsAllowed(true);

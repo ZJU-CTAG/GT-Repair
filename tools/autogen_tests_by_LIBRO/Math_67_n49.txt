@@ -1,0 +1,13 @@
+public void testOptimizer() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+
+        @Override
+        public double value(double x) {
+            return x*x;
+        }
+    };
+    UnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(), 10);
+    optimizer.optimize(0, f, GoalType.MINIMIZE, -5, 5);
+    assertEquals(0.0, optimizer.getResult(), 1e-3);
+    assertEquals(optimizer.getResult(), optimizer.getFunctionValue(), 1e-3);
+}

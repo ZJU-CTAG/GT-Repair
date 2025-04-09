@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = mapper.getFactory().createGenerator(sw);
+    gen.writeStartObject();
+    gen.writeStringField("a", "b");
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("{\"a\":\"b\"}", sw.toString());
+}

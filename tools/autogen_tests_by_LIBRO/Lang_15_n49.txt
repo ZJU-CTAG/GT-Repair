@@ -1,0 +1,17 @@
+public void testTypeVarAssignments() throws Exception {
+    final TypeVariable[] typeVarA = Super.class.getTypeParameters();
+    final TypeVariable[] typeVarB = Sub.class.getTypeParameters();
+    final TypeVariable[] typeVarC = SubSub.class.getTypeParameters();
+    final TypeVariable[] typeVarD = SubSubSub.class.getTypeParameters();
+
+    Type[] typeArguments;
+    Map<TypeVariable, Type> typeVarAssigns;
+
+    typeArguments = SubSub.class.getGenericInterfaces();
+    typeVarAssigns = TypeUtils.getTypeArguments(SubSub.class, typeArguments[0]);
+    assertEquals(3, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(typeVarC[0]));
+    assertEquals(Integer.class, typeVarAssigns.get(typeVarC[1]));
+    assertEquals(typeVarD[1], typeVarAssigns.get(typeVarC[2]));
+
+    typeArguments = SubSubSub.class

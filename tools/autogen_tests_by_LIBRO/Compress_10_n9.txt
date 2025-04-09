@@ -1,0 +1,18 @@
+public void testUTF8ZipFiles() throws Exception {
+    // create a temp file
+    File f = File.createTempFile("UTFTest", ".zip");
+    FileOutputStream fos = new FileOutputStream(f);
+
+    // create a zip file with unicode names and extra fields
+    ZipOutputStream zos = new ZipOutputStream(fos);
+
+    // file with unicode name
+    ZipEntry ze = new ZipEntry("\u00E9");
+    ze.setExtra(new byte[] {0x01, 0x02, 0x03, 0x04});
+    zos.putNextEntry(ze);
+    zos.closeEntry();
+
+    // file with no unicode name, but with unicode extra fields
+    ze = new ZipEntry("foobar.txt");
+    ze.setExtra(new byte[] {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0

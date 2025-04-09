@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String source = "var variable = confirm('value from user');" +
+        "var array = [ 'constant', variable ];" +
+        "alert( array.join(',') );";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setOutputCharset("UTF-8");
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    Compiler.setLoggingLevel(Level.INFO);
+    Result result = compiler.compile(SourceFile.fromCode("foo.js", source), options);
+    assertTrue(result.success);
+    assertEquals("var a=['constant',confirm('value from user')];alert(a.join());", compiler.toSource());
+}

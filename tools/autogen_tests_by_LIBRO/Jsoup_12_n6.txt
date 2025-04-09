@@ -1,0 +1,12 @@
+public void testSelectorWithAttributeRegex() {
+    Document doc = Jsoup.parse("<div> <table class=\"x\"> <p>Hello</p> </table> <img src=foo.png title=bar> </div>");
+
+    assertEquals(1, doc.select("table[class~=(?i)x]").size());
+    assertEquals(1, doc.select("div table[class~=(?i)x]").size());
+    assertEquals(1, doc.select("div > table[class~=(?i)x]").size());
+    assertEquals(1, doc.select("div + table[class~=(?i)x]").size());
+    assertEquals(1, doc.select("div ~ table[class~=(?i)x]").size());
+
+    assertEquals(0, doc.select("div table[class~=(?i)z]").size());
+    assertEquals(0, doc.select("div > table[class~=(?i)z]").size());
+    assertEquals(0, doc.select("div + table[class

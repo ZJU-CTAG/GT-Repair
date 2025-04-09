@@ -1,0 +1,9 @@
+public void testIssue108() {
+    final String xml = "<ElementA xmlns:A=\"http://attr\" A:myAttr=\"Mytype\">\n" +
+            "   <B:ElementB xmlns:B=\"http://elem\">MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    final JXPathContext context = JXPathContext.newContext(xml);
+    context.setLenient(false);
+    final String value = (String) context.getValue("//*/@*[local-name()='myAttr']");
+    assertEquals("Mytype", value);
+}

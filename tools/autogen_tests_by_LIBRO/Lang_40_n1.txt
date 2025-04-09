@@ -1,0 +1,18 @@
+public void testCaseInsensitiveComparision() {
+    // non-ASCII characters
+    String umlaut = "\u00e4";
+    String upperUmlaut = "\u00c4";
+    Locale defaultLocale = Locale.getDefault();
+    try {
+        // German locale
+        Locale.setDefault(Locale.GERMAN);
+        assertTrue(umlaut.equalsIgnoreCase(upperUmlaut));
+        assertTrue(umlaut.equals(upperUmlaut));
+        // Turkish locale
+        Locale.setDefault(new Locale("tr"));
+        assertTrue(umlaut.equalsIgnoreCase(upperUmlaut));
+        assertFalse(umlaut.equals(upperUmlaut));
+    } finally {
+        Locale.setDefault(defaultLocale);
+    }
+}

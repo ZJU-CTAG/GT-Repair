@@ -1,0 +1,14 @@
+public void testUnsupported() {
+    assertCompiles("var x = { get 'x'() { return 1 } };");
+    assertCompiles("var x = { get 1() { return 1 } };");
+}
+
+private void assertCompiles(String js) {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.initOptions(new CompilerOptions());
+    compiler.parseTestCode(js);
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test", js) });
+    assertTrue("compile failed: " + result.errors, result.success);
+}

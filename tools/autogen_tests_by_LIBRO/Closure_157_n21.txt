@@ -1,0 +1,15 @@
+public void testPropertyName() throws Exception {
+    JavaScriptCompiler c = new JavaScriptCompiler();
+    CompilerOptions o = new CompilerOptions();
+    o.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(o);
+
+    String fn = "function x(){ return { get x() { return 1 } }; }";
+    String fn2 = "function x(){ return { get 1() { return 1 } }; }";
+
+    SourceFile f = SourceFile.fromCode("f", fn);
+    SourceFile f2 = SourceFile.fromCode("f2", fn2);
+
+    Result r = c.compile(ImmutableList.of(f, f2), o);
+    assertTrue(r.success);
+}

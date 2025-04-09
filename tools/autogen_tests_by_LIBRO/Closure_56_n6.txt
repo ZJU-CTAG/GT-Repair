@@ -1,0 +1,14 @@
+public void testLastErrorTruncated() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setPrintWarnings(false);
+    options.setCheckSymbols(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("foo.js", "var x = 1;\n" +
+            "var x = 2;\n" +
+            "var x = 3;\n"), options);
+    String output = compiler.toSource();
+    assertTrue(output.contains("foo.js:3: WARNING - variable x redefined"));
+}

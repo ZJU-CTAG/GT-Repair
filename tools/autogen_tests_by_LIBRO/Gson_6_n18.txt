@@ -1,0 +1,15 @@
+public void testCustomTypeAdapterNull() {
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(new TypeAdapterFactory() {
+                @Override
+                public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                    return null;
+                }
+            })
+            .create();
+    gson.fromJson("{}", Foo.class);
+}
+
+private static class Foo {
+    int i;
+}

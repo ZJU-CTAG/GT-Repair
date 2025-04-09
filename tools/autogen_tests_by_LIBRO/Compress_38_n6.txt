@@ -1,0 +1,10 @@
+public void testIssue113() throws Exception {
+    String tarFile = "./src/test/resources/test-dockerexport.tar";
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(
+            new FileInputStream(tarFile))) {
+        TarArchiveEntry entry;
+        while ((entry = tais.getNextTarEntry()) != null) {
+            assertTrue(entry.getName(), tais.canReadEntryData(entry));
+        }
+    }
+}

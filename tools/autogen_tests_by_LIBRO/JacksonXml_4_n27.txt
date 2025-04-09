@@ -1,0 +1,26 @@
+public void test() throws JsonProcessingException, XMLStreamException {
+    String result;
+    XmlMapper mapper = new XmlMapper();
+
+    // works as expected
+    result = mapper.writeValueAsString(null);
+    assertEquals("<Object/>", result);
+
+    // nulls are not wrapped in the tag
+    result = mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, true)
+            .writeValueAsString(null);
+    assertEquals("<null/>", result);
+
+    // config is ignored
+    result = mapper.withRootName("root")
+            .writeValueAsString(null);
+    assertEquals("<null/>", result);
+
+    // works as expected
+    result = mapper.writer().withRootName("root")
+            .writeValueAsString(null);
+    assertEquals("<root/>", result);
+
+    // config is ignored
+    result = mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, false)
+            .writeValueAsString(

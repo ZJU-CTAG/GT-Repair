@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", "window.Foo = function(A, B, C, D) {\n" +
+                    "    if ( A ) {\n" +
+                    "       if ( B ) {\n" +
+                    "           C = 0;\n" +
+                    "       } else {\n" +
+                    "           C = 0 in D;\n" +
+                    "       }\n" +
+                    "       while ( C-- ) {}\n" +
+                    "    }\n" +
+                    "}"));
+    assertNotNull(result);
+    assertFalse(result.success);
+}

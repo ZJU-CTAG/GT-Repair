@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception
+{
+    int i = mapper.readValue("\"\"", int.class);
+    // should fail
+    assertEquals(0, i);
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        i = mapper.readValue("\"\"", int.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "null value");
+        verifyException(e, "not allow");
+    }
+}

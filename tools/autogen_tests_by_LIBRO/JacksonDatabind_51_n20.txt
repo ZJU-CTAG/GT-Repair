@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Mess mess = new Mess();
+    MessDeserializer.setMapper(mapper);
+    mess.setValue("Pinky", new Pinky());
+    mess.setValue("Brain", new Brain());
+    String serialized = mapper.writeValueAsString(mess);
+    Mess deserialized = (Mess) mapper.readValue(serialized, Mess.class);
+    assertSame(mess.getValue("Pinky"), deserialized.getValue("Pinky"));
+    assertSame(mess.getValue("Brain"), deserialized.getValue("Brain"));
+}

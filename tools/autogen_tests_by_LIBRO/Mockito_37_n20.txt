@@ -1,0 +1,25 @@
+public void testIssue108() {
+    MyService service = Mockito.mock(MyService.class);
+    MyTest test = new MyTest(service);
+    test.executeTest();
+}
+
+public class MyTest {
+    @Rule
+    public MockitoRule rule = new MockitoRule(this);
+    @Mock
+    private MyService service;
+    private MyService service2;
+
+    public MyTest(MyService service2) {
+        this.service2 = service2;
+    }
+
+    @Test
+    public void executeTest() {
+        Mockito.when(service.getName()).thenReturn("Mockito");
+        Mockito.when(service2.getName()).thenReturn("Mockito 2");
+        assertEquals("Mockito", service.getName());
+        assertEquals("Mockito 2", service2.getName());
+    }
+}

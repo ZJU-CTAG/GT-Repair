@@ -1,0 +1,8 @@
+public void testIssue105() {
+    String script = "var x = { get 'x'() { return 1 } };";
+    ScriptableObject scope = cx.initStandardObjects();
+    cx.evaluateString(scope, script, "test", 0, null);
+    Object value = scope.get("x", scope);
+    assertNotNull(value);
+    assertEquals(1, ((Scriptable)value).get("x", scope));
+}

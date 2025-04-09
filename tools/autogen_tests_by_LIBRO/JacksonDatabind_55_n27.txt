@@ -1,0 +1,14 @@
+public void testEnumMap() throws Exception {
+    String json = "{\"map\":{\"BAR\":\"foo\"}}";
+    String expected = "{\"map\":{\"bar\":\"foo\"}}";
+    assertEquals(expected, mapper.writeValueAsString(mapper.readValue(json, EnumMapTest.Wrapper.class)));
+}
+
+public static class Wrapper {
+    public EnumMap<EnumMapTest.Foo, String> map;
+}
+
+public static enum Foo {
+    @JsonProperty("bar")
+    BAR;
+}

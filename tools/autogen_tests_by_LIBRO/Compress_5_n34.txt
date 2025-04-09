@@ -1,0 +1,17 @@
+public void testIssue107 () {
+	File archive = new File("src/test/resources/org/apache/commons/io/test-input-with-incomplete-entry.zip");
+	ZipArchiveInputStream zis = new ZipArchiveInputStream(new BufferedInputStream(new FileInputStream(archive)));
+	ZipArchiveEntry ze = zis.getNextZipEntry();
+	assertNotNull(ze);
+	assertEquals("test-input.txt", ze.getName());
+	assertEquals(20, ze.getSize());
+	ze = zis.getNextZipEntry();
+	assertNotNull(ze);
+	assertEquals("test-input-copy.txt", ze.getName());
+	assertEquals(20, ze.getSize());
+
+	// check that we return a zero length read, not a -1
+	byte[] b = new byte[10];
+	int read = zis.read(b);
+	assertEquals(0, read);
+}

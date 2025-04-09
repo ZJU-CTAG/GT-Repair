@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    String json = "{\"entity\": {\"@class\":\"com.example.Ruleform\"}}";
+    Something something = JSON.parseObject(json, new TypeReference<Something>() {});
+    assertEquals(Ruleform.class, something.getEntity().getClass());
+}
+
+interface Ruleform {}
+class Something {
+    private Ruleform entity;
+    public Ruleform getEntity() {
+        return entity;
+    }
+    public void setEntity(Ruleform entity) {
+        this.entity = entity;
+    }
+}

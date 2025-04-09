@@ -1,0 +1,15 @@
+public void testNamespaces() throws Exception {
+    DOMImplementationLS ls = (DOMImplementationLS) DOMImplementationRegistry.newInstance().getDOMImplementation("LS");
+    DOMWriter dw = ls.createLSSerializer().getDomConfig().createDOMWriter();
+    dw.setNamespaceDeclarations(true);
+    dw.setNewLine("\n");
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element parent = doc.createElementNS(XMLConstants.NULL_NS_URI, "parent");
+    doc.appendChild(parent);
+    parent.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:a", "uri:a");
+    parent.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:b", "uri:b");
+    Element child = doc.createElementNS("uri:a",

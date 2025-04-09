@@ -1,0 +1,30 @@
+public void testIssue108() {
+    final double min = -1.0e-10;
+    final double max = +1.0e-10;
+
+    // 100 times with Gragg-Bulirsch-Stoer, no problem
+    for (int i = 0; i < 100; ++i) {
+        try {
+            checkInterval(min, max);
+        } catch (MathIllegalArgumentException miae) {
+            Assert.fail(miae.getMessage());
+        }
+    }
+
+    // 100 times with embedded Runge-Kutta, fails at least once
+    int fail = 0;
+    for (int i = 0; i < 100; ++i) {
+        try {
+            checkInterval(min, max, true);
+        } catch (MathIllegalArgumentException miae) {
+            ++fail;
+        }
+    }
+    Assert.assertTrue(fail > 0);
+}
+
+private void checkInterval(final double min, final double max) {
+    checkInterval(min, max, false);
+}
+
+private void checkInterval(final double min

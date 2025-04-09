@@ -1,0 +1,20 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.WARNING);
+    Result result = compiler.compile(
+        ImmutableList.<SourceFile>of(),
+        ImmutableList.<SourceFile>of(SourceFile.fromCode("input.js",
+            "goog.provide('a.b.c');" +
+            "goog.scope(function() {" +
+            "var b = a.b;" +
+            "var c = b.c;" +
+            "/\*\* @typedef {string} \*/" +
+            "c.MyType;" +
+            "/\*\* @param {c.MyType} x The variable. \*/" +
+            "c.myFunc = function(x) {};" +
+            "});")),
+        options);
+    assertTrue(result.success

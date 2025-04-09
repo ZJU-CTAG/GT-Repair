@@ -1,0 +1,16 @@
+public void testZip() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(baos);
+    zos.setEncoding("UTF-8");
+    ZipArchiveEntry entry = new ZipArchiveEntry("\u00e4");
+    zos.putArchiveEntry(entry);
+    zos.closeArchiveEntry();
+    zos.close();
+    
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    ArchiveInputStream ais = asf.createArchiveInputStream(ArchiveStreamFactory.ZIP, bais);
+    ZipArchiveEntry ze = (ZipArchiveEntry)ais.getNextEntry();
+    assertEquals("\u00e4", ze.getName());
+    ais.close();
+}

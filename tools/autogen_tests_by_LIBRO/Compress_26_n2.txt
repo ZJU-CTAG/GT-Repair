@@ -1,0 +1,12 @@
+public void testSkip() throws IOException {
+    final int msgLength = 100;
+    final String msg = getRandomString(msgLength);
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final CipherOutputStream cos = new CipherOutputStream(baos, mockCipher);
+    cos.write(msg.getBytes());
+    cos.close();
+    final CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(baos.toByteArray()), mockCipher);
+    final long skipped = IOUtils.skip(cis, msgLength);
+    assertEquals("Should have skipped all bytes", msgLength, skipped);
+    assertEquals("Should now be at end of stream", -1, cis.read());
+}

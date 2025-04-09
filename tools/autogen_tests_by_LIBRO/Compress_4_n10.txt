@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+        ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, baos);
+        aos.putArchiveEntry(new TarArchiveEntry("test.txt"));
+        aos.write(new byte[] {1,2,3});
+        ((TarArchiveOutputStream)aos).finish();
+        aos.putArchiveEntry(new TarArchiveEntry("test2.txt"));
+        aos.write(new byte[] {1,2,3});
+        aos.close();
+    }
+}

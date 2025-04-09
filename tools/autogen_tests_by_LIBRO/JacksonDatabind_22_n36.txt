@@ -1,0 +1,23 @@
+public void testCustomSerializer() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule("MySerializers", new Version(1, 0, 0, null, null, null));
+    module.addSerializer(new JsonSerializer<String>() {
+        @Override
+        public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeString("custom");
+        }
+    });
+    mapper.registerModule(module);
+
+    // String serialized using custom serializer
+    final String string = mapper.writeValueAsString("foo");
+    assertEquals("\"custom\"", string);
+
+    // POJO serialized using @JsonValue
+    final POJO pojo = mapper.readValue("{}", POJO.class);
+    assertEquals("custom", pojo.toString());
+
+    // POJO serialized using custom serializer
+    final String pojoString = mapper.writeValueAsString(pojo);
+    assertEquals("\"custom\"", pojoString

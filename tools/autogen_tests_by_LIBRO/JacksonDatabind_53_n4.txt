@@ -1,0 +1,29 @@
+public void testAbstractSerialization() throws Exception {
+    String json = "{\"something\":[{\"id\":\"a uuid\",\"property\":\"value\"}]}";
+
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JodaModule());
+
+    MyPojo pojo = mapper.readValue(json, MyPojo.class);
+
+    MyHashMap<UUID, Foo> something = pojo.getSomething();
+
+    // this passes when using jackson 2.6.6 but fails in 2.7.x
+    assertNotNull(something.get(UUID.fromString("a uuid")));
+}
+
+
+public static class MyPojo {
+    private MyHashMap<UUID, Foo> something;
+
+    @JsonDeserialize(as = MyHashMap.class)
+    public void setSomething(MyHashMap<UUID, Foo> something) {
+        this.something = something;
+    }
+
+    public MyHashMap<UUID, Foo> getSomething() {
+        return something;
+    }
+}
+
+public class MyHashMap<K, V extends MyCustom

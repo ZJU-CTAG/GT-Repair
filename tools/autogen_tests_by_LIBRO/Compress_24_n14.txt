@@ -1,0 +1,13 @@
+public void testTarArchiveInputStream() throws IOException {
+    byte[] buf = new byte[512];
+    byte[] name = "user".getBytes();
+    byte[] mode = "000062410554".getBytes();
+    for (int i = 0; i < buf.length; i++) {
+        buf[i] = 0;
+    }
+    System.arraycopy(name, 0, buf, 0, name.length);
+    System.arraycopy(mode, 0, buf, 100, mode.length);
+    TarArchiveEntry entry = new TarArchiveEntry(buf, false);
+    assertEquals("user", entry.getName());
+    assertEquals(0x62410554, entry.getMode());
+}

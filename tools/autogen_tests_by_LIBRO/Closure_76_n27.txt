@@ -1,0 +1,25 @@
+public void testIssue111() {
+    String compiled = "function reduction() {" +
+            "var a;" +
+            "return echo(true) || echo(a = false) ? a: null" +
+            "}";
+
+    String original = "function reduction() {" +
+            "var a, b;" +
+            "if (echo(b = true) || echo(b = false))" +
+            "    a = b;" +
+            "else" +
+            "    a = null;" +
+            "return a;" +
+            "}";
+    
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("JavaScript");
+    try {
+        engine.eval("function echo(n) {return n}");
+        assertEquals("true", String.valueOf(engine.eval(original)));
+        assertEquals("true", String.valueOf(engine.eval(compiled)));
+    } catch (ScriptException e) {
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue_closure_compiler() {
+     String js = "function f() {\n" +
+             " var a = [], b;\n" +
+             " a.push(b = []);\n" +
+             " b[0] = 1;\n" +
+             " return a;\n" +
+             "}";
+     CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+     options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+     options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+     options.setPrettyPrint(false);
+     options.setPrintInputDelimiter(true);
+     Result result = new Compiler(options).compile(js, new ErrorManager());
+     assertEquals("function f() {\n" +
+             "  var a = [], b;\n" +
+             "  a.push(b = []);\n" +
+             "  b[0] = 1;\n" +
+             "  return a;\

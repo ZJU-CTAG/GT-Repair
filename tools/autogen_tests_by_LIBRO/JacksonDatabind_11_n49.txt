@@ -1,0 +1,18 @@
+public void testIssue() {
+    Something thing = new Something();
+    thing.setEntity(new Ruleform());
+    
+    String json = JSON.serialize(thing);
+    System.out.println(json);
+    Something newThing = JSON.deserialize(json, Something.class);
+}
+static class Ruleform {}
+static class Something {
+    public <T extends Ruleform> T getEntity() {
+        return (T)entity;
+    }
+    public <T extends Ruleform> void setEntity(T entity) {
+        this.entity = entity;
+    }
+    private Ruleform entity;
+}

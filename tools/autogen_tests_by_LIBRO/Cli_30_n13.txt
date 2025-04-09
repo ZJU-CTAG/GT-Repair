@@ -1,0 +1,18 @@
+public void testIssue108() {
+    class App {
+        @Option(name="-a", required=true)
+        boolean a;
+        @Option(name="-b", required=true)
+        boolean b;
+    }
+    App app = new App();
+    Properties props = new Properties();
+    props.setProperty("b", "true");
+    CommandLine cmd = new CommandLine(app);
+    try {
+        cmd.parse("-a", "-b", "--defaults", props);
+        fail("Expected exception");
+    } catch (MissingParameterException ex) {
+        assertEquals("-a", ex.getMissing().iterator().next().getName());
+    }
+}

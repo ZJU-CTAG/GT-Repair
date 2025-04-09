@@ -1,0 +1,15 @@
+public void testIssue() {
+    String expected = "var b; try { throw\"throw me\" } finally { console.log(\"fake catcher\"); break b } console.log(\"ok then...\");";
+    String actual = new JavaScriptCompressor(new StringReader(expected), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return new EvaluatorException(message);
+        }
+    }).compress(new StringWriter(), -1, true, true, false, false).toString();
+    assertEquals(expected, actual);
+}

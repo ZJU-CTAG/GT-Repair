@@ -1,0 +1,21 @@
+public void testIssue88() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setCheckTypes(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler compiler = new Compiler();
+    compiler.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Result result = compiler.compile(
+            SourceFile.fromCode("file.js", ""
+                                + "goog.provide(mine.Spike);"
+                                + "function test() {"
+                                + "  var Spike = function() {"
+                                + "    goog.base(this);"
+                                + "  };"
+                                + "  goog.inherits(Spike, mine.Spike);"
+                                + "  return Spike;"
+                                + "}")
+            , options);
+    assertEquals(CheckLevel.WARNING,
+                 compiler.getWarnings()[0].getDefaultLevel());
+}

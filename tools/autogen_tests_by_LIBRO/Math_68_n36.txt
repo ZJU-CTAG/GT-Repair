@@ -1,0 +1,26 @@
+public void testIssue106() {
+    // Sample function with a local minimum at x = +- 1.
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return x * x - 1;
+        }
+    };
+
+    // Optimization problem.
+    UnivariateRealOptimizationProblem problem = new UnivariateRealOptimizationProblem(f, 0, 2);
+
+    // Convergence checker.
+    VectorialConvergenceChecker convergenceChecker = new VectorialConvergenceChecker() {
+        @Override
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            // Do not stop if x < 2.
+            return current.getPointRef()[0] >= 2;
+        }
+    };
+
+    // Optimization.
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(false, convergenceChecker);
+    VectorialPointValuePair optimum = optimizer.optimize(problem);
+
+   

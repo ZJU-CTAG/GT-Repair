@@ -1,0 +1,21 @@
+public void testIssue108() {
+    class FakeUserAccount extends AbstractMockitoFake<UserAccount> implements UserAccount {
+        private final List<String> emails = new ArrayList<>();
+
+        @Override
+        public void addEmail(String email) {
+            emails.add(email);
+        }
+
+        @Override
+        public List<String> getEmails() {
+            return ImmutableList.copyOf(emails);
+        }
+    }
+
+    @Fake
+    FakeUserAccount userAccount; // Mockito instantiates abstract class.
+
+    userAccount.addEmail("a@b.com");
+    assertEquals(ImmutableList.of("a@b.com"), userAccount.getEmails());
+}

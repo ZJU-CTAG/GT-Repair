@@ -1,0 +1,22 @@
+public void testGroupIssue() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option option1 = new Option("a", "first");
+    Option option2 = new Option("b", "second");
+    Option option3 = new Option("c", "third");
+    Option option4 = new Option("d", "fourth");
+    Option option5 = new Option("e", "fifth");
+    options.addOption(option1);
+    options.addOption(option2);
+    options.addOption(option3);
+    group.addOption(option1);
+    group.addOption(option2);
+    group.addOption(option3);
+    group.setRequired(true);
+    options.addOptionGroup(group);
+    options.addOption(option4);
+    options.addOption(option5);
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-d", "--third"});
+    assertTrue(cmd.hasOption("d"));
+    assertTrue(group.isSelected(option3.get

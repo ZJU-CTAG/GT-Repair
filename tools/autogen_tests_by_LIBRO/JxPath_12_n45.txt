@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    DOMParser parser = new DOMParser();
+    parser.parse(new InputSource(new StringReader(XML)));
+    Document doc = parser.getDocument();
+    JXPathContext context = JXPathContext.newContext(doc);
+
+    context.registerNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+    assertEquals("Mytype", context.getValue("//*:ElementA/@xsi:myAttr"));
+    assertEquals("MY VALUE", context.getValue("//*:ElementB"));
+}

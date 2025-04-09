@@ -1,0 +1,8 @@
+public void testOffsetReadValues() throws IOException {
+    byte[] bytes = "{\"foo\": \"bar\"}".getBytes(UTF8);
+    ObjectReader objectReader = new ObjectMapper().readerFor(Map.class);
+    try (JsonParser jsonParser = objectReader.getFactory().createParser(bytes, 1, bytes.length - 2)) {
+        Map<?, ?> foo = objectReader.readValues(jsonParser).next();
+        assertEquals("bar", foo.get("foo"));
+    }
+}

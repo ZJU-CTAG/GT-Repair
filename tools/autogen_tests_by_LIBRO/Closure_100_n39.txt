@@ -1,0 +1,16 @@
+public void testOnlyAssignmentToThisIssuesADangerousUseOfTheGlobalThisObjectWarning() throws IOException {
+    String js = FileUtils
+            .readFileToString(new File(
+                    "src/test/resources/org/apache/commons/lang3/issue107/testOnlyAssignmentToThisIssuesADangerousUseOfTheGlobalThisObjectWarning.js"));
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(options, js);
+    assertFalse(result.success);
+    assertEquals(1, result.warnings.length);
+    assertEquals(
+            "testOnlyAssignmentToThisIssuesADangerousUseOfTheGlobalThisObjectWarning.js:29: WARNING - Dangerous use of the global this object\n"
+                    + "function writeMethodWithoutAnnotation() {\n"
+                    + "                        ^\n"
+                    + "",
+            result.warnings[0].toString());
+}

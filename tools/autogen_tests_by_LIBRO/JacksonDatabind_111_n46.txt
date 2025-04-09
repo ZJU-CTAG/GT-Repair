@@ -1,0 +1,13 @@
+public void testRefRef() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final MyBean intRef = mapper.readValue(" {\"refRef\": 2 } ", MyBean.class);
+    assertNotNull(intRef.refRef);
+    assertNotNull(intRef.refRef.get());
+    assertEquals(intRef.refRef.get().get(), Integer.valueOf(2));
+
+    final MyBean nullRef = mapper.readValue(" {\"refRef\": null } ", MyBean.class);
+    assertNotNull(intRef.refRef);
+    assertNotNull(intRef.refRef.get());
+    assertNull(intRef.refRef.get().get());
+}

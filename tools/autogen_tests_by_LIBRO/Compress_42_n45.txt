@@ -1,0 +1,12 @@
+public void testUnixSymlink() throws IOException {
+    Set<String> entryNames = new HashSet<String>();
+    ZipFile zipFile = new ZipFile(getFile("broken-unix-symlink-mode.zip"));
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry zipEntry = entries.nextElement();
+        System.out.println(zipEntry.getName() + " -> " + zipEntry.isUnixSymlink());
+        entryNames.add(zipEntry.getName());
+    }
+    assertTrue(entryNames.contains("META-INF/maven/"));
+    assertTrue(entryNames.contains("META-INF/"));
+}

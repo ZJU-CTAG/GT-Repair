@@ -1,0 +1,9 @@
+public void testIssue108() {
+    SimpleVector x0 = new SimpleVector(new double[] {1, 1});
+    LevenbergMarquardtOptimizer solver = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair p = solver.optimize(new MaxEval(1000), new ObjectiveFunction(new F1()), GoalType.MINIMIZE, x0);
+    assertEquals(0, p.getValue()[0], 1e-9);
+    assertEquals(0, p.getValue()[1], 1e-9);
+    assertEquals(4 * p.getPoint()[0] * p.getPoint()[0] + p.getPoint()[1] * p.getPoint()[1] + p.getPoint()[0] * p.getPoint()[1], p.getValue()[0], 1e-9);
+    assertEquals(2 * p.getPoint()[0] + p.getPoint()[1], p.getValue()[1], 1e-9);
+}

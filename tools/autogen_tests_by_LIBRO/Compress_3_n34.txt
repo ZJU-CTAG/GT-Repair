@@ -1,0 +1,20 @@
+public void testFinishCalledOnClose() throws Exception {
+    File output = new File("target/test.zip").getCanonicalFile();
+    try {
+        final FileOutputStream fos = new FileOutputStream(output);
+        final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+        final ZipArchiveEntry ze = new ZipArchiveEntry("foo");
+        ze.setSize(3);
+        zos.putArchiveEntry(ze);
+        zos.write("foo".getBytes());
+        zos.closeArchiveEntry();
+        // This is not required.
+        zos.finish();
+        zos.close();
+        fos.close();
+    } catch (Exception e) {
+        fail("Unexpected failure");
+    } finally {
+        output.delete();
+    }
+}

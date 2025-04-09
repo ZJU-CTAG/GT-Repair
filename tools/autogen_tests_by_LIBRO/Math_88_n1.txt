@@ -1,0 +1,20 @@
+public void testIssue352() {
+    SimplexSolver solver = new SimplexSolver();
+    Variable x = Variable.make("x");
+    Variable y = Variable.make("y");
+    LinearExpression objective = new LinearExpression();
+    objective.addVariable(x, 1);
+    objective.addVariable(y, 1);
+    Constraint c1 = new Constraint(
+            new LinearExpression().addVariable(x, 1)
+                    .addVariable(y,1),
+            OperatorType.GEQ, 1);
+    Constraint c2 = new Constraint(
+            new LinearExpression().addVariable(x, 1)
+                    .addVariable(y,1),
+            OperatorType.LEQ, 1);
+    System.out.println(solver.optimize(objective,
+            ConstraintType.NONE, objective, ConstraintType.NONE,
+            new Constraint[]{c1, c2},
+            new Variable[]{x, y}));
+}

@@ -1,0 +1,15 @@
+public void testJsonSchema() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+
+    // then one for basic POJO
+    JsonSchema schema = schemaGen.generateSchema(Point.class);
+    assertEquals("{\"type\":\"object\",\"id\":\"urn:jsonschema:com:fasterxml:jackson:module:jsonSchema:TestIntrospector:Point\",\"properties\":{\"x\":{\"type\":\"integer\"},\"y\":{\"type\":\"integer\"}}}", schema.toString());
+}
+
+public static class Point {
+    public int x, y;
+    public BigDecimal z;
+}

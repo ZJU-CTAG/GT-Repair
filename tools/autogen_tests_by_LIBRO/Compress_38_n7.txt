@@ -1,0 +1,18 @@
+public void testIssuePaxHeaderEntryNameEndingWithSlashCausesProblems() throws Exception {
+    final File file = File.createTempFile("commons-compress-", ".tar");
+    file.deleteOnExit();
+    try (
+            final OutputStream os = new FileOutputStream(file);
+            final ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, os)) {
+        final TarArchiveEntry entry = new TarArchiveEntry("foo/");
+        entry.setSize(1);
+        aos.putArchiveEntry(entry);
+        aos.write(new byte[] {(byte) 42});
+        aos.closeArchiveEntry();
+    }
+    try (
+            final InputStream is = new FileInputStream(file);
+            final TarArchiveInputStream ais = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.TAR, is)) {
+        final TarArchiveEntry entry = ais.getNextTarEntry();
+        assertNotNull(entry);
+        assertEquals("

@@ -1,0 +1,17 @@
+public void testNextTextValue() throws Exception {
+    String xml = "<root attr='value'> <child>value2</child> </root>";
+    FromXmlParser p = (FromXmlParser) XML.createParser(xml);
+    // <root>
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    // <root attr>
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    // <root attr='value'>
+    assertEquals(JsonToken.VALUE_STRING, p.nextToken());
+    // <root>
+    assertEquals(JsonToken.END_OBJECT, p.nextToken());
+    // <root> <child>
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    // <root> <child>value2</child>
+    assertEquals(JsonToken.VALUE_STRING, p.nextToken());
+    // <root> <child></child>
+    assertEquals(JsonToken.END_OBJECT, p.next

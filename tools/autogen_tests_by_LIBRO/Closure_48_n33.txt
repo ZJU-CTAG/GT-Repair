@@ -1,0 +1,18 @@
+public void testIssue106() {
+    final String source = "/** @constructor */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+            "\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { }\n" +
+            "\n" +
+            "myclass.prototype.test = function() {\n" +
+            "this.fn();\n" +
+            "this.fn = function() { };\n" +
+            "}\n";
+    final String[] warnings = {
+        "4:19: JSC_PARAMETER_NOT_NULLABLE",
+        "4:19: JSC_TYPE_MISMATCH"
+    };
+    test(source, warnings);
+}

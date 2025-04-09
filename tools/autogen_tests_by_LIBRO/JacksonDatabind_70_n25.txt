@@ -1,0 +1,15 @@
+public void testCaseInsensitive() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    final CsvMapper csvMapper = mapper.readerFor(Person.class)
+            .with(CsvSchema.emptySchema().withHeader());
+    final Person p = csvMapper.readValue(String.format(
+            "\"businessAddress.street\",\"businessAddress.addon\",\"businessAddress.zip\",\"businessAddress.town\",\"businessAddress.country\"%n" +
+            "\"Wiersberg\",\"1\",\"12345\",\"Somewhere\",\"Germany\"%n"
+    ).getBytes(StandardCharsets.UTF_8));
+    assertEquals("Wiersberg", p.businessAddress.street);
+    assertEquals("1", p.businessAddress.addon);
+    assertEquals("12345", p.businessAddress.zip);
+    assertEquals("Somewhere", p.businessAddress.town);
+    assertEquals("

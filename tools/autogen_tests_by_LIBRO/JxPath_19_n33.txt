@@ -1,0 +1,17 @@
+public void testPrefixes() throws Exception {
+    String xml = "<a:doc xmlns:a=\"ns\">" +
+            " <a:elem />" +
+            " <b:elem xmlns:b=\"ns\" />" +
+            "</a:doc>";
+    Document doc = DocumentHelper.parseText(xml);
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    Iterator iter = ctx.iteratePointers("//*[local-name() = 'elem']");
+    int cnt = 0;
+    while (iter.hasNext()) {
+        Pointer ptr = (Pointer) iter.next();
+        Node n = (Node) ptr.getNode();
+        cnt++;
+        System.out.println(n.getNodeName());
+    }
+    assertEquals(2, cnt);
+}

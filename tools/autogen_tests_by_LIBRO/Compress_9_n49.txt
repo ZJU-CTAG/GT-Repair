@@ -1,0 +1,22 @@
+public void testTarArchiveStream() throws Exception {
+    File tmpTar = File.createTempFile("tartest", ".tar");
+    tmpTar.deleteOnExit();
+    FileOutputStream fos = new FileOutputStream(tmpTar);
+    
+    ArchiveOutputStream sTarOut = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+    
+    File sSource = new File("pom.xml");
+    TarArchiveEntry sEntry = new TarArchiveEntry(sSource);
+    sTarOut.putArchiveEntry(sEntry);
+    
+    FileInputStream sInput = new FileInputStream(sSource);
+    byte[] cpRead = new byte[8192];
+    
+    int iRead = 0;
+    while ((iRead = sInput.read(cpRead)) > 0) {
+        sTarOut.write(cpRead, 0, iRead);
+    }
+    
+    long bytesWritten = ((TarArchiveOutputStream) sTarOut).getBytesWritten();
+    assertTrue(bytesWritten > 0);
+    assertTrue(bytesWritten > sSource

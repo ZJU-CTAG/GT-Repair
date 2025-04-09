@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String js = "var uid; function reset() { uid = Math.random(); } function doStuff() { reset(); var _uid = uid; " +
+            "if (uid < 0.5) { doStuff(); } " +
+            "if (_uid !== uid) { throw 'reset() was called'; } } doStuff();";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setLanguageVersion(Context.VERSION_ES6);
+    env.setOptimizationLevel(9);
+    env.setRecordingLocalJsDocComments(true);
+    env.setRecordingComments(true);
+
+    Script script = ContextFactory.getGlobal().compileString(js, "test.js", 1, null);
+    script.exec(ContextFactory.getGlobal(), null);
+}

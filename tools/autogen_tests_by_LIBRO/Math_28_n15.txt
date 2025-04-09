@@ -1,0 +1,11 @@
+public void testLinearProgrammingProblem() throws NoFeasibleSolutionException, UnboundedSolutionException {
+        LinearObjectiveFunction f = new LinearObjectiveFunction(new double[]{1,0}, 0);
+        Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+        constraints.add(new LinearConstraint(new double[]{-1,0}, Relationship.GEQ, 0));
+        constraints.add(new LinearConstraint(new double[]{0,1}, Relationship.GEQ, 0));
+        SimplexSolver solver = new SimplexSolver();
+        PointValuePair solution = solver.optimize(f, new LinearConstraintSet(constraints), GoalType.MINIMIZE, new NonNegativeConstraint(true));
+        assertEquals(0, solution.getValue());
+        assertEquals(0, solution.getPoint()[0], 0);
+        assertEquals(0, solution.getPoint()[1], 0);
+    }

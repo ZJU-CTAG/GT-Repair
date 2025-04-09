@@ -1,0 +1,11 @@
+public void testIllegalStateException() {
+    Throwable caught = null;
+    try {
+        RhinoException re = CommandLineRunner.getRhinoException("-1", "var test = {}; /** @interface */ test.T = function() {}; /** @constructor @implements {test.T} */ test.A = function() {}; /** @constructor @implements {test.T} */ test.B = function() {}; /** @constructor */ test.X = function() { this.type = test.A; this.t = this.f(); }; /** @return {test.T} */ test.X.prototype.f = function() { if (this.type === test.A) { return new test.A(); } else if (this.type === test.B) { return new test.B(); } };");
+        Assert.fail("Expected an exception, but none was thrown.");
+    } catch (RhinoException re) {
+        caught = re;
+        Assert.assertEquals(
+            "IllegalStateException: The instance type has not been set yet.",
+            re.details);
+   

@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Car.class);
+    mapper.registerSubtypes(Truck.class);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    try {
+        mapper.readValue("[\"org.codehaus.jackson.map.jsontype.impl.VehicleType\",{\"type\":\"truck\"}]", Car.class);
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+        // good
+    }
+}

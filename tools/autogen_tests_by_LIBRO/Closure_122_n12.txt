@@ -1,0 +1,24 @@
+public void testIssue108() {
+
+    Compiler compiler = new Compiler();
+    compiler.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    compiler.disableThreads();
+
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setOutputCharset("utf-8");
+    options.setEmitUseStrict(false);
+    options.setPrettyPrint(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.ALL, PropertyRenamingPolicy.ALL_UNQUOTED);
+
+    Compiler.setLoggingLevel(Level.ALL);
+
+    Result result = compiler.compile(
+            "", "", options);
+
+    System.out.println(result.success);
+
+    for (JSError err : result.errors) {
+        System.out.println(err.toString());

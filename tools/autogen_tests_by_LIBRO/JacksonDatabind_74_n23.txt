@@ -1,0 +1,20 @@
+public void testIssueEmptyStringAsNullObject() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.readValue("\"\"", Foo.class);
+}
+
+static class Foo {
+    @JsonDeserialize(using = BarDeserializer.class)
+    public Bar bar;
+}
+
+static class BarDeserializer extends AsPropertyTypeDeserializer<Bar> {
+    public BarDeserializer(JavaType bt) {
+        super(bt, Bar.class);
+    }
+}
+
+static class Bar {
+    public String s;
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String[] modules = new String[] {
+            "goog.provide('apps');",
+            "goog.provide('apps.foo.bar.B');",
+            "goog.provide('apps.foo.bar.C');",
+            "",
+            "goog.require('apps.foo.bar.B');",
+            "goog.require('apps.foo.bar.C');",
+            "",
+            "new apps.foo.bar.B();",
+            "new apps.foo.bar.C();"
+    };
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[] {
+            JSSourceFile.fromCode("testcode", Joiner.on("\n").join(modules))
+    }, new CompilerOptions());
+    assertEquals("", result.errors.toString());
+}

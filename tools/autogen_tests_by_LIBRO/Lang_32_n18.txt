@@ -1,0 +1,22 @@
+public void testToStringStyleThreadLocalLeak() {
+    ClassLoader tccl = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(new ClassLoader() {
+
+        @Override
+        public Class<?> loadClass(String name) throws ClassNotFoundException {
+            if ("org.apache.commons.lang3.builder.ToStringStyle".equals(name)) {
+                // force loading of this class, triggering the creation of the ThreadLocal
+                return super.loadClass(name);
+            }
+            return ToStringStyleThreadLocalLeakTest.class.getClassLoader().loadClass(name);
+        }
+
+    });
+    try {
+        assertEquals(0, ToStringStyle.getRegistry().size());
+        Thread.currentThread().setContextClassLoader(tccl);
+        assertEquals(0, ToStringStyle.getRegistry().size());
+    } finally {
+        Thread.currentThread().setContextClassLoader(tccl);
+    }
+}

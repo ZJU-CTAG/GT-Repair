@@ -1,0 +1,10 @@
+public void testIssue180() throws Exception {
+    StringReader r = new StringReader("a,b,c\n1,2,3\n4,5,6");
+    CSVParser p = new CSVParser(r, CSVFormat.newBuilder().withHeader("A", "B", "C", "D").build());
+    try {
+        p.getRecords().get(0).get("D");
+        fail("Should have thrown exception");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}

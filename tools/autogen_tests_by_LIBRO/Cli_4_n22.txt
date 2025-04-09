@@ -1,0 +1,27 @@
+public void test() throws Exception {
+    String[] args = new String[] {
+            "-t",
+            "-target",
+            "-t foobar.com",
+            "-target foobar.com",
+    };
+
+    int i = 0;
+    String[] args1 = new String[] { args[i++] };
+    String[] args2 = new String[] { args[i++] };
+    String[] args3 = new String[] { args[i++] };
+    String[] args4 = new String[] { args[i++] };
+
+    Options options = new Options();
+    Option generateTarget = new Option("t", "target", true, "Generate files for the specified target machine");
+    options.addOption(generateTarget);
+
+    PosixParser parser = new PosixParser();
+
+    CommandLine line = parser.parse(options, args1);
+    assertEquals(0, line.getOptions().length);
+    assertEquals(0, line.getArgs().length);
+
+    line = parser.parse(options, args2);
+    assertEquals(0, line.getOptions().length);
+    assertEquals

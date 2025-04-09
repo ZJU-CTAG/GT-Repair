@@ -1,0 +1,28 @@
+public void testSimplexSolver() throws Exception {
+
+        // FIRST ITERATION
+        // ---------------
+
+        // define problem variables
+        Variable[] vars =
+                new Variable[] {
+                        new Variable("t").lower(0).weight(1),
+                        new Variable("l1").lower(0).weight(0),
+                        new Variable("l2").lower(0).weight(0)
+                };
+
+        // define problem constraints
+        Constraint[] constraints =
+                new Constraint[] {
+                        new Constraint("c1", -1, 0).set(vars[0], 1).set(vars[1], -1),
+                        new Constraint("c2", -1, 0).set(vars[0], -1).set(vars[1], 1),
+                        new Constraint("c3", -1, 0).set(vars[1], 1)
+                };
+
+        // define and solve problem
+        Linear linear = new Linear(vars, constraints);
+        LinearSolver solver = new SimplexSolver();
+
+        Solution solution = solver.solve(linear);
+
+       

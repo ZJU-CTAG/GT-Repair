@@ -1,0 +1,17 @@
+public void testClone() {
+    Element el = new Element("el").addClass("class1");
+    Element elClone = (Element) el.clone();
+    assertEquals(el, elClone);
+    assertNotNull(el.classNames);
+    assertNotNull(elClone.classNames);
+    assertEquals(el.classNames.size(), elClone.classNames.size());
+    assertTrue(el.classNames.contains("class1"));
+    assertTrue(elClone.classNames.contains("class1"));
+    assertTrue(el.classNames == elClone.classNames);
+    elClone.addClass("class2");
+    // check the original classNames Set is modified too
+    assertTrue(el.classNames.contains("class1"));
+    assertTrue(el.classNames.contains("class2"));
+    assertEquals(2, el.classNames.size());
+    assertTrue(el.classNames == elClone.classNames);
+}

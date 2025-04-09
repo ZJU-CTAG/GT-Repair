@@ -1,0 +1,11 @@
+public void testOptionalHeaders() throws IOException {
+    final String input = "aaa,bbb\n" +
+            "aaa,bbb\n";
+    final StringReader reader = new StringReader(input);
+    final CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL.withHeader().withSkipHeaderRecord());
+
+    final List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+    final Map<String, String> record1Map = records.get(0).toMap();
+    assertNull(record1Map);
+}

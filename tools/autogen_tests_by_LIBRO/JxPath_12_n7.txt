@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String xml =
+        "<ElementA A:myAttr=\"Mytype\">\n" +
+        " <B:ElementB>MY VALUE</B:ElementB>\n" +
+        "</ElementA>";
+    Document document = DocumentHelper.parseText(xml);
+    assertNotNull(document);
+
+    // will fail
+    assertNotNull(document.getRootElement().attribute("myAttr"));
+
+    // will work
+    Namespace.registerNamespace("A", "http://www.apache.org");
+    assertNotNull(document.getRootElement().attribute("myAttr"));
+
+    // will fail
+    assertNotNull(document.getRootElement().element("ElementB"));
+
+    // will work
+    Namespace.registerNamespace("B", "http://www.apache.org");
+    assertNotNull(document.getRootElement().element("ElementB"));
+}

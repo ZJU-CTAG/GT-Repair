@@ -1,0 +1,17 @@
+public void testTarArchiveInputStream() throws Exception {
+  TarArchiveInputStream tis = null;
+  try {
+    tis = new TarArchiveInputStream(new ByteArrayInputStream(new byte[] {
+        0x1f, (byte)0xa0, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, // these 8 bytes are invalid, and will cause an IllegalArgumentException
+        0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08,
+    }));
+    tis.getNextTarEntry();
+    fail("Expected an IOException!");
+  } catch (IOException e) {
+    // expected
+  } finally {
+    if (tis != null) {
+      tis.close();
+    }
+  }
+}

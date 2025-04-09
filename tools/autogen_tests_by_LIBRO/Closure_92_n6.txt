@@ -1,0 +1,23 @@
+public void testIssue(){
+    String root = "apps";
+    String name = "apps.foo.bar.B";
+    String code = "goog.provide('"+name+"');";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.initOptions(options);
+
+    JSSourceFile[] externs = new JSSourceFile[]{
+        JSSourceFile.fromCode("externs", "goog.provide('"+root+"');")
+    };
+    JSSourceFile[] input = new JSSourceFile[]{
+        JSSourceFile.fromCode("input", code)
+    };
+
+    Result result = compiler.compile(externs, input, options);
+    if(result.success){
+        System.out.println(compiler.toSource());
+    } else {
+        System.err.println(result.errors);
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue126() throws IOException {
+    // Create a payload that executes "calc" on Windows
+    // See https://github.com/frohoff/ysoserial
+    String command = "calc";
+    Transformer[] transformers = new Transformer[] {
+        new ConstantTransformer(Runtime.class),
+        new InvokerTransformer("getMethod", new Class[] { String.class, Class[].class }, new Object[] { "getRuntime", new Class[0] }),
+        new InvokerTransformer("invoke", new Class[] { Object.class, Object[].class }, new Object[] { null, new Object[0] }),
+        new InvokerTransformer("exec", new Class[] { String.class }, new Object[] { command } ),
+        new ConstantTransformer(1)
+    };
+
+    Transformer transformerChain = new ChainedTransformer(transformers);
+    Map<String, String> map = new HashMap<>();
+    map.put("test", "test");
+    Map<String, String> innerMap = TransformedMap.decorate(map, null, transformerChain);
+    Map<

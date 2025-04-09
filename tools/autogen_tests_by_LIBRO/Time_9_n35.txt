@@ -1,0 +1,35 @@
+public void testEnsureThereIsAMaxMinValidOffset() {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(24, 0);
+        fail();
+    } catch (IllegalArgumentException ex) {
+        // success
+    }
+    try {
+        DateTimeZone.forOffsetHoursMinutes(24, 1);
+        fail();
+    } catch (IllegalArgumentException ex) {
+        // success
+    }
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 60);
+        fail();
+    } catch (IllegalArgumentException ex) {
+        // success
+    }
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 59);
+        // success
+    } catch (IllegalArgumentException ex) {
+        fail();
+    }
+    try {
+        DateTimeZone.forID("+24:00");
+        fail();
+    } catch (IllegalArgumentException ex) {
+        // success
+    }
+    try {
+        DateTimeZone.forID("+23:60");
+        fail();
+    } catch

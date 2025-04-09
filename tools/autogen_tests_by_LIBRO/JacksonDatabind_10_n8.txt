@@ -1,0 +1,26 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final Issue107Bean bean = new Issue107Bean();
+    bean.setParameters(ImmutableMap.of("foo", "bar"));
+    final String json = mapper.writeValueAsString(bean);
+    assertEquals("{\"foo\":\"bar\"}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public static class Issue107Bean
+{
+    private Map<String, String> parameters;
+
+    @JsonAnyGetter
+    public Map<String, String> getParameters()
+    {
+        return parameters;
+    }
+
+    @JsonAnySetter
+    public void setParameters(Map<String, String> parameters)
+    {
+        this.parameters = parameters;
+    }
+}

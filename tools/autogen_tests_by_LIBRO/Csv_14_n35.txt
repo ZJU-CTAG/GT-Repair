@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVFormat.TDF.withMinimalQuote());
+    printer.printRecord("first", "second");
+    printer.printRecord("-92.222", "43.333", "3");
+    printer.printRecord("-92.222", "43.333", "3");
+    printer.printRecord("-92.222", "43.333", "3");
+    printer.close();
+    assertEquals("\"first\",second\n" +
+            "-92.222,\"43.333\",3\n" +
+            "-92.222,43.333,3\n" +
+            "-92.222,43.333,3\n", sw.toString());
+}

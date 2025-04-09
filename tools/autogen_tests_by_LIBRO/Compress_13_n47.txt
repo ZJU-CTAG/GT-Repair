@@ -1,0 +1,22 @@
+public void testDirectoryWithUmlauts() throws IOException {
+    ArchiveInputStream in = null;
+    try {
+        in = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(getFile()));
+        ArchiveEntry entry = in.getNextEntry();
+        assertNotNull(entry);
+        assertTrue(entry.isDirectory());
+        assertEquals("ä/", entry.getName());
+
+        entry = in.getNextEntry();
+        assertNotNull(entry);
+        assertFalse(entry.isDirectory());
+        assertEquals("ä/Testfile.txt", entry.getName());
+    } finally {
+        if (in != null) {
+            in.close();
+        }
+    }
+}
+private File getFile() {
+    return new File(getClass().getResource("/TEST-ä.zip").getFile());
+}

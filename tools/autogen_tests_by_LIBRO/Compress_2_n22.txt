@@ -1,0 +1,19 @@
+public void testArArchiveDeletion() throws IOException {
+    File file = new File("ar.ar");
+    file.deleteOnExit();
+    try (ArArchiveOutputStream outputStream = new ArArchiveOutputStream(file)) {
+        ArArchiveEntry entry = new ArArchiveEntry("test1.xml", "test1.xml".getBytes());
+        outputStream.putArchiveEntry(entry);
+        outputStream.write("test1.xml".getBytes());
+        outputStream.closeArchiveEntry();
+
+        entry = new ArArchiveEntry("test2.xml", "test2.xml".getBytes());
+        outputStream.putArchiveEntry(entry);
+        outputStream.write("test2.xml".getBytes());
+        outputStream.closeArchiveEntry();
+    }
+
+    try (ArArchiveInputStream inputStream = new ArArchiveInputStream(file)) {
+        ArArchiveEntry entry = inputStream.getNextArEntry();
+        assertEquals("test1.xml", new String(entry.getNameByteArray()));
+        entry = inputStream.getNextArEntry();

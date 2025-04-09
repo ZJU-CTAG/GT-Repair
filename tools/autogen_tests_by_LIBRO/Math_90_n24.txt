@@ -1,0 +1,24 @@
+public void testFreq() {
+    final Object OBJ = new Object();
+    final Comparable<Object> COBJ = new Comparable<Object>() {
+        public int compareTo(final Object o) {
+            if (o instanceof Comparable) {
+                return ((Comparable<Object>) o).compareTo(o);
+            } else {
+                return 0;
+            }
+        }
+    };
+    final Frequency f = new Frequency();
+    f.addValue(COBJ);
+    assertEquals(1, f.getCount(COBJ));
+    try {
+        f.addValue(OBJ);
+        fail("Exception expected");
+    } catch (ClassCastException ex) {
+        // ignore
+    }
+    assertEquals(0, f.getCount(OBJ));
+    assertEquals(1, f.getCumFreq(OBJ));
+    assertEquals(1, f.getCumFreq(OBJ));
+}

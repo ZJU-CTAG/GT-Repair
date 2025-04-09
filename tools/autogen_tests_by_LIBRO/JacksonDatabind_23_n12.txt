@@ -1,0 +1,20 @@
+public void testIssue108() {
+    MyBean bean = new MyBean();
+    bean.index = 1;
+    bean.name = "";
+    bean.group = "";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    String json = mapper.writeValueAsString(bean);
+    assertEquals("{\"index\":1}", json);
+    mapper = new ObjectMapper(new AfterburnerModule());
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    json = mapper.writeValueAsString(bean);
+    assertEquals("{\"index\":1}", json);
+}
+
+private static class MyBean {
+    public int index;
+    public String name;
+    public String group;
+}

@@ -1,0 +1,27 @@
+public void testIssue107() {
+    String js = "var i = 0; "
+    + "lab1: do{ "
+    + " lab2: do{ "
+    + " i++; "
+    + " if (1) { "
+    + " break lab2; "
+    + " } else { "
+    + " break lab1; "
+    + " } "
+    + " } while(false); "
+    + "} while(false); "
+    + "console.log(i); ";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingLocalJsDocComments(true);
+    env.setAllowSharpComments(true);
+    env.setRecoverFromErrors(true);
+    env.setIdeMode(true);
+    env.setStrictMode(false);
+    env.setLogger(new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line,
+                String lineSource, int lineOffset) {
+            System.err.println(message);
+        }
+        
+        @

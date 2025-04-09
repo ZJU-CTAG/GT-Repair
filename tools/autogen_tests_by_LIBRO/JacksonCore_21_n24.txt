@@ -1,0 +1,12 @@
+public void testFilteringWithStartObject() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonParser p0 = mapper.getJsonFactory().createJsonParser(new StringReader("{}"));
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+            );
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    assertNull(p.nextToken());
+}

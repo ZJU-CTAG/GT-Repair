@@ -1,0 +1,19 @@
+public void testIssue() {
+    try {
+        final BaseAbstractMultivariateOptimizer<DifferentiableMultivariateFunction> optimizer
+            = new LevenbergMarquardtOptimizer();
+        optimizer.optimize(new MaxEval(100),
+                           new ObjectiveFunction(new MultivariateDifferentiableFunction() {
+                               public RealVector gradient(RealVector x) {
+                                   return null;
+                               }
+                               public double value(RealVector x) {
+                                   return 0;
+                               }
+                           }),
+                           GoalType.MINIMIZE,
+                           new double[] { 0, 0 });
+    } catch (Exception e) {
+        fail("wrong exception caught");
+    }
+}

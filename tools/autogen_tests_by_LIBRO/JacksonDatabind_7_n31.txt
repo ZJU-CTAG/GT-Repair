@@ -1,0 +1,26 @@
+public void testTokenBufferDelegate() throws IOException {
+    final String testJson = "{ \"a\":1, \"b\":null }";
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(Value.class, ValueMixIn.class);
+
+    final Value value = mapper.readValue(testJson, Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+abstract class ValueMixIn {
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        final Value value = new Value();
+
+        final JsonParser parser = buffer.asParser();
+        while (parser.nextToken() != JsonToken.END_OBJECT) {
+            final String name = parser.getCurrentName();
+            if ("a".equals(name)) {
+                parser.nextToken();
+                value.a = parser.getIntValue();
+            } else if ("b".equals(name)) {
+                parser.nextToken();
+               

@@ -1,0 +1,15 @@
+public void testIssue959() {
+    assertEquals(null, DatasetUtilities.iterateRangeBounds(null));
+    assertEquals(null, DatasetUtilities.iterateDomainBounds(null));
+    XYSeriesCollection dataset = new XYSeriesCollection();
+    XYSeries series1 = new XYSeries("1", false);
+    series1.add(1.0, 1.0);
+    series1.add(2.0, 2.0);
+    dataset.addSeries(series1);
+    Range r = DatasetUtilities.iterateDomainBounds(dataset);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(2.0, r.getUpperBound(), EPSILON);
+    r = DatasetUtilities.iterateRangeBounds(dataset);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(2.0, r.getUpperBound(), EPSILON);
+    XYSeries series2 = new XYSeries("2", false);

@@ -1,0 +1,15 @@
+public void testIssue108() {
+    ParserConfiguration configuration = new ParserConfiguration();
+    configuration.setGrammarAccess(Grammar_AS3.instance);
+    
+    IParser parser = new AntlrParser(configuration);
+    IResource resource = new ClasspathResourceSet("test-data/issues/108/test.as");
+    IResourceDescriptions descriptions = new ResourceSetBasedResourceDescriptions(resource);
+
+    IParseResult parseResult = parser.parse(resource.getContents().get(0));
+    assertEquals(IParseResult.InternalState.OK, parseResult.getInternalState());
+    List<IEObjectDescription> eObjectDescriptions = descriptions.getExportedObjects(As3EFactory.eINSTANCE.getNsURI(), QualifiedName.create("com.adobe.example", "Foo"));
+    assertEquals(1, eObjectDescriptions.size());
+    
+    IEObjectDescription eObjectDescription = eObjectDescriptions.get(0);
+    assertEquals(As3EFactory.eINSTANCE.getNsURI(), eObjectDescription.get

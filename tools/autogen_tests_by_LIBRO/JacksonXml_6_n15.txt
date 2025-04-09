@@ -1,0 +1,16 @@
+public void testToXmlGenerator() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(Feature.AUTO_CLOSE_TARGET, false);
+    JsonGenerator gen = mapper.getFactory().createGenerator(new FileOutputStream("c:/temp/test.xml"));
+    gen.writeStartObject();
+    gen.writeFieldName("test");
+
+    // I'd like to do something like this instead:
+    // InputStream is = ...
+    // gen.writeBinary(Base64Variants.MIME, is, (int)is.available());
+
+    byte[] b = new byte[4096];
+    gen.writeBinary(Base64Variants.MIME, b, b.length);
+    gen.writeEndObject();
+    gen.close();
+}

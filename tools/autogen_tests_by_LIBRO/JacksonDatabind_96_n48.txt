@@ -1,0 +1,19 @@
+public void testPropertyNamingStrategy() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+    mapper.registerModule(new Jdk8Module());
+    assertEquals("{\"named-parameter\":1}", mapper.writeValueAsString(new NamedParameterConstructor(1)));
+}
+
+class NamedParameterConstructor {
+    private final int namedParameter;
+
+    @JsonCreator
+    public NamedParameterConstructor(@JsonProperty("named-parameter") int namedParameter) {
+        this.namedParameter = namedParameter;
+    }
+
+    public int getNamedParameter() {
+        return namedParameter;
+    }
+}

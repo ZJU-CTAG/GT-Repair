@@ -1,0 +1,13 @@
+public void testNullOwner() throws IOException {
+    final File testDir = new File("target/test-classes/test-data/COMPRESS-262");
+    final File archiveFile = new File(testDir, "no-owner.tgz");
+    final TarArchiveInputStream tis = new TarArchiveInputStream(new GzipCompressorInputStream(
+        new FileInputStream(archiveFile)));
+
+    boolean entryFound = false;
+    while (tis.getNextTarEntry() != null) {
+        entryFound = true;
+    }
+
+    assertTrue("No entry found in archive", entryFound);
+}

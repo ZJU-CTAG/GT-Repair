@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String dateString = "01/02/2010";
+    Date date = TypeHandler.getInstance().createValue(dateString, Date.class);
+    assertNotNull(date);
+    Integer integer = TypeHandler.getInstance().createValue(dateString, Integer.class);
+    assertNotNull(integer);
+    try {
+        TypeHandler.getInstance().createValue(dateString, String.class);
+        fail("Should throw ParseException");
+    } catch (ParseException e) {
+        // ok
+    }
+    try {
+        TypeHandler.getInstance().createValue(dateString, Thread.class);
+        fail("Should throw ParseException");
+    } catch (ParseException e) {
+        // ok
+    }
+}

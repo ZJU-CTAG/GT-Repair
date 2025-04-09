@@ -1,0 +1,10 @@
+public void testCJKQuote() {
+    final String[] values = new String[] {"あ", "い", "う"};
+    final String expected = "\"あ\",\"い\",\"う\"";
+    final StringWriter out = new StringWriter();
+    final CSVFormat csvFormat = CSVFormat.EXCEL.withQuoteMode(QuoteMode.ALL);
+    final CSVPrinter printer = new CSVPrinter(out, csvFormat);
+    printer.printRecord(values);
+    printer.flush();
+    assertEquals(expected, out.toString());
+}

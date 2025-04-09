@@ -1,0 +1,26 @@
+public void testIssue4() {
+    Map map = new HashMap();
+    map.put("a", null);
+    JXPathContext pathContext = JXPathContext.newContext(map);
+    pathContext.setFactory(new AbstractFactory() {
+        public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+            // index > -1 iff this is a list.
+            if (index > -1) {
+                // create a List, if necessary
+                List parentList = (List) parent;
+                if (parentList == null) {
+                    parentList = new ArrayList();
+                }
+                int size = parentList.size();
+                for (int i = size; i <= index; i++) {
+                    parentList.add(i, null);
+                }
+            } else {
+                // create a Map.
+                Map parentMap = (Map) parent;
+                if (parentMap == null) {
+                    parentMap = new HashMap();
+                }
+                parentMap.put(name, new HashMap());
+            }
+            return true;

@@ -1,0 +1,18 @@
+public void testIssue108() throws JsonParseException, JsonMappingException, IOException {
+    final int id = 0;
+    final String name = "Joe Doe";
+    final String typeName = "Person";
+    final String json = "{\"type\":\"" + typeName + "\", \"id\":" + id + ", \"name\":\"" + name + "\"}";
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping();
+    objectMapper.registerSubtypes(Person.class);
+    objectMapper.setVisibility(objectMapper.getSerializationConfig().getDefaultVisibilityChecker()
+            .withFieldVisibility(Visibility.ANY)
+            .withGetterVisibility(Visibility.NONE)
+            .withIsGetterVisibility(Visibility.NONE)
+            .withSetterVisibility(Visibility.NONE)
+            .withCreatorVisibility(Visibility.NONE));
+
+    final Person person = objectMapper.readValue(json, Person.class);
+    assertEquals(id, person.getId

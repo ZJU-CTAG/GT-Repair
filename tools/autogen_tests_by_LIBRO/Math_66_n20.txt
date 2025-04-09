@@ -1,0 +1,21 @@
+public void testBrentOptimizer() {
+    double f = new UnivariateFunction() {
+        public double value(double x) {
+            return x * x;
+        }
+    };
+    UnivariateRealFunction f2 = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x;
+        }
+    };
+
+    int maxEval = 1000;
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariatePointValuePair optimum = optimizer.optimize(f, GoalType.MINIMIZE, -100.0, 100.0, maxEval);
+    System.out.println("optimum=" + optimum.getValue());
+    assertEquals(0.0, optimum.getValue(), 1e-8);
+
+    UnivariateRealPointValuePair optimum2 = optimizer.optimize(f2, GoalType.MINIMIZE, -100.0, 100.0, maxEval);
+    System.out.println("optimum2=" + optimum2.getValue());
+    assertEquals(

@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException {
+    byte[] buff = new byte[512];
+    try (InputStream is = new FileInputStream("testAIFF.aif")) {
+      is.read(buff);
+    }
+    assertEquals("application/x-tar",
+                 new ArchiveStreamFactory().detect(new ByteArrayInputStream(buff), buff));
+}

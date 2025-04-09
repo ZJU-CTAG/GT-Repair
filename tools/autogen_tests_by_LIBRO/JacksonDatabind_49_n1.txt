@@ -1,0 +1,13 @@
+public void testForwardReference() throws Exception {
+    // create structure to serialize
+    Foo mo = new Foo();
+    mo.bar1 = new Bar();
+    mo.bar2 = mo.bar1;
+
+    // serialize it
+    String json = mapper.writeValueAsString(mo);
+
+    // check if both references are written with the same id
+    JsonNode root = mapper.readTree(json);
+    assertEquals(root.get("bar1").asInt(), root.get("bar2").asInt());
+}

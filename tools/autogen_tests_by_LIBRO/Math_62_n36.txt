@@ -1,0 +1,24 @@
+public void testIterate() {
+    final double[] startPoint = { -1.2, 1.0 };
+    final double[] target = { 0.0, 0.0 };
+    final double[] weights = { 1.0, 1.0 };
+
+    final MultivariateVectorialOptimizer optimizer
+        = new LevenbergMarquardtOptimizer();
+
+    final PointVectorValuePair optimum = optimizer.optimize(
+        new MaxEval(100),
+        new ObjectiveFunction(new MultivariateVectorialFunction() {
+                public double[] value(double[] point) {
+                    final double[] residuals = new double[2];
+                    residuals[0] = (point[0] - target[0]) * weights[0];
+                    residuals[1] = (point[1] - target[1]) * weights[1];
+                    return residuals;
+                }
+            }),
+        GoalType.MINIMIZE,
+        new InitialGuess(startPoint),
+        new Weight(weights));
+
+    Assert.assertNotNull(optimum);
+    Assert.assertTrue(optimizer.

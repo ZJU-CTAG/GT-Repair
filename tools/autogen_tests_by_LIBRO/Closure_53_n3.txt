@@ -1,0 +1,13 @@
+public void testIssue180() {
+    // reproduce the error from the stack trace
+    final Node root = new Node((String) null, Token.BLOCK);
+    root.addChildrenToFront(new Node(Token.BLOCK));
+    root.addChildrenToFront(new Node(Token.BLOCK));
+    root.addChildToBack(new Node(Token.BLOCK));
+    try {
+        root.removeChild(1);
+        fail(); // should not reach here
+    } catch (final Error e) {
+        assertTrue(e instanceof ArrayIndexOutOfBoundsException);
+    }
+}

@@ -1,0 +1,18 @@
+public void testRequiredOptions() {
+    Options options = new Options()
+        .addOption(new Group()
+            .addOption(new Option("c", "compress")
+                .setRequired(true)
+            )
+            .addOption(new Option("h", "help")
+                .setRequired(true)
+            )
+        );
+
+    CommandLine line = new Parser()
+        .parse(options, new String[]{"-c", "arg"});
+
+    assertTrue(line.hasOption("c"));
+    assertFalse(line.hasOption("h"));
+    assertEquals("arg", line.getOptionValue("c"));
+}

@@ -1,0 +1,15 @@
+public void testRounding() throws JaxenException {
+    Navigator nav = getNavigator();
+    String url = "xml/basic.xml";
+    log("Document [" + url + "]");
+    Object document = nav.getDocument(url);
+    XPath contextpath = new BaseXPath("/", nav);
+    log("Initial Context :: " + contextpath);
+    List list = contextpath.selectNodes(document);
+    assertValueOfXPath(list, "floor('NaN')", Double.NaN);
+    assertValueOfXPath(list, "floor(-2 div 0)", Double.NEGATIVE_INFINITY);
+    assertValueOfXPath(list, "floor(2 div 0)", Double.POSITIVE_INFINITY);
+    assertValueOfXPath(list, "ceiling('NaN')", Double.NaN);
+    assertValueOfXPath(list, "ceiling(-2 div 0)", Double.NEGATIVE_INFINITY);
+    assertValueOfXPath(list, "ceiling(2 div 0)", Double.POSITIVE_INFINITY);
+    assert

@@ -1,0 +1,11 @@
+public void testArchiveOutputStream() throws IOException {
+    File f = new File(System.getProperty("java.io.tmpdir") + "/test.zip");
+    ArchiveOutputStream os = new ZipArchiveOutputStream(f);
+    os.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+    os.write("test".getBytes());
+    os.closeArchiveEntry();
+    os.finish();
+    os.close();
+    assertTrue(f.exists());
+    assertTrue(f.length() > 0);
+}

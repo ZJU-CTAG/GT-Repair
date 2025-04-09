@@ -1,0 +1,8 @@
+public void testRootNode() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(false);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream("<root id=\"1234\"/>".getBytes()));
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("1234", context.selectSingleNode("//root/@id/text()"));
+}

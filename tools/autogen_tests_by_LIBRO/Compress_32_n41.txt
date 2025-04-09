@@ -1,0 +1,16 @@
+public void testTarArchiveInputStream() throws Exception {
+  File f = new File("/path/to/sysdiagnose.tar");
+  InputStream is = new BufferedInputStream(new FileInputStream(f));
+  try {
+    TarArchiveInputStream tis = new TarArchiveInputStream(is);
+    try {
+      for (TarArchiveEntry entry = tis.getNextTarEntry(); entry != null; entry = tis.getNextTarEntry()) {
+        // do something with the entry
+      }
+    } finally {
+      tis.close();
+    }
+  } finally {
+    is.close();
+  }
+}

@@ -1,0 +1,15 @@
+public void testSizeParsing() throws IOException {
+    TarArchiveEntry original = new TarArchiveEntry("test");
+    original.setSize(1024);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new TarArchiveOutputStream(baos);
+    aos.putArchiveEntry(original);
+    aos.closeArchiveEntry();
+    aos.close();
+    byte[] data = baos.toByteArray();
+
+    TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(data));
+    TarArchiveEntry entry = tais.getNextTarEntry();
+    assertEquals(original.getSize(), entry.getSize());
+    tais.close();
+}

@@ -1,0 +1,25 @@
+public void testPolymorphicMapper() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.setAnnotationIntrospector(new JsonSubTypesDefaultForBaseType());
+
+    final String json = "{\"num\":\"123\"}";
+    final NumericExample example = mapper.readValue(json, NumericExample.class);
+    assertNotNull(example);
+    NumericBase base = example.getBase();
+    assertEquals(123L, base.getNum());
+
+    // but this does not work...
+    final String json2 = "{\"base\":{\"num\":\"456\"}}";
+    final ExampleWithPolymorphicField example2 = mapper.readValue(json2, ExampleWithPolymorphicField.class);
+    assertNotNull(example2);
+    NumericBase base2 = example2.getBase();
+    assertEquals(456L, base2.getNum());
+}
+
+/*
+/**********************************************************
+/* Test classes, method
+/**********************************************************
+*/

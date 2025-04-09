@@ -1,0 +1,11 @@
+public void testUnicodeExtraFields() throws Exception {
+    File zipfile = getFile("UTF8ZipFilesTest_unicodeExtraFields.zip");
+    ZipFile zip = new ZipFile(zipfile);
+    Enumeration<? extends ZipArchiveEntry> entries = zip.getEntries();
+    assertNotNull(entries);
+    assertTrue(entries.hasMoreElements());
+    ZipArchiveEntry entry = entries.nextElement();
+    assertNotNull(entry);
+    assertEquals("\u6d4b\u8bd5.txt", entry.getName());
+    assertNotNull(zip.getInputStream(entry));
+}

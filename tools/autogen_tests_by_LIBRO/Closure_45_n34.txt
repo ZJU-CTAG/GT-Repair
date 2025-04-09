@@ -1,0 +1,15 @@
+public void testIssue12() {
+    String code = 
+        "function f() {\n" + 
+        "  var a = [], b;\n" + 
+        "  a.push(b = []);\n" + 
+        "  b[0] = 1;\n" + 
+        "  return a;\n" + 
+        "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("code", code), options);
+    assertFalse(result.success);
+}

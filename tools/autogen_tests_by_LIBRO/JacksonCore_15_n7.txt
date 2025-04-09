@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException {
+    String json = "{\"FOO_BAR_FOO_BAR\":\"BAR_FOO_BAR_FOO\"}";
+    JsonNode node = new ObjectMapper().readTree(json);
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(node.traverse(), new NameMatchFilter("FOO_BAR"), true, true);
+    assertNotNull(filteringParserDelegate);
+    assertTrue(filteringParserDelegate.getAllowMultipleMatches());
+    assertTrue(filteringParserDelegate.getMatchProperty());
+}

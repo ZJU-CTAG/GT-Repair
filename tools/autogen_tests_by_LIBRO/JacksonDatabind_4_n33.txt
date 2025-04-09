@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    final String json = "{\"collection\":[\"abc\",123]}";
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, Map.class);
+        fail("Should have thrown an InvalidFormatException");
+    } catch (InvalidFormatException e) {
+        assertEquals(1, e.getPath().size());
+        assertEquals(0, e.getPath().get(0).getIndex());
+    }
+}

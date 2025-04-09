@@ -1,0 +1,10 @@
+public void testNextTextValue() throws Exception {
+    final String xml = "<foo attr=\"attrValue\"/>";
+    FromXmlParser parser = (FromXmlParser) XmlMapper.xmlMapper().getFactory().createParser(xml);
+    assertToken(JsonToken.START_OBJECT, parser.nextToken());
+    assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+    assertToken(JsonToken.START_OBJECT, parser.nextToken());
+    assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.currentName());
+    assertEquals("attrValue", parser.nextTextValue());
+}

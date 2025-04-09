@@ -1,0 +1,14 @@
+public void testUTF16BOMHandling() throws IOException {
+    // UTF-16LE with BOM
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+    os.write( new byte[]{(byte) 0xFF, (byte) 0xFE} );
+    os.write( "\u0041\u0042\u0043".getBytes("UTF-16LE") );
+    String s = new String(os.toByteArray(), "UTF-8");
+    assertEquals("ABC", s);
+
+    os = new ByteArrayOutputStream();
+    os.write( new byte[]{(byte) 0xFE, (byte) 0xFF} );
+    os.write( "\u0041\u0042\u0043".getBytes("UTF-16BE") );
+    s = new String(os.toByteArray(), "UTF-8");
+    assertEquals("ABC", s);
+}

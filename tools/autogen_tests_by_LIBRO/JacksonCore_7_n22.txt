@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception
+{
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = new JsonFactory().createGenerator(sw);
+    gen.writeStartObject();
+    gen.writeFieldName("foo");
+    try {
+        gen.writeString("bar");
+        fail("Should have thrown exception");
+    } catch (JsonGenerationException e) {
+        verifyException(e, "Expected a value");
+    }
+    gen.writeEndObject();
+    gen.close();
+    String json = sw.toString();
+}

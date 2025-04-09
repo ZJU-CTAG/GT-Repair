@@ -1,0 +1,20 @@
+public void testDateTimeSerializerBase() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
+    objectMapper.setDateFormat(new StdDateFormat().withZoneUTC().withChronologyISO().withDateTimeFormatter(dateTimeFormatter));
+    String json = objectMapper.writeValueAsString(new Bean());
+    assertEquals("{\"timestamp\":\"2011-12-03T10:15:30\"}", json);
+}
+
+public static class Bean {
+    @JsonSerialize(using = DateTimeSerializer.class)
+    private final DateTime timestamp = new DateTime(2011, 12, 3, 10, 15, 30);
+}
+
+public static class DateTimeSerializer extends DateTimeSerializerBase<DateTime> {
+    public DateTimeSerializer() {
+        this(null);
+    }
+
+    public DateTimeSerializer(Class<DateTime> t) {
+        super(t, true, new St

@@ -1,0 +1,14 @@
+public void testEmptyArchive() throws Exception {
+    try (ZipArchiveInputStream zip = new ZipArchiveInputStream(new FileInputStream(emptyZip))) {
+        ZipArchiveEntry entry = zip.getNextZipEntry();
+        assertNotNull(entry);
+        assertEquals(0, entry.getSize());
+        assertEquals(-1, zip.read());
+    }
+    try (SevenZFile sevenZFile = new SevenZFile(empty7z)) {
+        SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+        assertNotNull(entry);
+        assertEquals(0, entry.getSize());
+        assertEquals(-1, sevenZFile.read());
+    }
+}

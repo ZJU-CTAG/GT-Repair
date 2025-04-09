@@ -1,0 +1,19 @@
+public void testIssue108() {
+    Function<Void> func = new Function<Void>() {
+        /*@Override*/
+        void foo() {
+            alert("hello world");
+        }
+    };
+    assertEquals(func.toString(), "function foo() {\nalert(\"hello world\");\n}");
+}
+
+function foo() {}
+(function() {
+ foo.prototype = {
+ alert: function() {
+ alert("hello world");
+ }
+ };
+})()
+window.console.log(foo.prototype.alert); //undefined property warning

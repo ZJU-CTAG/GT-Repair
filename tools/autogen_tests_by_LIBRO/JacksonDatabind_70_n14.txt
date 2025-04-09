@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception
+{
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
+    assertNull(mapper.readValue("{\"businessAddress\":{},\"businessAddress.zip\":\"\"}", Person.class).businessAddress);
+    assertNotNull(mapper.readValue("{\"businessAddress\":{},\"businessAddress.zip\":\"123\"}", Person.class).businessAddress);
+
+}

@@ -1,0 +1,27 @@
+public void testIssue108() {
+    String input = "/**\n" +
+            " * @preserve\n" +
+            " *\n" +
+            " * This\n" +
+            " * was\n" +
+            " * ASCII\n" +
+            " * Art\n" +
+            " *\n" +
+            " */";
+    String expected = "/*\n" +
+            "This\n" +
+            "was\n" +
+            "ASCII\n" +
+            "Art\n" +
+            "*/";
+    String actual = new JavaScriptCompressor(new StringReader(input), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+        
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+        
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    }).

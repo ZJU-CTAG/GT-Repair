@@ -1,0 +1,9 @@
+public void testIssue121() {
+    final DateTimeFormatter dtf = DateTimeFormat.forPattern("xxxxMM'w'ww");
+    final DateTime dt = dtf.parseDateTime("201101w01");
+
+    final AbstractDateTimeFormatter adtf = spy(AbstractDateTimeFormatter.class);
+    doCallRealMethod().when(adtf).printTo(null, null);
+    adtf.printTo(new StringBuffer(), dt);
+    verify(adtf, times(1)).printTo(null, null);
+}

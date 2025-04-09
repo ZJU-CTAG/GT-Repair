@@ -1,0 +1,14 @@
+public void testEnumMapKeys() throws JsonProcessingException {
+    EnumMap<TestEnum, String> map = new EnumMap<>(TestEnum.class);
+    map.put(TestEnum.A, "A");
+    map.put(TestEnum.B, "B");
+
+    ObjectMapper om = new ObjectMapper();
+    om.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    assertEquals("{\"A\":\"A\",\"B\":\"B\"}", om.writeValueAsString(map));
+}
+
+public static enum TestEnum {
+    @JsonProperty("A") A,
+    @JsonProperty("B") B
+}

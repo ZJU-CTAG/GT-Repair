@@ -1,0 +1,25 @@
+public void testMultiDirectionalCorrectStart() {
+    ConvexMultivariateRealFunction f = new ConvexMultivariateRealFunction() {
+        public double value(double[] x) {
+            return x[0] * x[0] + x[1] * x[1];
+        }
+
+        public double[] gradient(double[] x) {
+            return new double[] {2 * x[0], 2 * x[1]};
+        }
+
+        public double[][] hessian(double[] x) {
+            return new double[][] { {2, 0}, {0, 2} };
+        }
+
+        public int getDim() {
+            return 2;
+        }
+    };
+
+    // optimize the function
+    RealPointValuePair optimum = new MultiDirectional().optimize(f, GoalType.MINIMIZE, new double[]{0, 0});
+
+    assertEquals(0, optimum.getPoint()[0], 0);
+    assertEquals(0, optimum.getPoint()[1], 0);
+}

@@ -1,0 +1,28 @@
+public void testNonInstantiableSubclass() throws Exception
+{
+    final DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+    final ObjectWriter writer = new ObjectMapper().writer(printer);
+    try {
+        writer.writeValueAsString(new Object());
+    } catch (Exception e) {
+        fail("Should not fail");
+    }
+}
+
+public static class FailingDefaultPrettyPrinter extends DefaultPrettyPrinter {
+    @Override
+    public DefaultPrettyPrinter createInstance() {
+        return new FailingDefaultPrettyPrinter();
+    }
+}
+
+public void testInstantiableSubclass() throws Exception
+{
+    final DefaultPrettyPrinter printer = new FailingDefaultPrettyPrinter();
+    final ObjectWriter writer = new ObjectMapper().writer(printer);
+    try {
+        writer.writeValueAsString(new Object());
+    } catch (Exception e) {
+        fail("Should not fail");
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    //NOTE: this test will fail at the moment.
+    FilterProvider filterProvider = new SimpleFilterProvider()
+            .addFilter("propertyFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept("name", "birthDate", "favoriteColor", "favoriteSport"));
+
+    SimpleModule filterModule = new SimpleModule("FilterModule", new Version(1, 0, 0, null, null, null));
+    filterModule.addSerializer(new FilteringBeanSerializer(SimpleBean.class, filterProvider));
+    filterModule.addDeserializer(SimpleBean.class, new FilteringBeanDeserializer(SimpleBean.class, filterProvider, true));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(filterModule);
+
+    SimpleBean bean = new SimpleBean();
+    bean.setName("Joe");
+    bean.setAge(35);
+    bean.setBirthDate(LocalDate.of(1970, Month.JANUARY, 1));
+    bean.setGender(Gender.MALE);
+    bean.setFavoriteColor("

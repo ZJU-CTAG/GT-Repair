@@ -1,0 +1,16 @@
+public void testGroup() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option option = new Option("o", "option", false, "option");
+    Option option2 = new Option(null, "option2", false, "option2");
+    group.addOption(option);
+    group.addOption(option2);
+    options.addOptionGroup(group);
+    group.setSelected(option2);
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(options, new String[]{"--option2"});
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+}

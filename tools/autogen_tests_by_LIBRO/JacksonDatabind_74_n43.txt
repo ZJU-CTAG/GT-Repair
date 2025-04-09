@@ -1,0 +1,18 @@
+public void testIssue140() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    final String json = "{\"Long\":\"\"}";
+    final Issue140Bean issue140Bean = mapper.readValue(json, Issue140Bean.class);
+    assertNull(issue140Bean.getLong());
+}
+
+public static class Issue140Bean {
+    private Long longValue;
+    public Long getLong() {
+        return longValue;
+    }
+    public void setLong(Long longValue) {
+        this.longValue = longValue;
+    }
+}

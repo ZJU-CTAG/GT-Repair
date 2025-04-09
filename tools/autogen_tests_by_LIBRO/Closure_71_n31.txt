@@ -1,0 +1,14 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                JSSourceFile.fromCode("foo.js", "var foo = new Foo();"),
+                JSSourceFile.fromCode("foo.js", "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+                JSSourceFile.fromCode("foo.js", "/** @constructor \n @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }")
+            },
+            options);
+    assertFalse(result.success);
+    assertEquals(2, result.errors.length);
+}

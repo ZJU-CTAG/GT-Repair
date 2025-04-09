@@ -1,0 +1,28 @@
+public void testIssue431() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    Map<String, String> map = new HashMap<String, String>(1);
+    map.put("foo", "bar");
+
+    SimpleClass c = new SimpleClass(map);
+
+    // should be {"foo":1}
+    mapper.writeValue(System.out, c);
+
+    // should be {"foo":"bar"}
+    mapper.writeValue(System.out, new SimpleClass2(map));
+}
+
+static class MyKeySerializer extends StdSerializer<String> {
+    protected MyKeySerializer() {
+        super(String.class);
+    }
+
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider)
+        throws IOException, JsonGenerationException {
+        jgen.writeFieldName("1");
+   

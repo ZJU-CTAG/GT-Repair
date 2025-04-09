@@ -1,0 +1,17 @@
+public void testExternalTypeIdWithTypeIdFirst() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.addMixInAnnotations(RenamedInSubclass.class, RenamedInSubclassMixin.class);
+    mapper.addMixInAnnotations(RenamedInSubclass2.class, RenamedInSubclass2Mixin.class);
+    mapper.addMixInAnnotations(RenamedInSubclass3.class, RenamedInSubclass3Mixin.class);
+
+    String json = aposToQuotes(
+            "{'@type':'a','id':'1',\n"
+            +"'name':'A1',\n"
+            +"'extra':'foobar'}\n"
+            );
+    BaseClass bc = mapper.readValue(json, BaseClass.class);
+    assertTrue(bc instanceof RenamedInSubclass);
+    RenamedInSubclass

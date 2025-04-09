@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setOutputCharset("utf-8");
+    compiler.initOptions(options);
+    Result result = compiler.compile(SourceFile.fromCode("input.js", "var foo = function bar(){var bar;alert(bar);};"), options);
+    String output = compiler.toSource();
+    assertTrue(output, output.contains("alert(void 0);"));
+}

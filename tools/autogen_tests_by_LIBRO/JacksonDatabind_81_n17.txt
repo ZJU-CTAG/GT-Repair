@@ -1,0 +1,17 @@
+public void testGenericTypes() {
+    Class<?>[] params;
+    params = new GenericType<String>(){}.getParameterTypes();
+    assertEquals(String.class, params[0]);
+    params = new GenericType<Object>(){}.getParameterTypes();
+    assertEquals(Object.class, params[0]);
+    params = new GenericType<Integer>(){}.getParameterTypes();
+    assertEquals(Integer.class, params[0]);
+    params = new GenericType<int[]>(){}.getParameterTypes();
+    assertEquals(int[].class, params[0]);
+}
+
+static class GenericType<T> {
+    public Class<?>[] getParameterTypes() {
+        return getClass().getTypeParameters();
+    }
+}

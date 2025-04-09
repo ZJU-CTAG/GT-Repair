@@ -1,0 +1,7 @@
+public void testIssue114() throws IOException {
+    String html = "<html><body>\uFEFF<p>Test</p></body></html>";
+    String encoding = "UTF-16LE";
+    Document doc = Jsoup.parse(html.getBytes(encoding), encoding, "http://example.com/");
+    Element p = doc.select("p").first();
+    assertEquals("Test", p.text());
+}

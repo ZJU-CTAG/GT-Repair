@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    TarArchiveInputStream tarInputStream = null;
+
+    try {
+        tarInputStream =
+            new TarArchiveInputStream( new GzipCompressorInputStream( new FileInputStream( new File(
+                        "src/test/resources/test.tar.gz" ) ) ) );
+        TarArchiveEntry entry;
+        while ( ( entry = tarInputStream.getNextTarEntry() ) != null ) {
+            System.out.println( entry.getName() );
+            System.out.println(entry.getUserName()+"/"+entry.getGroupName());
+        }
+
+    } catch ( FileNotFoundException e ) {
+        e.printStackTrace();
+    } catch ( IOException e ) {
+        e.printStackTrace();
+    }
+}
+

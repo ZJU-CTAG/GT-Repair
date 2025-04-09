@@ -1,0 +1,9 @@
+public void testFinallyBreak() {
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
+    String script = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    try {
+        engine.eval(script);
+    } catch (ScriptException e) {
+        fail("Exception should not be thrown");
+    }
+}

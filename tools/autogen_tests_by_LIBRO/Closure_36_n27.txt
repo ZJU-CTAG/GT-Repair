@@ -1,0 +1,18 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    options.setDebugOptionsForCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            ResourceLoader.fromString("goog.provide('foo');\n" +
+                    "var foo = function() { this.values = []; };\n" +
+                    "goog.addSingletonGetter(foo);\n" +
+                    "foo.prototype.add = function(value) {this.values.

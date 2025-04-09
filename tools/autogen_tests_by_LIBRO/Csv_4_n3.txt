@@ -1,0 +1,14 @@
+public void testIssueWithHeader() throws Exception {
+    final String testLine = "1,2,3,4";
+    final CSVParser parser = new CSVParser(new StringReader(testLine), CSVFormat.DEFAULT.withHeader());
+    final Map<String, Integer> headerMap = parser.getHeaderMap();
+    assertNotNull(headerMap);
+    assertEquals(4, headerMap.size());
+}
+
+public void testIssueWithoutHeader() throws Exception {
+    final String testLine = "1,2,3,4";
+    final CSVParser parser = new CSVParser(new StringReader(testLine), CSVFormat.DEFAULT);
+    final Map<String, Integer> headerMap = parser.getHeaderMap();
+    assertNull(headerMap);
+}

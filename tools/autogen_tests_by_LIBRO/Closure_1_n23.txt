@@ -1,0 +1,14 @@
+public void testLength() {
+    final String source = "function foo(a,b){return a}alert(foo.length);";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setEmitUseStrict(false);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    compiler.compile(SourceFile.fromCode("[extern]", ""),
+            SourceFile.fromCode("[testcode]", source), options);
+    String result = compiler.toSource();
+    assertEquals(source, result);
+}

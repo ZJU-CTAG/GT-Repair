@@ -1,0 +1,18 @@
+public void testImplicitNaming() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(
+            PropertyNamingStrategy.SNAKE_CASE
+    );
+    String json = mapper.writeValueAsString(new SimpleClass("Test"));
+    JsonNode readTree = mapper.readTree(json);
+    assertEquals("Test", readTree.get("test").asText());
+}
+
+public class SimpleClass {
+    private String test;
+
+    public SimpleClass(String test) {
+        this.test = test;
+    }
+}

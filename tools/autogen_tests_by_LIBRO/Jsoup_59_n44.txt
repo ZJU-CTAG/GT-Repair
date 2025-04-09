@@ -1,0 +1,10 @@
+public void testJsoupCleanWithControlChars() {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 32; i++) {
+        if (i == 0 || (i > 8 && i < 14)) {
+            continue;
+        }
+        sb.append(StringEscapeUtils.escapeHtml4("<a" + (char) i + "/>"));
+    }
+    System.out.println(sb.toString());
+    assertEquals("&lt;a\u0001/&gt;&lt;a\u0002/&gt;&lt;a\u0003/&gt;&lt;a\u0004/&gt;&lt;a\u0005/&gt;&lt;a\u0006/&gt;&lt;a\u0007/&gt;&lt;a\u0008/&gt;&lt;a\u000b/&gt;&lt;a\u000c/&gt;&lt;a\u000e/&gt;&lt;a\u000f/&gt

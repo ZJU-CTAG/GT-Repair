@@ -1,0 +1,18 @@
+public void testIssueWithDefault() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Inclusion.NON_EMPTY);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    String str = mapper.writeValueAsString(new Bean());
+    assertEquals("{\"@class\":\"org.apache.commons.lang3.SerializationTest$Bean\",\"a\":\"foo\",\"b\":\"bar\"}", str);
+}
+public static class Bean {
+    public String a;
+    public String b;
+    public int c;
+    
+    public Bean() {
+        this.a = "foo";
+        this.b = "bar";
+    }
+}

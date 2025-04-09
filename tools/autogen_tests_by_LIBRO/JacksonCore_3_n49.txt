@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    String input = "{ \"abc\": [{}, {}]}";
+    int start = 6;
+    int end = 0;
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.readTree(input.getBytes("UTF-8"));
+        fail("No exception");
+    } catch (JsonParseException e) {
+        assertEquals(start, e.getLocation().getCharOffset());
+    }
+}

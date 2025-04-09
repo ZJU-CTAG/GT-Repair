@@ -1,0 +1,11 @@
+public void testCVE_2017_15095() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // should fail, but not with NPE
+    try {
+        mapper.readValue("[\"ch.qos.logback.core.joran.spi.JoranException\"]", Object.class);
+        fail("Should not pass");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "ch.qos.logback.core.joran.spi.JoranException");
+    }
+}

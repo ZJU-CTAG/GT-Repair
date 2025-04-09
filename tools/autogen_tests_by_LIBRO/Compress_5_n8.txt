@@ -1,0 +1,19 @@
+public void testReadFromTruncatedArchive() throws Exception {
+    File testFile = File.createTempFile("commons-io",".zip");
+    testFile.deleteOnExit();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(testFile);
+    zos.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zos.write("Hello World!".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+
+    File truncatedArchive = File.createTempFile("commons-io",".zip");
+    truncatedArchive.deleteOnExit();
+    OutputStream os = new FileOutputStream(truncatedArchive);
+    os.write(IOUtils.toByteArray(new FileInputStream(testFile)));
+    os.close();
+
+    InputStream is = new FileInputStream(truncatedArchive);
+    ZipArchiveInputStream zais = new ZipArchiveInputStream(is);
+    assertNull(zais.getNextZipEntry());
+}

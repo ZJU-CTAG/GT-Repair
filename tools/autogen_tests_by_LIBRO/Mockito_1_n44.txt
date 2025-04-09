@@ -1,0 +1,11 @@
+public void testCaptor() {
+    Foo foo = mock(Foo.class);
+    foo.doSomething("some string");
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(foo).doSomething(captor.capture());
+    assertEquals("some string", captor.getValue());
+}
+
+public interface Foo {
+    void doSomething(String... strings);
+}

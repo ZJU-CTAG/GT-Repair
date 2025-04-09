@@ -1,0 +1,12 @@
+public void testIssueWithJackson() throws JsonProcessingException {
+    try {
+        new ObjectMapper().readValue("{\"num\":123true}", NumberedBean.class);
+        fail("expected exception");
+    } catch (JsonProcessingException e) {
+        assertEquals("Unexpected token (VALUE_TRUE), expected FIELD_NAME: missing property 'name' that is to contain type id  (for class org.joda.time2.issue.NumberedBean) at [Source: {\"num\":123true}; line: 1, column: 13]", e.getMessage());
+    }
+}
+
+public static class NumberedBean {
+    public int num;
+}

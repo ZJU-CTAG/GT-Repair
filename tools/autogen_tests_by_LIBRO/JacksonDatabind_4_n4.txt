@@ -1,0 +1,28 @@
+public void testIndexIsNeverSetInInvalidFormatException() throws Exception
+{
+    String json = "{\"list\":[\"string\",123]}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, ListTest.class);
+        fail("exception expected");
+    } catch (JsonMappingException ex) {
+        InvalidFormatException e = (InvalidFormatException) ex.getCause();
+        assertEquals(1, e.getPath().size());
+        assertEquals("list[1]", e.getPath().get(0).toString());
+    }
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+static class ListTest {
+
+    private List<Integer> list;
+
+    public List<Integer> getList() {
+        return list;
+    }
+
+    public void setList(List<Integer> list) {
+        this.list = list;
+    }
+}
+

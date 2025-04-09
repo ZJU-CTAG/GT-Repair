@@ -1,0 +1,18 @@
+public void testIssue107() {
+    File zipFile = new File(getTempDir(), "testZip.zip");
+    if (zipFile.exists()) {
+        zipFile.delete();
+    }
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(zipFile)) {
+        zos.setUseZip64(Zip64Mode.AsNeeded);
+        ZipArchiveEntry ze = new ZipArchiveEntry("test");
+        zos.putArchiveEntry(ze);
+        zos.write(new byte[1]);
+        zos.closeArchiveEntry();
+    }
+    try (ZipFile zf = new ZipFile(zipFile)) {
+        ZipArchiveEntry ze = zf.getEntry("test");
+        assertNotNull(ze);
+        assertEquals(20, ze.getVersionMadeBy());
+    }
+}

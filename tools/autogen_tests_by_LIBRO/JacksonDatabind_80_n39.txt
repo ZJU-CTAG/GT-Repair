@@ -1,0 +1,14 @@
+public void testExtraneousTypeIdMapping() throws Exception
+{
+    final String NAME = "myName";
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule(NAME);
+
+    module.addAbstractTypeMapping(Object.class, String.class);
+    mapper.registerModule(module);
+
+    assertEquals(NAME, mapper.getRegisteredModuleIds().iterator().next());
+
+    // ensure we can deserialize
+    assertEquals(NAME, mapper.readValue("\"" + NAME + "\"", Object.class));
+}

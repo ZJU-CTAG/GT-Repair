@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    String html = "<html><head><title>First parse</title></head><body><div>Test</div></body></html>";
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    Element div = doc.select("div").first();
+    div.attr("xmlns", "http://www.w3.org/1999/xhtml");
+    Assert.assertEquals("http://www.w3.org/1999/xhtml", div.namespace().getURI());
+    Assert.assertEquals("http://www.w3.org/1999/xhtml", div.nextElementSibling().namespace().getURI());
+    Assert.assertEquals("http://www.w3.org/1999/xhtml", doc.select("body").first().namespace().getURI());
+}

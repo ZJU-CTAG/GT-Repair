@@ -1,0 +1,14 @@
+public void testIssue113() throws Exception {
+    Type type = getClass().getDeclaredField("superType").getGenericType();
+    TypeAdapter<?> typeAdapter = new GsonBuilder()
+        .registerTypeAdapter(Type.class, new TypeAdapter<Type>() {
+          public void write(JsonWriter out, Type value) {
+            throw new UnsupportedOperationException();
+          }
+          public Type read(JsonReader in) {
+            throw new UnsupportedOperationException();
+          }
+        })
+        .create()
+        .getAdapter(type);
+}

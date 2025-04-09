@@ -1,0 +1,18 @@
+public void testIssue120() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new Foo(new Bar()));
+    assertEquals("{\"bar\":{\"id\":1}}", json);
+    final Foo foo = mapper.readValue(json, Foo.class);
+    assertEquals(1, foo.bar.id);
+}
+
+static class Foo {
+    public final Bar bar;
+    public Foo(Bar b) { bar = b; }
+}
+
+@JsonTypeName("bar")
+static class Bar {
+    public final int id = 1;
+}

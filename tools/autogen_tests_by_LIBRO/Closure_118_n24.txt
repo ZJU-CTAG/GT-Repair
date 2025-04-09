@@ -1,0 +1,22 @@
+public void testPrototypeMethod() {
+    JavaScriptEngine engine = new JavaScriptEngine();
+    engine.eval("/*\n" +
+            " * @compilation_level ADVANCED_OPTIMIZATIONS\n" +
+            " * @output_file_name default.js\n" +
+            " * @formatting pretty_print\n" +
+            " */\n" +
+            "/** @const */\n" +
+            "var foo = {};\n" +
+            "\n" +
+            "foo.bar = {\n" +
+            "  'bar1': function() { console.log('bar1'); }\n" +
+            "}\n" +
+            "\n" +
+            "/** @constructor */\n" +
+            "function foobar() {}\n" +
+            "foobar.prototype = foo.bar;\n" +
+            "\n" +
+            "foo.foobar = new foobar;\n" +
+            "\n" +
+            "console.log(foo.foobar['bar1']);");
+    assertTrue(engine.

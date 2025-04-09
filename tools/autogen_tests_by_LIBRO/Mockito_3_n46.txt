@@ -1,0 +1,19 @@
+public void testIssue171() {
+    final StringBuilder sb = new StringBuilder();
+    final String a = "a";
+    final String b = "b";
+    final String c = "c";
+    final String d = "d";
+
+    final Foo foo = mock(Foo.class);
+    doNothing().when(foo).bar(anyString(), anyString(), anyString(), anyString());
+
+    foo.bar(a,b,c,d);
+
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(foo).bar(captor.capture(), captor.capture(), captor.capture(), captor.capture());
+    assertEquals(Arrays.asList(a,b,c,d), captor.getAllValues());
+}
+interface Foo {
+    public void bar(String a, String b, String c, String d);
+}

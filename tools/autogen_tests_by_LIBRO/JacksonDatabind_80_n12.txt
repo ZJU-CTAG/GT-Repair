@@ -1,0 +1,15 @@
+public void testIssue109() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final String json = "{\"map\":{\"a\":2}}";
+    final TypeReference<Map<String,Base>> ref = new TypeReference<Map<String,Base>>() { };
+    final Map<String,Base> map = mapper.readValue(json, ref);
+    assertEquals(1, map.size());
+    assertEquals(2, map.get("a").i);
+}
+
+static class Base
+{
+    public int i;
+}

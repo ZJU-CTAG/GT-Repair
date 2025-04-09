@@ -1,0 +1,18 @@
+public void testPrivateTopLevelFunction() {
+    ClosureJsUtils jsUtils = new ClosureJsUtils();
+    jsUtils.addDefaultExterns();
+
+    String code = //
+            "(function() {\n" + //
+            "  goog.scope(function() {\n" + //
+            "    /** @private */\n" + //
+            "    function test() {\n" + //
+            "      return 'test';\n" + //
+            "    }\n" + //
+            "    alert(test());\n" + //
+            "  });\n" + //
+            "})();";
+
+    String compiled = jsUtils.compile(code, new CompilerOptions());
+    assertEquals("alert(function(){return\"test\"}());", compiled);
+}

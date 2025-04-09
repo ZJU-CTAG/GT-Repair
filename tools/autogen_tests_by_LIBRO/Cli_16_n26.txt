@@ -1,0 +1,26 @@
+public void testGroupBounds() {
+        Options options = new Options();
+        OptionGroup group1 = new OptionGroup();
+        group1.setRequired(true);
+        group1.addOption(OptionBuilder.hasArg().create('a'));
+        group1.addOption(OptionBuilder.hasArg().create('b'));
+        options.addOptionGroup(group1);
+
+        OptionGroup group2 = new OptionGroup();
+        group2.setRequired(true);
+        group2.addOption(OptionBuilder.hasArg().create('c'));
+        group2.addOption(OptionBuilder.hasArg().create('d'));
+        options.addOptionGroup(group2);
+
+        // group1 should be required
+        try {
+            CommandLineParser parser = new GnuParser();
+            parser.parse(options, new String[]{});
+            fail("group1 is required");
+        } catch (ParseException e) {
+            assertEquals("You must specify at least one of the following options: -a, -b", e.getMessage());
+        }
+
+        // group2 should be required
+        try {
+           

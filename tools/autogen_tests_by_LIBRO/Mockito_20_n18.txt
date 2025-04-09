@@ -1,0 +1,13 @@
+public void testFake() {
+    Foo foo = new Foo();
+    foo.addEmail("email");
+    assertEquals(ImmutableList.of("email"), foo.getEmails());
+}
+@Test
+public void testMock() {
+    AccountService service = mock(AccountService.class);
+    UserAccount account = new FakeUserAccount();
+    when(service.getAccount("id")).thenReturn(account);
+    service.getAccount("id", callback);
+    verify(callback).onSuccess(account);
+}

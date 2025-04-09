@@ -1,0 +1,13 @@
+public void testJsonParserSequenceWithNextTokenOnFirstParser() throws IOException {
+    JsonNodeFactory factory = JsonNodeFactory.instance;
+    ObjectMapper mapper = new ObjectMapper();
+    JsonParser parser1 = mapper.treeAsTokens(factory.arrayNode().add(factory.numberNode(1)));
+    JsonParser parser2 = mapper.treeAsTokens(factory.numberNode(2));
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(parser1, parser2);
+    
+    sequence.nextToken(); // [
+    sequence.nextToken(); // 1
+    sequence.nextToken(); // ]
+    assertEquals(JsonToken.VALUE_NUMBER_INT, sequence.nextToken());
+    assertEquals(2, sequence.getIntValue());
+}

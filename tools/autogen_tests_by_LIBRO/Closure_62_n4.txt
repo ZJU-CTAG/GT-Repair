@@ -1,0 +1,14 @@
+public void testIssue106() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setClosurePass(true);
+    options.setPreserveTypeAnnotations(true);
+    options.setPrettyPrint(true);
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", ""));
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js", "alert(1;\n"));
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, inputs, options);
+    assertEquals(1, compiler.getErrorCount());
+}

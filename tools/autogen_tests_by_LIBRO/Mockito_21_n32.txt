@@ -1,0 +1,26 @@
+public void testFakeWithTrivialLogic() {
+  interface UserAccount {
+    List<String> getEmails();
+    void addEmail(String email);
+    // 12 other methods ...
+  }
+
+  abstract class FakeUserAccount implements UserAccount {
+    private final List<String> emails = new ArrayList<>();
+
+    @Override public void addEmail(String email) {
+      emails.add(email);
+    }
+    @Override public List<String> getEmails() {
+      return ImmutableList.copyOf(emails);
+    }
+  }
+
+  // Mockito automatically instantiates abstract class
+  @Fake private FakeUserAccount userAccount;
+
+  userAccount.addEmail("foo@example.com");
+  userAccount.addEmail("bar@example.com");
+  assertEquals(ImmutableList.of("foo@example.com", "bar@example.com"),
+      userAccount.getEmails());
+}

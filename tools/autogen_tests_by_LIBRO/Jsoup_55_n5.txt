@@ -1,0 +1,8 @@
+public void testIssue() throws IOException {
+    HtmlCleaner cleaner = new HtmlCleaner();
+    CleanerProperties props = cleaner.getProperties();
+    TagNode node = cleaner.clean(new StringReader(
+        "<html><body><img /onerror=\"a()\"/></body></html>"));
+    assertNode(node, "html/body/img");
+    assertAttr(node, "onerror", "a()");
+}

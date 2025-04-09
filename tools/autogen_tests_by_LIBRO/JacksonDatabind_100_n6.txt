@@ -1,0 +1,8 @@
+public void testBase64Variant() throws IOException {
+    final Base64Variant variant = new Base64Variant("TEST", "T", 'Z', Integer.MAX_VALUE, Integer.MAX_VALUE, false, false);
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setBase64Variant(variant);
+    final byte[] bytes = mapper.readValue("\"abc\"", byte[].class);
+    assertThat(bytes, is(new byte[] { 'a', 'b', 'c'}));
+}

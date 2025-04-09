@@ -1,0 +1,18 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    MyException myException = mapper.readValue("{}", MyException.class);
+    assertEquals("cause", myException.getCause());
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+    private String cause;
+
+    public String getCause() {
+        return cause;
+    }
+
+    public void setCause(String cause) {
+        this.cause = cause;
+    }
+}

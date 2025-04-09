@@ -1,0 +1,39 @@
+public void testBug() {
+    // create estimator
+    AbstractEstimator estimator = new AbstractEstimator() {
+
+        @Override
+        protected EstimationProblem buildEstimationProblem() {
+            final Parameter p1 = new Parameter("p1");
+            final Parameter p2 = new Parameter("p2");
+            p2.setBound(true);
+
+            final EstimationProblem problem = new EstimationProblem();
+            problem.addMeasurement(new Measurement() {
+
+                @Override
+                protected EstimatedParameter[] getUnboundParameters() {
+                    return new EstimatedParameter[] {
+                        new EstimatedParameter(p1, 0.0)
+                    };
+                }
+
+                @Override
+                protected double getTheoreticalValue() {
+                    return 0.0;
+                }
+
+                @Override
+                protected double getWeight() {
+                    return 1.0;
+                }
+            });
+
+            problem.addMeasurement(new Measurement() {
+
+                @Override
+                protected EstimatedParameter[] getUnboundParameters() {
+                    return new EstimatedParameter[] {
+                        new EstimatedParameter(p1, 0.0)
+                    };
+               

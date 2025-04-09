@@ -1,0 +1,26 @@
+public void testIssueJsonInclude() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.configure(SerializationFeature.USE_DEFAULTS_AS_NULLS, false);
+
+    final Foo foo = new Foo();
+    foo.setString_with_default_null(null);
+
+    System.out.println(mapper.writeValueAsString(foo));
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+
+class Foo {
+
+    private String string_with_default_null = "";
+
+    public String getString_with_default_null() {
+        return string_with_default_null;
+    }
+
+    public void setString_with_default_null(String string_with_default_null) {
+        this.string_with_default_null = string_with_default_null;
+    }
+
+}

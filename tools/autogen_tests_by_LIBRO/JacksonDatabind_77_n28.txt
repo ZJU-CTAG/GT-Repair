@@ -1,0 +1,7 @@
+public void testCVE20177525() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    String json = "{\"@class\":\"org.apache.commons.collections.functors.InvokerTransformer\",\"iMethodName\":\"toString\",\"iArguments\":[\"ping\"],\"iTarget\":{\"@class\":\"java.lang.ProcessBuilder\",\"command\":[\"ping\",\"-c\",\"3\",\"localhost\"]}}";
+    Object object = mapper.readValue(json, Object.class);
+    assertTrue(object instanceof Map);
+}

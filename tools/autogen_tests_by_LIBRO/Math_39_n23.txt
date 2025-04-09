@@ -1,0 +1,18 @@
+public void testAdaptiveStep() {
+    final double xMin = 0.0;
+    final double xMax = 1.0e-8;
+    final double[] y = new double[1];
+
+    final FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = -y[0];
+        }
+        public int getDimension() {
+            return 1;
+        }
+    };
+
+    final RungeKuttaIntegrator integrator = new DormandPrince853Integrator(xMin, xMax, 1.0e-8, 1.0e-8);
+
+    integrator.integrate(ode, 0.0, y, xMax, y);
+}

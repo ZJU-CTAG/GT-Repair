@@ -1,0 +1,10 @@
+public void testBase64Variants() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Base64Variant customBase64 = new Base64Variant("custom", "custom", true, '_', "_".getBytes(StandardCharsets.UTF_8));
+    mapper.registerModule(new SimpleModule().addDeserializer(byte[].class, new Base64Deserializers.ByteArrayDeserializer(customBase64)));
+    mapper.registerModule(new SimpleModule().addDeserializer(ByteBuffer.class, new Base64Deserializers.ByteBufferDeserializer(customBase64)));
+    mapper.registerModule(new SimpleModule().addDeserializer(String.class, new Base64Deserializers.StringDeserializer(customBase64)));
+
+    JsonNode node = mapper.readTree("{\"binaryByteArray\":\"_w==\",\"binaryByteBuffer\":\"_w==\",\"binaryString\":\"_w==\"}");
+    TreeTraversingParser parser = new TreeTraversingParser(node, mapper);
+    parser.setCodec(mapper

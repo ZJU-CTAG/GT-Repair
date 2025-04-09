@@ -1,0 +1,15 @@
+public void testProperties() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(Feature.ALLOW_COMMENTS, true);
+    Properties props = mapper.readValue(aposToQuotes("{"
+            +"// a comment!\n"
+            +" 'name' : 'Bob',"
+            +" 'age' : 17,"
+            +" 'male' : true"
+            +" }"), Properties.class);
+    assertEquals(3, props.size());
+    assertEquals("Bob", props.getProperty("name"));
+    assertEquals("17", props.getProperty("age"));
+    assertEquals("true", props.getProperty("male"));
+}

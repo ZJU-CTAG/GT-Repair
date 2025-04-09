@@ -1,0 +1,19 @@
+public void testIssue103() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    Element foo = doc.createElement("foo");
+    foo.setAttribute("xmlns", "test111");
+    root.appendChild(foo);
+    Element bar = doc.createElement("bar");
+    bar.setTextContent("a");
+    foo.appendChild(bar);
+    Element test = doc.createElement("test");
+    foo.appendChild(test);
+    TransformerFactory.newInstance().newTransformer().transform(new DOMSource(doc), new StreamResult(baos));
+
+    JXPathContext context = JXPathContext.newContext(new ByteArrayInputStream(baos.toByteArray()));
+    context.setLenient(true);
+    context.setNamespaceContextPointer(new Pointer("test111", ""));
+    assertEquals("a", context.getValue("//test111:foo

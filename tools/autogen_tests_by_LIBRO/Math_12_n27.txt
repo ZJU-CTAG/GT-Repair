@@ -1,0 +1,22 @@
+public void testGammaDistribution() {
+    final double shape = 1.8;
+    final double scale = 2.3;
+    GammaDistribution gd = new GammaDistribution(shape, scale);
+    for (int i = 0; i < 10; i++) {
+        gd.sample();
+    }
+    GammaDistribution gd2 = null;
+    try {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(gd);
+        oos.close();
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        gd2 = (GammaDistribution) ois.readObject();
+        ois.close();
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+    assertNotSame(gd, gd2);
+    for (int i = 0; i < 10; i++) {
+        assertEquals(gd.sample(), gd2.sample(), 1.0e-10

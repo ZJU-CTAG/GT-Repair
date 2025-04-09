@@ -1,0 +1,15 @@
+public void testIssue48() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    SimpleType st = SimpleType.construct(TestIssue48.class);
+    JavaType type = TypeFactory.defaultInstance().constructType(st);
+    // this should fail, which it does
+    Object result = m.readValue("{\"field\":3, \"other\":4}", type);
+    Map<?,?> map = (Map<?,?>) result;
+    assertEquals(3, map.get("field"));
+    assertEquals(4, map.get("other"));
+}
+
+public static class TestIssue48 extends HashMap<String,Object> {
+    public int field;
+}

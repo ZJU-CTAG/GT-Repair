@@ -1,0 +1,17 @@
+public void testIssue() {
+    String code = "var a = this;";
+    //GlobalThis
+    assertEquals(1, compile(code, DiagnosticGroups.GLOBAL_THIS, 1));
+    assertEquals(0, compile(code, DiagnosticGroups.GLOBAL_THIS, 0));
+    //NonStandardJSDoc
+    assertEquals(1, compile(code, DiagnosticGroups.NON_STANDARD_JSDOC, 1));
+    assertEquals(0, compile(code, DiagnosticGroups.NON_STANDARD_JSDOC, 0));
+}
+
+public int compile (String code, String diagnosticGroup, int level) {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.valueOf(level));
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.valueOf(level));
+    compiler.compile(
+        new JSSourceFile[]

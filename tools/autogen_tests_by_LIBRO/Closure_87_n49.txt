@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result compile = compiler.compile(SourceFile.fromCode("entry",
+        "if(b.onchange){" +
+        "b.onchange({" +
+        "\\_extendedByPrototype:Prototype.emptyFunction," +
+        "target:b" +
+        "});" +
+        "}")
+        ,options);
+    System.out.println(compile.success);
+    System.out.println(compile.compiledCode);
+}

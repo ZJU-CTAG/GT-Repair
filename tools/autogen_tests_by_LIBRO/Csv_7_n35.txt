@@ -1,0 +1,15 @@
+public void testFileWithDuplicateHeader() throws IOException {
+    String filePath = "src/test/resources/duplicate_header.csv";
+    CSVFormat format = CSVFormat.RFC4180.withDelimiter(',').withHeader();
+    Reader in = new FileReader(filePath);
+    CSVParser parser = new CSVParser(in, format);
+    HeaderMap headerMap = parser.getHeaderMap();
+    assertEquals(4, headerMap.size()); // fails, there are 3 entries instead of 4
+    assertEquals("Col1", headerMap.get(0));
+    assertEquals("Col2", headerMap.get(1));
+    assertEquals("Col2", headerMap.get(2)); // notice that the Col2 is not there
+    assertEquals("Col3", headerMap.get(3));
+    assertEquals("Col4", headerMap.get(4));
+    parser.close();
+    in.close();
+}

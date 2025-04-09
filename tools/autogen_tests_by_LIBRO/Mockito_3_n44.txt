@@ -1,0 +1,14 @@
+public void testArgumentCaptor() throws Exception {
+    //Given
+    ArrayList<String> list = mock(ArrayList.class);
+
+    //When
+    list.add("1");
+    list.add("2");
+
+    //Then
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(list, times(2)).add(captor.capture());
+    assertEquals("1", captor.getAllValues().get(0));
+    assertEquals("2", captor.getAllValues().get(1));
+}

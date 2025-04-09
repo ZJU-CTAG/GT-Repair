@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+
+    final DateTime test = new DateTime(2011, 1, 3, 0, 0, 0, 0);
+    final String expected = "\"2011-01-03T00:00:00.000+01:00\"";
+    assertEquals(expected, mapper.writeValueAsString(test));
+
+    final Bean bean = new Bean();
+    bean.dateTime = test;
+
+    final String expectedBean = "{\n" +
+            "  \"dateTime\" : \"2011-01-03T00:00:00.000+01:00\"\n" +
+            "}";
+
+    assertEquals(expectedBean, mapper.writeValueAsString(bean));
+}
+
+
+public class Bean

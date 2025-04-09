@@ -1,0 +1,12 @@
+public void testDeser() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(TestClass.class, TestClassMixIn.class);
+
+    TestClass external = new TestClass();
+    external.setId(new TestClassId(TestClassId.Type.EXTERNAL));
+
+    String testClassAsString = mapper.writeValueAsString(external);
+    TestClass deserialized = mapper.readValue(testClassAsString, TestClass.class);
+
+    assertEquals(external, deserialized);
+}

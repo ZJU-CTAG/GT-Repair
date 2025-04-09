@@ -1,0 +1,11 @@
+public void testFoo() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] values = new String[]{"ABC", "DEF"};
+    foo(values);
+    verify(bar).foo(captor.capture());
+    assertTrue(Arrays.equals(values, captor.getAllValues().toArray(new String[]{})));
+}
+
+private Object foo(String... values) {
+    bar.foo(values);
+}

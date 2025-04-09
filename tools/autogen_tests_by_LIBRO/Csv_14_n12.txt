@@ -1,0 +1,14 @@
+public void testIssue107() {
+    StringWriter sw = new StringWriter();
+    CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.MINIMAL);
+    try {
+        csvPrinter.printRecord((Object[]) "-92.222", 43.333, 3);
+        csvPrinter.flush();
+        String csv = sw.toString();
+        // ",-92.222,43.333,3"
+        assertFalse(csv.startsWith("\"-"));
+        assertTrue(csv.startsWith("-,\"-"));
+    } catch (IOException e) {
+        fail("Should not raise exception");
+    }
+}

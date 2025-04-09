@@ -1,0 +1,16 @@
+public void testIssue() {
+    String js = "" +
+            "function foo() {\n" +
+            "    alert(1;;\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("in.js", js),
+            new CompilerOptions());
+    for (JSError error : result.errors) {
+        System.out.println(error.sourceName + ":" +
+                error.lineNumber + ":" +
+                error.getCharno() + " - " +
+                error.description);
+    }
+}

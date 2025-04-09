@@ -1,0 +1,11 @@
+public void testCaptor() {
+    Capture<String> captor = new Capture<>();
+    Foo mock = mock(Foo.class);
+    mock.bar("a", "b", "c");
+    verify(mock).bar(capture(captor), eq("b"), eq("c"));
+    assertEquals("a", captor.getValue());
+}
+
+interface Foo {
+    void bar(String... args);
+}

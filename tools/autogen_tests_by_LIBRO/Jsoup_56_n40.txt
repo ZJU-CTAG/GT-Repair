@@ -1,0 +1,9 @@
+public void testSystemId() {
+    String html = "<!DOCTYPE html SYSTEM \"exampledtdfile.dtd\">" +
+        "<html><head><title>First parse</title></head>" +
+        "<body><p>Parsed HTML into a doc.</p></body></html>";
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    Element htmlEl = doc.select("html").first();
+    assertNotNull("<html> element missing", htmlEl);
+    assertEquals("<!DOCTYPE html SYSTEM \"exampledtdfile.dtd\">\n<html>", htmlEl.outerHtml());
+}

@@ -1,0 +1,14 @@
+public void testJSCompiler() {
+  String code1 = "/** @typedef {string} */\n" +
+                 "c.MyType;\n" +
+                 "/** @param {c.MyType} x The variable. */\n" +
+                 "c.myFunc = function(x) {};\n";
+  String code2 = "c.myFunc(\"foo\");";
+  Compiler compiler = new Compiler(System.err);
+  List<SourceFile> input = new ArrayList<>();
+  input.add(SourceFile.fromCode("test1.js", code1));
+  input.add(SourceFile.fromCode("test2.js", code2));
+  CompilerOptions options = new CompilerOptions();
+  options.setCheckTypes(true);
+  compiler.compile(externs, input, options);
+}

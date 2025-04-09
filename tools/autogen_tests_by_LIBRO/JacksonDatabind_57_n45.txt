@@ -1,0 +1,10 @@
+public void testReadValues() throws Exception {
+    byte[] bytes = new byte[] { 1, 2, 3 };
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.readerFor(byte[].class);
+    JsonParser parser = reader.getFactory().createParser(bytes, 1, 1);
+    JsonNode node = reader.readTree(parser);
+    assertEquals(1, node.size());
+    assertEquals(2, node.asInt());
+}

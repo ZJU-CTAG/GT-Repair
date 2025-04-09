@@ -1,0 +1,12 @@
+public void testExternalIdDeser() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    
+    JsonNode json = mapper.readTree("{\"type\":\"USER\",\"ext_id\":\"1234\"}");
+    Document doc = mapper.treeToValue(json, Document.class);
+    assertEquals(DocumentType.USER, doc.getType());
+    assertEquals(1234, doc.getExtId());
+}

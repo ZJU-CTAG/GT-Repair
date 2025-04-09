@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    String xml = "<a:doc xmlns:a=\"ns\">" + "\n" +
+      "<a:elem />" + "\n" +
+      "<b:elem xmlns:b=\"ns\" />" + "\n" +
+      "</a:doc>";
+    JXPathContext context = JXPathContext.newContext(new org.xml.sax.InputSource(new java.io.StringReader(xml)));
+    Iterator pointers = context.iteratePointers("/namespace::*[local-name(.) = 'elem']");
+    assertTrue(pointers.hasNext());
+    Pointer p1 = (Pointer)pointers.next();
+    assertTrue(pointers.hasNext());
+    Pointer p2 = (Pointer)pointers.next();
+    assertFalse(pointers.hasNext());
+    assertEquals(p1.getValue(), p2.getValue());
+    assertNotSame(p1, p2);
+}

@@ -1,0 +1,7 @@
+public void testNegativeNumbersAlwaysQuoted() throws Exception {
+    CSVPrinter printer = new CSVPrinter(new StringWriter(), CSVFormat.DEFAULT.withThrowExceptions(false).withQuoteMode(QuoteMode.MINIMAL));
+    printer.printRecord(new Object[] {-1, "foo", "bar"});
+    // the first field should not be quoted.
+    assertEquals("-1,foo,bar\n", printer.getWriter().toString());
+    printer.close();
+}

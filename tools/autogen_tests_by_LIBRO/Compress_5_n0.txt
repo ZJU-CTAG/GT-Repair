@@ -1,0 +1,17 @@
+public void testZipArchiveInputStream() throws Exception {
+    File f = new File("src/test/resources/truncated.zip");
+    InputStream in = new FileInputStream(f);
+    ZipArchiveInputStream zipin = new ZipArchiveInputStream(in);
+    boolean done = false;
+    while (! done) {
+        ZipArchiveEntry ze = zipin.getNextZipEntry();
+        if (ze == null) {
+            done = true;
+        } else {
+            int size = (int) ze.getSize();
+            byte[] buffer = new byte[size];
+            zipin.read(buffer);
+        }
+    }
+    zipin.close();
+}

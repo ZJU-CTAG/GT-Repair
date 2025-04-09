@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String source = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    String result = "avalue";
+    String query = "string(/MAIN/B | /MAIN/A)";
+    Document document = parseDocument(source);
+    XPathEvaluator evaluator = new XPathEvaluator();
+    NodeSet nodes = (NodeSet) evaluator.evaluate(query, document, XPathConstants.NODESET);
+    assertEquals(1, nodes.size());
+    assertEquals(result, nodes.get(0).getTextContent());
+}

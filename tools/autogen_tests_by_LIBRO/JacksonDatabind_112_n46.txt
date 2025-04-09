@@ -1,0 +1,23 @@
+public void testCollection() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+        .addDeserializer(ImmutableStringCollection.class,
+            new StringCollectionDeserializer<>(ImmutableStringCollection::of)));
+    final String json = mapper.writeValueAsString(new Foo(ImmutableStringCollection.of("a", "b")));
+    final Foo deserialized = mapper.readValue(json, Foo.class);
+    assertEquals(ImmutableStringCollection.of("a", "b"), deserialized.getStrings());
+}
+
+private static class Foo {
+    private final ImmutableStringCollection strings;
+
+    @JsonCreator
+    public Foo(@JsonProperty("strings") final ImmutableStringCollection strings) {
+        this.strings = strings;
+    }
+
+    @JsonProperty("strings")
+    public ImmutableStringCollection getStrings() {
+        return this.strings;
+    }
+}

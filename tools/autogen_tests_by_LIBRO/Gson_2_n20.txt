@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Vehicle vehicle = mapper.readValue("{\"type\":1}", Vehicle.class);
+    assertEquals(Car.class, vehicle.getClass());
+    assertEquals(1, ((Car) vehicle).type);
+    vehicle = mapper.readValue("{\"type\":2}", Vehicle.class);
+    assertEquals(Truck.class, vehicle.getClass());
+    assertEquals(2, ((Truck) vehicle).type);
+    try {
+        vehicle = mapper.readValue("{\"type\":3}", Vehicle.class);
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+        // Expected.
+    }
+}
+
+abstract class Vehicle {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+    @JsonSubTypes({ @Type(value = Car.class, name = "1"),
+            @Type(value = Truck

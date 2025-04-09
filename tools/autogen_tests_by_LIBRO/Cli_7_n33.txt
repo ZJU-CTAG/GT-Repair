@@ -1,0 +1,22 @@
+public void testRequiredOptions() throws Exception {
+    final Option help = new Option("h", "help", false, "print this message");
+    final Option additional = new Option("c", "configuration", true, "the configuration file");
+
+    final Group options = new GroupBuilder()
+        .withOption(help)
+        .withOption(additional)
+        .create();
+
+    final ArgumentList arguments = new ArgumentListBuilder()
+        .withOptionValue("c", "file.xml")
+        .create();
+
+    final Parser parser = new Parser();
+    parser.setGroup(options);
+    parser.setHelpOption(help);
+
+    final CommandLine line = parser.parseAndHelp(arguments);
+
+    assertEquals(new ArrayList(), line.getOptions());
+    assertEquals(new ArrayList(), line.getValues(additional));
+}

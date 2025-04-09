@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+  final ObjectMapper mapper = new ObjectMapper();
+  mapper.registerModule(new ParameterNamesModule());
+  mapper.registerModule(new Jdk8Module());
+  mapper.registerModule(new JavaTimeModule());
+  mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+  mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+  mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true);
+
+  // This validates that the canonical string for reference type is built incorrectly
+  assertEquals(
+    "{\"$ref\":\"java.lang.Object<$1>\"}",
+    mapper.writeValueAsString(new ReferenceType(new TypeFactory(new LRUMap<Object, JavaType>(0, 10000)).constructType(Object.class), new PlaceholderForType(0)))
+  );
+}

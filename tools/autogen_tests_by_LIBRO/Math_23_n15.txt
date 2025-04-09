@@ -1,0 +1,19 @@
+public void testOptimizer() throws FunctionEvaluationException, OptimizationException {
+    double[] coeffs = new double[5];
+    coeffs[0] = 1.0;
+    coeffs[1] = 1.5;
+    coeffs[2] = 2.0;
+    coeffs[3] = 2.5;
+    coeffs[4] = 3.0;
+    PolynomialFunction f = new PolynomialFunction(coeffs);
+    double lower = -2.0;
+    double upper = 4.0;
+    BrentOptimizer opt = new BrentOptimizer(1E-10, 1E-14);
+    AbstractUnivariateRealOptimizer.BracketedUnivariateRealFunction func = opt.getConverter().convert(f);
+    assertTrue(opt.bracket(lower, upper, func));
+    double start = opt.getMin();
+    assertTrue(start >= lower);
+    assertTrue(start <= upper);
+    double min = opt.optimize(func).getPoint();
+    assertTrue(min >= start);
+   

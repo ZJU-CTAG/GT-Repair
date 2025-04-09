@@ -1,0 +1,9 @@
+public void testNestedListsDeserializeProperly() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    String in = "{\"records\":[{\"fields\":[{\"name\":\"field1\",\"value\":\"value1\"}]},{\"fields\":[{\"name\":\"field2\",\"value\":\"value2\"}]}]}";
+    Definition definition = mapper.readValue(in, Definition.class);
+    assertEquals(2, definition.records.size());
+    assertEquals(1, definition.records.get(0).fields.size());
+    assertEquals(1, definition.records.get(1).fields.size());
+}

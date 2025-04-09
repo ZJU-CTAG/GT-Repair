@@ -1,0 +1,24 @@
+public void testIssue() {
+    String source = "/* @license Foo License */\n" +
+                    "alert(\"foo\");\n";
+    String expected = "/* @license Foo License */\n" +
+                      "alert(\"foo\");\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(
+        SourceFile.fromCode("input.js", source),
+        SourceFile.fromCode("externs.js", ""),
+        options);
+    assertEquals(expected, compiler.toSource());
+}
+
+public void testIssue1() {
+    String source = "/*! @license Foo License */\n" +
+                    "alert(\"foo\");\n";
+    String expected = "/*! @license Foo License */\n" +
+                      "alert(\"foo\");\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(
+        SourceFile.fromCode("input.js", source),
+        SourceFile.fromCode("

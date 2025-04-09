@@ -1,0 +1,22 @@
+public void testMixin() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.AUTO_DETECT_FIELDS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+            .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    SimpleModule module = new SimpleModule();
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    mapper.registerModule(module);
+
+    PersonImpl person = new PersonImpl();
+    String json = mapper.writeValueAsString(person);
+    Assert.assertTrue(json.contains("city"));
+}
+
+public static interface Contact {
+    String getCity();
+}
+
+public static class ContactImpl

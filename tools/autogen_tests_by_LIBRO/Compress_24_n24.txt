@@ -1,0 +1,25 @@
+public void testTarArchiveInputStream() throws IOException {
+    // Create tarball
+    File tarball = new File(System.getProperty("java.io.tmpdir"), "Test.tar");
+    FileOutputStream fos = new FileOutputStream(tarball);
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(fos);
+    TarArchiveEntry entry = new TarArchiveEntry("foo.txt");
+    entry.setUserId(62410554);
+    tos.putArchiveEntry(entry);
+    tos.write(new byte[0]);
+    tos.closeArchiveEntry();
+    tos.close();
+    fos.close();
+
+    // Read tarball
+    FileInputStream fis = new FileInputStream(tarball);
+    TarArchiveInputStream tis = new TarArchiveInputStream(fis);
+    entry = tis.getNextTarEntry();
+    System.out.println(entry.getUserId());
+    tis.close();
+    fis.close();
+
+    // Cleanup
+    tarball.delete();
+}
+``

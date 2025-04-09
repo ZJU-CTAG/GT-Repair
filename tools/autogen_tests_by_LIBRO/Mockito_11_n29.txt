@@ -1,0 +1,18 @@
+public void testCustomVerificationMode() {
+    Mockito.VerificationMode firstInvocation = new VerificationMode() {
+
+        @Override
+        public VerificationMode description(String description) {
+            return this;
+        }
+
+        @Override
+        public void verify(VerificationData data) {
+            if (!firstInvocation) {
+                throw new VerificationError("This is not the first invocation");
+            }
+        }
+    };
+    firstInvocation.verify(new VerificationDataImpl(null,null,null));
+    firstInvocation.verify(new VerificationDataImpl(null,null,null));
+}

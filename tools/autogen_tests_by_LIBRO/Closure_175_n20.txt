@@ -1,0 +1,23 @@
+public void testIssue() {
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  options.setCheckSymbols(false);
+  compiler.disableThreads();
+
+  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  options.setCheckGlobalThisLevel(CheckLevel.OFF);
+
+  compiler.compile(
+    CommandLineRunner.getDefaultExterns(),
+    ImmutableList.of(SourceFile.fromCode("input.js",
+      "window['foo'] = function (obj, modifiesProp) {" +
+      "  return (function (saved) {" +
+      "    return modifiesProp(obj) + saved;" +
+      "  })(obj['prop']);" +
+      "}")),
+    options);
+
+  assertEquals(
+    "window.foo=function(a,b){return b(a)+a.prop};",

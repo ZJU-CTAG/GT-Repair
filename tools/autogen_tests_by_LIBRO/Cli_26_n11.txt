@@ -1,0 +1,10 @@
+public void testOptionBuilder() {
+    final Option option = OptionBuilder.withArgName("arg").hasArg().create("opt");
+    final CommandLineParser parser = new PosixParser();
+    final Options options = new Options();
+    options.addOption(option);
+    final String[] args = new String[] { "-target", "opt" };
+    final CommandLine cmd = parser.parse(options, args); // will fail with IAE
+    // this will fail on IBM JDK 6 running on Maven 2.0.10
+    assertFalse(cmd.hasOption("opt"));
+}

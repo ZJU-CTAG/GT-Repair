@@ -1,0 +1,17 @@
+public void testWriteBinaryWithStream() throws IOException {
+    XMLOutputFactory xof = XMLOutputFactory.newFactory();
+    StringWriter sw = new StringWriter();
+    XMLStreamWriter xow = xof.createXMLStreamWriter(sw);
+    ToXmlGenerator txg = new ToXmlGenerator(xow);
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    bos.write(new byte[] { 1, 2, 3, 4, 5 });
+    txg.writeStartObject();
+    txg.writeFieldName("fieldname");
+    txg.writeBinary(Base64Variants.MIME, bos, bos.size());
+    txg.writeEndObject();
+    txg.flush();
+
+    String expected = "<root><fieldname>AQIDBAU=</fieldname></root>";
+    String actual = sw.toString();
+    assertEquals(expected, actual);
+}

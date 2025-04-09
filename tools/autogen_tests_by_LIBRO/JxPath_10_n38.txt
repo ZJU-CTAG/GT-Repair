@@ -1,0 +1,17 @@
+public void testBinaryOperators() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    Document doc = dbf.newDocumentBuilder().newDocument();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    JXPathContext ctx = JXPathContext.newContext(root);
+    ctx.setLenient(true);
+
+    assertFalse((Boolean) ctx.getValue("2.0 > child1", Boolean.class));
+    assertFalse((Boolean) ctx.getValue("2.0 >= child1", Boolean.class));
+    assertFalse((Boolean) ctx.getValue("2.0 < child1", Boolean.class));
+    assertFalse((Boolean) ctx.getValue("2.0 >= child1", Boolean.class));
+
+    assertFalse((Boolean) ctx.getValue("2.0 > child1", Boolean.class));
+    assertTrue((Boolean) ctx.getValue("2.0 >= child1", Boolean.class));
+    assertTrue((

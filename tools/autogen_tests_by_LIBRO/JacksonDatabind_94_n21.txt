@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping();
+        try {
+            mapper.readValue("[\"c3p0.v2.ComboPooledDataSource\",{\"properties\":{\"user\":\"sa\",\"password\":\"sa\",\"jdbcUrl\":\"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1\",\"driverClass\":\"org.h2.Driver\"}}]", Object.class);
+        } catch (JsonMappingException e) {
+            assertEquals(JsonMappingException.class, e.getClass());
+            assertEquals(ClassNotFoundException.class, e.getCause().getClass());
+        }
+
+        try {
+            mapper.readValue("[\"c3p0.v2.DataSources\",{\"properties\":{\"user\":\"sa\",\"password\":\"sa\",\"jdbcUrl\":\"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1\",\"driverClass\":\"org.h

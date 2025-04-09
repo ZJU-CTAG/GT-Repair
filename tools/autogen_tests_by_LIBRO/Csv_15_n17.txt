@@ -1,0 +1,13 @@
+public void testCsvPrinter() throws IOException {
+    final String record = "あ,い,う";
+    try (StringReader reader = new StringReader(record)) {
+        try (CSVParser parser = new CSVParser(reader)) {
+            try (StringWriter writer = new StringWriter()) {
+                try (CSVPrinter printer = new CSVPrinter(writer, CSVFormat.EXCEL)) {
+                    printer.printRecord(parser.getRecords().get(0));
+                    assertEquals(record, writer.toString());
+                }
+            }
+        }
+    }
+}

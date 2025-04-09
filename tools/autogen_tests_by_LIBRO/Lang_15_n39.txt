@@ -1,0 +1,13 @@
+public void testPartialAssignedClass() {
+
+    ParameterizedType type = new ParameterizedTypeImpl(new Type[] {String.class, Other.class.getTypeParameters()[0]},
+            Other.class, This.class);
+    Map<TypeVariable<?>, Type> typeVarAssigns = TypeUtils.getTypeArguments(type, This.class);
+    Assert.assertEquals(2, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(This.class.getTypeParameters()[0]));
+    Assert.assertEquals(Other.class.getTypeParameters()[0], typeVarAssigns.get(This.class.getTypeParameters()[1]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(Other.class, This.class);
+    Assert.assertEquals(2, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(This.class.getTypeParameters()[0]));
+    Ass

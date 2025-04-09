@@ -1,0 +1,34 @@
+public void testIssue126() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    KeyedBean bean = mapper.readValue(
+            "{\"a\":\"a\", \"b\":\"b\"}", KeyedBean.class);
+    assertEquals("a", bean.getA());
+    assertEquals("b", bean.getB());
+}
+
+@JsonDeserialize(using = CustomKeyDeserializer.class)
+public static class KeyedBean {
+    private CharSequence a, b;
+
+    public CharSequence getA() {
+        return a;
+    }
+
+    public void setA(CharSequence a) {
+        this.a = a;
+    }
+
+    public CharSequence getB() {
+        return b;
+    }
+
+    public void setB(CharSequence b) {
+        this.b = b;
+    }
+}
+
+public static class CustomKeyDeserializer extends KeyDeserializer {
+    @Override
+    public Object deserializeKey(String key, DeserializationContext ctxt)
+            throws IOException, J

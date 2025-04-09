@@ -1,0 +1,8 @@
+public void testBreakInFinally() {
+    Script script = Script.compile("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")");
+    Context context = Context.newContext();
+    Console console = new Console();
+    context.setAttribute("console", console, 0);
+    script.execute(context);
+    assertEquals("ok then...", console.getOut());
+}

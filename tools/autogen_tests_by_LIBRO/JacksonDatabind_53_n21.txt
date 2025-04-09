@@ -1,0 +1,28 @@
+public void testIssue107_2() {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new JodaModule());
+
+    String inputJson = "{  \"something\": [    {       \"id\": \"a uuid\",       \"property\": \"value\"     }  ]}";
+    MyType mt = om.readValue(inputJson, MyType.class);
+    assertEquals("a uuid", mt.something.keySet().toArray()[0]);
+}
+
+@JsonDeserialize(as = MyHashMap.class)
+public static class MyType {
+    public MyHashMap<UUID, Foo> something;
+}
+
+public static class MyHashMap<K, V extends MyCustomIdInterface> extends HashMap<K, V> {
+    @Override
+    public V put(K key, V value) {
+        return super.put(value.getId(), value);
+    }
+}
+
+public interface MyCustomIdInterface {
+    public UUID getId();
+}
+
+public static class Foo implements MyCustomIdInterface {
+    public UUID id;
+   

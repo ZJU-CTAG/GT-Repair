@@ -1,0 +1,20 @@
+public void testIssueWithDefaultSerializers() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    DefaultSerializerProvider sp = (DefaultSerializerProvider)mapper.getSerializerProvider();
+
+    // First, verify that there is no type id for base type
+    assertNull(sp.findTypeParameters(Serializable.class, null));
+    assertNull(sp.findTypeParameters(Object.class, null));
+
+    // then just verify there is no type id for anything:
+    assertEquals(0, sp.getKnownSerializers().size());
+
+    // and then serialize something
+    mapper.writeValueAsString(new Object());
+    // and verify that this is now added
+    assertEquals(1, sp.getKnownSerializers().size());
+
+    // and finally verify that there is no (String) type id for base type
+    assertNull(sp.findTypeParameters(Serializable.class, null));
+    assertNull(sp.findTypeParameters(Object.class, null));
+}

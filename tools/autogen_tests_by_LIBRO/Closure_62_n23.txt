@@ -1,0 +1,14 @@
+public void testCaret() {
+    CompilerOptions options = new CompilerOptions();
+    options.setIdeMode(true);
+    options.setOutputCharset("utf-8");
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("code", "alert(1;"),
+            SourceFile.fromCode("externs", ""),
+            options);
+
+    String output = result.success ? result.compiledSource : result.errors[0].toString();
+    assertTrue(output.contains("^"));
+}

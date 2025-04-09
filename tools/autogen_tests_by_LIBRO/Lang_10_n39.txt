@@ -1,0 +1,14 @@
+public void testQuotedWhiteSpace() {
+    String format = "dd/MM/yyyy HH:mm:ss";
+    String date = "11/01/2010 21:00:00";
+    String quoted_format = "dd/MM/yyyy'\u0020'HH:mm:ss";
+    try {
+        assertEquals(new SimpleDateFormat(format).parse(date),
+                new SimpleDateFormat(quoted_format).parse(date));
+        fail("White space must be quoted");
+    } catch (ParseException e) {
+        // expected
+    }
+    assertEquals(new SimpleDateFormat(format).parse(date),
+            new FastDateParser(quoted_format, TimeZone.getDefault(), Locale.getDefault()).parse(date));
+}

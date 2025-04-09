@@ -1,0 +1,16 @@
+public void testClosureDependencies() throws Exception {
+    CommandLineRunner runner = new CommandLineRunner(
+        new String[] {
+            "--jscomp_off=checkTypes",
+            "--compilation_level", "WHITESPACE_ONLY",
+            "--js", "test/testdata/core/iife1.js",
+            "--manage_closure_dependencies",
+            "--process_common_js_modules",
+            "--common_js_entry_module", "test/testdata/core/iife1.js",
+        }
+    );
+
+    String result = runner.run();
+    assertTrue(result.contains("var a = 5;"));
+    assertTrue(result.contains("a = 5"));
+}

@@ -1,0 +1,17 @@
+public void testGetValueAsString() throws IOException
+{
+  String json = "{\"field\":\"value\"}";
+  JsonParser jp = createParserUsingReader(json);
+  assertToken(JsonToken.START_OBJECT, jp.nextToken());
+  assertEquals("field", jp.nextFieldName());
+  assertEquals("field", jp.getValueAsString());
+  // note: token should be FIELD_NAME, not VALUE_STRING
+  assertToken(JsonToken.FIELD_NAME, jp.currentToken());
+  assertEquals("field", jp.getCurrentName());
+  assertEquals("value", jp.nextTextValue());
+  assertEquals("value", jp.getValueAsString());
+  assertToken(JsonToken.VALUE_STRING, jp.currentToken());
+  assertEquals("value", jp.getValueAsString());
+  assertToken(JsonToken.VALUE_STRING, jp.currentToken());
+  assertEquals("value", jp.getText());
+  assertEquals("value", jp

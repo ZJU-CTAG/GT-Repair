@@ -1,0 +1,15 @@
+public void testIssue102() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    try {
+        Compiler compiler = new Compiler(System.err);
+        compiler.compile(CLOSURE_HEADER,
+                         new FileReader("testdata/issue102.js"),
+                         options);
+        String compiled = compiler.toSource();
+        Assert.assertThat(compiled, CoreMatchers.containsString("if(null!==b)"));
+    } catch (Exception e) {
+        Assert.fail(e.getMessage());
+    }
+}

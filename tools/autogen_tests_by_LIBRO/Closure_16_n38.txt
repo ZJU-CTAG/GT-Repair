@@ -1,0 +1,18 @@
+public void testTypedefs() throws IOException {
+    String original = "goog.provide('a.b.c');"
+        + "goog.scope(function() {"
+        + "var b = a.b;"
+        + "var c = b.c;"
+        + "/** @typedef {string} */"
+        + "c.MyType;"
+        + "/** @param {c.MyType} x The variable. */"
+        + "c.myFunc = function(x) {};"
+        + "});";
+
+    String expected = "goog.provide('a.b.c');"
+        + "goog.scope(function(){var b=a.b,c=b.c;"
+        + "c.MyType;"
+        + "c.myFunc=function(x){}});";
+
+    check(original, expected);
+}

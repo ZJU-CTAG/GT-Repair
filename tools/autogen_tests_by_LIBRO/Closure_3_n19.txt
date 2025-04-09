@@ -1,0 +1,12 @@
+public void testIssue82() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT6_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setAngularPass(true);
+    options.setOptimizationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    options.setSourceMapOutputPath("/path/to/source/map");
+
+    final Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager());
+    compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("foo", "function getStack() { var getErrorObject = function() { try { throw Error(''); } catch(err) { return err; } }; return getErrorObject().stack; } window['getStackTrace'] = getStack;")}, options);
+}

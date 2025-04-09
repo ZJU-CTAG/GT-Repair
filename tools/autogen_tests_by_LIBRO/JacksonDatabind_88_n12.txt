@@ -1,0 +1,14 @@
+public void testJavaTypeSerialization() throws Exception {
+    JavaType stringType = TypeFactory.defaultInstance().constructType(String.class);
+    JavaType listType = TypeFactory.defaultInstance().constructCollectionType(ArrayList.class, stringType);
+    JavaType mapType = TypeFactory.defaultInstance().constructMapType(EnumMap.class, SomeEnum.class, listType);
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"stuff\":{\"enum\":\"VALUE\",\"list\":[true]}}";
+    Map<SomeEnum, ArrayList<String>> map = mapper.readValue(json, mapType);
+    fail("Should not get here, doesn't type check");
+}
+
+enum SomeEnum {
+    VALUE,
+    OTHER
+}

@@ -1,0 +1,21 @@
+public void test_ignoreUnknown_default() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JsonTest json = new JsonTest("user", "password");
+    assertEquals("{\"username\":\"user\"}", mapper.writeValueAsString(json));
+}
+
+public void test_ignoreUnknown_true() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    JsonTest json = new JsonTest("user", "password");
+    assertEquals("{\"username\":\"user\"}", mapper.writeValueAsString(json));
+}
+
+public void test_ignoreUnknown_false() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    String jsonString = "{ \"username\":\"username\",\"password\":\"password\" }";
+    JsonTest json = mapper.read

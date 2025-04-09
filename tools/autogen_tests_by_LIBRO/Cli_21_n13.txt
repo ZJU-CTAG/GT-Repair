@@ -1,0 +1,12 @@
+public void testNegativeNumbersMistakenForOptions() {
+    SimpleOptionSpec<Number> numOpt = newArgumentsSpec(Number.class, "num").withMinimum(1).withMaximum(1).create();
+    OptionParser parser = new OptionParser();
+    parser.acceptsAll(asList("num"), "num")
+            .withRequiredArg()
+            .withValuesConvertedBy(new NumberConverter())
+            .withValuesSeparatedBy(',');
+    OptionSet options = parser.parse("--num", "-0.1");
+    assertEquals(1, options.valuesOf(numOpt).size());
+    assertEquals(Number.class, options.valuesOf(numOpt).get(0).getClass());
+    assertEquals(-0.1, options.valuesOf(numOpt).get(0));
+}

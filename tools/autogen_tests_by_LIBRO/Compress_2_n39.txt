@@ -1,0 +1,24 @@
+public void testAr() throws IOException {
+    File arFile = new File("bla.ar");
+    String[] files={"test1.xml","test2.xml"};
+    putFilesInAr(files,arFile);
+    ArFile af = new ArFile(arFile);
+
+    // delete test2.xml
+    af.deleteFile("test2.xml");
+    af.close();
+
+    // add test.txt
+    putFilesInAr(new String[] {"test.txt"},arFile);
+    af = new ArFile(arFile);
+    assertEquals(1,af.getEntries().size());
+}
+
+private void putFilesInAr(String[] files, File arFile) throws IOException {
+    ArFile af = new ArFile(arFile);
+    for (String file : files) {
+        File f = new File(file);
+        af.putFile(f,f.getName());
+    }
+    af.close();
+}

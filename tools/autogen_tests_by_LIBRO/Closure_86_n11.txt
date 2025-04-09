@@ -1,0 +1,23 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT_2017);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setAssumeStrictThis(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager() {
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            if (level != CheckLevel.OFF) {
+                super.println(level, error);
+            }
+        }
+    });
+    Result result = compiler.compile(
+            SourceFile.fromCode("[testcode]",
+                    "function Foo() {\n"
+                    + " var self = this;\n"
+                    + " window.setTimeout(function() {\n"
+                    + " window.location = self.location;\n"
+                    + " }, 0);\n"
+                    + "}\n

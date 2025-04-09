@@ -1,0 +1,16 @@
+public void testIssue1148() throws Exception {
+    EnumMap<MyEnum, String> enumMap = new EnumMap<>(MyEnum.class);
+    enumMap.put(MyEnum.FOO, "foo");
+    enumMap.put(MyEnum.BAR, "bar");
+
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(enumMap);
+
+    assertEquals("{\"FOO\": \"foo\", \"BAR\": \"bar\"}", json);
+}
+
+enum MyEnum {
+    @JsonProperty("foo") FOO,
+    @JsonProperty("bar") BAR
+}
+

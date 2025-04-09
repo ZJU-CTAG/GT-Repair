@@ -1,0 +1,11 @@
+public void testIncompleteFunctionDefinition() {
+      String code = "f f f; function t";
+      Compiler compiler = new Compiler();
+      CompilerOptions options = new CompilerOptions();
+      options.ideMode = true;
+      Result result = compiler.compile(JSSOURCE, code, options);
+      assertFalse(result.success);
+      assertEquals(1, result.errors.length);
+      assertEquals(2, result.errors[0].lineNumber);
+      assertTrue(result.errors[0].description.contains("FUNCTION"));
+  }

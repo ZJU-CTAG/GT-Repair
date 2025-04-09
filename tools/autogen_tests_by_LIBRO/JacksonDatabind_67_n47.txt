@@ -1,0 +1,22 @@
+public void testIssue126() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaExtrasModule());
+    mapper.readValue("{\"foo\":\"bar\"}", new TypeReference<ImmutableMap<MyEnum, String>>() {});
+}
+
+public enum MyEnum {
+    FOO, BAR;
+}
+
+public class GuavaExtrasModule extends SimpleModule {
+    public GuavaExtrasModule() {
+        super("GuavaExtrasModule", new Version(1, 0, 0, null, "com.guava", "jackson-datatype-guava-extras"));
+        setDeserializerModifier(new BeanDeserializerModifier() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public JsonDeserializer<Enum> modifyEnumDeserializer(
+                    DeserializationConfig config,
+                    final JavaType type,
+                    BeanDescription beanDesc,
+                    final JsonDeserializer<?> deserializer) {
+                return new JsonDeserializer<Enum>

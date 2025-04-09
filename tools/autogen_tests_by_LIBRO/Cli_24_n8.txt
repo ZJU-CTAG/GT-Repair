@@ -1,0 +1,16 @@
+public void testNotEnoughSpace() {
+    Options options = new Options();
+    options.addOption("h", "help", false, "This is a looooong description");
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setWidth(24);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    formatter.printHelp(pw, formatter.getWidth() + 1, "app", null, options, formatter.getLeftPadding(), formatter.getDescPadding(), null, true); // hang & crash
+    pw.close();
+    String help = baos.toString();
+    assertTrue(help.contains("This is a"));
+    assertTrue(help.contains("looooong"));
+    assertTrue(help.contains("description"));
+    assertEquals(2, StringUtils.countMatches(help, "\n"));
+}

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    XmlSerializerProvider provider = new XmlSerializerProvider(mapper.getSerializerFactory()
+    );
+    ObjectMapper.DefaultSerializerProvider sp = new ObjectMapper.DefaultSerializerProvider.Impl();
+    sp.setNullValueSerializer(
+            provider.findNullValueSerializer(null)
+    );
+    // works as expected:
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ToXmlGenerator jgen = XmlMapper.xmlFactory().createGenerator(out, JsonEncoding.UTF8);
+    sp.serializeValue(jgen, null);
+    jgen.close();
+    String xmlStr = new String(out.toByteArray(), "UTF-8");
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><null/>", xmlStr);
+    // doesn't work as expected

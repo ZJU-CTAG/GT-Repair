@@ -1,0 +1,23 @@
+public void testNoWarningPropertyRedeclared() {
+    // Warning: cannot be removed
+    String code = "/** @constructor */\n"
+        + "function Foo() { /** @private */ this.x_ = 3; }\n";
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_PRIVATE_PROPERTIES,
+        CheckLevel.ERROR);
+    compiler.compile(
+        ImmutableList.<SourceFile>of(),
+        ImmutableList.of(SourceFile.fromCode("file.js", code)),
+        options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarnings().length);
+}
+
+public void testWarningPropertyRedeclared() {
+    // Warning: cannot be removed
+    String code = "/** @constructor */\n"
+        + "function Foo() { /** @private */ this.x_ = 3; }\n"
+        + "/** @

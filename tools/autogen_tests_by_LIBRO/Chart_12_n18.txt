@@ -1,0 +1,19 @@
+public void testMultiplePiePlot() {
+    JFreeChart chart = createChart(createDataset());
+    PiePlot plot = (PiePlot) chart.getPlot();
+    PlotChangeEventListener l = new PlotChangeEventListener() {
+        public void plotChanged(PlotChangeEvent event) {
+            System.out.println("event");
+        }
+    };
+    plot.addChangeListener(l);
+    DefaultPieDataset dataset = (DefaultPieDataset) plot.getDataset();
+    dataset.setValue("val", new Double(5));
+    dataset.setValue("val", new Double(5));
+}
+
+public JFreeChart createChart(DefaultPieDataset dataset) {
+    JFreeChart chart = ChartFactory.createMultiplePieChart("Multiple Pie Chart", dataset, TableOrder.BY_COLUMN, true, true, false);
+    MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
+    JFreeChart pieChart1 = ChartFactory.createPieChart("Pie Chart 1", dataset, true, true, false);
+    JFreeChart pieChart2 = ChartFactory.createPieChart

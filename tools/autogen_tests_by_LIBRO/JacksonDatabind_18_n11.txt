@@ -1,0 +1,31 @@
+public void testMissingEnd() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Object> it = mapper.readValues(
+            "{\"a\":\"b\" { \"a\":\"b\" }", Object.class
+            );
+    assertTrue(it.hasNextValue());
+    try {
+        assertNull(it.next());
+        fail("Should fail");
+    } catch (MismatchedInputException e) {
+        // good
+    }
+    // and how about now?
+    assertTrue(it.hasNextValue());
+    try {
+        assertNull(it.next());
+        fail("Should fail");
+    } catch (MismatchedInputException e) {
+        // good
+    }
+    // and again...
+    assertTrue(it.hasNextValue());
+    try {
+        assertNull(it.next());
+        fail("Should fail");
+    } catch (MismatchedInputException e) {
+        // good
+    }
+    assertFalse(it.hasNextValue());
+}

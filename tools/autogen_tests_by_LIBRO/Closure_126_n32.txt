@@ -1,0 +1,5 @@
+public void testBreakInFinally() {
+    String js = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    Script script = parse(js);
+    assertEquals("console.log('ok then...')", script.getStatements().get(0).toSource());
+}

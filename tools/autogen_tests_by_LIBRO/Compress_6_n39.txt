@@ -1,0 +1,20 @@
+public void testCorruptZip() throws IOException {
+    long seed = System.currentTimeMillis();
+    System.out.println("seed = " + seed);
+
+    int numEntries = 2000;
+    int numFiles = 2000;
+    final Random random = new Random(seed);
+    String commonPrefix = StringUtils.leftPad("", random.nextInt(10) + 10, 'a');
+    System.out.println("commonPrefix = " + commonPrefix);
+    String[] entries = new String[numEntries];
+    for (int i = 0; i < entries.length; i++) {
+        int len = random.nextInt(10) + 10;
+        entries[i] = commonPrefix + StringUtils.leftPad("", len, (char) ('a' + random.nextInt(26)));
+    }
+    int dataLength = 1000;
+    byte[] data = new byte[dataLength];
+    random.nextBytes(data);
+    File output = new File("target/corrupt.zip");
+    try {
+        ZipOutputStream zos = new ZipOutputStream(new

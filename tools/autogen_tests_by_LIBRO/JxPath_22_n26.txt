@@ -1,0 +1,14 @@
+public void testIssue() {
+    NamespaceContext ns = new SimpleNamespaceContext();
+    ns.bindNamespaceUri("test111","");
+
+    InputSource is = new InputSource(new ByteArrayInputStream(
+        "<root xmlns='test111'  xmlns:b='bla'><b:foo><b:bar>a</b:bar><test/></b:foo></root>".getBytes()));
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.setNamespaceContextPointer(new SimpleNamespaceContextPointer(ns));
+    assertEquals("a", ctx.getValue("//test111:foo/b:bar"));
+    assertEquals("//test111:foo/test111:test",ctx.getPointer("//test111:foo/test111:test").asPath());
+}
+

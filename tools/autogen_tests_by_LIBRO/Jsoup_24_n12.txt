@@ -1,0 +1,20 @@
+public void testIncorrectJavascript() throws Exception {
+    String testString = "<HTML>\n" +
+            "<body>\n" +
+            " <div>\n" +
+            "  <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>\n" +
+            " </div>\n" +
+            "</body>\n" +
+            "</HTML>";
+    HtmlCleaner cleaner = new HtmlCleaner();
+    TagNode node = cleaner.clean(testString);
+    String actual = new SimpleHtmlSerializer(cleaner.getProperties()).getAsString(node);
+    String expected = "<html>\n" +
+            " <body>\n" +
+            "  <div>\n" +
+            "   <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "   </script>\n" +
+           

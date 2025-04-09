@@ -1,0 +1,21 @@
+public void testISO8601() {
+    List<String> dates = Arrays.asList("2014-10-03T18:00:00.6-05:00",
+                                       "2014-10-03T18:00:00.61-05:00",
+                                       "1997-07-16T19:20+01:00",
+                                       "1997-07-16T19:20:30.45+01:00");
+    
+    for (String date : dates) {
+        ObjectMapper mapper = new ObjectMapper();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        mapper.setDateFormat(df);
+        
+        try {
+            Date d = mapper.readValue(date, Date.class);
+            System.out.println(d);
+        } catch (JsonParseException ex) {
+            System.out.println("Unable to parse: " + date);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}

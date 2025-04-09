@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    File f = new File(getClass().getResource("/test.tar").toURI());
+    TarArchiveInputStream is = new TarArchiveInputStream(new FileInputStream(f));
+    byte[] buf = new byte[8192];
+    int len = 0;
+    ArrayList<TarArchiveEntry> entries = new ArrayList<TarArchiveEntry>();
+    while ((len = is.read(buf)) != -1) {
+        entries.add(is.getNextTarEntry());
+    }
+    is.close();
+    assertEquals(2, entries.size());
+}

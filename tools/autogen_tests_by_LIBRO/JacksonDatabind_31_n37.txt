@@ -1,0 +1,26 @@
+public void testWriteContextDifference() throws IOException {
+
+TestWrapper wrapper = new TestWrapper();
+wrapper.setField1("Hello");
+wrapper.setField2(42);
+
+TestWrapperWrapper wrapper2 = new TestWrapperWrapper();
+wrapper2.setWrapped(wrapper);
+
+ObjectMapper objectMapper = new ObjectMapper();
+
+// first we write the object to a string
+objectMapper.writeValueAsString(wrapper2);
+
+// then we print out the writeContext
+System.out.println("--- WriteContext ---");
+traverseWriteContextTree(objectMapper.getFactory().getJsonFactory().getContext().getParent());
+
+// then we filter the writeContext and call the convert method
+StringWriter sw = new StringWriter();
+FilterProvider provider = new SimpleFilterProvider().addFilter("testFilter", SimpleBeanPropertyFilter.serializeAllExcept("field1"));
+objectMapper.writer(provider).writeValue(sw, wrapper2);
+
+// now we print the writeContext again
+System.out.println("--- WriteContext ---");
+traverseWriteContextTree(objectMapper

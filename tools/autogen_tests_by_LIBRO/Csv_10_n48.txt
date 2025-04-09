@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+    CSVFormat format = CSVFormat.TDF.withHeader("x");
+    try (CSVPrinter csvPrinter
+         = format.print(Files.newBufferedWriter(Paths.get("data.csv")))) {
+        csvPrinter.printRecord(42);
+    }
+    try (CSVParser parser = format.parse(Files.newBufferedReader(Paths.get("data.csv")))) {
+        for (CSVRecord record : parser) {
+            assertEquals("x", record.get(0));
+            assertEquals("42", record.get(1));
+        }
+    }
+}

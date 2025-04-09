@@ -1,0 +1,12 @@
+public void testIssue107() {
+    double numeratorDegreesOfFreedom = 2;
+    double denominatorDegreesOfFreedom = 2;
+    double alpha = 0.95;
+    FDistributionImpl f = new FDistributionImpl(numeratorDegreesOfFreedom, denominatorDegreesOfFreedom);
+    try {
+        f.inverseCumulativeProbability(1.0 - alpha);
+        fail("An exception should have been thrown");
+    } catch (MathException e) {
+        assertTrue("IllegalArgumentException expected", e.getCause() instanceof IllegalArgumentException);
+    }
+}

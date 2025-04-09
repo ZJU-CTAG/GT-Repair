@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Document doc = Dom4jUtils.newDocument();
+    Element foo = doc.addElement("foo");
+    foo.addNamespace("", "test111"); // this is important, as it causes a null namespace
+    foo.addElement("bar");
+    foo.addElement("test");
+    DOMNodePointer pointer = new DOMNodePointer(null, doc.getDocumentElement());
+    pointer.setNamespaceResolver(new DefaultNamespaceResolver());
+    pointer = (DOMNodePointer) pointer.getValuePointer().getValue();
+    pointer = (DOMNodePointer) pointer.getValuePointer().getValue();
+    pointer = (DOMNodePointer) pointer.getValuePointer().getValue();
+    assertEquals("foo/test", pointer.asPath());
+}

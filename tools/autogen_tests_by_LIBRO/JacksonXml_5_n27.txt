@@ -1,0 +1,17 @@
+public void testIssue171() throws Exception {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    System.out.println(noAnnotationsXmlMapper.writeValueAsString(new XMLTest()));
+    System.out.println(xmlMapper.writeValueAsString(new XMLTest()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public class XMLTest {
+    public static void main(String[] s) throws Exception {
+        new XMLTest().testIssue171();
+    }
+}
+

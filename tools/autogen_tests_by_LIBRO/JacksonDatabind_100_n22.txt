@@ -1,0 +1,9 @@
+public void testBase64Variant() throws Exception {
+    ObjectMapper om = new ObjectMapper(new JsonFactory());
+    om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    JsonNode node = om.readTree(new StringReader("{b64:\"AAAA\"}"));
+    String value = node.get("b64").binaryValue().toString();
+
+    //Returns "AAAA" instead of "AAAAAA=="
+    assertEquals("AAAAAA==", value);
+}

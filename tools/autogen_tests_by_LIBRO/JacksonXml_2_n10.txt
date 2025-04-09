@@ -1,0 +1,10 @@
+public void testIssue110() throws IOException {
+    String xml = "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+    ObjectMapper mapper = new ObjectMapper();
+    XmlFactory xmlFactory = new XmlFactory();
+    xmlFactory.configure(Feature.WRAP_ROOT_VALUE, false);
+    XmlMapper xmlMapper = new XmlMapper(xmlFactory);
+    WindSpeed windSpeed = xmlMapper.readValue(xml, WindSpeed.class);
+    assertEquals(windSpeed.getValue(), 27);
+    assertEquals(windSpeed.getRadius().get(0).getValue(), 20);
+}

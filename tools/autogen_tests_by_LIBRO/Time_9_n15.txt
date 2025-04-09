@@ -1,0 +1,12 @@
+public void testParseOffset() {
+    assertEquals(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999,
+            DateTimeZone.forOffsetHours(24).getOffset(null));
+    assertEquals(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999,
+            DateTimeZone.forOffsetHoursMinutes(23, 60).getOffset(null));
+    assertEquals(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999,
+            DateTimeZone.forOffsetHoursMinutesSeconds(23, 59, 60).getOffset(null));
+    
+    assertEquals(0, DateTimeZone.forOffsetHoursMinutesSeconds(0, 0, 0).getOffset(null));
+    assertEquals(0, DateTimeZone.forOffsetHoursMinutesSeconds(0, 0, 0).getOffset(new DateTime()));
+    
+    assertEquals(DateTimeConstants.MILLIS_PER_MINUTE, DateTimeZone.forOffsetHoursMinutesSeconds(0, 0, 1).getOffset

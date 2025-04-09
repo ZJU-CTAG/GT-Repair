@@ -1,0 +1,14 @@
+public void testReinitializationIsComplete() {
+    EventSimulator simulator = new EventSimulator();
+    int eventCount = 2;
+    Event[] events = new Event[eventCount];
+    for(int i = 0; i < eventCount; i++) {
+        events[i] = new Event(new EventType("type" + i), new DateTime());
+    }
+    EventTypeListener listener = new EventTypeListener();
+    listener.setAcceptedEventTypes(new EventType[] {events[0].getType()});
+    simulator.addEventListener(listener);
+    simulator.addEvent(events[0]);
+    simulator.addEvent(events[1]);
+    assertFalse(events[1].isAccepted());
+}

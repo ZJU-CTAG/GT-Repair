@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule("test", Version.unknownVersion())
+        .addSerializer(new BeanSerializer(Object.class))
+    );
+    Map<String,Object> input = new LinkedHashMap<String,Object>();
+    input.put("@class", "java.lang.String");
+    input.put("value", "abc");
+    // should this trigger an exception?
+    om.writeValueAsString(input);
+}

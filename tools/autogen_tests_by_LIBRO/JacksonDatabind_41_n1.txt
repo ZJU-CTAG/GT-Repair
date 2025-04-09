@@ -1,0 +1,17 @@
+public void testDeprecatedNull() throws Exception
+{
+    final String JSON = aposToQuotes(
+"[{'id': 1, 'type': 'foobar'},"
++"{'id':2, 'type':'barfoo'},"
++"{'id':3, 'type':'foobar'}]");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(BarFoo.class, FooBar.class);
+    JsonNode root = mapper.readTree(JSON);
+    TypeFactory typeFactory = TypeFactory.defaultInstance();
+    CollectionType collectionType = typeFactory.constructCollectionType(List.class, Animal.class);
+    List<Animal> animals = mapper.readValue(root, collectionType);
+    assertEquals(3, animals.size());
+    assertEquals(FooBar.class, animals.get(0).getClass());
+    assertEquals(BarFoo.class, animals.get(1).getClass());
+    assertEquals(FooBar.class, animals.get(2).getClass());
+}

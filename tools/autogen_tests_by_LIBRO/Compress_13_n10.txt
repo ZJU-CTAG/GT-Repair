@@ -1,0 +1,10 @@
+public void testIssue107() throws Exception {
+    File zipFile = new File("src/test/resources/test-winzip-umlauts.zip");
+    assertTrue(zipFile.isFile());
+    ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(zipFile));
+    ArchiveEntry entry = null;
+    while ((entry = in.getNextEntry()) != null) {
+        System.out.println(entry.getName() + " " + entry.isDirectory());
+    }
+    in.close();
+}

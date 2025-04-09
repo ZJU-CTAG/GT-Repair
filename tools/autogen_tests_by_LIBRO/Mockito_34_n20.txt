@@ -1,0 +1,11 @@
+public void testIssue108() {
+    URL resource = getClass().getResource("/mockito-all-1.9.5.jar");
+    assertTrue(resource.getFile(), resource.getFile().endsWith("mockito-all-1.9.5.jar"));
+
+    JarFile jarFile = new JarFile(resource.getFile());
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry jarEntry = entries.nextElement();
+        assertFalse("jar should not contain .java files, but found " + jarEntry.getName(), jarEntry.getName().endsWith(".java"));
+    }
+}

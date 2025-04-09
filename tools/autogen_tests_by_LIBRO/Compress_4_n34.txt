@@ -1,0 +1,16 @@
+public void testPublicFinish() throws Exception {
+    final File dest = new File(dir, "publicFinish.zip");
+    final OutputStream output = new FileOutputStream(dest);
+    ArchiveOutputStream archive = new ZipArchiveOutputStream(output);
+
+    // Write the bytes to the archive.
+    final byte[] content = "The quick brown fox jumps over the lazy dog".getBytes();
+    final byte[] name = "publicFinish".getBytes();
+    archive.putArchiveEntry(new ZipArchiveEntry(new String(name)));
+    archive.write(content);
+    archive.closeArchiveEntry();
+    archive.close();
+
+    // Now try to call the public finish() method.
+    archive.finish();
+}

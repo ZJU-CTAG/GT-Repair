@@ -1,0 +1,11 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setIdeMode(false);
+    options.setClosurePass(true);
+    options.checkSymbols(true);
+    compiler.compile(new JSSourceFile[] {
+            JSSourceFile.fromCode("a.js", "function x() { return delete a; }") },
+        options);
+    assertEquals(0, compiler.getErrorCount());
+}

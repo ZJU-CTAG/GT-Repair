@@ -1,0 +1,12 @@
+public void testCSVPrinter() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, format);
+    printer.printRecord(Arrays.asList("-92.222", "43.333", "3"));
+    printer.close();
+    CSVParser parser = CSVParser.parse(sw.toString(), format);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(1, records.size());
+    assertEquals(Arrays.asList("-92.222", "43.333", "3"), records.get(0));
+    assertEquals(Arrays.asList("-92.222", "43.333", "3"), records.get(0).getValues());
+}

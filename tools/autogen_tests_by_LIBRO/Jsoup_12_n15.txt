@@ -1,0 +1,17 @@
+public void testAttributeSelectorRegexCombinator() throws IOException {
+    String html = "<div><table class=xy></table></div><table class=xx></table>";
+
+    Document doc = Jsoup.parse(html);
+
+    Elements els = doc.select("div table[class~=x|y]");
+    assertEquals(1, els.size());
+
+    els = doc.select("div > table[class~=x|y]");
+    assertEquals(1, els.size());
+
+    els = doc.select("div + table[class~=x|y]");
+    assertEquals(1, els.size());
+
+    els = doc.select("div ~ table[class~=x|y]");
+    assertEquals(1, els.size());
+}

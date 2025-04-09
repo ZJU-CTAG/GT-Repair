@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    Base64Variant base64variant = Base64Variants.MIME;
+    byte[] decoded = "aGVsbG8gd29ybGQ=".getBytes("UTF-8");
+    String encoded = base64variant.encode(decoded);
+    JsonNode node = new TextNode(encoded);
+    JsonParser parser = new TreeTraversingParser(node, new ObjectMapper());
+    parser.setCodec(new ObjectMapper());
+    parser.setBase64Variant(base64variant);
+    assertArrayEquals(decoded, parser.getBinaryValue());
+}

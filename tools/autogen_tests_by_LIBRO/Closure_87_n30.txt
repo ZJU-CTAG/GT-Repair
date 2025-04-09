@@ -1,0 +1,12 @@
+public void testIssue1() {
+    String code = "if(b.onchange){b.onchange({\_extendedByPrototype:Prototype.emptyFunction,target:b})}";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setEnvironment(Environment.BROWSER);
+    options.setPrettyPrint(true);
+    options.setGenerateExports(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] {}, new JSSourceFile[] {JSSourceFile.fromCode("", code)}, options);
+    String compiledCode = compiler.toSource();
+    assertEquals("if(b.onchange){b.onchange({\_extendedByPrototype:Prototype.emptyFunction,target:b})}", compiledCode);
+}

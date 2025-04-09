@@ -1,0 +1,23 @@
+public void testInstanceof() {
+    class A { }
+    class B extends A { }
+    A a = new B();
+    boolean b = instanceOf(a, B.class);  // should compile
+}
+
+private boolean instanceOf(Object obj, Class cls) {
+    try {
+        // first try built-in test -- if it succeeds, we're golden.
+        if (obj instanceof cls) {
+            return true;
+        }
+    } catch (Exception exception) {
+        if (exception instanceof TypeError) {
+            throw exception; // indicates that "type" is not a type
+        }
+        // Otherwise, assume the exception was caused by
+        // the Firefox 1.0.3 bug. Work around it.
+        return (cls === Object);
+    }
+    return false;
+}

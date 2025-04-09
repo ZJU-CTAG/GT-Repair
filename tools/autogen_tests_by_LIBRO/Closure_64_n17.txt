@@ -1,0 +1,19 @@
+public void testIssue() {
+    String result = compile("get_num.js", "alert.js");
+    assertEquals("'use strict';alert(5);", result);
+}
+
+private String compile(String source, String... more) {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setProcessCommonJSModules(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setPrettyPrint(true);
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    options.setCheckSuspiciousCode(true);
+    CompilationLevel.ADVANCED_OPTIMIZ

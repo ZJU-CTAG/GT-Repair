@@ -1,0 +1,14 @@
+public void testIssue107() throws Exception {
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(java.sql.Date.class, new SqlDateSerializer().withFormat(false, new SimpleDateFormat("yyyy-MM-dd")));
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(module);
+
+    objectMapper.configOverride(java.sql.Date.class)
+            .setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    java.sql.Date date = java.sql.Date.valueOf("2011-01-03");
+    String json = objectMapper.writeValueAsString(date);
+    assertEquals("\"2011-01-03\"", json);
+}

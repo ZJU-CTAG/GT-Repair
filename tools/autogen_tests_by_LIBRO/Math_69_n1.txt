@@ -1,0 +1,26 @@
+public void testPrecision() {
+    RandomGenerator rg = new RandomGenerator() {
+        int i = 0;
+
+        public double nextDouble() {
+            return i++ % 2 == 0 ? 0.5 : 0.51;
+        }
+
+        public void setSeed(int i) {
+        }
+
+        public void setSeed(int[] ints) {
+        }
+
+        public void setSeed(long l) {
+        }
+    };
+
+    PearsonsCorrelation pc = new PearsonsCorrelation(rg, 100, 100);
+    System.out.println(Arrays.toString(pc.getCorrelationPValues()));
+
+    System.out.println(Arrays.toString(pc.getCorrelationPValues()));
+    TDistribution tDistribution = new TDistribution(98);
+    double[] vals = new double[100];
+    for (int i = 0; i < vals.length; ++i) {
+        vals[i] = tDistribution.cumulativeProbability(-Math.abs(pc.getCorrelationMatrix().getEntry(1, i))

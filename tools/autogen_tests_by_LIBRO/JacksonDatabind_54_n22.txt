@@ -1,0 +1,17 @@
+public void testOptionalEmpty() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+
+    JsonResult result = new JsonResult();
+    result.setA(Optional.empty());
+    result.setB(Optional.empty());
+    System.out.println(mapper.writeValueAsString(result));
+}
+
+@Data
+public class JsonResult {
+    private Object a;
+    private Optional<Object> b;
+}

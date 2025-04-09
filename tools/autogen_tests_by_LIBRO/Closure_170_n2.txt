@@ -1,0 +1,19 @@
+public void testComma() {
+    CompilationUnit compilationUnit = new CompilationUnit();
+    final CompilerOptions options = new CompilerOptions();
+    final CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    level.setOptionsForCompilationLevel(options);
+    level.setTypeBasedOptimizationOptions(options);
+    level.setDebugOptionsForCompilationLevel(options);
+    final SourceFile input = SourceFile.fromCode("input.js",
+        "function Test(n) {   "
+        + " var i = 0; "
+        + " return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i "
+        + "}"
+        + "var dummy = \"6chars\"; "
+        + "console && console.log( Test(dummy) ); ");
+    final Result result = compiler.compile(externs, ImmutableList.of(input), options);
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    System.out.println(output);
+   

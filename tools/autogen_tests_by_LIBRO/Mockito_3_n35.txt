@@ -1,0 +1,17 @@
+public void testVarargsIssue() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    List<String> list = new ArrayList<>();
+    list.add("1");
+    list.add("2");
+    list.add("3");
+    list.add("4");
+    list.add("5");
+    CapturingSink sink = mock(CapturingSink.class);
+    sink.capture(list.toArray(new String[list.size()]));
+    verify(sink).capture(captor.capture());
+    assertEquals(list, captor.getAllValues());
+}
+
+private interface CapturingSink {
+    void capture(String... messages);
+}

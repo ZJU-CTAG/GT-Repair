@@ -1,0 +1,21 @@
+public void testIssue114() throws Exception {
+    String file = "src/test/resources/issue114.js";
+    String fileContent = FileUtils.readFileToString(new File(file));
+    String minified = new JavaScriptCompressor(new StringReader(fileContent), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public EvaluatorException runtime

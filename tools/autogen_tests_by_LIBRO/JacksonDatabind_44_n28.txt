@@ -1,0 +1,37 @@
+public void testIssue()
+{
+    // this one fails, because polymorphic property is not found
+    String json = "{\"type\":\"foo\",\"x\":3,\"y\":4}";
+    MainBase main = MAPPER.readValue(json, MainBase.class);
+    assertEquals(3, main.x);
+    assertEquals(4, main.y);
+}
+
+//@JsonSubTypes({@JsonSubTypes.Type(Foo.class)})
+abstract class MainBase {
+    public int x;
+    public int y;
+
+    protected MainBase() { }
+}
+//
+abstract class MainBase2 extends MainBase {
+    public short s;
+
+    protected MainBase2() { }
+}
+
+abstract class MainBase3 extends MainBase2 {
+    public long l;
+
+    protected MainBase3() { }
+}
+
+class Foo extends MainBase3 {
+    public String foo;
+
+    public Foo() { }
+}
+
+class MainBase3Deserializer extends StdDeserializer<MainBase3> {
+    protected MainBase3Deserializer() {

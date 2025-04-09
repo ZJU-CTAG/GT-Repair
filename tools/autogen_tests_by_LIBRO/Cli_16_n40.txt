@@ -1,0 +1,27 @@
+public void testGroupConstraints() {
+    final Options options = new Options();
+    final OptionGroup groupA = new OptionGroup();
+    final OptionGroup groupB = new OptionGroup();
+    final Option optionA = OptionBuilder.create("a");
+    final Option optionB = OptionBuilder.create("b");
+    final Option optionC = OptionBuilder.create("c");
+
+    groupA.addOption(optionA);
+    groupA.addOption(optionB);
+
+    groupB.addOption(optionC);
+
+    options.addOptionGroup(groupA);
+    options.addOptionGroup(groupB);
+
+    // maximum set on groupB should be determined by whether the groupA is present
+    groupA.setMax(1);
+    groupB.setMax(1);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(options, new String[]{"-a", "-c"});
+
+    assertFalse(line.hasOption("a"));
+    assertFalse(line.hasOption("b"));
+    assertFalse(line.hasOption("c"));
+}

@@ -1,0 +1,19 @@
+public void testCodecBase64InputStream() throws Exception {
+    // NOTE: this test is a bit of a hack: it's not really a unit test,
+    // but a manual test that makes sure the bug is fixed
+    // (see https://issues.apache.org/jira/browse/CODEC-102)
+    StringBuilder stringBuilder = new StringBuilder();
+    for (int i = 0; i < 100000; i++) {
+        stringBuilder.append("Hello");
+    }
+    byte[] in = stringBuilder.toString().getBytes("ASCII");
+    ByteArrayInputStream bais = new ByteArrayInputStream(in);
+    Base64InputStream b64stream = new Base64InputStream(bais, true, 0, null);
+    int n = 0;
+    try {
+        while (b64stream.read() != -1) n++;
+    } catch (Exception x) {
+        System.out.println(n);
+        throw x;
+    }
+}

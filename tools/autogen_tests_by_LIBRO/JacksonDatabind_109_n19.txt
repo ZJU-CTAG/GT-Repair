@@ -1,0 +1,17 @@
+public void testIssue180() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+
+    BigDecimal bd = new BigDecimal("0.0000000005");
+    Issue180 test = new Issue180(bd);
+
+    String json = om.writeValueAsString(test);
+
+    assertEquals("{\"value\":5.0E-10}", json);
+}
+
+@JsonFormat(shape= Shape.STRING)
+public static class Issue180 {
+    public BigDecimal value;
+    public Issue180(BigDecimal v) { value = v; }
+}

@@ -1,0 +1,15 @@
+public void testRootNodeDescendantOrSelfAxis() throws Exception {
+
+    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+    docBuilderFactory.setNamespaceAware(true);
+
+    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+    Element rootElement = doc.createElement("root");
+    rootElement.setAttribute("id", "1234");
+    doc.appendChild(rootElement);
+
+    JXPathContext context = JXPathContext.newContext(doc);
+
+    assertEquals("1234", context.selectSingleNode("//root/@id/text()"));
+}

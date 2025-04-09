@@ -1,0 +1,14 @@
+public void testIssue113() {
+    try {
+        final ZipArchiveEntry entry = new ZipArchiveEntry("test");
+        entry.setCompressedSize(ArchiveEntry.SIZE_UNKNOWN);
+        entry.setMethod(ZipMethod.BZIP2.getCode());
+        entry.setSize(ArchiveEntry.SIZE_UNKNOWN);
+        final ByteArrayInputStream in = new ByteArrayInputStream(new byte[0]);
+        final ZipArchiveInputStream zip = new ZipArchiveInputStream(in);
+        zip.getNextZipEntry();
+        fail("Should have thrown a ZipException");
+    } catch (final ZipException expected) {
+        // expected
+    }
+}

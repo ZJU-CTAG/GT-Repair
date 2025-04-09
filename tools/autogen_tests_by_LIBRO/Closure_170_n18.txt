@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String js = "function Test(n) {" +
+            " var i = 0;" +
+            " return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i" +
+            "}" +
+            "var dummy = \"6chars\";" +
+            "console && console.log( Test(dummy) );";
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{
+            JSSourceFile.fromCode("input", js)
+    });
+    CompilerOptions options = compiler.getOptions();
+    options.setPrettyPrint(false);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    compiler.compile(new JSSourceFile[]{
+            JSSourceFile.fromCode("input", js)
+    });
+    assertEquals("function Test(a) {\n" +
+            " return 0\n" +
+            "}\n" +
+            "var

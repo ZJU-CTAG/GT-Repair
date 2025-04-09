@@ -1,0 +1,17 @@
+public void testLongOptIssue(){
+    Options options = new Options();
+
+    options.addOption(Option.builder().longOpt("importToOpen").hasArg().argName("FILE").build());
+    options.addOption(Option.builder("i").longOpt("import").hasArg().argName("FILE").build());
+
+    String[] args = {"--import=FILE"};
+
+    CommandLineParser parser = new DefaultParser();
+    parser.parse(options, args);//will fail since AmbiguousOptionException
+
+    CommandLineParser parser1 = new PosixParser();
+    parser1.parse(options, args);//will work
+
+    CommandLineParser parser2 = new GnuParser();
+    parser2.parse(options, args);//will work
+}

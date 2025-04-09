@@ -1,0 +1,19 @@
+public void testPosixParser() {
+        String[] args = {"-target", "abc"};
+        CommandLineParser parser = new PosixParser();
+        Options cmdLineOpts = new Options();
+        Option generateTarget = new Option("t", "target", true, "Generate files for the specified target machine");
+        cmdLineOpts.addOption(generateTarget);
+        CommandLine parsedLine = null;
+        try {
+            parsedLine = parser.parse(cmdLineOpts, args);
+        } catch (ParseException pe) {
+            System.out.println("Invalid command: " + pe.getMessage() + "\n");
+            HelpFormatter hf = new HelpFormatter();
+            hf.printHelp("", cmdLineOpts);
+            System.exit(-1);
+        }
+        if (parsedLine.hasOption("target")) {
+            System.out.println("processing selected target: " + parsedLine.getOptionValue("target"));
+        }
+    }

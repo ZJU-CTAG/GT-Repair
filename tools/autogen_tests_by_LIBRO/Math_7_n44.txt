@@ -1,0 +1,27 @@
+public void test() throws MathException, FileNotFoundException {
+    double t0 = 0;
+    double tEnd = 10;
+
+    // the double arrays t and y will be used to store the
+    // state of the integration at the end of each step
+    double[] t = new double[1];
+    double[] y = new double[2];
+    t[0] = t0;
+    y[0] = 0;
+    y[1] = 0;
+
+    // the ODE problem, with one dependent variable y
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] =  y[1];
+            yDot[1] = -y[0];
+        }
+
+        public int getDimension() {
+            return 2;
+        }
+    };
+
+    // The ODE solver
+    AdaptiveStepsizeIntegrator integrator =
+            new DormandPrince853Integrator(1.0e-8, 100.0, 1.

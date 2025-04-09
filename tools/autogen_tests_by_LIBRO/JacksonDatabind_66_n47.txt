@@ -1,0 +1,16 @@
+public void testEnumKeyWithTypeInfo() throws Exception {
+    SimpleModule module = new SimpleModule();
+    module.addKeyDeserializer(GenericEnum.class, new GenericEnumKeyDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+
+    Map<GenericEnum, Object> map = new HashMap<>();
+    map.put(GenericEnum.A, "a");
+    GenericEnumContainer container = new GenericEnumContainer();
+    container.setObjectMap(map);
+    String json = mapper.writeValueAsString(container);
+
+    GenericEnumContainer deserialized = mapper.readValue(json, GenericEnumContainer.class);
+    assertEquals(1, deserialized.getObjectMap().size());
+    assertEquals(GenericEnum.A.toString(), deserialized.getObjectMap().get(GenericEnum.A));
+}

@@ -1,0 +1,20 @@
+public void testAdvancedCompilation() {
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setGeneratePseudoNames(true);
+    options.setPrettyPrint(true);
+
+    final List<SourceFile> externs = new ArrayList<SourceFile>();
+    final List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input",
+            "function A() {\n" +
+                    "    this._x = 1;\n" +
+                    "}\n" +
+                    "\n" +
+                    "A.prototype['func1'] = // done to save public reference to func1\n" +
+                    "A.prototype.func1 = function() {\n" +
+                    "    this._x = 2;\n" +
+                    "    this.func2();

@@ -1,0 +1,13 @@
+public void testIssue() {
+    SimpleType type = SimpleType.construct(MyPojo.class);
+    assertNotNull(type.getRawClass());
+
+    SerializerProvider provider = new SerializerProvider();
+    JsonSerializer<Object> ser = provider.findValueSerializer(type);
+    assertNotNull(ser);
+    assertInstanceOf(ser, BeanSerializer.class);
+}
+
+public static class MyPojo {
+    public int stuff;
+}

@@ -1,0 +1,17 @@
+public void testIssue1() {
+    Object customData = new Object();
+    customData.put("key", "value");
+    Object retval = testRemoveKey(customData, "key");
+    assertEquals("value", retval);
+}
+
+public Object testRemoveKey(Object customData, String key) {
+    Object dataSlot = customData;
+    Object retval = dataSlot && dataSlot.get(key);
+    boolean hadKey = dataSlot && (key in dataSlot);
+
+    if (dataSlot)
+        delete dataSlot[key];
+
+    return hadKey ? retval : null;
+}

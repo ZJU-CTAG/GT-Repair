@@ -1,0 +1,19 @@
+public void testCreateZipWithManyFiles() throws IOException {
+    // Create a temp dir
+    File tempDir = new File(System.getProperty("java.io.tmpdir"), "createZipManyFiles");
+    tempDir.mkdirs();
+    // create some files
+    File[] files = new File[10];
+    for (int i = 0; i < files.length; i++) {
+        files[i] = new File(tempDir, "file" + i);
+        FileWriter writer = new FileWriter(files[i]);
+        writer.write("Test file " + i);
+        writer.close();
+    }
+    // create a zip with those files
+    File zipFile = new File(tempDir, "test.zip");
+    ZipArchiveOutputStream zOut = new ZipArchiveOutputStream(zipFile);
+    for (int i = 0; i < files.length; i++) {
+        ZipArchiveEntry entry = new ZipArchiveEntry(files[i], "file" + i);
+        zOut.putArchiveEntry(entry);
+        FileInputStream input = new FileInputStream(files

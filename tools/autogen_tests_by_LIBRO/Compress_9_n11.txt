@@ -1,0 +1,14 @@
+public void testTarArchiveOutputStreamGetBytesWritten() throws Exception {
+        File f = File.createTempFile("TarOut", "Test");
+        f.deleteOnExit();
+        FileOutputStream fos = new FileOutputStream(f);
+        ArchiveOutputStream tar = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+        byte[] buf = new byte[1024];
+        for (int i = 0; i < 100; i++) {
+            tar.putArchiveEntry(new TarArchiveEntry(String.valueOf(i)));
+            tar.write(buf);
+            tar.closeArchiveEntry();
+        }
+        assertTrue("tar.getBytesWritten() < 100k", tar.getBytesWritten() >= 100 * 1024);
+        tar.close();
+    }

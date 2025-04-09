@@ -1,0 +1,14 @@
+public void testArgumentCaptorVarargs() {
+    ArgumentCaptor<String> argCaptor = ArgumentCaptor.forClass(String.class);
+    SomeService mock = mock(SomeService.class);
+    mock.doSomething("1", "2");
+    verify(mock).doSomething(argCaptor.capture(), argCaptor.capture());
+    assertEquals("1", argCaptor.getAllValues().get(0));
+    assertEquals("2", argCaptor.getAllValues().get(1));
+}
+
+public class SomeService {
+    public void doSomething(final String... strings) {
+        //do something
+    }
+}

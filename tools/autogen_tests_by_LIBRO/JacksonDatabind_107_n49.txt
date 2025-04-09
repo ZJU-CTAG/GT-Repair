@@ -1,0 +1,18 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = createObjectMapper();
+    DeserializationProblemHandler handler = new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId,
+                TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return Void.class;
+        }
+    };
+    mapper.addHandler(handler);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    ClassWithVoidType ref = mapper.readValue("[\"" + ClassWithVoidType.class.getName() + "\",{\"value\":3}]", ClassWithVoidType.class);
+    assertEquals(3, ref.value);
+}
+
+public static class ClassWithVoidType {
+    public int value;
+}

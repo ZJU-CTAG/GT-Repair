@@ -1,0 +1,6 @@
+public void test() throws JsonParseException, IOException {
+    String base64 = "YQo=";
+    JsonNode node = JsonNodeFactory.instance.textNode(base64);
+    InputStream is = new TreeTraversingParser(node).getBinaryValue(Base64Variants.MIME);
+    assertArrayEquals(new byte[] {'a', 'b'}, IOUtils.toByteArray(is));
+}

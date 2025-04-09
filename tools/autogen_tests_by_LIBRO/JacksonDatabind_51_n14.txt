@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final TypeFactory typeFactory = mapper.getTypeFactory();
+    final JavaType baseType = typeFactory.constructType(BaseType.class);
+    final JavaType subType1 = typeFactory.constructParametricType(SubType1.class, String.class);
+    final JavaType subType2 = typeFactory.constructParametricType(SubType2.class, String.class);
+    mapper.registerSubtypes(subType1, subType2);
+    mapper.setDefaultTyping(new CustomTypeResolverBuilder().init(JsonTypeInfo.Id.NAME, null)
+            .inclusion(JsonTypeInfo.As.PROPERTY).typeProperty("type"));
+
+    // this fails
+    final BaseType type = mapper.readValue("{\"type\":\"sub1\",\"field\":\"foo\"}", baseType);
+    assertEquals("foo", type.field);
+
+    // but this works
+    final SubType1 sub1 = mapper.readValue("{\"type\":\"sub1\",\"

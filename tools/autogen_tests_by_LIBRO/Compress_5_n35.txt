@@ -1,0 +1,21 @@
+public void testEndOfTruncatedZip() throws IOException {
+    final String s = "testEndOfTruncatedZip";
+    final File f = new File("target/testEndOfTruncatedZip.zip");
+    final ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+    final ZipArchiveEntry za = new ZipArchiveEntry(s);
+    zos.putNextEntry(za);
+    zos.write(s.getBytes());
+    zos.closeEntry();
+    zos.close();
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(f));
+    final String actual = IOUtils.toString(zis);
+    assertEquals(s, actual);
+    try {
+        final ZipArchiveEntry ze = zis.getNextZipEntry();
+        assertNull(ze);
+        final byte[] b = new byte[1];
+        final int read = zis.read(b);
+        assertEquals(-1, read);
+    } finally {
+        zis.close();
+    }

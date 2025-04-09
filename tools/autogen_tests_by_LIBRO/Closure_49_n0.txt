@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.compile(
+        SourceFile.fromCode("input.js", 
+            "var foo = function bar(){\n" +
+            "  var bar;\n" +
+            "  alert(bar)\n" +
+            "};\n"
+        ), 
+        options
+    );
+    assertEquals(
+        "function bar(){\n" +
+        "  var a;\n" +
+        "  alert(a)\n" +
+        "}\n" +
+        ";\n", compiler.getResult().toSource());
+}

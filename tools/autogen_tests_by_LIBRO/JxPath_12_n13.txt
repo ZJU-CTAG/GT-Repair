@@ -1,0 +1,16 @@
+public void testIssue() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+        "<schema xmlns=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:b=\"http://b\" targetNamespace=\"http://a\">" +
+        "<complexType name=\"CT\">" +
+        "<sequence>" +
+        "<element name=\"E1\" type=\"b:CT\"/>" +
+        "</sequence>" +
+        "</complexType>" +
+        "</schema>";
+    try {
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+        DOMNodePointer pointer = new DOMNodePointer(null, doc.getDocumentElement());
+        pointer.getChild("E1", pointer.getNamespaceResolver());

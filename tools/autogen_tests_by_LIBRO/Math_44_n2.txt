@@ -1,0 +1,26 @@
+public void testIssue109() {
+    BasicEventGenerator eventGenerator = new BasicEventGenerator();
+    BasicEventGenerator eventGenerator2 = new BasicEventGenerator();
+    eventGenerator.getEvents().add(new Event() {
+        @Override
+        public double evaluate(Simulation simulation, Person person) {
+            return 0;
+        }
+    });
+    eventGenerator2.getEvents().add(new Event() {
+        @Override
+        public double evaluate(Simulation simulation, Person person) {
+            return 0;
+        }
+    });
+    eventGenerator2.setWaitingTime(0);
+    eventGenerator.setWaitingTime(0);
+    Simulation s = new Simulation();
+    s.getEventGenerators().add(eventGenerator);
+    s.getEventGenerators().add(eventGenerator2);
+    int runs = 10000;
+    for (int i = 0; i < runs; i++) {
+        s.nextStep();
+    }
+    assertEquals(runs * 2, s.getEvents().size());
+}

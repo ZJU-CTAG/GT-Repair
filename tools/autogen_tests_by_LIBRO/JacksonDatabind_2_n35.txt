@@ -1,0 +1,12 @@
+public void testSerializeToTree () throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ListAttribute tree = new ListAttribute();
+    tree.setItemJsonKey("test");
+    List<String> items = new ArrayList<String>();
+    items.add("one");
+    items.add("two");
+    tree.setItems(items);
+    String json = mapper.writeValueAsString(tree);
+    ObjectNode node = (ObjectNode) mapper.readTree(json);
+    System.out.println(node.get("items").getClass().getName());
+}

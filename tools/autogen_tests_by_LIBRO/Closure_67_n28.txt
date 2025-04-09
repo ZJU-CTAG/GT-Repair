@@ -1,0 +1,23 @@
+public void test() {
+    String input = "function A() {\n"+
+            "this._x = 1;\n"+
+            "}\n"+
+            "\n"+
+            "A.prototype['func1'] = // done to save public reference to func1\n"+
+            "A.prototype.func1 = function() {\n"+
+            " this._x = 2;\n"+
+            " this.func2();\n"+
+            "}\n"+
+            "\n"+
+            "A.prototype.func2 = function() {\n"+
+            " this._x = 3;\n"+
+            " this.func3();\n"+
+            "}\n"+
+            "\n"+
+            "window['A'] = A;";
+    CompilerOptions options = new CompilerOptions();
+    options.manageClosureDependencies = true;
+    options.closurePass = true;
+    options.dependencyOptions.manageClosureDependencies = true;
+    options.dependencyOptions.sortDependencies = true;
+    options.depend

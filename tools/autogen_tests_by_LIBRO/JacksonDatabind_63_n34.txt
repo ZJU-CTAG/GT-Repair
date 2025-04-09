@@ -1,0 +1,9 @@
+public void testReferenceChainTest() throws IOException {
+    JsonMappingException jsonMappingException = expectThrows(JsonMappingException.class, () -> {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.readValue(objectMapper.writeValueAsBytes(new ReferenceChainTest.Outer()), ReferenceChainTest.Outer.class);
+    });
+    JsonMappingException.Reference reference = jsonMappingException.getPath().get(0);
+    assertEquals("com.fasterxml.jackson.databind.exc.MismatchedInputException: ReferenceChainTest$Outer[\"inner\"]", jsonMappingException.getMessage());
+    assertEquals("ReferenceChainTest$Outer[\"inner\"]", reference.toString());
+}

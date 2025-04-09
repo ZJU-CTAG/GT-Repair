@@ -1,0 +1,22 @@
+public void testParseFullyGrowable() throws Exception {
+    final byte[] doc = "{\"text\":\"test\"}".getBytes("UTF-8");
+    final int bufferSize = 4;
+    final int blockSize = 8;
+    final int growth = 2;
+    final JsonFactory factory = new JsonFactory() {
+        @Override
+        protected IOContext _createContext(Object srcRef, boolean resourceManaged) {
+            return new IOContext(_getBufferRecycler(), srcRef, resourceManaged) {
+                @Override
+                protected byte[] allocReadIOBuffer(int minSize) {
+                    byte[] result = super.allocReadIOBuffer(minSize);
+                    if (result.length > blockSize) {
+                        return new byte[Math.min(bufferSize, result.length)];
+                    }
+                    return result;
+                }
+                @Override
+                protected byte[] allocWriteEncodingBuffer(int minSize) {
+                    byte[] result = super.allocWriteEncodingBuffer(minSize);
+                    if (result.length > blockSize) {
+                        return new byte[Math.min(bufferSize

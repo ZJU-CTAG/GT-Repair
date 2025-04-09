@@ -1,0 +1,12 @@
+public void testIssue107() {
+    SummaryStatistics stats = new SummaryStatistics();
+    stats.setVarianceImpl(new Variance(false)); //use "population variance"
+    stats.addValue(1);
+    stats.addValue(2);
+    stats.addValue(3);
+    stats.addValue(4);
+    double sd = stats.getStandardDeviation();
+    assertEquals(1.118033988749895, sd, 1e-15);
+    double sd2 = FastMath.sqrt(stats.getSecondMoment() / stats.getN());
+    assertEquals(sd, sd2, 1e-15);
+}

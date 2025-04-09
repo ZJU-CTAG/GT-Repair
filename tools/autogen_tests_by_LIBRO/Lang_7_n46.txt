@@ -1,0 +1,20 @@
+public void testCreateNumberLeadingDashes() {
+    assertNull(NumberUtils.createNumber("--0"));
+    assertNull(NumberUtils.createNumber("--9223372036854775808"));
+    assertEquals(Long.valueOf(-9223372036854775808L), NumberUtils.createNumber("-9223372036854775808"));
+
+    try {
+        NumberUtils.createBigDecimal("--0");
+        fail();
+    } catch (NumberFormatException ex) {
+        // expected
+    }
+    try {
+        NumberUtils.createBigDecimal("--9223372036854775808");
+        fail();
+    } catch (NumberFormatException ex) {
+        // expected
+    }
+    assertEquals(new BigDecimal("-9223372036854775808"), NumberUtils.createBigDecimal("-9223372036854775808"));
+
+}

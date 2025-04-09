@@ -1,0 +1,12 @@
+public void testHelpFormatter() {
+    HelpFormatter helpFormatter = new HelpFormatter();
+    helpFormatter.setArgName("arg1");
+    Options options = new Options();
+    options.addOption("f", "foo", true, "Foo help");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    helpFormatter.printHelp(pw, 100, "test", "test", options, 2, 2, "test", true);
+    pw.flush();
+    String help = baos.toString();
+    assertTrue("Help formatter default name not used", help.indexOf("[arg1]") >= 0);
+}

@@ -1,0 +1,20 @@
+public void testCountAttributeNode() throws JaxenException, ParserConfigurationException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    org.w3c.dom.Document doc = builder.newDocument();
+    org.w3c.dom.Element a = doc.createElementNS("", "a");
+    doc.appendChild(a);
+    a.setAttributeNS("", "a", "1");
+    a.setAttributeNS("", "b", "2");
+    a.setAttributeNS("", "x", "3");
+    a.setAttributeNS("", "y", "4");
+    a.setAttributeNS("", "z", "5");
+
+    DOMXPath xpath = new DOMXPath("count(//attribute::*)");
+    Log log = new Log();
+    xpath.setXPathFunctionResolver(log);
+    Double result = (Double) xpath.evaluate(doc);
+
+    assertEquals(5, result.intValue());
+    assertEquals(0

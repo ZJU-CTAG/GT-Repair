@@ -1,0 +1,14 @@
+public void testIssue110() throws IOException {
+    final Reader in = new StringReader(
+            "A,B,C,,\n" +
+            "a,b,c,d,e\n"
+    );
+    CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+    for (CSVRecord record : parser) {
+        assertEquals("a", record.get(0));
+        assertEquals("b", record.get(1));
+        assertEquals("c", record.get(2));
+        assertEquals("d", record.get(3));
+        assertEquals("e", record.get(4));
+    }
+}

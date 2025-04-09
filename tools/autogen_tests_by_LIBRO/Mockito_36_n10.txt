@@ -1,0 +1,17 @@
+public void testIssue109() {
+    org.junit.rules.RuleChain chain = org.junit.rules.RuleChain.outerRule(new MockitoRule(this)).around(
+            new org.junit.rules.TestRule() {
+                @Override
+                public org.junit.runners.model.Statement apply(final org.junit.runners.model.Statement base,
+                        final org.junit.runners.model.Description description) {
+                    return base;
+                }
+            });
+    chain.apply(new org.junit.runners.model.Statement() {
+        @Override
+        public void evaluate() throws Throwable {
+            System.out.println("OK");
+        }
+    }, org.junit.runners.model.FrameworkMethod.class.getMethod("invokeExplosively", Object.class, Object[].class),
+            new Object()).evaluate();
+}

@@ -1,0 +1,16 @@
+public void testIssue41() {
+    CMAESOptimizer optimizer = new CMAESOptimizer(1000, 10, false, 0, 0, new MersenneTwister(), false, 1e-14, 1e-14, 1e-14, 1e-14, 1e-6);
+    double[] x = optimizer.optimize(
+    new MaxEval(10000),
+    new ObjectiveFunction(new MultivariateFunction() {
+        public double value(double[] values) {
+        return values[0] * values[0];
+        }
+    }),
+    GoalType.MINIMIZE,
+    new InitialGuess(new double[] {5}),
+    new SimpleBounds(new double[] {-100}, new double[] {100})
+    ).getPoint();
+    assertTrue(x[0] >= -100);
+    assertTrue(x[0] <= 100);
+}

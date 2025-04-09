@@ -1,0 +1,22 @@
+public void testImplicitConstructorProperties() throws Exception
+{
+    final ObjectMapper mapper = objectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    final String json = mapper.writeValueAsString(new Foo("bar"));
+    assertEquals("{\"foo_prop\":\"bar\"}", json);
+    final Foo foo = mapper.readValue(json, Foo.class);
+    assertEquals("bar", foo.getFooProp());
+}
+
+static class Foo {
+    private final String fooProp;
+
+    Foo(final String fooProp) {
+        this.fooProp = fooProp;
+    }
+
+    public String getFooProp() {
+        return fooProp;
+    }
+}
+

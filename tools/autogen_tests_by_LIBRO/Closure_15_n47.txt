@@ -1,0 +1,13 @@
+public void testCompiler() {
+    String expected = "var a={b:\"c\"};function d(b){var a=a,c=a&&a[b];a&&delete a[b];return a&&b in a?c:null}console.log(d(\"b\"));console.log(\"b\" in a)";
+    String actual = compile("var a={b:\"c\"};function d(b){var a=a,c=a&&a[b];a&&delete a[b];return a&&b in a?c:null}console.log(d(\"b\"));console.log(\"b\" in a)");
+    assertEquals(expected, actual);
+}
+
+public static String compile(String input) throws IOException {
+    HttpURLConnection connection = (HttpURLConnection) new URL(
+            "http://closure-compiler.appspot.com/compile").openConnection();
+    connection.setDoOutput(true);
+    connection.setUseCaches(false);
+    connection.setRequestMethod("POST");
+    connection.setRequestProperty("Content-

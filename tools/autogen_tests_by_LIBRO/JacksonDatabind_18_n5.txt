@@ -1,0 +1,21 @@
+public void testObjectReader() {
+    String input = "[{\"id\":1, \"name\": \"A\"} 1 {}]";
+    ObjectMapper mapper = new ObjectMapper();
+    try (MappingIterator<Object> iter = mapper.reader().forType(Object.class)
+            .readValues(input)) {
+        assertTrue(iter.hasNext());
+        assertEquals(1, iter.next().get("id"));
+        assertTrue(iter.hasNext());
+        assertTrue(iter.next().get("name").equals("A"));
+        assertTrue(iter.hasNext());
+        assertTrue(iter.next() instanceof Integer);
+        assertTrue(iter.hasNext());
+        assertTrue(iter.next() instanceof Map<?,?>);
+        assertFalse(iter.hasNext());
+        assertFalse(iter.hasNext());
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        fail();
+    }
+}

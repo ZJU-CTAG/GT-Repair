@@ -1,0 +1,15 @@
+public void testIssue() {
+    String s = "<ElementA A:myAttr=\"Mytype\">\n" +
+            "    <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    SAXReader reader = new SAXReader();
+    org.dom4j.Document doc;
+    try {
+        doc = reader.read(new StringReader(s));
+        DOMNodePointer pointer = new DOMNodePointer(doc);
+        assertEquals("Mytype", pointer.getValue("/ElementA[1]/@A:myAttr"));
+    } catch (DocumentException e) {
+        e.printStackTrace();
+        fail();
+    }
+}

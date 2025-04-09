@@ -1,0 +1,19 @@
+public void testIssue116() throws IOException {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setTypeBasedOptimizationOptions(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+    options.prettyPrint = true;
+    options.skipAllCompilerPasses = true;
+    options.setCodingConvention(new ClosureCodingConvention());
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, options.errorFormat);
+    Result result =
+        new Compiler(testErrorReporter)
+            .compile(
+                new JSSourceFile[] {
+                  JSSourceFile.fromCode(
+                      "testcode", "var testvar = {}; testvar.style.writingMode = 'vertical-lr';")
+                },
+                options);
+    assertEquals(0, testErrorReporter.getErrorCount());
+}

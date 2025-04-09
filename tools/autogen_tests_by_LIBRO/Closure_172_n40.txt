@@ -1,0 +1,15 @@
+public void testIssue95() {
+    try {
+        new JsCode("function f(a) { " +
+                   "  a.prototype = '__proto'; " +
+                   "} " +
+                   "function g(a) { " +
+                   "  a.prototype = function(){}; " +
+                   "}");
+        fail();
+    } catch (JsCheckerException e) {
+        assertContains(e.getMessage(), "WARNING - assignment to property prototype of Object");
+        assertContains(e.getMessage(), "required: string");
+        assertContains(e.getMessage(), "a.prototype = function(){};");
+    }
+}

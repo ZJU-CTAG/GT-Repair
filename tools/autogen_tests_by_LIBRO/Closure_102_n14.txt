@@ -1,0 +1,18 @@
+public void testIssue108() {
+    StringWriter sw = new StringWriter();
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setLanguageVersion(Context.VERSION_1_8);
+    env.setOptimizationLevel(9);
+    env.setGeneratingSource(true);
+    env.setGenerateDebugInfo(true);
+    env.setRecordingComments(true);
+    env.setRecordingLocalJsDocComments(true);
+    env.setWarnTrailingComma(true);
+    env.setIdeMode(true);
+    env.setStrictMode(true);
+    env.setErrorReporter(new ToolErrorReporter(false));
+    Script script = (Script) Context.compileString("function name() { var arguments = Array.prototype.slice.call(arguments, 0); }", "", 1, env);
+    script.exec(Context.enter(), null);
+    ScriptNode scriptNode = script.getScriptNode();
+    IRFactory irFactory = new IRFactory(env);
+    scriptNode.compile(new NodeTransformer(), irFactory);

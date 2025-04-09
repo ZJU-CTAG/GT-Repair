@@ -1,0 +1,13 @@
+public void testIssue119() {
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(), 2);
+    UnivariateRealFunction f = new SinFunction();
+    double result = optimizer.optimize(f, GoalType.MINIMIZE, -10, 10);
+    assertEquals(0, result, 1e-14);
+    assertEquals(0, optimizer.getResult(), 1e-14);
+    
+    optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(), 2);
+    f = new SinFunction();
+    result = optimizer.optimize(f, GoalType.MAXIMIZE, -10, 10);
+    assertEquals(0, result, 1e-14);
+    assertEquals(0, optimizer.getResult(), 1e-14);
+}

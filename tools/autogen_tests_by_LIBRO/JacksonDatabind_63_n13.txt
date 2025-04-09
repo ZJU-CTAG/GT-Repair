@@ -1,0 +1,8 @@
+public void testReferenceChainTest() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    final JsonMappingException jsonMappingException = expectThrows(JsonMappingException.class, () -> {
+        ReferenceChainTest.Outer outer = objectMapper.readValue(objectMapper.writeValueAsBytes(new ReferenceChainTest.Outer()), ReferenceChainTest.Outer.class);
+    });
+
+    assertTrue(jsonMappingException.getLocalizedMessage().contains("ReferenceChainTest$Outer.inner"));
+}

@@ -1,0 +1,17 @@
+public void testIssue109() throws Exception {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(new Option("a", "a", false, "a"));
+    group.addOption(new Option("b", "b", false, "b"));
+    options.addOptionGroup(group);
+
+    String[] args = new String[]{"-a"};
+    Properties defaultOptions = new Properties();
+    defaultOptions.setProperty("b", "true");
+
+    CommandLine cmd = parser.parse(options, args, defaultOptions);
+
+    assertTrue(cmd.hasOption('a'));
+    assertTrue(cmd.hasOption('b'));
+}

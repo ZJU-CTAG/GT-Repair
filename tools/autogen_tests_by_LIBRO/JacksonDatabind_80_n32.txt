@@ -1,0 +1,14 @@
+public void testIssue123() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    TypeFactory tf = mapper.getTypeFactory();
+    SimpleType base = tf.constructSimpleType(Animal.class, new JavaType[0]);
+    SimpleType sub = tf.constructSimpleType(Cat.class, new JavaType[] { base });
+    String json = mapper.writeValueAsString(new Cat());
+    assertEquals("{\"@class\":\"com.fasterxml.jackson.datatype.jsontype.TestTypeIdResolver$Cat\"}", json);
+    Object cat = mapper.readValue(json, Cat.class);
+    json = mapper.writeValueAsString(new Animal());
+    assertEquals("{\"@class\":\"com.fasterxml.jackson.datatype.jsontype.TestTypeIdResolver$Animal\"}", json);
+    cat = mapper.readValue(json, Animal.class);
+}

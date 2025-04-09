@@ -1,0 +1,14 @@
+public void testCrossProductCancellation() {
+    checkCrossProductCancellation(1, 1e-6);
+    checkCrossProductCancellation(1, 1e-12);
+}
+
+private void checkCrossProductCancellation(double scale, double middle) {
+    Vector3D v1 = new Vector3D(scale, middle, 1);
+    Vector3D v2 = new Vector3D(scale, middle + 1, 1);
+    Vector3D reference = new Vector3D(-1, 2, 1);
+    Vector3D cross = Vector3D.crossProduct(v1, v2);
+    assertEquals(reference.getX(), cross.getX(), 1e-10);
+    assertEquals(reference.getY(), cross.getY(), 1e-10);
+    assertEquals(reference.getZ(), cross.getZ(), 1e-10);
+}

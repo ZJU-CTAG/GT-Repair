@@ -1,0 +1,13 @@
+public void testNullNonEmpty() {
+    ExclusionStrategy strat = new AnnotationExclusionStrategy();
+    Map<String, Class<?>> types = new HashMap<String, Class<?>>();
+    types.put("name", String.class);
+    types.put("age", Integer.class);
+    JsonSerializer<Object> ser = new BeanSerializerFactory.ConfigImpl().createSerializer(
+            null, TypeFactory.defaultInstance().constructSimpleType(
+                    Bean.class, null, types), null, null,
+            strat);
+    Bean b = new Bean();
+    b.age = 42;
+    assertEquals("{\"age\":42}", JSONSerializer.toJSON(b).serialize(b));
+}

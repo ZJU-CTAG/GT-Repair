@@ -1,0 +1,16 @@
+public void testConcurrentNavigableMap() {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+    map.put("one", "1");
+    map.put("two", "2");
+    
+    Bean bean = new Bean();
+    bean.map = map;
+    String json = gson.toJson(bean);
+    bean = gson.fromJson(json, Bean.class);
+    assertEquals(2, bean.map.size());
+    assertEquals("1", bean.map.get("one"));
+}
+
+class Bean {
+    ConcurrentNavigableMap<String, String> map;
+}

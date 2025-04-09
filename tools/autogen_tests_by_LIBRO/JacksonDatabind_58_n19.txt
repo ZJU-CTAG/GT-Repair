@@ -1,0 +1,30 @@
+public void testJsonIgnoreProperties() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    mapper.writeValue(baos, new MyException("some exception"));
+    MyException deserialized = mapper.readValue(baos.toByteArray(), MyException.class);
+    assertEquals("some exception", deserialized.getMessage());
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public MyException() {
+        super();
+    }
+
+    public MyException(String message) {
+        super(message);
+    }
+
+    public MyException(Throwable cause) {
+        super(cause);
+    }
+
+    public MyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

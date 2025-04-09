@@ -1,0 +1,9 @@
+public void testPointerIssue() throws Exception
+{
+    JsonPointer ptr = JsonPointer.compile("/0/0");
+    JsonNode n = MAPPER.readTree("{\"0\":{\"0\":\"foo\"}}");
+    n = n.at(ptr);
+    assertNotNull(n);
+    assertEquals(TextNode.class, n.getClass());
+    assertEquals("foo", n.asText());
+}

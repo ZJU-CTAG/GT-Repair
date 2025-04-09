@@ -1,0 +1,14 @@
+public void test_recursive_type_hierarchy_serialization() throws Exception {
+
+    final ObjectMapper mapper = new ObjectMapper();
+
+    Base base = new Base();
+
+    // Base is serialized as expected
+    assertEquals("{\"base\":1}", mapper.writeValueAsString(base));
+
+    Sub sub = new Sub();
+
+    // Sub is missing the base property and fails to deserialize
+    assertEquals("{\"base\":1,\"sub\":2}", mapper.writeValueAsString(sub));
+}

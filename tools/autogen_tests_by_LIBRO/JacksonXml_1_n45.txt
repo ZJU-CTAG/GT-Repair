@@ -1,0 +1,22 @@
+public void testInnerListDeserializationProblem() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    List<String> outerList = new ArrayList<String>();
+    outerList.add( "{\"innerList\": []}" );
+    outerList.add( "{\"innerList\": []}" );
+    outerList.add( "{\"innerList\": []}" );
+    outerList.add( "{\"innerList\": []}" );
+    outerList.add( "{\"innerList\": []}" );
+
+    String json = mapper.writeValueAsString( outerList );
+    JsonNode outerNode = mapper.readTree( json );
+
+    assertEquals( "outerNode isn't an ArrayNode", ArrayNode.class, outerNode.getClass() );
+    assertEquals( 5, outerNode.size() );
+
+    List<Outer> list = mapper.readValue( json, new TypeReference<List<Outer>>() {});
+    assertEquals( 5, list.size() );
+
+    for( Outer o : list ) {
+        assertNotNull( o );
+        assertNotNull( o

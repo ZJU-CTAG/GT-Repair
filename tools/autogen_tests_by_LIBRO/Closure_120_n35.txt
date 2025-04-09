@@ -1,0 +1,18 @@
+public void testIssue60 () {
+    String js = "var uid;function reset() {uid = Math.random();}\n" +
+            "function doStuff() {\n" +
+            "  reset();var _uid = uid;\n" +
+            "  if (uid < 0.5) {\n" +
+            "    doStuff();\n" +
+            "  }\n" +
+            "  if (_uid !== uid) {\n" +
+            "    throw 'reset() was called';\n" +
+            "  }\n" +
+            "}\n" +
+            "doStuff();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(externs, js, compilerOptions);
+    assertTrue(result.success);
+    assertEquals("function b(){a=Math.random();0.5>a&&b();a!==a&&alert(\"reset() was called\")}var a;b();", result.getOptimizedCode());
+}

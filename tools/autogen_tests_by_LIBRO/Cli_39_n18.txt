@@ -1,0 +1,7 @@
+public void testExistingFileValue() {
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    CommandLine cline = new DefaultParser().parse(options, new String[]{"-f", "./src/test/resources/issue-reproduction.txt"});
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    assertTrue(file.available() > 0);
+}

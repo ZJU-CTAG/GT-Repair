@@ -1,0 +1,14 @@
+public void testUtf16BomHandling() throws IOException {
+    // UTF-16BE BOM
+    byte[] utf16beBom = { -2, -1 };
+    // UTF-16LE BOM
+    byte[] utf16leBom = { -1, -2 };
+    // UTF-8 BOM
+    byte[] utf8Bom = { -17, -69, -65 };
+    InputStream utf16beBomStream = new ByteArrayInputStream(utf16beBom);
+    InputStream utf16leBomStream = new ByteArrayInputStream(utf16leBom);
+    InputStream utf8BomStream = new ByteArrayInputStream(utf8Bom);
+    Document doc = DataUtil.parseByteData(utf16beBomStream, "UTF-16BE", "http://n/a");
+    assertEquals("UTF-16BE", doc.outputSettings().charset().name());
+    doc = DataUtil.parseByteData(utf16leBomStream, "UTF-16LE", "http://n/a");
+    assertEqu

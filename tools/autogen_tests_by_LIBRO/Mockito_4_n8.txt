@@ -1,0 +1,20 @@
+public void testVerifyZeroInteractions() throws Exception {
+    when(mockInterface.method(anyString())).thenAnswer(new Answer() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return null;
+        }
+    });
+    try {
+        verifyZeroInteractions(mockInterface);
+    } catch (ClassCastException e) {
+        fail("Exception in test");
+    }
+}
+
+private interface TestInterface {
+    String method(String arg);
+}
+
+@Mock
+private TestInterface mockInterface;

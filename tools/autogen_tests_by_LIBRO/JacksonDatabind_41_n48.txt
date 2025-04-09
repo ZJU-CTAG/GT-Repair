@@ -1,0 +1,10 @@
+public void testIssue1079() throws Exception
+{
+    // first, with empty config, which should be fine:
+    ObjectMapper mapper = new ObjectMapper();
+    assertNotNull(mapper.getTypeFactory().constructType(String.class));
+
+    // but also with config that is missing context
+    mapper = new ObjectMapper(new ObjectMapper().getSerializationConfig());
+    assertNotNull(mapper.getTypeFactory().constructType(String.class));
+}

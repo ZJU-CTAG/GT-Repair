@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception
+{
+    final String json = "{ \"id\": null, \"name\": null, \"children\": [ { \"id\": null, \"name\": null } ] }";
+    final ObjectMapper mapper = new ObjectMapper();
+    final JsonNode node = mapper.readTree(json);
+
+    assertTrue("Id node should be null", node.get("id").isNull());
+    assertTrue("Id node of child should be null", node.get("children").get(0).get("id").isNull());
+}

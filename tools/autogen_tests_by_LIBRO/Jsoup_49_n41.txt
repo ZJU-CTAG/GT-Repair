@@ -1,0 +1,14 @@
+public void testIssue() {
+    String html = "<html><body>";
+    html += "<div id='one'><div id='one-one'></div><div id='one-two'></div><div id='one-three'></div></div>";
+    html += "</body></html>";
+    Document doc = Jsoup.parse(html);
+    Element body = doc.body();
+    Element one = body.getElementById("one");
+    Element oneOne = one.getElementById("one-one");
+    Element oneTwo = one.getElementById("one-two");
+    Element oneThree = one.getElementById("one-three");
+    List<Element> toMove = Arrays.asList(oneTwo, oneThree);
+    one.insertChildren(0, toMove);
+    String result = doc.toString().replaceAll("\\s+", "");
+    assertEquals("<html><head></head><body><divid=\"one\"><divid=\"one-two\"></div><divid=\"one-three\"></div><divid=\"one-one\"></div></

@@ -1,0 +1,21 @@
+public void testDefaultOptions() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption("f", "f", true, "toggle -f");
+    opts.addOption("z", "z", true, "toggle -z");
+
+    Properties properties = new Properties();
+    properties.setProperty( "a", "true" );
+    properties.setProperty( "c", "yes" );
+    properties.setProperty( "e", "0" );
+    properties.setProperty( "f", "false" );
+    properties.setProperty( "z", "" );
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(opts, null, properties);
+
+    assertTrue( cmd.hasOption("a") );
+    assertTrue( cmd.hasOption("c") );
+    assertTrue( cmd.hasOption("e") );

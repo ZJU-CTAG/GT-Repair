@@ -1,0 +1,17 @@
+public void testIssue109() throws IOException {
+    Map<String, Object> mapData = new HashMap<>();
+    mapData.put("longInMap", 2L);
+    mapData.put("longAsField", new Data());
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    String json = mapper.writeValueAsString(mapData);
+    System.out.println("json = " + json);
+
+    // Deserialize
+    Map deserializedData = mapper.readValue(json, Map.class);
+}
+static class Data {
+    public long key;
+}

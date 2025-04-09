@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+    try {
+        mapper.readValue("{\"name\": \"foo\", \"someField\": null}", POJOWithDate.class);
+        fail("Should have thrown exception");
+    }
+    catch (JsonMappingException e) {
+        assertTrue("Location info is included twice", e.getMessage().split(" at \\.\\[source\\]").length == 2);
+    }
+}
+
+static class POJOWithDate {
+    public String name;
+    public List<Date> someDates;
+}

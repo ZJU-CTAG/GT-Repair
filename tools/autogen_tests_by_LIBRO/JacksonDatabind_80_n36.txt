@@ -1,0 +1,17 @@
+public void testExtraneousBaseTypeIdRegistration() {
+    ObjectMapper m = new ObjectMapper();
+    m.registerSubtypes(Holder.class);
+    assertEquals("{\"base_type\":{\"value\":\"some\"}}", m.writeValueAsString(new Holder("some")));
+}
+
+static class Base {
+    public String value;
+    
+    protected Base() { }
+    public Base(String v) { value = v; }
+}
+
+static class Holder extends Base {
+    protected Holder() { }
+    public Holder(String v) { super(v); }
+}

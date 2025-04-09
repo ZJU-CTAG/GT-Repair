@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    String htmlFragment = "<HTML>\n" +
+            "<body>\n" +
+            " <div>\n" +
+            "  <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>\n" +
+            " </div>\n" +
+            "</body>\n" +
+            "</HTML>\n";
+
+    String clean = Jsoup.clean(htmlFragment, Whitelist.none());
+    assertEquals("<html>\n" +
+            " <body> \n" +
+            "  <div> \n" +
+            "   <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            " \n" +
+            "   </script> \n" +
+            "  </div>  \n" +
+            " </body>\n" +
+            "</html

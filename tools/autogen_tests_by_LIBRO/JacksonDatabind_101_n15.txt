@@ -1,0 +1,33 @@
+public void testIssue137() throws Exception {
+    // setup
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addMixIn(Bean.class, BeanMixin.class);
+
+    // run
+    Bean bean = objectMapper.readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}", Bean.class);
+
+    // test
+    assertEquals(1, bean.x);
+    assertEquals(2, bean.w.a);
+    assertEquals(3, bean.y);
+    assertEquals(4, bean.w.b);
+}
+
+public static class Bean {
+    int x;
+    int y;
+
+    @JsonUnwrapped
+    UnwrappedBean w;
+
+    public Bean(@JsonProperty("x") int x, @JsonProperty("y") int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setW(UnwrappedBean w) {
+        this.w = w;
+    }
+}
+
+public

@@ -1,0 +1,9 @@
+public void testIssue108() {
+    ArgumentCaptor<String> arg = ArgumentCaptor.forClass(String.class);
+    String[] args = new String[] { "foo", "bar" };
+    test(args);
+    verify(mock).test(arg.capture(), arg.capture(), arg.capture());
+    assertEquals("foo", arg.getAllValues().get(0));
+    assertEquals("bar", arg.getAllValues().get(1));
+    assertEquals("foo", arg.getAllValues().get(2));
+}

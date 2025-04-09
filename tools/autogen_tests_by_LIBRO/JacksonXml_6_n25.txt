@@ -1,0 +1,14 @@
+public void testWriteBinary() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    try (ToXmlGenerator generator = (ToXmlGenerator) jsonFactory.createGenerator(System.out)) {
+        generator.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+
+        generator.writeStartObject();
+        generator.writeFieldName("binary");
+        //generator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[0]), 0);
+        generator.writeBinary(Base64Variants.DEFAULT, new byte[0], 0, 0);
+        generator.writeBinary(Base64Variants.MIME, new byte[0], 0, 0);
+        generator.writeEndObject();
+        generator.flush();
+    }
+}

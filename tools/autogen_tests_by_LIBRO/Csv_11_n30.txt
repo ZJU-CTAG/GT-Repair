@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+  Reader in = new StringReader(
+    "\"\",0,0\n"
+  );
+  CsvToBean<TempObj> csv = new CsvToBean<TempObj>();
+  Map<String,String> mapping = new HashMap<String,String>();
+  mapping.put(TempObj.col1, TempObj.col1);
+  mapping.put(TempObj.col2, TempObj.col2);
+  mapping.put(TempObj.col3, TempObj.col3);
+  HeaderColumnNameTranslateMappingStrategy<TempObj> strat = new HeaderColumnNameTranslateMappingStrategy<TempObj>();
+  strat.setColumnMapping(mapping);
+  strat.setType(TempObj.class);
+  csv.setMappingStrategy(strat);
+  CsvPreference pref = new CsvPreference.Builder('"', ',', "\n").nullString("\"\"").build();
+  List<TempObj> l = csv.parse(strat, in, pref);
+  assertEquals(

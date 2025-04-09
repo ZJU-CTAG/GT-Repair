@@ -1,0 +1,17 @@
+public void testWildcardDeserialization() {
+    Gson gson = new Gson();
+
+    BigClass big = gson.fromJson(JSON, BigClass.class);
+
+    assertNotNull(big.inBig);
+    assertEquals(1, big.inBig.size());
+
+    Map.Entry<String, ? extends List<SmallClass>> entry = big.inBig.entrySet().iterator().next();
+    assertEquals("key", entry.getKey());
+
+    List<? extends SmallClass> list = entry.getValue();
+    assertEquals(1, list.size());
+
+    SmallClass small = list.get(0);
+    assertEquals("hello", small.inSmall);
+}

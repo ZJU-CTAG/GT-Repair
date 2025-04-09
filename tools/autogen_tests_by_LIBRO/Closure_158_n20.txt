@@ -1,0 +1,11 @@
+public void testJSCompiler() {
+    List<String> args = new ArrayList<String>();
+    args.add("--jscomp_error=const");
+    args.add("--jscomp_off=const");
+    CompilerOptions options = new CompilerOptions();
+    CommandLineRunner runner = new CommandLineRunner(args.toArray(new String[args.size()]));
+    runner.setLoggingLevel(Level.OFF);
+    runner.setOptionsForTesting(options);
+    runner.processArgs();
+    assertEquals(CheckLevel.OFF, options.getWarningLevel(DiagnosticGroups.CONST));
+}

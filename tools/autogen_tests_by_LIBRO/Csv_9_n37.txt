@@ -1,0 +1,16 @@
+public void testNoHeaders() {
+    String line = "Header1,Header2,Header3";
+    String[] values = line.split(",");
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVRecord record = new CSVRecord( values, format.getHeaderMap(), 0 );
+    
+    // This method throws a NullPointerExcpetion
+    Map<String, String> map = record.toMap();
+    
+    // This method works as expected
+    map = format.getHeaderMap().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> record.get(e.getValue())));
+
+    assertEquals(values[0], map.get("Header1"));
+    assertEquals(values[1], map.get("Header2"));
+    assertEquals(values[2], map.get("Header3"));
+}

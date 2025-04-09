@@ -1,0 +1,16 @@
+public void testCSVRecordWithMalformedHeader() {
+    final String csv = "1,2\r\n3,4\r\n";
+    final String[] header = new String[] { "A", "B", "C" };
+    try {
+        final Reader r = new StringReader(csv);
+        final CSVParser parser = new CSVParser(r, CSVFormat.newBuilder()
+                .withHeader(header)
+                .withAllowMissingColumnNames(false)
+                .build());
+        for (final CSVRecord record : parser) {
+            System.out.println(record);
+        }
+    } catch (final Exception e) {
+        System.err.println(e.getMessage());
+    }
+}

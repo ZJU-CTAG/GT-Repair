@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Option optA = OptionBuilder.withLongOpt("a").create("a");
+    Options options = new Options();
+    options.addOption(optA);
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmdLine = null;
+    try {
+        cmdLine = parser.parse(options, "-z -a foo".split(" "));
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+    assertEquals("-z -a foo", cmdLine.getArgList().get(0));
+}

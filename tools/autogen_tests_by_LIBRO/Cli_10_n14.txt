@@ -1,0 +1,17 @@
+public void test_missingOption() throws ParseException {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+    opts.addOption(OptionBuilder.isRequired().create('f'));
+
+    // first call is ok
+    Parser parser = new GnuParser();
+    CommandLine firstCL = parser.parse(opts, new String[] { "-v", "-f" });
+    assertEquals(true, firstCL.hasOption('v'));
+    assertEquals(true, firstCL.hasOption('f'));
+
+    // second call is missing option
+    CommandLine secondCL = parser.parse(opts, new String[] { "-v" });
+
+    assertEquals(true, secondCL.hasOption('v'));
+    assertEquals(false, secondCL.hasOption('f'));
+}

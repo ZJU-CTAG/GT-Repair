@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0", false);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("/p/test.js", "/** @define {string} */ test.VERSION = '';"),
+            SourceFile.fromCode("/p/test2.js", "alert(test.VERSION);"),
+            options);
+    assertTrue(result.success);
+    assertEquals("alert(\"1.0.0\");\n", compiler.toSource());
+}

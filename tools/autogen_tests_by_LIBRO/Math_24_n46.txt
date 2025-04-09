@@ -1,0 +1,18 @@
+public void testBrentOptimizer() {
+    final int n = 1000;
+    final double[] x = new double[n];
+    final double[] y = new double[n];
+    for (int i = 0; i < n; i++) {
+        x[i] = 0.01 * i;
+        y[i] = 5 * x[i] * x[i] * x[i] - 6 * x[i] * x[i] + 7 * x[i] - 8;
+    }
+    UnivariateRealFunction func = new UnivariateRealFunction() {
+        public double value(double x) {
+            return 5 * x * x * x - 6 * x * x + 7 * x - 8;
+        }
+    };
+    UnivariateRealPointValuePair result =
+            new BrentOptimizer(1e-10, 1e-10).optimize(func, GoalType.MINIMIZE, 0, 1);
+    System.out.println("result = " + result);
+    assertEquals(0.2, result.getPoint(), 1e-8);
+    assertEquals(-

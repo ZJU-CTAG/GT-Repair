@@ -1,0 +1,16 @@
+public void testBreakInFinally () {
+    String js = "b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")";
+
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+
+    try {
+        System.out.println("Running " + js);
+        engine.eval(js);
+        fail("Exception should have been thrown");
+    } catch (ScriptException e) {
+        System.out.println("Exception expected: " + e);
+    } catch (Exception e) {
+        fail("Exception was " + e);
+    }
+}

@@ -1,0 +1,11 @@
+public void testRequiredOption() throws ParseException {
+    final Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+
+    final GnuParser parser = new GnuParser();
+    CommandLine firstCL = parser.parse(opts, new String[] { "-v" });
+    assertTrue(firstCL.hasOption('v'));
+
+    CommandLine secondCL = parser.parse(opts, new String[] {});
+    assertFalse(secondCL.hasOption('v'));
+}

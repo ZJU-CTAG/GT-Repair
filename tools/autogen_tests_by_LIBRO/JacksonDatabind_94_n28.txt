@@ -1,0 +1,19 @@
+public void testIssue_c3p0_1() throws Exception {
+    String json = aposToQuotes("{'@type':'c3p0.jdbc3.Jdbc3PooledConnectionPool'}");
+    try {
+        objectMapper.readValue(json, Object.class);
+    } catch (Throwable t) {
+        verifyException(t, "would try to create an instance");
+        verifyException(t, "Unrecognized");
+    }
+}
+
+public void testIssue_c3p0_2() throws Exception {
+    String json = aposToQuotes("{'@type':'c3p0.jdbc.JdbcIdentityTokenResConfig'}");
+    try {
+        objectMapper.readValue(json, Object.class);
+    } catch (Throwable t) {
+        verifyException(t, "would try to create an instance");
+        verifyException(t, "Unrecognized");
+    }
+}

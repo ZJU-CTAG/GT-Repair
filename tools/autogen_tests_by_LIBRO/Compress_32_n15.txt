@@ -1,0 +1,14 @@
+public void testTarArchiveInputStream() throws Exception {
+    FileInputStream fin = new FileInputStream("src/test/data/issue107.tar");
+    try {
+        TarArchiveInputStream tin = new TarArchiveInputStream(fin);
+        try {
+            TarArchiveEntry entry = tin.getNextTarEntry();
+            assertEquals(4294967294L, entry.getUserId());
+        } finally {
+            tin.close();
+        }
+    } finally {
+        fin.close();
+    }
+}

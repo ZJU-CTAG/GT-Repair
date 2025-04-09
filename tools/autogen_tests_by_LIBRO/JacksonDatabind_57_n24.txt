@@ -1,0 +1,20 @@
+public void testReadValues() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectReader reader = mapper.readerFor(int[].class);
+    final int[] value = { 1, 2, 3, 4, 5 };
+    final String json = reader.writeValueAsString(value);
+    final JsonParser parser = mapper.getFactory().createParser(json);
+    final JsonToken currentToken = parser.nextToken();
+    if (currentToken == JsonToken.START_ARRAY) {
+        final JsonToken nextToken = parser.nextToken();
+        if (nextToken == JsonToken.VALUE_NUMBER_INT) {
+            final int[] next = reader.readValues(parser).readAll().get(0);
+            assertEquals(2, next.length);
+            assertEquals(2, next[0]);
+            assertEquals(3, next[1]);
+        } else {
+            fail("Expected VALUE_NUMBER_INT, got " + nextToken);
+        }
+    } else {
+        fail("Expected START_AR

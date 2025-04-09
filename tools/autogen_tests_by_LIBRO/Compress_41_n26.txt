@@ -1,0 +1,15 @@
+public void testInvalidEntry() {
+    final String fileName = getClass().getResource("/test.zip").getFile();
+    InputStream is = null;
+    ZipArchiveInputStream zis = null;
+    try {
+        is = new FileInputStream(fileName);
+        zis = new ZipArchiveInputStream(is);
+        assertNotNull(zis.getNextZipEntry());
+    } catch (IOException e) {
+        fail("Unexpected IOException");
+    } finally {
+        IOUtils.closeQuietly(is);
+        IOUtils.closeQuietly(zis);
+    }
+}

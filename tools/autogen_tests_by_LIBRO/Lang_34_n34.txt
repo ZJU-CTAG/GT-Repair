@@ -1,0 +1,29 @@
+public void testToStringStyleThreadLocal() throws Exception {
+    final URL url = getClass().getClassLoader().getResource("org/apache/commons/lang3/builder/ToStringStyle.class");
+    final URLClassLoader urlClassloader = new URLClassLoader(new URL[]{url.toURI().resolve("../../../../").toURL()});
+    final Thread thread = new Thread() {
+        @Override
+        public void run() {
+            try {
+                urlClassloader.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    thread.start();
+    thread.join();
+    urlClassloader.close();
+    System.gc();
+    System.gc();
+    System.gc();
+    System.gc();
+    System.gc();
+    System.gc();
+    System.gc();
+    assertEquals(1, getReferenceCount(thread));
+}
+
+
+private int getReferenceCount(Thread thread) throws Exception {
+    Field thread

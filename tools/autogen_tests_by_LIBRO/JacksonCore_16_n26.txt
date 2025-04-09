@@ -1,0 +1,18 @@
+public void testIssueJsonParserSequence() throws IOException {
+    JsonFactory factory = new JsonFactory();
+
+    JsonParser parser1 = factory.createParser("{\"name\":\"John\"}");
+    JsonParser parser2 = factory.createParser("{\"lastname\":\"Doe\"}");
+
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(parser1, parser2);
+
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals("name", sequence.getCurrentName());
+    assertEquals(JsonToken.VALUE_STRING, sequence.nextToken());
+    assertEquals("John", sequence.getText());
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals("lastname", sequence.getCurrent

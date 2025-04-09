@@ -1,0 +1,24 @@
+public void testNullAdapter() {
+    final TypeAdapter<String> adapter = new TypeAdapter<String>() {
+        @Override
+        public void write(final JsonWriter out, final String value) throws IOException {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        @Override
+        public String read(final JsonReader in) throws IOException {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    };
+    final GsonBuilder builder = new GsonBuilder().registerTypeAdapterFactory(new TypeAdapterFactory() {
+        @Override
+        public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> type) {
+            if (type.getRawType() == String.class) {
+                return (TypeAdapter<T>) adapter;
+            }
+            return null;
+        }
+    });
+    final Gson gson = builder.create();
+    final String json = gson.toJson(new Object());
+    assertEquals("{}", json);
+    final Object object = gson.fromJson("{}",

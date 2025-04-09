@@ -1,0 +1,21 @@
+public void testExternalTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    // alternatively: mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    PolymorphicTypeMap<Object> map = new PolymorphicTypeMap<Object>()
+    {{
+        put("bar", Bar.class);
+        put("foo", Foo.class);
+    }};
+
+    mapper.setPolymorphicTypeMap(map);
+
+    String json = "{\"@class\":\"bar\",\"id\":0,\"name\":\"Joe\"}";
+    Bar foo = mapper.readValue(json, Bar.class);
+
+    assertNotNull(foo);
+    assertEquals("Joe", foo.name);
+}

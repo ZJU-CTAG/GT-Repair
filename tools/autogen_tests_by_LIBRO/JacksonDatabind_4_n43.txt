@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    String json = "{\"name\": \"abc\", \"dates\": [\"a\", \"b\", \"c\"]}";
+    try {
+        objectMapper.readValue(json, POJO.class);
+        fail("Should have failed");
+    } catch (JsonMappingException e) {
+        assertEquals(InvalidFormatException.class, e.getCause().getClass());
+        InvalidFormatException cause = (InvalidFormatException)e.getCause();
+        assertEquals(0, cause.getIndex());
+    }
+}

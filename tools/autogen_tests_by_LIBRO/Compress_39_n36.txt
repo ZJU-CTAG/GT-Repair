@@ -1,0 +1,13 @@
+public void testIssue106() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(baos);
+    zos.putNextEntry(new ZipEntry("test"));
+    zos.close();
+    baos.close();
+
+    byte[] data = baos.toByteArray();
+
+    ZipInputStream zin = new ZipInputStream(new ByteArrayInputStream(data));
+    zin.getNextEntry();
+    zin.close();
+}

@@ -1,0 +1,16 @@
+public void testAddSingletonGetter() {
+    String code = "goog.provide('foo');" +
+            "var foo = function() { this.values = []; };" +
+            "goog.addSingletonGetter(foo);" +
+            "foo.prototype.add = function(value) {this.values.push(value)};";
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setManageClosureDependencies(true);
+    options.setExternExports(true);
+    options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT, CheckLevel.OFF);
+    Compiler compiler

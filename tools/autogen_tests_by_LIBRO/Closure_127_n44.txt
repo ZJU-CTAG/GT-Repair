@@ -1,0 +1,11 @@
+public void testFinallyBreak() throws Exception {
+    Context cx = Context.enter();
+    try {
+        cx.setOptimizationLevel(-1);
+        Script script = cx.compileString("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')", "test.js", 1, null);
+        script.exec(cx, cx.initStandardObjects());
+        fail("Should never reach this point");
+    } finally {
+        Context.exit();
+    }
+}

@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"field\":\"2010-01-01 01:01:01\"}", SimpleBean.class);
+        fail("Should have failed");
+    } catch (JsonMappingException e) {
+        assertEquals(1, e.getMessage().split("\n").length);
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    String entryName = "README";
+    TarArchiveEntry entry = new TarArchiveEntry(entryName);
+    entry.setUserId(62410554);
+    entry.setUserName("user name");
+    File file = File.createTempFile("commons-compress-test", ".tar");
+    file.deleteOnExit();
+    try (OutputStream os = new FileOutputStream(file);
+         ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, os)) {
+        aos.putArchiveEntry(entry);
+        aos.write(0);
+        aos.closeArchiveEntry();
+    }
+    try (InputStream is = new FileInputStream(file);
+         ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.TAR, is)) {
+        TarArchiveEntry e = (TarArchiveEntry) ais.getNextEntry();
+        assertEquals(entryName, e.getName());
+        assertEquals(62410554

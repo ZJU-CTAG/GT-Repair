@@ -1,0 +1,14 @@
+public void testModelObjects() {
+	ObjectMapper mapper = new ObjectMapper();
+	mapper.disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+	mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+	mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+	mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+	mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+	mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+	mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+	mapper.registerModule(new SimpleModule() {
+		@Override
+		public void setupModule(SetupContext context) {
+			super

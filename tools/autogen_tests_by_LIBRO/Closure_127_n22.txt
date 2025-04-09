@@ -1,0 +1,9 @@
+public void testIssue108() {
+    Context context = Context.enter();
+    try {
+        ScriptableObject scope = context.initStandardObjects();
+        context.evaluateString(scope, "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')", "test.js", 1, null);
+    } finally {
+        Context.exit();
+    }
+}

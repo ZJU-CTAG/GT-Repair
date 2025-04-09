@@ -1,0 +1,26 @@
+public void testCsvFormatNullStringShouldNotBeEscaped() throws Exception {
+    CsvFormat format = new CsvFormat();
+    format.setDelimiter(';');
+    format.setQuote('"');
+    format.setQuoteMode(QuoteMode.ALL);
+    format.setNullString("\\N");
+    format.setQuoteEscape('\\');
+    format.setCommentStart("#");
+
+    StringWriter sw = new StringWriter();
+    ICsvListWriter listWriter = new CsvListWriter(sw, format);
+
+    List<String> list = new ArrayList<String>();
+    list.add("\\N");
+    list.add("\"");
+    list.add("\\");
+    list.add("#");
+    list.add("\\N");
+    list.add("#");
+
+    listWriter.write(list);
+    listWriter.close();
+
+    String expected = "\"\\\\N\";\"\\\"\";\"\\\\\";\"#\";\"\\\\N\";\"#\"\n";
+    assertEquals(expected, sw.toString());
+}

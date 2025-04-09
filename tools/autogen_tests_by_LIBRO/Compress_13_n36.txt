@@ -1,0 +1,15 @@
+public void testWinZipDirectory() throws Exception {
+    File file = File.createTempFile("commons-compress-issue-107-", ".zip");
+    file.deleteOnExit();
+
+    FileUtils.copyURLToFile(getClass().getResource("/issue-107.zip"), file);
+
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ArchiveInputStream zipInputStream = factory.createArchiveInputStream("zip", new FileInputStream(file));
+    ArchiveEntry entry;
+    while ((entry = zipInputStream.getNextEntry()) != null) {
+        System.out.println(entry.getName());
+        assertEquals(entry.getName(), entry.getName().replace('\\', '/'));
+    }
+    zipInputStream.close();
+}

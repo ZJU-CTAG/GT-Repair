@@ -1,0 +1,28 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    String json = mapper.writeValueAsString(new Definition());
+    System.out.println(json);
+    Definition de = mapper.readValue(json, Definition.class);
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Definition {
+
+    public List<Record> records = new ArrayList<>();
+
+    public Definition() {
+        records.add(new Record());
+        records.add(new Record());
+    }
+}
+
+public class Record {
+
+    public List<Field> fields = new ArrayList<>();
+}
+
+public class Field {
+
+    public String name = "field";
+}

@@ -1,0 +1,26 @@
+public void testHighWeightCount() {
+    int n = 40000;
+    Weight[] weights = new Weight[n];
+    for (int i = 0; i < n; i++) {
+        weights[i] = new Weight(1);
+    }
+    // This will throw OutOfMemoryError with n = 40000;
+    MultivariateVectorFunction mvf = new MultivariateVectorFunction() {
+        public double[] value(double[] point) throws IllegalArgumentException {
+            return point;
+        }
+    };
+    MultivariateVectorialOptimizer optimizer = new MultivariateVectorialOptimizer() {
+        public Optimum optimize(OptimizationData... optData)
+                throws TooManyEvaluationsException, DimensionMismatchException,
+                NullArgumentException {
+            return null;
+        }
+        public int getEvaluations() {
+            return 0;
+        }
+        public ConvergenceChecker<PointVectorValuePair> getConvergenceChecker() {
+            return null;
+        }
+    };
+    optimizer.optimize(new MaxEval(Integer.MAX_VALUE

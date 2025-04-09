@@ -1,0 +1,9 @@
+public void test() {
+    final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    Foo foo = Mockito.mock(Foo.class);
+    foo.bar("first", "second", "third");
+    Mockito.verify(foo).bar(captor.capture(), captor.capture(), captor.capture());
+    assertEquals("first", captor.getAllValues().get(0));
+    assertEquals("second", captor.getAllValues().get(1));
+    assertEquals("third", captor.getAllValues().get(2));
+}

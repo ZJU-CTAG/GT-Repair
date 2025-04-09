@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    File file = new File("target/testIssue.zip");
+    if (file.exists()) {
+        file.delete();
+    }
+    ArchiveOutputStream out = new ArchiveStreamFactory().createArchiveOutputStream("zip", new FileOutputStream(file));
+    ((ZipArchiveOutputStream) out).setUseZip64(Zip64Mode.AsNeeded);
+    out.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    out.write("hello".getBytes("UTF-8"));
+    out.closeArchiveEntry();
+    out.finish();
+    
+    out.close();
+    
+    out = new ArchiveStreamFactory().createArchiveOutputStream("zip", new FileOutputStream(file));
+    ((ZipArchiveOutputStream) out).setUseZip64(Zip64Mode.AsNeeded);
+    out.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    out.write("hello".getBytes("UTF-8"));
+    out.closeArchiveEntry();
+    out.finish();
+    

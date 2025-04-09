@@ -1,0 +1,13 @@
+public void testConsoleLog() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        CompilerOptions.builder()
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT5)
+            .build(),
+        "console.log([console.log('hello, '), 'world!'][1]);");
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals(TypeValidator.TYPE_MISMATCH_WARNING, result.errors[0].getType());
+}

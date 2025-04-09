@@ -1,0 +1,18 @@
+public void testSequence() throws IOException {
+    String s = "{ \"key\" : \"value\" }";
+
+    JsonParser parser1 = createParserUsingReader(s);
+    JsonParser parser2 = createParserUsingReader("\"anotherValue\"");
+
+    JsonParser parser = JsonParserSequence.createFlattened(parser1, parser2);
+
+    assertToken(JsonToken.START_OBJECT, parser.nextToken());
+    assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+    assertToken(JsonToken.VALUE_STRING, parser.nextToken());
+    assertToken(JsonToken.END_OBJECT, parser.nextToken());
+
+    assertToken(JsonToken.VALUE_STRING, parser.nextToken());
+    assertNull(parser.nextToken());
+
+    parser.close();
+}

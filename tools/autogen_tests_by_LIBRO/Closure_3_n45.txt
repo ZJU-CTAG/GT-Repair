@@ -1,0 +1,23 @@
+public void testIssue114() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("testcode", "function getStack() {" +
+            "  var getErrorObject = function() {" +
+            "    try {" +
+            "      throw Error(\"\");" +
+            "    } catch(err) {" +
+            "      return err;" +
+            "    }" +
+            "  };" +
+            "  return getErrorObject().stack;" +
+            "}" +
+            "window['getStackTrace']=getStack;"
+    ));
+    Result result = com.google.javascript.jscomp.Compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+    assertEquals(
+        "function getStack() {" +
+            "  try {" +
+            "   

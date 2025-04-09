@@ -1,0 +1,14 @@
+public void testErrorWithBoundaries() {
+    // The following test fails
+    final int dim = 2;
+    final double[] startPoint = { 1, 0 };
+    final double[][] boundaries = { { 0, 0 }, { 2, 1 } };
+    final SimpleBounds bounds = new SimpleBounds(boundaries);
+    final BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 2);
+    optim.optimize(100000, new MaxEval(100000),
+                   new MultiDimensionalScalarFunction() {
+                       public double value(double[] x) {
+                           return x[0] + x[1];
+                       }
+                   }, GoalType.MINIMIZE, startPoint, bounds);
+}

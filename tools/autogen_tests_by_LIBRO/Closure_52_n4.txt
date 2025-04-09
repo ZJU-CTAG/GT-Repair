@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String s = "var lit = {\"0102\":\"Zero One Zero Two\"}; alert(lit[\"0102\"]);";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(s), new ErrorReporter() {
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException(message + "[" + line + "," + lineOffset + "]");
+        }
+
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException(message + "[" + line + "," + lineOffset + "]");
+        }
+    });
+    StringWriter sw = new StringWriter();
+    compressor.compress(sw, -1, true, false, false, false);
+    assertEquals("var lit={\"0102\":\"Zero One Zero Two\"};alert(lit[\"0102\"]);", sw.toString());
+}

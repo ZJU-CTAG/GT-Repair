@@ -1,0 +1,13 @@
+public void testReplacement() {
+    String input = "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+            "  return (function (saved) {\n" +
+            "    return modifiesProp(obj) + saved;\n" +
+            "  })(obj[\"prop\"]);\n" +
+            "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(SourceFile.fromCode("window.js", ""), SourceFile.fromCode("input.js", input), options);
+    // If this assert fails, then the compiled code will do the wrong thing.
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", compiler.toSource());
+}

@@ -1,0 +1,15 @@
+public void testIssue144() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    String code = "var NS = { " +
+            "read : function() { return this.foo; }, " +
+            "write : function() { this.foo = 123; } };" +
+            "NS.write2 = function() { this.foo = 123; };";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, code, options);
+    assertTrue(result.success);
+    assertEquals(0, compiler.getErrors().length);
+    JSError[] warnings = compiler.getWarnings();
+    assertEquals(1, warnings.length);
+}

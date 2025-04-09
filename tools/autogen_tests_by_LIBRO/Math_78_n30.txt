@@ -1,0 +1,26 @@
+public void testIssue108() throws IOException {
+
+        String baseDir = getClass().getResource("issue108").getPath();
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("BASE_DIR", baseDir);
+        map.put("PROCESS", "switch");
+
+        // Generate the BPEL process and deploy it
+        ODEBPELProcessDeployer deployer = new ODEBPELProcessDeployer();
+        deployer.deploy(map);
+
+        // Prepare the message
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new File(baseDir + "/message.xml"));
+
+        // Invoke the process and get the response
+        ODEInvoker invoker = new ODEInvoker();
+        invoker.invoke(map, doc);
+        Document response = invoker.getResponse();
+
+        // Check the response
+        assertNotNull("Response is null", response);
+        XMLUtil.printDOM(response, System.out);
+    }

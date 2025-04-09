@@ -1,0 +1,32 @@
+public void testIssue108() throws IOException {
+    DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, Locale.ITALY);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(dateFormat);
+    mapper.addMixInAnnotations(Event.class, EventMixin.class);
+    Event event = new Event();
+    event.setDate(new Date());
+
+    String actual = mapper.writeValueAsString(event);
+    assertNotNull(actual);
+    assertFalse(actual, actual.contains("dateFormat"));
+}
+
+public static class Event {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+}
+
+@JsonSerialize(using = EventSerializer.class)
+public interface EventMixin {
+}
+
+public static class Event

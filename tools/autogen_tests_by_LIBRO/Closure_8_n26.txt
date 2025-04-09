@@ -1,0 +1,17 @@
+public void testClosureCompiler() {
+    String source = "function(argument){\n"
+            + "...//use argument\n"
+            + "var variable = ...;\n"
+            + "...//argument not used anymore\n"
+            + "}";
+    Compiler compiler = new Compiler(System.err);
+    Result result = compiler.compile(
+            new JSSourceFile[]{new JSSourceFile("input.js", source)},
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("function(a){\n"
+            + "...\n"
+            + "var a=...;\n"
+            + "...\n"
+            + "}\n", result.compiledSource);
+}

@@ -1,0 +1,19 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckGlobalThisLevel(CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.OFF);
+
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("externs", "var window = {};\n"
+        + "var console = {};\n"
+        + "console.log = function() {};\n"
+        + "/** @constructor */\n"
+        + "var ns = {};\n"
+        + "/** @constructor */\n"
+        + "ns.Thing = function() {};\n"),
+        SourceFile.fromCode("test",
+            "/**\n"
+            + " * @param

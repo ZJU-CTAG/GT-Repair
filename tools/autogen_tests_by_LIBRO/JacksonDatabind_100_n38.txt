@@ -1,0 +1,12 @@
+public void testIssue107() {
+    String json = "{\"b64\":\"AHNybw==\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    Base64Variant variant = new Base64Variant(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+_",
+            true, '=', 76);
+    mapper.setBase64Variant(variant);
+    JsonNode node = mapper.readTree(json);
+    byte[] bytes = node.get("b64").binaryValue();
+    assertEquals("srp", new String(bytes));
+}

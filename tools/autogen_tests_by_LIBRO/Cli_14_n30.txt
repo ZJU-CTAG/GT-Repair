@@ -1,0 +1,18 @@
+public void testIssue109() {
+    ArgumentBuilder ab = new ArgumentBuilder();
+    ab.withName("file-name")
+      .withValidator(FileValidator.getExistingFileInstance());
+    DefaultOptionBuilder ob = new DefaultOptionBuilder();
+    ob.withShortName("f")
+      .withLongName("file-name")
+      .withRequired(true)
+      .withDescription("name of an existing file")
+      .withArgument(ab.create());
+    GroupBuilder gb = new GroupBuilder();
+    gb.withName("options")
+      .withOption(ob.create());
+    Parser parser = new Parser();
+    parser.setHelpTrigger("--help");
+    parser.setGroup(gb.create());
+    CommandLine cl = parser.parseAndHelp(new String[] {"--file-name", "./src/test/java/org/apache/commons/cli2/issues/CLI2Sample.java"});
+}

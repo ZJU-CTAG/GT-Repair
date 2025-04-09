@@ -1,0 +1,32 @@
+public void testRequiredOptions() throws Exception {
+    final Argument arg1 = new Argument("h");
+    final Argument arg2 = new Argument("c", new StringParser(),
+                                       ArgumentPolicy.REQUIRED);
+
+    final ArgumentList arguments = new ArgumentList();
+    arguments.add(arg1);
+    arguments.add(arg2);
+
+    final Option opt1 = new Option("h", "help", new HelpParser());
+    final Option opt2 = new Option("c", "config", arg2);
+
+    final OptionGroup options = new OptionGroup();
+    options.add(opt1);
+    options.add(opt2);
+
+    final CommandLine c = new CommandLine();
+    c.addOptionGroup(options);
+    c.addArgumentList(arguments);
+
+    final String[] args = {"-c", "foo"};
+    
+    try
+    {
+        c.parseAndHelp(args);
+    }
+    catch (final OptionException e)
+    {
+        assertEquals("[-h]", e.getMessage());
+        return;
+    }
+    fail("Failed to catch required argument exception");

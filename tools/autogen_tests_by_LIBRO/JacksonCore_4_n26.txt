@@ -1,0 +1,13 @@
+public void testIssue00() throws Exception {
+    String key = RandomStringUtils.randomAlphanumeric(1024) + "." + RandomStringUtils.randomAlphanumeric(1024);
+    System.out.println(key.length());
+    // if this line is commented out, it will fail at deserialization
+    JSONObject input = new JSONObject();
+    input.put(key, "value");
+    String inputString = input.toString();
+
+    ObjectMapper mapper = new ObjectMapper();
+    // this line fails
+    Map<String, String> map = mapper.readValue(inputString, new TypeReference<Map<String, String>>() {});
+    System.out.println(map);
+}

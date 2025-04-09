@@ -1,0 +1,15 @@
+public void testIssue107() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    InputSource is = new InputSource(new StringReader(
+            "<a b=\"1\" xmlns=\"http://a\" xmlns:c=\"http://c\" c:d=\"2\" e=\"3\"/>"));
+    Document doc = builder.parse(is);
+    
+    BeanInfo info = Introspector.getBeanInfo(Document.class);
+    BeanDescriptor desc = info.getBeanDescriptor();
+    DOMNodePointer pointer = new DOMNodePointer(desc, doc);
+    assertEquals("1", pointer.getValue("b"));
+    assertEquals("2", pointer.getValue("d"));
+    assertEquals("3", pointer.getValue("e"));
+}

@@ -1,0 +1,39 @@
+public void testMixinAnnotationsLost() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        {
+            setMixInAnnotation(Person.class, PersonMixin.class);
+        }
+    });
+
+    final Person person = new PersonImpl();
+    person.setCity(null);
+
+    final String json = mapper.writeValueAsString(person);
+    assertEquals("{\"city\":null}", json);
+}
+
+public interface Contact {
+    String getCity();
+
+    void setCity(String city);
+}
+
+public class ContactImpl implements Contact {
+    public String getCity() { return null; }
+    public void setCity(String city) { }
+}
+
+public class ContactMixin implements Contact {
+    @Override
+    @JsonProperty
+    public String getCity() { return null; }
+    @Override
+    public void setCity(String city) { }
+}
+
+public interface Person extends Contact {}
+
+public class PersonImpl extends ContactImpl implements Person {}
+
+public class PersonMixin extends ContactMixin implements Person {}

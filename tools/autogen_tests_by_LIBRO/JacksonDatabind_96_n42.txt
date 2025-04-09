@@ -1,0 +1,19 @@
+public void testPropertyNaming() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    Foo foo = mapper.readValue("{\"name\":\"foo\"}", Foo.class);
+    assertEquals("foo", foo.getName());
+}
+
+public static class Foo {
+    private String name;
+    public Foo() {
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}

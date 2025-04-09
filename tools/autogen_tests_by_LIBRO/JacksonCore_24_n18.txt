@@ -1,0 +1,21 @@
+public void testCoercionAndOverflow() throws Exception {
+    final int VALUE = Integer.MAX_VALUE + 1;
+
+    final ObjectReader READER = newMapper().readerFor(Map.class);
+
+    // verify that we can parse the input
+    try {
+        assertEquals(Collections.singletonMap("value", VALUE),
+                READER.readValue("{\"value\":" + VALUE + "}"));
+    } catch (JsonParseException e) {
+        fail("should parse");
+    }
+
+    // verify that coercion fails with JsonParseException
+    try {
+        READER.readValue("{\"value\":" + VALUE + "}");
+        fail("should not coerce");
+    } catch (JsonParseException e) {
+        verifyException(e, "overflow");
+    }
+}

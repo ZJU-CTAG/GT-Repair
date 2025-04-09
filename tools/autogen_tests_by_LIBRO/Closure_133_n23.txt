@@ -1,0 +1,11 @@
+public void testIssue108() {
+    JsDocToken[] tokens = JsDocToken.getTokens("/**\n" +
+      " * @return {@code foo} bar\n" +
+      " * baz.\n" +
+      " */\n" +
+      "var x;\n");
+    JsDocInfo info = new JsDocInfoParser(tokens, null, false, true)
+      .parse();
+    assertEquals("{@code foo} bar", info.getReturnDescription().getItem(0));
+    assertEquals("baz.", info.getReturnDescription().getItem(1));
+}

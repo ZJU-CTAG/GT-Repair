@@ -1,0 +1,26 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(A.class, "a"));
+    mapper.registerSubtypes(new NamedType(B.class, "b"));
+    mapper.registerSubtypes(new NamedType(C.class, "c"));
+    mapper.registerSubtypes(new NamedType(D.class, "d"));
+
+    String json = mapper.writeValueAsString(new C());
+    assertEquals("{\"type\":\"c\"}", json);
+
+    json = mapper.writeValueAsString(new D());
+    assertEquals("{\"type\":\"d\"}", json);
+}
+
+abstract class A {
+}
+
+class B extends A {
+}
+
+@JsonTypeName("d")
+class C extends B {
+}
+
+class D extends B {
+}

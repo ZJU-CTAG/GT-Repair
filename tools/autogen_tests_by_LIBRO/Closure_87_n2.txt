@@ -1,0 +1,33 @@
+public void testIssue108() {
+    final boolean[] called = {false};
+    final int[] value = {0};
+    final Runnable caller = new Runnable() {
+        public void run() {
+            final Element element = new Element("input", true);
+            element.onchange = new EventListener() {
+                public void handleEvent(Event evt) {
+                    called[0] = true;
+                    value[0] = ((Element) evt.target).value;
+                }
+            };
+            element.onchange.handleEvent(new Event() {
+                public Element target;
+                public Element currentTarget;
+                public Element relatedTarget;
+                public int eventPhase;
+                public boolean bubbles;
+                public boolean cancelable;
+                public boolean cancelBubble;
+                public boolean returnValue;
+                public Function stopPropagation;
+                public Function preventDefault;
+                public Function initEvent;
+                public Event() {
+                    this.target = element;
+                }
+            });
+        }
+    };
+    caller.run();
+    assertTrue(called[0]);
+    assertEquals(0

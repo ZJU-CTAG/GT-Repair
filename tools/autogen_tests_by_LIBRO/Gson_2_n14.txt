@@ -1,0 +1,19 @@
+public void testIssue108() {
+    TypeHierarchyAdapter<Vehicle> adapter = new TypeHierarchyAdapter<Vehicle>(Vehicle.class);
+    String jsonCar = "{\"type\":\"com.fasterxml.jackson.datatype.jsr310.TestDateTimeFormatter$Car\",\"model\":\"Corvette\",\"year\":1953,\"doors\":2}";
+    String jsonTruck = "{\"type\":\"com.fasterxml.jackson.datatype.jsr310.TestDateTimeFormatter$Truck\",\"model\":\"F-150\",\"year\":2012,\"doors\":2,\"bedLength\":8.1}";
+
+    Vehicle car = adapter.fromJson(jsonCar);
+    assertTrue(car instanceof Car);
+
+    Vehicle truck = adapter.fromJson(jsonTruck);
+    assertTrue(truck instanceof Truck);
+
+    try {
+        adapter.fromJson(jsonCar);
+        fail("No error thrown when decoding a car as a truck.");
+    } catch (Exception ignored) {
+    }
+
+    try {
+        adapter.fromJ

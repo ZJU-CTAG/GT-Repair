@@ -1,0 +1,16 @@
+public void testIssue108() throws JaxenException {
+    Document jaxenTestDoc = new Document();
+    Element rootElement = new Element("doc", "ns", "a");
+    jaxenTestDoc.setRootElement(rootElement);
+
+    Element elem = new Element("elem", "ns", "a");
+    rootElement.addContent(elem);
+    elem = new Element("elem", "ns", "b");
+    rootElement.addContent(elem);
+
+    rootElement = new Element("root", "ns", "a");
+    jaxenTestDoc.getRootElement().addContent(rootElement);
+
+    List result = new XPath("//a:elem", new DocumentNavigator()).selectNodes(jaxenTestDoc);
+    assertEquals(2, result.size());
+}

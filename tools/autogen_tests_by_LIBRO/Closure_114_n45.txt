@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.setUseTypedScope(true);
+    compiler.setUseAssign(true);
+    compiler.setUseTypesForLocalOptimization(true);
+    compiler.setGenerateExports(true);
+    compiler.setCheckTypes(true);
+    compiler.setCheckGlobalNamesLevel(CheckLevel.ERROR);
+    compiler.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.ERROR);
+    final CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckSymbols(true);
+    options.setInlineConstantVars(

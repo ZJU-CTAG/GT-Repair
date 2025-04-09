@@ -1,0 +1,20 @@
+public void testMatchCount() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    om.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+
+    FilteringParserDelegate filter = new FilteringParserDelegate(
+            om.getFactory().createParser(getClass().getResourceAsStream("test-input.yaml")),
+            new SimpleBeanPropertyFilter("a", "b"), true, true);
+
+    assertEquals(0, filter.getMatchCount());
+
+    // {"a": 1, "b": 2, "c": 3}
+    JsonToken t = filter.nextToken();
+    assertEquals(JsonToken.START_OBJECT, t);
+    assertEquals(0, filter.getMatchCount());
+
+    // "a": 1
+    t = filter.nextToken

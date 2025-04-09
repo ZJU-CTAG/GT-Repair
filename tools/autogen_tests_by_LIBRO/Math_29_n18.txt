@@ -1,0 +1,15 @@
+public void testEbeMultiply() {
+    Random rnd = new Random();
+    for (int i = 0; i < 100; i++) {
+        double[] array1 = new double[100];
+        double[] array2 = new double[100];
+        for (int j = 0; j < array1.length; j++)
+            array1[j] = rnd.nextDouble();
+        for (int j = 0; j < array2.length; j++)
+            array2[j] = rnd.nextDouble();
+        array2[rnd.nextInt(100)] = Double.NaN;
+        OpenMapRealVector v1 = new OpenMapRealVector(array1);
+        OpenMapRealVector v2 = new OpenMapRealVector(array2);
+        OpenMapRealVector v3 = (OpenMapRealVector) v1.ebeMultiply(v2);
+        RealVector v4 = Matrices.createRealVector(array1).ebeMultiply(Matrices.createRealVector(array2));
+        RealVectorTestImpl.assertClose("ebeMultiply", v3, v

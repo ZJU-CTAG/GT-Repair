@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setDependencyOptions(new DependencyOptions());
+    compilerOptions.getDependencyOptions().setDependencySorting(true);
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "goog.provide('A');"),
+                    JSSourceFile.fromCode("test.js", "goog.require('B');" +
+                            "goog.provide('B');"),
+                    JSSourceFile.fromCode("test.js", "goog.require('A');" +
+                            "goog.provide('C');")
+            }, compilerOptions);
+    assertTrue(result.success);
+    JSSourceFile[] inputs = result.inputs;
+    assertEquals(3, inputs

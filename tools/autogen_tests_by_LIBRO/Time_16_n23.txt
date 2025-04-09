@@ -1,0 +1,12 @@
+public void testParseInto() {
+  // Test with a leap year that contains Feb 29.
+  DateTimeFormatter fmt = DateTimeFormat.forPattern("MM/dd");
+  DateTime orig = new DateTime(2016, 2, 29, 12, 0);
+  DateTime parsed = fmt.parseInto(orig, "02/29", Locale.ENGLISH);
+  assertEquals(orig, parsed);
+  
+  // Test with a non-leap year that does not contain Feb 29.
+  orig = new DateTime(2015, 2, 29, 12, 0);
+  parsed = fmt.parseInto(orig, "02/29", Locale.ENGLISH);
+  assertEquals(orig.withDayOfMonth(1), parsed);
+}

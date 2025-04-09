@@ -1,0 +1,9 @@
+public void testExploit() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // ensure there is no `module-provided` deserializer:
+    mapper.registerModule(new Jdk8Module());
+    String JSON = "{ \"a\": { \"@type\": \"java.lang.Class\", \"val\": \"com.sun.rowset.JdbcRowSetImpl\" } }";
+    // and then:
+    mapper.readValue(JSON, Map.class);
+}

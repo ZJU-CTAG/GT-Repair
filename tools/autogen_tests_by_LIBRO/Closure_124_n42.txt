@@ -1,0 +1,17 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+
+    Compiler.setLoggingLevel(Level.ALL); // quiet output
+
+    String code = "var foreignObject = gfx.parentNode.parentNode;\n" +
+            "var parentContainer = foreignObject.parentNode.parentNode;\n";
+
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("foo.js", code)}, options);
+    String result = compiler.toSource();
+    assertTrue(!result.contains("var b=a=a.parentNode.parentNode;"));
+    assertTrue(!result.contains("c.appendChild(b)"));
+}

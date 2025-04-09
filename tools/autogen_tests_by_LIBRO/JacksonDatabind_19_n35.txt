@@ -1,0 +1,26 @@
+public void testProperties() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    Properties properties = new Properties();
+    properties.put("foo", "bar");
+    properties.put("baz", new TestBean());
+
+    String result = objectMapper.writeValueAsString(properties);
+    Properties read = objectMapper.readValue(result, Properties.class);
+
+    assertEquals(2, read.size());
+    assertEquals("bar", read.get("foo"));
+    assertEquals("{\"value\":\"value\"}", read.get("baz"));
+}
+
+class TestBean {
+    private String value = "value";
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+}

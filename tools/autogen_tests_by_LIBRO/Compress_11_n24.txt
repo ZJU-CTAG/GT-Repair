@@ -1,0 +1,7 @@
+public void testIssue107() {
+    InputStream is = new Buffer().writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234567890").writeAscii("1234").inputStream();
+    // This is a buffer that should be detected as a tar entry
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ArchiveInputStream ais = factory.createArchiveInputStream(is);
+    assertEquals(TarArchiveInputStream.class, ais.getClass());
+}

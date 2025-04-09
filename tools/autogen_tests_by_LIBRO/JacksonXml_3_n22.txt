@@ -1,0 +1,15 @@
+public void testIssue129() throws IOException {
+    XmlFactory factory = new XmlFactory();
+    XmlMapper xmlMapper = new XmlMapper(factory);
+    FromXmlParser parser = (FromXmlParser) xmlMapper.getFactory().createParser(
+            "<a><b>1</b><c type=\"2\">3</c></a>");
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+    assertEquals("1", parser._currText);
+    assertEquals("1", parser.nextTextValue());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assert

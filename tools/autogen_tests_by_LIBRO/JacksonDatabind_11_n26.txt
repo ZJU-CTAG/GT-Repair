@@ -1,0 +1,31 @@
+public void testGenericTypeResolution() {
+    String json = "{\"entity\": {\"__type\": \"Foo:com.blah\", \"name\":\"Fred\"}}";
+    Something something = JSON.parseObject(json, Something.class);
+    assertNotNull(something.getEntity());
+    assertEquals("Fred", something.getEntity().getName());
+}
+
+public static class Something<T extends Ruleform> {
+    private T entity;
+
+    public T getEntity() {
+        return entity;
+    }
+    public void setEntity(T entity) {
+        this.entity = entity;
+    }
+}
+
+public static abstract class Ruleform {
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+public static class Foo extends Ruleform {
+}

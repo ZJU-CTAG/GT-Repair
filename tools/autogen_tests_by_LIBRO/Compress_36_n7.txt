@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    final String filename = dir.getAbsolutePath() + "/bla.7z";
+    try (SevenZOutputFile out = new SevenZOutputFile(new File(filename))) {
+        out.putArchiveEntry(new SevenZArchiveEntry());
+        out.closeArchiveEntry();
+    }
+
+    try (SevenZFile f = new SevenZFile(new File(filename))) {
+        SevenZArchiveEntry entry = f.getNextEntry();
+        byte[] b = new byte[1024];
+        System.out.println(entry.read(b, 0, 1024));
+    }
+}

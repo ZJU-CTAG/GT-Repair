@@ -1,0 +1,13 @@
+public void testDeserializationWithDeserializationProblemHandler() throws IOException {
+// ensure that when Void.class is returned, a NPE is not thrown
+String json = "{\"type\":\"A\",\"value\":\"test\"}";
+VoidTypeTestClass result = mapper.readerFor(VoidTypeTestClass.class)
+        .withAttribute(DeserializationProblemHandler.DESERIALIZATION_PROBLEM_HANDLER, new DeserializationProblemHandler() {
+@Override
+public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+return context.getTypeFactory().constructType(Void.class);
+}
+})
+        .readValue(json);
+assertEquals(A.class, result.value.getClass());
+}

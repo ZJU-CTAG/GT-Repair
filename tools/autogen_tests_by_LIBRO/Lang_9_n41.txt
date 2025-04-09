@@ -1,0 +1,14 @@
+public void testUnterminatedQuote() throws ParseException {
+    // test unterminated quote
+    String pattern = "d'd'";
+    String str = "d3";
+    Pattern pat = Pattern.compile(pattern);
+    assertFalse(pat.matcher(str).find());
+    FastDateParser fdp = new FastDateParser(pattern, TimeZone.getDefault(), Locale.getDefault());
+    try {
+        fdp.parse(str);
+        fail("Should have failed to parse " + str + " with pattern " + pattern);
+    } catch (ParseException e) {
+        // expected
+    }
+}

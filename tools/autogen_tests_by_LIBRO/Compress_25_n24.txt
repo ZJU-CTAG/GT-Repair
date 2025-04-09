@@ -1,0 +1,15 @@
+public void testZip() throws Exception {
+    File tmp = File.createTempFile("commons-compress", ".zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(tmp);
+    zos.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zos.write("data".getBytes());
+    zos.closeArchiveEntry();
+    zos.flush();
+    zos.close();
+
+    ZipFile zf = new ZipFile(tmp);
+    ZipArchiveEntry zae = zf.getEntry("test.txt");
+    InputStream is = zf.getInputStream(zae);
+    byte[] actual = IOUtils.toByteArray(is);
+    assertEquals("data", new String(actual));
+}

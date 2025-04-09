@@ -1,0 +1,21 @@
+public void testTruncated() throws IOException, ArchiveException {
+    // Create a truncated ZIP file
+    File file = new File("src/test/resources/commons-compress-1.5.zip");
+    RandomAccessFile raf = new RandomAccessFile(file, "r");
+    byte[] buffer = new byte[(int) raf.length()];
+    raf.readFully(buffer);
+    raf.close();
+    File truncated = File.createTempFile("truncated", ".zip");
+    FileOutputStream out = new FileOutputStream(truncated);
+    out.write(buffer, 0, buffer.length / 2);
+    out.close();
+    // Read it
+    FileInputStream in = new FileInputStream(truncated);
+    ZipArchiveInputStream zip = new ZipArchiveInputStream(in);
+    int count = 0;
+    for (ZipArchiveEntry entry = zip.getNextZipEntry(); entry != null; entry = zip.getNextZipEntry()) {
+        count++;
+    }
+    zip.close();
+    in.close();
+   

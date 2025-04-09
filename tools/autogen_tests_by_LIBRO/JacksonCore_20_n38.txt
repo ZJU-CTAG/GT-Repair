@@ -1,0 +1,11 @@
+public void testByteArray() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    byte[] input = new byte[] { 1, 2, 3, 4 };
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    JsonGenerator gen = mapper.getFactory().createGenerator(baos);
+    gen.writeEmbeddedObject(input);
+    gen.close();
+    byte[] result = baos.toByteArray();
+    assertArrayEquals(new byte[] { '"', (byte)0x80, 2, 3, 4 }, result);
+}

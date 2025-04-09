@@ -1,0 +1,21 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(
+        DiagnosticGroups.MISSING_PROVIDE, CheckLevel.OFF);
+    options.setWarningLevel(
+        DiagnosticGroups.UNDEFINED_VARIABLES, CheckLevel.OFF);
+    options.setWarningLevel(
+        DiagnosticGroups.UNDEFINED_NAMES, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+
+    String input = "goog.require('foo.bar');";
+    String output = "";
+
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.SEVERE);
+    Result result = compiler.compile(externs,
+        Collections.singletonList(js(fromString(input))),
+        options);
+    assertTrue(result.success);

@@ -1,0 +1,10 @@
+public void testZipEntry_8189949() throws Exception {
+    File testZip = new File(getTestDirectory(), "test-zip.zip");
+    URL testZipUrl = testZip.toURI().toURL();
+    FileUtils.copyURLToFile(testZipUrl, testZip);
+    try (ZipFile file = new ZipFile(testZip)) {
+        ZipEntry entry = file.getEntry("test.txt");
+        assertNotNull(entry);
+        assertEquals(testZipUrl + "!/test.txt", entry.toString());
+    }
+}

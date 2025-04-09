@@ -1,0 +1,20 @@
+public void testIssue106() throws Exception {
+    final ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    asf.setEntryEncoding(StandardCharsets.US_ASCII.name());
+    final Map<String, String> entries = new HashMap<>();
+    entries.put("hello", "world");
+
+    // Verify that the encoding is being set
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         ArchiveOutputStream aos = asf.createArchiveOutputStream(ArchiveStreamFactory.ZIP, baos)) {
+
+        for (final Map.Entry<String, String> entry : entries.entrySet()) {
+            final ZipArchiveEntry zae = new ZipArchiveEntry(entry.getKey());
+            aos.putArchiveEntry(zae);
+            aos.write(entry.getValue().getBytes(StandardCharsets.US_ASCII));
+            aos.closeArchiveEntry();
+        }
+        aos.finish();
+        baos.flush();
+
+        try (ArchiveInputStream ais = asf.createArchiveInputStream(Arch

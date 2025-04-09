@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
+    mod.addAbstractTypeMapping(Base.class, Child1.class);
+    mapper.registerModule(mod);
+
+    mapper.writeValueAsString(new Child1());
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes(@JsonSubTypes.Type(name = "child1", value = Child1.class))
+public static class Base {
+
+}
+
+public static class Child1 extends Base {
+
+}

@@ -1,0 +1,17 @@
+public void testMinsMaxsInGroups() throws ParseException {
+    Options options = new Options();
+
+    OptionGroup group = new OptionGroup();
+    group.addOption(new Option("a", "a", false, "a"));
+    group.addOption(new Option("b", "b", false, "b"));
+    options.addOptionGroup(group);
+
+    OptionGroup group2 = new OptionGroup();
+    group2.addOption(new Option("c", "c", false, "c"));
+    group2.setRequired(true);
+    group.addOption(group2);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-c"});
+    assertTrue(cmd.hasOption("c"));
+}

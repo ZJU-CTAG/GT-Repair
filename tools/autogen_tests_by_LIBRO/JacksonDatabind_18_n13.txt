@@ -1,0 +1,28 @@
+public void testBrokenJson() throws IOException {
+    String json = "{\"a\":[{},{},{}}]";
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Map<String,Object>> it = mapper.reader()
+            .readValues(json);
+    assertTrue(it.hasNext());
+    try {
+        it.next();
+        fail("Should throw exception");
+    } catch (JsonMappingException e) {
+        // good
+    }
+    // will throw an exception now:
+    assertFalse(it.hasNext());
+    try {
+        it.nextValue();
+        fail("Should throw exception");
+    } catch (JsonMappingException e) {
+        // good
+    }
+    // will throw an exception now:
+    try {
+        it.hasNextValue();
+        fail("Should throw exception");
+    } catch (JsonMappingException e) {
+        // good
+    }
+}

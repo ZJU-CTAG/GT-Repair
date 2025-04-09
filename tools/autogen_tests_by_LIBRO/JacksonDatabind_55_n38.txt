@@ -1,0 +1,24 @@
+public void testEnumMapKeys() throws Exception {
+    TestClass testClass = new TestClass();
+    testClass.enumMap = new EnumMap<>(TestEnum.class);
+    testClass.enumMap.put(TestEnum.VALUE1, true);
+    testClass.enumMap.put(TestEnum.VALUE2, true);
+    testClass.enumMap.put(TestEnum.VALUE3, true);
+
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(testClass);
+    assertEquals("{\"enumMap\":{\"VALUE1\":true,\"VALUE2\":true,\"VALUE3\":true}}", json);
+}
+
+public enum TestEnum {
+    @JsonProperty("value1")
+    VALUE1,
+    @JsonProperty("value2")
+    VALUE2,
+    @JsonProperty("value3")
+    VALUE3
+}
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+class TestClass {
+    public EnumMap<TestEnum, Boolean

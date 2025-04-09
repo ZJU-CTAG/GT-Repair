@@ -1,0 +1,14 @@
+public void testIssue109() throws IOException {
+    Reader in = new StringReader("a,b\n1,2\n3,4\n");
+    Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader().parse(in);
+    Map<String, String> m = records.iterator().next().toMap();
+    assertNotNull(m);
+    assertEquals(2, m.size());
+    assertEquals("1", m.get("a"));
+    assertEquals("2", m.get("b"));
+
+    in = new StringReader("a,b\n1,2\n3,4\n");
+    records = CSVFormat.RFC4180.parse(in);
+    m = records.iterator().next().toMap();
+    assertNull(m);
+}

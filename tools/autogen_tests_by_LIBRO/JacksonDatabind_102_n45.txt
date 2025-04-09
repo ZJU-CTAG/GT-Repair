@@ -1,0 +1,7 @@
+public void testIssue287() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class)
+            .setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    String s = mapper.writeValueAsString(new Date(0));
+    assertEquals("1969-12-31", s);
+}

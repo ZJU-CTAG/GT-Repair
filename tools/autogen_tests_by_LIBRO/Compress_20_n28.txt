@@ -1,0 +1,10 @@
+public void testCPIO() throws IOException {
+    InputStream in = IOStreams.read(getClass().getResourceAsStream("cpio.bin"));
+    try {
+        ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("cpio", in);
+        ais.close();
+        fail("Should throw IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        assertEquals("Invalid CPIO header, file mode is not zero: 0", e.getMessage());
+    }
+}

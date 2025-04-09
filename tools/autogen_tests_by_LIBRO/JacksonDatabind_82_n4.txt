@@ -1,0 +1,11 @@
+public void testJsonIssue() throws JsonParseException, JsonMappingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    JsonTest json = new JsonTest("user", "password");
+
+    assertEquals("{\"username\":\"user\",\"password\":\"password\"}", mapper.writeValueAsString(json));
+
+    String jsonString = "{ \"username\":\"username\",\"password\":\"password\" }";
+    json = mapper.readValue(jsonString, JsonTest.class);
+    assertEquals("password", json.getPassword());
+}

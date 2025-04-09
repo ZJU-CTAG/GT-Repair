@@ -1,0 +1,13 @@
+public void testIssue58() throws ParseException {
+	final String OPT_TARGET = "t";
+	final String OPT_TARGET_LONG = "target";
+	final String TARGET_NAME = "mytarget";
+	Options options = new Options();
+	Option generateTarget = new Option(OPT_TARGET, OPT_TARGET_LONG, true, "Generate files for the specified target machine");
+	options.addOption(generateTarget);
+	String[] args = new String[] { "-t", TARGET_NAME };
+	CommandLineParser parser = new PosixParser();
+	CommandLine cmdLine = parser.parse(options, args);
+	assertTrue(cmdLine.hasOption(OPT_TARGET));
+	assertEquals(TARGET_NAME, cmdLine.getOptionValue(OPT_TARGET));
+}

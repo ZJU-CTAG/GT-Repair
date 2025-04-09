@@ -1,0 +1,11 @@
+public void testGetValueAsString() throws Exception
+{
+    JsonParser jp = MAPPER.createParser("{\"foo\":\"bar\"}");
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("foo", jp.getValueAsString());
+    assertToken(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals("bar", jp.getValueAsString());
+    assertToken(JsonToken.END_OBJECT, jp.nextToken());
+    jp.close();
+}

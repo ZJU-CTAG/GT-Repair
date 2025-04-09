@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    JsDocInfoParser parser = new JsDocInfoParser(new JsDocInfoParser.TypeRecoveryHandler() {
+      public void handleTypeRecovery(JsDocInfo info, SourcePositionRecorder recorder) throws Exception {
+      }
+    });
+    JsDocInfo info = parser.parse("/** @type {function(new:?)} */ var foo = function() {};");
+    assertEquals(1, info.getType().getTypeOfThis().getInstanceType().getReferenceType(null).getReferenceName().length());
+    info = parser.parse("/** @type {function(new:*)} */ var foo = function() {};");
+    assertEquals(1, info.getType().getTypeOfThis().getInstanceType().getReferenceType(null).getReferenceName().length());
+}

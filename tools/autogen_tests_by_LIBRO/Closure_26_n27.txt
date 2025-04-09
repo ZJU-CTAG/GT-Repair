@@ -1,0 +1,17 @@
+public void testProcessCommonJSModules() {
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+  options.setCheckTypes(true);
+  options.setPrettyPrint(true);
+  options.setClosurePass(true);
+  options.setPreserveTypeAnnotations(true);
+  options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+  CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  compiler.setLoggingLevel(Level.INFO);
+  Result result = compiler.compile(
+      ImmutableList.of(
+          SourceFile.fromCode("echo.js",
+              "define(function() { return {echo: function(val) { window.console.log(val); }};})"),
+          SourceFile.fromCode("echo-main.js", "var echo = require('echo'); echo.echo

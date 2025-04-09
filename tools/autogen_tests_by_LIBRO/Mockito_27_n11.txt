@@ -1,0 +1,16 @@
+public void testExceptionInStub() {
+    Object o = Mockito.mock(Object.class);
+    Mockito.when(o.toString()).thenThrow(RuntimeException.class);
+    try {
+        o.toString();
+        fail();
+    } catch (RuntimeException e) {
+        // expected
+    }
+    try {
+        Mockito.when(o.toString()).thenThrow(IllegalArgumentException.class);
+        fail();
+    } catch (RuntimeException e) {
+        // expected
+    }
+}

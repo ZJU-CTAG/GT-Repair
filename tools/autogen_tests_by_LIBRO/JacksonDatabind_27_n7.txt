@@ -1,0 +1,10 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    m.enableDefaultTyping();
+    final String JSON = "{\"@type\":\"java.util.HashMap\",\"@id\":42,\"foo\":\"bar\"}";
+    // used to work fine with 2.5, fails with 2.6
+    Map<?,?> result = m.readValue(JSON, Map.class);
+    assertEquals(1, result.size());
+    assertEquals("bar", result.get("foo"));
+}

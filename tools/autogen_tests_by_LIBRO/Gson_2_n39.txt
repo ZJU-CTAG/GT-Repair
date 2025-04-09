@@ -1,0 +1,26 @@
+public void testTypeHierarchyAdapters() {
+    Gson gson = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Vehicle.class, new VehicleAdapter())
+            .registerTypeAdapter(Truck.class, new TruckAdapter())
+            .create();
+    String json = "{\"manufacturer\":\"Honda\",\"make\":\"Civic\",\"wheels\":4}";
+    Vehicle vehicle = gson.fromJson(json, Car.class);
+}
+
+private static class VehicleAdapter implements JsonDeserializer<Vehicle> {
+    @Override
+    public Vehicle deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        return null;
+    }
+}
+
+private static class TruckAdapter implements JsonDeserializer<Truck> {
+    @Override
+    public Truck deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        return null;
+    }
+}
+
+private static class Car extends Vehicle {
+    String make;
+}

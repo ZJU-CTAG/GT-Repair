@@ -1,0 +1,16 @@
+public void testModelObjects() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JacksonModule());
+    AccessionIdentifier accessionIdentifier = new AccessionIdentifier() {
+        public String getValue() {
+            return "PGx-1";
+        }
+    };
+    Foo foo = new Foo() {
+        public AccessionIdentifier getReference() {
+            return accessionIdentifier;
+        }
+    };
+    String json = mapper.writeValueAsString(foo);
+}
+

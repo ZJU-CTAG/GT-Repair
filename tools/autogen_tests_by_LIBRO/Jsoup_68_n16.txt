@@ -1,0 +1,17 @@
+public void testIssue111() throws Exception {
+    String url = "http://szshb.nxszs.gov.cn/";
+    String html = WebClientUtil.getPageContent(url);
+
+    int start = html.indexOf("var allcitysJSON =");
+    int end = html.indexOf("var allcitysJSON =") + "var allcitysJSON =".length();
+
+    String json = html.substring(start, end);
+    System.out.println(json);
+
+    start = json.indexOf("[");
+    end = json.lastIndexOf("]") + 1;
+    json = json.substring(start, end);
+    System.out.println(json);
+    JSONArray jsonArray = JSONArray.parseArray(json);
+    System.out.println(jsonArray);
+}

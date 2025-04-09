@@ -1,0 +1,24 @@
+public void testVarargsCaptorWithMockito() throws Exception {
+    Foo foo1 = new Foo();
+    Foo foo2 = new Foo();
+    List<Foo> foos = Arrays.asList(foo1, foo2);
+
+
+    doReturn(foos).when(service).getFoos(any());
+
+    service.getFoos(foo1, foo2);
+
+    ArgumentCaptor<Foo[]> captor = ArgumentCaptor.forClass(Foo[].class);
+    verify(service).getFoos(captor.capture());
+
+    assertEquals(2, captor.getValue().length);
+    assertEquals(foo1, captor.getValue()[0]);
+    assertEquals(foo2, captor.getValue()[1]);
+}
+
+public interface SomeService {
+    public List<Foo> getFoos(Foo... foos);
+}
+
+public class Foo {
+}

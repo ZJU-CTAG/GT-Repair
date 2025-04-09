@@ -1,0 +1,28 @@
+public void testDeserialization() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+
+    String json = om.writeValueAsString(object);
+    assertEquals("{}", json);
+
+    ObjectNode de1 = om.readValue(json, ObjectNode.class);  // this works
+    assertEquals("{}", de1.toString());
+
+    MyValue de2 = om.readValue(json, MyValue.class);  // but this throws exception
+    assertEquals("{}", de2.object.toString());
+}
+
+static class MyValue {
+    @JsonCreator
+    public MyValue(ObjectNode object) {
+        this.object = object;
+    }
+
+    @JsonValue
+    public ObjectNode getObject() {
+        return object;
+    }
+
+    private final ObjectNode object;
+}

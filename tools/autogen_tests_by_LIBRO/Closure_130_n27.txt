@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String source = "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.closurePass = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(externs, js, options);
+    String optimizedJs = result.compiledCode;
+    assertEquals("function(){return function(){setTimeout(function(){alert(args)},0)}}", optimizedJs);
+}

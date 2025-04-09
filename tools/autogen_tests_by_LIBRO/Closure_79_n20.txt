@@ -1,0 +1,18 @@
+public void testIssue106() {
+    String prototypeJs = "function (key, holder, stack) {
+  var value = holder[key];
+  if (value !== undefined) {
+    return value;
+  }
+  if (stack !== null) {
+    stack.push(key);
+  }
+  var result = this.getObject(key, holder);
+  if (stack !== null) {
+    stack.pop();
+  }
+  return result;
+}";
+    Compiler compiler = new Compiler();
+    compiler.compile(null, prototypeJs, false, null);
+}

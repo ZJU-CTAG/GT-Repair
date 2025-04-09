@@ -1,0 +1,20 @@
+public void testIssue() {
+    String js = ""
+            + "var goog = {};"
+            + "goog.scope;"
+            + ""
+            + "var ns = {};"
+            + "ns.sub = {};"
+            + "/** @constructor */"
+            + "ns.sub.C = function() {};"
+            + ""
+            + ""
+            + "goog.scope(function() {"
+            + " var sub = ns.sub;"
+            + " /** @type {sub.C} */"
+            + " var x = null;"
+            + "});";
+
+    ParserRunner.parse(CompilerOptions.builder().build(),
+            SourceFile.fromCode("test", js));
+}

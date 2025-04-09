@@ -1,0 +1,11 @@
+public void testVarargs() {
+    // "t1" and "t2" are not captured
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(mock).someMethod(captor.capture(), eq("t1"), eq("t2"));
+    assertEquals("t1", captor.getAllValues().get(0));
+    assertEquals("t2", captor.getAllValues().get(1));
+}
+
+public interface TestInterface {
+    void someMethod(String... strings);
+}

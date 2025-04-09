@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    JsonNode root = JsonNodeFactory.instance.objectNode();
+    ((ObjectNode) root).put("00", "abc");
+    ((ObjectNode) root).put("0", "def");
+    JsonPointer p = new JsonPointer("/00");
+    assertEquals(1, p.matchingProperties(root).size());
+    assertEquals("abc", p.matchingProperty(root).getTextValue());
+    assertNull(p.getMatchingIndex(root));
+}

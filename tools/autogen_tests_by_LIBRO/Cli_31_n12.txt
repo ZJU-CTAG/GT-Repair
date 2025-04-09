@@ -1,0 +1,8 @@
+public void testIssue45() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("foo");
+    CommandLine line = new PosixParser().parse(new Options().addOption(OptionBuilder.hasOptionalArg().create('t')));
+    String expected = "usage: <main class> [-t [<arg>]]" + System.getProperty("line.separator") +
+            " -t,--test [<foo>]   " + System.getProperty("line.separator");
+    assertEquals(expected, formatter.printHelp("<main class>", line.getOptions()));
+}

@@ -1,0 +1,9 @@
+public void testArchiveStreamFactory() throws IOException {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    Map<String,Object> properties = new HashMap<String,Object>();
+    properties.put(ArchiveStreamFactory.TAR_NAMEDETECTION_MODE, TarArchiveEntry.NAME_FALLBACK);
+    ArchiveInputStream ais = factory.createArchiveInputStream(ArchiveStreamFactory.TAR, new FileInputStream(getTestFile("test2.tar")), "UTF-8", properties);
+    TarArchiveEntry entry = (TarArchiveEntry) ais.getNextEntry();
+    assertEquals("README.txt", entry.getName());
+    ais.close();
+}

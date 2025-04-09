@@ -1,0 +1,15 @@
+public void testIssue(){
+    JsonFactory f = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(f);
+    String json = "{\"records\":[{\"fields\":[{\"name\":\"id\",\"value\":\"123\"},{\"name\":\"code\",\"value\":\"XYZ\"}]},{\"fields\":[{\"name\":\"id\",\"value\":\"456\"},{\"name\":\"code\",\"value\":\"ABC\"}]},{\"fields\":[]}]}";
+    Def def = mapper.readValue(json, Def.class);
+    assertNotNull(def);
+    assertTrue(def.records.size() == 3);
+    for(Record r : def.records){
+        System.out.println(r.fields.size());
+    }
+    assertTrue(def.records.get(0).fields.size() == 2);
+    assertTrue(def.records.get(1).fields.size() == 2);
+    assertTrue(def.records.get(2).fields.size() == 0);
+}
+``

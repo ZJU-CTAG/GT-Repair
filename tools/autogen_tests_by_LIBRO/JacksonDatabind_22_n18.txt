@@ -1,0 +1,21 @@
+public void testCustomSerializer() throws Exception {
+    ObjectMapper mapper = objectMapperBuilder().build();
+    SimpleModule module = new SimpleModule("test");
+    module.addSerializer(CustomType.class, new CustomTypeSerializer());
+    mapper.registerModule(module);
+    assertEquals("\"test\"", mapper.writeValueAsString(new CustomType()));
+}
+
+class CustomType {
+    @JsonValue
+    public String getValue() {
+        return "test";
+    }
+}
+
+class CustomTypeSerializer extends JsonSerializer<CustomType> {
+    @Override
+    public void serialize(CustomType value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("custom");
+    }
+}

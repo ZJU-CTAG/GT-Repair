@@ -1,0 +1,16 @@
+public void testStackTrace() {
+    JsCompiler compiler = new DefaultJsCompiler();
+    String script = "function getStack() {\n" +
+            " var getErrorObject = function() {\n" +
+            " try {\n" +
+            " throw Error(\"\");\n" +
+            " } catch(err) {\n" +
+            " return err;\n" +
+            " }\n" +
+            " };\n" +
+            " return getErrorObject().stack;\n" +
+            "}\n" +
+            "window['getStackTrace']=getStack;";
+    String result = compiler.compile(script, new JsCompilerParameters().setOptimization(JsCompilerParameters.Optimization.SIMPLE));
+    assertTrue(result.indexOf("return a.stack")>0);
+}

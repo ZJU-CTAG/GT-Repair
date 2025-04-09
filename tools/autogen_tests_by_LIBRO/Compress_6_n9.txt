@@ -1,0 +1,24 @@
+public void testZip() throws Exception {
+    final int NUM_FILES = 1000;
+    final int NUM_ENTRIES = 10;
+    final String FILENAME = "filename";
+    final File zipFile = new File("test.zip");
+    final ZipOutputStream zos = CompressorStreamFactory.create(new BufferedOutputStream(new FileOutputStream(zipFile)));
+    try {
+        for (int i=0; i < NUM_FILES; i++) {
+            for (int j=0; j < NUM_ENTRIES; j++) {
+                final ZipArchiveEntry entry = new ZipArchiveEntry(FILENAME);
+                entry.setSize(1);
+                entry.setMethod(ZipArchiveEntry.DEFLATED);
+                zos.putArchiveEntry(entry);
+                zos.write(1);
+                zos.closeArchiveEntry();
+            }
+        }
+    }
+    finally {
+        zos.close();
+    }
+    ZipFile zf = new ZipFile(zipFile);
+    try {
+        // This will throw an error if the zip file

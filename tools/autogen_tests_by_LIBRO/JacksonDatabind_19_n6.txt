@@ -1,0 +1,12 @@
+public void testIssue() throws Exception
+{
+    Properties props = new Properties();
+    props.setProperty("foo", "text");
+    props.put("bar", Integer.valueOf(123));
+
+    String json = new ObjectMapper().writeValueAsString(props);
+
+    // should produce JSON like ["foo":"text","bar":123]
+    // but instead results in ["foo":"text","bar":"123"]
+    assertEquals("{\"foo\":\"text\",\"bar\":\"123\"}", json);
+}

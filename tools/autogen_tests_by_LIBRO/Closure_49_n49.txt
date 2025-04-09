@@ -1,0 +1,8 @@
+public void testIssue138() {
+    String code = "var foo = function bar(){var bar; alert(bar)};";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(code, null, CompilerOptions.Level.SIMPLE_OPTIMIZATIONS);
+    assertTrue(result.success);
+    System.out.println(result.compiledCode);
+    assertEquals("var foo = function() { alert(void 0) };", result.compiledCode);
+}

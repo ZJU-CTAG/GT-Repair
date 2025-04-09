@@ -1,0 +1,14 @@
+public void testGetHeaderMap() throws Exception {
+    final Reader in = new StringReader(
+        "a,b,c\n" + 
+        "d,e,f\n" + 
+        "1,2,3\n");
+    CSVParser parser = new CSVParser(new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).build());
+    final List<CSVRecord> records = parser.parse(in).getRecords();
+    assertEquals(2, records.size());
+    assertEquals(3, parser.getHeaderMap().size());
+    parser = new CSVParser(new CSVParserBuilder().withSeparator(',').withIgnoreQuotations(true).withIgnoreHeaderCase(false).withHeader(new String[] {"foo", "bar", "baz"}).build());
+    final List<CSVRecord> records2 = parser.parse(in).getRecords();
+    assertEquals(2, records2.size());
+    assertEquals(3, parser.getHeaderMap().size());
+    assertEquals(-1

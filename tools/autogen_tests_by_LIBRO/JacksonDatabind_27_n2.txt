@@ -1,0 +1,21 @@
+public void testAfterburnerWithTypeId() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper().registerModule(new AfterburnerModule());
+
+    // test using example from FasterXML/jackson-module-afterburner#58
+    final String json = "{\"@class\":\"com.example.Foo\",\"value\":\"bar\"}";
+    final Foo f = mapper.readerFor(Foo.class).readValue(json);
+    assertEquals("bar", f.value);
+
+    // test my use case
+    final String json2 = "{\"@class\":\"com.example.Foo2\",\"foo\":{\"value\":\"bar\"}}";
+    final Foo2 f2 = mapper.readerFor(Foo2.class).readValue(json2);
+    assertEquals("bar", f2.foo.value);
+}
+
+public static class Foo {
+    public String value;
+}
+
+public static class Foo2 {
+    public Foo foo;
+}

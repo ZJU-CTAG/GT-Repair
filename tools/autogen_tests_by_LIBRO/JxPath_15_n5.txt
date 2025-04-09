@@ -1,0 +1,20 @@
+public void testUnion() throws TransformerException {
+    String input = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    String xpath = "string(/MAIN/B | /MAIN/A)";
+    String expected = "avalue";
+    String actual = "";
+    try {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new InputSource(new StringReader(input)));
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xPath = factory.newXPath();
+        XPathExpression expression = xPath.compile(xpath);
+        Object result = expression.evaluate(doc, XPathConstants.STRING);
+        actual = (String) result;
+    } catch (XPathExpressionException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } catch (

@@ -1,0 +1,29 @@
+public void testCustomSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("test", Version.unknownVersion()) {
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.addSerializers(new BeanSerializerFactory(null));
+        }
+    });
+
+    assertEquals(
+            "{\"value\":\"value1\",\"name\":\"name1\"}",
+            mapper.writeValueAsString(new TestBean1()));
+    assertEquals(
+            "{\"name\":\"name2\"}",
+            mapper.writeValueAsString(new TestBean2()));
+}
+
+@JsonSerialize(using = TestBeanSerializer.class)
+static class TestBean1 {
+    public String value = "value1";
+    public String name = "name1";
+}
+
+@JsonSerialize(using = TestBeanSerializer.class)
+static class TestBean2 {
+    public String name = "name2";
+
+    @Json

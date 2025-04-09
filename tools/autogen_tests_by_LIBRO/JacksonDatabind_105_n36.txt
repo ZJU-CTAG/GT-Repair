@@ -1,0 +1,14 @@
+public void testIllegalReflectiveAccess() {
+    // create rest template
+    RestTemplate restTemplate = new RestTemplate();
+    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+    // create json mapper
+    ObjectMapper mapper = new ObjectMapper();
+    // create converter
+    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+    converter.setObjectMapper(mapper);
+    // add converter to rest template
+    restTemplate.getMessageConverters().add(0, converter);
+    // call request without body
+    restTemplate.exchange("http://localhost:8080", HttpMethod.GET, null, Void.class);
+}

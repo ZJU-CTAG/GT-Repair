@@ -1,0 +1,22 @@
+public void testIssue() {
+  String source = "var MyClass = new Class({ \n" +
+    "initialize: function(name) { \n" +
+    "this.name = name; \n" +
+    "}, \n" +
+    "getName: function() { \n" +
+    "return this.name; \n" +
+    "} \n" +
+    "}); \n" +
+    "var MySubClass = MyClass.extend({ \n" +
+    "getName: function($super) { \n" +
+    "return $super() + ', son of MyClass'; \n" +
+    "} \n" +
+    "}); \n" +
+    "var myInstance = new MySubClass('MySubClass'); \n" +
+    "alert(myInstance.getName());"
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  CompilerOptions options = new CompilerOptions();
+  WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+  options.setPrettyPrint(true);
+ 

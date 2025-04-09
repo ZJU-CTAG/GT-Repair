@@ -1,0 +1,24 @@
+public void testBigDecimalRounded() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new BigDecimalHolder(new BigDecimal("-10000000000.0000000001")));
+    final BigDecimalHolder o = mapper.readValue(json, BigDecimalHolder.class);
+    assertEquals(new BigDecimal("-10000000000.0000000001"), o.getValue());
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = BigDecimalHolder.class, name = "bigDecimal")
+})
+static class BigDecimalHolder {
+    private final BigDecimal value;
+
+    public BigDecimalHolder(BigDecimal value) {
+        this.value = value;
+    }
+
+    @JsonGetter
+    public BigDecimal getValue() {
+        return value;
+    }
+}

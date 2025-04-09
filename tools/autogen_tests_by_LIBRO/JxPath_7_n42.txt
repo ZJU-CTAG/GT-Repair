@@ -1,0 +1,16 @@
+public void testCompareNodesets()
+{
+    final String xml = "<doc><child1>1</child1><child2>2</child2></doc>";
+    final JXPathContext context = JXPathContext.newContext(parseXml(xml));
+
+    assertEquals(Boolean.TRUE, context.getValue("child1 > child2", Boolean.class));
+    assertEquals(Boolean.FALSE, context.getValue("child2 > child1", Boolean.class));
+
+    assertEquals(Boolean.TRUE, context.getValue("child1 < child2", Boolean.class));
+    assertEquals(Boolean.FALSE, context.getValue("child2 < child1", Boolean.class));
+
+    assertEquals(Boolean.TRUE, context.getValue("child1 >= child1", Boolean.class));
+    assertEquals(Boolean.FALSE, context.getValue("child1 >= child2", Boolean.class));
+
+    assertEquals(Boolean.TRUE, context.getValue("child1 <= child1", Boolean.class));
+    assertEquals(Boolean

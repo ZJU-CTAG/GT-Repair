@@ -1,0 +1,13 @@
+public void testFromXmlParser() throws Exception {
+    final String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<root><child attr=\"foo\">bar</child></root>";
+    final XmlMapper mapper = new XmlMapper();
+    final XmlParser parser = mapper.getFactory().createParser(xml);
+
+    parser.nextToken();
+    parser.nextToken();
+    parser.next();
+    assertTrue(JsonToken.VALUE_STRING == parser.getCurrentToken());
+    assertEquals("attr", parser.getCurrentName());
+    assertEquals("foo", parser.nextTextValue());
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+     Compiler compiler = new Compiler();
+     CompilerOptions options = new CompilerOptions();
+     options.checkSymbols = true;
+     options.setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT3);
+     compiler.compile(
+         new JSSourceFile[] {
+             JSSourceFile.fromCode("customData.js", Joiner.on("\n").join(
+                 "var customData = { key: 'value' };",
+                 "function testRemoveKey( key ) {",
+                 " var dataSlot = customData,",
+                 " retval = dataSlot && dataSlot[ key ],",
+                 " hadKey = dataSlot && ( key in dataSlot );",
+                 "",
+                 " if ( dataSlot )",
+                 " delete dataSlot[ key ];",
+                 "",
+                 " return hadKey ? retval : null;",
+                 "};",
+                 "console.log( testRemoveKey( 'key' ) ); // 'value'",
+                 "console.log( 'key' in customData ); // false"
+                 ))

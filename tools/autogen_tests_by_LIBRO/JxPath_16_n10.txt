@@ -1,0 +1,15 @@
+public void testNode() throws JaxenException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    org.w3c.dom.Document doc = builder.newDocument();
+    org.w3c.dom.Element a = doc.createElement("a");
+    org.w3c.dom.Element b = doc.createElement("b");
+    org.w3c.dom.Element c = doc.createElement("c");
+    b.appendChild(c);
+    a.appendChild(b);
+    doc.appendChild(a);
+    XPath xpath = new DOMXPath("//node()");
+    List result = xpath.selectNodes(doc);
+    assertEquals(4, result.size());
+}

@@ -1,0 +1,20 @@
+public void testLongHex() {
+    assertEquals(Long.valueOf(0x7fffffffffffffffL), NumberUtils.createLong("7fffffffffffffff", 16));
+    try {
+        assertEquals(Long.valueOf(0x7fffffffffffffffL), NumberUtils.createLong("7ffffffffffffff", 16));
+        fail();
+    } catch (NumberFormatException e) {
+        // expected
+    }
+    try {
+        assertEquals(Long.valueOf(0x7fffffffffffffffL), NumberUtils.createLong("7ffffffffffffffff", 16));
+        fail();
+    } catch (NumberFormatException e) {
+        // expected
+    }
+}
+
+public void testBigHex() {
+    assertEquals(new BigInteger("7ffffffffffffffff", 16), NumberUtils.createBigInteger("7ffffffffffffffff", 16));
+    assertEquals(new BigInteger("7ffffffffffffffff", 16), NumberUtils.createBigInteger("7ffffffffffffffff0", 16));
+    assertEquals(new BigInteger("7ffff

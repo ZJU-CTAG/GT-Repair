@@ -1,0 +1,17 @@
+public void testErrorRecovery() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final MappingIterator<String> it = mapper.reader()
+        .forType(String.class)
+        .readValues(com.fasterxml.jackson.databind.TestBase.jsonTestSource(com.fasterxml.jackson.databind.TestBase.class, "test2.json"));
+    while (it.hasNextValue()) {
+        it.next();
+    }
+    try {
+        it.next();
+        fail("Expected an exception");
+    } catch (final MismatchedInputException e) {
+        assertTrue(it.hasNext());
+        assertEquals(JsonToken.END_ARRAY, it.next());
+    }
+}

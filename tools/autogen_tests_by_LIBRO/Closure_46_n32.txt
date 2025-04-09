@@ -1,0 +1,12 @@
+public void testIssue() {
+    ClassType ct = new ClassType(new TypeClassDef(null, "test", new TypeClassDef[0]) {
+        @Override
+        public Type getThisType() {
+            return new NamedType(getName());
+        }
+    });
+    ct.setBody(new TypeBody());
+    Type type = ct.getBody().addTypeUse("test", ct);
+    
+    TypeCheckPass.check(type, null);
+}

@@ -1,0 +1,17 @@
+public void testNonNullTypeAdapterWithNullInstance() {
+    class MyTypeAdapterFactory implements TypeAdapterFactory {
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (typeToken.getRawType() == String.class ) {
+                return null;
+            }
+            return null;
+        }
+    }
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new MyTypeAdapterFactory()).create();
+    try {
+        gson.toJson("");
+    } catch (NullPointerException e) {
+        fail("Should not throw NPE");
+    }
+}

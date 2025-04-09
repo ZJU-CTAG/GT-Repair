@@ -1,0 +1,10 @@
+public void testBreakInFinallyBlock() {
+    Context context = Context.enter();
+    try {
+        ScriptableObject scope = context.initStandardObjects();
+        Script script = context.compileString("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")", "", 1, null);
+        script.exec(context, scope);
+    } finally {
+        Context.exit();
+    }
+}

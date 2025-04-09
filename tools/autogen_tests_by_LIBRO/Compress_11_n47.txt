@@ -1,0 +1,12 @@
+public void testCreateArchiveInputStreamText() throws Exception {
+    final byte[] data = "this is a simple text file\n".getBytes();
+    final File file = File.createTempFile("commons-compress-107-", ".txt");
+    file.deleteOnExit();
+    try (final FileOutputStream os = new FileOutputStream(file)) {
+        os.write(data);
+    }
+    try (final FileInputStream is = new FileInputStream(file)) {
+        assertEquals(ArchiveStreamFactory.TAR,
+                     new ArchiveStreamFactory().createArchiveInputStream(is).getClass().getSimpleName());
+    }
+}

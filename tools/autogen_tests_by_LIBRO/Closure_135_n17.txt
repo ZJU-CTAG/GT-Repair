@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String[] warnings = new String[] {"JSC_UNKNOWN_OVERRIDE: property CustomMethod not defined on any superclass of SubClass" };
+    TestErrorReporter testErrorReporter = TestErrorReporter.forNoErrors();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler(testErrorReporter);
+    compiler.compile(INPUT_FILE, options);
+    testErrorReporter.assertWarnings(warnings);
+}

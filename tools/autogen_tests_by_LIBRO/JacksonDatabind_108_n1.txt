@@ -1,0 +1,16 @@
+public void testEmptyInput() throws Exception
+{
+    final String INPUT = "   \n\t  ";
+    ObjectMapper m = new ObjectMapper();
+    JsonNode n = m.readTree(INPUT);
+    assertNotNull(n);
+    assertTrue(n.isMissingNode());
+
+    // and also:
+    JsonParser p = m.getFactory().createParser(INPUT);
+    assertFalse(p.hasCurrentToken());
+    assertNull(p.getCurrentToken());
+    n = m.readTree(p);
+    assertNotNull(n);
+    assertTrue(n.isMissingNode());
+}

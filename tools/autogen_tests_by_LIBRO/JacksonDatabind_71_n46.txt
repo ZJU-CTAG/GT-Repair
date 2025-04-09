@@ -1,0 +1,13 @@
+public void testCharSequenceMap() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new GuavaModule());
+    mapper.registerModule(new JsonOrgModule());
+    Map<CharSequence, Object> map = new HashMap<>();
+    map.put("A", "B");
+    String s = mapper.writeValueAsString(map);
+    assertEquals("{\"A\":\"B\"}", s);
+    map = mapper.readValue(s, new TypeReference<Map<CharSequence, Object>>() {});
+    assertEquals(1, map.size());
+    assertEquals("B", map.get("A"));
+}

@@ -1,0 +1,18 @@
+public void testGammaDistributionClone() throws Exception {
+    final GammaDistribution testDistribution = new GammaDistribution(1.0, 1.0);
+
+    final ByteArrayOutputStream output = new ByteArrayOutputStream();
+    final ObjectOutputStream out = new ObjectOutputStream(output);
+    out.writeObject(testDistribution);
+    out.close();
+
+    final ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
+    final ObjectInputStream in = new ObjectInputStream(input);
+    final GammaDistribution resultDistribution = (GammaDistribution) in.readObject();
+    in.close();
+
+    final double[] testSamples = testDistribution.sample(100000);
+    final double[] resultSamples = resultDistribution.sample(100000);
+
+    assertArrayEquals(testSamples, resultSamples, 0.000001);
+}

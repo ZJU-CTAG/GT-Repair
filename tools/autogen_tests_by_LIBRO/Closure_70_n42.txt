@@ -1,0 +1,7 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test", "function test(param1, param2) { var s = param1 + param2; }"));
+    assertTrue(result.success);
+    assertEquals(1, result.warnings.size());
+    assertEquals(TypeCheck.WRONG_ARGUMENT_COUNT, ((JSError) result.warnings.toArray()[0]).getType());
+}

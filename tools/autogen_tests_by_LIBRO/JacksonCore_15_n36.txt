@@ -1,0 +1,20 @@
+public void testFilteringParserDelegateMultipleMatches() throws Exception {
+    final String json = "{\"a\": 1, \"b\": 2, \"c\": 3}";
+    final JsonFactory jsonFactory = new JsonFactory();
+    final JsonParser jsonParser = jsonFactory.createParser(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)));
+    final ObjectWriter writer = new ObjectMapper().writer();
+    final AtomicInteger counter = new AtomicInteger(1);
+    final JsonParserDelegate delegate = new FilteringParserDelegate(jsonParser, new TokenFilter() {
+        @Override
+        public TokenFilter includeProperty(final BeanPropertyWriter writer) {
+            if (counter.getAndDecrement() > 0) {
+                return TokenFilter.INCLUDE_ALL;
+            } else {
+                return null;
+            }
+        }
+    }, false, true);
+    final JsonNode node = writer.writeValueAsTree(delegate);
+
+    assertEquals(2, node.size());
+}

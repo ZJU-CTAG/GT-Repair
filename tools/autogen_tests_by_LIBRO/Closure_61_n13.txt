@@ -1,0 +1,12 @@
+public void testIssue() {
+    String input = "Math.blah = function(test) { test.a = 5; };\n" +
+                   "var test = new Object();\n" +
+                   "Math.blah(test);";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js", input));
+    assertTrue(result.success);
+    assertFalse(result.errors.length > 0);
+    assertFalse(result.warnings.length > 0);
+}

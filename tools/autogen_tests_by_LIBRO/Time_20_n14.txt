@@ -1,0 +1,22 @@
+public void testIssue126() {
+    Set<String> timeZones = DateTimeZone.getAvailableIDs();
+    int numTimeZonesTested = 0;
+    int numTimeZonesPassed = 0;
+    int numTimeZonesFailed = 0;
+    int numTimeZonesException = 0;
+    for (String timeZone : timeZones) {
+        numTimeZonesTested++;
+
+        final DateTime dateTime = new DateTime(0L, DateTimeZone.forID(timeZone));
+        final String dateTimeZoneId = dateTime.getZone().getID();
+
+        if (!timeZone.equals(dateTimeZoneId)) {
+            numTimeZonesFailed++;
+            System.out.println(timeZone + " failed to construct into the proper date time zone - constructed time zone = " + dateTimeZoneId);
+            continue;
+        }
+        try {
+            DateTime convertedDateTime = ISODateTimeFormat.dateTime().parseDateTime(dateTime.toString());
+
+            if (dateTime.equals(convertedDateTime)) {
+                numTimeZonesPassed++;

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final Function<String, Void> check = new Function<String, Void>() {
+        public Void apply(String input) {
+            Compiler compiler = new Compiler();
+            compiler.disableThreads();
+            CompilerOptions compilerOptions = new CompilerOptions();
+            compilerOptions.ideMode = true;
+            compiler.init(
+                    ImmutableList.<SourceFile>of(),
+                    ImmutableList.of(SourceFile.fromCode("third_party", input)),
+                    compilerOptions);
+            compiler.parseInputs();
+            compiler.check();
+            return null;
+        }
+    };
+    check.apply("function assert(b) {if (!b) throw 'error';} assert(f() === 1); var f = function() {return 2;}; assert(f() === 2);");
+    check.apply("function assert(b) {if (!b) throw 'error';} assert(f() === 1); var f = function() {return 2;}; assert(f() === 2); function f() {return 1;}");
+}

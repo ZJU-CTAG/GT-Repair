@@ -1,0 +1,19 @@
+public void testGetNextZipEntry() throws IOException {
+    File testFile = new File(getTestDirectory(), "ZipArchiveInputStreamTest.zip");
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(testFile);
+    zaos.putArchiveEntry(new ZipArchiveEntry("ZipEntry1"));
+    zaos.write(1);
+    zaos.closeArchiveEntry();
+    zaos.putArchiveEntry(new ZipArchiveEntry("ZipEntry2"));
+    zaos.write(2);
+    zaos.closeArchiveEntry();
+    zaos.close();
+    ZipArchiveInputStream zais = null;
+    try {
+        zais = new ZipArchiveInputStream(new FileInputStream(testFile));
+        ZipArchiveEntry entry = zais.getNextZipEntry();
+        assertEquals("ZipEntry1", entry.getName());
+        assertEquals(1, zais.read());
+        entry = zais.getNextZipEntry();
+        assertEquals("ZipEntry2", entry.getName());
+        assertEquals(2, z

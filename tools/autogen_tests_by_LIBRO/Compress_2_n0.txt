@@ -1,0 +1,21 @@
+public void testDeleteArchiveEntry() throws Exception {
+    File archive = getFile("bla.ar");
+    ArArchiveEntry entry1 = new ArArchiveEntry("test1.xml", 11);
+    ArArchiveEntry entry2 = new ArArchiveEntry("test2.xml", 11);
+    FileOutputStream output = new FileOutputStream(archive);
+    ArchiveOutputStream os = new ArArchiveOutputStream(output);
+    os.putArchiveEntry(entry1);
+    os.write("Hello World".getBytes());
+    os.closeArchiveEntry();
+    os.putArchiveEntry(entry2);
+    os.write("Hello World".getBytes());
+    os.closeArchiveEntry();
+    os.close();
+    output.close();
+    output = new FileOutputStream(archive, true);
+    os = new ArArchiveOutputStream(output);
+    os.deleteArchiveEntry(entry2);
+    entry1.setName("test.txt");
+    entry1.setSize(11);
+    os.putArchiveEntry(entry1);
+    os.write("Hello World".get

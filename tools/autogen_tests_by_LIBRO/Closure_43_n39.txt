@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String js = "function makeClass(parent, prop) { \n" +
+            "    // Dynamically create class constructor. \n" +
+            "    var clazz = function() { \n" +
+            "        // Stupid JS need exactly one \"operator\" to start a block. \n" +
+            "        if (parent) { \n" +
+            "            parent.apply(this, arguments); \n" +
+            "        } \n" +
+            "    }; \n" +
+            "    \n" +
+            "    // Inherit parent\'s statics methods. \n" +
+            "    if (parent) { \n" +
+            "        var F = function() {}; \n" +
+            "        F.prototype = parent.prototype; \n" +
+            "        clazz.prototype = new F(); \n" +
+            "    } \n" +
+            "    \n" +
+            "    // Add mixins (other classes). \n" +
+            "    if (!prop) { \n" +

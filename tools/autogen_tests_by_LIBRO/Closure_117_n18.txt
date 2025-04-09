@@ -1,0 +1,23 @@
+public void testIssue108() {
+    String js = "/**\n" +
+                " * @constructor\n" +
+                " */\n" +
+                "function C2() {}\n" +
+                "/**\n" +
+                " * @constructor\n" +
+                " */\n" +
+                "function C3(c2) {\n" +
+                "  /**\n" +
+                "   * @type {C2} \n" +
+                "   * @private\n" +
+                "   */\n" +
+                "  this.c2_;\n" +
+                "\n" +
+                " use(this.c2_.prop);\n" +
+                "}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(js);
+    assertTrue(result.success);
+    for (JSError warning : result.warnings) {
+        if (warning.type.key.equals("JSC_INEXISTENT_PROPERTY")) {
+            assertTrue(warning.description, warning

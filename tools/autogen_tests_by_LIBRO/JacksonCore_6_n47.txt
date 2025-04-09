@@ -1,0 +1,10 @@
+public void testIssue109() {
+    String json = "{\"00\": \"value\"}";
+    JsonNode node = JsonLoader.fromString(json);
+    assertEquals("value", node.path("00").asText());
+    assertFalse(node.has("0"));
+    assertEquals("value", node.path("/00").asText());
+    assertFalse(node.has("/0"));
+    assertFalse(node.has("/0/0"));
+    assertFalse(node.has("/00/00"));
+}

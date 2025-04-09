@@ -1,0 +1,20 @@
+public void testIssue110() {
+    @Command(name = "issue110")
+    class App {
+        @Option(names = "-a", required = true) String a;
+        @Option(names = "-b", required = true) String b;
+    }
+    try {
+        CommandLine.populateCommand(new App(), "-a", "1");
+        fail("Missing option: -b");
+    } catch (MissingParameterException ex) {
+        assertEquals("Missing required option '-b=<b>'", ex.getMessage());
+    }
+    Properties props = new Properties();
+    props.setProperty("a", "1");
+    props.setProperty("b", "2");
+    CommandLine cmd = new CommandLine(new App());
+    cmd.parse(props);
+    assertEquals("1", cmd.getOptionValue("a"));
+    assertEquals("2", cmd.getOptionValue("b"));
+}

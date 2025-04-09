@@ -1,0 +1,14 @@
+public void testZipArchiveEntryEquals() throws IOException {
+    File file = File.createTempFile("issue", ".zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+    zos.putArchiveEntry(new ZipArchiveEntry("entry"));
+    zos.write("content".getBytes("UTF-8"));
+    zos.closeArchiveEntry();
+    zos.close();
+    ZipFile zipFile = new ZipFile(file);
+    ZipArchiveEntry one = zipFile.getEntry("entry");
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(file));
+    ZipArchiveEntry two = zis.getNextZipEntry();
+    assertEquals(one, two);
+    assertEquals(one.hashCode(), two.hashCode());
+}

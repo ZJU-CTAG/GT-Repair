@@ -1,0 +1,20 @@
+public void testIteratorRecovery() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    JsonFactory jf = mapper.getFactory();
+    JsonParser jp = jf.createParser("[1, 2, 3, ]");
+    // should be able to recover from this error...
+    MappingIterator<Object> it = mapper.reader().readValues(jp);
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(1), it.nextValue());
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(2), it.nextValue());
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(3), it.nextValue());
+    assertFalse(it.hasNextValue());
+
+    // and can continue after it
+    jp = jf.createParser("[4, 5, 6, ]");
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(4), it.nextValue());
+    assertTrue(it.hasNextValue

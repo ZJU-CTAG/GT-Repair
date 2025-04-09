@@ -1,0 +1,10 @@
+public void testIssue109() throws IOException {
+    CsvPreference prefs = new CsvPreference.Builder('"', ',', "\n")
+        .nullString("")
+        .build();
+    StringReader r = new StringReader("");
+    CsvListReader csvr = new CsvListReader(r, prefs);
+    List<String> header = csvr.read();
+    assertEquals(1, header.size());
+    assertEquals("", header.get(0));
+}

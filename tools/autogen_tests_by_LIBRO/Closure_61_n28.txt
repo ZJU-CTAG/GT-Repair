@@ -1,0 +1,14 @@
+public void testMath() throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        ResourceUtils.getResourceFilePath("math.js"),
+        ResourceUtils.getResourceFilePath("out.js")
+    );
+    assertFalse(result.success);
+    assertEquals(1, result.warnings.length);
+    assertEquals(
+        "JSC_USELESS_CODE: Suspicious code. This code lacks side-effects. Is there a bug?",
+        result.warnings[0].description
+    );
+}

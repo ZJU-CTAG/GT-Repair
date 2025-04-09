@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception {
+    TarArchiveEntry tae = new TarArchiveEntry("test", TarConstants.LF_NORMAL);
+    tae.setSize(0x80000000L);
+    assertEquals(0x80000000L, tae.getSize());
+    byte[] header = tae.getHeader();
+    // Leading spaces are allowed
+    header[116] = 32;
+    header[117] = 32;
+    header[118] = 32;
+    header[119] = 32;
+    header[120] = 32;
+    header[121] = 32;
+    header[122] = 32;
+    header[123] = 32;
+    header[124] = 32;
+    header[125] = 32;
+    header[126] = 32;
+    header[127] = 0;
+    TarArchiveEntry tae2 = new TarArchiveEntry(header);
+    assertEquals("test", tae2.getName());
+    assertEquals(0x80000000L, tae2.getSize());
+}

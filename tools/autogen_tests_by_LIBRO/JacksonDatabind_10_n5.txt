@@ -1,0 +1,25 @@
+public void testReproduce() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValueAsString(new Dummy());
+}
+
+static class Dummy {
+    @JsonSerialize(using = MySerializer.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters(){
+        return null;
+    }
+}
+
+static class MySerializer extends StdSerializer<Map<String, String>> {
+    public MySerializer() {
+        super(Map.class);
+    }
+
+    @Override
+    public void serialize(Map<String, String> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        gen.writeStartObject();
+        gen.writeStringField("value", "john");
+        gen.writeEndObject();
+    }
+}

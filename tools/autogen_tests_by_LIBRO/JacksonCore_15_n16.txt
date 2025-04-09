@@ -1,0 +1,23 @@
+public void testFilteringParserDelegate(){
+    String json = "[{\"a\":1},{\"a\":2}]";
+    final List<JsonToken> foundTokens = new ArrayList<JsonToken>();
+    final List<String> foundTexts = new ArrayList<String>();
+    final List<JsonLocation> foundLocations = new ArrayList<JsonLocation>();
+    JsonFactory factory = new JsonFactory();
+    JsonParser jp = factory.createParser(json);
+    jp.nextToken();
+    FilteringParserDelegate delegate = new FilteringParserDelegate(jp, new TokenFilter() {
+        @Override
+        public boolean includeValue(JsonParser jp) throws IOException {
+            JsonToken currentToken = jp.getCurrentToken();
+            if (currentToken.isNumeric()) {
+                foundTokens.add(currentToken);
+                foundTexts.add(jp.getText());
+                foundLocations.add(jp.getCurrentLocation());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean include

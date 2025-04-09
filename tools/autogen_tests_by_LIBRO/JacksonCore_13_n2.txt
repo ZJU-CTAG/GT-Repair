@@ -1,0 +1,19 @@
+public void testSimpleMultiple() throws Exception
+{
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator gen = new JsonFactory().createGenerator(out, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeStringField("a", "");
+    gen.writeStringField("b", "");
+    gen.writeEndObject();
+    gen.close();
+
+    final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+    JsonParser parser = new JsonFactory().createParser(in);
+    assertToken(JsonToken.START_OBJECT, parser.nextToken());
+    assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("a", parser.getCurrentName());
+    assertToken(JsonToken.VALUE_STRING, parser.nextToken());
+    assertToken(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("b", parser.getCurrentName());
+    assertToken(JsonToken.VALUE_STRING, parser.nextToken());

@@ -1,0 +1,22 @@
+public void testToStringStyleMemoryLeak() throws Exception {
+    // First, create a ThreadLocal in ToStringStyle
+    Class<?> tsClass = Class.forName("org.apache.commons.lang3.builder.ToStringStyle");
+    Field field = tsClass.getDeclaredField("defaultStyle");
+    Field modifiersField = Field.class.getDeclaredField("modifiers");
+    modifiersField.setAccessible(true);
+    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+    field.setAccessible(true);
+    field.set(null, null);
+    field.set(null, new ThreadLocal());
+
+    // Create a reference chain that is not GCable until the webapp is unloaded
+    ThreadLocalServlet servlet = new ThreadLocalServlet();
+    servlet.init();
+    servlet.doGet(null, null);
+    servlet.destroy();
+}
+
+public class ThreadLocalServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    private static final class ThreadLocalBuilder extends HashCodeBuilder {

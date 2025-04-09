@@ -1,0 +1,18 @@
+public void testMixin() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.addMixIn(MixinTarget.class, MixinSource.class);
+        mapper.writeValueAsString(new MixinTarget());  // throws
+    }
+
+    public static class MixinTarget {
+        public int getA() {
+            return 0;
+        }
+        public int getB() {
+            return 1;
+        }
+    }
+    
+    @JsonIgnoreProperties({"a", "b"})
+    public static class MixinSource {
+    }

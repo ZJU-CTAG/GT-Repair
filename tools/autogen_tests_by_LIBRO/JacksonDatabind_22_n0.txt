@@ -1,0 +1,31 @@
+public void testIssue108() throws Exception {
+    String json = "{\"v\":\"a\"}";
+    ObjectMapper mapper = new ObjectMapper();
+
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Value.class, new ValueSerializer());
+
+    mapper.registerModule(module);
+
+    Value value = mapper.readValue(json, Value.class);
+
+    assertEquals("Expected serializer to be used", "a", value.v);
+}
+
+@JsonValue
+static class Value {
+    String v;
+}
+
+static class ValueSerializer extends StdSerializer<Value> {
+    public ValueSerializer() {
+        super(Value.class);
+    }
+
+    @Override
+    public void serialize(Value value, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException, JsonProcessingException {
+        value.v = "a";
+        jgen.writeObject(value);
+    }
+}

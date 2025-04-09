@@ -1,0 +1,16 @@
+public void testIssue108() {
+    try {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        ObjectOutputStream oout = new ObjectOutputStream(bout);
+        oout.writeObject(FastDateFormat.getInstance("yyyy"));
+        oout.flush();
+        oout.close();
+        ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+        ObjectInputStream oin = new ObjectInputStream(bin);
+        oin.readObject();
+    } catch (IOException e) {
+        fail("Failed with IOException: " + e);
+    } catch (ClassNotFoundException e) {
+        fail("Failed with ClassNotFoundException: " + e);
+    }
+}

@@ -1,0 +1,19 @@
+public void testInvokerTransformer() {
+    String command = "calc.exe";
+    InvokerTransformer transformer = new InvokerTransformer("toString", new Class[] {}, new Object[] {});
+
+    TransformingComparator comparator = new TransformingComparator(transformer);
+    SortedSet sortedSet = new TreeSet(comparator);
+
+    Method[] methods = Process.class.getDeclaredMethods();
+    for (Method method : methods) {
+        if (Modifier.isPublic(method.getModifiers()) && method.getReturnType().equals(Process.class)) {
+            sortedSet.add(method);
+        }
+    }
+
+    Method method = (Method) sortedSet.first();
+    Process p = (Process) method.invoke(null, command);
+    p.waitFor();
+    assertEquals(0, p.exitValue());
+}

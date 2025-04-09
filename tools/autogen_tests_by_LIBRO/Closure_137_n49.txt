@@ -1,0 +1,20 @@
+public void testIssue() {
+    // ==ClosureCompiler==
+    // @output_file_name default.js
+    // @compilation_level ADVANCED_OPTIMIZATIONS
+    // ==/ClosureCompiler==
+
+    String s = "var t = null;\n"
+              + "window.test = function() {\n"
+              + "  if (t != null) {\n"
+              + "    t = null;\n"
+              + "  }\n"
+              + "  t = 1;\n"
+              + "};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setWarningLevel(Di

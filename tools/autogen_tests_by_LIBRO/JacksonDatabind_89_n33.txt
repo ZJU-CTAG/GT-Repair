@@ -1,0 +1,16 @@
+public void testYaml() {
+    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    try {
+        mapper.readValue("type: !org.apache.commons.collections.functors.InvokerTransformer\naction: run\n" +
+                "allowedTypes: [!java.lang.Runtime, !java.lang.Class]\n" +
+                "transformer: !org.apache.commons.collections.functors.InstantiateTransformer\n" +
+                "allowedTypes: [!java.lang.reflect.Constructor]\n" +
+                "constructor: [!java.lang.String, !java.lang.String]\n" +
+                "resolveClass: !java.lang.Class\n" +
+                "method: !java.lang.String\n",
+            Object.class);
+        fail("Should throw an exception");
+    } catch (Throwable e) {
+        assertEquals("Illegal type", e.getMessage());
+    }
+}

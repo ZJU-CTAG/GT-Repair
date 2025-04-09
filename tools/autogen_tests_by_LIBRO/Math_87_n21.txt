@@ -1,0 +1,12 @@
+public void testBug101() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { -1, -2 }, 0);
+    List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 1, 1 }, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] { 1, 0 }, Relationship.LEQ, 0));
+    constraints.add(new LinearConstraint(new double[] { 0, 1 }, Relationship.LEQ, 0));
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(f, constraints, GoalType.MAXIMIZE, true);
+    double[] expected = { 0.0, 0.0 };
+    double[] actual = solution.getPoint();
+    assertArrayEquals(expected, actual, 0);
+}

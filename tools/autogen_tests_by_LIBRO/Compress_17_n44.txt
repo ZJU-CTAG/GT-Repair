@@ -1,0 +1,9 @@
+public void testIssue108(@TempDir File temp) throws IOException {
+    Path file = temp.toPath().resolve("test.tar");
+    Files.copy(getClass().getResourceAsStream("/issue108.tar"), file);
+    try (InputStream is = Files.newInputStream(file); TarArchiveInputStream tar = new TarArchiveInputStream(is)) {
+        TarArchiveEntry e = tar.getNextTarEntry();
+        assertEquals("com.android.providers.contacts/databases/contacts2.db", e.getName());
+        assertEquals(17280, e.getSize());
+    }
+}

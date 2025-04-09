@@ -1,0 +1,29 @@
+public void testCase1() {
+    final int n = 2;
+    final double[] target = new double[] { 0, 0 };
+    final double[] weights = new double[] { 1, 1 };
+    final MultivariateDifferentiableVectorFunction f = new MultivariateDifferentiableVectorFunction() {
+            
+            @Override
+            public double[] value(double[] point) {
+                return point;
+            }
+            
+            @Override
+            public DerivativeStructure[] value(DerivativeStructure[] point) {
+                return point;
+            }
+        };
+    final double[] startPoint = new double[] { -0.05, -0.05 };
+        
+    LeastSquaresProblem problem = new LeastSquaresBuilder().
+            start(startPoint).
+            model(f).
+            target(target).
+            weight(new DiagonalMatrix(weights)).
+            build();
+        
+    LevenbergMarquardtOptimizer solver = new LevenbergMarquardtOptimizer();
+    LeastSquaresOptimizer.Optimum optimum = solver.optimize(problem);
+        
+    V

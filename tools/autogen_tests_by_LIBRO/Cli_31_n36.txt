@@ -1,0 +1,21 @@
+public void testSetArgName() {
+    final String commandLineSyntax = "java Test";
+    final String header = "Header";
+    final String footer = "Footer";
+    Option opt1 = new Option("a", null);
+    Option opt2 = OptionBuilder.withArgName("opt2").hasArg().create("b");
+    Options options = new Options();
+    options.addOption(opt1);
+    options.addOption(opt2);
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("test");
+    StringWriter out = new StringWriter();
+    PrintWriter writer = new PrintWriter(out);
+    formatter.printHelp(writer, formatter.getWidth(), commandLineSyntax, header, options, formatter.getLeftPadding(), formatter.getDescPadding(), footer);
+    writer.flush();
+    final String expected = "usage: java Test [-a] [-b <opt2>]\n" +
+            "\n" +
+            "Header\n" +
+            "\n" +
+            "  -a         \n" +
+           

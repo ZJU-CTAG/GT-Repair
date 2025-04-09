@@ -1,0 +1,10 @@
+public void testRightPaddedChecksum() throws Exception {
+    File tar = File.createTempFile("commons-compress-issue-99", ".tar");
+    FileUtils.copyURLToFile(Issue99Test.class.getResource(RIGHT_PADDED_CHECKSUM_TAR), tar);
+    TarArchiveInputStream tin = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar",new FileInputStream(tar));
+    TinTest.assertHasNext(tin);
+    TarArchiveEntry entry = tin.getNextTarEntry();
+    assertNotNull(entry);
+    tin.close();
+}
+

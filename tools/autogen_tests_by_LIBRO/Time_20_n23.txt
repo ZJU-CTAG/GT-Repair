@@ -1,0 +1,18 @@
+public void testIssue126() {
+    Set<String> timeZones = DateTimeZone.getAvailableIDs();
+    int numTimeZonesTested = 0;
+    int numTimeZonesPassed = 0;
+    int numTimeZonesFailed = 0;
+    int numTimeZonesException = 0;
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss.SSS ZZZ");
+    for (String timeZone : timeZones) {
+        numTimeZonesTested++;
+        DateTime dateTime = DateTime.now().withZone(DateTimeZone.forID(timeZone));
+        final String dateTimeZoneId = dateTime.getZone().getID();
+        try {
+            DateTime convertedDateTime = formatter.parseDateTime(formatter.print(dateTime));
+            if (dateTime.equals(convertedDateTime)) {
+                numTimeZonesPassed++;
+            } else {
+                numTimeZonesFailed++;
+                System.out.println("Formatter failed for time zone ID: " + dateTimeZoneId

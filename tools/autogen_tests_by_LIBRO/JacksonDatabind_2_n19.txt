@@ -1,0 +1,17 @@
+public void testManyToOne() throws JsonGenerationException,
+JsonMappingException, IOException {
+    ObjectMapper mapper = jsonMapper();
+    List<Issue> issues = new ArrayList<Issue>();
+    for (int i = 0; i < 3; i ++) {
+        Issue issue = new Issue();
+        issue.setId(new Long(i));
+        issues.add(issue);
+    }
+    IssueWithManyToOne iwmo = new IssueWithManyToOne();
+    iwmo.setIssues(issues);
+    String json = mapper.writeValueAsString(iwmo);
+    System.out.println(json);
+    JsonNode tree = mapper.valueToTree(iwmo);
+    System.out.println(tree);
+    assertEquals(3, tree.get("issues").size());
+}

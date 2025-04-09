@@ -1,0 +1,17 @@
+public void testRequiredOptions() {
+    CommandLineParser parser = new PosixParser();
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.withLongOpt("foo").isRequired().create('f'));
+    opts.addOption(OptionBuilder.withLongOpt("bar").isRequired().create('b'));
+    opts.addOption(OptionBuilder.withLongOpt("baz").create('z'));
+    opts.addOption(OptionBuilder.withLongOpt("quux").create('q'));
+
+    String[] args = new String[] { "-f", "foo" };
+    CommandLine cl = parser.parse(opts, args);
+    assertEquals("-f", cl.getOptions()[0].getOpt());
+    assertEquals("foo", cl.getOptions()[0].getValue());
+
+    args = new String[] { "--bar", "bar" };
+    cl = parser.parse(opts, args);
+    assertEquals("bar", cl.getOptions()[0].getLongOpt());
+    assertEquals("bar", cl.getOptions()[

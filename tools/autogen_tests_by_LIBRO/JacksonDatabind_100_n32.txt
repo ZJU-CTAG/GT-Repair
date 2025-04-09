@@ -1,0 +1,11 @@
+public void testTreeTraversingParser() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    mapper.configure(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS, true);
+
+    String json = "{ a:1, b:1.1, c:0x0, d:null, e:true, f:'some text', g:new Date(0), h:[1,2,3], i:/regex/, j:{x:1,y:2} }";
+    JsonNode tree = mapper.readTree(json);
+    JsonParser parser = new TreeTravers

@@ -1,0 +1,18 @@
+public void test() {
+    Options options = new Options();
+    OptionGroup groupB = new OptionGroup();
+    groupB.setMinimum(1);
+    groupB.setMaximum(1);
+    groupB.addOption(new Option("b", "b", false, "B"));
+    OptionGroup groupA = new OptionGroup();
+    groupA.addOption(new Option("a", "a", false, "A"));
+    groupB.addOption(groupA);
+    options.addOptionGroup(groupB);
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[]{"-a"});
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        assertEquals("Unrecognized option: -a", e.getMessage());
+    }
+}

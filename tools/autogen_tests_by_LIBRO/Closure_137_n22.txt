@@ -1,0 +1,12 @@
+public void testIssue() {
+    String expected = "var t = null; window.test = function() { if (t != null) { t = null; } t = 1; };";
+    String source = "var t = null; window.test = function() { if (t != null) { t = null; } t = 1; };";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("source", source),
+      SourceFile.fromCode("extern", ""), options);
+    assertEquals(expected, compiler.toSource());
+    assertTrue(result.success);
+}

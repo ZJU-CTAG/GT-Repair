@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    Document document = Jsoup.parse(new File("/tmp/test.html"), "UTF-8", "http://example.com/");
+    Element root = document.root();
+    assertEquals("http://example.com/", root.namespaceURI());
+
+    Element div = root.child(0);
+    assertEquals("http://example.com/", div.namespaceURI());
+
+    Element a = div.child(0);
+    assertEquals("http://www.w3.org/1999/xhtml", a.namespaceURI());
+
+    Element div2 = div.child(1);
+    assertEquals("http://example.com/", div2.namespaceURI());
+}

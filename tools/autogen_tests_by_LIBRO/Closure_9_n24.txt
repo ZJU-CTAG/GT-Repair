@@ -1,0 +1,14 @@
+public void testIssue867() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setTransformAMDModules(true);
+    options.setProcessCommonJSModules(true);
+    compiler.compile(
+        SourceFile.fromCode("externs.js", "function alert(x) {}"),
+        SourceFile.fromCode("main.js", "require('./lib/Foo');"),
+        SourceFile.fromCode("lib/Foo.js", "define(function(require) { alert('libFoo'); });"),
+        options);
+}

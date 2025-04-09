@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    String[] expected = new String[] {
+            "/**",
+            " * @preserve",
+            "",
+            "This",
+            "was",
+            "ASCII",
+            "Art",
+            "*/"
+    };
+    String result = (String)Shell.run(new String[] {
+            "-s", "--indent 4", "--indent-preprocessor", "--line-break 80", "--preserve-newlines",
+            "-f", "-"
+    }, StringUtils.join(expected, "\n"));
+    String[] lines = StringUtils.split(result, "\n");
+    assertEquals(expected.length, lines.length);
+    for (int i = 0; i < expected.length; i++) {
+        assertEquals(expected[i], lines[i]);
+    }
+}

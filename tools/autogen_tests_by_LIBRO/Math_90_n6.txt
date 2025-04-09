@@ -1,0 +1,22 @@
+public void testFrequency() {
+    final Frequency f = new Frequency();
+    final Object OBJ = new Object();
+    try {
+        f.addValue(OBJ);
+    } catch (ClassCastException e) {
+        // OKAY
+    }
+    f.addValue("A");
+    // This should fail
+    try {
+        f.addValue(OBJ);
+        fail("Expecting ClassCastException");
+    } catch (ClassCastException e) {
+        // OKAY
+    }
+    f.addValue("B");
+    f.addValue("C");
+    f.addValue("D");
+    assertEquals(f.getCount(OBJ), 0);
+    assertEquals(f.getPct(OBJ), 0.0, 0.001);
+}

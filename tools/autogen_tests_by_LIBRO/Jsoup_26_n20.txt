@@ -1,0 +1,19 @@
+public void testIssue109() throws IOException {
+    // See for example http://www.w3schools.com/tags/tryit.asp?filename=tryhtml_frame_cols
+    String html = "<html>\n" +
+            "<frameset cols=\"20%,80%\">\n" +
+            "  <frame src=\"frame_a.htm\">\n" +
+            "  <frame src=\"frame_b.htm\">\n" +
+            "  <noframes>\n" +
+            "  <body>\n" +
+            "  Your browser does not support frames.\n" +
+            "  </body>\n" +
+            "  </noframes>\n" +
+            "</frameset>\n" +
+            "</html>";
+    Cleaner cleaner = new Cleaner(Whitelist.none());
+    Document document = Jsoup.parse(html);
+    Document cleanDocument = cleaner.clean(document);
+    assertNotNull(cleanDocument);
+    assertEquals(cleanDocument, document);
+}

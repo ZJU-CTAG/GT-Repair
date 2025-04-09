@@ -1,0 +1,11 @@
+public void testParseJSDoc() {
+    String jsDoc = "/**\n"
+        + " * @return {@code foo} bar\n"
+        + " * baz.\n"
+        + " */\n"
+        + "var x;";
+    JSDocInfo info = new JSDocInfoParser(compiler,
+        new DefaultErrorReporter(new ErrorManager(new PrintStreamErrorManager(System.err)))).parse(jsDoc);
+    assertTrue(info.hasReturnType());
+    assertEquals(info.getReturnType().toString(), "foo");
+}

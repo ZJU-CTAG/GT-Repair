@@ -1,0 +1,12 @@
+public void testWrappedListMixedEmpty() throws Exception {
+    String json = "{\"records\":[{\"fields\":[]}]}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationConfig.Feature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
+
+    CustomRecordList recs = mapper.readValue(json, CustomRecordList.class);
+
+    assertEquals(1, recs.size());
+    assertEquals(0, recs.get(0).getFields().size());
+}

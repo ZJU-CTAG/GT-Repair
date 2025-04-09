@@ -1,0 +1,14 @@
+public void testIgnoreCause() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+            .withCreatorVisibility(JsonAutoDetect.Visibility.NONE)
+            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withSetterVisibility(JsonAutoDetect.Visibility.NONE));
+    mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    MyException exception = (MyException) mapper.readValue(
+            "{\"message\":\"my message\",\"cause\":{\"message\":\"cause message\"}}",
+            MyException.class);
+    assertEquals("my message", exception

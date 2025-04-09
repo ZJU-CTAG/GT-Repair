@@ -1,0 +1,12 @@
+public void testWithSpark() {
+    File f = new File("src/test/resources/twitter.json");
+    JavaRDD<String> rdd = SparkHelper.sc.textFile(f.getAbsolutePath());
+    JavaRDD<JsonNode> treeRdd = rdd.map(new Function<String, JsonNode>() {
+        @Override
+        public JsonNode call(String s) throws Exception {
+            return SparkHelper.reader.readTree(s);
+        }
+    });
+    treeRdd.cache();
+    treeRdd.count();
+}

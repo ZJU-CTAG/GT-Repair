@@ -1,0 +1,17 @@
+public void testThreadLocalUsageInHashCodeBuilder() throws Exception {
+        Thread[] threads = new Thread[1000];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    HashCodeBuilder.reflectionHashCode(new Object());
+                }
+            });
+        }
+        for (int i = 0; i < threads.length; i++) {
+            threads[i].start();
+        }
+        for (int i = 0; i < threads.length; i++) {
+            threads[i].join();
+        }
+    }

@@ -1,0 +1,8 @@
+public void testIssue107() {
+    TarArchiveInputStream t = new TarArchiveInputStream(new ByteArrayInputStream(new byte[0]));
+    t.getNextTarEntry();
+    t.applyPaxHeadersToCurrentEntry(new HashMap<String,String>() {{
+        put("uid", "4294967294");
+    }});
+    assertEquals(4294967294L, t.getCurrentEntry().getUserId());
+}

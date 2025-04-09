@@ -1,0 +1,10 @@
+public void testMixinAnnotationsLost() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("Mixins", new Version(1, 0, 0, null));
+    module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+    Person person = new PersonImpl("ABC");
+    String json = mapper.writeValueAsString(person);
+    assertEquals("{\"city\":\"ABC\"}", json);
+}

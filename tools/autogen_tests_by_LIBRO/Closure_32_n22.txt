@@ -1,0 +1,28 @@
+public void testIssue151() {
+    String input = "/**\n"
+        + " * @preserve\n"
+        + "\n"
+        + "This\n"
+        + "was\n"
+        + "ASCII\n"
+        + "Art\n"
+        + "\n"
+        + "*/\n"
+        + "function foo() {\n"
+        + "}\n";
+
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setPreserveDetailedSourceInfo(true);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        JSSourceFile.fromCode("externs.js", ""),
+        JSSourceFile.fromCode("input.js", input),
+        options);
+    String compiled = compiler.toSource();
+    assertEquals(
+        "/**\n"
+        + " * @preserve\n"
+        +

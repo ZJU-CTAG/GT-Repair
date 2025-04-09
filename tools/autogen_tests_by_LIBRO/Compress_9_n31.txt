@@ -1,0 +1,11 @@
+public void testTarArchiveOutputStream() throws IOException {
+    InputStream in = new ByteArrayInputStream(new byte[10]);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, out);
+    aos.putArchiveEntry(new TarArchiveEntry("test"));
+    int count = IOUtils.copy(in, aos);
+    aos.closeArchiveEntry();
+    aos.close();
+    assertEquals(10, count);
+    assertEquals(10, aos.getBytesWritten());
+}

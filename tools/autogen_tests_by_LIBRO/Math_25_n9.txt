@@ -1,0 +1,20 @@
+public void testHarmonicFitter() throws Exception {
+        // create HarmonicFitter instance
+        HarmonicFitter fitter = new HarmonicFitter();
+        // generate values
+        Random rnd = new Random();
+        double offset = rnd.nextDouble();
+        double amplitude = rnd.nextDouble();
+        double phase = rnd.nextDouble() * 2 * Math.PI;
+        double freq = rnd.nextDouble() * 40 + 2;
+        HarmonicFunction hf = new HarmonicFunction(offset, amplitude, freq, phase);
+        double[] vals = new double[1000];
+        double[] abscissas = new double[vals.length];
+        for (int i = 0; i < vals.length; ++i) {
+            abscissas[i] = i;
+            vals[i] = hf.value(i);
+        }
+        // set up guesser
+        HarmonicFitter.ParameterGuesser guesser = fitter.new ParameterGuesser(abscissas, vals);
+        // test
+        assertEquals(offset,

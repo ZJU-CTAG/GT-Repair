@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.OFF);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("test.js", "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }")),
+            ImmutableList.<SourceFile>of(),
+            options);
+    assertTrue(result.success);
+    assertEquals("function(){return function(){setTimeout(function(){alert(arguments)},0)}};", compiler.toSource());
+}

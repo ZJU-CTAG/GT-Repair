@@ -1,0 +1,9 @@
+public void testIssue105() throws Exception {
+    final Path in = getFile("issue-105.zip");
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    try (ArchiveInputStream inStream = factory.createArchiveInputStream("zip", new FileInputStream(in.toFile()), "UTF-8")) {
+        assertTrue("Wrong stream type: " + inStream.getClass().getName(), inStream instanceof ZipArchiveInputStream);
+        final ZipArchiveInputStream zipIn = (ZipArchiveInputStream) inStream;
+        assertEquals("UTF-8", zipIn.getEncoding());
+    }
+}

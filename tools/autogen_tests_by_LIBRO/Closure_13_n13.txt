@@ -1,0 +1,10 @@
+public void testIssue00() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+            new JSSourceFile[]{JSSourceFile.fromCode("test.js", 
+                    "function some_function() {\n var fn1;\n var fn2;\n\n if (any_expression) {\n fn2 = external_ref;\n fn1 = function (content) { return fn2(); }\n }\n\n return {\n method1: function () { if (fn1) fn1(); return true; },\n method2: function () { return false; }\n }\n}\n\n")}, options);
+    assertEquals("", compiler.toSource());
+}

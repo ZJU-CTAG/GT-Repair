@@ -1,0 +1,20 @@
+public void testIssue84() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setEmitUseStrict(true);
+
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckTypes(true);
+    options.setProcessCommonJSModules(true);
+    options.setCommonJSModulePathPrefix("modules");
+    options.setTransformAMDToCJSModules(true);
+    options.setPrettyPrint(true);
+
+    Compiler.setLoggingLevel(Level.INFO);
+
+    List<SourceFile> sources = new ArrayList<SourceFile>();
+
+    sources.add(SourceFile.fromCode("echo.js", "define(function() { return {\n echo: function(val) {\n window.console.log(val);\n }\n}});"));
+    sources.add(SourceFile.fromCode("echo-

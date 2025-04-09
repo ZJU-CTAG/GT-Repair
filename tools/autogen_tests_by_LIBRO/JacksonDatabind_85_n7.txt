@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+    final DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+    final String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(new Issue108Pojo(formatter));
+
+    System.out.println(json);
+
+    final Issue108Pojo pojo = mapper.readValue(json, Issue108Pojo.class);
+
+    assertEquals("2013-01-30 23:59:59", pojo.date.toString(formatter));
+}

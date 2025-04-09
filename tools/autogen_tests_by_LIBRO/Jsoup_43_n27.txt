@@ -1,0 +1,14 @@
+public void testSiblingIndex() {
+    String h = "<table>"+
+            "<tr><td>1</td><td>2</td></tr>"+
+            "<tr><td>1</td><td>2</td></tr>"+
+            "<tr><td>1</td><td>2</td></tr>"+
+            "<tr><td>1</td><td>2</td></tr>"+
+            "<tr><td>1</td><td>2</td></tr>"+
+            "</table>";
+    Document doc = Jsoup.parse(h);
+    Element el1 = doc.select("tr").get(1);
+    Element el2 = doc.select("tr").get(4);
+    assertTrue(el1.parent().children().get(0).equals(el1) && el1.parent().children().get(0).equals(el2));
+    assertFalse(el1.parent().children().get(0)==el1 && el1.parent().children().get(0)==el2);
+    assertEquals(el1.elementSiblingIndex(),

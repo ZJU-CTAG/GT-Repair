@@ -1,0 +1,21 @@
+public void testIssue118() {
+    // create a type system
+    TypeSystem typeSystem = TypeSystem.getInstance();
+
+    // create a record type
+    RecordType recordType = new RecordType("TEST");
+    recordType.addField("foo", new NamedType("FOO"));
+    recordType.addField("bar", new NamedType("BAR"));
+    typeSystem.defineType("TEST", recordType);
+    typeSystem.defineType("FOO", new IntType());
+    typeSystem.defineType("BAR", new FloatType());
+
+    // create a proxy type
+    ProxyObjectType proxyType = new ProxyObjectType("TEST");
+
+    // create a variable type
+    VariableType variableType = new VariableType(proxyType);
+
+    // try to cast a variable type to a record type
+    TypeCheckUtils.castType(variableType, recordType);
+}

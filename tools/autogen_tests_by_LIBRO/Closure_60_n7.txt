@@ -1,0 +1,16 @@
+public void testIssue112() {
+    Predicate<MethodCallExpr> hasNoSideEffects = new Function<MethodCallExpr, Boolean>() {
+        @Override
+        public Boolean apply(MethodCallExpr methodCallExpr) {
+            return methodCallExpr.getScope() == null && methodCallExpr.getArgs().size() == 0;
+        }
+    };
+
+    ExpressionStmt expressionStmt = (ExpressionStmt) Javac.parse(
+            "class X { void f() { void function () {}(); } }"
+    );
+
+    MethodCallExpr methodCallExpr = (MethodCallExpr) expressionStmt.getExpression();
+
+    assertTrue(hasNoSideEffects.apply(methodCallExpr));
+}

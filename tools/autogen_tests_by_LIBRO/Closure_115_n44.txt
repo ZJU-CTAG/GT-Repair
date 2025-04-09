@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setOptimizationLevel(OptimizationLevel.ADVANCED_OPTIMIZATIONS);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE_WARNINGS, CheckLevel.WARNING);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("window.js", "var window = {};"));
+
+    List<SourceFile> inputs = Arrays.asList(SourceFile.fromCode("input.js", "window['anchor'] = function (obj, modifiesProp) {\n" +
+            "    return (function (saved) {\n" +
+            "        return modifiesProp(obj) + saved;\n" +
+            "    })(obj['prop']);\n" +
+            "};")

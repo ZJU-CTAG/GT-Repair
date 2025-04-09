@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+        byte[] input = "{\"key\":\"value\"}".getBytes();
+        InputStream in = new ByteArrayInputStream(input);
+        byte[] buf = new byte[1024];
+        int len = in.read(buf, 0, buf.length);
+        UTF8StreamJsonParser parser = new UTF8StreamJsonParser(new IOContext(new BufferRecycler(), buf, 0, len, true), JsonParser.Feature.collectDefaults(), in, new ObjectCodec(), BytesToNameCanonicalizer.createRoot(), buf, 0, len, true);
+        try {
+            parser.nextToken();
+            parser.close();
+        } catch (JsonParseException e) {
+            Assert.assertEquals("Unexpected character ('k' (code 107)): expected a valid value (number, String, array, object, 'true', 'false' or 'null') at [Source: java.io.ByteArrayInputStream@4f4f4f4f; line: 1, column: 2]", e.getMessage());
+        }
+    }

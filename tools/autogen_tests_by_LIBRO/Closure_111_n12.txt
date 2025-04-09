@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final String js = "var test = function(object) { " +
+            "if (goog.isArray(object)) {" +
+            "var x = object;" +
+            "return x;" +
+            "}" +
+            "};";
+    final Compiler compiler = new Compiler();
+    final Result result = compiler.compile(
+            CompilerOptions.builder()
+                    .setPrettyPrint(false)
+                    .setLanguageIn(LanguageMode.ECMASCRIPT6_STRICT)
+                    .setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT)
+                    .setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+                    .build(),
+            SourceFile.fromCode("test108.js", js)
+    );
+    assertTrue(result.success);
+}

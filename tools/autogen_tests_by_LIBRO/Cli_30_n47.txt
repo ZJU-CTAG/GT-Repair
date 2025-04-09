@@ -1,0 +1,27 @@
+public void testIssue108() throws Exception {
+    final class Example {
+        @Option(name = "-a", usage = "Enable both -x and -y")
+        boolean a;
+        @Option(name = "-x", usage = "Enable something")
+        boolean x;
+        @Option(name = "-y", usage = "Enable something else")
+        boolean y;
+    }
+    final Example example = new Example();
+    final CommandLine cmd = new CommandLine(example);
+    cmd.setDefaultValueProvider(new DefaultValueProvider() {
+        @Override
+        public String[] defaultValues(ArgSpec argSpec) {
+            if (argSpec.options().length > 0) {
+                if ("-a".equals(argSpec.options()[0])) {
+                    return new String[] { "true" };
+                }
+            }
+            return null;
+        }
+    });
+    cmd.parse("-a", "-x");
+    assertTrue(example.a);
+    assertTrue(example.x);
+    assertFalse(example.y);
+}

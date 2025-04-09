@@ -1,0 +1,10 @@
+public void testIssue108() {
+    final ScriptEngineManager mgr = new ScriptEngineManager();
+    final ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')");
+        fail("should have failed");
+    } catch (final ScriptException e) {
+        // ok then...
+    }
+}

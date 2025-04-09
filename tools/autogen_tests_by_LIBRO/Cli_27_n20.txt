@@ -1,0 +1,21 @@
+public void testIssue108() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+
+    Option option1 = OptionBuilder.withLongOpt("long1").create();
+    Option option2 = OptionBuilder.withLongOpt("long2").create();
+
+    group.setRequired(true);
+
+    group.addOption(option1);
+    group.addOption(option2);
+
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[]{"--long1"};
+    CommandLine cmd = parser.parse(options, args);
+
+    assertTrue(cmd.hasOption("long1"));
+    assertFalse(cmd.hasOption("long2"));
+}

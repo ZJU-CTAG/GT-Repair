@@ -1,0 +1,14 @@
+public void testJsonParserSequence() throws Exception {
+    JsonParser parser1 = jsonFactory.createParser("{ \"first\" : \"foo\" }");
+    JsonParser parser2 = jsonFactory.createParser("{ \"second\" : \"bar\" }");
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(parser1, parser2);
+
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals("first", sequence.getCurrentName());
+    assertEquals("foo", sequence.nextTextValue());
+    // now the first parser is drained, we switch to the second
+    assertEquals("bar", sequence.nextTextValue());
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+    assertNull(sequence.nextToken());
+}

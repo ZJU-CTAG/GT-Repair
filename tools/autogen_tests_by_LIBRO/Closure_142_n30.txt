@@ -1,0 +1,23 @@
+public void testArraySorting() {
+    List<List<Integer>> expected = new ArrayList<List<Integer>>();
+    expected.add(Arrays.asList(0, 0));
+    expected.add(Arrays.asList(0, 1));
+    expected.add(Arrays.asList(1, 0));
+    expected.add(Arrays.asList(1, 1));
+    int threshold =256;
+    List<List<Integer>> actual = new ArrayList<List<Integer>>();
+    for (int i = 0; i <= threshold; i++) {
+        for (int j = 0; j <= threshold; j++) {
+            actual.add(Arrays.asList(i, j));
+        }
+    }
+    Collections.sort(actual, new ArrayComparator());
+    assertEquals(expected, actual);
+}
+
+private static class ArrayComparator implements Comparator<List<Integer>> {
+    @Override
+    public int compare(List<Integer> a, List<Integer> b) {
+        return b.get(1) - a.get(1);
+    }
+}

@@ -1,0 +1,10 @@
+public void testVarargs() {
+    MethodCaptor<TestModel> captor = MethodCaptor.forMethod(TestModel.class);
+    TestModel model = mock(TestModel.class);
+    captor.capture(model);
+    model.foo(new TestArg("a"));
+    List<MethodInvocation<TestModel>> invocations = captor.getInvocations();
+    assertEquals(1, invocations.size());
+    MethodInvocation invocation = invocations.get(0);
+    assertEquals(1, invocation.getArguments().length);
+}

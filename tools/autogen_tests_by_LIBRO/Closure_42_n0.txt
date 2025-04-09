@@ -1,0 +1,17 @@
+public void testIssue123() throws Exception {
+    String before = "contactcenter.screenpop.updatePopStatus = function(stamp, status) {"
+            + "for each ( var curTiming in this.timeLog.timings ) {"
+            + "if ( curTiming.callId == stamp ) {"
+            + "curTiming.flag = status;"
+            + "break;"
+            + "}"
+            + "}"
+            + "};";
+    String expected = "contactcenter.screenpop.updatePopStatus=function(stamp,status){for each(var curTiming in this.timeLog.timings)if(curTiming.callId==stamp){curTiming.flag=status;break}};";
+    assertEquals(expected, new JavaScriptCompressor(new StringReader(before), new ErrorReporter() {
+
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n

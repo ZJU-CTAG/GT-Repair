@@ -1,0 +1,16 @@
+public void testEmptyObject() throws IOException {
+		final String JSON = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonParser p0 = mapper.getFactory().createJsonParser(JSON);
+
+		JsonParser p = new FilteringParserDelegate(p0,
+				new NameMatchFilter("value"),
+				true, // includePath
+				false // multipleMatches
+				);
+		JsonNode root = mapper.readTree(p);
+		assertNotNull(root);
+
+		assertEquals("{\"ob\":{\"value\":3}}", mapper.writeValueAsString(root));
+}

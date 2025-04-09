@@ -1,0 +1,14 @@
+public void testUnionSorting() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    factory.setValidating(false);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new InputSource(new StringReader("<MAIN><A>avalue</A><B>bvalue</B></MAIN>")));
+    Context context = new ContextSupport();
+    context.setNodeSet(document);
+    CoreOperationUnion union = new CoreOperationUnion();
+    union.add(new CoreOperationStringValue(new CoreOperationVariableReference("/MAIN/B")));
+    union.add(new CoreOperationStringValue(new CoreOperationVariableReference("/MAIN/A")));
+    String value = (String) union.evaluate(context);
+    assertEquals("avalue", value);
+}

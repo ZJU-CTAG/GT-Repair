@@ -1,0 +1,10 @@
+public void testIssue371() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+
+    Compiler compiler = new Compiler();
+    compiler.setLifeCycleStage(LifeCycleStage.RAW);
+    Result result = compiler.compile(ImmutableList.of(""));
+    assertEquals(TypeValidator.TYPE_MISMATCH_WARNING, result.errors.get(0).getType());
+}

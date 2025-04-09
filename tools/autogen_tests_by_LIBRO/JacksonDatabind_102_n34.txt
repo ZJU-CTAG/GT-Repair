@@ -1,0 +1,10 @@
+public void testSqlDateSerializer() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    Date date = new Date();
+    String json = mapper.writeValueAsString(date);
+    assertTrue(json.matches("\\d{13}"));
+    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+    json = mapper.writeValueAsString(sqlDate);
+    assertTrue(json.matches("\\d{4}-\\d{2}-\\d{2}"));
+}

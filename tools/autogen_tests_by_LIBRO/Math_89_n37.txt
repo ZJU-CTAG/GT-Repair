@@ -1,0 +1,21 @@
+public void testFrequency() {
+    final Frequency f = new Frequency();
+    final Object OBJ = new Object();
+    try {
+        f.addValue(OBJ);
+    } catch (IllegalArgumentException e) {
+        // OK - should fail
+    }
+    f.clear();
+    f.addValue(new Integer(5));
+    f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    assertEquals(1, f.getCount(new Integer(5)));
+    assertEquals(0, f.getCount(OBJ)); // 0
+    assertEquals(1, f.getCumFreq(new Integer(5)));
+    try {
+        f.getCumFreq(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    } catch (IllegalArgumentException e) {
+        // OK - should fail
+    }
+    assertEquals(0.5, f.getPct(new Integer(5)), 0.1);
+    assertEquals(0.0, f.get

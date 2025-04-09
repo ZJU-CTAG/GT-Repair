@@ -1,0 +1,21 @@
+public void testStringDefaultNull() throws Exception {
+    MyBean bean = new MyBean();
+    bean.setStr("");
+    assertSame("Should NOT suppress empty Strings", "", bean.getStr());
+    bean.setStr(null);
+    ObjectMapper objectMapper = new ObjectMapper();
+    assertEquals("Should suppress null Strings", "{}", objectMapper.writeValueAsString(bean));
+}
+
+public static class MyBean {
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    private String str;
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
+}

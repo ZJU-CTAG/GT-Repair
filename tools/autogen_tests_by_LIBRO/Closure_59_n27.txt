@@ -1,0 +1,20 @@
+public void testExcludeGlobalThis() {
+    Compiler compiler = compile("var x = globalThis;", false, false);
+    assertEquals(1, compiler.getErrorCount());
+    compiler = compile("var x = globalThis;", true, false);
+    assertEquals(0, compiler.getErrorCount());
+}
+
+protected Compiler compile(String code, boolean jsCompOff, boolean jsCompError) {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setSummaryDetailLevel(0);
+    if (jsCompOff) {
+        options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    }
+    if (jsCompError) {
+        options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.ERROR);
+    }
+    compiler.compile(

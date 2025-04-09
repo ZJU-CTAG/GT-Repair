@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    String json = "{ \"collection\" : [ 1, 2, 3, \"4\" ] }";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        ObjectNode on = mapper.readValue(json, ObjectNode.class);
+    } catch (InvalidFormatException e) {
+        assertEquals("4", e.getValue());
+        assertEquals("java.lang.Integer", e.getTargetType());
+        assertEquals(3, e.getPath().get(0).getIndex());
+    } catch (Exception e) {
+        fail("InvalidFormatException expected");
+    }
+}

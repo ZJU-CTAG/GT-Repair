@@ -1,0 +1,26 @@
+public void testIssue36() {
+    String source = "var NS = {\n" +
+            " read: function()\n" +
+            " {\n" +
+            " return this.foo;\n" +
+            " },\n" +
+            "\n" +
+            " write: function()\n" +
+            " {\n" +
+            " this.foo = 123;\n" +
+            " }\n" +
+            "};\n" +
+            "\n" +
+            "// only the non-inline notation warns in 0616 release\n" +
+            "NS.write2 = function()\n" +
+            "{\n" +
+            " this.foo = 123;\n" +
+            "};";
+
+    String[] expected = {
+            "6:8: WARNING - dangerous use of the global this object",
+            "15:8: WARNING - dangerous use of the global this object"
+    };
+
+    runWarningTest(source, expected);
+}

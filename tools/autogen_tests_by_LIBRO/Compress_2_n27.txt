@@ -1,0 +1,20 @@
+public void testAr() throws Exception {
+    // Create test file
+    File file = new File("/tmp", "bla.ar");
+    file.deleteOnExit();
+    ArArchiveOutputStream arOut = new ArArchiveOutputStream(file);
+    ArArchiveEntry entry = new ArArchiveEntry("test1.xml", 12);
+    arOut.putArchiveEntry(entry);
+    arOut.write("test1.xml".getBytes());
+    arOut.closeArchiveEntry();
+    entry = new ArArchiveEntry("test2.xml", 12);
+    arOut.putArchiveEntry(entry);
+    arOut.write("test2.xml".getBytes());
+    arOut.closeArchiveEntry();
+    arOut.close();
+    // Modify test file
+    ArArchiveInputStream arIn = new ArArchiveInputStream(file);
+    String test1 = IOUtils.toString(arIn);
+    ArArchiveEntry ae = arIn.getNextArEntry();
+    assertEquals("test1.xml", ae.getName());
+    String test

@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    File archive = getFile("issue-108.7z");
+    SevenZFile sevenZFile = new SevenZFile(archive);
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertEquals("bar.txt", entry.getName());
+    assertTrue(entry.isDirectory());
+    assertEquals(0, entry.getSize());
+    assertEquals(0, entry.getCompressedSize());
+    assertEquals(0, entry.getCrcValue());
+    assertEquals(0, entry.getMethods().length);
+    assertEquals(0, entry.getPackedStreams());
+    assertEquals(0, entry.getUnpackedSize());
+    entry = sevenZFile.getNextEntry();
+    assertEquals("foo.txt", entry.getName());
+    assertFalse(entry.isDirectory());
+    assertEquals(0, entry.getSize());
+    assertEquals(0, entry.getCompressedSize());
+    assertEquals(0, entry.getCrcValue());
+    assertEquals(0

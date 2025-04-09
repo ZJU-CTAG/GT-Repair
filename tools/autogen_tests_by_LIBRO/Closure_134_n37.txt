@@ -1,0 +1,22 @@
+public void testInheritDoc() {
+    // create a folder
+    File repoDir = new File("target/repos/testIssue110");
+    deleteDir(repoDir);
+    assertTrue(repoDir.mkdirs());
+    // checkout the project
+    Git git = Git.init().setDirectory(repoDir).call();
+    git.checkout().setCreateBranch(true).setName("master").call();
+    // add a file
+    File a = new File(repoDir, "a.txt");
+    assertTrue(a.createNewFile());
+    // commit
+    git.add().addFilepattern("a.txt").call();
+    git.commit().setMessage("Commit a").call();
+    // create a branch
+    git.branchCreate().setName("branch").call();
+    // modify the file on branch
+    File b = new File(repoDir, "b.txt");
+    assertTrue(b.createNewFile());
+    // commit
+    git.add().addFilepattern("b.txt").call();
+    git.commit().setMessage("Commit

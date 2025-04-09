@@ -1,0 +1,12 @@
+public void testTreeTraversingParser () throws Exception {
+    String json = "{\"x\": 1e10}";
+    // read as tree
+    JsonNode tree = new ObjectMapper().readTree(json);
+    assertEquals(1e10, tree.get("x").asDouble(), 1e-10);
+    // read as int
+    IntClass intClass = new ObjectMapper().readerFor(IntClass.class).readValue(tree);
+    assertEquals(Integer.MAX_VALUE, intClass.x);
+    // read as string
+    String str = new ObjectMapper().readerFor(IntClass.class).readValue(json);
+    assertEquals(Integer.MAX_VALUE, intClass.x);
+}

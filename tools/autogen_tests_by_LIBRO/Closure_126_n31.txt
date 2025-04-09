@@ -1,0 +1,11 @@
+public void testBreakInFinallyOptimized()
+{
+    ScriptEngineManager engineManager = new ScriptEngineManager();
+    ScriptEngine engine = engineManager.getEngineByName("js");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */; break b }");
+        fail("expected exception");
+    } catch(ScriptException e) {
+        assertTrue(e.getMessage().contains("b"));
+    }
+}

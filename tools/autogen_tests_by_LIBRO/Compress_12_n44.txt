@@ -1,0 +1,15 @@
+public void testIssue107() throws IOException {
+    final InputStream is = this.getClass().getResourceAsStream("/test.tar");
+    try {
+        final ArchiveInputStream ais = new TarArchiveInputStream(is);
+        TarArchiveEntry entry = null;
+        while ((entry = (TarArchiveEntry) ais.getNextEntry()) != null) {
+            System.out.println("Entry: " + entry.getName());
+        }
+        fail("Should have thrown an IOException");
+    } catch (IllegalArgumentException e) {
+        fail("Should have thrown an IOException");
+    } catch (IOException e) {
+        // expected
+    }
+}

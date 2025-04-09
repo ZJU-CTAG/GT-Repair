@@ -1,0 +1,20 @@
+public void testValueToTree() throws Exception {
+    ListAttribute list = new ListAttribute();
+    list.setItemJsonKey("itemName");
+    list.getItems().add(new StringItem("item1"));
+    list.getItems().add(new StringItem("item2"));
+    list.getItems().add(new StringItem("item3"));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    SimpleModule module = new SimpleModule("ListAttributeSerializer",
+new Version(0, 0, 0, null));
+    module.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+    mapper.writeValue(new File("target/ListAttribute.json"), list);
+    JsonNode tree = mapper.valueToTree(list);
+    assertEquals("itemName", tree.get("itemType").textValue());
+    assertEquals(3, tree.get("items").size());
+    System.out.println(tree);
+}
+

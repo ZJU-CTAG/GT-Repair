@@ -1,0 +1,20 @@
+public void testNode() {
+    final Document document = createDocument(
+            "<a><b></b></a>");
+    final Document result = createDocument(
+            "<a>1<b>2</b>3</a>");
+    final String expr = "/a/node()";
+    final PredicateContext context = new PredicateContext(
+            document, result);
+    final NodePointer pointer = new DOMNodePointer(null, // parent
+            document, // node
+            DOMNodePointer.class);
+    final int position = 1;
+    final int length = 1;
+    final boolean resultNode = true;
+    final Predicate predicate = new Predicate(expr, context, pointer,
+            position, length, resultNode);
+    assertTrue(predicate.evaluate(position, length));
+    assertTrue(predicate.evaluate(position + 1, length));
+    assertTrue(predicate.evaluate(position + 2, length));
+}

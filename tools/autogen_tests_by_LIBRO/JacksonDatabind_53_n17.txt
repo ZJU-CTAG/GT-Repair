@@ -1,0 +1,15 @@
+public void testReproduction() throws IOException {
+    String json = "{\n" +
+                  "  \"something\": [\n" +
+                  "        {\n" +
+                  "           \"id\": \"a uuid\",\n" +
+                  "           \"property\": \"value\"\n" +
+                  "         }\n" +
+                  "  ]\n" +
+                  "}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    Pojo pojo = mapper.readValue(json, Pojo.class);
+    assertTrue("Value of something should be a MyHashMap", pojo.getSomething() instanceof MyHashMap);
+    assertTrue("Value of something should have a Foo as the value", ((MyHashMap) pojo.getSomething()).get(UUID.fromString("a uuid")) instanceof Foo);
+}

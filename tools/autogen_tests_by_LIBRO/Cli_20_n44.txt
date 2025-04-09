@@ -1,0 +1,18 @@
+public void testStopAtNonOption() {
+    // Create Options object
+    Options options = new Options();
+    options.addOption("a", false, "");
+    options.addOption(OptionBuilder.withLongOpt("b")
+                       .withDescription("")
+                       .hasArg()
+                       .create());
+    // Parse command line
+    PosixParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options,
+                                   new String[] {"--zop", "-abfoo"},
+                                   true);
+    // Output
+    assertEquals(1, cmd.getOptions().length);
+    assertTrue(cmd.hasOption("a"));
+    assertEquals("--zop -abfoo", cmd.getArgs()[0]);
+}

@@ -1,0 +1,10 @@
+public void testIssue104() {
+    ErrorReporter reporter = ErrorReporter.forTesting();
+    Compiler compiler = new Compiler(reporter);
+    CompilerOptions options = new CompilerOptions();
+    options.ideMode = true;
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", "Math.blah = function(test) { test.a = 5; };\nvar test = new Object();\nMath.blah(test);")}, options);
+    assertEquals(0, reporter.getErrorCount());
+    String output = compiler.toSource();
+    assertTrue(output.contains("Math.blah = function(test) { test.a = 5; };"));
+}

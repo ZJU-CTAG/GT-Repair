@@ -1,0 +1,11 @@
+public void testPosixParser() throws Exception {
+    String[] args = new String[] { "--zop", "-abfoo" };
+    Options options = new Options()
+        .addOption(new Option("a", false, "a"))
+        .addOption(new Option("b", true, "b"));
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args, true);
+    assertEquals(2, cmd.getArgList().size());
+    assertEquals("--zop", cmd.getArgList().get(0));
+    assertEquals("foo", cmd.getArgList().get(1));
+}

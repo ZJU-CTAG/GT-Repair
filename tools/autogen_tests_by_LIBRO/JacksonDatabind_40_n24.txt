@@ -1,0 +1,10 @@
+public void testCoercion_int_emptyString() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+    } catch (JsonMappingException e) {
+        verifyException(e, "Can not map empty String");
+    }
+}

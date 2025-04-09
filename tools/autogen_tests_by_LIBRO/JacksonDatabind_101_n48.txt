@@ -1,0 +1,11 @@
+public void testUnwrappedFields() throws Exception {
+    Bean output = new ObjectMapper().readerFor(Bean.class)
+            .with(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
+            .with(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT)
+            .readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}");
+    assertEquals(1, output.x);
+    assertEquals(3, output.y);
+    assertNotNull(output.w);
+    assertEquals(2, output.w.a);
+    assertEquals(4, output.w.b);
+}

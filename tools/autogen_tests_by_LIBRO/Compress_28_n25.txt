@@ -1,0 +1,20 @@
+public void testCorruptedTar() throws IOException {
+    final File archive = IoUtils.createRandomTestFile("test.tar.bz2", 10 * 1024);
+    FileOutputStream fos = new FileOutputStream(archive);
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(new BZip2CompressorOutputStream(fos, true));
+    for (int i = 0; i < 10; i++) {
+        TarArchiveEntry tae = new TarArchiveEntry("entry-" + i + ".txt");
+        tae.setSize(1024);
+        taos.putArchiveEntry(tae);
+        for (int j = 0; j < 1024; j++) {
+            taos.write(j);
+        }
+        taos.closeArchiveEntry();
+    }
+    taos.close();
+    fos.close();
+    RandomAccessFile raf = new RandomAccessFile(archive, "rw");
+    raf.setLength(raf.length() - 16 * 1024);
+    raf.close();
+    try {
+        final TarArchiveInputStream tais =

@@ -1,0 +1,13 @@
+public void testPropertyNaming() throws Exception
+{
+    final ObjectMapper mapper = mapperWithModuleBuilder()
+            .changeDefaultPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .build();
+
+    final String json = mapper.writeValueAsString(new ConstructorPropertyNameChangeBean(0, "value"));
+    assertEquals("{\"constructor_property\":0,\"regular_property\":\"value\"}", json);
+
+    ConstructorPropertyNameChangeBean result = mapper.readValue(json, ConstructorPropertyNameChangeBean.class);
+    assertEquals(0, result.getConstructorProperty());
+    assertEquals("value", result.getRegularProperty());
+}

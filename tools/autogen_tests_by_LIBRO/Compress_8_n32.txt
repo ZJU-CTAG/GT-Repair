@@ -1,0 +1,11 @@
+public void testTarHeaderParsing() throws Exception {
+    byte[] header = new byte[512];
+
+    byte[] octalSize = "00000006150".getBytes();
+    System.arraycopy(octalSize, 0, header, 124, 12);
+
+    TarArchiveEntry tarEntry = new TarArchiveEntry();
+    tarEntry.parseTarHeader(header);
+
+    assertEquals(61, tarEntry.getSize());
+}

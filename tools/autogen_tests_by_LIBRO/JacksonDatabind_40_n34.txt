@@ -1,0 +1,14 @@
+public void testFailOnNullForPrimitives() throws Exception
+{
+    final ObjectMapper mapper = jsonMapperBuilder()
+            .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .disable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+            .build();
+
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should have thrown exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "expected numeric type but got null");
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final int nTreatments = 10000;
+
+    double[] v1 = new double[nTreatments];
+    double[] v2 = new double[nTreatments];
+    for (int i = 0; i < nTreatments; i++) {
+        v1[i] = Math.random() * 10;
+        v2[i] = Math.random() * 10;
+    }
+
+    PearsonsCorrelation c = new PearsonsCorrelation();
+    double[][] pvalues = c.getCorrelationPValues();
+
+    TDistribution tDistribution = new TDistribution(nTreatments - 2);
+    for (int i = 0; i < nTreatments; i++) {
+        double r = c.correlation(v1, v2);
+        double t = r * Math.sqrt((nTreatments - 2) / (1 - r * r));
+        double p = 2 * (tDistribution.cumulativeProbability(-t));
+
+        assertTrue(pvalues[0][i] < p);
+        assertTrue(pvalues

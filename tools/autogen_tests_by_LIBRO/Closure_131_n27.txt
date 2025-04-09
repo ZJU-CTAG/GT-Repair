@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String js = "var test={\"a\u0004b\":\"c\"};";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingLocalJsDocComments(true);
+    env.setLocalHasOwnProperty(true);
+    env.setAllowSharpComments(true);
+    env.setRecordingComments(true);
+    env.setAllowBitwiseOperators(true);
+    env.setLanguageVersion(Context.VERSION_ES6);
+    StringWriter sw = new StringWriter();
+    Script s = new Script();
+    Parser p = new Parser(env, s);
+    p.setTarget((ErrorReporter) new ErrorCollector());
+    p.parse(js, "test", 1);
+    Node n = s.getFirstChild();
+    if (n != null) {
+        NodeTransformer nt = new NodeTransformer();
+        nt.transform(n);
+        Decompiler d = new Decompiler();
+        d.setIndentStep(4);
+        d.append(n);
+        d

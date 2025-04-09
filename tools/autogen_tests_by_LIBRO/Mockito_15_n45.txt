@@ -1,0 +1,10 @@
+public void testArgumentCaptorVarargs() {
+    List<String> list = Arrays.asList("a", "b");
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+
+    StringUtils.join(list, ",");
+    verify(StringUtils.class);
+    StringUtils.join(captor.capture());
+
+    assertArrayEquals(list.toArray(new String[list.size()]), captor.getValue());
+}

@@ -1,0 +1,7 @@
+public void testSqlDate() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    final java.sql.Date sqlDate = new java.sql.Date(0);
+    final String s = mapper.writeValueAsString(sqlDate);
+    assertThat(s).isEqualTo("0");
+}

@@ -1,0 +1,13 @@
+public void testIssue108() {
+    final Compiler compiler = new Compiler();
+    final TestErrorManager errorManager = new TestErrorManager();
+    compiler.setErrorManager(errorManager);
+    final Result result = compiler.compile(
+            "/** @constructor */ var myclass = function() { }\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { };\n" +
+            "myclass.prototype.test = function() { this.fn(); this.fn = function() {}; };",
+            new CompilerOptions());
+    assertFalse(result.success);
+    assertEquals(2, errorManager.getErrorCount());
+}

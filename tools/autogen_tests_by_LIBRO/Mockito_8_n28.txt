@@ -1,0 +1,8 @@
+public void testSelfReferencingTypeVariable() throws Exception {
+    ParameterizedType interfaceType = (ParameterizedType) GenericsSelfReference.class.getGenericInterfaces()[0];
+    Type selfType = interfaceType.getActualTypeArguments()[0];
+    ParameterizedType selfReferencingType = (ParameterizedType) selfType;
+    Type[] typeArguments = selfReferencingType.getActualTypeArguments();
+    assertThat(typeArguments[0]).isSameAs(selfType);
+    assertThat(typeArguments[0]).isSameAs(typeArguments[0]);
+}

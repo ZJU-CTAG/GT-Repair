@@ -1,0 +1,12 @@
+public void testPolymorphicTypeLost() throws JsonProcessingException {
+    final byte[] apduBytes = new byte[]{(byte)0xA0, (byte)0xA4, (byte)0x00, (byte)0x00, (byte)0x02, (byte)0x2f, (byte)0xE2};
+    final CommandAPDU commandAPDU = new CommandAPDU(apduBytes);
+
+    final String json = mapper.writeValueAsString(commandAPDU);
+    assertThat(json, is(notNullValue()));
+    assertThat(json.indexOf("com.ubitricity.devices.common.pal.CommandAPDU"), is(greaterThan(-1)));
+
+    final CommandAPDU commandAPDU2 = mapper.readValue(json, CommandAPDU.class);
+    assertThat(commandAPDU2, is(notNullValue()));
+    assertThat(commandAPDU2.getBytes(), is(commandAPDU.getBytes()));
+}

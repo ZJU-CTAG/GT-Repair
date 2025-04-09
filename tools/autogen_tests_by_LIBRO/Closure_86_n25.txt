@@ -1,0 +1,26 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(ImmutableList.of(SourceFile.fromCode("testcode",
+            "/** @constructor */ function Foo() {"
+            + "var self = this;"
+            + "window.setTimeout(function() {"
+            + "window.location = self.location;"
+            + "}, 0);"
+            + "}"
+
+            + "Foo.prototype.setLocation = function(loc) {"
+            + "this.location = loc;"
+            + "};"
+
+            + "(new Foo()).setLocation('http://www.google.com/');")),
+            new CompilerOptions());
+    Node root = result.astRoot;
+    assertThat(root).isNotNull();
+    assertNode(root).matches(
+        new Node(Token.SCRIPT,
+            new Node(Token.EXPR_RESULT,
+                new Node(Token.CALL,
+                    new Node(Token.GETPROP,
+                       

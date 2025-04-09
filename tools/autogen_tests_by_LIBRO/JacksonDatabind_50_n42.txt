@@ -1,0 +1,15 @@
+public void testIssue() throws IOException {
+    ConfiguredObjectTypeProvider.registerSubtypes(ImmutableList.of(new NamedType(Name.class, "name")));
+    ConfiguredObjectTypeProvider.registerSubtypes(ImmutableList.of(new NamedType(Names.class, "names")));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+            .addAbstractTypeMapping(ConfiguredObject.class, ConfiguredObjectImpl.class)
+            .addAbstractTypeMapping(ConfiguredObjectTypeProvider.class, ConfiguredObjectTypeProvider.class)
+            .addDeserializer(ConfiguredObject.class, new ConfiguredObjectDeserializer())
+    );
+
+    mapper.addMixInAnnotations(ConfiguredObject.class, ConfiguredObjectMixin.class);
+    mapper.addMixInAnnotations(ConfiguredObjectTypeProvider.class, ConfiguredObjectTypeProviderMixin.class);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    CollectionType type = mapper.get

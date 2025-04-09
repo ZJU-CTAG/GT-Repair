@@ -1,0 +1,14 @@
+public void testTreeTraversingParser() throws IOException {
+    // test string
+    final String input = "STEVEN";
+    // test node
+    final BinaryNode node = new BinaryNode(Base64Variants.MODIFIED_FOR_URL.encode(input.getBytes("UTF-8")));
+    // parser
+    final TreeTraversingParser parser = new TreeTraversingParser(node, new ObjectMapper());
+    parser.setCodec(new ObjectMapper());
+    parser.nextToken();
+    // this will throw an exception
+    final String result = parser.getText(Base64Variants.MODIFIED_FOR_URL);
+    // this fails if the test is correct
+    assertEquals(input, result);
+}

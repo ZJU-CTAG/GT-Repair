@@ -1,0 +1,12 @@
+public void testIssue() throws IOException {
+    File file = new File("target/testIssue.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+    ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+    zos.putArchiveEntry(entry);
+    zos.write("test".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+
+    ZipFile zip = new ZipFile(file);
+    assertEquals(10, zip.getEntry("test.txt").getLocalHeaderVersionNeededToExtract());
+}

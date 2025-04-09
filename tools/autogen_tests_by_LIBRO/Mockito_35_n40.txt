@@ -1,0 +1,14 @@
+public void testNullProxyInstance() {
+    PowerMockito.mock(CicsBundleManager.class);
+    PowerMockito.mock(CicsBundleManager.class, new Answer<Object>() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            for (Object arg : invocation.getArguments()) {
+                if (arg.toString().contains("javax.naming.NamingException: java.lang.ClassNotFoundException: javax.naming.NamingException")) {
+                    throw (Exception) arg;
+                }
+            }
+            return null;
+        }
+    });
+}

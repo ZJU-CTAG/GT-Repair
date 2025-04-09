@@ -1,0 +1,18 @@
+public void testIssue811() {
+    String js = "";
+    js += "define('module$lib$Foo', ['module$lib$Bar'], function(module$lib$Bar) { alert('foo'); });\n";
+    js += "define('module$lib$Bar', [], function() { alert('bar'); });\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.transformAMDToCJSModules = true;
+    options.commonJSModulePathPrefix = "lib/";
+    options.commonJSModulePathPrefix = "module$";
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Result result = compiler.compile(
+                                     SourceFile.fromCode("input.js", js),
+                                     SourceFile.fromCode("common.js", ""),
+                                     options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

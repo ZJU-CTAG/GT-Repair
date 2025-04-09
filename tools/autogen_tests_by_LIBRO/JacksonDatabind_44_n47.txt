@@ -1,0 +1,13 @@
+public void testIssue1084() throws Exception
+{
+    ObjectMapper mapper1 = new ObjectMapper();
+    ObjectMapper mapper2 = new ObjectMapper();
+    mapper2.registerModule(new JSR310Module());
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    mapper2.configOverride(java.time.LocalDateTime.class)
+        .setFormat(JsonFormat.Value.forPattern(fmt.toString()));
+    mapper2.addMixIn(java.time.LocalDateTime.class, LocalDateTimeMixin.class);
+    mapper2.addMixIn(java.time.LocalDate.class, LocalDateMixin.class);
+    mapper2.addMixIn(java.time.LocalTime.class, LocalTimeMixin.class);
+    mapper2.addMixIn(java.time.OffsetDateTime.class, OffsetDateTimeMixin.class);
+    mapper2.addMixIn(java.time.OffsetTime.class, Offset

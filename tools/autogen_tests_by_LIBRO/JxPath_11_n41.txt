@@ -1,0 +1,17 @@
+public void testIncompleteNamespaceHandling() throws Exception {
+  DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+  DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+  Document document = docBuilder.newDocument();
+  Element elementA = document.createElement("ElementA");
+  elementA.setAttributeNS("http://namespaceA", "A:myAttr", "Mytype");
+  Element elementB = document.createElementNS("http://namespaceB", "B:ElementB");
+  elementB.appendChild(document.createTextNode("MY TEXT"));
+  elementA.appendChild(elementB);
+  document.appendChild(elementA);
+  JXPathContext context = JXPathContext.newContext(document);
+  context.registerNamespace("A", "http://namespaceA");
+  context.registerNamespace("B", "http://namespaceB");
+  assertEquals("MY TEXT", context.getValue("//B:ElementB"));
+  assertEquals("Mytype", context.getValue("//@A:myAttr"));
+}
+``

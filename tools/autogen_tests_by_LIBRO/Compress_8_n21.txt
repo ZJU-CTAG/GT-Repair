@@ -1,0 +1,14 @@
+public void testParseOctal() throws Exception {
+    byte[] buffer = new byte[512];
+    System.arraycopy("00000000000\0".getBytes(), 0, buffer, 124, 12);
+    TarArchiveEntry entry = TarArchiveEntry.parseTarHeader(buffer);
+    assertEquals("File name", entry.getName());
+    assertEquals("File mode", entry.getMode());
+    assertEquals("User ID", entry.getUserId());
+    assertEquals("Group ID", entry.getGroupId());
+    assertEquals("Size", 0, entry.getSize());  // this fails
+    assertEquals("Mod time", entry.getModTime());
+    assertEquals("Check sum", entry.getCheckSum());
+    assertEquals("Link flag", entry.getLinkFlag());
+    assertEquals("Link name", entry.getLinkName());
+}

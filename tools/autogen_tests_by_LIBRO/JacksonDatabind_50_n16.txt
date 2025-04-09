@@ -1,0 +1,29 @@
+public void testIdentityInfo() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.enableDefaultTyping();
+
+    Foo foo = new Foo("foo");
+    Bar bar = new Bar("bar");
+    baz.setBar(bar);
+    baz.setFoo(foo);
+    bar.setBazzes(Collections.singletonList(baz));
+    foo.setBar(bar);
+
+    String json = mapper.writeValueAsString(foo);
+    System.out.println(json);
+    Foo foo2 = mapper.readValue(json, Foo.class);
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+public class Foo {
+    private String name;
+    private Bar bar;
+
+    @JsonCreator
+    public Foo(@JsonProperty("name") String name) {
+        this.name = name;
+    }
+
+    public String get

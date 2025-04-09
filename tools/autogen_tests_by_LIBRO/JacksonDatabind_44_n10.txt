@@ -1,0 +1,23 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(MyClass.class, MyClassMixIn.class);
+    assertEquals("{\"value\":\"hello\"}", mapper.writeValueAsString(new MyClassSub()));
+}
+
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type",
+        defaultImpl = MyClassSub.class)
+@JsonSubTypes(@JsonSubTypes.Type(value=MyClassSub.class, name="sub"))
+public abstract class MyClass
+{
+    public String getValue() { return "hello"; }
+}
+
+public class MyClassSub extends MyClass {}
+
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+abstract class MyClassMixIn
+{
+    @JsonProperty
+    @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+    @JsonSubTypes(@JsonSubTypes.

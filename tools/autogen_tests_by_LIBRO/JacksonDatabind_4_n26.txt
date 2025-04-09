@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[\"a\", 1]", Collection.class);
+    } catch (JsonMappingException e) {
+        for (Reference ref : e.getPath()) {
+            assertTrue(ref.getIndex() >= 0);
+        }
+    }
+}

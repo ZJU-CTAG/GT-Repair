@@ -1,0 +1,13 @@
+public void testTypedObjects() throws Exception {
+    // This object is a type that should be resolved by the type id resolver.
+    // The return type should be Map<String, String>.
+    String json = "{\"type\": \"com.fasterxml.jackson.datatype.jsr310.deser.key.Jsr310StringKeyDeserializer\", \"key\": \"some-key\"}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new CustomModule());
+    // Note that the default typing is turned off here.
+    objectMapper.enableDefaultTyping();
+    GenericRecord genericRecord = objectMapper.readValue(json, GenericRecord.class);
+    // This throws a MismatchedInputException.
+    // However, if the generic type is removed from GenericRecord, it works.
+    Assert.assertEquals("some-key", genericRecord.getRecord().keySet().iterator().next());
+}

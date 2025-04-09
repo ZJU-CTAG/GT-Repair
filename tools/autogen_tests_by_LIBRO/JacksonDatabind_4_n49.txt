@@ -1,0 +1,27 @@
+public void testIssueWithIndex() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
+
+    final String json = "{" +
+            "\"a\":[\"1\",\"2\"]," +
+            "\"b\":[1,\"2\"]" +
+            "}";
+
+    final SimpleBean bean = mapper.readValue(json, SimpleBean.class);
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+static class SimpleBean {
+
+    @JsonDeserialize(contentUsing = IntegerDeserializer.class)
+    int[] a;
+
+    @JsonDeserialize(contentUsing = IntegerDeserializer.class)
+    List<Integer> b;
+}
+
+class IntegerDeserializer extends JsonDeserializer<Integer> {
+
+    @Override
+    public Integer deserialize(final JsonParser jp

@@ -1,0 +1,9 @@
+public void testBigDecimalNaN() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    final JsonParser jp = mapper.getFactory().createParser("{\"a\": NaN}");
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    assertEquals(BigDecimal.valueOf(Double.NaN), jp.getDecimalValue());
+}

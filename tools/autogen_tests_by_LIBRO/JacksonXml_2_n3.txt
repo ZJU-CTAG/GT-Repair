@@ -1,0 +1,14 @@
+public void testIssue108() {
+    final String input = "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+    final ObjectMapper mapper = new ObjectMapper();
+    XmlMapper xmlMapper = new XmlMapper();
+    xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    try {
+        final WindSpeed windSpeed = xmlMapper.readValue(input, WindSpeed.class);
+        Assert.assertEquals("kt", windSpeed.getUnits());
+        Assert.assertEquals(27, windSpeed.getValue());
+        Assert.assertEquals(20, windSpeed.getRadius().get(0).getValue());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

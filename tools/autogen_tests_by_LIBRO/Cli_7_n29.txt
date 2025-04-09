@@ -1,0 +1,12 @@
+public void testRequiredOptions() throws Exception {
+    final Group help = new GroupBuilder().withOption(OptionBuilder.withLongName("help").create()).create();
+    final Group options = new GroupBuilder().withOption(OptionBuilder.withLongName("config").withRequired(true).withArgument(
+            ArgumentBuilder.withName("arg").create()).create()).create();
+    final Group group = new GroupBuilder().withOption(help).withOption(options).create();
+    group.addOption(help);
+    group.addOption(options);
+    final CommandLine line = new CommandLine(group);
+    line.parse(new String[] { "-c", "val", "-h" });
+    assertEquals(line.getArguments(), Arrays.asList(new Argument[] { }));
+    assertEquals(line.getOptions(), Arrays.asList(new Option[] { help }));
+}

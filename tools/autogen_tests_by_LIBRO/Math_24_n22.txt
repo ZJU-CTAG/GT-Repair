@@ -1,0 +1,15 @@
+public void testOptimizer() {
+    final double xMin = -1.0;
+    final double xMax = 1.0;
+    final double expected = -0.5 * (xMin + xMax);
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x * x + 0.1;
+        }
+    };
+    final UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    final double actual = optimizer.optimize(new MaxEval(100),
+                                             new UnivariateRealFunctionAdapter(f),
+                                             GoalType.MINIMIZE, xMin, xMax).getPoint();
+    assertEquals(expected, actual, 1e-5);
+}

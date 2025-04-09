@@ -1,0 +1,14 @@
+public void testWriteBinaryWithInputStream() throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    XmlFactory f = new XmlFactory();
+    ToXmlGenerator g = f.createGenerator(out);
+
+    try {
+        Base64Variant b64variant = Base64Variants.getDefaultVariant();
+        InputStream source = new ByteArrayInputStream(new byte[] { 3, 34, 5, 21, 23, 92});
+
+        g.writeBinary(b64variant, source, -1);
+    } finally {
+        g.close();
+    }
+}

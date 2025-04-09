@@ -1,0 +1,15 @@
+public void testIssue() {
+    final double[] y = new double[] { 4.0, 2.0 };
+    final DSFactory factory = new DSFactory(2, 1);
+    final ODEIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 15.0, 1.0e-8, 1.0e-8);
+    final AbsoluteTolerance convergence = new AbsoluteTolerance(1.0e-6);
+    final ODEStateAndDerivative state = new ODEStateAndDerivative(0.0, y, new double[2]);
+    final MainStateJacobianProvider jacobianProvider = new MainStateJacobianProvider();
+    final ODEProblem problem = new ODEProblem(new MainStateEquations(),
+                                              new ODEIntegrator[] { integrator },
+                                              new ODEIntegrator[] { integrator },
+                                              jacobianProvider,
+                                              new ODEProblemConstants(convergence, factory, state));
+
+    final ExpandableStatefulODE expandable = new ExpandableStatefulODE(problem);
+    expandable

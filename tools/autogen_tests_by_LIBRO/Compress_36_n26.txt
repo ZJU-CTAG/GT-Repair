@@ -1,0 +1,17 @@
+public void testEmptyEntry() throws Exception {
+    final byte[] EMPTY_ARCHIVE =
+            new byte[] { 0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c, 0x00, 0x00, 0x04, 0x00, 0x21, 0x01, 0x1b, 0x00 };
+
+    try (SevenZFile archive = new SevenZFile(new ByteArrayInputStream(EMPTY_ARCHIVE))) {
+        SevenZArchiveEntry entry = archive.getNextEntry();
+        assertEquals("", entry.getName());
+        assertEquals(0, entry.getSize());
+        assertEquals(0x20, entry.getDataCrcValue());
+        assertEquals(0, archive.read(new byte[64]));
+
+        entry = archive.getNextEntry();
+        assertEquals("test.txt", entry.getName());
+        assertEquals(4, entry.getSize());
+        assertEquals(0, archive.read(new byte[64]));
+    }
+}

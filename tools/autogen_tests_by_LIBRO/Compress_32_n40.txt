@@ -1,0 +1,10 @@
+public void testIssue107() {
+    InputStream is = this.getClass().getClassLoader().getResourceAsStream("sysdiagnose.tar");
+    TarArchiveInputStream tis = new TarArchiveInputStream(is);
+    TarArchiveEntry entry = tis.getNextTarEntry();
+    assertEquals("sysdiagnose/", entry.getName());
+    assertEquals(429496729L, entry.getUserId());
+    entry = tis.getNextTarEntry();
+    assertEquals("sysdiagnose/sysdiagnose.tar.gz", entry.getName());
+    assertEquals(429496729L, entry.getUserId());
+}

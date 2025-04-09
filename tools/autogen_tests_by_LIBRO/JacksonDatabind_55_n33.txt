@@ -1,0 +1,26 @@
+public void testEnum() throws Exception {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    EnumMap<TestEnum, String> map = new EnumMap<>(TestEnum.class);
+    map.put(TestEnum.ONE, "one");
+    map.put(TestEnum.TWO, "two");
+
+    String json = objectMapper.writeValueAsString(map);
+    TestEnum testEnum = TestEnum.ONE;
+    TestClass testClass = new TestClass();
+
+    assertEquals("{\"1\":\"one\",\"2\":\"two\"}", json);
+    assertEquals("one", objectMapper.writeValueAsString(testEnum));
+    assertEquals("{\"test\":\"one\"}", objectMapper.writeValueAsString(testClass));
+}
+
+class TestClass {
+    @JsonProperty("test")
+    public TestEnum test = TestEnum.ONE;
+}
+
+enum TestEnum {
+
+    @JsonProperty

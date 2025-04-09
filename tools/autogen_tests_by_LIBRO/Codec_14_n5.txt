@@ -1,0 +1,19 @@
+public void testBeiderMorse() {
+    String input = "John";
+    String[] expected = new String[] { "JN", "JN0", "JN1", "AN", "AN0", "AN1", "JN", "JN0",
+        "JN1", "AHN" };
+    List<String> actual = new ArrayList<>();
+    BeiderMorseEncoder encoder = new BeiderMorseEncoder();
+    BeiderMorseBean bean = new BeiderMorseBean();
+    bean.setNameType(NameType.GENERIC);
+    bean.setRuleType(RuleType.APPROX);
+    List<Token> tokens = encoder.encode(bean, input);
+    for (Token token : tokens) {
+        actual.add(token.getText());
+    }
+    assertArrayEquals(expected, actual.toArray());
+}
+
+public void testBeiderMorseAlternate() {
+    String input = "Hanau";
+    String[] expected = new String[] { "HN", "HN1", "HN2",

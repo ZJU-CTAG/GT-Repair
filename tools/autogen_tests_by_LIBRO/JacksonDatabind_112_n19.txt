@@ -1,0 +1,19 @@
+public void testCustomStringCollection() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .registerModule(new GuavaModule());
+    final String serialized = "{\"strings\": [\"a\", \"b\"]}";
+    final RootObject root = mapper.readValue(serialized, RootObject.class);
+    assertEquals(2, root.strings.size());
+    assertEquals("a", root.strings.get(0));
+    assertEquals("b", root.strings.get(1));
+}
+
+public class RootObject {
+    public final ImmutableList strings;
+
+    @JsonCreator
+    public RootObject(@JsonProperty("strings") ImmutableList strings) {
+        this.strings = strings;
+    }
+}

@@ -1,0 +1,24 @@
+public void testAssignment() {
+    String code = "var x=0,y=1;x||y=8";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setErrorReporter(new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Warning " + message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Runtime error " + message);
+            return new EvaluatorException(message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Error " + message);
+            throw new RuntimeException(message);
+        }
+    });
+    Parser p = new Parser(env, env.getErrorReporter());
+    p.parse(code, "", 1);
+}

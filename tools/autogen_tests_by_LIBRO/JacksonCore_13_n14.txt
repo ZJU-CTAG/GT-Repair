@@ -1,0 +1,25 @@
+public void testCharWrite() throws IOException {
+    final int nrOfRuns = 1000;
+    final char[] chars = new char[100];
+    final JsonFactory jsonFactory = new JsonFactory();
+
+    // Test with this setting to generate quotes around field names:
+    jsonFactory.configure(Feature.QUOTE_FIELD_NAMES, true);
+
+    // This should be false to make the test work:
+    jsonFactory.configure(Feature.ESCAPE_NON_ASCII, false);
+
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final UTF8JsonGenerator gen = new UTF8JsonGenerator(jsonFactory, out, JsonEncoding.UTF8, null, null);
+
+    gen.writeStartObject();
+
+    for (int i = 0; i < nrOfRuns; i++) {
+        gen.writeFieldName(String.valueOf(i));
+        gen.writeString(String.valueOf(i));
+    }
+
+    gen.writeEndObject();
+    gen.close();
+
+    String expected = "{\"0\":\"0\",\"1\":\"

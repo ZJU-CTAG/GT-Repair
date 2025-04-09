@@ -1,0 +1,14 @@
+public void testIssue105() throws Exception {
+    String encoding = "UTF-8";
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    String[] formats = factory.getInputStreamArchiveFormats();
+    for (String format : formats) {
+        ArchiveInputStream ais = factory.createArchiveInputStream(format, new ByteArrayInputStream(new byte[0]), encoding);
+        assertEquals(encoding, ais.getEncoding());
+    }
+    String[] formats2 = factory.getOutputStreamArchiveFormats();
+    for (String format : formats2) {
+        ArchiveOutputStream aos = factory.createArchiveOutputStream(format, new ByteArrayOutputStream(), encoding);
+        assertEquals(encoding, aos.getEncoding());
+    }
+}

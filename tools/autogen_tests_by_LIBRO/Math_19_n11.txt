@@ -1,0 +1,13 @@
+public void testBounds() {
+    final double[] target = new double[] { 1.8 };
+    FitnessFunction fitnessFunction = new FitnessFunction() {
+        public double value(double[] params) {
+            return target[0] - params[0] * params[0];
+        }
+    };
+    double[] lowerBound = new double[] { -Double.MAX_VALUE };
+    double[] upperBound = new double[] { Double.MAX_VALUE };
+    CMAESOptimizer optimizer = new CMAESOptimizer(20000, 0.0, true, 5, 0, new MersenneTwister(), false, 0.0);
+    double[] startPoint = new double[] { 1 };
+    optimizer.optimize(new MaxEval(1000000), fitnessFunction, GoalType.MINIMIZE, startPoint);
+}

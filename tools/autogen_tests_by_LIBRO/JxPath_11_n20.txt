@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    Namespace nsA = Namespace.getNamespace("A", "http://A");
+    Namespace nsB = Namespace.getNamespace("B", "http://B");
+    Element root = new Element("ElementA", nsA);
+    root.setAttribute("myAttr", nsA, "Mytype");
+    Element child = new Element("ElementB", nsB);
+    child.setText("MY VALUE");
+    root.addContent(child);
+    JXPathContext context = JXPathContext.newContext(new Document(root));
+    context.registerNamespace("A", "http://A");
+    context.registerNamespace("B", "http://B");
+    assertEquals("MY VALUE", context.getValue("/A:ElementA/B:ElementB"));
+}

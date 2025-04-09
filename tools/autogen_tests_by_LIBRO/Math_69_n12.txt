@@ -1,0 +1,13 @@
+public void testPearsonsCorrelationWithManyTreatments() {
+    final Random random = new Random(123456789L);
+    final double[][] data = new double[10000][13];
+    for(int i = 0; i < data.length; i++) {
+        for(int j = 0; j < data[0].length; j++) {
+            data[i][j] = random.nextGaussian();
+        }
+    }
+    double[] pValues = new PearsonsCorrelation(data).getCorrelationPValues();
+    double[] expected = new double[pValues.length];
+    Arrays.fill(expected, 2.2e-16);
+    assertEquals(Arrays.toString(expected), Arrays.toString(pValues));
+}

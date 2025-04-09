@@ -1,0 +1,21 @@
+public void testKeyDeserializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("Module") {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.setDeserializerModifier(new BeanDeserializerModifier() {
+                @Override
+                public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config, JavaType type, KeyDeserializer deserializer) {
+                    System.err.println("Got key deserializer " + deserializer);
+                    return super.modifyKeyDeserializer(config, type, deserializer);
+                }
+            });
+        }
+    });
+
+    GuavaModule gm = new GuavaModule();
+    gm.setupModule(mapper.getDeserializationConfig());
+    mapper.registerModule(gm);
+
+    TypeReference<Map<SimpleEnum, String>> tr = new TypeReference<Map<SimpleEnum, String>>() {};
+    Map<SimpleEnum, String> map = mapper.readValue("{\"onE\": \"foo\"

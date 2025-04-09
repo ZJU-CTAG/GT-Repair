@@ -1,0 +1,32 @@
+public void testIssue149() {
+    String source = "function () {" +
+            "return function() {" +
+            "var args = arguments;" +
+            "setTimeout(function() { alert(args); }, 0);" +
+            "};" +
+            "}";
+
+    CompilerOptions options = new CompilerOptions();
+
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setRemoveUnusedPrototypeProperties(true);
+    options.setRemoveUnusedPrototypePropertiesInExterns(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            externs,
+            ImmutableList.of(SourceFile.fromCode("source", source)),
+            options);
+
+
+    List<String> warnings = result.warnings;
+    assertEquals(ImmutableList.of(), warnings);
+
+    List<String> errors = result.errors;
+    assertEquals(ImmutableList.of(), errors);
+
+    Node root = result.ast;
+    assertNotNull(root);
+
+    Node first = root.getFirstChild();
+    assertNot

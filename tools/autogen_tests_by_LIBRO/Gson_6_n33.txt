@@ -1,0 +1,28 @@
+public void testIssue125() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("foo", "bar");
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullValueTypeAdapterFactory()).create();
+    String json = gson.toJson(map);
+    assertEquals("{}", json);
+    assertEquals(map, gson.fromJson(json, map.getClass()));
+}
+
+class NullValueTypeAdapterFactory implements TypeAdapterFactory {
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        return (TypeAdapter<T>) new NullValueTypeAdapter();
+    }
+}
+
+class NullValueTypeAdapter extends TypeAdapter<Object> {
+
+    @Override
+    public Object read(JsonReader in) throws IOException {
+        return null;
+    }
+
+    @Override
+    public void write(JsonWriter out, Object value) throws IOException {
+        if (value == null) {

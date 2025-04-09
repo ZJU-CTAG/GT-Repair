@@ -1,0 +1,11 @@
+public void testGammaDistribution() throws Exception {
+    GammaDistribution dist = new GammaDistribution(1.0, 0.1);
+    double[] samples = {
+        dist.sample(), dist.sample(), dist.sample(), dist.sample(), dist.sample()
+    };
+    byte[] bytes = serialize(dist);
+    dist = (GammaDistribution) deserialize(bytes);
+    assertArrayEquals(samples, new double[]{
+        dist.sample(), dist.sample(), dist.sample(), dist.sample(), dist.sample()
+    }, 0);
+}

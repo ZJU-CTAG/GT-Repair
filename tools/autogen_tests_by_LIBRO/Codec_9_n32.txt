@@ -1,0 +1,14 @@
+public void testEncodeBase64MaxResultSize() {
+    int maxResultSize = 8;
+    byte[] bytes = new byte[1];
+    bytes[0] = 0;
+    assertEquals("AA==", Base64.encodeBase64String(bytes, false, true, maxResultSize));
+
+    maxResultSize = -1;
+    try {
+      Base64.encodeBase64String(bytes, false, true, maxResultSize);
+      fail("Should have failed with IAE");
+    } catch(IllegalArgumentException iae) {
+      // expected
+    }
+}

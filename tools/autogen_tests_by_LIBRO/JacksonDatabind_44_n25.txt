@@ -1,0 +1,9 @@
+public void testWithDefaultImpl() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(EnumImpl.class, "Impl"));
+
+    final String json = mapper.writeValueAsString(new EnumBase(EnumType.Impl));
+    final EnumBase output = mapper.readValue(json, EnumBase.class);
+    assertEquals(EnumType.Impl, output.type);
+}

@@ -1,0 +1,12 @@
+public void testVisibility() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(
+        SourceFile.fromCode("Foo.js",
+            "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+        SourceFile.fromCode("SubFoo.js",
+            "/** @constructor \n @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }"),
+        options);
+    assertEquals(0, result.errors.length);
+}

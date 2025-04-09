@@ -1,0 +1,10 @@
+public void testW3CHtmlWithNoNamespace() throws IOException, SAXException {
+    final URL url = getClass().getResource("/test.html");
+    final Document document = Jsoup.parse(url, 2000);
+    final Element element = document.selectFirst("[xmlns]");
+    assertEquals("http://www.w3.org/1999/xhtml", element.namespaceURI());
+    final Elements siblings = element.siblingElements();
+    for (final Element sibling : siblings) {
+        assertEquals(null, sibling.namespaceURI());
+    }
+}

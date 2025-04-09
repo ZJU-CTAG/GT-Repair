@@ -1,0 +1,16 @@
+public void testOptimizerWithWideBounds() {
+    double[] lower = new double[] {-Double.MAX_VALUE, -Double.MAX_VALUE};
+    double[] upper = new double[] {Double.MAX_VALUE, Double.MAX_VALUE};
+    FitnessFunction function = new FitnessFunction() {
+        @Override
+        public double eval(double[] parameters) {
+            assertNotNull(parameters);
+            assertEquals(2, parameters.length);
+            assertTrue(Double.isFinite(parameters[0]));
+            assertTrue(Double.isFinite(parameters[1]));
+            return parameters[0] * parameters[1];
+        }
+    };
+    CMAESOptimizer optimizer = new CMAESOptimizer(200, 5, false, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-10, 1e-10));
+    optimizer.optimize(function, GoalType.MAXIMIZE, lower, upper);
+}

@@ -1,0 +1,28 @@
+public void testJsonTypeInfoWithMessageType() throws IOException {
+    Message message = new Message();
+    message.setId("123");
+    message.setPayload(new UpdateUser());
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Message.class, Message.class);
+    module.addAbstractTypeMapping(UpdateUser.class, UpdateUser.class);
+    module.addAbstractTypeMapping(BaseMessage.class, BaseMessage.class);
+    module.addAbstractTypeMapping(BasePayload.class, BasePayload.class);
+    module.setTypeIdResolver(new TypeIdResolver() {
+        @Override
+        public String idFromValue(Object o) {
+            return o.getClass().getName();
+        }
+
+        @Override
+        public String idFromValueAndType(Object o, Class<?> aClass) {
+            return o.getClass().getName();
+        }
+
+        @Override
+        public String idFromBaseType() {
+            return null;
+        }
+
+        @

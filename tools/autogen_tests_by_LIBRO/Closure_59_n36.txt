@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    TestErrorReporter testErrorReporter = new TestErrorReporter(compiler, false);
+    compiler.setErrorManager(testErrorReporter);
+    compiler.initOptions(new CompilerOptions());
+    compiler.parse(JSCompiler.getDefaultExterns(),
+        ImmutableList.of(SourceFile.fromCode("testcode",
+            "var globalThis = this;")),
+        new CompilerOptions());
+    compiler.check();
+
+    assertEquals(1, testErrorReporter.getWarningCount());
+    assertEquals(1, testErrorReporter.getErrorCount());
+}

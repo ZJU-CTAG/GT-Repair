@@ -1,0 +1,15 @@
+public void testIssue632() throws IOException {
+    final String json = "[\"abc\"][\"def\"]";
+    final ObjectReader r = MAPPER.reader(String[].class);
+    try (MappingIterator<String[]> it = r.readValues(json)) {
+        assertTrue(it.hasNextValue());
+        try {
+            it.nextValue();
+            fail("Expected an exception");
+        } catch (final JsonMappingException e) {
+            // fine, expected
+        }
+
+        assertFalse(it.hasNextValue());
+    }
+}

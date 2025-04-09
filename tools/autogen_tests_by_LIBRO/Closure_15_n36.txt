@@ -1,0 +1,20 @@
+public void testIssue108() {
+
+    JsCompiler compiler = new JsCompiler();
+    compiler.setDebug(true);
+    // compiler.setOutputDir(new File("target/"));
+    compiler.add("var customData={key: 'value'};" +
+            "function testRemoveKey(key) {" +
+            "var dataSlot = customData," +
+            "retval = dataSlot && dataSlot[key]," +
+            "hadKey = dataSlot && (key in dataSlot);" +
+            "if (dataSlot)" +
+            "delete dataSlot[key];" +
+            "return hadKey ? retval : null;" +
+            "};" +
+            "console.log(testRemoveKey('key'));" +
+            "console.log('key' in customData);");
+    compiler.compile();
+    // -> null
+    // -> false
+}

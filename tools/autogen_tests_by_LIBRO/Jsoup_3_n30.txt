@@ -1,0 +1,10 @@
+public void testIssue() {
+    String html = "<table><tr><td>first</td></tr></table>";
+    Document doc = Jsoup.parse(html);
+    Element table = doc.select("table").first();
+    Element newRow = new Element(Tag.valueOf("tr"), "");
+    newRow.appendChild(new Element(Tag.valueOf("td"), "")
+        .appendText("second"));
+    table.appendChild(newRow);
+    assertEquals("<table><tbody><tr><td>first</td></tr><tr><td>second</td></tr></tbody></table>", table.outerHtml());
+}

@@ -1,0 +1,17 @@
+public void testFinish() {
+    File f = new File("target/input.zip");
+    try {
+        ZipArchiveOutputStream out = new ZipArchiveOutputStream(f);
+        out.putArchiveEntry(new ZipArchiveEntry("foo"));
+        out.write("foo".getBytes());
+        out.closeArchiveEntry();
+        out.finish();
+        out.close();
+
+        ZipFile zf = new ZipFile(f);
+        ZipArchiveEntry zae = zf.getEntry("foo");
+        assertNotNull(zae);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

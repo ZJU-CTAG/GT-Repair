@@ -1,0 +1,22 @@
+public void testCaretInErrorOutput() {
+    String code = "alert(1;";
+    String expected = "alert(1;\n^";
+    assertEquals(expected, compile(code));
+}
+
+public void testCaretInErrorOutput2() {
+    String code = "alert(1;\n";
+    String expected = "alert(1;\n^";
+    assertEquals(expected, compile(code));
+}
+
+public String compile(String code) {
+    final StringWriter out = new StringWriter();
+    final PrintWriter err = new PrintWriter(out);
+    CommandLineRunner runner = new CommandLineRunner(
+        new PrintWriter(err));
+    runner.addInputFile(new File(code));
+    runner.doRun();
+    err.flush();
+    return out.toString();
+}

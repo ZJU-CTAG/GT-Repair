@@ -1,0 +1,10 @@
+public void testIssue108() {
+    assertTrue(Pattern.compile("\\$super\\$\\d+").matcher(compile("function Foo() {}\n" +
+        "Foo.prototype.bar = function() { this.$super(); };")).find());
+}
+
+public void testIssue108_correct() {
+    assertFalse(Pattern.compile("\\$super\\$\\d+").matcher(compile("function Foo() {}\n" +
+        "Foo.prototype.bar = function() { this.$super(); };",
+        Copy.createSettings().setSkipAllCompilerPasses(true))).find());
+}

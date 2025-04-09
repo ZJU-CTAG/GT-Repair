@@ -1,0 +1,28 @@
+public void testAnyGetterSerialize() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new Jdk8Module());
+    PojoWithAnyGetter pojo = new PojoWithAnyGetter();
+    pojo.addParam("test", "value");
+    System.out.println(mapper.writeValueAsString(pojo));
+}
+
+public static class PojoWithAnyGetter {
+
+    @JsonSerialize(converter = MyConverter.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters(){
+        return parameters;
+    }
+
+    private Map<String, String> parameters = new HashMap<>();
+
+    public void addParam(String name, String value) {
+        parameters.put(name, value);
+    }
+}
+
+public static class MyConverter extends JsonSerializer<Map<String, String>> {
+
+    @Override
+    public void serialize(Map<String, String>

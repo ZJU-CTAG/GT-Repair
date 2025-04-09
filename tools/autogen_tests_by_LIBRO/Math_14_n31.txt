@@ -1,0 +1,27 @@
+public void test() {
+
+// Generate some data to test the polynomial fit
+
+double[] x = new double[41200];
+double[] y = new double[41200];
+
+x[0] = -0.0000001;
+y[0] = -0.0000001;
+
+x[1] = 0.0000001;
+y[1] = 0.0000001;
+
+for (int i = 2; i < 41200; ++i) {
+    x[i] = x[i - 1] + 1.0;
+    y[i] = y[i - 1] + 1.0;
+}
+
+PolynomialCurveFitter fitter = PolynomialCurveFitter.create(2);
+
+fitter.withStartPoint(new double[] {0.0, 0.0, 0.0});
+
+fitter.withMaxIterations(1000);
+
+fitter.fit(x, y);
+
+}

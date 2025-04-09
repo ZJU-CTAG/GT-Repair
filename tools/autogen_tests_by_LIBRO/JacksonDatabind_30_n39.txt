@@ -1,0 +1,13 @@
+public void testBigDecimalSerialization() throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+
+        final WrapperType wrapper = new WrapperType(new BigDecimal("10000000000.0000000001"));
+
+        // Serialize and deserialize
+        final WrapperType wrapperCopy = mapper.readValue(mapper.writeValueAsString(wrapper), WrapperType.class);
+
+        Assert.assertEquals(wrapper, wrapperCopy);
+        Assert.assertEquals(wrapper.value.getClass(), wrapperCopy.value.getClass());
+    }
+

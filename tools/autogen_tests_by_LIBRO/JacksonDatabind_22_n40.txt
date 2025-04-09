@@ -1,0 +1,31 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addSerializers(new Serializers.Base() {
+                @Override
+                public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
+                    if (beanDesc.getBeanClass() == POJO.class) {
+                        return new POJOSerializer();
+                    }
+                    return super.findSerializer(config, type, beanDesc);
+                }
+            });
+        }
+    });
+    String json = objectMapper.writeValueAsString(new POJO());
+    assertEquals("\"custom\"", json);
+}
+
+public static class POJO {
+    @JsonValue
+    public String getName() {
+        return "custom";
+    }
+}
+
+public static class POJOSerializer extends JsonSerializer<POJO> {
+    @Override
+    public void serialize(POJO

@@ -1,0 +1,15 @@
+public void testBug() throws Exception {
+    CommandLineRunner runner = new CommandLineRunner();
+
+    String testFile = "function f() {\n" +
+            "    alert(1;\n" +
+            "}\n";
+
+    runner.addInputFile(testFile);
+    runner.addOutputFile("out.js");
+    runner.setExpectedError(DiagnosticType.ERROR,
+            "Parse error. missing ) after argument list");
+    runner.setExpectedError(DiagnosticType.ERROR,
+            "Parse error. missing name after . operator");
+    runner.run();
+}

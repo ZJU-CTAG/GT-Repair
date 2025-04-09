@@ -1,0 +1,10 @@
+public void testNullString() {
+    StringWriter sw = new StringWriter();
+    CsvFormat format = CsvFormat.DEFAULT.withNullString("\N");
+    CsvPrinter csvPrinter = new CsvPrinter(sw, format);
+
+    csvPrinter.printRecord(new Object[] { null });
+    csvPrinter.close();
+
+    assertEquals("\N" + System.lineSeparator(), sw.toString());
+}

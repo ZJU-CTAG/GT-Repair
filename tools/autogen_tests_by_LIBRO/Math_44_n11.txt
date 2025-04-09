@@ -1,0 +1,37 @@
+public void testIssue2() {
+    Issue2 sut = new Issue2();
+    sut.addEvent(new MyEvent(1));
+    assertEquals(0, sut.getCurrentEvent());
+    sut.addEvent(new MyEvent(2));
+    assertEquals(2, sut.getCurrentEvent());
+}
+
+class Issue2 extends AbstractSimulation {
+
+    private int currentEvent = 0;
+
+    public int getCurrentEvent() {
+        return currentEvent;
+    }
+
+    public void addEvent(final MyEvent myEvent) {
+        TimeInstant timeInstant = new TimeInstant(myEvent.getTime());
+        Event event = new Event(timeInstant) {
+            @Override
+            public void eventRoutine() {
+                System.out.println("event " + myEvent.getTime());
+                currentEvent = myEvent.getTime();
+            }
+        };
+        event.schedule(this);
+    }
+}
+
+class MyEvent {
+    private int time;
+
+    public MyEvent(int time) {
+        this.time = time;
+    }
+
+    public int getTime

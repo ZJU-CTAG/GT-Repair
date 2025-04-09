@@ -1,0 +1,30 @@
+public void testIssue() {
+    Node node = buildNode();
+    NodePointer pointer = new DOMNodePointer(node);
+    String path = pointer.asPath();
+    assertTrue(path.length() > 0);
+}
+
+private Node buildNode() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = null;
+    try {
+        builder = dbf.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    Document doc = builder.newDocument();
+
+    Element root = doc.createElement("foo");
+    root.setAttribute("xmlns", "test111");
+    root.setAttribute("xmlns:b", "bla");
+    doc.appendChild(root);
+
+    Element bar = doc.createElementNS("bla", "bar");
+    bar.setTextContent("a");
+    root.appendChild(bar);
+
+    Element test = doc.createElementNS("", "test");
+    root.appendChild(test);
+    return test;
+}

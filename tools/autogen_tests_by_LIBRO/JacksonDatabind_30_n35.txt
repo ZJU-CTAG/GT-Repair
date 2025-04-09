@@ -1,0 +1,9 @@
+public void testBigDecimalRounding() throws Exception
+{
+    BigDecimal value = new BigDecimal("1.0000000001");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    String json = mapper.writeValueAsString(value);
+    BigDecimal value2 = mapper.readValue(json, BigDecimal.class);
+    assertEquals(value, value2);
+}

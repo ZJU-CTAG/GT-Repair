@@ -1,0 +1,19 @@
+public void testExternExport() {
+    String code = "/** @typedef {{foo: string, bar: string}} */ \n" +
+            "var FooType; \n" +
+            "/** @param {FooType} foo */ \n" +
+            "function func1 (foo) {} \n" +
+            "\n" +
+            "/** @param {FooType=} foo */ \n" +
+            "function func2 (foo) {} \n" +
+            "\n" +
+            "var foo1 = {foo: 'foo', bar: 'bar'};\n" +
+            "var foo2 = {foo: 'foo', bar: 'bar'};\n" +
+            "\n" +
+            "func1(foo1);\n" +
+            "func2(foo2);\n";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(code, null, new CompilerOptions());
+    System.out.println(result.externExport);
+}

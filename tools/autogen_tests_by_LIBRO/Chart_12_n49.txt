@@ -1,0 +1,17 @@
+public void testIssue213() {
+    DefaultPieDataset dpd1 = new DefaultPieDataset();
+    dpd1.setValue(1, 1);
+    DefaultPieDataset dpd2 = new DefaultPieDataset();
+    dpd2.setValue(2, 2);
+    MultiplePiePlot mp = new MultiplePiePlot(new PieDataset[] { dpd1, dpd2 } );
+    PiePlot p = (PiePlot) mp.getPieChart().getPlot();
+    p.setIgnoreZeroValues(false);
+    p.setIgnoreNullValues(false);
+    p.setLabelGenerator(null);
+    JFreeChart chart = mp.getPieChart();
+    BufferedImage bi = new BufferedImage(200 , 100, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    ChartRenderingInfo info = new ChartRenderingInfo();
+    mp.draw(g2, new Rectangle2D.Double(0, 0, 200, 100), null, info);
+    g2.dispose();
+}

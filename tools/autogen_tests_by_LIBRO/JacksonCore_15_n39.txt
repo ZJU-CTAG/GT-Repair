@@ -1,0 +1,8 @@
+public void testIssue104() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(new JsonGenerator.Feature[0],
+            new JsonGenerator.Feature[0], new BeanPropertyFilter[] { new SimpleBeanPropertyFilter() }, null);
+    mapper.writer(delegate).writeValueAsString(new TestBean("foo"));
+}

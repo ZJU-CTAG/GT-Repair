@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    Result result = compiler.compile("var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};\n", options);
+    assertTrue(result.success);
+    assertEquals("var foo=function(){alert(void 0)};", compiler.toSource());
+}

@@ -1,0 +1,18 @@
+public void testDoesntAcceptEmptyDocType() {
+    try {
+        Jsoup.parse("<!DOCTYPE>");
+        fail("should have thrown exception");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}
+
+public void testParsesDocTypeWithNoName() {
+    Document doc = Jsoup.parse("<!DOCTYPE html><p>One</p>");
+    assertEquals("<!DOCTYPE html>", doc.select("html").first().previousSibling().outerHtml());
+}
+
+public void testParsesDocTypeWithNoNameAndSpaces() {
+    Document doc = Jsoup.parse("<!DOCTYPE   html>  <p>One</p>");
+    assertEquals("<!DOCTYPE   html>", doc.select("html").first().previousSibling().outerHtml());
+}

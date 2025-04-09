@@ -1,0 +1,5 @@
+public void testOptimizeBreakInFinally() throws Exception {
+    final String source = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    final String optimized = org.mozilla.javascript.optimizer.OptRuntime.optimizeString(source, null, 0, null).toSource();
+    assertEquals("console.log('ok then...')", optimized);
+}

@@ -1,0 +1,10 @@
+public void test() {
+    String log = new CompilationLevel.ADVANCED_OPTIMIZATIONS()
+        .process(
+            externs,
+            SourceFile.fromCode("input.js",
+                "console.log( /** @type {function(!string):!string} */ " +
+                "((new window.ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ))['GetVariable'])( '$version' ) );")
+        ).getWarnings()[0].toString();
+    assertEquals("suspicious code. @type function(!string):!string only describes the return value, not the function itself", log);
+}

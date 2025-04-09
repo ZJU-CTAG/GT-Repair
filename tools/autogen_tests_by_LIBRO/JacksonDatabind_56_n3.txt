@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper =
+            new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule());
+
+    Locale locale = new Locale("en-GB");
+    String json = mapper.writeValueAsString(locale);
+
+    Locale result = mapper.readValue(json, Locale.class);
+
+    assertEquals(locale, result);
+}

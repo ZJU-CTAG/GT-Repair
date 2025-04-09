@@ -1,0 +1,18 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    String json;
+    // first, with no value
+    json = mapper.writeValueAsString(new Bean());
+    assertEquals(aposToQuotes("{'name':null}"), json);
+
+    // then with value
+    json = mapper.writeValueAsString(new Bean("foo"));
+    assertEquals(aposToQuotes("{'name':'foo'}"), json);
+
+    // and then with default value
+    mapper.setDefaultPropertyInclusion(Include.NON_EMPTY);
+    json = mapper.writeValueAsString(new Bean());
+    assertEquals(aposToQuotes("{}"), json);
+}

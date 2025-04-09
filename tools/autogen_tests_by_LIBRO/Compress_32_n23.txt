@@ -1,0 +1,11 @@
+public void testTarArchiveInputStreamRejectsUidOrGidGe0x80000000() throws Exception {
+    File file = new File("src/test/resources/bla.tar");
+    FileInputStream is = new FileInputStream(file);
+    try {
+        TarArchiveInputStream tais = new TarArchiveInputStream(is);
+        TarArchiveEntry entry = tais.getNextTarEntry();
+        assertEquals("uid=4294967294", entry.getUserName());
+    } finally {
+        is.close();
+    }
+}

@@ -1,0 +1,10 @@
+public void testForIssue1079_2() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(StringBean.class);
+    // this works fine, but next one fails
+    assertEquals("{\"type\":\"string\"}", mapper.writeValueAsString(new StringBean()));
+    // this throws:
+    // com.fasterxml.jackson.databind.JsonMappingException: Cannot find a (Map) Key deserializer for type [simple type, class java.lang.String]
+    mapper.readValue("{\"type\":\"string\"}", Object.class);
+}

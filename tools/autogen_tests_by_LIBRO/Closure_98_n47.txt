@@ -1,0 +1,13 @@
+public void testClosureCompiler() throws Exception {
+    String code = IOUtils.toString(getClass().getResourceAsStream("closure.js"));
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(
+        Externs.EXTERNS,
+        Collections.singletonList(SourceFile.fromCode("[test]", code)),
+        options);
+    assertEquals("(function(){var a=[1,2,3,4,5];for(var b=0,c=a.length;b<c;++b){var d=a[b];(function(){var a=d;setTimeout(function(){console.log(a)},0)})();}})();",
+        compiler.toSource());
+}

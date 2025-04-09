@@ -1,0 +1,26 @@
+public void testWriteContext() throws Exception {
+    /**
+    * Test that the converted context is different to the write context
+    */
+    JsonFactory f = new JsonFactory();
+    JsonGenerator g = f.createGenerator(new StringWriter());
+
+    g.writeStartObject();
+
+    JsonStreamContext context = g.getOutputContext();
+    System.out.println(context);
+    Assert.assertEquals(JsonStreamContext.TYPE_ROOT, context.inRoot());
+    Assert.assertEquals(JsonStreamContext.TYPE_OBJECT, context.inObject());
+    Assert.assertEquals(-1, context.inArray());
+
+    g.writeFieldName("test");
+    g.writeObject("TEST");
+    g.writeEndObject();
+
+    Assert.assertEquals(JsonStreamContext.TYPE_ROOT, context.inRoot());
+    Assert.assertEquals(JsonStreamContext.TYPE_OBJECT, context.inObject());
+    Assert.assertEquals(-1, context.inArray());
+
+    g.close();
+}
+public void

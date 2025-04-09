@@ -1,0 +1,11 @@
+public void testSourceFiles() throws IOException {
+    JarFile jarFile = new JarFile("mockito-core.jar", false);
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry entry = entries.nextElement();
+        if (entry.getName().endsWith(".java")) {
+            System.out.println("Source file " + entry.getName() + " found in binary jar");
+            fail("Source file " + entry.getName() + " found in binary jar");
+        }
+    }
+}

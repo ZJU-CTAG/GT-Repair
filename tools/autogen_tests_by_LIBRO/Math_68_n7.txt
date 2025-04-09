@@ -1,0 +1,19 @@
+public void testLevenbergMarquardtOptimizer() {
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer() {
+        @Override
+        protected void setUp() {
+            super.setUp();
+            // should check for null here but doesn't
+            if (!(checker instanceof VectorialConvergenceChecker)) {
+                throw new IllegalStateException();
+            }
+        }
+    };
+    optimizer.optimize(new MultiStartDifferentiableMultivariateVectorOptimizer(optimizer),
+            new MaxEval(100), new MaxIter(100),
+            new VectorialConvergenceChecker(1e-6, 1e-6),
+            GoalType.MINIMIZE,
+            new InitialGuess(new double[] { 0, 0 }),
+            new ObjectiveFunction(new ModelFunction(new double[] { 1, 1 })),
+            new Target(new double[] { 0, 0 }));
+}

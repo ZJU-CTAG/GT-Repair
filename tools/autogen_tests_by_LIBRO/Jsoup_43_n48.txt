@@ -1,0 +1,13 @@
+public void testElementSiblingIndex() {
+    Element table = Jsoup.parse("<table><tr><td>Cell1</td><td>Cell2</td></tr><tr><td>Cell1</td><td>Cell2</td></tr></table>").select("table").first();
+    Elements rows = table.select("tr");
+    assertEquals(2, rows.size());
+    Element row1 = rows.get(0);
+    Element row2 = rows.get(1);
+    assertEquals(row1, row2);
+    assertEquals(0, row1.elementSiblingIndex());
+    assertEquals(0, row2.elementSiblingIndex());
+    assertNotSame(row1, row2);
+    assertEquals(row1, row1.parent().children().get(0));
+    assertEquals(row2, row2.parent().children().get(1));
+}

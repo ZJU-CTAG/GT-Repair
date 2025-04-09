@@ -1,0 +1,24 @@
+public void testIssue() {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING, true);
+    String json = om.writeValueAsString(TestEnum.VALUE_ONE);
+    System.out.println("json = " + json);
+    TestEnum val = om.readValue(json, TestEnum.class);
+    assertEquals(TestEnum.VALUE_ONE, val);
+}
+
+public enum TestEnum {
+    @JsonValue
+    VALUE_ONE("value1");
+
+    private String valueInJson;
+
+    private TestEnum(String valueInJson) {
+        this.valueInJson = valueInJson;
+    }
+
+    @Override
+    public String toString() {
+        return valueInJson;
+    }
+}

@@ -1,0 +1,16 @@
+public void testInconsistentCommentHandling() throws IOException {
+    StringReader sr = new StringReader("/* @license Foo License */ alert('foo');");
+    StringWriter sw = new StringWriter();
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setProcessJSDoc(true);
+    Result result = compiler.compile(sr, sw, options);
+    assertEquals(0, result.errors.length);
+    assertEquals(1, result.warnings.length);
+    assertEquals("0: WARNING - Parse error. Non-JSDoc comment has annotations. Did you mean to start it with '/\*\*' ?\n/* @license Foo License */\n^\n\n", result.warnings[0].toString());
+    assertEquals("\n/* @license Foo License */\n\nalert(\"foo\");", sw.toString());
+    
+    sr = new StringReader("/*! @license Foo License */ alert('foo');");
+    sw = new StringWriter();
+   

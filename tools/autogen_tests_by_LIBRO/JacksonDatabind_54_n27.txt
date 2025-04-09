@@ -1,0 +1,20 @@
+public void testIssue1071() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+
+    final JsonResult result = new JsonResult();
+    result.setA(Optional.empty());
+    result.setB(Optional.empty());
+    assertEquals("{}", mapper.writeValueAsString(result));
+}
+
+public void testIssue1072() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+
+    final JsonResult result = new JsonResult();
+    result.setA(Optional.of("A"));
+    result.setB(Optional.of("B"));
+    assertEquals("{\"a\":\"A\",\"b\":\"B\"}", mapper

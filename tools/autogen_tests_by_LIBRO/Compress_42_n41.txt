@@ -1,0 +1,8 @@
+public void testUnixSymlink() throws IOException {
+    try (ZipFile zipFile = new ZipFile(getFile("invalid-entry.jar"))) {
+        for (String name : new String[] { "META-INF/", "META-INF/maven/" }) {
+            ZipArchiveEntry entry = zipFile.getEntriesInPhysicalOrder(name).iterator().next();
+            assertFalse("unexpected Unix symlink: " + name, entry.isUnixSymlink());
+        }
+    }
+}

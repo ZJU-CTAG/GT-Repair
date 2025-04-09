@@ -1,0 +1,34 @@
+public void testIssue() {
+    Person person = new Person();
+    person.setName("Bob");
+    person.setAge(20);
+    assertEquals("Bob", person.getName());
+}
+
+public void makeClass(/*object*/ classDefinition) {
+    // Creates a new object based on the class definition object
+    var newClass = function() {
+        // If a base class was specified, call it after setting up the prototype
+        if (classDefinition.baseClass) {
+            this.base = new classDefinition.baseClass;
+            this.base.prototype.constructor.apply(this, arguments);
+        }
+
+        // Call the init method if it exists
+        if (this.init) this.init.apply(this, arguments);
+    };
+
+    // Assign properties, prototype and constructor
+    newClass.prototype = classDefinition;
+    newClass.prototype.constructor = newClass;
+
+    // Return the new class
+    return newClass;
+}
+
+public void Person() {
+    /**
+    * The person's name.
+    * @type {string}
+    */
+    this.name

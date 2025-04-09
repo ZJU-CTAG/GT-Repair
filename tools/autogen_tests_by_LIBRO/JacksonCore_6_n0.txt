@@ -1,0 +1,8 @@
+public void testJsonPointer() throws Exception {
+    final String json = "{\"foo\": {\"00\":\"bar\"}}";
+    final JsonPointer ptr = JsonPointer.compile("/foo/00");
+    final JsonNode node = new ObjectMapper().readTree(json);
+    final JsonNode result = ptr.findValue(node);
+    assertNotNull(result);
+    assertEquals("bar", result.asText());
+}

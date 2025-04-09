@@ -1,0 +1,24 @@
+public void testIssue114() {
+    TarArchiveEntry entry = new TarArchiveEntry("longfilename.txt");
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < 255; i++) {
+        builder.append("@");
+    }
+    entry.setLongName(builder.toString());
+    entry.setSize(0);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(baos);
+    try {
+        tos.putArchiveEntry(entry);
+        tos.closeArchiveEntry();
+        tos.close();
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    try {
+        tis.getNextTarEntry();
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+}

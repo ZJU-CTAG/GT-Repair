@@ -1,0 +1,11 @@
+public void testIssue109() throws IOException {
+    String html = "<html><head><title>First parse</title></head><body><p>Parsed HTML into a doc.</p></body></html>";
+    Document doc = Jsoup.parse(html);
+    assertEquals("First parse", doc.head().text());
+
+    String htm2 = "<html><head><title>Empty head</title></head><body><p>Parsed HTML into a doc.</p></body></html>";
+    File testFile = new File("src/test/resources/test.html");
+    FileUtils.writeStringToFile(testFile, htm2, "UTF-8");
+    Document doc2 = Jsoup.parse(testFile, "UTF-8");
+    assertEquals("Empty head", doc2.head().text());
+}

@@ -1,0 +1,18 @@
+public void testClassifyNonRightmostExpressionsAsProblematic() {
+    assertEquals(42, foo(1, 2, 42));
+    assertEquals(1, foo(bar(), 2, 42));
+    assertEquals(1, foo((1, 2, 3), (4, 5, 42)));
+}
+
+public int foo(int... args) {
+    int lastArg = 0;
+    for (int arg : args) {
+        lastArg = arg;
+    }
+    return lastArg;
+}
+
+public int bar() {
+    System.out.println("bar");
+    return 1;
+}

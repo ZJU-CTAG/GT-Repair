@@ -1,0 +1,11 @@
+public void testIssue108() {
+    final String[] elements = new String[]{"1", "2", "3", null, "5"};
+    final String[] elementsWithNull = new String[]{"1", "2", "3", "\\N", "5"};
+    final CsvFormat csvFormat = new CsvFormat().withEscapeChar('\\').withNullString("\\N");
+    final StringWriter writer = new StringWriter();
+    try (CsvPrinter printer = new CsvPrinter(writer, csvFormat)) {
+        printer.printRecord(elements);
+    }
+    assertEquals("1,2,3,\\N,5\n", writer.toString());
+    assertArrayEquals(elementsWithNull, csvFormat.parse(writer.toString()).getRecords().get(0).toArray());
+}

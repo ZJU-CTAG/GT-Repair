@@ -1,0 +1,8 @@
+public void testAcceptSingleValueAsArray() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    B b = mapper.readValue(com.fasterxml.jackson.databind.JsonCreatorWithCollectionTest.JSON, B.class);
+    Assert.assertEquals(1, b.cs.size());
+    Assert.assertEquals(com.fasterxml.jackson.databind.JsonCreatorWithCollectionTest.C, b.cs.get(0).getClass());
+    Assert.assertEquals("site is missing from bid request (breq) object", b.cs.get(0).message);
+}

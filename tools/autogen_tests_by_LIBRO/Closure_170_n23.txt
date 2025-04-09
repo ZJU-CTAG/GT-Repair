@@ -1,0 +1,17 @@
+public void testIssue() {
+  String js = "function Test(n) { " +
+              "var i = 0;" +
+              "return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i } " +
+              "var dummy = \"6chars\"; " +
+              "console && console.log( Test(dummy) );";
+  String expected = "function Test(a){return 0}var dummy=\"6chars\";console&&console.log(Test(dummy));";
+  Compiler compiler = new Compiler();
+  compiler.setLanguageMode(LanguageMode.ECMASCRIPT5);
+  CompilerOptions options = new CompilerOptions();
+  options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+  options.aggressiveVarCheck = CheckLevel.OFF;
+  options.setCheckTypes(true);
+  options.setCheckSymbols(true);
+  options.setCheckSuspiciousCode(true);
+  options.setCheckGlobalNamesLevel(CheckLevel.OFF);
+  options.setCheckMissingReturn(CheckLevel.OFF

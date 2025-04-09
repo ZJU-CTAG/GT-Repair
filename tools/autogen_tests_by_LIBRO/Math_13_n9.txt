@@ -1,0 +1,16 @@
+public void testMultivariateVectorOptimizer() throws MathUserException {
+    double[] x = new double[41200];
+    double[] y = new double[41200];
+    for (int i = 0; i < x.length; i++) {
+        x[i] = i;
+        y[i] = i * i;
+    }
+    Weight w = new Weight(x);
+    PolynomialCurveFitter fitter = PolynomialCurveFitter.create(2);
+    fitter.withStartPoint(new double[]{0, 1, 0});
+    fitter.withMaxIterations(100000);
+    double[] coeff = fitter.fit(w, y);
+    assertEquals(2, coeff.length);
+    assertEquals(0.0, coeff[0], 0.01);
+    assertEquals(1.0, coeff[1], 0.01);
+}

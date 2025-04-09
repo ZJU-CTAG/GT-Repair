@@ -1,0 +1,20 @@
+public void testToStringStyle() {
+    ToStringStyle test = new ToStringStyle() {
+        @Override
+        public void append(StringBuffer buffer, String fieldName, Object value, Boolean fullDetail) {
+        }
+    };
+    Field field = null;
+    try {
+        field = ToStringStyle.class.getDeclaredField("THREAD_LOCAL_STYLE");
+    } catch (NoSuchFieldException e) {
+        e.printStackTrace();
+    }
+    field.setAccessible(true);
+    try {
+        ThreadLocal<ToStringStyle> threadLocal = (ThreadLocal<ToStringStyle>) field.get(test);
+        System.out.println(threadLocal.get());
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    }
+}

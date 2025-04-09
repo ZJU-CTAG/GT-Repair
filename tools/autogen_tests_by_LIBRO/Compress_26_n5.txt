@@ -1,0 +1,9 @@
+public void testSkip() throws Exception {
+    byte[] contents = "abcdefghij".getBytes();
+    ByteArrayInputStream in = new ByteArrayInputStream(contents);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    CipherInputStream cin = new CipherInputStream(in, new NullCipher());
+    IOUtils.skip(cin, 8);
+    IOUtils.copy(cin, out);
+    assertEquals("ij", out.toString());
+}

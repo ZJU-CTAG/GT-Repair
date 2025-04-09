@@ -1,0 +1,17 @@
+public void testResetState() {
+    try {
+        EventState[] handlers = new EventState[] {
+            new EventState(new Event(new MyFirstEvent(), 0.0, 0.1, 1.0e-6)),
+            new EventState(new Event(new MySecondEvent(), 0.0, 0.1, -1.0e-6))
+        };
+        double maxStep = 0.1;
+        double t0 = 0;
+        double t = 0;
+        double[] y = new double[] { 10.0, 20.0 };
+        FirstOrderIntegrator integ = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+        integ.addStepHandler(new MyStepHandler());
+        integ.integrate(new MyFirstOrderDifferentialEquations(), t0, y, 10, y);
+    } catch (Exception e) {
+        assertTrue(false);
+    }
+}

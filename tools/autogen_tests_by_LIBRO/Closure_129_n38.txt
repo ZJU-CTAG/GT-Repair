@@ -1,0 +1,13 @@
+public void testIssue121() {
+    String filename = "issue121.js";
+    String code = "/** @type {function(!string):!string} */" +
+            "((new window.ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ))['GetVariable'])( '$version' );";
+
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckTypes(true);
+    options.setWarningLevel(
+            DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+
+    compiler.compile(SourceFile.fromCode(filename, code), options);
+}

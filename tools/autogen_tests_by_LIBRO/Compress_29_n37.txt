@@ -1,0 +1,18 @@
+public void testArchiveStreamFactory() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream is = getClass().getClassLoader().getResourceAsStream("archive-stream-factory.txt");
+    try {
+        ArchiveInputStream ais = factory.createArchiveInputStream(ArchiveStreamFactory.JAR, is, "UTF-8");
+        try {
+            ArchiveEntry entry = ais.getNextEntry();
+            assertEquals("archive-stream-factory.txt", entry.getName());
+            assertEquals(0, entry.getSize());
+            assertFalse(entry.isDirectory());
+            assertTrue(entry.isFile());
+            assertEquals(0, entry.getTime());
+            assertEquals(new DateTime(0L), new DateTime(entry.getTime()));
+            StringWriter sw = new StringWriter();
+            IOUtils.copy(ais, sw, "UTF-8");
+            assertEquals("\ufffd\ufffd\ufffd\ufffd\ufffd", sw.toString());
+        } finally {
+            ais.close();

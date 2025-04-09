@@ -1,0 +1,16 @@
+public void testIOUtils() throws IOException {
+    final String s = "Hello world";
+    InputStream is = new InputStream() {
+        private int pos = 0;
+        public int read() throws IOException {
+            if (pos >= s.length()) {
+                return -1;
+            }
+            return s.charAt(pos++);
+        }
+    };
+    long n = IOUtils.skip(is, 12);
+    assertEquals(11, n);
+    int c = is.read();
+    assertEquals(-1, c);
+}

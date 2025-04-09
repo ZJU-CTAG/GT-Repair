@@ -1,0 +1,17 @@
+public void testToMap() throws IOException {
+    String csv = "c1,c2,c3\n" +
+            "v1,v2,v3\n";
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVParser parser = new CSVParser(new StringReader(csv), format);
+    List<CSVRecord> records = parser.getRecords();
+    for (CSVRecord record : records) {
+        Map<String, String> map = record.toMap();
+        assertNotNull(map);
+    }
+    parser = new CSVParser(new StringReader(csv), CSVFormat.DEFAULT);
+    records = parser.getRecords();
+    for (CSVRecord record : records) {
+        Map<String, String> map = record.toMap();
+        assertNull(map);
+    }
+}

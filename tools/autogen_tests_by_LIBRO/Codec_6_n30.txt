@@ -1,0 +1,22 @@
+public void testBase64InputStream() throws Exception {
+    byte[] input = "ABC".getBytes("UTF-8");
+    byte[] expected = new Base64().encode(input);
+    // The bug is seen only when the last input block is exactly 3 bytes long
+    byte[] inputWithPadding = Arrays.copyOf(input, 3);
+    byte[] encoded = encode(inputWithPadding);
+    assertEquals(expected, encoded);
+}
+private byte[] encode(byte[] input) throws IOException {
+    InputStream in = new ByteArrayInputStream(input);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    Base64InputStream b64in = new Base64InputStream(in, true);
+    OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+    try {
+        IOUtils.copy(b64in, writer, "UTF-8");
+    } finally {
+        IOUtils.closeQuietly(writer);
+    }
+
+    return out.toByteArray();
+}

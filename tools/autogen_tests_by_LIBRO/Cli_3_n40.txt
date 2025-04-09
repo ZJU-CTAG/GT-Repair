@@ -1,0 +1,16 @@
+public void testIssue108() {
+    Options options = new Options();
+    Option t = OptionBuilder.withArgName("target")
+            .hasArg()
+            .withDescription("Generate files for the specified target machine")
+            .withLongOpt("target")
+            .create("t");
+    options.addOption(t);
+
+    PosixParser parser = new PosixParser();
+
+    CommandLine line = parser.parse(options, new String[] {"-t", "foobar.com"});
+    assertEquals("foobar.com", line.getOptionValue("t").trim());
+    line = parser.parse(options, new String[] {"-target", "foobar.com"});
+    assertEquals("foobar.com", line.getOptionValue("target").trim());
+}

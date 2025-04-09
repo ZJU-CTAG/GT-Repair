@@ -1,0 +1,21 @@
+public void testIssue123() throws Exception {
+    final String pattern = "yyyy-MM-dd HH:mm:ss";
+    final String date = "2015-01-01 00:00:00";
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Date.class, new CustomDateSerializer(pattern));
+    module.addDeserializer(Date.class, new CustomDateDeserializer(pattern));
+    mapper.registerModule(module);
+
+    // Serialize with custom format
+    Bean123 bean = new Bean123(new SimpleDateFormat(pattern).parse(date));
+    String json = mapper.writeValueAsString(bean);
+    assertEquals("{\"date\":\"" + date + "\"}", json);
+
+    // Deserialize with custom format
+    Bean123 bean2 = mapper.readValue(json, Bean123.class);
+    assertEquals(date, new SimpleDateFormat(pattern).format(bean2.getDate()));
+
+    // Round trip with @JsonFormat
+    BeanWithFormat bean3 = m

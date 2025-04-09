@@ -1,0 +1,30 @@
+public void testIssue624() {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<String, String>();
+    map.put("1", "1");
+    map.put("2", "2");
+    map.put("3", "3");
+    Bean bean = new Bean(map);
+
+    assertEquals(bean, new Gson().fromJson(new Gson().toJson(bean), Bean.class));
+}
+
+class Bean {
+    ConcurrentNavigableMap<String, String> map;
+
+    public Bean() {
+    }
+
+    public Bean(ConcurrentNavigableMap<String, String> map) {
+        this.map = map;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bean bean = (Bean) o;
+
+        if (map != null ? !map.equals(bean.map) : bean.map != null) return false;
+
+        return true;

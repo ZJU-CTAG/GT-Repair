@@ -1,0 +1,16 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setExternExports(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    
+    Result result = compiler.compile(
+            Files.read("externs/externs.js", Charsets.UTF_8),
+            Files.read("testdata/issue108.js", Charsets.UTF_8),
+            options);
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertTrue(result.errors[0].sourceName.contains("issue108.js"));
+    assertTrue(result.errors[0].description.contains("Bad type annotation"));
+}

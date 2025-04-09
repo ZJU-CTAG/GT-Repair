@@ -1,0 +1,20 @@
+public void testRotationCreation() {
+    // the following vectors have been extracted from a real use case,
+    // and caused problems when trying to build a rotation
+    double[] u1 = new double[] {
+        -4921140.837095533, -2.1512094250440013E7, -890093.279426377
+    };
+    double[] u2 = new double[] {
+        -2.7238580938724895E9, -2.169664921341876E9, 6.749688708885301E10
+    };
+    double[] v1 = new double[] { 1, 0, 0 };
+    double[] v2 = new double[] { 0, 0, 1 };
+
+    // this is the commons-math constructor, which fails
+    // with a NaN axis
+    Rotation r = new Rotation(v1, v2, u1, u2);
+
+    // these are the same formulas, but with enhanced precision
+    // using a BigDecimal representation
+    BigDecimal[][] bigV = new BigDecimal[][] {
+       

@@ -1,0 +1,9 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        "var C2 = function(){};" +
+        "var C3 = function(c2){this.c2_ = c2; use(this.c2_.prop); };");
+    assertEquals(1, result.errors.length);
+    JSError error = result.errors[0];
+    assertEquals("Property prop never defined on C2", error.description);
+}

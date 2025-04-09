@@ -1,0 +1,12 @@
+public void testArgumentCaptor() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] strings = new String[]{"a", "b", "c"};
+    StringStringTester tester = mock(StringStringTester.class);
+    tester.test(strings);
+    verify(tester).test(captor.capture());
+    assertEquals("a", captor.getValue());
+}
+
+public static interface StringStringTester {
+    void test(String... strings);
+}

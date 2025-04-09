@@ -1,0 +1,19 @@
+public void testJacksonTest() throws IOException {
+    final String json = ResourceUtils.getStringFromResource("jackson-test.json");
+    final JsonNode root = mapper.readTree(json);
+    final JsonNode parent = root.get("parent");
+    String name = parent.get("name").textValue();
+    assertEquals("parent", name);
+    JsonNode children = parent.get("children");
+    assertEquals(2, children.size());
+    JsonNode child1 = children.get(0);
+    name = child1.get("name").textValue();
+    assertEquals("child1", name);
+    assertEquals(1, child1.get("id").intValue());
+    assertNotNull(child1.get("parent"));
+    JsonNode child2 = children.get(1);
+    name = child2.get("name").textValue();
+    assertEquals("child2", name);
+    assertEquals(2, child2.get("id").intValue());
+    assertNotNull(child2.get("parent"));
+}

@@ -1,0 +1,30 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+    {
+        @Override
+        public void setupModule(SetupContext context)
+        {
+            addSerializer(new POJOSerializer());
+        }
+    });
+
+    final String json = mapper.writeValueAsString(new POJO());
+    assertEquals("\"serialized\"", json);
+}
+
+class POJO {
+    @JsonValue
+    String value() {
+        return "pojo";
+    }
+}
+
+class POJOSerializer extends JsonSerializer<POJO> {
+    @Override
+    public void serialize(final POJO value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonProcessingException
+    {
+        jgen.writeString("serialized");
+    }
+}

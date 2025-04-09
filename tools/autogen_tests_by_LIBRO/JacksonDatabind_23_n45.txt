@@ -1,0 +1,18 @@
+public void testExclusion() throws Exception
+{
+    String json = "{\"a\":0,\"b\":\"\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    // AfterBurnerModule afterBurnerModule = new AfterBurnerModule();
+    // mapper.registerModule(afterBurnerModule);
+    TestData value = mapper.readValue(json, TestData.class);
+    assertNotNull(value);
+    assertEquals(0, value.a);
+    assertNull(value.b);
+}
+
+class TestData
+{
+    public int a;
+    public String b;
+}

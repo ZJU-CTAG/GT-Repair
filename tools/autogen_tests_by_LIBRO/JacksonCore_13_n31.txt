@@ -1,0 +1,15 @@
+public void testQuoteFieldNames() throws Exception {
+    JsonFactory f = new JsonFactory();
+    StringWriter writer = new StringWriter();
+    JsonGenerator gen = f.createGenerator(writer);
+
+    gen.getCodec().writeValue(gen, new Model());
+    gen.flush();
+
+    String json = writer.toString();
+    assertEquals("{\"foo\":\"bar\"}", json);
+}
+
+static class Model {
+    String foo = "bar";
+}

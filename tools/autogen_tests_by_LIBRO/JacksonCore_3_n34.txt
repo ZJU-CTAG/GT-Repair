@@ -1,0 +1,16 @@
+public void testIssue113() throws IOException {
+    File testFile = new File(getTestDirectory(), "issue113.json");
+    String json = "{\"message\" : \"hello\"}";
+    FileUtils.write(testFile, json, "UTF-8");
+    FileInputStream fis = new FileInputStream(testFile);
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createParser(fis);
+    p.nextToken();
+    try {
+        p.nextToken();
+        fail("Must throw an exception");
+    } catch (Exception e) {
+        assertTrue(e instanceof JsonParseException);
+        assertEquals(5, e.getLocation().getColumnNr());
+    }
+}

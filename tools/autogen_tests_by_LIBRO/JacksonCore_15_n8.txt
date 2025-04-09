@@ -1,0 +1,20 @@
+public void testFilteringGeneratorDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(mapper.getFactory().createGenerator(System.out, JsonEncoding.UTF8), mapper.getSerializationConfig(), new BeanPropertyFilter() {
+        @Override
+        public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, BeanPropertyWriter writer) throws Exception {
+            PropertyName propName = writer.getFullName();
+            if (propName.equals("age")) {
+                writer.serializeAsField(pojo, jgen, provider);
+            }
+        }
+    });
+
+    filteringGeneratorDelegate.writeStartArray();
+    filteringGeneratorDelegate.writeStartObject();
+    filteringGeneratorDelegate.writeFieldName("name");
+    filteringGeneratorDelegate.writeString("John");
+    filteringGeneratorDelegate.writeFieldName("age");
+    filteringGeneratorDelegate.writeNumber(32);
+    filteringGeneratorDelegate

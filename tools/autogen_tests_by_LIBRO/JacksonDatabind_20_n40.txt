@@ -1,0 +1,10 @@
+public void testIssue112() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER\_CASE);
+    ClassWithObjectNodeField deserialized =
+        mapper.readValue(
+            "{ \"id\": \"1\", \"json\": { \"foo\": \"bar\", \"baz\": \"bing\" } }",
+            ClassWithObjectNodeField.class);
+    assertEquals("1", deserialized.id);
+    assertEquals("bar", deserialized.json.get("foo").asText());
+}

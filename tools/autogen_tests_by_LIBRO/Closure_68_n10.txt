@@ -1,0 +1,19 @@
+public void testIssue103() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", 
+              "var extern;"));
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("inputs.js", 
+              "/**\n" +
+              " * @type function\n" +
+              " */\n" +
+              "var callback;"));
+    Result result = compiler.compile(externs, inputs, new CompilerOptions());
+    assertEquals(1, result.warnings.length);
+    assertEquals(
+              "inputs.js:4: WARNING - Parse error. Unexpected end of file\n" +
+              " */\n" +
+              "^", 
+              result.warnings[0].toString());
+}

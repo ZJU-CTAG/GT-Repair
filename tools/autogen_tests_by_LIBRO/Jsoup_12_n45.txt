@@ -1,0 +1,8 @@
+public void testAttrRelaxed() {
+    String h = "<div> <table class='x'></table> <table class='y'></table> </div> <table class='x'></table>";
+    Document doc = Jsoup.parse(h);
+    assertEquals(6, doc.select("div table[class~=x|y]").size());
+    assertEquals(1, doc.select("div > table[class~=x|y]").size());
+    assertEquals(1, doc.select("div + table[class~=x|y]").size());
+    assertEquals(2, doc.select("div ~ table[class~=x|y]").size());
+}

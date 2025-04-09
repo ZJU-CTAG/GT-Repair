@@ -1,0 +1,10 @@
+public void testNonEmptyWithInts() throws Exception
+{
+    ObjectMapper mapper = new AfterburnerModule().newObjectMapper();
+    mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.addMixInAnnotations(Issue204Test.class, Issue204TestMixIn.class);
+    // original (2.5.4)
+    String json = mapper.writeValueAsString(new Issue204Test());
+    assertEquals("{\"intField\":0,\"listField\":[]}", json);
+}

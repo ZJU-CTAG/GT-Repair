@@ -1,0 +1,15 @@
+public void testListAttribute() throws IOException {
+    ListAttribute listAttribute = new ListAttribute();
+    listAttribute.setItemJsonKey("key");
+    List<String> items = new ArrayList<String>();
+    items.add("one");
+    items.add("two");
+    listAttribute.setItems(items);
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(simpleModule);
+    JsonNode tree = mapper.valueToTree(listAttribute);
+    System.out.println(tree);
+}

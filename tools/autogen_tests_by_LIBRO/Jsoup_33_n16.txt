@@ -1,0 +1,26 @@
+public void testHandlesKnownEmptyBlocks() {
+    String h = "<script>hello</script><div>world</div><script>foo</script><div>bar</div>";
+    HtmlParser p = new HtmlParser(new HtmlParserConfiguration());
+    p.parse(h, new HtmlDocumentHandler() {
+        public void startDocument(HtmlPage page) {
+        }
+
+        public void startTag(HtmlTag tag, MutableAttributes attrs, int pos) {
+            Assert.assertFalse(tag.isEmpty());
+        }
+
+        public void text(String text, List<HtmlTag> path) {
+            Assert.assertFalse(text.contains("hello"));
+            Assert.assertFalse(text.contains("foo"));
+            Assert.assertTrue(text.contains("world"));
+            Assert.assertTrue(text.contains("bar"));
+        }
+
+        public void endTag(HtmlTag tag, int pos) {
+        }
+
+        public void endDocument(HtmlPage page) {
+        }
+    });
+}
+

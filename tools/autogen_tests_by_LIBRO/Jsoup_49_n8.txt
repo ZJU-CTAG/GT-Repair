@@ -1,0 +1,16 @@
+public void testIssue108() {
+    final org.jsoup.nodes.Document doc = new org.jsoup.nodes.Document("");
+    final org.jsoup.nodes.Element body = doc.appendElement("body");
+    body.appendElement("div1");
+    body.appendElement("div2");
+    final org.jsoup.nodes.Element div3 = body.appendElement("div3");
+    final org.jsoup.nodes.Element div4 = body.appendElement("div4");
+    final java.util.ArrayList<org.jsoup.nodes.Element> toMove = new java.util.ArrayList<org.jsoup.nodes.Element>() {
+        {
+            add(div3);
+            add(div4);
+        }
+    };
+    body.insertChildren(0, toMove);
+    final java.lang.String result = doc.toString().replaceAll("\\s+", "");
+    assertEquals("<body><div3></div3><div4></div4><div1></div1><div2></div2></body>",

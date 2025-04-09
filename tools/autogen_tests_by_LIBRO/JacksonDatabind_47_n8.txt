@@ -1,0 +1,25 @@
+public void testModelObjects() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new ParameterNamesModule());
+    mapper.registerModule(new JsonOrgModule());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(new SimpleModule()
+            .addSerializer(BaseAccessionIdentifier.class, new AccessionIdentifierSerializer())
+            .addDeserializer(BaseAccessionIdentifier.class, new AccessionIdentifierDeserializer()));
+    final Foo foo = new Foo();
+    final String serialized = mapper.writeValueAsString(foo);
+    System.out.println(serialized);
+    assertNotNull(serialized);
+}
+
+public class Foo {
+
+  @JsonSerialize(as = BaseAccessionIdentifier.class)
+  @JsonDeserialize(as = BaseAccessionIdentifier.class)
+  public AccessionIdentifier getReference() {
+    return null;
+  }
+}
+
+public interface Access

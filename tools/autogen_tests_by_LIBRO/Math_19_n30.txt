@@ -1,0 +1,17 @@
+public void testIssue108() {
+    MultivariateMultiStartOptimizer optimizer = new CMAESOptimizer();
+    optimizer.optimize(
+            new MaxEval(100),
+            new InitialGuess(new double[] {0, 0.1}),
+            new ObjectiveFunction(new Issue108FitnessFunction()),
+            GoalType.MINIMIZE,
+            new SimpleBounds(new double[] {-Double.MAX_VALUE, -1}, new double[] {Double.MAX_VALUE, 1}));
+}
+
+private static class Issue108FitnessFunction implements MultivariateFunction {
+    @Override
+    public double value(double[] parameters) {
+        System.out.println(Arrays.toString(parameters));
+        return 0;
+    }
+}

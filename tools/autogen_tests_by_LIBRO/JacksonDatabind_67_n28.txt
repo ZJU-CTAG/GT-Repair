@@ -1,0 +1,9 @@
+public void testMapKeyDeserializerModifiersIgnored() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaExtrasModule());
+    Map<TestEnum, String> result = mapper.readValue(
+            "{\"key\":\"value\"}",
+            new TypeReference<Map<TestEnum, String>>() {
+            });
+    assertEquals(TestEnum.KEY, result.keySet().iterator().next());
+}

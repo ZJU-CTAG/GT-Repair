@@ -1,0 +1,21 @@
+public void testAr() throws Exception{
+   File fileToDelete = new File("test2.xml");
+   File newFile = new File("test.txt");
+   File archive = new File("bla.ar");
+   
+   ArOutputStream ar = new ArOutputStream(new FileOutputStream(archive));
+   ar.putArchiveEntry(new ArArchiveEntry(newFile, "test.txt"));
+   ar.write(1);
+   ar.closeArchiveEntry();
+   ar.close();
+   ar.close();
+   ArUtils.updateAr(archive, ArUtils.toMap(ArUtils.listAr(archive)), archive, new ArArchiveEntry[]{
+      new ArArchiveEntry(fileToDelete, fileToDelete.getName())
+   });
+   
+   // ar -t /tmp/dir26673/bla.ar
+   // returns test1.xml, test2.xml
+   // vi shows me that there is still the test2.xml entry in the archive, 
+   // even when getNextEntry returns null.
+   
+   ar = new ArOutputStream(new File

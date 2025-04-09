@@ -1,0 +1,16 @@
+public void testIssue1351() throws Exception
+{
+    Issue1351 data = new Issue1351();
+    data.value = "foo";
+    data.id = 1;
+    Map<String,Object> map = MAPPER.convertValue(data, Map.class);
+    assertEquals(1, map.size());
+    assertEquals(1, map.get("id"));
+}
+
+static class Issue1351 {
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    public String value;
+
+    public int id;
+}

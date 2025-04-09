@@ -1,0 +1,21 @@
+public void testIssue() {
+    String js = "/** @type {Object} */\n" +
+                "var NS = {};\n" +
+                "/** @enum {number} */\n" +
+                "NS.keys = {\n" +
+                "  a: 1,\n" +
+                "  b: 2,\n" +
+                "  c: 3\n" +
+                "};\n" +
+                "/** @enum */\n" +
+                "window['gKEYS'] = NS.keys;";
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setGenerateExports(true);
+    options.setExportLocalPropertyDefinitions(true);
+    options.setSummaryDetailLevel(3);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", js

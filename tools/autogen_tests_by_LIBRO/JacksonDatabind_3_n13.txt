@@ -1,0 +1,18 @@
+public void testIssue108() throws IOException
+{
+    List<String> list = new ArrayList<String>();
+    list.add("foobar");
+    list.add(null);
+    list.add("baz");
+    String[] input = list.toArray(new String[list.size()]);
+
+    StringWriter writer = new StringWriter();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(writer, input);
+
+    String[] output = mapper.readValue(writer.toString(), String[].class);
+    assertEquals(list.size(), output.length);
+    assertEquals("foobar", output[0]);
+    assertEquals(null, output[1]);
+    assertEquals("baz", output[2]);
+}

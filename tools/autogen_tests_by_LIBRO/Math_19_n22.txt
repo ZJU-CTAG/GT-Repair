@@ -1,0 +1,17 @@
+public void test() {
+    Double[] bounds = new Double[2];
+    bounds[0] = -1e200;
+    bounds[1] = 1e200;
+    CMAESOptimizer cmaesOptimizer = new CMAESOptimizer(1000, 1e-15, true, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(-Double.MAX_VALUE, Double.MAX_VALUE));
+    double[] result = cmaesOptimizer.optimize(new MaxEval(1000), new ObjectiveFunction(new MyFitnessFunction()), GoalType.MINIMIZE, new double[0], new double[0], new double[0], bounds);
+    System.out.println(result.length);
+}
+
+static class MyFitnessFunction implements MultivariateFunction {
+    @Override
+    public double value(double[] point) {
+        System.out.println(point.length);
+        System.out.println(point[0]);
+        assertTrue("Got NaN", !Double.isNaN(point[0]));
+        return point[0];
+    }

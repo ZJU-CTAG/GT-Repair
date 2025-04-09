@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String,Object> map = new HashMap<String,Object>();
+    map.put("@class", "java.lang.Integer");
+    map.put("value", 2);
+    try {
+        mapper.readValue(mapper.writeValueAsString(map), Object.class);
+    } catch (MismatchedInputException e) {
+        // good
+        return;
+    } catch (JsonMappingException e) {
+        // bad
+        throw e;
+    }
+    fail("Should not have passed");
+}

@@ -1,0 +1,23 @@
+public void testExternalTypeId() throws Exception
+{
+    final String JSON = "{\"value\":13}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.EXTERNAL_PROPERTY);
+    BeanWithValue bean = mapper.readValue(JSON, BeanWithValue.class);
+    assertNull(bean.value);
+}
+
+public class BeanWithValue
+{
+    private Number value;
+
+    public Number getValue()
+    {
+        return value;
+    }
+
+    public void setValue(Number value)
+    {
+        this.value = value;
+    }
+}

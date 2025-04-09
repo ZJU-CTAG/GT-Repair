@@ -1,0 +1,13 @@
+public void testIssue124() {
+    final Foo foo = mock(Foo.class);
+    final Bar bar = mock(Bar.class);
+    new JUnitRuleMockery() {
+        {
+            setImposteriser(ClassImposteriser.INSTANCE);
+            checking(new Expectations() {{
+                oneOf(foo).bar(bar);
+            }});
+        }
+    };
+    foo.bar(bar);
+}

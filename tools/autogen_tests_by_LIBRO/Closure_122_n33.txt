@@ -1,0 +1,7 @@
+public void testIssueInconsistentCommentHandling() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    SourceFile extern = SourceFile.fromCode("externs.js", "function alert(x) {}");
+    SourceFile input = SourceFile.fromCode("input.js", "/*! @preserve Foo License */\n alert(\"foo\");");
+    compiler.compile(extern, input, new CompilerOptions());
+}

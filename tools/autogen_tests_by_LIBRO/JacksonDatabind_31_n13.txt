@@ -1,0 +1,23 @@
+public void testWriteContextForConvert() throws Exception {
+        ObjectWriter ow = new ObjectMapper().writerFor(new TypeReference<Map<String, Object>>() {
+        });
+
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("test", 1);
+
+        Field fWriteContext = ow.getClass().getDeclaredField("_writeContext");
+        fWriteContext.setAccessible(true);
+
+        JsonGenerator jg = ow.getFactory().createGenerator(System.out);
+        jg.writeStartObject();
+        jg.writeEndObject();
+        log.debug("Context from writeStartObject/EndObject: {}", fWriteContext.get(ow));
+
+        jg = ow.getFactory().createGenerator(System.out);
+        ow.writeValue(jg, map);
+        jg.flush();
+        log.debug("Context from writeValue: {}", fWriteContext.get(ow));
+
+        jg = ow.getFactory().createGenerator(System.out);
+        ow.writeValue(jg, map);
+        jg

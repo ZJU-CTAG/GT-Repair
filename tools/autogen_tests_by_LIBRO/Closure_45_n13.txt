@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+        SourceFile.fromCode("input.js", ""
+            + "function f() {\n"
+            + "  var a = [], b;\n"
+            + "  a.push(b = []);\n"
+            + "  b[0] = 1;\n"
+            + "  return a;\n"
+            + "}\n"),
+        options);
+    System.out.println(result.errors);
+    System.out.println(result.warnings);
+    System.out.println(result.generatedSource);
+}

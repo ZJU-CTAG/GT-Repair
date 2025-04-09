@@ -1,0 +1,11 @@
+public void testSomething() throws Exception {
+    final Consumer<String> consumer = mock(Consumer.class);
+
+    final ArgumentCaptor<? extends Consumer<String>> captor = ArgumentCaptor.fromClass(Consumer.class);
+
+    consumer.accept("Hello World");
+
+    verify(consumer).accept(captor.capture());
+
+    assertEquals("Hello World", captor.getValue().get());
+}

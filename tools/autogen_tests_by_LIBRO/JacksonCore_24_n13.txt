@@ -1,0 +1,6 @@
+public void testCustomException() throws Exception {
+    ObjectMapper m = new ObjectMapper();
+    InputCoercionException e = m.readValue("{\"int\": 2147483648}", InputCoercionException.class);
+    assertEquals("Failed to convert value of type 'java.lang.Long' to required type 'int'; nested exception is java.lang.NumberFormatException: 2147483648", e.getMessage());
+    assertEquals(InputCoercionException.class, e.getClass());
+}

@@ -1,0 +1,18 @@
+public void testUUIDDeserializerProblemHandling() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt,
+                Class<?> targetType, String valueToConvert, String failureMsg) {
+            return null;
+        }
+    });
+    try {
+        mapper.readValue("\"1-2-3-4-5\"", UUID.class);
+        fail("Should have thrown an exception");
+    } catch (InvalidFormatException e) {
+        verifyException(e, "not a valid textual representation");
+    }
+}
+

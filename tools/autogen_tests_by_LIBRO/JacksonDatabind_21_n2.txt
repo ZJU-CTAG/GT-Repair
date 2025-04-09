@@ -1,0 +1,8 @@
+public void testEnumSerialization() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    String json = mapper.writeValueAsString(TestEnum.VALUE_ONE);
+    assertEquals("\"value1\"", json);
+    TestEnum deserialized = mapper.readValue(json, TestEnum.class);
+    assertEquals(TestEnum.VALUE_ONE, deserialized);
+}

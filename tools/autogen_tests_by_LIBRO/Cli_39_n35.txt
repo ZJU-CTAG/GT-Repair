@@ -1,0 +1,15 @@
+public void testOptionParserFileValue() throws ParseException {
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    CommandLine cline = new DefaultParser().parse(options, new String[] { "-f", "pom.xml" });
+    assertNotNull((FileInputStream) cline.getParsedOptionValue("f"));
+
+    try {
+        options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+        cline = new DefaultParser().parse(options, new String[] { "-f", "pom1.xml" });
+        ((FileInputStream) cline.getParsedOptionValue("f"));
+        fail();
+    } catch (ParseException e) {
+        // ok
+    }
+}

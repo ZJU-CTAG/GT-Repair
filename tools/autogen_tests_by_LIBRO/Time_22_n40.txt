@@ -1,0 +1,16 @@
+public void testForJodaForum() {
+    DateTimeZone.setDefault(DateTimeZone.UTC);
+    assertEquals("Timezone: " + DateTimeZone.getDefault(), "Timezone: Etc/UTC");
+
+    //Duration of more than 24 hours
+    Duration aDuration = new Duration(DateTimeConstants.MILLIS_PER_HOUR * 30 + DateTimeConstants.MILLIS_PER_MINUTE * 50
+            + DateTimeConstants.MILLIS_PER_SECOND * 14);
+
+    System.out.println("Duration before: " + aDuration);
+    Period period = aDuration.toPeriod();
+    System.out.println("Period after: " + period);
+    assertEquals(period.getDays(), 1);
+    assertEquals(period.getHours(), 6);
+    assertEquals(period.getMinutes(), 50);
+    assertEquals(period.getSeconds(), 14);
+}

@@ -1,0 +1,16 @@
+public void testEBR() throws IOException {
+    String s = "foo\rbar\r\nbaz\r\n";
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(new StringReader(s));
+
+    assertEquals(1, ebr.getLineNumber());
+    assertEquals("foo", ebr.readLine());
+    assertEquals(2, ebr.getLineNumber());
+
+    assertEquals("bar", ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+
+    assertEquals("baz", ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+
+    assertEquals(null, ebr.readLine());
+}

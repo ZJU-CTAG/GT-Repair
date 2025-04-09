@@ -1,0 +1,25 @@
+public void testGeneric() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Something something = mapper.readValue("{\"entity\":{\"_class\":\"com.fasterxml.jackson.jr.ob.test.TestGeneric$RuleformImpl\"}}", Something.class);
+    assertNotNull(something);
+    assertNotNull(something.getEntity());
+}
+
+static class Something {
+    private Ruleform entity;
+
+    public <T extends Ruleform> T getEntity() {
+        return (T) entity;
+    }
+
+    public <T extends Ruleform> void setEntity(T entity) {
+        this.entity = entity;
+    }
+}
+
+static class Ruleform {
+}
+
+static class RuleformImpl extends Ruleform {
+}

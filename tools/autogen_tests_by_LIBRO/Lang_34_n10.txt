@@ -1,0 +1,15 @@
+public void testHashCodeBuilderThreadLocalLeak() throws Exception {
+    String threadName = "thread1";
+    Thread thread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            HashCodeBuilder.reflectionHashCode(new Object());
+        }
+    }, threadName);
+    thread.start();
+    thread.join();
+    thread.setContextClassLoader(null);
+    System.gc();
+    Thread.sleep(1000);
+    assertNull(Thread.getAllStackTraces().get(thread));
+}

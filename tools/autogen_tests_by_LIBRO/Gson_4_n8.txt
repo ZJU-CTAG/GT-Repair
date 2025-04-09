@@ -1,0 +1,20 @@
+public void testIssue110() throws Exception {
+    JSONReader jr = new JSONReader(new StringReader("[null, {\"foo\": \"bar\"}, \"foobar\"]"));
+    assertEquals(null, jr.read());
+    JSONObject jo = (JSONObject) jr.read();
+    assertEquals("bar", jo.get("foo"));
+    assertEquals("foobar", jr.read());
+    jr.close();
+
+    jr = new JSONReader(new StringReader("null"));
+    assertEquals(null, jr.read());
+    jr.close();
+
+    jr = new JSONReader(new StringReader("{\"foo\": \"bar\"}"));
+    jo = (JSONObject) jr.read();
+    assertEquals("bar", jo.get("foo"));
+    jr.close();
+    jr = new JSONReader(new StringReader("\"foobar\""));
+    assertEquals("foobar", jr.read());
+    jr.close();
+}

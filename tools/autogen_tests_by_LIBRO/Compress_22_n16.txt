@@ -1,0 +1,10 @@
+public void testTruncatedFile() throws Exception {
+    URL url = getClass().getResource("/truncated.bz2");
+    File file = new File(url.toURI());
+    InputStream is = new BZip2CompressorInputStream(new FileInputStream(file));
+    int count = 0;
+    while (is.read() != -1) {
+        count++;
+    }
+    assertEquals(770, count);
+}

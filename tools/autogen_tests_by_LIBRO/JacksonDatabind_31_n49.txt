@@ -1,0 +1,26 @@
+public void testIssue() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    // create the Tree
+    JsonNode root = mapper.createObjectNode()
+        .put("a", "1")
+        .put("b", "2")
+        .put("c", "3");
+
+    // create the filter
+    AntPathPropertyFilter filter = new AntPathPropertyFilter("**.a");
+
+    // convert the tree with the filter
+    ObjectReader objectReader = mapper.reader(filter);
+    ObjectNode node = new ObjectNode(JsonNodeFactory.instance);
+    node.put("n", "3");
+    node.put("v", "1");
+    JsonNode filtered = objectReader.convertValue(root, JsonNode.class);
+
+    // append the converted tree to a new tree
+    ObjectNode newRoot = new ObjectNode(JsonNodeFactory.instance);
+    newRoot.put("converted", filtered);
+    newRoot.put("node", node);
+
+    // print the tree
+    System.out.println(mapper.writerWithDefault

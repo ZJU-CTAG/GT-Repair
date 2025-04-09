@@ -1,0 +1,7 @@
+public void testUtf16WithBom() throws IOException {
+    String utf16WithBom = "\ufeff<?xml version=\"1.0\" encoding=\"UTF-16\"?><foo>bar</foo>";
+
+    InputStream is = new ByteArrayInputStream(utf16WithBom.getBytes("UTF-16"));
+    Document doc = Jsoup.parse(is, null, "");
+    assertEquals("bar", doc.select("foo").text());
+}

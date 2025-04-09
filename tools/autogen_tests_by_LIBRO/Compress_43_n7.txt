@@ -1,0 +1,18 @@
+public void testZip() throws Exception {
+    File file = new File(getBaseDir(), "test.zip");
+    try (OutputStream os = new FileOutputStream(file);
+         ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os)) {
+        ZipArchiveEntry zipEntry = new ZipArchiveEntry("test.txt");
+        zos.putArchiveEntry(zipEntry);
+        zos.write("Hello, world!".getBytes());
+        zos.closeArchiveEntry();
+    }
+    try (ZipFile zipFile = new ZipFile(file)) {
+        Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+        ZipArchiveEntry zipEntry = entries.nextElement();
+        assertEquals("test.txt", zipEntry.getName());
+        try (InputStream is = zipFile.getInputStream(zipEntry)) {
+            assertEquals("Hello, world!", IOUtils.toString(is));
+        }
+    }
+}

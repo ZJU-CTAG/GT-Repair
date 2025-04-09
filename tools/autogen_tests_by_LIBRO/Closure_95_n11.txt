@@ -1,0 +1,12 @@
+public void testPublicTag() {
+    CompilerOptions options = new CompilerOptions();
+    options.outputCharset = "UTF-8";
+    options.setPrettyPrint(true);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    File jsCode = new File("c:/temp/test.js");
+    File jsOutput = new File("c:/temp/test.out.js");
+    DiagnosticGroups.enableDependencyDiagnostics();
+    Result result = new Compiler().compile(SourceFile.fromCode("test.js", "Glow = {};\n/** @public */ Glow.versions = [1,2,3];\nGlow.showVersions = function() { alert(Glow.versions); }\n\n// exports\nwindow['Glow'] = Glow;\nGlow['versions'] = Glow.versions;\nGlow['showVersions'] = Glow.showVersions;"), new SourceFile[] {}, options);
+    assertTrue(result.success);
+    try {
+        FileUtils.writeStringToFile(jsCode

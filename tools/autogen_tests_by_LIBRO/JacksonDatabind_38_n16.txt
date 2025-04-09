@@ -1,0 +1,10 @@
+public void testSimpleTypeConstruct() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first, let's check that JsonNode works ok
+    JavaType type = SimpleType.constructUnsafe(JsonNode.class);
+    JsonNode node = mapper.readTree("{\"a\":3}");
+    assertNotNull(type.getRawClass());
+    assertNotNull(type.getRawClass().getFields());
+    assertEquals(node, mapper.convertValue(node, type));
+}

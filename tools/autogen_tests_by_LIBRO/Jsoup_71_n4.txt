@@ -1,0 +1,11 @@
+public void testTextNodeSelector() {
+        String html = "<html><head><title>First parse</title></head>"
+                + "<body><p>Para 1</p><div><p>Para 2</p></div><div><p>Para 3</p><p>Para 4</p></div></body></html>";
+        Document doc = Jsoup.parse(html);
+
+        // this selector is not supported
+        Elements divs = doc.select("div + :text");
+        assertEquals(2, divs.size());
+        assertEquals("Para 3", divs.get(0).text());
+        assertEquals("Para 4", divs.get(1).text());
+}

@@ -1,0 +1,22 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    //mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+
+    Foo.Bar bar = mapper.readValue("{\"@type\":\"com.example.blackboard.model.Foo$Bar\",\"foo\":\"hello\",\"bar\":\"world\"}", Foo.Bar.class);
+    assertEquals("hello", bar.foo);
+    assertEquals("world", bar.bar);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(Bar.class)
+})
+public static class Foo {
+
+    public String foo;
+
+    @JsonTypeName("bar")
+    public static class Bar extends Foo {
+        public String bar;
+    }
+}

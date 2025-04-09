@@ -1,0 +1,20 @@
+public void testTypeHierarchyAdapters() {
+    Gson gson = new Gsonbuilder().
+    registerTypeHierarchyAdapter(Vehicle.class,
+            new JsonDeserializer<Vehicle>() {
+                public Vehicle deserialize(JsonElement json, Type type,
+                        JsonDeserializationContext context)
+                        throws JsonParseException {
+                    if (json.getAsJsonObject().get("type").getAsString().equals("car")) {
+                        return context.deserialize(json, Car.class);
+                    } else if (json.getAsJsonObject().get("type").getAsString().equals("truck")) {
+                        return context.deserialize(json, Truck.class);
+                    }
+                    throw new JsonParseException("Unexpected JSON type: " + json.toString());
+                }
+            }).create();
+    Truck truck = new Truck();
+    truck.type = "truck";
+    truck.wheels = 6;
+    String json = gson.toJson(truck);
+    Vehicle vehicle = gson.fromJson

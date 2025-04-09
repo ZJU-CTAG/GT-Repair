@@ -1,0 +1,17 @@
+public void testIssue172() throws Exception {
+    TransformerFactory factory = TransformerFactory.newInstance();
+    Transformer transformer = factory.newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+
+    StringReader xslReader = new StringReader("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<xsl:stylesheet version=\"2.0\"\n" +
+            "                xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n" +
+            "\n" +
+            "    <xsl:template match=\"/\">\n" +
+            "        <xsl:value-of select=\"count(//@*)\"/>\n" +
+            "    </xsl:template>\n" +
+            "\n" +
+            "</xsl:stylesheet>");
+    StreamSource xslSource = new StreamSource(

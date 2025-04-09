@@ -1,0 +1,25 @@
+public void testIssue108() {
+    final ArgumentCaptor<String[]> arrayCaptor = ArgumentCaptor.forClass(String[].class);
+
+    final List<String> list = new ArrayList<>();
+    list.add("one");
+    list.add("two");
+
+    // Using a list
+    service.varArgsMethod(list);
+    verify(service).varArgsMethod(arrayCaptor.capture());
+
+    assertEquals(2, arrayCaptor.getValue().length);
+    assertEquals("one", arrayCaptor.getValue()[0]);
+    assertEquals("two", arrayCaptor.getValue()[1]);
+
+    // Using an array
+    service.varArgsMethod(new String[] { "one", "two" });
+    verify(service).varArgsMethod(arrayCaptor.capture());
+
+    assertEquals(2, arrayCaptor.getValue().length);
+    assertEquals("one", arrayCaptor.getValue()[0]);
+    assertEquals("two", arrayCaptor.getValue()[1]);
+
+    // Using varargs
+    service.varArgsMethod

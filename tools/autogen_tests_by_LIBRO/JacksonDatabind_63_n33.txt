@@ -1,0 +1,15 @@
+public void testHints ()
+    throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"x\":\"NOT_AN_INT\"}";
+    try {
+        mapper.readValue(json, TestTypes.Inner.class);
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        assertTrue(msg.contains("x"));
+        assertTrue(msg.contains("NOT_AN_INT"));
+        assertTrue(msg.contains("Integer"));
+        assertTrue(msg.contains("TestTypes.Inner"));
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue108() {
+    File file1 = new File("temp/lib/Foo.js");
+    file1.getParentFile().mkdirs();
+    FileUtils.writeStringToFile(file1, "goog.provide('module$lib$Foo');\n" +
+            "module$lib$Foo = {};\n");
+
+    File file2 = new File("temp/Bar.js");
+    FileUtils.writeStringToFile(file2, "goog.provide('module$Bar');\n" +
+            "goog.require('module$lib$Foo');\n" +
+            "module$Bar = {};");
+
+    //CompilerOptions options = Main.parseCompilerOptions(new String[]{"--transform_amd_modules", "--process_common_js_modules", "--common_js_entry_module=Bar.js", "--compilation_level=ADVANCED_OPTIMIZATIONS", "--js_output_file=out.js", "--js=temp/Bar.js", "--js=temp/lib/Foo

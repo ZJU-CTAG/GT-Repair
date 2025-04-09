@@ -1,0 +1,17 @@
+public void testIssue() throws IOException {
+        String code = "var MSG_foo='bar';";
+        CompilerOptions options = new CompilerOptions();
+        options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+        options.setCheckSymbols(true);
+        options.setProcessCommonJsModules(false);
+        options.setRenamingPolicy(VariableRenamingPolicy.OFF, PropertyRenamingPolicy.OFF);
+        options.setGeneratePseudoNames(false);
+        options.setGenerateExports(false);
+        CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+        Compiler compiler = new Compiler();
+        Result result = compiler.compile(
+                ImmutableList.of(),
+                ImmutableList.of(SourceFile.fromCode("test", code)),
+                options);
+        assertTrue(result.success);
+}

@@ -1,0 +1,22 @@
+public void testRedefinition() {
+    /**
+     * The following code should not fail when run without compilation (it
+     * doesn't).  But when run with compilation, it fails with the error
+     * "Assertion failed: f already declared in current scope".
+     *
+     * <pre>
+     * function assert(b) {if (!b) throw "error"}
+     * assert(f() === 1)
+     * var f = function() {return 2;}
+     * assert(f() === 2)
+     * function f() {return 1;}
+     * </pre>
+     *
+     * This bug is originally from a blog comment[1], I don't know if it has hit
+     * anyone in the wild yet.
+     *
+     * [1] http://webreflection.blogspot.com/2009/11/google-closure-im-not-impressed.html#1604178721861066706
+     */
+    com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    // Process the input.
+    com.google.javascript

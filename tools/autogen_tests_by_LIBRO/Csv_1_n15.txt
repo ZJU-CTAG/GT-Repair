@@ -1,0 +1,13 @@
+public void testEOL () throws IOException {
+    final String data = "line 1\rline 2\nline 3\r\nline 4\r\nline 5\nline 6";
+    final ExtendedBufferedReader xbr = new ExtendedBufferedReader(new StringReader(data));
+    xbr.setEolCharsShort("\r");
+    xbr.setEolCharsLong("\n");
+    assertEquals("line 1", xbr.readLine());
+    assertEquals("line 2", xbr.readLine());
+    assertEquals("line 3", xbr.readLine());
+    assertEquals("line 4", xbr.readLine());
+    assertEquals("line 5", xbr.readLine());
+    assertEquals("line 6", xbr.readLine());
+    assertNull(xbr.readLine());
+}

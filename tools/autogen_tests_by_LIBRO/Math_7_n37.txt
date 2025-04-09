@@ -1,0 +1,19 @@
+public void testIssue() {
+    try {
+        final double integrationStart = 34;
+        final double integrationEnd = 1000;
+        final double[] y0 = { 3.2, -3.9, 2.2 };
+        final double[] y1 = { 1.0, 1.0, -1.0 };
+        final double[][] y12 = { y0, y1 };
+
+        final FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+
+            public int getDimension() {
+                return 3;
+            }
+
+            public void computeDerivatives(double t, double[] y, double[] yDot)
+                    throws MaxCountExceededException, DimensionMismatchException {
+                yDot[0] = -0.04 * y[0] + 1.0e4 * y[1] * y[2];
+                yDot[1] = 0.04 * y[0] - 1.0e4 * y[1] * y[2] - 3.0e7 * y[1] * y[1];
+                yDot[2] = 3

@@ -1,0 +1,12 @@
+public void testIssue536() throws Exception
+{
+    final String DOC = "{\"name\":123}";
+    JsonFactory jf = new JsonFactory();
+    JsonParser jp = jf.createJsonParser(new ByteArrayInputStream(DOC.getBytes("UTF-8")));
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+    assertEquals(1, jp.getTokenLocation().getLineNr());
+    assertEquals(9, jp.getTokenLocation().getColumnNr());
+    jp.close();
+}

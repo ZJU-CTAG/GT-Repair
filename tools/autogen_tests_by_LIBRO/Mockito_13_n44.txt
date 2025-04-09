@@ -1,0 +1,17 @@
+public void testIssue114() {
+    String[] patterns = {
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        "yyyy-MM-dd'T'HH:mm:ssZ",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd",
+        "dd-MM-yyyy"
+    };
+    DateTimeFormatter dtf = DateTimeFormat.forPattern(patterns[0]);
+    for (int i = 1; i < patterns.length; i++) dtf.appendOptional(DateTimeFormat.forPattern(patterns[i]));
+
+    DateTime dt = dtf.parseDateTime("2011-01-01T12:00:00.000+0000");
+    assertEquals(2011, dt.getYear());
+    assertEquals(1, dt.getMonthOfYear());
+    assertEquals(1, dt.getDayOfMonth());
+    assertEquals(12,

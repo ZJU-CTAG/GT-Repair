@@ -1,0 +1,15 @@
+public void testBug() throws JaxenException {
+    String xml = "<a:doc xmlns:a=\"ns\">\n" +
+            "  <a:elem/>\n" +
+            "  <b:elem xmlns:b=\"ns\"/>\n" +
+            "</a:doc>";
+
+    JXPathContext context = JXPathContext.newContext(new InputSource(new StringReader(xml)));
+    context.setLenient(true);
+
+    Pointer pointer = context.iteratePointers("//*[starts-with(local-name(), 'elem')]").next();
+    assertEquals("a:elem", pointer.asPath());
+
+    pointer = context.iteratePointers("//*[starts-with(local-name(), 'elem')]").next();
+    assertEquals("b:elem", pointer.asPath());
+}

@@ -1,0 +1,12 @@
+public void testIso8601DateParsing() throws JsonProcessingException, IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    // objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    objectMapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
+    objectMapper.registerModule(new JSR310Module());
+    String[] validISO8601Formats = {
+            // "2014-10-03T18:00:00.6-05:00", // doesn't parse
+            // "2014-10-03T18:00:00.61-05:00", // doesn't parse
+            "1997-07-16T19:20+01:00", // doesn't parse
+            "1997-07-16T19:20:30.45+01:00", // doesn't parse
+            "2014-10-03T18:00:00.6-0500",
+            "2014-10-03T18:00:00.

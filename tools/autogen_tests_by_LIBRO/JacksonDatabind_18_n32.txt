@@ -1,0 +1,25 @@
+public void testErrorRecovery() throws Exception
+{
+    final String DOC = "[\"a\", \"b\", \"c\"]";
+    final JsonFactory f = new JsonFactory();
+    final StringReader sr = new StringReader(DOC);
+    final JsonParser p = f.createParser(ObjectReadContext.empty(), sr);
+    final MappingIterator<String> it = p.readValuesAs(String.class);
+
+    // let's try to read just first two values
+    assertEquals("a", it.next());
+    assertEquals("b", it.next());
+    p.close();
+
+    // and then remaining:
+    try {
+        it.next();
+        fail("Should have failed!");
+    } catch (JsonMappingException e) {
+        verifyException(e, "No content");
+    }
+    assertFalse(it.hasNext());
+
+    // should be usable again
+    assertEquals(0, it.readAll().size());
+}

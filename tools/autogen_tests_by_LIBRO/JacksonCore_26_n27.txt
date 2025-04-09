@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final JsonFactory jf = new JsonFactory();
+    final JsonParser p = jf.createNonBlockingByteArrayParser();
+    final ByteArrayFeeder f = (ByteArrayFeeder) p.getNonBlockingInputFeeder();
+
+    // "[[[" with one char in first feeding, two in second
+    byte[] input = "[[[".getBytes(StandardCharsets.UTF_8);
+
+    f.feedInput(input, 2, 3);
+    assertEquals(JsonToken.START_ARRAY, p.nextToken());
+    assertEquals(1, p.getCurrentLocation().getByteOffset()); // FAIL: 3
+    assertEquals(1, p.getTokenLocation().getByteOffset());   // FAIL: 3
+
+    f.feedInput(input, 0, 1);
+    assertEquals(JsonToken.START_ARRAY, p.nextToken());
+    assertEquals(2, p.getCurrentLocation().getByteOffset());
+    assertEquals(2, p.getTokenLocation().getByteOffset());
+}

@@ -1,0 +1,22 @@
+public void testNode() throws JaxenException {
+    SAXPathException spe = null;
+    try {
+        XPath xpath = new DOMXPath("//node()");
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse("xml/basic.xml");
+        List results = xpath.selectNodes(doc);
+        assertEquals(23, results.size());
+    } catch (JaxenException e) {
+        spe = e;
+        e.printStackTrace();
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    } catch (SAXException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    assertNull(spe);
+}

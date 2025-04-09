@@ -1,0 +1,9 @@
+public void testGetResult() {
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(1e-10, 1e-14), 10, new JavaRandomGenerator(new MersenneTwister()));
+    UnivariateRealFunction f = new SinFunction();
+    double x = optimizer.optimize(new MaxEval(100), new UnivariateObjectiveFunction(f), GoalType.MINIMIZE,
+                                  new SearchInterval(-100, 100));
+    double y = optimizer.getResult();
+    assertEquals(x, y, 0);
+    assertEquals(f.value(x), optimizer.getFunctionValue(), 0);
+}

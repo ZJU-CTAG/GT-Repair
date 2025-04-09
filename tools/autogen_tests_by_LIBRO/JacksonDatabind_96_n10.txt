@@ -1,0 +1,12 @@
+public void testSerialize() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
+    LocalDate ld = LocalDate.of(1970, 1, 1);
+    OffsetDateTime odt = OffsetDateTime.of(ld, LocalTime.of(12, 34, 56, 789), ZoneOffset.ofHours(3));
+    OffsetTime ot = OffsetTime.of(LocalTime.of(12, 34, 56, 789), ZoneOffset.ofHours(3));
+
+    Wrapper w = new Wrapper(ld, odt, ot);
+    String json = mapper.writeValueAsString(w);
+    assertEquals("{\"local_date\":\"1970-01-01\",\"offset_date_time\":\"1970-01-01T12:34:56.789+03:00\",\"offset_time\":\"12:34:56.789+03:00\"}", json);
+}

@@ -1,0 +1,16 @@
+public void testTar() throws Exception {
+    final String fileName = "src/test/resources/tar/correct.tar";
+    final String fileNameBroken = "src/test/resources/tar/incorrect.tar";
+    final TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(fileName));
+    final TarArchiveInputStream taisBroken = new TarArchiveInputStream(new FileInputStream(fileNameBroken));
+    TarArchiveEntry entry = null;
+    TarArchiveEntry entryBroken = null;
+    while ((entry = tais.getNextTarEntry()) != null) {
+        assertNotNull(entry);
+        entryBroken = taisBroken.getNextTarEntry();
+        assertNotNull(entryBroken);
+        assertEquals(entry.getName(), entryBroken.getName());
+    }
+    tais.close();
+    taisBroken.close();
+}

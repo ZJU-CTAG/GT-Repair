@@ -1,0 +1,22 @@
+public void testIssue13() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        CompilerOptions.builder().setPrettyPrint(true).build(),
+        SourceFile.fromCode("[testcode]",
+            "var goog = {};\n" +
+                "goog.scope;\n" +
+                "\n" +
+                "var ns = {};\n" +
+                "ns.sub = {};\n" +
+                "/** @constructor */\n" +
+                "ns.sub.C = function() {};\n" +
+                "\n" +
+                "\n" +
+                "goog.scope(function() {\n" +
+                "  var sub = ns.sub;\n" +
+                "  /** @type {sub.C} */\n" +
+                "  var x = null;\n" +
+                "});\n"
+        ));
+    assertTrue(result.success);
+}

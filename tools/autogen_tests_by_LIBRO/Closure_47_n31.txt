@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    SourceMapGenerator generator = new SourceMapGenerator();
+    generator.addMapping(new File("test.js"), new File("test.js"), new Mapping(new Range(0, 0, 1, 0), new Range(0, 0, 1, 0)));
+    generator.addMapping(new File("test.js"), new File("test.js"), new Mapping(new Range(0, 0, 2, 0), new Range(0, 0, 2, 0)));
+    String generated = "test1\ntest2";
+    String source = "test1\ntest2";
+    String result = SourceMapGenerator.toJSON(generator, generated, source);
+    assertEquals("{\"version\":3,\"file\":\"test.js\",\"sourceRoot\":\"\",\"sources\":[\"test.js\"],\"names\":[],\"mappings\":\"AAAAA,QAASA,QAAS;ACpBA,QAASA,QAAS\"}", result);
+}

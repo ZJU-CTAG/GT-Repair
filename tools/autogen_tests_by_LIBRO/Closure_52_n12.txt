@@ -1,0 +1,21 @@
+public void testIssue() {
+    String test = "var lit = {\"0102\":\"Zero One Zero Two\"}; alert(lit[\"0102\"]);";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(test), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+        @Override
+        public Eval

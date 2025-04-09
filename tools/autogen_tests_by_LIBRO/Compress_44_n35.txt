@@ -1,0 +1,9 @@
+public void testIssue33() {
+    File f = new File("src/test/resources/test1.xml.bz2");
+    try (InputStream is = new BZip2CompressorInputStream(new FileInputStream(f))) {
+        ChecksumCalculatingInputStream checksumCalculatingInputStream = new ChecksumCalculatingInputStream(is, new Adler32());
+        checksumCalculatingInputStream.getValue(); // this throws NPE
+    } catch (IOException ex) {
+        Logger.getLogger(CompressTest.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}

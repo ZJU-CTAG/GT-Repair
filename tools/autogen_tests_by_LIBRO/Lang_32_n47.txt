@@ -1,0 +1,26 @@
+public void testThreadLocalLeak() throws Exception {
+    ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+    Thread.currentThread().setContextClassLoader(new ClassLoader() {
+        @Override
+        protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+            if ("org.apache.commons.lang3.builder.ToStringStyle".equals(name)) {
+                return null;
+            }
+            return super.loadClass(name, resolve);
+        }
+    });
+    try {
+        ThreadLocaleLeak.start();
+        assertEquals("[a=b, c=d]", new Object() {
+            private String a = "b";
+            private String c = "d";
+            @Override
+            public String toString() {
+                return ToStringBuilder.reflectionToString(this);
+            }
+        }.toString());
+        assertEquals(0, Thread.currentThread().getThreadGroup().activeCount());
+    } finally {
+        Thread.currentThread().setContextClassLoader(contextClassLoader);
+    }
+}

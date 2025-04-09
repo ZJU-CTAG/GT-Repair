@@ -1,0 +1,14 @@
+public void testIssue123() {
+        final Compiler compiler = new Compiler();
+        OptimizationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compiler.getOptions());
+        compiler.compile(
+                "function Test(n) {\n" +
+                "  var i = 0;\n" +
+                "  return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i\n" +
+                "}\n" +
+                "var dummy = \"6chars\";\n" +
+                "console && console.log( Test(dummy) );");
+        final String expected = "function Test(a){return a=6,0}var dummy=\"6chars\";console&&console.log(Test(dummy));";
+        String actual = compiler.toSource();
+        assertEquals(expected, actual);
+}

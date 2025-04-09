@@ -1,0 +1,12 @@
+public void testNull() throws Exception {
+    final ObjectMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, true);
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    final XmlMapper xmlMapper = mapper.copy();
+    xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
+    xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, false);
+    xmlMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    xmlMapper.setConfig(xmlMapper.getSerializationConfig().withRootName(new PropertyName("root")));
+    final StringWriter sw = new StringWriter();
+    JsonGenerator jsonGenerator = mapper.get

@@ -1,0 +1,10 @@
+public void testWriteBinary() throws Exception {
+    StringWriter writer = new StringWriter();
+    ToXmlGenerator xml = new ToXmlGenerator(new XmlFactory(), writer);
+    xml.writeStartObject();
+    InputStream stream = getClass().getClassLoader().getResourceAsStream("input.txt");
+    xml.writeBinaryField("binaryField", stream);
+    xml.writeEndObject();
+    xml.close();
+    System.out.println(writer.toString());
+}

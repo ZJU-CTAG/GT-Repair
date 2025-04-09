@@ -1,0 +1,16 @@
+public void testMissingOptionException() {
+
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("format").hasArg().withDescription("Format to convert to").isRequired().create("format"));
+    options.addOption(OptionBuilder.withArgName("source").hasArg().withDescription("Source to convert from").isRequired().create("source"));
+    options.addOption(OptionBuilder.withArgName("properties").hasArg().withDescription("Properties file to use").isRequired().create("properties"));
+
+    try {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse(options, new String[]{});
+        fail("Should have thrown MissingOptionException");
+    }
+    catch (MissingOptionException ex) {
+        assertEquals("Missing required option: -source", ex.getMessage());
+    }
+}

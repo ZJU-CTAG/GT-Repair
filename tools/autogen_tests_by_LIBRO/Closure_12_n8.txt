@@ -1,0 +1,12 @@
+public void testIssue() {
+    final String input = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += '2'; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    final Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    final Result result = compiler.compile(new String[] { input }, new String[] {}, new CompilerOptions());
+    if (result.success) {
+        System.out.println(result.compiledCode);
+    }
+    else {
+        System.err.println(result.errors);
+    }
+}

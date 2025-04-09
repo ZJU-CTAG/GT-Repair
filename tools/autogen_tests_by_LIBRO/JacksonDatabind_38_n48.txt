@@ -1,0 +1,25 @@
+public void testRegress() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
+    resolver.addMapping(Foo.class, FooChild.class);
+    module.setAbstractTypes(resolver);
+    mapper.registerModule(module);
+
+    final String INPUT = "{\"name\":\"foobar\",\"age\":13}";
+    FooChild result = mapper.readValue(INPUT, Foo.class);
+    assertEquals("foobar", result.name);
+    assertEquals(13, result.age);
+}
+
+public void testBaseType() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
+    resolver.addMapping(Foo.class, FooChild.class);
+    module.setAbstractTypes(resolver);
+    mapper.registerModule(module);
+
+    final String INPUT = "{\"

@@ -1,0 +1,17 @@
+public void testCommaRemoval() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("function Test(a) {\n");
+    sb.append(" return 0\n");
+    sb.append("}\n");
+    sb.append("var dummy = \"6chars\";\n");
+    sb.append("console && console.log(Test(dummy));\n");
+    String expected = sb.toString();
+    String script = "function Test(n) {\n" +
+            " var i = 0;\n" +
+            " return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i\n" +
+            "}\n" +
+            "var dummy = \"6chars\";\n" +
+            "console && console.log( Test(dummy) );\n";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(false);
+    env.setOptimizationLevel(SimpleOptimizer.SIMPLE_OP

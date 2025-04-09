@@ -1,0 +1,11 @@
+public void testCaseInsensitive() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{\"businessAddress.street\": \"Willysgatan\", \"businessAddress.addon\": \"\", \"businessAddress.zip\": \"12345\", \"businessAddress.town\": \"Göteborg\", \"businessAddress.country\": \"Sweden\"}";
+
+    Person person = mapper.readerFor(Person.class).readValue(json);
+    assertNotNull(person);
+}

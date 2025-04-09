@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test",
+            "var foreignObject = gfx.parentNode.parentNode;\n" +
+            "var parentContainer = foreignObject.parentNode.parentNode;\n" +
+            "parentContainer.appendChild(foreignObject);\n") 
+            }, options);
+    assertEquals(result.errors.length, 0);
+    assertEquals(result.warnings.length, 0);
+    assertEquals(result.toSource().trim(), "parentContainer.appendChild(foreignObject);");
+}

@@ -1,0 +1,24 @@
+public void testIssue105() {
+    JXPathContext context = JXPathContext.newContext(new TestBean());
+    context.registerNamespace("test", TestBean.class);
+    context.registerNamespace("test2", TestBean.class);
+    NodeSet n = (NodeSet) context.getValue("test:nodeSet()");
+    assertEquals("name", n.iterator().next().getNodeName());
+}
+public static class TestBean {
+    private List<String> list = Arrays.asList("a", "b", "c");
+    public List<String> getList() {
+        return list;
+    }
+    public NodeSet nodeSet() {
+        return new BasicNodeSet(new TestPointer("name", this, 0));
+    }
+    public static class TestPointer implements NodePointer {
+        private String name;
+        private Object bean;
+        private int position;
+        public TestPointer(String name, Object bean, int position) {
+            this.name = name;
+            this.bean = bean;
+            this.position = position;
+        }

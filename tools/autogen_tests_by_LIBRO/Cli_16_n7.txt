@@ -1,0 +1,30 @@
+public void testGroupExclusionCounts() {
+    CmdLineParser parser = new CmdLineParser(new CommandLine());
+    parser.setUsageWidth(80);
+    parser.parseArgument(new String[]{"-a", "-b"});
+}
+
+public class CommandLine {
+    @Option(name = "-a", depends = "--z")
+    public boolean a;
+
+    @Option(name = "-b", depends = "--y")
+    public boolean b;
+
+    @Group(exclusive = true, minimum = 1, maximum = 3)
+    public XGroup xGroup = new XGroup();
+
+    @Group(exclusive = true, minimum = 1, maximum = 3)
+    public YGroup yGroup = new YGroup();
+
+    @Group(exclusive = true, minimum = 1, maximum = 3)
+    public ZGroup zGroup = new ZGroup();
+
+    public class XGroup {
+        @Option(name = "--x", depends = "-a")
+        public boolean x;
+    }
+
+    public class YGroup {
+        @Option(name = "--y", depends = "-b")
+        public boolean y;

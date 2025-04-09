@@ -1,0 +1,10 @@
+public void testIssue() {
+    StringWriter sw = new StringWriter();
+    CSVFormat format = CSVFormat.TDF.withHeader("x");
+    try (CSVPrinter csvPrinter = new CSVPrinter(sw, format)) {
+        csvPrinter.printRecord(42);
+        csvPrinter.close();
+    }
+    String expected = "x\n42\n";
+    assertEquals(expected, sw.toString());
+}

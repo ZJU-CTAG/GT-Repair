@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String js = Joiner.on("\n").join(
+        "var fn=function(){",
+        "  var ctx=document.getElementById('canvas').getContext('2d');",
+        "  ctx.globalCompositeOperation='source-over';",
+        "  ctx.miterLimit='10';",
+        "};",
+        "fn();");
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    try {
+        engine.eval(js);
+    } catch (ScriptException e) {
+        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    }
+}

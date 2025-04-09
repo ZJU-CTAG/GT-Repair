@@ -1,0 +1,8 @@
+public void testIssue123() throws Exception {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setClosurePass(true);
+    options.setVariableRenaming(VariableRenamingPolicy.ALL);
+    options.setCodingConvention(new ClosureCodingConvention());
+    test("function Class() {} Class.prototype.method = function() { this.$super(); };",
+            "function Class(){};Class.prototype.method=function(){this.$super()};");
+}

@@ -1,0 +1,18 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    
+    String json = "{ \"records\": [ { \"fields\": [ { \"name\": \"field1\", \"value\": \"value1\" } ] }, { \"fields\": [] } ] }";
+    Definition def = mapper.readValue(json, Definition.class);
+    assertNotNull(def.records);
+    assertEquals(2, def.records.size());
+
+    Record record1 = def.records.get(0);
+    assertNotNull(record1.fields);
+    assertEquals(1, record1.fields.size());
+    assertEquals("field1", record1.fields.get(0).name);
+    
+    Record record2 = def.records.get(1);
+    assertNotNull(record2.fields);
+    assertEquals(0, record

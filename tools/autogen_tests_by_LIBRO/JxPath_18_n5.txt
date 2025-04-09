@@ -1,0 +1,15 @@
+public void testAttributeContext() throws Exception {
+    final AttributeContext attributeContext = new AttributeContext(new ParserImpl(), new CompilerImpl());
+    final ParserContext parserContext = new ParserContext(new ParserConfiguration());
+    final CompilerContext compilerContext = new CompilerContext(new CompilerConfiguration());
+
+    XPath xpath = parserContext.parse("@*", null);
+    assertTrue(attributeContext.matches(xpath.getRootExpr(), compilerContext));
+    xpath = parserContext.parse("attribute::*", null);
+    assertTrue(attributeContext.matches(xpath.getRootExpr(), compilerContext));
+    xpath = parserContext.parse("@foo", null);
+    assertTrue(attributeContext.matches(xpath.getRootExpr(), compilerContext));
+    xpath = parserContext.parse("attribute::foo", null);
+    assertTrue(attributeContext.matches(xpath.getRootExpr(), compilerContext));
+    xpath = parserContext.parse("child::@foo", null);
+    assertFalse(attributeContext.matches(xpath.getRootExpr

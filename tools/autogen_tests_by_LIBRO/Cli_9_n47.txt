@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption( new Option("f", "format", true, "format of the properties file to generate" ));
+    options.addOption( new Option("s", "source", true, "source properties file to read" ));
+    options.addOption( new Option("p", "properties", true, "properties to add" ));
+    CommandLineParser parser = new GnuParser();
+    CommandLine cmd;
+    try {
+        cmd = parser.parse(options, new String[0]);
+        fail("MissingOptionException expected");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format -source -properties", e.getMessage());
+    }
+}

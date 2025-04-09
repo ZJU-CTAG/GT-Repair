@@ -1,0 +1,13 @@
+public void testListSerialization() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new SimpleModule("MyModule", new
+Version(1, 0, 0, null))
+            .addSerializer(ListAttribute.class, new
+ListAttributeSerializer()));
+    final ListAttribute expected = new ListAttribute("item-type",
+Arrays.asList("foo", "bar"));
+    final String json = objectMapper.writeValueAsString(expected);
+    final ListAttribute actual = objectMapper.readValue(json,
+ListAttribute.class);
+    Assert.assertEquals(expected, actual);
+}

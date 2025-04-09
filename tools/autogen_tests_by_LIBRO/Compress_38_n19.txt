@@ -1,0 +1,19 @@
+public void testIssue175() throws IOException {
+    final File file = File.createTempFile("test-issue-175", ".tar");
+    final InputStream inputStream = new ClassPathResource("/test-issue-175.tar").getInputStream();
+    try {
+        final OutputStream outputStream = new FileOutputStream(file);
+        try {
+            IOUtils.copy(inputStream, outputStream);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+        }
+    } finally {
+        IOUtils.closeQuietly(inputStream);
+    }
+    final TarArchiveInputStream input = (TarArchiveInputStream) new TarArchiveInputStream(new FileInputStream(file));
+    TarArchiveEntry entry;
+    while ((entry = input.getNextTarEntry()) != null) {
+        assertNotNull(entry.getName());
+    }
+}

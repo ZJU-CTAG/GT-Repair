@@ -1,0 +1,12 @@
+public void testAtan2SpecialCases() {
+    DerivativeStructure dsX = new DerivativeStructure(2, 1, 0, -1.0);
+    DerivativeStructure dsY = new DerivativeStructure(2, 1, 1,  1.0);
+    DerivativeStructure ds  = dsX.atan2(dsY);
+    double[][] jacobian = ds.getAllDerivatives();
+
+    // x = -1, y =  0
+    dsX = new DerivativeStructure(2, 1, 0, -1.0);
+    dsY = new DerivativeStructure(2, 1, 1,  0.0);
+    checkValue(dsX.atan2(dsY), FastMath.atan2(0.0, -1.0));
+    checkValue(dsY.atan2(dsX), FastMath.atan2(-1.0, 0.0));
+    checkValue(dsX.atan2(dsY).getPartialDerivative(1, 0, 0), jacobian

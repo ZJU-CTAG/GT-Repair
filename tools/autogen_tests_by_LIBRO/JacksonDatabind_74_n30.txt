@@ -1,0 +1,19 @@
+public void testDeserializeEmptyString() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    String json = "{\"test\":\"\"}";
+    TestClass testClass = mapper.readValue(json, TestClass.class);
+    Assert.assertNull(testClass.getTest());
+}
+
+private static class TestClass {
+    private String test;
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+}

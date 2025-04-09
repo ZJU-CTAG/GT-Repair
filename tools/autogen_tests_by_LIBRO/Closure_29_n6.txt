@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String code = "function isFunction(functionToCheck) { var getType; getType = {}; return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]'; };";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[0],
+            new JSSourceFile[] { JSSourceFile.fromCode("testIssue108.js", code) },
+            options);
+    StringBuilder result = new StringBuilder();
+    compiler.toSource(result);
+    assertFalse(result.toString().contains("getType"));
+}

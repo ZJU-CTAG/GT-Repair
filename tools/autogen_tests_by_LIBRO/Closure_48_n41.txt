@@ -1,0 +1,17 @@
+public void testTypeChecking() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("myclass.js",
+                    "/** @constructor */\n" +
+                    "var myclass = function() { \n" +
+                    "};\n" +
+                    "/** @param {boolean} success */\n" +
+                    "myclass.prototype.fn = function(success) { };\n" +
+                    "myclass.prototype.test = function() {\n" +
+                    "this.fn();\n" +
+                    "this.fn = function() { };\n" +
+                    "};\n")},
+            options);
+}

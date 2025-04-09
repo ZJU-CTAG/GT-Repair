@@ -1,0 +1,31 @@
+public void testFrequencyComparable() {
+    final Object OBJ = new Object();
+    final String STR = "abc";
+    final Integer I = Integer.valueOf(1);
+    final Comparable<Object> COMP = new Comparable<Object>() {
+        public int compareTo(Object o) {
+            return 0;
+        }
+    };
+
+    final Frequency f = new Frequency();
+    try {
+        f.addValue(OBJ);
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {}
+    f.addValue(STR); // Will this work with a Comparable?
+    try {
+        f.addValue(I);
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {}
+
+    try {
+        f.addValue(COMP);
+    } catch (IllegalArgumentException ex) {
+        fail("Expecting no IllegalArgumentException");
+    }
+    f.addValue(STR);
+    f.addValue(STR);
+    f.addValue(STR);
+
+    assertEquals(

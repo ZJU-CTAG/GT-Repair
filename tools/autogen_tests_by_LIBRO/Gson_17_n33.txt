@@ -1,0 +1,24 @@
+public void testIssue1096() {
+    JsonSerializer<Date> dateSerializer = new JsonSerializer<Date>() {
+        @Override
+        public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.toString());
+        }
+    };
+
+    JsonDeserializer<Date> dateDeserializer = new JsonDeserializer<Date>() {
+        @Override
+        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            return new Date(json.getAsLong());
+        }
+    };
+
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Date.class, dateSerializer)
+            .registerTypeAdapter(Date.class, dateDeserializer)
+            .create();
+
+    Date date = new Date();
+    String jsonString = gson.toJson(date);
+    assertEquals(date, gson.fromJson(jsonString, Date.class));

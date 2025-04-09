@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    // this is a html fragment containing a link to an image identified with cid
+    String html = "<img src=\"cid:xxx\">";
+    // by default, CID links are removed, so this fails
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    Element img = doc.select("img").first();
+    assertEquals("", img.attr("src"));
+
+    // the appropriate way to resolve this, is to add a protocol
+    Whitelist wl = Whitelist.relaxed();
+    wl.addProtocols("img", "src", "cid");
+    doc = Jsoup.parse(html, "", Parser.xmlParser());
+    img = doc.select("img").first();
+    assertEquals("cid:xxx", img.attr("src"));
+}

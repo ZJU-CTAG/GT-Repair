@@ -1,0 +1,10 @@
+public void testIssue110() throws IOException, SAXException, ParserConfigurationException {
+    Document doc = Jsoup.parse("<html><head><title>Title</title></head><body><fb:like href=\"http://www.facebook.com/platform\" send=\"true\" width=\"450\" show_faces=\"true\" font=\"\"></fb:like></body></html>");
+    DOMImplementation domImpl =
+            GenericDOMImplementation.getDOMImplementation();
+    String namespaceURI = "http://www.w3.org/2000/svg";
+    String qualifiedName = "svg";
+    Document document = domImpl.createDocument(namespaceURI, qualifiedName, null);
+    org.w3c.dom.Document w3cDocument = W3CDom.fromJsoup(doc);
+    assertEquals("html", w3cDocument.getDocumentElement().getTagName());
+}

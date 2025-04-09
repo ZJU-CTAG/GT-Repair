@@ -1,0 +1,23 @@
+public void testJsonStreamContexts() throws Exception {
+    // create the converter
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    SimpleFilterProvider provider = new SimpleFilterProvider()
+            .addFilter("rootFilter", JsonPathFilter.of("$", FilterToApply.ACCEPT_ALL))
+            .addFilter("nestedFilter", JsonPathFilter.of("$.nested", FilterToApply.ACCEPT_ALL));
+    mapper.setFilters(provider);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public Object findFilterId(Annotated a) {
+            return "rootFilter";
+        }
+    });
+
+    // this is an object with a JsonFilter annotation
+    @JsonFilter("nestedFilter")
+    class Nested {
+        String value = "value";
+    }
+
+    //

@@ -1,0 +1,14 @@
+public void testX5455() throws Exception {
+    java.util.TimeZone timeZone = java.util.TimeZone.getTimeZone("UTC");
+    java.util.Calendar calendar = java.util.Calendar.getInstance(timeZone);
+    calendar.setTimeInMillis(0);
+    calendar.set(2011, 0, 1, 0, 0, 0);
+    calendar.set(java.util.Calendar.MILLISECOND, 0);
+    DateTimeZone zone = DateTimeZone.forTimeZone(timeZone);
+    Chronology chrono = ISOChronology.getInstance(zone);
+    DateMidnight dm = new DateMidnight(calendar.getTime(), chrono);
+    MutableDateTime mdt = dm.toMutableDateTime();
+    int millis = mdt.getMillisOfSecond();
+    System.out.println("millis: " + millis);
+    assertEquals(0, millis);
+}

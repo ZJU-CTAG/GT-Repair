@@ -1,0 +1,13 @@
+public void testPosixParser() {
+    OptionParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption(new Option("a", "option not found"));
+
+    try {
+        CommandLine line = parser.parse(options, new String[] { "-a", "-z", "foo" });
+        assertTrue(line.hasOption("a"));
+        assertFalse(line.hasOption("z"));
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

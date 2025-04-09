@@ -1,0 +1,11 @@
+public void testIssue144 () {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDeserializationConfig(mapper.getDeserializationConfig().with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT));
+    Point pt = mapper.readValue("{\"x\":\"\",\"y\":\"\"}", Point.class);
+    assertNull(pt.x);
+    assertNull(pt.y);
+}
+class Point {
+    public Integer x;
+    public Integer y;
+}

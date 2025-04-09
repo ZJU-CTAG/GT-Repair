@@ -1,0 +1,11 @@
+public void testDuplicateHeaders() throws IOException {
+    final CSVFormat format = CSVFormat.DEFAULT.withHeader("A", "B", "C", "B");
+    final StringWriter sw = new StringWriter();
+    final CSVPrinter printer = new CSVPrinter(sw, format);
+    try {
+        printer.printRecord("A", "B", "C", "D");
+        fail("Expected IllegalStateException");
+    } catch (IllegalStateException e) {
+        //expected
+    }
+}

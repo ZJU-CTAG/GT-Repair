@@ -1,0 +1,18 @@
+public void testPrototype() {
+    String fn = "WebCore/inspector/front-end/DOMAgent.js";
+    String code = TestUtils.readResource(fn);
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingLocalJsDocComments(true);
+    env.setAllowSharpComments(true);
+    env.setIdeMode(true);
+    env.setErrorReporter(new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(sourceName + ":" + line + ": WARNING - " + message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(sourceName + ":" + line + ": ERROR - " + message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset

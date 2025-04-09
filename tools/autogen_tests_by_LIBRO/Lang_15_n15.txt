@@ -1,0 +1,18 @@
+public void testGetTypeArguments() {
+    Type[] actualTypeArguments;
+    TypeVariable<?>[] typeParameters;
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+
+    // GenericArrayType
+    actualTypeArguments = ((ParameterizedType) new GenericArrayTypeImpl(
+            String.class, Integer.class, Long.class)).getActualTypeArguments();
+    typeParameters = GenericArrayTypeImpl.class.getTypeParameters();
+    typeVarAssigns = TypeUtils.getTypeArguments(GenericArrayTypeImpl.class,
+            new TypeToken<GenericArrayTypeImpl<String, Integer, Long>>() {
+            }.getType());
+    Assert.assertEquals(2, actualTypeArguments.length);
+    Assert.assertEquals(2, typeParameters.length);
+    Assert.assertEquals(String.class, actualTypeArguments[0]);
+    Assert.assertEquals(Integer.class, actualTypeArguments[1]);
+    Assert.assertEquals(String.class, typeVarAssigns.get(typeParameters[0]));
+   

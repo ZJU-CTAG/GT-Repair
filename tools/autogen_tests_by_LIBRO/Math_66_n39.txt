@@ -1,0 +1,13 @@
+public void testBrentMinimizer() {
+    final RealFunction f = new SinFunction();
+    final double min = -0.5;
+    final double expected = min;
+
+    final double result = (new BrentOptimizer(1.0e-10, 1.0e-14)).optimize(
+            f, GoalType.MINIMIZE,
+            new MaxEval(100),
+            new InitialGuess(expected),
+            new SearchInterval(-1.0,0.0)).getPoint();
+    Assert.assertEquals(expected, result, 2.0e-8);
+}
+

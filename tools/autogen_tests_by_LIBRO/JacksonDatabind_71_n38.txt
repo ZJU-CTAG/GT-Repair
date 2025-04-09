@@ -1,0 +1,12 @@
+public void testCharSequence() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final Map<CharSequence,Object> map = new HashMap<CharSequence,Object>();
+    map.put("a", Integer.valueOf(3));
+    map.put("b", Integer.valueOf(2));
+    final String json = mapper.writeValueAsString(map);
+    final Map<?,?> result = mapper.readValue(json, Map.class);
+    assertEquals(2, result.size());
+    assertEquals(Integer.valueOf(3), result.get("a"));
+    assertEquals(Integer.valueOf(2), result.get("b"));
+}

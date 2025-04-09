@@ -1,0 +1,6 @@
+public void testInvalidCharset() throws IOException {
+    String html = "<p>&eacute;</p>";
+    // html has invalid charset
+    Document doc = DataUtil.parseInputStream(new ByteArrayInputStream(html.getBytes("UTF8")), "UTF8", "http://example.com/");
+    assertEquals("é", doc.select("p").first().text());
+}

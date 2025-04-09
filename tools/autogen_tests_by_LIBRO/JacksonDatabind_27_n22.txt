@@ -1,0 +1,15 @@
+public void testWithExternalTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL));
+    mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    // mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.registerModule(new AfterburnerModule());
+    mapper.registerModule(new GuavaModule());
+    mapper.registerModule(new JodaModule());
+
+    // With 2.6, this fails with
+    // com.fasterxml.jackson.databind.JsonMappingException: Could not resolve type id 'TestJackson$C' as a
+    // subtype of [simple type

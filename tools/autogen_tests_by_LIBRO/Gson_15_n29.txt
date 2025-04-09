@@ -1,0 +1,22 @@
+public void testIssue() throws IOException {
+    JsonWriter out = new JsonWriter(new StringWriter());
+    out.setLenient(true);
+    out.value("NaN");
+    out.value("Infinity");
+    out.value("-Infinity");
+    try {
+        out.value(Double.NaN);
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException ignored) {
+    }
+    try {
+        out.value(Double.POSITIVE_INFINITY);
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException ignored) {
+    }
+    try {
+        out.value(Double.NEGATIVE_INFINITY);
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException ignored) {
+    }
+}

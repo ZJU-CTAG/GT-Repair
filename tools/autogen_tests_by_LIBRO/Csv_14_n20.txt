@@ -1,0 +1,13 @@
+public void testIssueNegativeNumericValues() throws Exception {
+    StringWriter sw = new StringWriter();
+    CSVPrinter csvPrinter = CSVFormat.MYSQL.withNullString("null").withQuoteMode(QuoteMode.MINIMAL).print(sw);
+    csvPrinter.printRecord("-92.222", "43.333", "3");
+    csvPrinter.close();
+
+    sw = new StringWriter();
+    csvPrinter = CSVFormat.MYSQL.withNullString("null").withQuoteMode(QuoteMode.ALL).print(sw);
+    csvPrinter.printRecord("-92.222", "43.333", "3");
+    csvPrinter.close();
+
+    assertEquals(sw.toString(), sw.toString());
+}

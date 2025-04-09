@@ -1,0 +1,17 @@
+public void testIssue108 () throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"d\": [1, \"a\"]}", Wrapper.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        assertEquals(
+"Can not deserialize instance of java.lang.Integer out of VALUE_STRING token\n at [Source: [B@b2c6ae; line: 1, column: 9] (through reference chain: com.fasterxml.jackson.datatype.joda.TestJoda.Wrapper[\"d\"])\n at [Source: [B@b2c6ae; line: 1, column: 9]",
+                e.getMessage());
+    }
+}
+
+static class Wrapper {
+    @JsonProperty
+    public List<Integer> d;
+}

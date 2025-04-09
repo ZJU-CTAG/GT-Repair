@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String test = "goog.scope(function() {\n" +
+            "  /** @private */\n" +
+            "  function test() {}\n" +
+            "});";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test", test),
+            options);
+    assertTrue(result.success);
+}

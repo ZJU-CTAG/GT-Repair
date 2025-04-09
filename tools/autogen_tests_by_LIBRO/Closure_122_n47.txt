@@ -1,0 +1,20 @@
+public void testPreserve() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(false);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new TestErrorManager());
+    compiler.compile(SourceFile.fromCode("foo.js", "/*! @preserve Foo License */\nalert(\"foo\");"), options);
+}
+
+private static class TestErrorManager extends BasicErrorManager {
+    protected void printSummary() {
+        if (warnings + errors > 0) {
+            System.err.println("\n" + warnings + " warning(s)");
+            System.err.println(errors + " error(s)");
+        }
+    }
+}

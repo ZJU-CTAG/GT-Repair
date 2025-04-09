@@ -1,0 +1,14 @@
+public void testIssue106() throws Exception {
+    Something s = new Something();
+    s.setEntity(new Ruleform());
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(s);
+    mapper.readValue(json, Something.class);
+}
+
+public static class Ruleform {}
+
+public static class Something {
+    public <T extends Ruleform> T getEntity() { return null; }
+    public <T extends Ruleform> void setEntity(T entity) { }
+}

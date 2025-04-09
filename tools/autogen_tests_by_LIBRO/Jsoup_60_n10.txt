@@ -1,0 +1,19 @@
+public void testIssue110() {
+    String html = "<div id=\"a\">\n" +
+        "  <span class=\"a\">I'll Ship & Pay</span>\n" +
+        "  <span class=\"a\">I'll Send & Pay</span>\n" +
+        "  <span class=\"a\">Varies</span>\n" +
+        "</div>";
+    Document doc = Jsoup.parseBodyFragment(html);
+    Elements spans = doc.select("span.a:contains(I'll Ship & Pay)");
+    assertNotNull(spans);
+    assertEquals(1, spans.size());
+
+    spans = doc.select("span.a:contains(I'll Send & Pay)");
+    assertNotNull(spans);
+    assertEquals(1, spans.size());
+
+    spans = doc.select("span.a:contains(Varies)");
+    assertNotNull(spans);
+    assertEquals(1, spans.size());
+}

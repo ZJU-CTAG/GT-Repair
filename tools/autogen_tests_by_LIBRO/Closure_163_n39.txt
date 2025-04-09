@@ -1,0 +1,14 @@
+public void testVarCheckCrash() {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+    compilerOptions.setPrelude("var window, document, navigator, location, undefined;");
+    compiler.setPassConfig(new DefaultPassConfig(compilerOptions));
+    compiler.compile(
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("pre", "var window, document, navigator, location, undefined;"),
+            JSSourceFile.fromCode("pre2", "var window, document, navigator, location, undefined;"),
+            JSSourceFile.fromCode("jq", "var jQuery = {};"),
+            JSSourceFile.fromCode("test", "jQuery.test = function() { return 'test'; };"),
+            JSSourceFile.fromCode("test2", "jQuery.test = function() { return 'test'; };"),
+            JSSourceFile.fromCode("test3", "jQuery.test

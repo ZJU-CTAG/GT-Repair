@@ -1,0 +1,9 @@
+public void testNamespace() {
+    String xml = "<ElementA xmlns:A=\"http://www.A.com\" A:myAttr=\"Mytype\">\n" +
+            "  <B:ElementB xmlns:B=\"http://www.B.com\">MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    JXPathContext context = JXPathContext.newContext(xml);
+    context.registerNamespace("A", "http://www.A.com");
+    context.registerNamespace("B", "http://www.B.com");
+    assertEquals("MY VALUE", context.getValue("/ElementA/B:ElementB"));
+}

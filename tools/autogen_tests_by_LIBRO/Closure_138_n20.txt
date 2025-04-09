@@ -1,0 +1,18 @@
+public void testIssue() {
+    final CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(true);
+    options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    final Compiler compiler = new Compiler();
+    final Result result = compiler.compile(CompilerTestCase.EXTERNS, "// ==ClosureCompiler==\n" +
+            "// @output_file_name default.js\n" +
+            "// @compilation_level ADVANCED_OPTIMIZATIONS\n" +
+            "// ==/ClosureCompiler==\n" +
+            "var t = null;\n" +
+            "\n" +
+            "window.test = function()\n" +
+            "{\n" +
+            " if (t != null) {\n" +
+            " t = null;\n" +

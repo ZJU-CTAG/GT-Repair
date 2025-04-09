@@ -1,0 +1,22 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setIdeMode(true);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+
+    String source = "function closureCompilerTest(someNode) {\n" +
+            " var nodeId;\n" +
+            " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n" +
+            "}";
+
+    SourceFile extern = SourceFile.fromCode("externs.js", "");
+
+    SourceFile input = SourceFile.fromCode("input.js", source);
+
+    Result result = compiler.compile(extern, input, options);
+    assertTrue(result.success);
+
+    System.out.println(compiler.toSource());
+}

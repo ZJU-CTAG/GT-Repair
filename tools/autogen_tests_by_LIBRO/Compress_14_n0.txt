@@ -1,0 +1,24 @@
+public void testTarArchiveInputStream() throws Exception {
+    File file = File.createTempFile("test", "tar");
+    file.deleteOnExit();
+    final OutputStream os = new FileOutputStream(file);
+    try {
+        final TarArchiveOutputStream tos = new TarArchiveOutputStream(os);
+        tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+        final TarArchiveEntry entry = new TarArchiveEntry("test.txt");
+        tos.putArchiveEntry(entry);
+        tos.write("test".getBytes());
+        tos.closeArchiveEntry();
+        tos.close();
+    } finally {
+        os.close();
+    }
+    final InputStream is = new FileInputStream(file);
+    try {
+        final ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.TAR, is);
+        in.getNextEntry();
+        in.close();
+    } finally {
+        is.close();
+    }
+}

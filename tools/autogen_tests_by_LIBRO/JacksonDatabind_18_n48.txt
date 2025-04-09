@@ -1,0 +1,20 @@
+public void testErrorRecovery() throws Exception
+{
+    final ObjectReader reader = MAPPER.readerFor(List.class);
+    final MappingIterator<List> it = reader.readValues(
+            "[{], {\"x\":1}", 
+            new JsonParser.Feature[] { JsonParser.Feature.ALLOW_MISSING_VALUES });
+    assertTrue(it.hasNextValue());
+    assertEquals(0, it.nextValue().size());
+    assertTrue(it.hasNextValue());
+    try {
+        it.nextValue();
+        fail("Expected an exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Missing field \"x\"");
+    }
+    // and then we can still get the last value...
+    assertTrue(it.hasNext());
+    assertEquals(0, it.next().size());
+    assertFalse(it.hasNext());
+}

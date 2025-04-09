@@ -1,0 +1,23 @@
+public void testOverflow() {
+    JacksonJsonProvider provider = new JacksonJsonProvider();
+    String example = "{\"x\": 1e10}";
+
+    ResourceConfig config = new ResourceConfig();
+    config.register(provider);
+    config.register(IntClass.class);
+
+    IntClass fromTree;
+    try {
+        JsonNode tree = provider.locateMapper(Object.class, MediaType.APPLICATION_JSON_TYPE).readTree(example);
+        fromTree = provider.locateMapper(IntClass.class, MediaType.APPLICATION_JSON_TYPE).readValue(tree, IntClass.class);
+    } catch (IOException _e) {
+        fromTree = new IntClass();
+        fromTree.x = -1;
+    }
+
+    IntClass fromString;
+    try {
+        fromString = provider.locateMapper(IntClass.class, MediaType.APPLICATION_JSON_TYPE).readValue(example, IntClass.class);
+    } catch (IOException _e) {
+        fromString = new IntClass();
+        fromString.x = -

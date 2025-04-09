@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectReader objectReader = objectMapper.readerFor(MyBean.class);
+
+    MyBean intRef = objectReader.readValue(" {\"refRef\": 2 } ");
+    Assert.assertNotNull(intRef.refRef); // succeeds
+    Assert.assertNotNull(intRef.refRef.get()); // succeeds
+    Assert.assertEquals(intRef.refRef.get().get(), new Integer(2)); // succeeds
+
+    MyBean nullRef = objectReader.readValue(" {\"refRef\": null } ");
+    Assert.assertNotNull(intRef.refRef); // succeeds
+    Assert.assertNotNull(intRef.refRef.get()); // fails
+    Assert.assertNull(intRef.refRef.get().get()); // fails
+}

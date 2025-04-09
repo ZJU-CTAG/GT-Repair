@@ -1,0 +1,23 @@
+public void testArchiveStreamFactory() throws Exception {
+    File ar = getFile("test1.ar");
+    File arj = getFile("test1.arj");
+    File cpio = getFile("test1.cpio");
+    File dump = getFile("test1.dump");
+    File jar = getFile("test1.jar");
+    File zip = getFile("test1.zip");
+
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    asf.setEntryEncoding("UTF-8");
+    ArchiveInputStream stream;
+
+    stream = asf.createArchiveInputStream("ar", new FileInputStream(ar));
+    assertTrue(stream instanceof ArArchiveInputStream);
+    stream.close();
+
+    stream = asf.createArchiveInputStream("arj", new FileInputStream(arj));
+    assertTrue(stream instanceof ArjArchiveInputStream);
+    stream.close();
+
+    stream = asf.createArchiveInputStream("cpio", new FileInputStream(cpio));
+    assertTrue(stream instanceof CpioArchiveInputStream);
+    stream.

@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    File notExistFile = new File("notExist");
+    try {
+        FileInputStream fis = notExistFile.toPath().toRealPath().getFileSystem().provider().newFileInputStream(notExistFile);
+        fail("should not be here");
+    } catch (FileNotFoundException e) {
+    }
+
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    CommandLine cline = new DefaultParser().parse(options, new String[]{"-f", notExistFile.toString()});
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    assertNull(file);
+}

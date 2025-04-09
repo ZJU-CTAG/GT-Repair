@@ -1,0 +1,13 @@
+public void testCyclic() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JsonCycleModule());
+    mapper.registerModule(new JsonIdentityInfoModule());
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    Pair pair = new Pair();
+    mapper.writeValue(System.out, pair);
+    System.out.println();
+    pair = mapper.readValue(mapper.writeValueAsString(pair), Pair.class);
+    System.out.println();
+    mapper.writeValue(System.out, pair);
+}

@@ -1,0 +1,10 @@
+public void testArchiveStreamFactory() throws Exception {
+    File testDataDir = new File(getDataDir(), "testdata");
+    File testFile = new File(testDataDir, "test.txt");
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    try (InputStream is = new FileInputStream(testFile)) {
+        ArchiveInputStream in = factory.createArchiveInputStream(is);
+        assertNotNull(in);
+        assertEquals("tar", factory.getFileExtension());
+    }
+}

@@ -1,0 +1,11 @@
+public void testUnionSort() throws JaxenException {
+    Navigator nav = new DocumentNavigator();
+    String xml = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    Object document = nav.getDocument("<MAIN><A>avalue</A><B>bvalue</B></MAIN>");
+    Context context = new Context(nav);
+    context.setNodeSet(nav.getDocument("<MAIN><A>avalue</A><B>bvalue</B></MAIN>"));
+    XPath xpath = new BaseXPath("string(/MAIN/B | /MAIN/A)", nav);
+    List result = xpath.selectNodes(document);
+    assertEquals(1, result.size());
+    assertEquals("avalue", result.get(0));
+}

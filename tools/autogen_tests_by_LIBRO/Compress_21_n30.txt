@@ -1,0 +1,21 @@
+public void testWriting7zArchiveWithEmptyEntries() throws Exception {
+    int fileCount = 8;
+    File tempDirectory = createTempDirectory();
+    List<String> fileNames = new ArrayList<String>();
+    for (int i = 0; i < fileCount; i++) {
+        String fileName = "file" + i;
+        fileNames.add(fileName);
+        File file = new File(tempDirectory, fileName);
+        if (i % 2 == 0) {
+            file.createNewFile();
+        }
+    }
+
+    File archiveFile = new File(tempDirectory, "archive.7z");
+
+    SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(archiveFile);
+    sevenZOutputFile.setContentCompression(SevenZArchiveEntry.METHOD_LZMA2);
+    for (String fileName : fileNames) {
+        SevenZArchiveEntry entry = sevenZOutputFile.createArchiveEntry(new File(tempDirectory, fileName), fileName);
+        sevenZOutputFile.putArchiveEntry(entry);
+        sevenZOutputFile.closeArchive

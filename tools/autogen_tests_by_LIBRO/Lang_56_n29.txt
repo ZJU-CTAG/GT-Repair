@@ -1,0 +1,10 @@
+public void testSerialize() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(FastDateFormat.getDateInstance(DateFormat.FULL));
+    oos.close();
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    FastDateFormat clone = (FastDateFormat)ois.readObject();
+    assertEquals("Wednesday, April 6, 2011", clone.format(new Date()));
+}

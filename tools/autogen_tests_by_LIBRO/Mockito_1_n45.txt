@@ -1,0 +1,17 @@
+public void test() {
+    // given
+    final String s = "foo";
+    when(mock.method(anyString(), anyString())).thenReturn(s);
+
+    // when
+    final String result = mock.method("bar", "baz");
+
+    // then
+    assertEquals(s, result);
+    final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(mock, times(2)).method(captor.capture(), anyString());
+    List<String> allValues = captor.getAllValues();
+    assertEquals(2, allValues.size());
+    assertEquals("bar", allValues.get(0));
+    assertEquals("foo", allValues.get(1));
+}

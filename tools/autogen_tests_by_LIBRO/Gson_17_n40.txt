@@ -1,0 +1,19 @@
+public void testDefaultDateTypeAdapter() {
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+        .setPrettyPrinting().create();
+
+    String jsonTrue = gson.toJson(true);
+    String jsonFalse = gson.toJson(false);
+    assertEquals("true", jsonTrue);
+    assertEquals("false", jsonFalse);
+    assertEquals(true, gson.fromJson(jsonTrue, boolean.class));
+    assertEquals(false, gson.fromJson(jsonFalse, boolean.class));
+
+    String jsonNull = gson.toJson(null);
+    assertEquals("null", jsonNull);
+
+    // JsonPrimitive does not accept null values, so we have to use a workaround
+    assertEquals(null, gson.fromJson(jsonNull, Date.class));
+    assertEquals(null, gson.fromJson(jsonNull, Boolean.class));
+    assertEquals(null, gson.fromJson(jsonNull, Byte.class));
+    assert

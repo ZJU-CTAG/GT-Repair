@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    byte[] content = {0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0};
+    File file = File.createTempFile("testIssue", ".tar");
+    try {
+        FileUtils.writeByteArrayToFile(file, content);
+        FileInputStream fis = new FileInputStream(file);
+        try {
+            new TarArchiveInputStream(fis);
+            fail("Expected IOException");
+        } catch (IllegalArgumentException e) {
+            fail("Expected IOException, got " + e);
+        } catch (IOException e) {
+            // expected
+        }
+    } finally {
+        FileUtils.deleteQuietly(file);
+    }
+}

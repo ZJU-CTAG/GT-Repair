@@ -1,0 +1,19 @@
+public void testBOBYQAOptimizer() throws Exception {
+    final int dim = 10;
+    final BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 2);
+    final MultivariateRealFunction func = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            double f = 0;
+            for (int i = 0; i < dim; i++) {
+                final double xi = x[i] - 1.23;
+                f += xi * xi;
+            }
+            return f;
+        }
+    };
+
+    final GoalType goal = GoalType.MINIMIZE;
+    final double[] startPoint = new double[dim];
+    Arrays.fill(startPoint, 0.0);
+    optim.optimize(100000, func, goal, startPoint);
+}

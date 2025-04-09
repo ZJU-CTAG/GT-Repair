@@ -1,0 +1,15 @@
+public void testIssue_noWarningsWhenPrivatePropertyIsRedeclaredOnSubclass() {
+    assertEquals(
+        "ERROR - Property x_ defined on Foo already declared on SubFoo.",
+        "var Foo = function() {\n  this.x_ = 3;\n};\nvar SubFoo = function() {\n  Foo.call(this);\n  this.x_ = 3;\n};\ngoog.inherits(SubFoo, Foo);",
+        compile(
+            "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }",
+            "/**",
+            " * @constructor",
+            " * @extends {Foo}",
+            " */",
+            "function SubFoo() {",
+            "  /** @private */ this.x_ = 3;",
+            "}",
+            "goog.inherits(SubFoo, Foo);"));
+}

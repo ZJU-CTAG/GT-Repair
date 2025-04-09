@@ -1,0 +1,14 @@
+public void testIssue108() {
+    SimpleDateFormat sdf = new SimpleDateFormat("M d y");
+    FastDateParser fdp = new FastDateParser("M d y");
+
+    assertEquals(sdf.parse("1 1 1"), fdp.parse("1 1 1"));
+    assertEquals(sdf.parse("1 1 1"), fdp.parse("1  1  1"));
+
+    try {
+        sdf.parse("1 1 1");
+        fail("Should have thrown a ParseException");
+    } catch (ParseException e) {
+        // success
+    }
+}

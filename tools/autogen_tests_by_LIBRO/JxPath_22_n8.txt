@@ -1,0 +1,8 @@
+public void testNamespaceResolver() throws Exception {
+    String xml = "<root xmlns=\"ns1\" xmlns:b=\"ns2\"><a xmlns=\"ns3\"/><b:b/></root>";
+    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes()));
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setLenient(true);
+    context.setNamespaceContextPointer(new NamespaceContextPointer());
+    context.getValue("/root/a");
+}

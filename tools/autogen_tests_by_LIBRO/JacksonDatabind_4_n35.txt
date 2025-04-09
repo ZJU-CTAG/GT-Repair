@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    IllegalStateException e = null;
+    Integer[] list = {1,2,3};
+    try {
+        MAPPER.readValue("[1, 2, \"a\"]", Integer[].class);
+    } catch (IllegalStateException es) {
+        e = es;
+    }
+    List<InvalidFormatException.Reference> references = e.getCause().getPath();
+    assertEquals(2, references.get(0).getIndex());
+}

@@ -1,0 +1,11 @@
+public void testHelpFormatter () throws Exception {
+    HelpFormatter formatter = new HelpFormatter();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+    formatter.printHelp(writer, HelpFormatter.DEFAULT_WIDTH, "cmd", "header",
+        new Options(), 1, HelpFormatter.DEFAULT_LEFT_PAD,
+        HelpFormatter.DEFAULT_DESC_PAD, "footer");
+    writer.flush();
+    String str = out.toString("UTF-8");
+    assertTrue("Footer in: " + str, str.contains("footer"));
+}

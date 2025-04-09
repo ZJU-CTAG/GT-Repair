@@ -1,0 +1,9 @@
+public void testConflict() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    String json = "{\"id\":1,\"name\":\"myName\",\"parent\":null,\"children\":[]}";
+    Parent parent = mapper.readValue(json, Parent.class);
+    assertNotNull(parent);
+    assertEquals(0, parent.getChildren().size());
+}

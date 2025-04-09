@@ -1,0 +1,22 @@
+public void testIssue116() {
+    String compiled = "function abc() { abc(); }";
+    SourceMapGeneratorV3 generator = new SourceMapGeneratorV3();
+    generator.setSourceFile("/test.js");
+    generator.addMapping(new Mapping()
+            .setOriginalFile("/test.js")
+            .setOriginalLine(1)
+            .setOriginalColumn(0)
+            .setGeneratedFile("/test.js")
+            .setGeneratedLine(1)
+            .setGeneratedColumn(0)
+    );
+    generator.addMapping(new Mapping()
+            .setOriginalFile("/test.js")
+            .setOriginalLine(1)
+            .setOriginalColumn(4)
+            .setGeneratedFile("/test.js")
+            .setGeneratedLine(1)
+            .setGeneratedColumn(11)
+    );
+    String sourceMap = generator.toJson();
+    String generated = compiled + "\n//@ sourceMappingURL=data:application/json;base64," + Base64.encodeBytes(sourceMap.get

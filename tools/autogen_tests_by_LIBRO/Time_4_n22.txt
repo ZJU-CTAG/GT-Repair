@@ -1,0 +1,12 @@
+public void testIssue108() {
+    DateTimeFieldType[] types = new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() };
+    int[] values = new int[] { 1, 1 };
+    try {
+        new Partial(types, values);
+        fail("should not be possible to construct such a partial");
+    } catch (IllegalArgumentException e) {}
+    Partial partial = new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1);
+    assertEquals("#<Partial [clockhourOfDay=1, hourOfDay=1]>", partial.toString());
+    assertEquals("#<Partial [clockhourOfDay=1, hourOfDay=1]>", partial.with(hourOfDay(), 1).toString());
+    assertEquals("#<Partial [clockhourOfDay=1, hourOfDay=1]>", new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1).toString());
+    assertEquals("#<Partial [clockhourOfDay=1, hourOfDay=1]>", new Partial(clock

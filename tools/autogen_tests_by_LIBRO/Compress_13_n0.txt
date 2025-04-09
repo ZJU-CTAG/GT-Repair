@@ -1,0 +1,18 @@
+public void testArchiveInputStreamGetNextEntry() throws Exception {
+
+try (ArchiveInputStream archiveStream = new ArchiveStreamFactory().createArchiveInputStream(
+    new FileInputStream(
+    new File("src/test/resources/archive/commons-compress-umlauts-winzip.zip")))) {
+
+  List<ArchiveEntry> entries = new ArrayList<>();
+  ArchiveEntry entry = archiveStream.getNextEntry();
+  while (entry != null) {
+    if (!entry.getName().equals("Test/") && !entry.getName().equals("Test/ä/") && !entry.getName().equals("Test/ä/äääää.txt") ) {
+      entries.add(entry);
+    }
+    entry = archiveStream.getNextEntry();
+  }
+
+  assertEquals("Test/", entries.get(0).getName());
+  assertTrue("Test/".equals(entries.get(0).getName()) && entries.get(0).isDirectory());
+  assertEquals("Test/test.txt", entries.get(1).get

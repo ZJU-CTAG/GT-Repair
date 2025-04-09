@@ -1,0 +1,19 @@
+public void testIssue() {
+    final double t0 = 67500;
+    final double t1 = t0 + 0.1;
+    final double dt0 = t1 - t0;
+    for (final String name : new String[] { "Dormand-Prince 8(5,3)", "Dormand-Prince 8(5,3) with RKF45 step size estimate" }) {
+        final FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, dt0, 1.0e-8, 1.0e-8);
+        final double dt = integrator.integrate(new FirstOrderDifferentialEquations() {
+            @Override
+            public void init(final double t0, final double[] z0, final double t) {
+            }
+            @Override
+            public int getDimension() {
+                return 1;
+            }
+            @Override
+            public void computeDerivatives(final double t, final double[] x, final double[] dotX) {
+                dotX[0] = 1.0;
+            }
+        }, t0

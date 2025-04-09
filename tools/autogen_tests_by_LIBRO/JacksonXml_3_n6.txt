@@ -1,0 +1,11 @@
+public void testNextTextValueAttribute() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    FromXMLParser parser = xmlMapper.getFactory().createParser("<root attr=\"value\"/>");
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.currentName());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+    assertEquals("value", parser.getText());
+    // returns null, but should return "value"
+    assertEquals("value", parser.nextTextValue());
+}

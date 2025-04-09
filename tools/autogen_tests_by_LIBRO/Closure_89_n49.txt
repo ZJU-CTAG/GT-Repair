@@ -1,0 +1,20 @@
+public void testAddFunctionProperty() {
+    ScriptableObject scope = getScope();
+
+    // Add to a function, then call it
+    Function f = (Function) scope.get("f1", scope);
+    f.put("alwaysCall", f, true);
+    f.call(Context.getCurrentContext(), scope, scope, new Object[0]);
+
+    // Add to a function, then call it again
+    f = (Function) scope.get("f2", scope);
+    f.put("alwaysCall", f, true);
+    f.call(Context.getCurrentContext(), scope, scope, new Object[0]);
+
+    // Call the function by key
+    Function callFunctionByKey = (Function) scope.get("callFunctionByKey", scope);
+    Object[] callArgs = { "f1" };
+    callFunctionByKey.call(Context.getCurrentContext(), scope, scope, callArgs);
+    callArgs[0] = "f2";
+    callFunctionByKey.call(Context.getCurrentContext(), scope, scope, callArgs);
+}

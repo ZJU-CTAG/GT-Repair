@@ -1,0 +1,19 @@
+public void testToStringStyleLeak() {
+    Thread thread = new Thread(new Runnable() {
+        public void run() {
+            // This will cause ToStringStyle.DEFAULT_STYLE to be created
+            System.out.println(ToStringBuilder.reflectionToString("foo"));
+        }
+    });
+
+    thread.start();
+    try {
+        thread.join();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+
+    // If ToStringStyle.DEFAULT_STYLE was created the following will throw
+    // IllegalStateException
+    System.out.println(ToStringBuilder.reflectionToString("foo"));
+}

@@ -1,0 +1,11 @@
+public void testSetArgName() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("option").hasArgs().create("a"));
+    StringWriter out = new StringWriter();
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setWidth(100);
+    formatter.setArgName("arg");
+    formatter.printHelp(new PrintWriter(out), formatter.getWidth(), "test", null, options, formatter.getLeftPadding(), formatter.getDescPadding(), null, false);
+    assertEquals("usage: test [options]\n" +
+            "  -a arg\n", out.toString());
+}

@@ -1,0 +1,26 @@
+public void testIssue108() {
+    StringWriter sw = new StringWriter();
+    StringBuffer sb = sw.getBuffer();
+    Compiler compiler = new Compiler();
+    compiler.compile(CommandLineRunner.getDefaultExterns(),
+                     ImmutableList.of(SourceFile.fromCode(
+                         "testinput",
+                         "var x = null;\n"
+                         + "x.toString();"
+                         )),
+                     new CompilerOptions());
+    ErrorManager errorManager = compiler.getErrorManager();
+    CheckLevel expected = CheckLevel.ERROR;
+    // Note that warnings are downgraded to errors.
+    assertEquals(expected.toString(),
+                 errorManager.getTypedPercentage(
+                     DiagnosticGroup.forType(
+                         TypeCheck.NULL_DEREFERENCE)),
+                 0.0);
+    assertEquals(expected.toString(),
+                 errorManager.getTypedPercentage(
+                     DiagnosticGroup.forType(
+                         TypeCheck.INEXISTENT_PROPERTY)),
+                 0.0);
+    assertEquals(expected.toString(),
+                 errorManager

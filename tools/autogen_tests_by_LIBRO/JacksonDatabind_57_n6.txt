@@ -1,0 +1,10 @@
+public void testReadArrayWithOffsetAndLength() throws Exception {
+    ObjectReader reader = OBJECT_MAPPER.reader();
+    byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/sample.json"));
+
+    try (JsonParser parser = reader.getFactory().createParser(bytes, 2, bytes.length - 2)) {
+        assertEquals(JsonToken.START_ARRAY, parser.nextToken());
+        assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+        assertEquals("a", parser.getText());
+    }
+}

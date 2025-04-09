@@ -1,0 +1,20 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{ \"a\":1, \"b\":null }";
+    Value value = mapper.readValue(json, Value.class);
+    assertEquals(1, value.a);
+    assertEquals(null, value.b);
+}
+
+class Value {
+    int a;
+    Object b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        value.a = buffer.readValueAsTree().asInt();
+        value.b = buffer.readValueAsTree().asInt();
+        return value;
+    }
+}

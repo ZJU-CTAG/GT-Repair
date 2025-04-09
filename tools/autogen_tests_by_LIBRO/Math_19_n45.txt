@@ -1,0 +1,25 @@
+public void testCMAESOptimizer() {
+    final MultivariateRealFunction fitnessFunction = new MultivariateRealFunction() {
+
+        @Override
+        public double value(double[] params) {
+            for (double param : params) {
+                if (Double.isNaN(param)) {
+                    throw new RuntimeException("param is NaN");
+                }
+            }
+            return 0;
+        }
+    };
+
+    CMAESOptimizer optimizer = new CMAESOptimizer(true, 0, true, 0, 0, new MersenneTwister());
+
+    optimizer.optimize(
+            new MaxEval(10000),
+            new ObjectiveFunction(fitnessFunction),
+            new InitialGuess(new double[] {0.0}),
+            new SimpleBounds(new double[] {-Double.MAX_VALUE}, new double[] {Double.MAX_VALUE}),
+            new CMAESOptimizer.PopulationSize(2),
+            new CMAESOptimizer.Sigma(new double[] {1.0}),
+            new CMAESOptimizer.DiagonalOnly(false),
+           

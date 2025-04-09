@@ -1,0 +1,13 @@
+public void testJSCompiler() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, source, options);
+    for (JSError jsError : result.errors) {
+        System.out.println(jsError.toString());
+    }
+    assertTrue(result.success);
+}

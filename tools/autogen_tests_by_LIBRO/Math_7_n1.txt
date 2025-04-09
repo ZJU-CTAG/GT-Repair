@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    double t0 = 0;
+    double t1 = 100;
+    double[] y0 = new double[] { 1.0 };
+    ODEIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addEventHandler(new Handler1(), 1.0, 0.1, 400);
+    integrator.addEventHandler(new Handler2(), 1.0, 0.1, 400);
+    integrator.integrate(new ODE(), new FirstOrderDifferentialEquations() {
+        @Override
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = -y[0];
+        }
+        @Override
+        public int getDimension() {
+            return 1;
+        }
+    }, t0, y0, t1, y0);
+}

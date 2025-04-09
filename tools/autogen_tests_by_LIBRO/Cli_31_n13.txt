@@ -1,0 +1,12 @@
+public void testHelpFormatterWithDefaultArgName() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("opt1").create('1'));
+    options.addOption(OptionBuilder.withLongOpt("opt2").hasArg().create('2'));
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(new PrintWriter(writer), 80, "test", "", options, 1, 2, "");
+    assertEquals("usage: test [-1] [-2 arg]\n" +
+            "\n" +
+            "  -1\n" +
+            "  -2 arg\n", writer.toString());
+}

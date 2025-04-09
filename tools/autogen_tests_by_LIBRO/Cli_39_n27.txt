@@ -1,0 +1,18 @@
+public void testExistingFile() throws Exception {
+    CommandLineParser parser = new DefaultParser();
+    Option option = Option.builder("f").hasArg().type(FileInputStream.class).build();
+    Options options = new Options().addOption(option);
+    FileInputStream file = null;
+    try {
+        file = (FileInputStream) parser.parse(options, new String[]{"-f", File.createTempFile("testExistingFile", "txt").getAbsolutePath()}).getParsedOptionValue("f");
+    } catch (ParseException e) {
+        fail("File must exist");
+    }
+    file.close();
+    try {
+        file = (FileInputStream) parser.parse(options, new String[]{"-f", "/path/to/file"}).getParsedOptionValue("f");
+        fail("File must not exist");
+    } catch (ParseException e) {
+        // All good
+    }
+}

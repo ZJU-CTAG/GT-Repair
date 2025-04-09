@@ -1,0 +1,14 @@
+public void testIssue109() {
+    CompilerOptions options = new CompilerOptions();
+    options.defineReplacements.put("test.VERSION", "1.0.0");
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", "/** @define {string} */\ntest.VERSION = '';"),
+            SourceFile.fromCode("extern", ""),
+            options
+    );
+    assertTrue(result.success);
+    assertEquals("/** @define {string} */\ntest.VERSION = '1.0.0';\n", compiler.toSource());
+}

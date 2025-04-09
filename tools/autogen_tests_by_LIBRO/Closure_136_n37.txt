@@ -1,0 +1,13 @@
+public void testIssue$super() throws Exception {
+    String code = "var a = {\n" +
+            "    test: function() {\n" +
+            "        b();\n" +
+            "    }\n" +
+            "};\n" +
+            "var b = function() {\n" +
+            "    $super();\n" +
+            "};\n" +
+            "a.test();";
+    Compiler compiler = runAdvancedOptimizations(code);
+    assertEquals("var a={test:function(){b()}};var b=function(){$super()};a.test();", compiler.toSource());
+}

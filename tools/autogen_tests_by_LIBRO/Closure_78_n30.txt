@@ -1,0 +1,21 @@
+public void testDivisionByZero() {
+    String code = "1/0";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(JSSourceFile.fromCode("input.js", code));
+    assertFalse(result.success);
+    assertEquals(1, result.warnings.length);
+    assertEquals(CheckLevel.WARNING, result.warnings[0].getLevel());
+    assertEquals(
+            CheckLevel.WARNING,
+            result.warnings[0].level);
+    assertEquals(
+            DiagnosticType.warning(
+                    "JSC_DIVIDE_BY_0_ERROR",
+                    "Division by zero"),
+            result.warnings[0].type);
+    assertEquals(1, result.warnings[0].lineNumber);
+    assertEquals(0, result.warnings[0].getCharno());
+    assertEquals(code, result.warnings[0].description);
+    assertEquals(1, result.warnings[0].getLength());
+}

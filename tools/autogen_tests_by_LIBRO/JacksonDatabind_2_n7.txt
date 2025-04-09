@@ -1,0 +1,12 @@
+public void testJsonNodes() throws Exception {
+    ListAttribute attrib = new ListAttribute("itemType", new ArrayList<String>(Arrays.asList("item1", "item2")));
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_DEFAULT);
+    mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_DEFAULT);
+    mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_EMPTY);
+    mapper.getSerializationConfig().addMixInAnnotations(ListAttribute.class, ListAttributeMixIn.class);
+    mapper.getSerializationConfig().addMixInAnnotations(Attribute.class, Att

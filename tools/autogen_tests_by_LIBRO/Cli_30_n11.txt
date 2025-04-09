@@ -1,0 +1,22 @@
+public void testIssue108() {
+    class App {
+        @Option(name="-a", required=true)
+        boolean a;
+
+        @Option(name="-b", required=true)
+        boolean b;
+    }
+    App app = new App();
+    Properties options = new Properties();
+    options.put("a", "true");
+    options.put("b", "true");
+
+    String[] args = new String[0];
+    CommandLine commandLine = new CommandLine(app).parse(args, options);
+    assertFalse(commandLine.isUsageHelpRequested());
+    assertFalse(commandLine.isVersionHelpRequested());
+    assertTrue(commandLine.isValid());
+
+    assertTrue(app.a);
+    assertTrue(app.b);
+}

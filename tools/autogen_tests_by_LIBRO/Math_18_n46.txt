@@ -1,0 +1,20 @@
+public void testCMAESOptimizerWithBounds() {
+    ParameterGuesser guesser = new ParameterGuesser(FunctionUtils.toMultiVariateFunction(new SimpleParabola()),
+                                                    new double[] {-2, -2});
+    guesser.guess();
+    double[] startPoint = guesser.getParametersGuess();
+
+    double[] target = new double[] {1, 1};
+    double[] weights = new double[] {1, 1};
+
+    LeastSquaresFactory lsf = new LeastSquaresFactory();
+    // remove bounds and the fit is fine
+    double[] lower = new double[] {-1, -1};
+    double[] upper = new double[] {3, 3};
+    lsf.setLowerBound(lower);
+    lsf.setUpperBound(upper);
+    lsf.setMaxEvaluations(10000);
+    lsf.setMaxIterations(10000);
+    lsf.setCostRelativeTolerance(1e-5);
+    lsf.setOrthoTolerance(1e-5);
+    LeastSquares

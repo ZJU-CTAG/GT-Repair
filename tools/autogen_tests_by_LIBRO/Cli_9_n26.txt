@@ -1,0 +1,10 @@
+public void testMissingOption() {
+    Options options = new Options().addOption(OptionBuilder.withLongOpt("format").isRequired());
+
+    try {
+        new PosixParser().parse(options, new String[] {});
+        fail("Parse should have failed");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required option: format", e.getMessage());
+    }
+}

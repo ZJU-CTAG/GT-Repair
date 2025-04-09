@@ -1,0 +1,12 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "_class");
+    String json = "{\"_class\": \"java.lang.ProcessBuilder\"," +
+                  "\"_class\": \"java.lang.UNIXProcess\"," +
+                  "\"command\": [\"touch\", \"/tmp/CVE-2017-7525\"]}";
+
+    // Exception in thread "main" java.lang.IllegalArgumentException: java.lang.ProcessBuilder
+    //    at com.fasterxml.jackson.databind.type.TypeFactory.constructSpecializedType(TypeFactory.java:628)
+    //    at com.fasterxml.jackson.databind.type.TypeFactory.constructType(TypeFactory.java:525)
+    //    at com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer.mapObject(UntypedObjectDeserializer.java:322)
+    //    at com.fasterxml.jackson

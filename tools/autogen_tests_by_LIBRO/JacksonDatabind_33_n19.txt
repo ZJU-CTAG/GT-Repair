@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new Wrapper());
+    assertEquals("{\"animal\":\"Zebra\"}", json);
+}
+
+public static class Inner {
+    public String animal;
+}
+
+public static class Wrapper {
+    // @JsonProperty
+    @JsonUnwrapped
+    private Inner inner;
+    
+    @JsonCreator
+    public Wrapper() {
+        inner = new Inner();
+        inner.animal = "Zebra";
+    }
+}

@@ -1,0 +1,19 @@
+public void testConvergence() throws MathException {
+    System.out.println("testing BrentOptimizer");
+    Random r = new Random(123456789);
+    for (int i = 0; i < 10; i++) {
+        System.out.println("trial " + i);
+        double min = -10;
+        double max = 10;
+        UnivariateRealFunction f = new UnivariateRealFunction() {
+            public double value(double x) {
+                return x * x * x;
+            }
+        };
+        UnivariateRealOptimizer optimizer = new BrentOptimizer(1E-15, 1E-14);
+        optimizer.setMaxEvaluations(100);
+        double start = (max - min) * r.nextDouble() + min;
+        double result = optimizer.optimize(f, GoalType.MINIMIZE, min, max, start);
+        assertEquals(0.0, result, 1E-14);
+    }
+}

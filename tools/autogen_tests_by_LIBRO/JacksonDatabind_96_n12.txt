@@ -1,0 +1,14 @@
+public void testNamingStrategy() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModule(new JavaTimeModule());
+    // this fails, but should not:
+    mapper.readValue("{\"epoch_second\":1000000}", OffsetDateTime.class);
+}
+public void testNamingStrategy2() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    // this succeeds, as should first test:
+    mapper.readValue("{\"epoch_second\":1000000}", OffsetDateTime.class);
+}

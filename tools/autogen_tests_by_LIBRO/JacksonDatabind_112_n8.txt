@@ -1,0 +1,20 @@
+public void testIssue() {
+    final String json = "{\"strs\": [\"a\", \"b\"]}";
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addDeserializer(ImmutableStringSet.class, new StringSetDeserializer()));
+    final StringCollectionBean stringCollectionBean = mapper.readValue(json, StringCollectionBean.class);
+    assertEquals(Sets.newHashSet("a", "b"), stringCollectionBean.getStrs());
+}
+
+@Test(expected = JsonMappingException.class)
+public void testIssueDeserialize() {
+    final String json = "[\"a\", \"b\"]";
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addDeserializer(ImmutableStringSet.class, new StringSetDeserializer()));
+    mapper.readValue(json, ImmutableStringSet.class);
+}
+
+private static class StringCollectionBean {
+    ImmutableStringSet strs;
+
+    public ImmutableString

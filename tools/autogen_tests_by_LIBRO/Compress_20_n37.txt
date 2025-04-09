@@ -1,0 +1,10 @@
+public void testIssue108() {
+    byte[] data = IOUtils.toByteArray(getClass().getResourceAsStream("/test108.cpio"));
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    try (ArchiveInputStream in = factory.createArchiveInputStream(ArchiveStreamFactory.CPIO, new ByteArrayInputStream(data))) {
+        ArchiveEntry entry;
+        while ((entry = in.getNextEntry()) != null) {
+            System.out.println(entry.getName());
+        }
+    }
+}

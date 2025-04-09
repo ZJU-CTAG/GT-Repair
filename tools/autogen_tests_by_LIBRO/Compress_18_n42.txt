@@ -1,0 +1,16 @@
+public void testLongDirectoryName () throws IOException {
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < 100; i++) {
+        b.append('a');
+    }
+    final String longName = b.toString();
+    final File file = folder.newFolder(longName);
+
+    try (FileOutputStream fos = new FileOutputStream(new File(folder.getRoot(), "test.tar"));
+         ArchiveOutputStream out = new ArchiveStreamFactory()
+                 .createArchiveOutputStream(ArchiveStreamFactory.TAR, fos)) {
+        TarArchiveEntry entry = new TarArchiveEntry(file, longName);
+        out.putArchiveEntry(entry);
+        out.closeArchiveEntry();
+    }
+}

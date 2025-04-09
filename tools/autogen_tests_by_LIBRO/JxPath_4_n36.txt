@@ -1,0 +1,19 @@
+public void testJxpath() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    InputStream in = null;
+    try {
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        in = new ByteArrayInputStream("<root><test>test</test><test2>  test2</test2></root>".getBytes("UTF-8"));
+        Document doc = db.parse(in);
+        DOMParser parser = new DOMParser();
+        parser.parse(new InputSource(new StringReader(doc.toString())));
+        org.w3c.dom.Document document = parser.getDocument();
+        JXPathContext context = JXPathContext.newContext(document);
+        String test = (String) context.getValue("/root/test");
+        String test2 = (String) context.getValue("/root/test2");
+        assertEquals("test", test);
+        assertEquals("  test2", test2);
+    } catch (Exception e) {
+        fail(e.toString());
+    } finally {
+        IOUtils.close

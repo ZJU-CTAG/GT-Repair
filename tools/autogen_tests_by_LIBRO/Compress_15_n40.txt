@@ -1,0 +1,18 @@
+public void testZipFile() throws Exception {
+    File zip = File.createTempFile("test", ".zip");
+    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zip));
+    String name = "test.txt";
+    ZipEntry entry = new ZipEntry(name);
+    entry.setComment("test");
+    out.putNextEntry(entry);
+    out.closeEntry();
+    out.close();
+
+    ZipFile zipFile = new ZipFile(zip);
+    ZipArchiveEntry zipArchiveEntry = zipFile.getEntry(name);
+    assertNotNull(zipArchiveEntry);
+    ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(zip));
+    assertTrue(zipArchiveEntry.equals(in.getNextZipEntry()));
+    assertNull(in.getNextZipEntry());
+    in.close();
+}

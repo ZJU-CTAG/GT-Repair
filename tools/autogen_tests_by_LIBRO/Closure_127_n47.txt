@@ -1,0 +1,10 @@
+public void testFinally() {
+    Script script = new NashornScriptEngineFactory().getScriptEngine().script(
+            "b: try {throw('throw me')} finally {/* fake catcher */; break b};"+
+            "console.log('ok then...'); console.log('never reached...')");
+    try {
+        script.invoke(null);
+    } catch (Exception e) {
+        System.out.println("caught " + e);
+    }
+}

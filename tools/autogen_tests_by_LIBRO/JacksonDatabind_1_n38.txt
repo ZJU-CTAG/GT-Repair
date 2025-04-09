@@ -1,0 +1,16 @@
+public void testIssue5() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    om.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+    TestOuter o = new TestOuter();
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    om.writeValue(out, o);
+    String json = out.toString("UTF-8");
+
+    System.out.println("\nJSON:\n" + json + "\n");
+
+    assertTrue("null value is duplicated", json.contains("[0,null,null]") == false);
+}

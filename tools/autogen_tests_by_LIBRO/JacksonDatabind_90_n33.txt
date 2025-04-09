@@ -1,0 +1,28 @@
+public void testValueInstantiator()
+{
+    final POJO pojo = new POJO();
+    pojo.x = 3;
+    pojo.y = 4;
+    pojo.z = 5;
+    pojo.setFoo(11);
+    pojo.setBar(22);
+    pojo.setBaz(33);
+    final ValueInstantiator v = new ValueInstantiator() {
+        @Override
+        public Object createUsingDefault() {
+            return pojo;
+        }
+
+        @Override
+        public Object createUsingArrayDelegate(DeserializationContext ctxt, Object[] params) {
+            return pojo;
+        }
+
+        @Override
+        public Object createUsingDelegate(DeserializationContext ctxt, Object delegate) {
+            return pojo;
+        }
+    };
+    final DeserializationConfig config = new DeserializationConfig.Impl(new DeserializationConfig.Impl(BeanDeserializerFactory.instance));
+    final DeserializationContext ctxt = new DeserializationContext(config, null, null, null);
+    assertTrue(v.canInstantiate

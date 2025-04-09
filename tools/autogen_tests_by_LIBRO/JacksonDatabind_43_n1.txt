@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+
+    String payload = "{\"id\": null}";
+    ObjectNode node = (ObjectNode) mapper.readTree(payload);
+    assertNotNull(node.get("id"));
+    assertTrue(node.get("id").isNull());
+    assertEquals(JsonToken.VALUE_NULL, node.get("id").asToken());
+
+    Object deser = mapper.readValue(payload, Object.class);
+    assertTrue(deser instanceof Map);
+    assertEquals(1, ((Map) deser).size());
+    assertTrue(((Map) deser).containsKey("id"));
+    assertNull(((Map) deser).get("id"));
+}

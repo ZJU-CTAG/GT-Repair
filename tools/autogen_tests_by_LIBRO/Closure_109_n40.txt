@@ -1,0 +1,9 @@
+public void testIssue108() {
+    final String jsdocText = "/** @type {function(new:?)} */ var foo = function() {};\n" +
+        "/** @type {function(new:*)} */ var bar = function() {};";
+    final JsDocInfoParser parser = new JsDocInfoParser(new JsDocInfoParser.TypeParser());
+    final List<JsDocInfo> jsdocInfos = parser.parse(jsdocText);
+    assertEquals(2, jsdocInfos.size());
+    assertEquals("function(new:?)", jsdocInfos.get(0).getType().toString());
+    assertEquals("function(new:?)", jsdocInfos.get(1).getType().toString());
+}

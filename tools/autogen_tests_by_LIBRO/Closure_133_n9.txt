@@ -1,0 +1,11 @@
+public void testIssue() {
+    Node n = new Node(Token.SCRIPT);
+    n.addChildToBack(new Node(Token.FUNCTION, new Node(Token.NAME, "foo"),
+            new Node(Token.BLOCK)));
+    Node fn = n.getFirstChild();
+    fn.setJSDocInfo(new JSDocInfoBuilder(false).build());
+    fn.getJSDocInfo().recordParameter("x", "*", null);
+    Compiler compiler = new Compiler();
+    compiler.initCompiler(new PrintStream(System.err), System.err);
+    compiler.compile(n, new Node(Token.EMPTY));
+}

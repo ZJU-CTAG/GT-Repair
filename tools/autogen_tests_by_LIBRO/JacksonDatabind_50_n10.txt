@@ -1,0 +1,19 @@
+public void testIssue1277() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    SimpleModule module = new SimpleModule();
+    module.addKeyDeserializer(WithId.class, new WithIdKeyDeserializer());
+    mapper.registerModule(module);
+
+    SimpleModule idModule = new SimpleModule();
+    idModule.addKeyDeserializer(WithId.class, new WithIdKeyDeserializer());
+    idModule.addKeySerializer(WithId.class, new WithIdKeySerializer());
+    idModule.addSerializer(new WithoutIdSerializer());
+    mapper.registerModule(idModule);
+
+    String json = mapper.writeValueAsString(
+            ImmutableMap.of(new WithId(1), new WithId(2), new WithoutId(1), new WithoutId(2)));
+    System.out.println(json);
+    Map<WithId, WithId> map = mapper.readValue(json, new TypeReference<Map<WithId, WithId>>(){});
+    assertEqu

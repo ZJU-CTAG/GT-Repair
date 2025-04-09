@@ -1,0 +1,12 @@
+public void testExcludeGlobalThis() throws Exception {
+    final DiagnosticGroups groups = new DiagnosticGroups();
+    final List<File> files = Arrays.asList(new File("src/test/resources/testcode/globalThisTest.js"));
+    final CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    groups.setWarningLevel("globalThis", CheckLevel.OFF);
+    groups.setWarningLevel("nonStandardJsDocs", CheckLevel.OFF);
+    options.setWarningLevel(groups.getRegisteredGroups(), CheckLevel.WARNING);
+    final Compiler compiler = new Compiler();
+    compiler.compile(Collections.<SourceFile>emptyList(), files, options);
+    assertEquals(1, compiler.getResult().warnings.length);
+}

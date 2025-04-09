@@ -1,0 +1,18 @@
+public void testBigDecimal() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+    mapper.acceptJsonFormatVisitor(mapper.constructType(BigDecimal.class), visitor);
+    JsonSchema schema = visitor.finalSchema();
+    assertNotNull(schema);
+
+    JsonNode schemaAsNode = mapper.valueToTree(schema);
+    assertNotNull(schemaAsNode);
+    assertTrue(schemaAsNode.isObject());
+    ObjectNode on = (ObjectNode) schemaAsNode;
+
+    JsonNode typeNode = on.get("type");
+    assertNotNull(typeNode);
+    assertTrue(typeNode.isTextual());
+    assertEquals("number", typeNode.textValue());
+}

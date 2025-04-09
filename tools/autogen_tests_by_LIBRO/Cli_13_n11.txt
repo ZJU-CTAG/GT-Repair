@@ -1,0 +1,12 @@
+public void testDuplicateArg() {
+	Options options = new Options();
+	Argument arg = new Argument("test");
+	arg.setRequired(false);
+	arg.setValueSeparator('=');
+	arg.setDefault("bar");
+	options.addArgument(arg);
+
+	CommandLineParser parser = new PosixParser();
+	CommandLine cmd = parser.parse(options, new String[] { "--test=foo" });
+	assertEquals("foo", cmd.getValue("test"));
+}

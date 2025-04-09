@@ -1,0 +1,10 @@
+public void testRequiredOptions() {
+    final CLI cli = new CLI();
+    final Group group = new GroupBuilder()
+    .withOption(new OptionBuilder().withShortName("h").withDescription("help").create())
+    .withOption(new OptionBuilder().withShortName("c").withDescription("this option is required").isRequired(true).withArgument(new ArgumentBuilder().withName("arg").create()).create())
+    .create();
+    cli.addGroup(group);
+    final Set<Option> options = cli.parse(new String[]{"-c", "arg"});
+    assertEquals("[-h]", options.toString());
+}

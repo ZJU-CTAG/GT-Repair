@@ -1,0 +1,16 @@
+public void testOrderOfDependencySorting() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(false);
+    DependencyOptions depOptions = new DependencyOptions();
+    depOptions.setDependencySorting(true);
+    compiler.setDependencyOptions(depOptions);
+
+    List<JSSourceFile> input = new ArrayList<JSSourceFile>();
+    File file = new File("src/test/java/com/google/javascript/jscomp/deps/a.js");
+    input.add(JSSourceFile.fromFile(file));
+    file = new File("src/test/java/com/google/javascript/jscomp/deps/b.js");
+    input.add(JSSourceFile.fromFile(file));
+    file = new File("src/test/java/com/google/javascript/jscomp/deps/c.js");
+    input.add(JSSourceFile.fromFile(file));
+    Result result = compiler.compile(CommandLineRunner.get

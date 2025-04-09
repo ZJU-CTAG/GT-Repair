@@ -1,0 +1,8 @@
+public void testIssue129() {
+    XmlMapper mapper = new XmlMapper();
+    FromXmlParser parser = (FromXmlParser) mapper.getFactory().createParser("<root attr=\"attrValue\" />");
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.getCurrentName());
+    assertEquals("attrValue", parser.nextTextValue());
+}

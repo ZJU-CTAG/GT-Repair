@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    JavaTimeModule module = new JavaTimeModule();
+    module.addSerializer(BigDecimal.class, new DecimalSerializer());
+    mapper.registerModule(module);
+    String value = mapper.writeValueAsString(new Issue108());
+    assertEquals("{\"value\":\"5.0E-10\"}", value);
+}
+
+public static class Issue108 {
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
+    public BigDecimal getValue() {
+        return BigDecimal.valueOf(5.0E-10);
+    }
+}
+
+public static class DecimalSerializer extends StdSerializer<BigDecimal> {
+    public DecimalSerializer() {
+        super(BigDecimal.class);
+    }
+    @Override
+    public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider

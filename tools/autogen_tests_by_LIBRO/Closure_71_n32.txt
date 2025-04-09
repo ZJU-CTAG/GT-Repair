@@ -1,0 +1,15 @@
+public void testIssue() {
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  Result result = compiler.compile(
+      JSSourceFile.fromCode("in1.js",
+          "/** @constructor */ function Foo() {\n"
+          + "/** @private */ this.x_ = 3;\n"
+          + "}"),
+      JSSourceFile.fromCode("in2.js",
+          "/** @constructor \n"
+          + " * @extends {Foo} */ function SubFoo() {\n"
+          + "/** @private */ this.x_ = 3;\n"
+          + "}"));
+  assertTrue(result.success);
+}

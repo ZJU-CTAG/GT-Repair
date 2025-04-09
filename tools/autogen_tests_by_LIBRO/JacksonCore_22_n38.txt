@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String json = "{\"foo\":\"bar\"}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectWriter filteringWriter = objectMapper.writer(new SimpleFilterProvider().addFilter("defaultFilter", SimpleBeanPropertyFilter.serializeAllExcept("foo")));
+    SimpleBean bean = objectMapper.readValue(json, SimpleBean.class);
+    String filteredJson = filteringWriter.writeValueAsString(bean);
+    assertEquals("{}", filteredJson);
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(objectMapper.getFactory().createParser(filteredJson),
+            new SimpleBeanPropertyFilter.FilterExceptFilter("foo"), false, false);
+    assertEquals(0, filteringParserDelegate._matchCount);
+}

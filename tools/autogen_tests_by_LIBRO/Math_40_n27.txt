@@ -1,0 +1,18 @@
+public void test_Issue_107() {
+    double xA = 12500.0;
+    double xB = 12500.03;
+    double yA = 3.7e-16;
+    double yB = -7.0e-5;
+    Function<Double, Double> function = new Function<Double, Double>() {
+        @Override
+        public Double apply(Double x) {
+            if (x == 0) {
+                return 1.0;
+            } else {
+                return FastMath.sin(x) / x;
+            }
+        }
+    };
+    BracketingNthOrderBrentSolver solver = new BracketingNthOrderBrentSolver();
+    solver.solve(Integer.MAX_VALUE, function, xA, xB, yA, yB);
+}

@@ -1,0 +1,10 @@
+public void testGzFinish() throws Exception {
+    File file = new File("foo.gz");
+    ArchiveOutputStream os = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.GZIP, new FileOutputStream(file));
+    os.finish();
+    os.close();
+    ArchiveInputStream is = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.GZIP, new FileInputStream(file));
+    assertEquals(null, is.getNextEntry());
+    is.close();
+    assertTrue(file.delete());
+}

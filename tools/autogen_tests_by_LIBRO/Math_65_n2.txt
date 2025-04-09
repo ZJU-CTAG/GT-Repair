@@ -1,0 +1,15 @@
+public void testResidualsWeight() {
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    obs.add(1.0, 1.0, 10.0);
+    obs.add(2.0, 2.0, 10.0);
+    obs.add(3.0, 3.0, 10.0);
+    obs.add(4.0, 4.0, 10.0);
+
+    LevenbergMarquardtOptimizer optim = new LevenbergMarquardtOptimizer();
+    PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+    double[] coeff = fitter.fit(obs.toList());
+    double rmsf = optim.getRMS(coeff);
+    double chi2f = optim.getChiSquare(coeff);
+    double rmsm = Math.sqrt(chi2f/obs.toList().size());
+    assertEquals(rmsf, rmsm, 1E-8);
+}

@@ -1,0 +1,16 @@
+public void testCMAESOptimizer() {
+    double[] expected = new double[]{-2.0, -2.0};
+    double[] lower = new double[]{-4.0, -4.0};
+    double[] upper = new double[]{-1.0, -1.0};
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    PointValuePair optimum = optimizer.optimize(new MaxEval(2000), new ObjectiveFunction(new MultivariateFunction() {
+        public double value(double[] point) {
+            return 0;
+        }
+    }), GoalType.MINIMIZE, new InitialGuess(new double[]{-2.0, -2.0}), new SimpleBounds(lower, upper));
+    double[] optimumPoint = optimum.getPoint();
+    assertEquals(expected.length, optimumPoint.length);
+    for (int i = 0; i < optimumPoint.length; i++) {
+        assertEquals(expected[i], optimumPoint[i], 1e-12);
+    }
+}

@@ -1,0 +1,9 @@
+public void testIssue041() {
+    String html = "<div><table class=x></table><table class=y></table></div>";
+    Document doc = Jsoup.parse(html);
+
+    assertEquals(doc.select("div table[class~=x|y]").size(), 2);
+    assertEquals(doc.select("div > table[class~=x|y]").size(), 2);
+    assertEquals(doc.select("div + table[class~=x|y]").size(), 2);
+    assertEquals(doc.select("div ~ table[class~=x|y]").size(), 2);
+}

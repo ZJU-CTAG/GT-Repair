@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+        .configure(MapperFeature.USE_ANNOTATIONS, false)
+        .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    assertEquals("<XMLTest/>", noAnnotationsXmlMapper.writeValueAsString(new XMLTest()));
+    assertEquals("<myname/>", xmlMapper.writeValueAsString(new XMLTest()));
+}
+
+// No setter to avoid an empty bean
+@JacksonXmlRootElement(localName = "myname")
+public class XMLTest {
+}

@@ -1,0 +1,20 @@
+public void testIssue1427() {
+  CompilerOptions options = new CompilerOptions();
+  options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+  options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+  options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+  options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+      "function writeMethodWithoutAnnotation(){"
+       + " this._bar = 123;"
+       + "}",
+      options);
+  JSError[] warnings = result.warnings;
+  JSError[] errors = result.errors;
+  assertEquals(0, errors.length);
+  assertEquals(1, warnings.length);
+  assertEquals(
+      "JSC_DANGEROUS_GLOBAL_THIS: Dangerous use of the global this object",
+      warnings[0].description);
+}

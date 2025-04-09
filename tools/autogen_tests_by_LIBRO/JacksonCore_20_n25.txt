@@ -1,0 +1,10 @@
+public void testWriteEmbeddedObject() throws Exception
+{
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator g = new JsonFactory().createGenerator(bytes);
+    g.writeStartObject();
+    g.writeObjectField("foo", new byte[] { 1, 2, 3 });
+    g.writeEndObject();
+    g.close();
+    assertEquals("{\"foo\":[1,2,3]}", bytes.toString("UTF-8"));
+}

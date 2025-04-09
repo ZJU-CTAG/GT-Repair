@@ -1,0 +1,18 @@
+public void testOptionArgName() {
+    Options options = new Options();
+
+    options.addOption(OptionBuilder.hasArg()
+            .withArgName("file")
+            .withDescription("use given file for log")
+            .create("f"));
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.printHelp( "foo", options );
+
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outContent));
+    formatter.printHelp("foo", options);
+    String s = new String(outContent.toByteArray());
+
+    assertTrue(s.indexOf("file") > 0);
+}

@@ -1,0 +1,17 @@
+public void testCaptorVarArgs() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    List<String> list = Arrays.asList("one", "two");
+    List<String> list2 = Arrays.asList("three", "four");
+    List<String> list3 = Arrays.asList("five", "six");
+    testObject.methodWithVarArgs(list, list2, list3);
+
+    verify(testObject).methodWithVarArgs(captor.capture(), captor.capture(), captor.capture());
+
+    List<String[]> result = captor.getAllValues();
+    assertEquals(3, result.size());
+    assertEquals(2, result.get(0).length);
+    assertEquals(2, result.get(1).length);
+    assertEquals(2, result.get(2).length);
+    assertEquals("one", result.get(0)[0]);
+    assertEquals("two", result.get(0)[1]);
+    assertEquals("three", result.get(

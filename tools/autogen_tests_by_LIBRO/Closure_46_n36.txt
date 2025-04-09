@@ -1,0 +1,18 @@
+public void testTypeCheckPass() {
+    Schema s = new Schema();
+    s.define(new NamedType("foo", new RecordType(new Field("bar", new PrimitiveType(PrimitiveType.Tag.INT)), new Field("baz", new PrimitiveType(PrimitiveType.Tag.LONG)))));
+
+    Schema.Type type = s.getType("foo");
+    ProxyObjectType proxy = new ProxyObjectType(type.getSchema(), type.getName());
+    type.getSchema().define(proxy);
+
+    Schema.Type type2 = s.getType("foo");
+    ProxyObjectType proxy2 = new ProxyObjectType(type2.getSchema(), type2.getName());
+    type2.getSchema().define(proxy2);
+
+    Schema.Type type3 = s.getType("foo");
+    ProxyObjectType proxy3 = new ProxyObjectType(type3.getSchema(), type3.getName());
+    type3.getSchema().define(proxy3);
+
+    Schema.Type type4 = s.getType("foo");
+    ProxyObjectType proxy4

@@ -1,0 +1,21 @@
+public void testThisTypeInheritance() {
+    /** @constructor */
+    function F() {}
+    F.prototype.bar = function() { this.baz(); };
+    F.prototype.baz = function() { };
+
+    /** @constructor */
+    function G() {}
+    G.prototype.bar = F.prototype.bar;
+
+    ClosureCompiler compiler = new ClosureCompiler();
+    CompilerOptions options = new CompilerOptions();
+    options.checkTypes = true;
+    String source = "";
+    source += "G.prototype.bar();";
+    source += "new G().bar();";
+    Result result = compiler.compile(
+        SourceFile.fromCode("testcode", source),
+        options);
+    assertTrue(result.success);
+}

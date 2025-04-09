@@ -1,0 +1,15 @@
+public void testSameSign() {
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(final double x) {
+            return x * x * x;
+        }
+    };
+
+    final UnivariateRealSolver solver = new BrentSolver(1E-14, 1E-14);
+    try {
+        solver.solve(f, -1, 1, 0.5);
+        fail("Expected exception");
+    } catch (final IllegalArgumentException ex) {
+        // expected
+    }
+}

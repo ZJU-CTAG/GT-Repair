@@ -1,0 +1,16 @@
+public void testIssue() {
+    UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            return x * Math.sin(x);
+        }
+    };
+    double guess = 5;
+    int maxEval = 100;
+    double relTol = 1e-12;
+    double absTol = 1e-6;
+    BrentOptimizer b = new BrentOptimizer(relTol, absTol);
+    UnivariatePointValuePair p = b.optimize(maxEval, f, GoalType.MAXIMIZE, guess);
+    double optPoint = p.getPoint();
+    // given the function, we expect the optimum to be at x=pi
+    assertEquals(Math.PI, optPoint, relTol);
+}

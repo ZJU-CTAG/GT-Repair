@@ -1,0 +1,12 @@
+public void testExample() throws IOException {
+        String json = "{\"something\": [{\"id\": \"a uuid\",\"property\": \"value\"}]}";
+        ObjectMapper mapper = new ObjectMapper();
+
+        MyPojo pojo = mapper.readValue(json, MyPojo.class);
+
+        Map<UUID, Foo> something = pojo.getSomething();
+        assertNotEquals(0, something.size());
+        Foo foo = something.get(UUID.fromString("a uuid"));
+        assertNotNull(foo);
+        assertEquals("value", foo.property);
+    }

@@ -1,0 +1,12 @@
+public void testExclusion() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    assertEquals(aposToQuotes("{}"), mapper.writeValueAsString(new Default(0)));
+    assertEquals(aposToQuotes("{'a':1}"), mapper.writeValueAsString(new Default(1)));
+    assertEquals(aposToQuotes("{'a':''}"), mapper.writeValueAsString(new Default("")));
+    assertEquals(aposToQuotes("{'a':'a'}"), mapper.writeValueAsString(new Default("a")));
+
+    assertEquals(aposToQuotes("{}"), new AfterburnerMapper().writeValueAsString(new Default(0)));
+    assertEquals(aposToQuotes("{'a':1}"), new AfterburnerMapper().writeValueAsString(new Default(1)));
+    assertEquals(aposToQuotes("{'a':''}

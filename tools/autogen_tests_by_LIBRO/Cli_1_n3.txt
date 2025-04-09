@@ -1,0 +1,15 @@
+public void testDefaultOption() {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    options.addOption("b", true, "set -b");
+    options.addOption("c", "c", false, "toggle -c");
+    options.addOption("d", "d", true, "set -d");
+
+    String[] args = new String[] { "-a", "-b", "foo", "-c", "-d", "bar" };
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args);
+
+    assertEquals("Value for -b", "foo", cmd.getOptionValue("b"));
+    assertEquals("Value for -d", "bar", cmd.getOptionValue("d"));
+}

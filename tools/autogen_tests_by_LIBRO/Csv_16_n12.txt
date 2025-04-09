@@ -1,0 +1,20 @@
+public void testIssue107() {
+    String fiveRows = "1\n2\n3\n4\n5\n";
+    CSVParser parser = new CSVParser(new BufferedReader(new StringReader(fiveRows)), CSVFormat.DEFAULT);
+    List<CSVRecord> records = new ArrayList<>();
+    for (CSVRecord record : parser) {
+        records.add(record);
+        if (records.size() >= 2) {
+            break;
+        }
+    }
+    // CSVParser.iterator() returns a new iterator, but the lexer isn't reset so we can pick up
+    // where we left off.
+    for (CSVRecord record : parser) {
+        records.add(record);
+    }
+    assertEquals("1", records.get(0).get(0));
+    assertEquals("2", records.get(1).get(0));
+    assertEquals("3", records.get(2).get(0));
+    assertEquals("4", records.get(3).get(0));
+    assertEquals("5",

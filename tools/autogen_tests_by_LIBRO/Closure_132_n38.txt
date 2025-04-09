@@ -1,0 +1,7 @@
+public void testIssue() {
+    String code = "if( es[--esi][ es[esi+1] ] === 1) { es[esi] = 0; } else { es[esi] = 1; }";
+    ScriptNode tree = Parser.parse(code, "", 1);
+    CodeBuilder builder = new CodeBuilder(new CompilerEnvirons());
+    builder.append(tree);
+    assertEquals("es[--esi] = 1 === es[esi][es[esi + 1]] ? 0 : 1;", builder.toSource());
+}

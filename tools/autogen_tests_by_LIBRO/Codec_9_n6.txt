@@ -1,0 +1,12 @@
+public void testIssue150() {
+    byte[] bytes = new byte[256];
+    for (int i = 0; i < 256; i++) {
+        bytes[i] = (byte) i;
+    }
+    byte[] base64bytes = Base64.encodeBase64(bytes, false, false, 256);
+    assertEquals(256, base64bytes.length);
+    assertEquals((byte) 'A', base64bytes[0]);
+    assertEquals((byte) 'B', base64bytes[1]);
+    assertEquals((byte) '=', base64bytes[254]);
+    assertEquals((byte) '=', base64bytes[255]);
+}

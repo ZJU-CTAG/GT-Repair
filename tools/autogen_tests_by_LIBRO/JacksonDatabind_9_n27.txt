@@ -1,0 +1,19 @@
+public void testIssue630() throws Exception {
+    Map<Class<?>, String> map = new HashMap<>();
+    map.put(ArrayList.class, "ArrayList");
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addKeyDeserializer(Class.class, new KeyDeserializer() {
+        @Override
+        public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return Class.forName(key);
+        }
+    });
+    mapper.registerModule(module);
+
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+    System.out.println(json);
+    mapper.readValue(json, new TypeReference<Map<Class<?>, String>>() {
+    });
+}

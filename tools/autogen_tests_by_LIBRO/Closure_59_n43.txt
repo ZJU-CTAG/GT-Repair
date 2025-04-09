@@ -1,0 +1,19 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.OFF);
+    CommandLineRunner runner = new CommandLineRunner(new String[] {
+        "--warning_level=VERBOSE", "--jscomp_off=globalThis", "--jscomp_off=nonStandardJsDocs"
+        }, options);
+    compiler.compile(
+        ImmutableList.<SourceFile>of(),
+        ImmutableList.<SourceFile>of(SourceFile.fromCode("test.js", "")),
+        options);
+    CheckLevel level = runner.getErrorManager().getTypedPercentages().get(
+        DiagnosticGroups.NON_STANDARD_JSDOC);
+    assertEquals(null, level);
+    level = runner.getErrorManager().getTypedPercentages().get(
+        DiagnosticGroups.GLOBAL_THIS);
+    assertEquals(CheckLevel.WARNING, level);
+}

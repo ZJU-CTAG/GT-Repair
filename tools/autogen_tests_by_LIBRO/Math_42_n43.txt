@@ -1,0 +1,13 @@
+public void testIssue() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 1, 0 }, 0);
+    Collection<LinearConstraint> constraints = Collections.emptyList();
+    constraints.add(new LinearConstraint(new double[] { 1, 0 }, Relationship.EQ, 1));
+    SimplexSolver solver = new SimplexSolver();
+    try {
+        double[] solution = solver.optimize(f, constraints, GoalType.MINIMIZE, true).getPoint();
+        assertEquals("x", 1, solution[0], 0);
+        assertEquals("y", 0, solution[1], 0);
+    } catch (NoFeasibleSolutionException e) {
+        fail("Unexpected exception: " + e.getMessage());
+    }
+}

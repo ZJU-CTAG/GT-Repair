@@ -1,0 +1,16 @@
+public void testListAttributeSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("ListAttribute", new
+Version(1, 0, 0, null));
+    module.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+
+    ListAttribute value = new ListAttribute("s", Collections.EMPTY_LIST);
+    JsonNode tree = mapper.valueToTree(value);
+
+    ObjectMapper mapper2 = new ObjectMapper();
+    ListAttribute value2 = mapper2.treeToValue(tree, ListAttribute.class);
+
+    assertEquals(value.getItemJsonKey(), value2.getItemJsonKey());
+}

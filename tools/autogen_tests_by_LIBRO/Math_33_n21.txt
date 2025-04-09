@@ -1,0 +1,11 @@
+public void test() {
+    double[][] a = {{1.0, 1.0}, {2.0, 1.0}};
+    double[] b = {1.0, 3.0};
+    double[] c = {1.0, 1.0};
+    SimplexSolver solver = new SimplexSolver();
+    RealPointValuePair solution = solver.optimize(new MaxIter(10),
+        new NonNegativeConstraint(true), new LinearConstraintSet(a, b),
+        GoalType.MINIMIZE, new LinearObjectiveFunction(c, 0));
+    double[] expected = {0.0, 1.0};
+    assertTrue(Arrays.equals(expected, solution.getPoint(), 1.e-8));
+}

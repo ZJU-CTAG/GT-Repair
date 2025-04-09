@@ -1,0 +1,23 @@
+public void testInterfaceMembers() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("foo.js",
+                    "/**\n" +
+                    " * @interface\n" +
+                    " */\n" +
+                    "function I() {};\n" +
+                    "/** @type {string} */\n" +
+                    "I.prototype.foobar;\n" +
+                    "/**\n" +
+                    " * @constructor\n" +
+                    " * @implements {I}\n" +
+                    " */\n" +
+                    "function C() {\n" +
+                    " // No warning generated here.\n" +
+                    " this.foobar = 2;\n" +
+                    "};\n" +
+                    "/** @type {I} */\n" +
+                    "var test = new C();\n" +
+                    "alert(test.foobar);")},
+            new CompilerOptions());
+    assertEquals(0, result.errors.

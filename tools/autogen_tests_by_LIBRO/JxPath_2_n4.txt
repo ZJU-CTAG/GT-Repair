@@ -1,0 +1,8 @@
+public void testExtensionFunction() {
+    JXPathContext context = JXPathContext.newContext(new Bean());
+    context.setLenient(true);
+    context.registerNamespace("bean", "urn:org.apache.commons.jxpath.ext");
+    context.registerFunction("bean:getObservations", Bean.class.getName());
+    List list = context.selectNodes("bean:getObservations()");
+    assertEquals("bean:getObservations()", 2, list.size());
+}

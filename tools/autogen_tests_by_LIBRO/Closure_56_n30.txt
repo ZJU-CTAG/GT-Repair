@@ -1,0 +1,24 @@
+public void testLastLineTruncated() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES,
+            CheckLevel.ERROR);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js",
+            "function alert(msg) {}"));
+
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js", "alert(foo);\n"
+            + "alert(bar);"));
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.init(externs, inputs, options);
+    compiler.parse();
+    compiler.check();
+    assertEquals(1, compiler.getErrors().length);
+    assertEquals(1, compiler.getWarnings

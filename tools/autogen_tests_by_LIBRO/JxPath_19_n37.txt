@@ -1,0 +1,26 @@
+public void testMultiplePrefixes() throws Exception {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"  
+         + "<a:doc xmlns:a=\"ns\">\n"  
+         + "<a:elem />\n"  
+         + "<b:elem xmlns:b=\"ns\" />\n";
+
+    Document doc = XMLUnit.buildControlDocument(xml);
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+
+    Iterator iter = ctx.iteratePointers("//*[local-name()='elem']");
+
+    assertTrue(iter.hasNext());
+
+    Pointer ptr = (Pointer) iter.next();
+
+    assertEquals("elem", ptr.asPath());
+
+    assertTrue(iter.hasNext());
+
+    ptr = (Pointer) iter.next();
+
+    assertEquals("elem", ptr.asPath());
+
+    assertFalse(iter.hasNext());
+}

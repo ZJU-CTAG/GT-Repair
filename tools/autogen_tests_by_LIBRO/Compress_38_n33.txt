@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    try (InputStream is = getClass().getResourceAsStream("/test-issue-108.tar")) {
+        try (TarArchiveInputStream tis = new TarArchiveInputStream(is)) {
+            TarArchiveEntry entry = null;
+            while ((entry = tis.getNextTarEntry()) != null) {
+                assertEquals("Only one entry should be found", "layer.tar", entry.getName());
+                assertEquals("Entry should be marked as a regular file", TarArchiveEntry.REGTYPE, entry.getType());
+                assertEquals("Entry should not be marked as a directory", false, entry.isDirectory());
+                final byte[] contents = new byte[(int) entry.getSize()];
+                int offset = 0;
+                while (offset < contents.length) {
+                    final int read = tis.read(contents, offset, contents.length - offset);
+                    if (read == -1) {
+                        fail("Reached EOF before contents were fully read");
+                    }
+                    offset += read;
+                }
+                assertEquals

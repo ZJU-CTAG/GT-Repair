@@ -1,0 +1,21 @@
+public void testCoverage() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    compiler.setPassConfig(new DefaultPassConfig(options));
+    Result result = compiler.compile(externs, srcs, options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    assertEquals(1, result.typeCheck().getTypedPercent(), 0.05);
+    assertEquals(1, result.typeCheck().getTypedPercent(), 0.05);
+}
+
+private static final SourceFile externs = SourceFile.fromCode("externs",
+    "var Element;");
+private static final SourceFile srcs = SourceFile.fromCode("srcs",
+    "var window = {};\n" +
+    "/** @constructor */\n" +
+    "function Example(element) {\n" +
+    "  /**\n" +
+    "   * @param {string} ns\n" +
+    "  

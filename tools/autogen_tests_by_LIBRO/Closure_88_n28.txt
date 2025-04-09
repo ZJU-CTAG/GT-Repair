@@ -1,0 +1,15 @@
+public void testIssue108() throws IOException {
+    for (int mode : new int[] {CompilationLevel.SIMPLE_OPTIMIZATIONS.getOptions().closurePass}) {
+        CompilerOptions options = new CompilerOptions();
+        options.closurePass = mode;
+        Compiler compiler = new Compiler();
+        compiler.initOptions(options);
+        SourceFile sourceFile = SourceFile.fromCode("test.js", "function closureCompilerTest(someNode) {" +
+                " var nodeId;" +
+                " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);" +
+                "}");
+        Result result = compiler.compile(externs, sourceFile, options);
+        String generatedCode = compiler.toSource();
+        assertTrue("Generated code should compile", !result.success);
+        String expected = "function closureCompilerTest(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0};";
+        assertEquals(expected, generatedCode);

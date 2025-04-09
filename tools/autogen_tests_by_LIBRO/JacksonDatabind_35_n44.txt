@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE)
+          .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
+          .setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE)
+                                          .inclusion(ObjectMapper.DefaultTyping.NON_FINAL));
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+
+    WithId entity = new WithId(12345, "test");
+    String json = mapper.writeValueAsString(entity);
+    assertEquals("{\"WithId\":{\"@id\":12345,\"value\":\"test\"}}", json);
+    
+    WithId entity2 = mapper.readValue(json, WithId.class);
+    assertEquals(entity, entity2);
+}

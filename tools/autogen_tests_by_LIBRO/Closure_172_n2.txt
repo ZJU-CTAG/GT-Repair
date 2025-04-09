@@ -1,0 +1,23 @@
+public void testIssue114() {
+    String code = "/** @param {Object} a */\n" +
+            "function f(a) {\n" +
+            " a.prototype = '__proto';\n" +
+            "}\n" +
+            "/** @param {Object} a */\n" +
+            "function g(a) { \n" +
+            " a.prototype = function(){}; \n" +
+            "}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            externs(getClass()),
+            srcs(code),
+            options(Option.TYPED_SUPPRESS_WARNINGS));
+    assertThat(result.success).isTrue();
+    assertThat(result.warnings).hasSize(1);
+    assertThat(result.warnings.get(0).toString())
+            .contains("assignment to property prototype of Object")
+            .contains("found : function (): undefined")
+            .contains("required: string")
+            .contains("a.prototype = function()");
+}
+``

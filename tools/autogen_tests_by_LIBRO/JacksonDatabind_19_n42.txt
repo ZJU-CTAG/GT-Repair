@@ -1,0 +1,13 @@
+public void testIssue10() {
+    Properties props = new Properties();
+    props.put("a", new Integer(1));
+    props.put("b", "{\"foo\":\"bar\"}");
+    // first serialize it
+    StringWriter sw = new StringWriter();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(sw, props);
+
+    // then read it back
+    Properties props2 = mapper.readValue(sw.toString(), Properties.class);
+    assertEquals(props, props2);
+}

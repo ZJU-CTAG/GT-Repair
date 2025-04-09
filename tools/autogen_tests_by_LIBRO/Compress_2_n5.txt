@@ -1,0 +1,19 @@
+public void testAr() throws Exception {
+    ArArchiveEntry entry;
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream("target/test.ar"));
+    out.putArchiveEntry(new ArArchiveEntry("test1.dat", 123));
+    out.write(new byte[] { 1, 2, 3 });
+    out.closeArchiveEntry();
+
+    out.putArchiveEntry(new ArArchiveEntry("test2.dat", 456));
+    out.write(new byte[] { 2, 3, 4, 5 });
+    out.closeArchiveEntry();
+
+    out.close();
+
+    // read it
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream("target/test.ar"));
+    Assert.assertNotNull(in.getNextEntry());
+    Assert.assertEquals("test1.dat", in.getNextEntry().getName());
+    Assert.assertEquals(123, in.getNextEntry().getSize());
+    Assert.assertArrayEquals(new byte[] { 1, 2, 3 },

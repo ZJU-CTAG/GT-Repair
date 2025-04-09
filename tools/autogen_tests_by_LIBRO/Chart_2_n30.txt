@@ -1,0 +1,17 @@
+public void testIssue959() {
+    XYSeries series = new XYSeries("Series");
+    series.add(1.0, 1.0);
+    series.add(2.0, 2.0);
+    series.add(3.0, 3.0);
+    series.add(4.0, 4.0);
+    series.add(5.0, 5.0);
+    XYSeriesCollection dataset = new XYSeriesCollection(series);
+
+    Range r = DatasetUtilities.iterateRangeBounds(dataset);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(5.0, r.getUpperBound(), EPSILON);
+
+    r = DatasetUtilities.iterateDomainBounds(dataset);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(5.0, r.getUpperBound(), EPSILON);
+}

@@ -1,0 +1,15 @@
+public void testCoerceFail() throws Exception
+{
+    /* First, with streaming API, as it is bit simpler to reproduce */
+
+    ObjectMapper mapper = _streamMapper();
+    try {
+        mapper.readValue("[ \"foobar\", true ]", int[].class);
+    } catch (JsonParseException e) {
+        fail("Should NOT get JsonParseException, but instead get InputCoercionException");
+    } catch (InputCoercionException e) {
+        assertEquals("Failed to coerce value of type `java.lang.String` to int[] element: foobar",
+                e.getMessage());
+    }
+
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    MultivariateMultiStartOptimizer optimizer = new MultivariateMultiStartOptimizer(new CMAESOptimizer(1000,0,true,0,0,new MersenneTwister(),false,new SimpleValueChecker(-1,1)));
+    double[] start = new double[]{0,0};
+    double[] lower = new double[]{-1,-1};
+    double[] upper = new double[]{1,1};
+    double[] result = optimizer.optimize(2, new ObjectiveFunction(new MultivariateDifferentiableFunction() {
+        public double value(double[] x) {
+            return x[0]*x[0]+x[1]*x[1];
+        }
+
+        public double[] gradient(double[] x) {
+            return new double[]{2*x[0],2*x[1]};
+        }
+
+        public double[][] hessian(double[] x) {
+            return new double[][]{{2,0},{0,2}};
+        }
+    }),GoalType.MINIMIZE,start,lower,

@@ -1,0 +1,11 @@
+public void testArchiveInputStream() throws Exception {
+    File f = getFile("/test-archive.zip");
+    try (ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", new FileInputStream(f))) {
+        ArchiveEntry entry = null;
+        while ((entry = in.getNextEntry()) != null) {
+            assertTrue(entry.getName(), entry.isDirectory() || entry.getSize() > 0);
+            assertTrue(entry.getName(), entry.getName().startsWith("test-archive/"));
+            assertFalse(entry.getName(), entry.getName().contains("\\"));
+        }
+    }
+}

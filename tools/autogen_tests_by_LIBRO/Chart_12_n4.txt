@@ -1,0 +1,20 @@
+public void testDatasetListener() {
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.addChangeListener(new MyListener());
+    
+    MultiplePiePlot plot = new MultiplePiePlot(dataset);
+    
+    dataset.add(new Comparable() {}, new Boolean(false));
+    
+    assertEquals(1, dataset.getItemCount());
+    assertEquals(1, MyListener.eventCount);
+}
+
+public static class MyListener implements DatasetChangeListener {
+    static int eventCount = 0;
+
+    public void datasetChanged(DatasetChangeEvent event) {
+        eventCount++;
+    }
+}
+

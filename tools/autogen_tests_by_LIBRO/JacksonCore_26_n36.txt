@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    final JsonFactory factory = new JsonFactory();
+    final JsonParser parser = factory.createNonBlockingByteArrayParser();
+    final ByteArrayFeeder feeder = (ByteArrayFeeder) parser.getNonBlockingInputFeeder();
+    final byte[] input = "[[[".getBytes(StandardCharsets.UTF_8);
+    feeder.feedInput(input, 2, 3);
+    assertEquals(JsonToken.START_ARRAY, parser.nextToken());
+    assertEquals(1, parser.getCurrentLocation().getByteOffset());
+    assertEquals(1, parser.getTokenLocation().getByteOffset());
+}

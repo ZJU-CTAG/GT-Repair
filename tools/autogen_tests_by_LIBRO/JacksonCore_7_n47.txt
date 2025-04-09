@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator gen = mapper.getJsonFactory().createJsonGenerator(out, JsonEncoding.UTF8);
+    gen.writeStartObject();
+    gen.writeFieldName("a");
+    gen.writeString("b");
+    gen.writeEndObject();
+    gen.close();
+    String json = out.toString();
+    // should be: '{"a": "b"}'
+    assertEquals("{\"a\": \"b\"}", json);
+}

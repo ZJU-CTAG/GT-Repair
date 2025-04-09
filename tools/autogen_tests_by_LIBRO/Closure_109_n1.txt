@@ -1,0 +1,13 @@
+public void testIssue124() {
+    JsDocInfo info = new JsDocInfoParser().parse("/** @type {function(new:?)} */ var foo = function() {};");
+
+    JsDocTypeExpression type = info.getType("foo");
+    assertEquals("Function", type.getRoot().getType());
+    assertEquals("?", type.getTypeArgument(0).getRoot().getType());
+
+    info = new JsDocInfoParser().parse("/** @type {function(new:*)} */ var bar = function() {};");
+
+    type = info.getType("bar");
+    assertEquals("Function", type.getRoot().getType());
+    assertEquals("*", type.getTypeArgument(0).getRoot().getType());
+}

@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+  CompilerOptions options = new CompilerOptions();
+  options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  options.setPrettyPrint(true);
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+    SourceFile.fromCode("externs.js", ""),
+    ImmutableList.of(SourceFile.fromCode("test.js", " /** @typedef {{asd: string}} */ var MyType;\n /** @param {MyType=} opt_param */ function foo(opt_param) {}\n /** @param {MyType} param */ function bar(param) {}\n")),
+    options);
+  System.out.println(result.externExport);
+}

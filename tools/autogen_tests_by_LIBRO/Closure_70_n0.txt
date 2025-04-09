@@ -1,0 +1,17 @@
+public void testIssue24() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setAllowUnrecognizedDependencies(true);
+    options.setClosurePass(true);
+    options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(CheckLevel.ERROR);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("v.js", "var x = function() {}; "),
+            SourceFile.fromCode("v2.js", "var x2 = function() {}; "),
+            options);
+    assertTrue(result.success);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

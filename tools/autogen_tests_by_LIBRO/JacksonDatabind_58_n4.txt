@@ -1,0 +1,19 @@
+public void testIgnoreProperty() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"cause\":null}";
+    ExceptionBean bean = mapper.readValue(json, ExceptionBean.class);
+    assertEquals(null, bean.getCause());
+}
+
+public class ExceptionBean extends RuntimeException
+{
+    @JsonIgnoreProperties("cause")
+    public static class MyException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        
+        public MyException(String message) {
+            super(message);
+        }
+    }
+}

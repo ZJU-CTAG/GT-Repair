@@ -1,0 +1,8 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    String output = mapper.writeValueAsString(new ReallyAlwaysContainer());
+    assertEquals("{\"a\":1,\"b\":2}", output);
+}

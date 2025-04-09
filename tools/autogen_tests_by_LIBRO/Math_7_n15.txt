@@ -1,0 +1,22 @@
+public void testBug() throws MathException, InterruptedException {
+    double epsilon = 1.0e-6;
+    double period = 10;
+    double y0 = 1;
+    double yDot0 = 0;
+
+    double[] y0Vector = new double[] { y0, yDot0 };
+    double[] y0VectorDot = new double[] { yDot0, -y0 };
+
+    SecondOrderODE ode = new SecondOrderODE() {
+      private static final long serialVersionUID = 1L;
+
+      public void computeSecondDerivatives(double t, double[] y, double[] yDot) {
+        yDot[0] = y[1];
+        yDot[1] = -y[0];
+      }
+    };
+
+    FirstOrderConverter converter = new FirstOrderConverter(ode, y0Vector);
+    FirstOrderDifferentialEquations odeConverted = converter;
+
+    RungeKuttaFehlbergIntegrator integrator = new RungeKuttaFehlbergIntegrator(period / 20, period, epsilon, epsilon);

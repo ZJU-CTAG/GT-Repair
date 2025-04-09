@@ -1,0 +1,18 @@
+public void testRedlineRpm() throws IOException {
+    CpioArchiveEntry entry = new CpioArchiveEntry();
+    entry.setMode(0);
+    entry.setMagic(CpioConstants.MAGIC_NEW);
+    entry.setName("TRAILER!!!");
+    
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    CpioArchiveOutputStream cpio = new CpioArchiveOutputStream(baos);
+    cpio.putArchiveEntry(entry);
+    cpio.closeArchiveEntry();
+    cpio.close();
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    cpio = new CpioArchiveInputStream(bais);
+    entry = cpio.getNextCPIOEntry();
+    assertEquals(0, entry.getMode());
+    cpio.close();
+}

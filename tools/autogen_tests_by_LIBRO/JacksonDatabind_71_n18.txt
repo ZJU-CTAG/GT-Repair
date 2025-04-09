@@ -1,0 +1,9 @@
+public void testIssueWithCharSequenceKeys() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final Map<CharSequence, Integer> value = new HashMap<CharSequence, Integer>();
+    value.put("foo", 42);
+    final String json = mapper.writeValueAsString(value);
+    final Map<CharSequence, Integer> readValue = mapper.readValue(json, new TypeReference<Map<CharSequence, Integer>>() {
+    });
+    assertEquals(value, readValue);
+}

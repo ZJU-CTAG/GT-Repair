@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setPreserveAnonymousFunctionNames(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("in", "function test(a) {"
+                                               + "a = 'value';"
+                                               + "}"),
+                      SourceFile.fromCode("in", "function test(b) {"
+                                               + "b = 'value';"
+                                               + "}"),
+                      options);
+    String result = compiler.toSource();
+    assertTrue(result.contains("function test(a)"));
+    assertTrue(result.contains("function test(b)"));
+}

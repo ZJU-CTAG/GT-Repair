@@ -1,0 +1,16 @@
+public void testMultivariateVectorOptimizerWithLargeNumberOfWeights() {
+    MultivariateVectorOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
+    int nWeights = 41200;
+    optimizer.optimize(new MaxEval(1000),
+                       new ObjectiveFunction(new MultivariateFunction() {
+                           public double value(double[] point) {
+                               double y = 0;
+                               for (int i = 0; i < point.length; i++) {
+                                   y += point[i] * point[i];
+                               }
+                               return y;
+                           }
+                       }), GoalType.MINIMIZE,
+                       new InitialGuess(new double[nWeights]),
+                       new Weight(new double[nWeights]));
+}

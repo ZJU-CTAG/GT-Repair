@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    List<SourceFile> externs = CommandLineRunner.getDefaultExterns();
+    externs.add(SourceFile.fromCode("externs", "var window = {};"));
+    List<SourceFile> inputs = Lists.newArrayList(SourceFile.fromCode("input", "$.fn.multicheck = function(options) {\n" +
+            "  var defaults = {\n" +
+            "    all_checked_name: null,\n" +
+            "    all_checked_value: 1,\n" +
+            "    all_checked_text: \"All\"\n" +
+            "  };\n" +
+            "  var config = $.extend({}, defaults, options);\n" +
+            "  var $all_checked = null;\n" +
+            "  return this.each(function() {\n" +
+            "    var $input

@@ -1,0 +1,8 @@
+public void testIsFoldableArray1() {
+        Node node = Node.newString("foo");
+        Node array = IR.arraylit(IR.string("foo"), IR.string("bar"));
+        Node arrayAccess = new Node(Token.GETELEM, array, node);
+
+        assertTrue(PeepholeFoldConstants.tryFoldArrayAccess(arrayAccess));
+        assertEquals(arrayAccess.getFirstChild(), NodeUtil.getArgumentForCallOrNew(arrayAccess));
+    }

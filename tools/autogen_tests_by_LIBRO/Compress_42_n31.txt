@@ -1,0 +1,13 @@
+public void testUnixSymlink() throws IOException {
+    ZipFile zipFile = new ZipFile(getFile("invalid-entry.jar"));
+    {
+        ZipArchiveEntry entry = zipFile.getEntry("META-INF/maven/");
+        assertEquals(65535, entry.getUnixMode());
+        assertFalse(entry.isUnixSymlink());
+    }
+    {
+        ZipArchiveEntry entry = zipFile.getEntry("META-INF/");
+        assertEquals(16877, entry.getUnixMode());
+        assertFalse(entry.isUnixSymlink());
+    }
+}

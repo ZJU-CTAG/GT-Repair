@@ -1,0 +1,23 @@
+public void testIssue108() throws IOException {
+    String html = "<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <div xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+            "   <span>One</span>\n" +
+            "   <span>Two</span>\n" +
+            "  </div>\n" +
+            " </body>\n" +
+            "</html>";
+
+    Document doc = Jsoup.parse(html);
+    Element body = doc.selectFirst("body");
+    Elements spans = body.select("span");
+
+    assertEquals(2, spans.size());
+
+    Attr ns = spans.first().attributes().asList().get(0);
+    assertEquals("xmlns", ns.getKey());
+    assertEquals("http://www.w3.org/1999/xhtml", ns.getValue());
+
+    ns = spans.last().attributes().asList().get(0);
+    assertEqu

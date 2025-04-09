@@ -1,0 +1,25 @@
+public void testIssue110() {
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setMixInAnnotations(Object.class, ObjectMixIn.class);
+        mapper.setMixInAnnotations(Foo.class, FooMixIn.class);
+        mapper.setMixInAnnotations(Bar.class, BarMixIn.class);
+
+        Foo foo = new Foo(new Bar(42));
+        String json = mapper.writeValueAsString(foo);
+        System.out.println(json);
+        Foo foo2 = mapper.readValue(json, Foo.class);
+        assertNotNull(foo2);
+        assertNotNull(foo2.var);
+        assertEquals(42, foo2.var.val);
+    } catch (Exception e) {
+        fail("testIssue110 failed: " + e.getMessage());
+    }
+}
+
+
+@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "@class")
+abstract class ObjectMixIn {
+}
+
+@JsonInclude(Include.N

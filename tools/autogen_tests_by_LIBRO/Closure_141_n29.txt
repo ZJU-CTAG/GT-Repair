@@ -1,0 +1,11 @@
+public void testIssue109() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.disableThreads();
+    compiler.setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(
+            "goog.now()",
+            "var f = function() { return this.x; };");
+    assertTrue(result.success);
+    assertEquals("var f=function(){return this.x};f.call(this)", compiler.toSource());
+}

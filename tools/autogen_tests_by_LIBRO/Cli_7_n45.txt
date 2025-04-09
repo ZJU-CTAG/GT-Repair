@@ -1,0 +1,20 @@
+public void testRequiredOptions() {
+    Option help = new Option("h", "help", "Display Help");
+    Option conf = new Option("c", "config", "Config file", "config");
+    Option log = new Option("l", "log", "Log file", "log");
+
+    Group group = new GroupBuilder().withName("test").withOption(help).withOption(conf).withOption(log).create();
+
+    List<String> commands = new ArrayList<String>();
+    commands.add("-h");
+    commands.add("-l");
+    commands.add("-c");
+    commands.add("-z");
+
+    CommandLine line = new Parser().parse(group, commands);
+    assertTrue(line.hasOption(help));
+    assertTrue(line.hasOption(log));
+    assertTrue(line.hasOption(conf));
+    assertFalse(line.hasOption("z"));
+    assertEquals(Arrays.asList(new String[] { "-h", "-l", "-c", "-z" }), line.getUnrecognizedOptions());
+}

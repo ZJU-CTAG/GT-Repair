@@ -1,0 +1,31 @@
+public void testIssue108() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    final JsonNode node = new ObjectMapper().valueToTree(new Issue108());
+    final Issue108 issue = mapper.treeToValue(node, Issue108.class);
+    assertEquals(1, issue.getAnInt());
+    assertEquals(1, issue.getAnInteger());
+}
+
+@XmlAccessorType(XmlAccessType.FIELD)
+static class Issue108 {
+    private int anInt;
+    @XmlElement(type=Integer.class)
+    private int anInteger;
+
+    public int getAnInt() {
+        return this.anInt;
+    }
+
+    public void setAnInt(final int anInt) {
+        this.anInt = anInt;
+    }
+
+    public int getAnInteger() {
+        return this.anInteger;
+    }
+
+    public void setAnInteger(final int anInteger) {
+        this.anInteger = anInteger;
+    }
+}

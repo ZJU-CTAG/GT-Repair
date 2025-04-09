@@ -1,0 +1,16 @@
+public void testIssue1() throws IOException {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 262145; i++) {
+        sb.append('a');
+    }
+    String longKey = sb.toString();
+    String jsonString = String.format("{\"%s\":\"value\"}", longKey);
+    JsonFactory factory = new JsonFactory();
+    JsonParser parser = factory.createParser(new StringReader(jsonString));
+    assertTrue(parser.nextToken() == JsonToken.START_OBJECT);
+    parser.nextToken();
+    assertTrue(parser.getText().equals(longKey));
+    assertTrue(parser.nextToken() == JsonToken.VALUE_STRING);
+    assertTrue(parser.getText().equals("value"));
+    assertTrue(parser.nextToken() == JsonToken.END_OBJECT);
+}

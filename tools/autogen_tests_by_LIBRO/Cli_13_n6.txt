@@ -1,0 +1,10 @@
+public void testIssue() {
+    ArgumentParser parser = new ArgumentParser("test");
+    ArgumentImpl arg = new ArgumentImpl("arg", "test");
+    arg.setMultiValued(true);
+    arg.addValue("default");
+    parser.addArgument(arg);
+    CommandLineImpl cl = (CommandLineImpl) parser.parse("override");
+    assertEquals("override", cl.getArgument("arg").getValue());
+    assertEquals("default", cl.getArgument("arg").getDefaultValue());
+}

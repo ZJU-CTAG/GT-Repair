@@ -1,0 +1,22 @@
+public void testPosixParserIssue() throws ParseException {
+        String[] args = new String[] { "-target", "foobar.com" };
+        Options cmdLineOpts = new Options();
+        Option generateTarget = new Option("t", "target", true,
+                "Generate files for the specified target machine");
+        cmdLineOpts.addOption(generateTarget);
+        CommandLineParser parser = new PosixParser();
+        CommandLine parsedLine = null;
+        try {
+            parsedLine = parser.parse(cmdLineOpts, args);
+        } catch (ParseException pe) {
+            System.out.println("Invalid command: " + pe.getMessage()
+                    + "\n");
+            HelpFormatter hf = new HelpFormatter();
+            hf.printHelp("USAGE", cmdLineOpts);
+            System.exit(-1);
+        }
+        if (parsedLine.hasOption("t")) {
+            System.out.println("processing selected target: "
+                    + parsedLine.getOptionValue("t"));
+        }
+    }

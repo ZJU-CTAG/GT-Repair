@@ -1,0 +1,20 @@
+public void testDefaultOptions() throws Exception {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.hasArg().create("a"));
+    opts.addOption("b", "b", false, "toggle -b");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption("d", "d", false, "toggle -d");
+    opts.addOption("e", "e", false, "toggle -e");
+
+    Properties properties = new Properties();
+    properties.setProperty("a", "value a");
+    properties.setProperty("b", "false");
+    properties.setProperty("c", "no");
+    properties.setProperty("d", "off");
+    properties.setProperty("e", "0");
+
+    Parser parser = new GnuParser();
+    CommandLine cmd = parser.parse(opts, null, properties);
+    assertEquals("value a", cmd.getOptionValue("a"));
+    assertTrue(!cmd.hasOption("b"));
+    assertTrue(!cmd.hasOption("c

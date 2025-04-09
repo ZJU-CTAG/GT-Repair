@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception {
+    String source = "function reset() {\n" +
+                    "    uid = Math.random();\n" +
+                    "}\n" +
+                    "function doStuff() {\n" +
+                    "    reset();\n" +
+                    "    var _uid = uid;\n" +
+                    "    if (uid < 0.5) {\n" +
+                    "        doStuff();\n" +
+                    "    }\n" +
+                    "    if (_uid !== uid) {\n" +
+                    "        throw 'reset() was called';\n" +
+                    "    }\n" +
+                    "}\n" +
+                    "doStuff();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(JSSourceFile.fromCode("issue108.js", source),
+                                     JSSourceFile.fromCode("extern.js", ""));
+    assertTrue(result.success);
+}

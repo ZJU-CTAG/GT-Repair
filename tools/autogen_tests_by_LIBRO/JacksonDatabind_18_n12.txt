@@ -1,0 +1,20 @@
+public void testErrorHandling() throws Exception
+{
+    final String JSON = aposToQuotes("[ { 'x':1, 'y':2, 'z':3 }, { 'x':2, 'y':3 } ]");
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Map<String,Object>> it = mapper.reader(Map.class).readValues(JSON);
+    Map<String,Object> value = it.nextValue();
+    assertNotNull(value);
+    try {
+        value = it.nextValue();
+        fail("Should not have passed");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "Missing required creator property");
+    }
+    // should be able to continue parsing
+    value = it.nextValue();
+    assertNotNull(value);
+    assertEquals(2, value.size());
+    assertEquals(Integer.valueOf(2), value.get("x"));
+    assertEquals(Integer.valueOf(3), value.get("y"));
+}

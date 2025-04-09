@@ -1,0 +1,11 @@
+public void testIssue42() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    mapper.enableDefaultTyping();
+
+    final CommandAPDU msg = new CommandAPDU(new byte[]{1, 2, 3, 4});
+    final String json = mapper.writeValueAsString(msg);
+    final CommandAPDU msg2 = mapper.readValue(json, CommandAPDU.class);
+    assertArrayEquals(msg.getBytes(), msg2.getBytes());
+}
+

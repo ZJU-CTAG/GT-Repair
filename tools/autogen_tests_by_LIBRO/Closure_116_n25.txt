@@ -1,0 +1,16 @@
+public void testIssue184() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    String[] externs = {"window.js"};
+    String[] inputs = {"window['foo'] = function (obj, modifiesProp) {" +
+            "return (function (saved) {" +
+            "return modifiesProp(obj) + saved;" +
+            "})(obj['prop']);" +
+            "};"};
+    Result result = compiler.compile(
+            CommandLineRunner.getDefaultExterns(), inputs,
+            new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};",
+            compiler.toSource());
+}

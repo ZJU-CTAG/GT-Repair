@@ -1,0 +1,12 @@
+public void testIssue112() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.getSerializerProvider().setNullValueSerializer(new NullSerializer());
+    assertEquals("null", objectMapper.writeValueAsString(new Dummy()));
+}
+
+static class Dummy {
+    @JsonValue
+    public String value() {
+        return "foo";
+    }
+}

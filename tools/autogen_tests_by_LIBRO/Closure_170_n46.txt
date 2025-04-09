@@ -1,0 +1,19 @@
+public void testIssue() {
+    String code = "function Test(n) {\n" +
+            " var i = 0;\n" +
+            " return typeof n !== 'undefined' ? (i = n.length) : (n = 'foo'), i\n" +
+            "}\n" +
+            "var dummy = '6chars';\n" +
+            "console && console.log( Test(dummy) );";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setOptimizationLevel(9);
+    env.setLanguageVersion(Context.VERSION_1_8);
+    env.setGeneratingSource(true);
+    env.setRecordingComments(true);
+    env.setAllowSharpComments(true);
+    env.setIdeMode(true);
+    env.setStrictMode(false);
+    env.setReservedKeywordAsIdentifier(true);
+    env.setWarnTrailingComma(false);
+    env.setErrorReporter(new DefaultErrorReporter(new PrintWriter(System.out)));
+    env

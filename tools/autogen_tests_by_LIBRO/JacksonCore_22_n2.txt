@@ -1,0 +1,9 @@
+public void test() {
+    String json = "{\"object\": {\"a\": \"b\"}}";
+    String filterJson = "{\"object\": {\"$value\": {\"$count\": \"$count\"}}}";
+    JsonNode jn = MAPPER.readTree(json);
+    JsonNode fn = MAPPER.readTree(filterJson);
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(MAPPER.getGeneratorFactory().createGenerator(System.out),
+            JsonPointer.compile(fn.fieldNames()), fn, true);
+    MAPPER.writer(delegate).writeValue(System.out, jn);
+}

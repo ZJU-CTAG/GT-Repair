@@ -1,0 +1,26 @@
+public void testSkip() throws IOException {
+    CipherInputStream cis = null;
+    TarInputStream tis = null;
+    try {
+        // create a fake stream that stops at 512 bytes
+        InputStream is = new InputStream() {
+            int count = 0;
+            @Override
+            public int read() throws IOException {
+                if (count++ == 512) {
+                    return -1;
+                }
+                return count;
+            }
+        };
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(new byte[16], "AES"));
+        cis = new CipherInputStream(is, cipher);
+        tis = new TarInputStream(cis);
+        // this will throw an error because TarInputStream.skip() uses IOUtils.skip()
+        tis.skip(2048L);
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+    } catch

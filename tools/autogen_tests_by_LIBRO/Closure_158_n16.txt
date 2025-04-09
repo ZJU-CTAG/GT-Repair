@@ -1,0 +1,12 @@
+public void testCompilationLevel() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            compiler.getDefaultExterns(),
+            ImmutableList.of(SourceFile.fromCode("test.js", "function f() {}")),
+            options);
+    assertTrue(result.success);
+}

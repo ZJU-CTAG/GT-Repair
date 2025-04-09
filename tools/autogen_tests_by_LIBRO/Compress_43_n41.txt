@@ -1,0 +1,19 @@
+public void testZipArchiveOutputStream() throws Exception {
+    File file = new File("target/zip.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+    ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+    zos.putArchiveEntry(ze);
+    zos.write("hello world".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+    byte[] content = IOUtils.toByteArray(new FileInputStream(file));
+    int i = 0;
+    assertEquals(0x50, content[i++]);
+    assertEquals(0x4b, content[i++]);
+    assertEquals(0x03, content[i++]);
+    assertEquals(0x04, content[i++]);
+    assertEquals(0x14, content[i++]); // Version Needed to Extract
+    // data descriptor
+    assertEquals(0x50, content[i++]);
+    assertEquals(0x4b, content[i++]);
+    assertEquals(

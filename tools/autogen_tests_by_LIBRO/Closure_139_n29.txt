@@ -1,0 +1,22 @@
+public void testIssue() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("function assert(b) {if (!b) throw 'error'}\n");
+    sb.append("assert(f() === 1)\n");
+    sb.append("var f = function() {return 2;}\n");
+    sb.append("assert(f() === 2)\n");
+    sb.append("function f() {return 1;}\n");
+    try {
+        CompilerOptions options = new CompilerOptions();
+        options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+        options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+        sb = new StringBuilder();
+        Compiler compiler = new Compiler(new PrintStream(new NullOutputStream()));
+        compiler.compile(
+                new JSSourceFile[] {
+                        JSSourceFile.fromCode("test", sb.toString())
+                },
+                options);
+    } catch (Exception e) {
+        fail(e.toString());
+    }
+}

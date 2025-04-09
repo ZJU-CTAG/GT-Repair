@@ -1,0 +1,12 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPreserveTypeAnnotations(false);
+    options.setPreserveDetailedSourceInfo(false);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("js", "var goog={},ns={};\ngoog.scope;\nns.sub={};\n/** @constructor */\nns.sub.C=function(){};\ngoog.scope(function(){var sub=ns.sub;/** @type {sub.C} */var x=null;});"),
+            SourceFile.fromCode("js", ""), options);
+    assertTrue(result.success);
+}

@@ -1,0 +1,16 @@
+public void testIssueWithPolymorphicTypeIds() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    final String attrName = "type";
+
+    // Ok:
+    SimpleType simple = mapper.readValue("{\""+attrName+"\":\"com.fasterxml.jackson.databind.jsontype.impl.TypeNameIdResolverTest$SimpleType\",\"value\":\"foo\"}", SimpleType.class);
+    assertNotNull(simple);
+    assertEquals("foo", simple.value);
+
+    // Ok:
+    simple = mapper.readValue("{\""+attrName+"\":\"com.fasterxml.jackson.databind.jsontype.impl.TypeNameIdResolverTest$SimpleType\",\"value\":\"foo\"}", SimpleType.class);
+    assertNotNull(simple);
+    assertEqu

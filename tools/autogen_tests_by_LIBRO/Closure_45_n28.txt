@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String code = "function f() {\n" +
+            " var a = [], b;\n" +
+            " a.push(b = []);\n" +
+            " b[0] = 1;\n" +
+            " return a;\n" +
+            " }";
+
+    String result = new Compiler().compile(SourceFile.fromCode("testIssue108", code))
+            .getResult()
+            .replaceAll("\\s+", "");
+    assertEquals("functionf(){var a=[];a.push([]);return a};", result);
+}

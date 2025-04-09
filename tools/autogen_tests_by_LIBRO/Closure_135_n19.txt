@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> externs = Lists.newArrayList(SourceFile.fromCode("externs.js", ""));
+    List<SourceFile> input = Lists.<SourceFile>newArrayList(
+        SourceFile.fromCode("input.js",
+            "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function SuperClass () {}\n" +
+
+            "SuperClass.prototype.CustomMethod = function() {};\n" +
+
+            "/**\n" +
+            " * @constructor\n" +
+            " * @extends {SuperClass}\n" +
+            " */\n" +
+            "function SubClass () {}\n" +
+            "SubClass.prototype = new SuperClass();\n" +
+
+            "/**\n" +
+            " * @override\n" +
+            " */\n"

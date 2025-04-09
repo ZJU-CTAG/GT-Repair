@@ -1,0 +1,11 @@
+public void testNullString() throws IOException {
+    final StringWriter stringWriter = new StringWriter();
+    final CsvFormat format = new CsvFormat();
+    format.setNullString("\\N");
+    final CsvPrinter printer = new CsvPrinter(format, stringWriter);
+    printer.print("a", null);
+    printer.endRecord();
+    printer.flush();
+    printer.close();
+    assertEquals("a,\\N\n", stringWriter.toString());
+}

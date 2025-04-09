@@ -1,0 +1,9 @@
+public void testZipArchiveInputStream() throws Exception {
+    File testFile = getFile("test.zip");
+    try (ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(testFile))) {
+        ZipArchiveEntry zae = zais.getNextZipEntry();
+        assertEquals("test.xml", zae.getName());
+        assertEquals(12, zae.getSize());
+        assertEquals(ArchiveEntry.SIZE_UNKNOWN, zae.getCompressedSize());
+    }
+}

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    EventIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addEventHandler(new EventHandler() {
+        Simulation sim = new Simulation(1, 1);
+        DataRecorder recorder = sim.getDataRecorder();
+        public void init(double t0, double[] y0, double t) {
+        }
+        public double g(double t, double[] y) {
+            double value = sim.getTime() - t;
+            return value;
+        }
+        public Action eventOccurred(double t, double[] y, boolean increasing) {
+            System.out.println("event detected at t = " + t);
+            return Action.CONTINUE;
+        }
+        public void resetState(double t, double[] y) {
+        }
+    }, 1.0e-12, 1.0e-12, 1000);
+    integrator.integrate(new ODE(), 0.0, new double[1], 150.0, new

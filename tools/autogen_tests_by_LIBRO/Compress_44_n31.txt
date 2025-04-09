@@ -1,0 +1,10 @@
+public void testReadByteArrayWithNullChecksum() throws IOException {
+    final byte[] bytes = "test".getBytes();
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ChecksumCalculatingInputStream checksumInputStream = new ChecksumCalculatingInputStream(new ByteArrayInputStream(bytes), null);
+    final byte[] out = new byte[bytes.length];
+
+    assertEquals(0, checksumInputStream.getValue());
+    checksumInputStream.read(out);
+    assertEquals(0, checksumInputStream.getValue());
+}

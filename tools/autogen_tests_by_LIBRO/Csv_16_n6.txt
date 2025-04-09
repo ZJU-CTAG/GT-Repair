@@ -1,0 +1,23 @@
+public void testIssue107() {
+    String fiveRows = "1\n2\n3\n4\n5\n";
+    CSVParser parser = new CSVParser(new BufferedReader(new StringReader(fiveRows)), CSVFormat.DEFAULT);
+    int recordNumber = 0;
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        assertEquals(recordNumber, Integer.parseInt(record.get(0)));
+        if (recordNumber >= 2) {
+            break;
+        }
+    }
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        assertEquals(recordNumber, Integer.parseInt(record.get(0)));
+    }
+    parser = new CSVParser(new BufferedReader(new StringReader(fiveRows)), CSVFormat.DEFAULT);
+    recordNumber = 0;
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        assertEquals(recordNumber, Integer.parseInt(record.get(0)));
+        if (recordNumber >= 2) {
+            break;
+       

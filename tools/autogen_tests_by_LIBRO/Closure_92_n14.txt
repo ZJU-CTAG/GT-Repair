@@ -1,0 +1,18 @@
+public void testIssue() {
+    NamespaceCollectionProvider a = new NamespaceCollectionProvider();
+    a.addNamespace("apps", false);
+    a.addNamespace("apps.foo.bar", false);
+    a.addNamespace("apps.foo", false);
+    String aBase = a.getBase();
+    NamespaceCollectionProvider b = new NamespaceCollectionProvider();
+    b.addNamespace("apps.foo.bar", false);
+    b.addNamespace("apps.foo.bar.B", true);
+    String bBase = b.getBase();
+    NamespaceCollectionProvider c = new NamespaceCollectionProvider();
+    c.addNamespace("apps.foo.bar", false);
+    c.addNamespace("apps.foo.bar.C", true);
+    String cBase = c.getBase();
+    String combined = aBase + bBase + cBase;
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(combined), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if

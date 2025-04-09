@@ -1,0 +1,19 @@
+public void testGroupConstraints() throws Exception {
+    PosixParser parser = new PosixParser();
+    Options options = new Options();
+    OptionGroup groupA = new OptionGroup();
+    groupA.addOption(new Option("a", "option a"));
+    groupA.addOption(new Option("b", "option b"));
+    groupA.setRequired(true);
+    options.addOptionGroup(groupA);
+    OptionGroup groupB = new OptionGroup();
+    groupB.addOption(new Option("x", "option x"));
+    groupB.addOption(new Option("y", "option y"));
+    groupB.setRequired(true);
+    groupB.setMaximum(2);
+    options.addOptionGroup(groupB);
+    CommandLine cl = parser.parse(options, new String[]{ "-a", "-y" });
+    assertTrue("Option x not present", cl.hasOption("x"));
+    assertTrue("Option y not present", cl.hasOption("y"));
+    assertTrue("Option a not present", cl.hasOption("a"));
+    assertTrue

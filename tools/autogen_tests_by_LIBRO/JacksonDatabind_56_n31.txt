@@ -1,0 +1,12 @@
+public void testLocale() throws Exception {
+    ObjectMapper mapper = objectMapper();
+    String value = mapper.writeValueAsString(Locale.ENGLISH);
+    assertEquals(value, "\"en\"");
+    Locale locale = mapper.readValue(mapper.writeValueAsBytes(Locale.ENGLISH), Locale.class);
+    assertEquals(locale, Locale.ENGLISH);
+
+    value = mapper.writeValueAsString(Locale.forLanguageTag("en-GB"));
+    assertEquals(value, "\"en-GB\"");
+    locale = mapper.readValue(mapper.writeValueAsBytes(Locale.forLanguageTag("en-GB")), Locale.class);
+    assertEquals(locale, Locale.forLanguageTag("en-GB"));
+}

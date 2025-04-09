@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ArrayNode node = mapper.createArrayNode();
+    node.add(mapper.createObjectNode());
+    node.add(mapper.createObjectNode());
+    node.add(mapper.createObjectNode());
+    MappingIterator<ObjectNode> it = mapper.readerFor(ObjectNode.class).readValues(node);
+    assertTrue(it.hasNext());
+    assertNotNull(it.next());
+    assertTrue(it.hasNext());
+    assertNotNull(it.next());
+    assertTrue(it.hasNext());
+    assertNotNull(it.next());
+    assertFalse(it.hasNext());
+}

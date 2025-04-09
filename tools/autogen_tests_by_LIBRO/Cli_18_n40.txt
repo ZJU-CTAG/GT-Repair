@@ -1,0 +1,11 @@
+public void testIssue110() {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine commandLine = parser.parse(options, new String[] {"-z", "-a", "foo"}, true);
+        assertEquals("foo", commandLine.getArgs()[0]);
+    } catch (ParseException e) {
+        fail("unexpected exception: " + e.getMessage());
+    }
+}

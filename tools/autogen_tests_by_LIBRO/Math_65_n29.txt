@@ -1,0 +1,21 @@
+public void testSigma() {
+        double[][] a = new double[2][4];
+        for (int i = 0; i<2; i++) {
+            for (int j=0; j<4; j++) {
+                a[i][j] = i;
+            }
+        }
+        double[] b = new double[2];
+        b[0] = 1.0;
+        b[1] = 1.0;
+        DecompositionSolver solver = new QRDecomposition(a).getSolver();
+        double[] coeffs = solver.solve(b);
+        double[] residuals = solver.getResiduals();
+        double[] weights = new double[2];
+        weights[0] = 1.0;
+        weights[1] = 10.0;
+        double sigma = 0.25;
+        double[] residualsWithSigma = new double[2];
+        residualsWithSigma[0] = residuals[0]/sigma;
+        residualsWithSigma[1] = residuals[1]/sigma;
+       

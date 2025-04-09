@@ -1,0 +1,15 @@
+public void testIssue103 () throws Exception {
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+    org.w3c.dom.Document doc = documentBuilder.parse(new ByteArrayInputStream(
+        "<a xmlns:b=\"bla\" xmlns=\"test111\">" +
+        "  <b:bar>a</b:bar>" +
+        "  <test xmlns=\"\"></test>" +
+        "</a>".getBytes()));
+    JXPathContext jxpath = JXPathContext.newContext(doc);
+    jxpath.setLenient(true);
+    jxpath.setNamespace("", "bla");
+    jxpath.setNamespace("null", "");
+    System.out.println("/a/null:test=" + jxpath.getValue("/a/null:test"));
+    System.out.println("/a/null:test.asPath()=" + jxpath.getValue("/a/null:test.asPath()"));
+}

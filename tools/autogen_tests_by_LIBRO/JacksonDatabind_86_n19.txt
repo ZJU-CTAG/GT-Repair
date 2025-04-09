@@ -1,0 +1,15 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    //mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    JavaType type = typeFactory.constructType(Sub.class);
+    mapper.constructType(Base.class); // This line changes the behaviour
+
+    Sub sub = new Sub();
+    String json = mapper.writeValueAsString(sub);
+    System.out.println("Serialized JSON: " + json);
+    assertEquals("{\n  \"base\" : 1,\n  \"sub\" : 2\n}", json);
+}

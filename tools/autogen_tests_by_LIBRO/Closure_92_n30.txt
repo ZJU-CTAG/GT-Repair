@@ -1,0 +1,19 @@
+public void testNamespaces() {
+    CompilerOptions options = new CompilerOptions();
+    options.setManageClosureDependencies(true);
+    options.setClosurePass(true);
+    options.setCheckSymbols(true);
+    options.setGenerateExports(true);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> sources = Arrays.asList(
+        SourceFile.fromCode("module1.js", "goog.provide('apps');"),
+        SourceFile.fromCode("module2.js", "goog.provide('apps.foo'); goog.require('apps');"),
+        SourceFile.fromCode("module3.js", "goog.provide('apps.foo.bar'); goog.require('apps.foo');")
+    );
+
+    Result result = compiler.compile(externs, sources, options);
+
+    assert

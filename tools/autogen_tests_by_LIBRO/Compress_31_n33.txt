@@ -1,0 +1,15 @@
+public void testIssue107() {
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(
+                                    getFile("test1.tar.gzip")))));
+
+    TarArchiveEntry entry = tarIn.getNextTarEntry();
+
+    while (entry != null) {
+        TarArchiveEntry entry2 = tarIn.getNextTarEntry();
+        assertNotNull(entry2);
+        entry = entry2;
+    }
+}

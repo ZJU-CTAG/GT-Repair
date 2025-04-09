@@ -1,0 +1,18 @@
+public void testPolymorphicDeserialization() throws Exception
+{
+    // Let's try with an array type
+    Bean bean = new Bean();
+    bean.setArray(new int[0]);
+    String json = MAPPER.writeValueAsString(bean);
+    System.out.println(json);
+    bean = MAPPER.readValue(json, Bean.class);
+    assertNotNull(bean);
+    assertNotNull(bean.getArray());
+}
+
+public class Bean {
+    private Object array;
+
+    public Object getArray() { return array; }
+    public void setArray(Object v) { array = v; }
+}

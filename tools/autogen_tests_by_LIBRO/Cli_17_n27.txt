@@ -1,0 +1,11 @@
+public void testPosixParser() {
+    Option a = new Option("a", "a", false, "a");
+    Option b = new Option("b", "b", false, "b");
+    Options options = new Options();
+    options.addOption(a).addOption(b);
+    PosixParser parser = new PosixParser();
+    parser.setStopAtNonOption(true);
+    CommandLine cmd = parser.parse(options, new String[]{"-azb"});
+    assertFalse(cmd.hasOption("a"));
+    assertFalse(cmd.hasOption("b"));
+}

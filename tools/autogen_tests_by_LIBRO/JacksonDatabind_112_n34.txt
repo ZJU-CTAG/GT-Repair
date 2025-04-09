@@ -1,0 +1,28 @@
+public void testDeserialize() throws Exception {
+    final String json = "{\"payload\":{\"parameters\":[\"Foo\",\"Bar\"]}}";
+
+    final Foo foo = new ObjectMapper().readValue(json, Foo.class);
+
+    assertEquals(foo.payload.parameters, ImmutableList.of("Foo", "Bar"));
+}
+
+@JsonRootName("payload")
+public static final class Payload {
+
+    public final ImmutableList<String> parameters;
+
+    @JsonCreator
+    public Payload(@JsonProperty("parameters") final ImmutableList<String> parameters) {
+        this.parameters = parameters;
+    }
+}
+
+public static final class Foo {
+
+    public final Payload payload;
+
+    @JsonCreator
+    public Foo(@JsonProperty("payload") final Payload payload) {
+        this.payload = payload;
+    }
+}

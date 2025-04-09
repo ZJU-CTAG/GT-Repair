@@ -1,0 +1,15 @@
+public void testInputCoercionException() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+        mapper.readValue("{\"value\":2147483648}", IntegerBean.class);
+    } catch (JsonProcessingException e) {
+        // will throw JsonParseException
+        // ideally, would use more specific exception
+        assertTrue(e.getMessage().contains("2147483648"));
+    }
+}
+
+public static class IntegerBean {
+    public int value;
+}

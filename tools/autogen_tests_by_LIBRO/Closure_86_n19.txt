@@ -1,0 +1,14 @@
+public void testIssue172() {
+  String result = new CompilerOptions().runAdvancedOptimizations(
+      "function Foo() {" +
+      " var self = this;" +
+      " window.setTimeout(function() {" +
+      " window.location = self.location;" +
+      " }, 0);" +
+      "}" +
+      "Foo.prototype.setLocation = function(loc) {" +
+      " this.location = loc;" +
+      "};" +
+      "(new Foo()).setLocation('http://www.google.com/');").toString();
+  assertThat(result).contains("window.location");
+}

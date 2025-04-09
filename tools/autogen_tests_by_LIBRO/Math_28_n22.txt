@@ -1,0 +1,24 @@
+public void testMinimizationProblem() {
+        int ENTITIES_COUNT = 2; // it should be 15 to get UnboundedSolutionException
+        SimplexSolver solver = new SimplexSolver();
+        LpSolve problem = LpSolve.makeLp(0, 2 * ENTITIES_COUNT);
+
+        // set objective function
+        for (int i = 0; i < ENTITIES_COUNT; i++) {
+            problem.setObj(i, i + 1);
+            problem.setObj(i + ENTITIES_COUNT, 0);
+        }
+
+        // set constraints
+        for (int i = 0; i < ENTITIES_COUNT; i++) {
+            for (int j = 0; j < ENTITIES_COUNT; j++) {
+                if (i == j) {
+                    problem.addConstraint(i + 1, LpSolve.EQ, 1);
+                } else {
+                    problem.addConstraint(i + 1, LpSolve.EQ, 0);
+                }
+            }
+        }
+
+        // set variables types
+        for (int

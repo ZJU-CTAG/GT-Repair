@@ -1,0 +1,9 @@
+public void testExistingFileValue() throws Exception {
+    final Options options = new Options();
+    options.addOption(Option.builder("t").hasArg().type(FileInputStream.class).build());
+
+    final CommandLineParser parser = new DefaultParser();
+    final CommandLine cmd = parser.parse(options, new String[] {"-t", "pom.xml"});
+    final FileInputStream t = (FileInputStream) cmd.getParsedOptionValue("t");
+    assertNotNull(t);
+}

@@ -1,0 +1,24 @@
+public void testIssue108() {
+    final String s = "01234567890123456789";
+    final byte[] bytes = s.getBytes(Charsets.UTF_8);
+    final InputStream is = new InputStream() {
+        int i = 0;
+        @Override
+        public int read() throws IOException {
+            return i < bytes.length ? bytes[i++] : -1;
+        }
+    };
+    final ByteArrayOutputStream os = new ByteArrayOutputStream();
+    final IOContext context = new IOContext(new BufferRecycler(), null, false);
+    final UnicodeInputStream uis = new UnicodeInputStream(is, context);
+    final OutputStreamWriter osw = new OutputStreamWriter(os);
+    final int n = 4096;
+    final char[] cbuf = new char[n];
+    for (; ; ) {
+        int len = uis.read(cbuf, 0, n);
+        if (len < 0) {
+            break;
+        }
+        osw.write(cbuf, 0, len);
+    }
+    uis.close();

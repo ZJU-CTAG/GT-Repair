@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode("testcode1.js",
+        "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+        options);
+    assertEquals(1, result.errors.length);
+    SourceFile file = SourceFile.fromCode("testcode2.js",
+        "/** @constructor \n" +
+        " * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }");
+    result = compiler.compile(SourceFile.fromCode("externs.js", ""), file, options);
+    assertEquals(1, result.errors.length);
+}

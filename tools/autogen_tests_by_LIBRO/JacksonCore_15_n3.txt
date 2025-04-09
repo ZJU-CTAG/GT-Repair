@@ -1,0 +1,10 @@
+public void testFilteringGeneratorDelegate() throws Exception {
+    String jsonString = "{\"name\": \"John\"}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    FilterProvider filterProvider = new SimpleFilterProvider().addFilter(
+            "myFilter",
+            SimpleBeanPropertyFilter.filterOutAllExcept(new String[]{"name"}));
+    objectMapper.setFilterProvider(filterProvider);
+    JsonNode jsonNode = objectMapper.readTree(jsonString);
+    assertThat(jsonNode.toString(), Matchers.is("{\"name\":\"John\"}"));
+}

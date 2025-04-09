@@ -1,0 +1,21 @@
+public void test7zip() throws Exception {
+    File tempFile = File.createTempFile("test", ".7z");
+    tempFile.deleteOnExit();
+
+    SevenZOutputFile out = new SevenZOutputFile(tempFile);
+    out.setContentMethods(new SevenZMethodConfiguration[]{
+        new SevenZMethodConfiguration(SevenZMethod.LZMA2, 0, 16)
+    });
+    SevenZArchiveEntry entry = out.createArchiveEntry(new File("."), "testFile");
+    entry.setDataOffset(0);
+    out.putArchiveEntry(entry);
+    out.write(new byte[] { 0, 1, 2, 3, 4 });
+    out.closeArchiveEntry();
+    out.close();
+
+    SevenZFile in = new SevenZFile(tempFile);
+    entry = in.getNextEntry();
+    byte[] data = new byte[(int) entry.getSize()];
+    in.read(data);
+    in.close();
+    assertTrue(Arrays.equals(data, new byte[] { 0, 1, 2, 3, 4 }));

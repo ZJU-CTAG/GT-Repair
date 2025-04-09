@@ -1,0 +1,22 @@
+public void testIssue123() {
+    String str = "<...> " +
+            " <b:foo xmlns:b='bla' xmlns='test111'> " +    //  No nodes are placed in the tree within ns "test111" but the attribute is still there.
+            "  <b:bar>a</b:bar> " +                         // is in ns 'bla'
+            "  <test xmlns=''></test> " +                   // does not have a namespace
+            " </b:foo> " +
+            "</...>";
+
+    String searchPath = "//test";
+    String result = "";
+
+    try {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(new InputSource(new StringReader(str)));
+
+        JXPathContext context = JXPathContext.newContext(document);
+        context.setLenient(true);
+        context.setNamespace("b", "bla");
+        context.setNamespace("", "test111");
+
+        JXPathContext context2

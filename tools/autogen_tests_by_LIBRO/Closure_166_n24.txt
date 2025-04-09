@@ -1,0 +1,18 @@
+public void testAnonymousObjectTypeInferenceInUnion() {
+    /** @param {{prop: string, prop2: (string|undefined)}} record */
+    final Object func = (final Object record) -> {
+        System.out.println(((Map<String, Object>)record).get("prop"));
+    };
+
+    /** @param {{prop: string, prop2: (string|undefined)}|string} record */
+    final Object func2 = (final Object record) -> {
+        if (record instanceof String) {
+            System.out.println(record);
+        } else {
+            System.out.println(((Map<String, Object>)record).get("prop"));
+        }
+    };
+
+    func(new HashMap<String, Object>(){{put("prop", "a");}});
+    func2(new HashMap<String, Object>(){{put("prop", "a");}});
+}

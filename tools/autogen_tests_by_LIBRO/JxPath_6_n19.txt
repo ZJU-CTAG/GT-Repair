@@ -1,0 +1,23 @@
+public void testEquals() {
+
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put("d", new String[] { "a", "b"});
+
+    String[] expressions = new String[] {
+            "$d = 'a'",
+            "$d = 'b'",
+            "$d = 'c'"
+    };
+
+    Object[] expected = new Object[] {
+            true,
+            true,
+            false
+    };
+
+    for (int i = 0; i < expressions.length; i++) {
+        String expression = expressions[i];
+        Object res = MVEL.eval(expression, context);
+        assertEquals(expected[i], res);
+    }
+}

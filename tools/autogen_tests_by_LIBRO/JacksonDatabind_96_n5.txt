@@ -1,0 +1,10 @@
+public void testCreatorPropertyNameWithNamingStrategy() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    String json = "{\"myDate\" : \"2007-12-03T10:15:30.000Z\"}";
+    LocalDateTime value = mapper.readValue(json, LocalDateTime.class);
+    assertNotNull(value);
+    assertEquals(2007, value.getYear());
+}

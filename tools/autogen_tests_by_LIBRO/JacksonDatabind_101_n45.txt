@@ -1,0 +1,12 @@
+public void testUnwrappedFieldsMissing() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    Bean bean = mapper.reader(Bean.class).readValue("{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}");
+
+    assertEquals(1, bean.x);
+    assertEquals(3, bean.y);
+    assertEquals(2, bean.w.a);
+    // b is skipped because it appears after y
+    assertEquals(0, bean.w.b);
+}

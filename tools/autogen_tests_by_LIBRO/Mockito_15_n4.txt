@@ -1,0 +1,10 @@
+public void testIssue105() {
+    final List<String> values = Arrays.asList("1", "2", "3");
+    final List<String> expectedValues = Arrays.asList("1", "2", "3");
+    final List<String> mockValues = mock(List.class);
+    final InOrder inOrder = inOrder(mockValues);
+    final ArgumentCaptor<List<String>> captor = ArgumentCaptor.forClass(List.class);
+    mockValues.addAll(Arrays.asList("1", "2", "3"));
+    verify(mockValues).addAll(captor.capture());
+    assertEquals(expectedValues, captor.getValue());
+}

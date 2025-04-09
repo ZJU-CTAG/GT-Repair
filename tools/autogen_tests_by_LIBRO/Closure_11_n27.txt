@@ -1,0 +1,20 @@
+public void testRecordTypeInvalidPropertyNotReportedOnFunctionWithThisAnnotation () {
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager() {
+        private final PrintStream ps = System.err;
+        @Override
+        public void println(JSError error) {
+            ps.println(error);
+        }
+    });
+    compiler.disableThreads();
+    List<SourceFile> externs = Lists.newArrayList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> sources = Lists.newArrayList(SourceFile.fromCode("input", "var makeClass = function(protoMethods) {\n" +
+            "  var clazz = function() {\n" +
+            "    this.initialize.apply(this, arguments);\n" +
+            "  };\n" +
+            "  for (var i in protoMethods) {\n" +
+            "    clazz.prototype[i] = protoMethods[i];\n" +
+            "  }\n" +
+            "\n" +
+            "  return clazz

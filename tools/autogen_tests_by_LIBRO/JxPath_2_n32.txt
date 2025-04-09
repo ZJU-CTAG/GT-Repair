@@ -1,0 +1,17 @@
+public void testNodeSetFunction() {
+    Node root = createDocument();
+    Node child = root.appendChild(root.getOwnerDocument().createElement("child"));
+    child.appendChild(root.getOwnerDocument().createTextNode("content"));
+    Object result = JXPathContext.newContext(root).getValue("test:nodeSet()");
+    assertTrue("result must be a NodeSet", result instanceof NodeSet);
+    NodeSet nodeSet = (NodeSet) result;
+    assertEquals("wrong number of pointers", 1, nodeSet.getLength());
+    assertEquals("wrong node", child, nodeSet.getNodePointer(0).getNode());
+    nodeSet = JXPathContext.newContext(root).iterate("test:nodeSet()");
+    assertEquals("wrong number of pointers", 1, nodeSet.getLength());
+    assertEquals("wrong node", child, nodeSet.getNodePointer(0).getNode());
+}
+
+public NodeSet nodeSet() {
+    NodeSet result = new BasicNodeSet();
+    result.add(new NodePointer(createDocument

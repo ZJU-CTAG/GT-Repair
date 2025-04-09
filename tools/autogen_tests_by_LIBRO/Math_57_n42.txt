@@ -1,0 +1,12 @@
+public void testChooseInitialClusters() {
+    final List<Vector> vectors = new ArrayList<Vector>();
+    vectors.add(new ArrayRealVector(new double[] { 0.0, 0.0 }));
+    vectors.add(new ArrayRealVector(new double[] { 1.0, 1.0 }));
+    vectors.add(new ArrayRealVector(new double[] { 1.0, 2.0 }));
+
+    final KMeansPlusPlusClusterer<Vector> kmc = new KMeansPlusPlusClusterer<Vector>(new Random(42));
+    final List<Cluster<Vector>> clusters = kmc.cluster(vectors, 2, new EuclideanDistance());
+    assertEquals(2, clusters.size());
+    assertEquals(1, clusters.get(0).getPoints().size());
+    assertEquals(2, clusters.get(1).getPoints().size());
+}

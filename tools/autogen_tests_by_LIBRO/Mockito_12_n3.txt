@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    Service service = mock(Service.class);
+    service.call("foo", "bar");
+    ArgumentCaptor<Object[]> captor = ArgumentCaptor.forClass(Object[].class);
+    verify(service).call("foo", "bar");
+    assertEquals("foo", captor.getValue()[0]);
+    assertEquals("bar", captor.getValue()[1]);
+}
+
+interface Service {
+    void call(String value1, String value2);
+}

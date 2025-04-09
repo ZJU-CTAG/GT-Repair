@@ -1,0 +1,19 @@
+public void testIssue107() throws IOException {
+    File f = new File(getClass().getResource("/test.zip").getFile());
+    FileInputStream fis = new FileInputStream(f);
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    ArchiveInputStream ais = null;
+    try {
+        ais = asf.createArchiveInputStream(fis);
+        ZipArchiveEntry e = (ZipArchiveEntry) ais.getNextEntry();
+        while (e != null) {
+            System.out.println(e.getName() + " - " + e.isDirectory());
+            e = (ZipArchiveEntry) ais.getNextEntry();
+        }
+    } catch (ArchiveException e) {
+        e.printStackTrace();
+    } finally {
+        IOUtils.closeQuietly(ais);
+        IOUtils.closeQuietly(fis);
+    }
+}

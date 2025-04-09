@@ -1,0 +1,14 @@
+public void testTrailerMode() throws Exception {
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    InputStream is = new FileInputStream("src/test/resources/asf-test-foo.cpio");
+    try {
+        ArchiveInputStream stream = asf.createArchiveInputStream("cpio", is);
+        assertTrue(stream instanceof CpioArchiveInputStream);
+        ArchiveEntry entry = stream.getNextEntry();
+        while (entry != null) {
+            entry = stream.getNextEntry();
+        }
+    } finally {
+        is.close();
+    }
+}

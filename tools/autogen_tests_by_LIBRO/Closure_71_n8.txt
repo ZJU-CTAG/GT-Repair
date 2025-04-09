@@ -1,0 +1,7 @@
+public void testIssue() {
+    Compiler compiler = runClosureCompiler("/** @constructor */ function Foo(){/** @private */ this.x_=3;}",
+                                          "/** @constructor\n* @extends {Foo} */ function SubFoo(){/** @private */ this.x_=3;}",
+                                          null,
+                                          ImmutableList.of("--jscomp_error=visibility"));
+    assertEquals("", compiler.toSource());
+}

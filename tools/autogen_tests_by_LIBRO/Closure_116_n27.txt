@@ -1,0 +1,8 @@
+public void testAdvancedOptimizations() {
+		String input = "window[\"anchor\"] = function (obj, modifiesProp) {"
+				+ "return (function (saved) {return modifiesProp(obj) + saved; })(obj[\"prop\"]);"
+				+ "}";
+		String expected = "window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};";
+		String output = compile(input, CompilationLevel.ADVANCED_OPTIMIZATIONS);
+		assertEquals(expected, output);
+	}

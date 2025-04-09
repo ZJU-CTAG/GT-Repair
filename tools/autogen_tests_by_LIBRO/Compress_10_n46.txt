@@ -1,0 +1,11 @@
+public void testReadUnicodeExtraFields() throws Exception {
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(getFile()));
+    try {
+        ZipArchiveEntry ze = null;
+        while ((ze = zis.getNextZipEntry()) != null) {
+            assertNotNull(ze.getName(), zis.getEncoding());
+        }
+    } finally {
+        zis.close();
+    }
+}

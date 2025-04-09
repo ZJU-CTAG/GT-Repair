@@ -1,0 +1,25 @@
+public void testIssue108() {
+    final int n = 10;
+
+    // create the test function
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+
+        @Override
+        public double value(double x) {
+            int i = (int) Math.ceil(x);
+            return -i;
+        }
+
+    };
+
+    // create the optimizer
+    UnivariateRealOptimizer optimizer = new BrentOptimizer();
+    for (int i = 0; i < n; ++i) {
+        UnivariateRealPointValuePair result = optimizer.optimize(
+                new MaxEval(100),
+                new UnivariateRealFunction[] { f },
+                GoalType.MINIMIZE,
+                new SearchInterval(0, i));
+        assertEquals(i, -result.getValue(), 1.0e-12);
+    }
+}

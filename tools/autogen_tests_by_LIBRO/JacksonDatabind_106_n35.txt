@@ -1,0 +1,10 @@
+public void test() throws Exception {
+    ObjectNode root = JsonNodeFactory.instance.objectNode();
+    root.put("x", Math.pow(2, 31));
+
+    ObjectMapper mapper = new ObjectMapper();
+    IntClass fromTree = mapper.readerFor(IntClass.class).readValue(root);
+
+    assertEquals(fromTree.x, -2147483648);
+  }
+

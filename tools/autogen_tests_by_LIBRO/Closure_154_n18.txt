@@ -1,0 +1,24 @@
+public void testIssue113() {
+    String js = "/**\n" +
+                " * @interface\n" +
+                " */\n" +
+                "function I() {};\n" +
+                "\n" +
+                "/** @type {string} */\n" +
+                "I.prototype.foobar;\n" +
+                "\n" +
+                "/**\n" +
+                " * @constructor\n" +
+                " * @implements {I}\n" +
+                " */\n" +
+                "function C() {\n" +
+                " // No warning generated here.\n" +
+                " this.foobar = 2;\n" +
+                "};\n" +
+                "\n" +
+                "/** @type {I} */\n" +
+                "var test = new C(); \n" +
+                "alert(test.foobar);";
+    try {
+        JsChecker.main(new String[] { "-h", "testdata/issue-113.js" });
+    } catch (IOException e)

@@ -1,0 +1,21 @@
+public void testIssueDuringODEIntegration() {
+        final double minStep = 0.1;
+        final double maxStep = 10.0;
+        final double scalAbsoluteTolerance = 1.0e-8;
+        final double scalRelativeTolerance = 1.0e-8;
+        AdaptiveStepsizeIntegrator integrator = new DormandPrince853Integrator(minStep, maxStep,
+                                                                               scalAbsoluteTolerance,
+                                                                               scalRelativeTolerance);
+        integrator.addEventHandler(new EventHandler() {
+            public void init(double t0, double[] y0, double t) {
+            }
+            public double g(double t, double[] y) {
+                return y[0] - 0.5;
+            }
+            public void resetState(double t, double[] y) {
+            }
+            public Action eventOccurred(double t, double[] y, boolean increasing) {
+                return null;
+            }
+        }, Double.POSITIVE_INFINITY, new double[] { 0.0 }, 1.0e-10, 100);
+

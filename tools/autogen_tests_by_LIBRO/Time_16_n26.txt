@@ -1,0 +1,8 @@
+public void testParseInto() {
+    DateTimeParser parser = DateTimeFormat.forPattern("MM/dd").getParser();
+    DateTime dt = new DateTime(2000, 1, 1, 0, 0);
+    dt = dt.withField(DateTimeFieldType.year(), 2011);
+    MutableDateTime mdt = dt.toMutableDateTime();
+    parser.parseInto(mdt, "02/29", 0);
+    assertEquals(2011, mdt.get(DateTimeFieldType.year()));
+}

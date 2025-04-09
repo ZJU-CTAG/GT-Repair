@@ -1,0 +1,17 @@
+public void testPosixParser() {
+    String[] args = {"-azb"};
+    PosixParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("a", false, "switch a");
+    options.addOption("b", false, "switch b");
+    CommandLine line = null;
+    try {
+        line = parser.parse(options, args, true);
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+    assertNotNull(line);
+    assertTrue(line.hasOption("a"));
+    assertFalse(line.hasOption("z"));
+    assertFalse(line.hasOption("b"));
+}

@@ -1,0 +1,16 @@
+public void testThreadLocal() throws Exception {
+    Thread t = new Thread(new Runnable() {
+        public void run() {
+            ToStringBuilder.reflectionToString("foo");
+        }
+    });
+    t.start();
+    t.join();
+    Field field = ToStringStyle.class.getDeclaredField("SHORT_PREFIX_STYLE");
+    field.setAccessible(true);
+    ToStringStyle style = (ToStringStyle) field.get(null);
+    Field field2 = ToStringStyle.class.getDeclaredField("threadLocal");
+    field2.setAccessible(true);
+    ThreadLocal threadLocal = (ThreadLocal) field2.get(style);
+    assertNull(threadLocal.get());
+}

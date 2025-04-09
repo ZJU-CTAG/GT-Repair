@@ -1,0 +1,17 @@
+public void testInvokerTransformer() throws ClassNotFoundException, NoSuchMethodException {
+    InvokerTransformer t = new InvokerTransformer("getMethod", new Class[] {String.class, Class[].class}, new Object[] {"getRuntime", new Class[0]});
+    assertEquals(Runtime.class.getMethod("getRuntime"), t.transform(null));
+}
+
+@SuppressWarnings("unchecked")
+public void testInvokeTransformerSerialization() throws IOException, ClassNotFoundException {
+    InvokerTransformer t = new InvokerTransformer("getMethod", new Class[] {String.class, Class[].class}, new Object[] {"getRuntime", new Class[0]});
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(bytes);
+    oos.writeObject(t);
+    oos.flush();
+
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()));
+    Object t2 = ois.readObject();
+    assertEquals(Runtime.class.getMethod("

@@ -1,0 +1,12 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    mapper.registerModule(module);
+
+    // There are other getters/properties in the Impl class that do not need to be serialized and so
+    // I am using the Mixin to match the interface and explicitly annotate all the inherited methods
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+
+    // When a PersonImpl instance is serialized, city is not included
+    assertEquals("{\"firstName\":\"Joe\"}", mapper.writeValueAsString(new PersonImpl("Joe", "Bloggs", "London")));
+}

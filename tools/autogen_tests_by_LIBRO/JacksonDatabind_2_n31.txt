@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().addMixInAnnotations(X.class, MixIn.class);
+    X<Item> x = new X<Item>();
+    x.s = "x";
+    x.items = new ArrayList<Item>();
+    Item i = new Item();
+    i.s = "i";
+    x.items.add(i);
+    TreeNode tree = mapper.valueToTree(x);
+    String json = mapper.writeValueAsString(tree);
+    assertEquals("{\"s\":\"x\",\"items\":[{\"@class\":\"com.github.davidmoten.jaxws.Item\",\"s\":\"i\"}]}", json);
+}
+

@@ -1,0 +1,25 @@
+public void testJsonPropertyAccess() throws JsonGenerationException, JsonMappingException, IOException {
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addDeserializer(TestPojo.class, new TestPojoDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(simpleModule);
+
+    String testPojoJson = "{\"firstName\": \"John\", \"lastName\": \"Doe\", \"fullName\": \"John Doe\"}";
+    TestPojo testPojo = mapper.readValue(testPojoJson, TestPojo.class);
+    assertEquals("John Doe", testPojo.getFullName());
+}
+
+public class TestPojo {
+    private String firstName;
+    private String lastName;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {

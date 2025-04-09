@@ -1,0 +1,14 @@
+public void testDefaultOptionsWithOptionGroups() throws Exception {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option option = new Option("a", "foo");
+    group.addOption(option);
+    group.setRequired(true);
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    Properties defaults = new Properties();
+    defaults.put("a", null);
+    CommandLine cmd = parser.parse(options, new String[]{}, defaults);
+    assertTrue(cmd.hasOption("a"));
+}

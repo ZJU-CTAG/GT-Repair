@@ -1,0 +1,20 @@
+public void testAsPath() {
+    Document doc = null;
+    try {
+        doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    } catch (ParserConfigurationException e) {
+        fail(e.getMessage());
+    }
+    Element foo = doc.createElement("foo");
+    foo.setAttribute("xmlns", "test111");
+    Element bar = doc.createElement("bar");
+    bar.setAttribute("xmlns", "bla");
+    Element test = doc.createElement("test");
+    doc.appendChild(foo);
+    foo.appendChild(bar);
+    bar.appendChild(test);
+
+    DOMNodePointer pointer = new DOMNodePointer(foo);
+    String path = pointer.asPath();
+    assertEquals("/null:foo", path);
+}

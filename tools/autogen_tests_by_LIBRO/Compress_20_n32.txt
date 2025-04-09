@@ -1,0 +1,14 @@
+public void testCpioRedline() throws Exception {
+    final InputStream input = getClass().getResourceAsStream("redline.cpio");
+    final CpioArchiveInputStream cpio = new CpioArchiveInputStream(input);
+    ArchiveEntry entry = cpio.getNextEntry();
+    assertNotNull(entry);
+    assertEquals("first", entry.getName());
+    assertEquals(0, cpio.read());
+    entry = cpio.getNextEntry();
+    assertNotNull(entry);
+    assertEquals("second", entry.getName());
+    assertEquals(0, cpio.read());
+    entry = cpio.getNextEntry();
+    assertNull(entry);
+}

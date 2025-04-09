@@ -1,0 +1,19 @@
+public void testArchiveStreamFactory() throws Exception {
+    String name = "ASF-22.zip";
+    final List<String> expected = new ArrayList<String>();
+    expected.add("ASF-22");
+    expected.add("ASF-22/");
+    expected.add("ASF-22/\u00f6\u00e4\u00fc.txt");
+    expected.add("ASF-22/\u00f6\u00e4\u00fc\u00df.txt");
+    final List<String> entries = new ArrayList<String>();
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    final InputStream is = getClass().getResourceAsStream(name);
+    final ArchiveInputStream in = factory.createArchiveInputStream("zip", is);
+    ArchiveEntry entry = null;
+    while ((entry = in.getNextEntry()) != null) {
+        System.out.println(entry.getName());
+        entries.add(entry.getName());
+    }
+    in.close();
+    assertEquals(expected, entries);
+}

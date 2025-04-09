@@ -1,0 +1,9 @@
+public void testClosure () {
+    String test = "Math.blah = function(test) { test.a = 5; };\n" + "var test = new Object();\n" + "Math.blah(test);";
+    StringWriter sw = new StringWriter();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    Compiler compiler = new Compiler(sw);
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test.js", test) }, options);
+    assertEquals(test, compiler.toSource());
+}

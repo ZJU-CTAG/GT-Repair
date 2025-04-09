@@ -1,0 +1,13 @@
+public void testIssue123() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(new Option("option1", "opt1", false, "option1"));
+    group.addOption(new Option("option2", "opt2", false, "option2"));
+    group.addOption(new Option("longname", null, true, "longname"));
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-longname"});
+
+    assertTrue(cmd.hasOption("longname"));
+}

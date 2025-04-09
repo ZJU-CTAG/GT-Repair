@@ -1,0 +1,15 @@
+public void testFilteringParserDelegate() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final JsonParser parser = mapper.getFactory().createParser(new File("src/test/resources/user.json"));
+    final FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(parser, new TokenStreamCursor() {
+        @Override
+        protected boolean accept(JsonToken t) {
+            return t.asBoolean();
+        }
+    }, false, false);
+    assertTrue(filteringParserDelegate.hasCurrentToken());
+    assertEquals(JsonToken.START_OBJECT, filteringParserDelegate.getCurrentToken());
+    assertEquals(filteringParserDelegate.getCurrentToken(), filteringParserDelegate.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, filteringParserDelegate.getCurrentToken());
+    assertEquals(filteringParserDelegate.getCurrentToken(), filteringParserDelegate.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, filteringParserDelegate.getCurrentToken());

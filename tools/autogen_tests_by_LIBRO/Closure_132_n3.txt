@@ -1,0 +1,20 @@
+public void testIfStatement() {
+    Script script = new Script();
+    script.lines.add("if(es[--esi][es[esi+1]]===1)");
+    script.lines.add("{");
+    script.lines.add("es[esi]=0;");
+    script.lines.add("}");
+    script.lines.add("else");
+    script.lines.add("{");
+    script.lines.add("es[esi]=1;");
+    script.lines.add("}");
+
+    ScriptCompiler compiler = new ScriptCompiler();
+    compiler.setScript(script);
+    compiler.compile();
+    Block block = compiler.getBlock();
+
+    String result = output(block);
+    String expected = "es[--esi] = 1 === es[esi][es[esi + 1]] ? 0 : 1;";
+    assertEquals(expected, result);
+}

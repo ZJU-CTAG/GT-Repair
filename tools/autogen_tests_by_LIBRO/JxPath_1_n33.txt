@@ -1,0 +1,11 @@
+public void testDescendantOrSelfAxisAtRoot() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    Element elem = doc.createElement("root");
+    doc.appendChild(elem);
+    elem.setAttribute("id", "1234");
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("1234", context.getValue("//root/@id/text()"));
+}

@@ -1,0 +1,22 @@
+public void testSevenZipIssue() throws IOException {
+    File tmpDir = new File("tmp");
+    for (File file : tmpDir.listFiles()) {
+        if (file.isFile()) file.delete();
+    }
+    for (int i = 0; i < 7; i++) {
+        File file = new File(tmpDir, "file-" + i);
+        FileUtils.writeStringToFile(file, "");
+    }
+
+    SevenZOutputFile output = new SevenZOutputFile(new File("tmp.7z"));
+    output.setContentCompression(new SevenZMethodConfiguration(SevenZMethod.LZMA2));
+    for (File file : tmpDir.listFiles()) {
+        SevenZArchiveEntry entry = output.createArchiveEntry(file, file.getName());
+        output.putArchiveEntry(entry);
+        if (!file.isDirectory()) {
+            IOUtils.copy(new FileInputStream(file), output);
+        }
+        output.closeArchiveEntry();
+    }
+    output.close();
+}

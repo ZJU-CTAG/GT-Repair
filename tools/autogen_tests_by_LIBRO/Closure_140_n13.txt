@@ -1,0 +1,10 @@
+public void testGoogleCommonLoader() {
+    Loader<String> testLoader = Loaders.newLoader(new Supplier<String>() {
+        public String get() {
+            return "test";
+        }
+    }, CacheBuilder.newBuilder()
+            .expireAfterWrite(2, TimeUnit.SECONDS)
+            .refreshAfterWrite(2, TimeUnit.SECONDS).build());
+    assertEquals("test", testLoader.get());
+}

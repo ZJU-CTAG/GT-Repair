@@ -1,0 +1,15 @@
+public void testIssue() {
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setLanguageVersion(Context.VERSION_1_8);
+    ErrorReporter errorReporter = compilerEnv.getErrorReporter();
+    Parser p = new Parser(compilerEnv, errorReporter);
+    AstRoot ast = p.parse("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")", "<stdin>", 1);
+    IRFactory irf = new IRFactory(compilerEnv, errorReporter);
+    ScriptNode scriptOrFn = irf.transformTree(ast);
+    int optLevel = 9;
+    if (optLevel != 0) {
+        OptFunctionNode ofn = OptFunctionNode.get(scriptOrFn, optLevel);
+        if (ofn != null) {
+            ofn.computeFunctionScope(new DataFlowGraph(ofn));
+            OptTransformer ot = new OptTransformer(ofn, ofn.getFlowGraph());
+           

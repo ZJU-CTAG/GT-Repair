@@ -1,0 +1,6 @@
+public void testIssue108() {
+    String s = ("function d3_call(callback) {\n" + "var f = callback;\n" + "arguments[0] = this;\n" + "f.apply(this, arguments);\n" + "return this;\n" + "}");
+    String t = ("function d3_call(a){arguments[0]=this;a.apply(this,arguments);return this};");
+    assertTrue(CompilerEnvirons.DEFAULT.getOptimizationLevel() > 0);
+    assertEquals(t, parse(s));
+}

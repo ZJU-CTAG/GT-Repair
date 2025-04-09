@@ -1,0 +1,13 @@
+public void test() {
+    File testFile = new File("target/test.zip");
+    try {
+        ArchiveOutputStream aos = new ZipArchiveOutputStream(testFile);
+        aos.putArchiveEntry(new ZipArchiveEntry("hello.txt"));
+        IOUtils.write("hello", aos);
+        aos.closeArchiveEntry();
+        aos.finish();
+        aos.close();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption("a", "aaa", false, "aaa");
+
+    String[] args = new String[]{"-z", "-a", "foo"};
+
+    PosixParser posixParser = new PosixParser();
+    CommandLine cl = posixParser.parse(options, args, true);
+
+    Assert.assertTrue(cl.hasOption("a"));
+    Assert.assertEquals(2, cl.getArgList().size());
+    Assert.assertEquals("-z", cl.getArgList().get(0));
+    Assert.assertEquals("foo", cl.getArgList().get(1));
+}

@@ -1,0 +1,9 @@
+public void testCaptorForVarargs() {
+    int[] args = new int[0];
+    Consumer<int[]> consumer = mock(Consumer.class);
+    ArgumentCaptor<int[]> argumentCaptor = ArgumentCaptor.forClass(int[].class);
+    consumer.accept(args);
+
+    verify(consumer).accept(argumentCaptor.capture());
+    assertThat(argumentCaptor.getValue(), is(args));
+}

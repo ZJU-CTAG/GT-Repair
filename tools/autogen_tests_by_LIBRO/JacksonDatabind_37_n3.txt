@@ -1,0 +1,25 @@
+public void testRead() throws IOException {
+    URL resource = Resources.getResource("model.json");
+    String s = Resources.toString(resource, Charsets.UTF_8);
+
+    ObjectMapper mapper = JsonSchema.mapper();
+    JsonRoot root = mapper.readValue(s, JsonRoot.class);
+    for (JsonSchema schema : root.schemas) {
+      System.out.println(schema);
+    }
+  }
+
+  @JsonTypeInfo(
+      use = JsonTypeInfo.Id.NAME,
+      include = JsonTypeInfo.As.PROPERTY,
+      property = "type")
+  @JsonTypeResolver(JsonSchemaResolver.class)
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public abstract class JsonSchema {
+    @JsonProperty
+    public String name;
+  }
+
+  public class JsonSchemaResolver implements TypeResolverBuilder<JsonSchema> {
+    public TypeDeserializer buildTypeDeserializer(DeserializationConfig config,
+       

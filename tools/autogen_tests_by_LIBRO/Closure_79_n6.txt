@@ -1,0 +1,17 @@
+public void testRuntimeException() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setIdeMode(true);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    compiler.initOptions(options);
+    JSSourceFile[] sourceFiles = {
+        JSSourceFile.fromCode("bootloader.js", "")
+    };
+    JSSourceFile[] externFiles = {
+        JSSourceFile.fromCode("prototype.js", "")
+    };
+    Compiler.setLoggingLevel(Level.ALL);
+    Result result = compiler.compile(externFiles, sourceFiles, options);
+    assertTrue(result.success);
+}

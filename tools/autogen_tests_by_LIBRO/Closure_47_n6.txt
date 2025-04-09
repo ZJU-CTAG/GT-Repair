@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+	String sourceMap = new UglifyJS2().minify("alert('Hello world!');", "foo.js");
+	JSONObject json = new JSONObject(sourceMap);
+	JSONArray mappings = new JSONArray(json.getString("mappings"));
+	JSONObject map = new JSONObject(mappings.getString(0));
+	assertEquals(0, map.getInt("source"));
+	assertEquals(0, map.getInt("originalLine"));
+}

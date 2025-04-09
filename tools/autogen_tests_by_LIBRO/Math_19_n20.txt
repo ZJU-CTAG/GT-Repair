@@ -1,0 +1,10 @@
+public void testCMESOptimizerBounds() {
+    SimpleBounds problemBounds = new SimpleBounds(new double[]{-Double.MAX_VALUE}, new double[]{Double.MAX_VALUE});
+    CMAESOptimizer optimizer = new CMAESOptimizer(10, -1, true, 0, 10, new MersenneTwister(), false, new SimpleValueChecker(-1, -1));
+    optimizer.optimize(10000, new ObjectiveFunction(new Function() {
+        @Override
+        public double value(double[] point) {
+            return 0;
+        }
+    }), problemBounds, new InitialGuess(new double[10]), new MaxEval(100000), new MultiStep(new Class[]{}));
+}

@@ -1,0 +1,18 @@
+public void testInvalidEmbeddedObject() throws Exception
+{
+    final String str = "\"[1,2,3,4]\"";
+    final byte[] bytes = str.getBytes("UTF-8");
+    final byte[] bytesNull = null;
+    for (boolean useBytes : new boolean[] { true, false }) {
+        final byte[] input = useBytes ? bytes : bytesNull;
+        final String EXP = useBytes ? str : "null";
+
+        // using Streaming API
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        JsonGenerator gen = JSON_F.createGenerator(ObjectWriteContext.empty(), out);
+        gen.writeEmbeddedObject(input);
+        gen.close();
+        final String json = out.toString("UTF-8");
+        assertEquals(EXP, json);
+    }
+}

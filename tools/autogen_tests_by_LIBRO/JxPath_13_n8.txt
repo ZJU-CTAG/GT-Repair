@@ -1,0 +1,18 @@
+public void testAttributeWithNamespace() {
+    BeanUtilsBean bub = new BeanUtilsBean();
+    bub.getConvertUtils().registerNamespace("A", "http://A");
+    bub.getConvertUtils().registerNamespace("B", "http://B");
+    bub.getConvertUtils().register(new MyConverter(), String.class);
+    MyBean bean = new MyBean();
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("A:myAttr", "MyValue");
+    map.put("B:myOtherAttr", "MyOtherValue");
+    try {
+        bub.populate(bean, map);
+        assertEquals("MyValue", bean.getMyAttr());
+        assertEquals("MyOtherValue", bean.getMyOtherAttr());
+    } catch (Exception x) {
+        x.printStackTrace();
+        assertTrue(false);
+    }
+}

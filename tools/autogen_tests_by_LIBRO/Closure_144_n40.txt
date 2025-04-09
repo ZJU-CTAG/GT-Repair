@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String str = "function f() {}\nvar i = f();";
+    try {
+        Reader in = new StringReader(str);
+        RhinoScriptEngine engine = (RhinoScriptEngine) factory.getScriptEngine();
+        CompiledScript cs = ((Compilable) engine).compile(in);
+        cs.eval();
+    } catch (ScriptException e) {
+        System.err.println(e);
+        fail();
+    }
+}

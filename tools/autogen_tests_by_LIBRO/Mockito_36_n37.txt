@@ -1,0 +1,27 @@
+public void testIssue113() {
+    final int[] value = new int[] {1};
+    final String[] message = new String[] {null};
+    Bar bar = mock(Bar.class);
+    when(bar.getValue()).thenReturn(1);
+    when(bar.getMessage()).thenReturn("mock");
+    doAnswer(new Answer<Object>() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            message[0] = (String) invocation.getArguments()[0];
+            return null;
+        }
+    }).when(bar).setMessage(anyString());
+    Foo foo = new Foo();
+    foo.setBar(bar);
+    foo.setValue(value);
+    assertEquals(0, value[0]);
+    assertNull(message[0]);
+    foo.doBar();
+    assertEquals(1, value[0]);
+    assertEquals("mock", message[0]);
+}
+
+@RunWith(MockitoJUnitRunner.class)
+public class Foo {
+    @Mock
+    private

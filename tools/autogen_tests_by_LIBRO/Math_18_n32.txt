@@ -1,0 +1,27 @@
+public void testCMAESOptimizer() {
+    CostFunction costFunction = new CostFunction(0);
+
+    double[] guess = new double[] {1};
+    double[] lower = new double[] {-10};
+    double[] upper = new double[] {10};
+
+    double[] fit =
+        new CMAESOptimizer(1000, 0, true, 1, 1, null, new MersenneTwister(), false,
+                           new SimplePointChecker<PointValuePair>(1e-10, 1e-10)).optimize(costFunction,
+                                                                                        GoalType.MINIMIZE,
+                                                                                        guess,
+                                                                                        lower,
+                                                                                        upper).getPoint();
+    Assert.assertEquals(0, fit[0], 1e-8);
+}
+private class CostFunction implements MultivariateFunction {
+    private int cost;
+
+    public CostFunction(int cost) {
+        this.cost = cost;
+    }
+
+    @Override
+    public double value(double[] params) {
+        cost++;
+        return Math.abs(params[0]);

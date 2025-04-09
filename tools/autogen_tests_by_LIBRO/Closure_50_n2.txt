@@ -1,0 +1,9 @@
+public void testIssue() {
+    String code = "var variable = confirm(\"value from user\");\n" +
+            "var array = [ \"constant\", variable ];\n" +
+            "alert( array.join(\",\") );";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    String js = compiler.compile(code, Code.INPUT_STRING, Code.OUTPUT_STRING);
+    assertEquals("var a=[\"constant\",confirm(\"value from user\")];alert(a.join(),\");", js);
+}

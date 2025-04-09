@@ -1,0 +1,20 @@
+public void testZip() throws Exception {
+    File tempFile = File.createTempFile("commons-compress", ".zip");
+    try {
+        ZipArchiveOutputStream zos = new ZipArchiveOutputStream(tempFile);
+        zos.setUseZip64(Zip64Mode.AsNeeded);
+        zos.putArchiveEntry(new ZipArchiveEntry("file.txt"));
+        zos.write("content".getBytes("US-ASCII"));
+        zos.closeArchiveEntry();
+        zos.close();
+
+        ZipFile zf = new ZipFile(tempFile);
+        Enumeration<ZipArchiveEntry> entries = zf.getEntries();
+        ZipArchiveEntry entry = entries.nextElement();
+        assertEquals(ZipMethod.DEFLATED, entry.getMethod());
+        assertEquals(2, entry.getVersionNeededToExtract());
+        assertEquals(2, entry.getGeneralPurposeBit().getVersionNeededToExtract());
+    } finally {
+        if (tempFile != null) {
+            tempFile.delete();
+       

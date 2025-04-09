@@ -1,0 +1,16 @@
+public void testIssue1() {
+    String js = "/** @constructor */\n"
+            + "function C2() {}\n"
+            + "\n"
+            + "/** @constructor */\n"
+            + "function C3(c2) {\n"
+            + "/** @type {C2} @private */\n"
+            + "this.c2_;\n"
+            + "use(this.c2_.prop);\n"
+            + "}";
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+    new JsSourceParser(new CompilerEnvirons(), testErrorReporter)
+            .parse(new CodeSnippet(0, 0, js), null, 0);
+    testErrorReporter.assertErrorCount(1);
+    testErrorReporter.assertErrorMessage(0, "Property prop never defined on C2");
+}

@@ -1,0 +1,12 @@
+public void testIssue50() {
+    String[] data = new String[] { "あ", "い", "う" };
+    StringBuilder sb = new StringBuilder();
+    CSVFormat format = CSVFormat.EXCEL.withQuoteMode(QuoteMode.ALL);
+    try (CSVPrinter printer = new CSVPrinter(sb, format)) {
+        printer.printRecord(data);
+        printer.flush();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    assertEquals("\"あ\",い,う" + System.lineSeparator(), sb.toString());
+}

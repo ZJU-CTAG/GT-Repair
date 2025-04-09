@@ -1,0 +1,16 @@
+public void testIssue107() {
+    Compiler c = new Compiler();
+    c.compile(new String[] {
+        "--js_output_file", "test.js",
+        "--js", "test.js",
+        "--js_output_wrapper", "%output%",
+        "--warning_level", "QUIET"
+    });
+    StringBuilder sb = new StringBuilder();
+    BufferedReader br = new BufferedReader(new FileReader("test.js"));
+    String line;
+    while ((line = br.readLine()) != null) {
+        sb.append(line);
+    }
+    assertEquals("if(e.onchange){e.onchange({\_extendedByPrototype:Prototype.emptyFunction,target:e})}", sb.toString());
+}

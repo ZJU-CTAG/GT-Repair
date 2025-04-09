@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.hasArg().create('a'));
+    group.addOption(OptionBuilder.hasArg().create('b'));
+    options.addOptionGroup(group);
+
+    Properties defaultOptions = new Properties();
+    defaultOptions.setProperty("b", "bvalue");
+
+    try {
+        parser.parse(options, new String[]{"-a", "avalue"}, defaultOptions);
+        fail("expecting exception");
+    } catch (ParseException e) {
+        // expected
+    }
+}

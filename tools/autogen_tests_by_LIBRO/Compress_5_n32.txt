@@ -1,0 +1,19 @@
+public void testTruncatedArchive() throws Exception {
+  FileInputStream fis = new FileInputStream(new File("src/test/resources/org/apache/commons/compress/archivers/zip/truncated.zip"));
+  ZipArchiveInputStream zais = new ZipArchiveInputStream(fis);
+  ArchiveEntry ae = null;
+  try {
+    ae = zais.getNextEntry();
+    assertNotNull(ae);
+    assertEquals("README", ae.getName());
+    byte[] buffer = new byte[20];
+    int length = 0;
+    while ((length = zais.read(buffer)) != -1) {
+      // do nothing
+    }
+    fail("This should not work");
+  } catch (IOException e) {
+    assertEquals(0, zais.available());
+    assertTrue(e.getMessage().startsWith("Truncated"));
+  }
+}

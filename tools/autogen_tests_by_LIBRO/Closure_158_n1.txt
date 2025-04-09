@@ -1,0 +1,9 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckGlobalThisLevel(CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("source", "var x = this;"), options);
+    assertEquals(CheckLevel.WARNING, compiler.getOptions().getWarningLevel(DiagnosticGroups.GLOBAL_THIS));
+}

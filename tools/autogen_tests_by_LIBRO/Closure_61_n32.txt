@@ -1,0 +1,15 @@
+public void testIssue108() {
+    ScriptableObject scope = (ScriptableObject) this.getContext().initStandardObjects();
+    try {
+        String script = "Math.blah = function(test) { test.a = 5; };" +
+                "var test = new Object();" +
+                "Math.blah(test);";
+        String compressed = StringUtils.compress(script);
+        String decompressed = StringUtils.decompress(compressed);
+        assertEquals(script, decompressed);
+        this.getContext().evaluateString(scope, decompressed, "<cmd>", 1, null);
+        assertEquals("{a=5}", scope.get("test").toString());
+    } catch (Exception e) {
+        fail("Exception: " + e.getMessage());
+    }
+}

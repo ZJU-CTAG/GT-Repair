@@ -1,0 +1,26 @@
+public void testSerialization() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TestEnum testEnum = TestEnum.VALUE\_ONE;
+    String json = objectMapper.writeValueAsString(testEnum);
+    assertEquals("\"value1\"", json);
+}
+
+public void testDeserialization() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TestEnum testEnum = objectMapper.readValue("\"value1\"", TestEnum.class);
+    assertEquals(TestEnum.VALUE\_ONE, testEnum);
+}
+
+enum TestEnum {
+    VALUE\_ONE("value1");
+
+    private String valueInJson;
+
+    private TestEnum(String valueInJson) {
+        this.valueInJson = valueInJson;
+    }
+
+    @JsonCreator
+    public static TestEnum getEnumFromValue(String value) {
+        for (TestEnum testEnum : values()) {
+            if (testEnum.valueInJson.equ

@@ -1,0 +1,10 @@
+public void testNodeSet() {
+    JXPathContext context = JXPathContext.newContext(new TestBean());
+    context.setLenient(false);
+    context.setFunctions(
+            new ClassFunctions(TestNodeSetFunction.class, "test"));
+    assertXPathValueIterator(context, "test:nodeSet()",
+            "2");
+    assertXPathValueIterator(context, "test:nodeSet()/name",
+            "a", "b");
+}

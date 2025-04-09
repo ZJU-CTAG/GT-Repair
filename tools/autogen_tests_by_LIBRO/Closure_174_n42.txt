@@ -1,0 +1,15 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(
+            new JSSourceFile[]{
+                    JSSourceFile.fromCode("foo.js", "goog.provide(\"main\");"
+                            + "goog.scope(function (){ "
+                            + "var a = foo, b, c = 1;"
+                            + "});")},
+            options);
+    assertTrue(compiler.getErrors().length > 0);
+}

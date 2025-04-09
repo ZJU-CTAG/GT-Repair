@@ -1,0 +1,21 @@
+public void testCovariances() throws EstimationException {
+    
+        final AbstractEstimator estimator = new AbstractEstimator(problem) {
+            @Override
+            protected double[] guessParametersErrors() {
+                return new double[] {
+                    FastMath.sqrt(getChiSquare() * getCovariances(0, 0)),
+                    FastMath.sqrt(getChiSquare() * getCovariances(1, 1))};
+            }
+        };
+        
+        // estimate a line model (ax + b) from a set of points
+        final ParameterFunction f = new ParameterFunction() {
+            public double value(double x, double[] p) {
+                return p[0] * x + p[1];
+            }
+            public double partial(int k, double x, double[] p) {
+                return (k == 0) ? x : 1;
+            }
+        };
+        estimator.addMeasurement(f, new double[] {   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10

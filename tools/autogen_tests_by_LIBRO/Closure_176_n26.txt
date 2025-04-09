@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String js = "/**\n" + 
+                " * @constructor\n" + 
+                " */\n" + 
+                "function MyClass() {\n" + 
+                " this.value = 1;\n" + 
+                "}\n" + 
+                "\n" + 
+                "MyClass.prototype.show = function() {\n" + 
+                " window.console.log(this.value)\n" + 
+                "}\n" + 
+                "\n" + 
+                "/**\n" + 
+                " * @type {MyClass}\n" + 
+                " */\n" + 
+                "var x = null;\n" + 
+                "x.show();";
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertTrue(result.success);
+}

@@ -1,0 +1,9 @@
+public void testW3cDomNamespaceInheritance() throws Exception {
+    String html = "<html><head><title>First parse</title></head><body><p><div xmlns=\"http://www.w3.org/1999/xhtml\">Hello</div></p></body></html>";
+    Document doc = Jsoup.parse(html);
+    Document doc2 = Jsoup.parse(doc.html());
+
+    Element element = doc2.getElementsByTag("p").first();
+
+    assertEquals(doc.childNode(0).childNode(0).childNode(0).childNode(1).childNode(0).childNode(0).childNode(0).getAttributes().getNamedItemNS("http://www.w3.org/1999/xhtml", "xmlns"), element.childNode(0).getAttributes().getNamedItemNS("http://www.w3.org/1999/xhtml", "xmlns"));
+}

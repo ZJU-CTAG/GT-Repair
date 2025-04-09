@@ -1,0 +1,21 @@
+public void testNegativeNumbers() throws IOException {
+
+    StringWriter sw = new StringWriter();
+    CSVPrinter cp = new CSVPrinter(sw, CSVFormat.DEFAULT.withMinimalQuotes());
+    cp.printRecord("-1", "1", "-1", "1", "-1", "1", "-1", "1");
+    cp.flush();
+    cp.close();
+
+    String result = sw.toString();
+    String[] split = result.split("\n");
+    String[] fields = split[1].split(",");
+
+    assertEquals("-1", fields[0].trim());
+    assertEquals("1", fields[1].trim());
+    assertEquals("-1", fields[2].trim());
+    assertEquals("1", fields[3].trim());
+    assertEquals("-1", fields[4].trim());
+    assertEquals("1", fields[5].trim());
+    assertEquals("-1", fields[6].trim());
+    assertEquals("1", fields[7].trim());
+}

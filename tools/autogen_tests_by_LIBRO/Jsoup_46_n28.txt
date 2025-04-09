@@ -1,0 +1,18 @@
+public void testEscapeModeXhtmlNoLongerFallsBackToNumericEscapes() throws Exception {
+    final String input = "<html>"
+            + "<head>"
+            + "<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1252\" />"
+            + "</head>"
+            + "<body>"
+            + "before&nbsp;after"
+            + "</body>"
+            + "</html>";
+    InputStream is = new ByteArrayInputStream(input.getBytes(Charset.forName("ASCII")));
+
+    final Document doc = Jsoup.parse(is, null, "http://example.com");
+    doc.outputSettings().escapeMode(EscapeMode.xhtml);
+
+    final String output = new String(doc.html().getBytes(doc.outputSettings().charset()), doc.outputSettings().charset());
+
+    assertTrue("Should have contained a '&nbsp;'.", output.contains("&nbsp;"));
+    assertFalse("Should not have contained a '&#xa0;'.", output.cont

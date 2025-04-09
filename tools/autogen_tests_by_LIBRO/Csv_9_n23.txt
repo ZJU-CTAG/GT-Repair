@@ -1,0 +1,12 @@
+public void testNoHeadersToMap() throws Exception {
+     String[] columns = new String[] { "a", "b", "c", "d", "e" };
+     String s = "a,b,c,d,e";
+
+     CSVFormat format = CSVFormat.DEFAULT.withEscape('\\').withDelimiter(',').withRecordSeparator("\n").withQuote('"');
+     CSVParser parser = new CSVParser(new StringReader(s), format);
+
+     List<CSVRecord> records = parser.getRecords();
+     assertEquals(1, records.size());
+     Map<String, String> recordMap = records.get(0).toMap();
+     assertNull(recordMap);
+}

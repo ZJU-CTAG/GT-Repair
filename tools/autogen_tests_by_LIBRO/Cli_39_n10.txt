@@ -1,0 +1,17 @@
+public void testOptionWithValueTypeFile() throws ParseException {
+        final Options options = new Options();
+        final Option file = Option.builder()
+                .argName("file")
+                .hasArg()
+                .desc("file to parse")
+                .longOpt("file")
+                .required()
+                .type(FileInputStream.class)
+                .build();
+        options.addOption(file);
+        final CommandLineParser parser = new DefaultParser();
+        final CommandLine commandLine = parser.parse(options, new String[] {"--file", "pom.xml"});
+        final FileInputStream fileInputStream = (FileInputStream) commandLine.getParsedOptionValue("file");
+        assertNotNull(fileInputStream);
+        assertTrue(fileInputStream.toString().contains("pom.xml"));
+}

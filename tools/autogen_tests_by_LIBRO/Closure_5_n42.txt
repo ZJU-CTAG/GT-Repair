@@ -1,0 +1,19 @@
+public void testIssue103() {
+    ClosureCompiler compiler = new ClosureCompiler();
+    compiler.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    compiler.setDebugOptionsForCompilationLevel(
+        CompilerOptions.Builder.getOptions(CompilationLevel.SIMPLE_OPTIMIZATIONS));
+    compiler.setWarningLevel(DiagnosticGroups.UNKNOWN_DEFINES, CheckLevel.WARNING);
+    String js = "var foo = {};\n" +
+        "\n" +
+        "foo.bar = 1;\n" +
+        "\n" +
+        "console.log(foo.bar);\n" +
+        "\n" +
+        "delete foo.bar;\n" +
+        "\n" +
+        "console.log(foo.bar);\n";
+    Result result = compiler.compile(SourceFile.fromCode("test", js), SourceFile.fromCode("test2", ""));
+    System.out.println(result.errors);
+    assertTrue(result.success);
+    assertEquals("(function

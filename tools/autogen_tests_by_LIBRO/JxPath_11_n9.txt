@@ -1,0 +1,13 @@
+public void testIssue() {
+    NodePointerFactory factory = new Dom4JNodePointerFactory();
+    // register the namespaces
+    factory.registerNamespace("A", "http://localhost");
+    factory.registerNamespace("B", "http://localhost");
+    Document document = DocumentHelper.createDocument();
+    Element elementA = document.addElement("ElementA");
+    elementA.addAttribute("http://localhost", "myAttr", "Mytype");
+    Element elementB = elementA.addElement("http://localhost", "ElementB");
+    elementB.setText("MY VALUE");
+    NodePointer root = factory.getNodePointer(document);
+    assertEquals("MY VALUE", root.getValue("ElementA/ElementB"));
+}

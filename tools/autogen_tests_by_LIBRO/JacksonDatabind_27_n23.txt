@@ -1,0 +1,11 @@
+public void testExternalTypeIdWithTypeBefore() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+
+    MyBean6 bean = mapper.readValue("{\"@class\":\"com.fasterxml.jackson.jr.ob.MyBean6\",\"value\":\"foo\"}", MyBean6.class);
+    assertEquals("foo", bean.value);
+}

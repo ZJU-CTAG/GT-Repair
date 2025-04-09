@@ -1,0 +1,8 @@
+public void testLongDirectoryName() throws IOException {
+    File dir = newFolder();
+    File tar = new File(dir, "archive.tar");
+    try (TarArchiveOutputStream out = new TarArchiveOutputStream(new FileOutputStream(tar))) {
+        out.putArchiveEntry(new TarArchiveEntry("a long directory name longer than 100 characters, which should not be a problem but is!"));
+        out.closeArchiveEntry();
+    }
+}

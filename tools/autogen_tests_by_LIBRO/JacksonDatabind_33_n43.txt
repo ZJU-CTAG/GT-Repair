@@ -1,0 +1,20 @@
+public void testIssue() {
+   SimpleModule testModule = new SimpleModule("TestModule", new Version(1, 0, 0, null))
+            .addSerializer(new JsonSerializer<Issue107Bean>() {
+                @Override
+                public void serialize(Issue107Bean value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+                    jgen.writeStartObject();
+                    // serialize the bean
+                    jgen.writeObjectField("firstName", value.getFirstName());
+                    jgen.writeObjectField("lastName", value.getLastName());
+                    // serialize the header
+                    jgen.writeObjectField("header", value.getHeader());
+                    jgen.writeEndObject();
+                }
+            });
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(testModule);
+    Issue107Bean bean = new Issue107Bean("John", "Doe");
+    bean.setHeader("foo");
+    String json = mapper.writeValueAsString(bean);
+    // {"firstName":"John","lastName":"Doe","header

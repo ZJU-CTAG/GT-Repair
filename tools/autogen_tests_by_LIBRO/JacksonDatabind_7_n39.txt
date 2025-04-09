@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    Value value = new ObjectMapper().readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertEquals(2, value.buffer.size());
+    assertEquals(JsonToken.FIELD_NAME, value.buffer.get(0).type());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, value.buffer.get(1).type());
+
+    TokenBuffer buffer = new TokenBuffer(null);
+    new ObjectMapper().writeValue(buffer, value);
+    assertEquals(6, buffer.size());
+    assertEquals(JsonToken.START_OBJECT, buffer.get(0).type());
+    assertEquals(JsonToken.FIELD_NAME, buffer.get(1).type());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, buffer.get(2).type());
+    assertEquals(JsonToken.FIELD_NAME, buffer.get(3).type());
+    assertEquals(JsonToken.VALUE_NULL, buffer.get(4).type());
+   

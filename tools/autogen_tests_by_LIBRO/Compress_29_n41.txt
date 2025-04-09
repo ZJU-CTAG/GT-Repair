@@ -1,0 +1,9 @@
+public void testIssue106() throws IOException {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    factory.setEntryEncoding("UTF-8");
+    ArjArchiveInputStream stream = (ArjArchiveInputStream) factory.createArchiveInputStream(ArchiveStreamFactory.ARJ,
+            new FileInputStream(new File("src/test/resources/test1.arj")));
+    stream.getNextEntry();
+    String name = stream.getNextEntry().getName();
+    assertEquals("\u00f6\u00e4\u00fc.txt", name);
+}

@@ -1,0 +1,12 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    mapper.registerModule(new SimpleModule() {
+        {
+            addSerializer(
+                    java.sql.Date.class,
+                    new SqlDateSerializer().withFormat(false, new SimpleDateFormat("yyyy-MM-dd"))
+            );
+        }
+    });
+}

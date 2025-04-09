@@ -1,0 +1,33 @@
+public void testEventCloseToStartOfStep() {
+    // create a pair of events that are very close to each other
+    EventDetector first = new EventDetector() {
+
+        public void g(double t, double[] y, double[] yDot, boolean increasing) throws EventException {
+            if (increasing) {
+                throw new EventException(EventException.STOP, true);
+            }
+        }
+
+        public double g(double t, double[] y) {
+            return y[0] - 0.5;
+        }
+
+        public void init(double t0, double[] y0, double t) {
+        }
+
+        public int eventOccurred(double t, double[] y, boolean increasing) {
+            return Action.STOP;
+        }
+
+        public double getEventTime() {
+            return 90.0;
+        }
+
+        public void resetState(double t, double[] y) {
+        }
+
+    };
+    EventDetector second = new EventDetector() {
+
+        public void g(double t, double[] y, double[] yDot, boolean increasing) throws EventException {
+            if (!increasing

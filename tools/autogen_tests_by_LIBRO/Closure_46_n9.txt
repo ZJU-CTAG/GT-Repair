@@ -1,0 +1,19 @@
+public void testTypeCast () {
+    TypeChecker typeChecker = new TypeChecker();
+    String code = "type Foo = {a:int, b: int};"
+        + "type Bar = {x:int, y: int, z: Foo};"
+        + "type FooBar = map<Bar, int>;"
+        + "class fooClass { constructor(required FooBar fooBar) {} }";
+    PigParser parser = new PigParser(new StringReader(code));
+    PigLexer lexer = new PigLexer(new ANTLRNoCaseStringStream(code));
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+    parser.setASTNodeClass("org.apache.pig.impl.logicalLayer.FrontendNode");
+    parser.setTreeAdaptor(new PigTreeAdaptor());
+    tokens.setTokenSource(lexer);
+    parser.setTokenStream(tokens);
+    try {
+        parser.program();
+    } catch (RecognitionException e) {
+        throw new RuntimeException("Parser error", e);
+    }
+    CommonTree ast = (

@@ -1,0 +1,14 @@
+public void testZlibHeader() throws Exception {
+    final File input = getFile("bla.tar.deflatez");
+    final InputStream is = new FileInputStream(input);
+    try {
+        final CompressorStreamFactory factory = new CompressorStreamFactory();
+        final CompressorInputStream in = factory.createCompressorInputStream(is);
+        final byte[] buf = new byte[100];
+        int r = in.read(buf);
+        assertTrue(r != -1);
+        assertTrue(r > 0);
+    } finally {
+        is.close();
+    }
+}

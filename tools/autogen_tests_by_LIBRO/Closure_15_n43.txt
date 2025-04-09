@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String code = "var customData = { key: 'value' };\n" +
+            "function testRemoveKey( key ) {\n" +
+            " var dataSlot = customData,\n" +
+            " retval = dataSlot && dataSlot[ key ],\n" +
+            " hadKey = dataSlot && ( key in dataSlot );\n" +
+            "\n" +
+            " if ( dataSlot )\n" +
+            " delete dataSlot[ key ];\n" +
+            "\n" +
+            " return hadKey ? retval : null;\n" +
+            "};\n" +
+            "console.log( testRemoveKey( 'key' ) ); // 'value'\n" +
+            "console.log( 'key' in customData ); // false\n";
+
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            CommandLineRunner.getCommandLineConfig(
+                    new String[]{"--js", code})).getWarnings();
+}

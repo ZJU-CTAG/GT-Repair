@@ -1,0 +1,18 @@
+public void testIssue106() throws IOException {
+    JsonFactory jf = new MappingJsonFactory();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    UTF8JsonGenerator jg = jf.createJsonGenerator(baos, JsonEncoding.UTF8);
+    jg.writeStartObject();
+    jg.writeStringField("hello", "world");
+    jg.writeEndObject();
+    jg.close();
+
+    // Now: try to parse it back
+    JsonParser jp = jf.createJsonParser(baos.toByteArray());
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("hello", jp.getCurrentName());
+    assertToken(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals("world", jp.getText());
+    assertToken(JsonToken.END_OBJECT, jp.nextToken());
+    assertNull(jp

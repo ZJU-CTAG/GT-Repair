@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption("t", "target", true, "The target");
+    String[] argv = new String [] {"-target", "foobar.com"};
+    String[] leftOverargs = null;
+    try {
+        CommandLine commandLine = new GnuParser().parse(options, argv);
+        leftOverargs = commandLine.getArgs();
+        assertEquals("foobar.com", commandLine.getOptionValue("target"));
+    } catch (ParseException pe) {
+        fail("Unexpected exception : " + pe.getMessage());
+    }
+}

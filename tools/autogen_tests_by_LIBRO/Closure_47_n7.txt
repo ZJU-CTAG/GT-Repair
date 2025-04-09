@@ -1,0 +1,10 @@
+public void testSourcePosition() throws IOException {
+    Map<File, CharSequence> sources = new HashMap<File, CharSequence>();
+    sources.put(new File("A.java"), "public class A {\n\tpublic void foo() {\n\t\tSystem.out.println(\"A.foo\");\n\t}\n}");
+    sources.put(new File("B.java"), "public class B {\n\tpublic void foo() {\n\t\tSystem.out.println(\"B.foo\");\n\t}\n}");
+    Map<File, List<String>> options = new HashMap<File, List<String>>();
+    options.put(new File("A.java"), Arrays.asList("-source", "1.6"));
+    options.put(new File("B.java"), Arrays.asList("-source", "1.6"));
+    InMemoryJavaFileManager jfm = InMemoryJavaFileManager.createFileManager(sources, options);
+    // Type-based source maps
+    SourceMapGenerator smg = SourceMap

@@ -1,0 +1,11 @@
+public void testIssue60() {
+    DateTimeZone australiaNSW = DateTimeZone.forID("Australia/NSW");
+    DateTimeZone usCentral = DateTimeZone.forID("US/Central");
+    DateTime usCentralStandardInUTC = new DateTime(2008, 11, 2, 7, 0, 0, 0, DateTimeZone.UTC);
+    DateTime usCentralDaylightInUTC = new DateTime(2008, 11, 2, 6, 0, 0, 0, DateTimeZone.UTC);
+    Assert.assertTrue("Should be standard time", usCentral.isStandardOffset(usCentralStandardInUTC.getMillis()));
+    Assert.assertFalse("Should be daylight time", usCentral.isStandardOffset(usCentralDaylightInUTC.getMillis()));
+    DateTime usCentralStandardInUSCentral = usCentralStandardInUTC.toDateTime(usCentral);
+    DateTime usCentralDaylightInUSCentral = usCentralDaylightInUTC.toDateTime(usCentral);
+    assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
+    assertEquals(us

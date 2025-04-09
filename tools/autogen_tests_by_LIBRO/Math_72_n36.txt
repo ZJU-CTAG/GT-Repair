@@ -1,0 +1,17 @@
+public void testIssue108() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return 1.0 - x*x;
+        }
+    };
+    double root = 1.0;
+    double start = 0.1;
+    double end = 10.0;
+    double tolerance = 1e-10;
+    double result = new BrentSolver().solve(f, start, end, tolerance);
+    assertEquals(root, result, tolerance);
+    result = new BrentSolver().solve(f, root, end, tolerance);
+    assertEquals(root, result, tolerance);
+    result = new BrentSolver().solve(f, start, root, tolerance);
+    assertEquals(root, result, tolerance);
+}

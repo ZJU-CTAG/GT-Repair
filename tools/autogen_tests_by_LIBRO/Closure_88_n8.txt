@@ -1,0 +1,10 @@
+public void testIssue_1071() {
+    AstRoot script = parse("function f(x) { var y = x.id; return y && y.substr(1); }");
+    ExpressionStatement stmt = (ExpressionStatement) script.getFirstChild();
+    FunctionNode fn = (FunctionNode) stmt.getExpression();
+    Scope scope = fn.getBody().getScope();
+    assertEquals(1, scope.getVarCount());
+    // make sure the variable "y" is never removed
+    assertEquals("y", scope.getVarName(0));
+    assertEquals(1, scope.getSymbol("y").getJSSymbol().getDeclarations().size());
+}

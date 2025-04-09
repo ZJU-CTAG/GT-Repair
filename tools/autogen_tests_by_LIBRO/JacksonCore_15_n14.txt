@@ -1,0 +1,21 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"id\":123,\"name\":\"foo\"}";
+    String filterId = "id";
+    String filterName = "name";
+
+    JsonFactory jf = new MappingJsonFactory();
+    JsonParser jp = jf.createParser(json);
+
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jp, new SimpleBeanPropertyFilter(filterId), false, false);
+    filteringParserDelegate.nextToken();
+    JsonToken token = filteringParserDelegate.nextToken();
+
+    JsonNode jsonNode = mapper.readTree(filteringParserDelegate);
+    assertEquals("{\"id\":123}", jsonNode.toString());
+
+    filteringParserDelegate = new FilteringParserDelegate(jp, new SimpleBeanPropertyFilter(filterId, filterName), false, true);
+    filteringParserDelegate.nextToken();
+    token = filteringParserDelegate.nextToken();
+
+    jsonNode = mapper.readTree(

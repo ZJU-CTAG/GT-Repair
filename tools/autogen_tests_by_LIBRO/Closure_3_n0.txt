@@ -1,0 +1,23 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkDeterminism = true;
+    options.inlineConstantVars = true;
+    options.inlineFunctions = true;
+    options.inlineLocalFunctions = true;
+    options.optimizeArgumentsArray = true;
+    options.optimizeCalls = true;
+    options.optimizeReturns = true;
+    options.removeDeadCode = true;
+    options.removeUnusedVariables = CheckLevel.WARNING;
+    options.setCheckTypes(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js",
+                                 "function get

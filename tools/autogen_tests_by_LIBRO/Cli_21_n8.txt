@@ -1,0 +1,11 @@
+public void testNegativeNumberMistakenForOption() throws Exception {
+    Argument argument = aBuilder.withValidator(NumberValidator.getNumberInstance()).withMinimum(1).withMaximum(1).create();
+    Option option = oBuilder.withLongName("num").withArgument(argument).create();
+    Group group = gBuilder.withOption(option).create();
+
+    CommandLine commandLine = p.parse(group, "-num", "-0.1");
+
+    assertTrue(commandLine.hasOption("num"));
+    assertEquals(Double.class, commandLine.getValue("num").getClass());
+    assertEquals(-0.1d, (Double) commandLine.getValue("num"));
+}

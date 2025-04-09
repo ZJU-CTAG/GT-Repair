@@ -1,0 +1,6 @@
+public void testIssue108() {
+    String js = "/** @constructor */\nvar myclass = function() { }\n\n/** @param {boolean} success */\nmyclass.prototype.fn = function(success) { }\n\nmyclass.prototype.test = function() { this.fn(); this.fn = function() { }; }";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", js));
+    assertEquals(2, result.errors.length);
+}

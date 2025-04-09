@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Vehicle.class, Car.class);
+    module.addAbstractTypeMapping(Vehicle.class, Truck.class);
+    mapper.registerModule(module);
+    String carJson = "{\"type\":\"car\"}";
+    String truckJson = "{\"type\":\"truck\"}";
+    Car car = mapper.readValue(carJson, Car.class);
+    Truck truck = mapper.readValue(truckJson, Truck.class);
+    assertTrue(car.getClass() == Car.class);
+    assertTrue(truck.getClass() == Truck.class);
+    // This should throw an exception
+    mapper.readValue(carJson, Truck.class);
+}

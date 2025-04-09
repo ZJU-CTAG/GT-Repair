@@ -1,0 +1,17 @@
+public void testReads() throws Exception {
+    byte[] buf = new byte[100];
+    for (int i = 0; i < buf.length; i++) {
+        buf[i] = (byte) (i & 0xFF);
+    }
+    
+    ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+    Base64InputStream b64stream = new Base64InputStream(bais, false, 0, null);
+    int n = 0;
+    
+    try {
+        while (b64stream.read() != -1) n++;
+    } catch (Exception x) {
+        System.out.println(n);
+        x.printStackTrace();
+    }
+}

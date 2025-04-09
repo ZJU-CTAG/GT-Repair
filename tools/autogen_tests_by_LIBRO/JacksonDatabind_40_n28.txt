@@ -1,0 +1,12 @@
+public void testFAIL_ON_NULL_FOR_PRIMITIVES() throws Exception
+{
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    int i = mapper.readValue("0", int.class);
+    assertEquals(0, i);
+    try {
+        mapper.readValue("\"\"", int.class); // should throw exception
+        fail("Expected exception not thrown");
+    } catch (JsonMappingException e) {
+         // ok
+    }
+}

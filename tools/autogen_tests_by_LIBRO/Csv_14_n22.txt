@@ -1,0 +1,14 @@
+public void testNegativeInFirstColumn() {
+    StringWriter sw = new StringWriter();
+    try (CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.RFC4180.withMinimalQuotes())) {
+        csvPrinter.printRecord("-92.222", 43.333, 3);
+        csvPrinter.flush();
+        String result = sw.toString();
+        System.out.println(result);
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals("-92.222,43.333,3", result);
+    } catch (IOException ex) {
+        fail("Should not throw any exception");
+    }
+}

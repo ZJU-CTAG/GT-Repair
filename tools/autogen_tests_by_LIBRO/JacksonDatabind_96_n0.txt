@@ -1,0 +1,23 @@
+public void testImplicitCreatorProperties() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper()
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
+    final String json = mapper.writeValueAsString(new ImplicitCreatorProperties());
+    assertEquals("{\"foo_bar\":\"test\"}", json);
+
+    final ImplicitCreatorProperties fromJson = mapper.readValue(json, ImplicitCreatorProperties.class);
+    assertEquals("test", fromJson.getFooBar());
+}
+
+public static class ImplicitCreatorProperties {
+    private final String fooBar;
+
+    public ImplicitCreatorProperties(final String fooBar) {
+        this.fooBar = fooBar;
+    }
+
+    public String getFooBar() {
+        return fooBar;
+    }
+}

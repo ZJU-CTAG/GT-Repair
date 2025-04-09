@@ -1,0 +1,10 @@
+public void testEmbeddedObject() throws IOException
+{
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = MAPPER.getFactory().createGenerator(bytes);
+    gen.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+    gen.writeEmbeddedObject(null);
+    gen.close();
+
+    assertEquals("[1,2,3,null]", bytes.toString());
+}

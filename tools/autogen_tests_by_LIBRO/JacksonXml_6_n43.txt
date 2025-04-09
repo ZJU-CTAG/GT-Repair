@@ -1,0 +1,10 @@
+public void testWriteBinaryWithStream() throws Exception {
+    final StringWriter out = new StringWriter();
+    final ToXmlGenerator generator = new XmlFactory().createGenerator(out);
+    generator.writeStartObject();
+    generator.writeBinaryField("binary", new ByteArrayInputStream("Hello World!".getBytes()));
+    generator.writeEndObject();
+    generator.close();
+    String expected = String.format("<object><binary>%s</binary></object>", Base64Variants.MIME.encode("Hello World!".getBytes()));
+    assertEquals(expected, out.toString());
+}

@@ -1,0 +1,21 @@
+public void testOptionBuilderReset() {
+    OptionBuilder.withArgName("directory");
+    try {
+        OptionBuilder.create(null);
+    } catch(IllegalArgumentException ex) {
+        //ignore
+    }
+    
+    OptionBuilder.withArgName("file");
+    try {
+        OptionBuilder.create('f');
+    } catch(IllegalArgumentException ex) {
+        //ignore
+    }
+    
+    OptionBuilder.withArgName("target");
+    Option target = OptionBuilder.create("target");
+    
+    assertEquals("target", target.getLongOpt());
+    assertEquals("file", target.getArgName());
+}

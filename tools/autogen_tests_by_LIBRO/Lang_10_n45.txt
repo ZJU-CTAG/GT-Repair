@@ -1,0 +1,25 @@
+public void testFastDateParser() {
+    final String sdfPattern = "yyyy MM dd HH mm ss";
+    final String fdpPattern = "yyyy MM dd HH mm ss";
+    final SimpleDateFormat sdf = new SimpleDateFormat(sdfPattern);
+    final FastDateParser fdp = new FastDateParser(fdpPattern);
+    try {
+        sdf.parse("2011 01 01 00 00 00");
+        assertTrue(true);
+    } catch (ParseException e) {
+        fail("SimpleDateFormat should parse but did not");
+    }
+    try {
+        fdp.parse("2011 01 01 00 00 00");
+        assertTrue(true);
+    } catch (ParseException e) {
+        fail("FastDateParser should parse but did not");
+    }
+    try {
+        sdf.parse("2011 01 01 00 00   00");
+        fail("SimpleDateFormat should throw ParseException but did not");
+    } catch (ParseException e) {
+        assertTrue(true);
+    }
+    try {
+        fdp.parse("2011 01 01 00 00   00");

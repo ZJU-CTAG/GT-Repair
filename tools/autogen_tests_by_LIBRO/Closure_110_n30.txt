@@ -1,0 +1,14 @@
+public void testCompilerIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setCheckSymbols(false);
+    SourceFile extern = SourceFile.fromCode("externs.js", "function alert() {}\n");
+    Result result = compiler.compile(extern,
+            SourceFile.fromCode("test.js", "goog.scope(function() {\n" +
+                    "  /** @private */\n" +
+                    "  function test() {}\n" +
+                    "});"), options);
+    assertThat(result.success, is(true));
+}

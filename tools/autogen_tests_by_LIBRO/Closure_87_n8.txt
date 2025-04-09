@@ -1,0 +1,25 @@
+public void testIssue107() {
+    String js = "if (e.onchange) {\n" +
+            " e.onchange({\n" +
+            " _extendedByPrototype: Prototype.emptyFunction,\n" +
+            " target: e\n" +
+            " });\n" +
+            " }";
+    Compiler compiler = new Compiler();
+    compiler.compile(new StringReader(js), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Warning: " + message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Error: " + message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Runtime error: " + message);
+            return null;
+        }
+    });

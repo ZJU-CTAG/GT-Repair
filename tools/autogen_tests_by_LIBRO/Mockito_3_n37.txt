@@ -1,0 +1,24 @@
+public void testIssue108() {
+    final A a = mock(A.class);
+    final B b = mock(B.class);
+    final C c = mock(C.class);
+    final D d = mock(D.class);
+    // Pass new D[]{d} to capture the object
+    a.foo(b, c, new D[]{d});
+    final ArgumentCaptor<D[]> captor = ArgumentCaptor.forClass(D[].class);
+    verify(a).foo(any(B.class), any(C.class), captor.capture());
+    assertEquals(d, captor.getValue()[0]);
+}
+
+interface A {
+    void foo(B b, C c, D... d);
+}
+
+interface B {
+}
+
+interface C {
+}
+
+interface D {
+}

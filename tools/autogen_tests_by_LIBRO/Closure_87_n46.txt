@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreadedCompilation();
+    Options options = new Options();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    WarningLevel level = WarningLevel.VERBOSE;
+    level.setOptionsForWarningLevel(options);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js", "if (e.onchange) {e.onchange({_extendedByPrototype: Prototype.emptyFunction,target: e});}"),
+            options);
+}

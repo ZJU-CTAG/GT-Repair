@@ -1,0 +1,15 @@
+public void testIssue() {
+    String script = "var foo = {};\n"
+            + "foo.bar = {\n"
+            + "    'bar1': function() { console.log('bar1'); }\n"
+            + "}\n"
+            + "function foobar() {}\n"
+            + "foobar.prototype = foo.bar;\n"
+            + "foo.foobar = new foobar;\n"
+            + "\n"
+            + "console.log(foo.foobar['bar1']);";
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("JavaScript");
+    // Prints null
+    engine.eval(script);
+}

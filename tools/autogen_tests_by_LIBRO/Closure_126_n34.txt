@@ -1,0 +1,19 @@
+public void testBreakInFinally() {
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    try {
+        engine.eval("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }");
+        fail("Exception expected");
+    } catch (ScriptException e) {
+        if (!e.getMessage().contains("Unhandled exception in script")) {
+            throw new AssertionError("Unexpected exception", e);
+        }
+    }
+    try {
+        engine.eval("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; }");
+        fail("Exception expected");
+    } catch (ScriptException e) {
+        if (!e.getMessage().contains("Unhandled exception in script")) {
+            throw new AssertionError("Unexpected exception", e);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonWriter writer = new JsonWriter(sw);
+    writer.setLenient(true);
+    writer.beginArray();
+    writer.value((Number) Double.valueOf(Double.NaN));
+    writer.endArray();
+    writer.close();
+    assertEquals("[NaN]", sw.toString());
+}
+
+public void testIssue108_2() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonWriter writer = new JsonWriter(sw);
+    writer.setLenient(true);
+    writer.beginArray();
+    writer.value(Double.NaN);
+    writer.endArray();
+    writer.close();
+    assertEquals("[NaN]", sw.toString());
+}

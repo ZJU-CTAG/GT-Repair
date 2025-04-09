@@ -1,0 +1,13 @@
+public void testPreNewlines() {
+    for (String text : new String[] {"", "\n", "\n\n"}) {
+        Document doc = Jsoup.parse(text + "<pre>\nabc  def</pre>");
+        assertEquals(text + "abc  def", doc.select("pre").get(0).childNodes().get(0).getWholeText());
+        assertEquals(text + "abc  def", doc.select("pre").get(0).childNodes().get(0).text());
+    }
+}
+
+public void testTextareaNewlines() {
+    for (String text : new String[] {"", "\n", "\n\n"}) {
+        Document doc = Jsoup.parse(text + "<textarea>\nabc  def</textarea>");
+        assertEquals(text + "abc  def", doc.select("textarea").get(0).childNodes().get(0).getWholeText());
+        assertEquals(text + "abc  def", doc.select("textarea").get(0).childNodes().get(0).

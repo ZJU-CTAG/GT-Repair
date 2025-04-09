@@ -1,0 +1,11 @@
+public void testCoercionOfIntFromEmptyString() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        mapper.readValue("\"\"", int.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Can not construct instance of int");
+    }
+}

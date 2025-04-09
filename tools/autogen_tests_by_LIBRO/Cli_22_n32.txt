@@ -1,0 +1,19 @@
+public void testPosixLongOption() {
+    CommandLineParser parser = new PosixParser();
+    Options cmdLineOpts = new Options();
+    String OPTION_TARGET = "t";
+    String OPTION_TARGET_LONG = "target";
+    Option generateTarget = new Option(OPTION_TARGET,
+        OPTION_TARGET_LONG, true,
+        "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+    try {
+        CommandLine parsedLine = parser.parse(cmdLineOpts, new String[] {
+            "-target", "foobar.com" });
+        assertTrue(parsedLine.hasOption("target"));
+        assertEquals("foobar.com",
+            parsedLine.getOptionValue("target"));
+    } catch (ParseException pe) {
+        fail("Unexpected ParseException: " + pe.getMessage());
+    }
+}

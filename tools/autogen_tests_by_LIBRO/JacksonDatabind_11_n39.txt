@@ -1,0 +1,29 @@
+public void testIssue() throws Exception {
+    String json = "{\"@type\":\"com.fasterxml.jackson.datatype.jsr310.TestJSR310#Something\",\"entity\":{\"@type\":\"com.fasterxml.jackson.datatype.jsr310.TestJSR310#Foo\",\"id\":\"15\"}}";
+    ObjectMapper om = new ObjectMapper()
+            .registerModule(new JSR310Module())
+            .registerModule(new ParameterNamesModule());
+    Something something = om.readValue(json, Something.class);
+    assertNotNull(something);
+}
+
+class Something {
+    Ruleform entity;
+    public <T extends Ruleform> T getEntity() {
+        return (T) entity;
+    }
+
+    public <T extends Ruleform> void setEntity(T entity) {
+        this.entity = entity;
+    }
+}
+
+class Ruleform {
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id

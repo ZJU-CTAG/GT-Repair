@@ -1,0 +1,18 @@
+public void testWebsite() {
+    WebClient webClient = new WebClient(BrowserVersion.FIREFOX_24);
+    webClient.getOptions().setCssEnabled(false);
+    webClient.getOptions().setJavaScriptEnabled(true);
+    webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+
+    for (String url : new String[] {
+            "http://szshb.nxszs.gov.cn/",
+            "http://www.lnfsfda.gov.cn",
+            "http://www.beihai.gov.cn",
+            "http://www.fsepb.gov.cn/",
+            "http://www.bhem.gov.cn"
+    }) {
+        HtmlPage page = webClient.getPage(url);
+        webClient.waitForBackgroundJavaScript(2000);
+    }
+}

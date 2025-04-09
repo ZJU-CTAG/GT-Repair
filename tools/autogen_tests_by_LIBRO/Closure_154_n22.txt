@@ -1,0 +1,20 @@
+public void testIssue108() {
+    final JType t = new JTypeStringBuilder().append("function I() {}").newline()
+            .append("/** @type {string} */").newline()
+            .append("I.prototype.foobar;").newline()
+            .append("/**").newline()
+            .append(" * @constructor").newline()
+            .append(" * @implements {I}").newline()
+            .append(" */").newline()
+            .append("function C() {").newline()
+            .append("   // No warning generated here.").newline()
+            .append("   this.foobar = 2;").newline()
+            .append("};").newline()
+            .append("/** @type {I} */ var test = new C();").newline()
+            .append("alert(test.foobar);").newline()
+            .toString();
+
+    final DefaultErrorHandler errorHandler = new DefaultErrorHandler();
+    final JsConfig cfg = new JsConfig();
+    cfg.setErrorHandler(errorHandler);
+    final JsComp

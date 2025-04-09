@@ -1,0 +1,11 @@
+public void testThreadLocalLeak() throws NoSuchFieldException, IllegalAccessException {
+    Field f = ToStringStyle.class.getDeclaredField("THREAD_LOCAL_STYLE_CACHE");
+    f.setAccessible(true);
+    Object cache = f.get(null);
+    assertEquals(1, ((ThreadLocal)cache).get().size());
+    new ToStringBuilder(this).toString();
+    assertEquals(2, ((ThreadLocal)cache).get().size());
+    new ToStringStyle();
+    assertEquals(2, ((ThreadLocal)cache).get().size());
+}
+

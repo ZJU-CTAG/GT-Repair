@@ -1,0 +1,26 @@
+public void testPreserveWhitespace() {
+    String source = "/**\n" +
+            "     * @preserve\n" +
+            "\n" +
+            "     This\n" +
+            "     was\n" +
+            "     ASCII\n" +
+            "     Art\n" +
+            "\n" +
+            "     */";
+    final String expected = "/*\n" +
+            "This\n" +
+            "was\n" +
+            "ASCII\n" +
+            "Art\n" +
+            "*/";
+    assertEquals(expected, new JavaScriptCompressor(new StringReader(source), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            assertEquals("", message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            assertEquals("", message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String line

@@ -1,0 +1,27 @@
+public void testConcurrentNavigableMap() {
+    NavigableMap<String, Integer> map = new ConcurrentSkipListMap<>();
+    map.put("a", 1);
+    map.put("b", 2);
+    map.put("c", 3);
+    SimplePojo pojo = new SimplePojo(map);
+    Gson gson = new Gson();
+    Type type = new TypeToken<NavigableMap<String, Integer>>(){}.getType();
+    String json = gson.toJson(pojo);
+    System.out.println(json);
+    SimplePojo newPojo = gson.fromJson(json, SimplePojo.class);
+    assertEquals(pojo, newPojo);
+}
+
+public static class SimplePojo {
+    private NavigableMap<String, Integer> map;
+
+    public SimplePojo() {
+    }
+
+    public SimplePojo(NavigableMap<String, Integer> map) {
+        this.map = map;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (

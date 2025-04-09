@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setTransformAMDToCJSModules(true);
+    options.setProcessCommonJSModules(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Result result = compiler.compile(
+        SourceFile.fromCode("echo.js", "define(function() { return { echo: function(val) { window.console.log(val); }}});"),
+        SourceFile.fromCode("echo-main.js", "var echo = require('echo'); echo.echo('hello world');"),
+        options);
+    assertTrue(result.success);
+    assertEquals("", compiler.toSource());

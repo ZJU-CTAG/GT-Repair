@@ -1,0 +1,17 @@
+public void testIssue108() {
+    @Fake
+    abstract class FakeUserAccount implements UserAccount {
+        private final List<String> emails = new ArrayList<>();
+
+        @Override public void addEmail(String email) {
+            emails.add(email);
+        }
+        @Override public List<String> getEmails() {
+            return ImmutableList.copyOf(emails);
+        }
+    }
+
+    FakeUserAccount userAccount = Mockito.mock(FakeUserAccount.class);
+    userAccount.addEmail("foo@bar.com");
+    assertEquals(ImmutableList.of("foo@bar.com"), userAccount.getEmails());
+}

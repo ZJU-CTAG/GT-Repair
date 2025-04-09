@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String json = "{\"bar\":{\"x\":\"baz\"},\"foo\":{\"x\":\"bar\"}}";
+    ObjectMapper om = new ObjectMapper();
+    JsonNode node = om.readTree(json);
+    assertNotNull(node);
+    JsonNode filtered = node.get("bar");
+    assertNotNull(filtered);
+    assertTrue(filtered.isObject());
+    assertFalse(filtered.isArray());
+    assertEquals("baz", filtered.get("x").textValue());
+}

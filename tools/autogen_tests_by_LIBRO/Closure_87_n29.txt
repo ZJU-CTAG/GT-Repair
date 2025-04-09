@@ -1,0 +1,13 @@
+public void testIssueIE8() {
+    String code = "if(b.onchange){ b.onchange({\n"
+                  + "  _extendedByPrototype: Prototype.emptyFunction,\n"
+                  + "  target: b\n"
+                  + "});}";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("/test.js", code), options);
+    assertTrue(result.success);
+}

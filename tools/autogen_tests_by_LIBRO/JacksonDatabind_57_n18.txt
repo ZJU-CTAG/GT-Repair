@@ -1,0 +1,11 @@
+public void testObjectReader() throws Exception {
+    ObjectReader or = new ObjectMapper().reader();
+    byte[] json = "{\"name\": \"foo\"}".getBytes("UTF-8");
+    byte[] json2 = "{\"name\": \"bar\"}".getBytes("UTF-8");
+    byte[] toRead = new byte[json.length + json2.length];
+    System.arraycopy(json, 0, toRead, 0, json.length);
+    System.arraycopy(json2, 0, toRead, json.length, json2.length);
+    List<JsonNode> read = or.readValues(toRead, 0, json.length).readAll();
+    assertThat(read.size(), is(1));
+    assertThat(read.get(0).get("name").asText(), is("foo"));
+}

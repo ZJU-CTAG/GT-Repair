@@ -1,0 +1,17 @@
+public void testIssue() {
+    String code =
+            "window[\"anchor\"] = function (obj, modifiesProp) {" +
+            "    return (function (saved) {" +
+            "        return modifiesProp(obj) + saved;" +
+            "    })(obj[\"prop\"]);" +
+            "};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(false);
+    compiler.compile(
+            SourceFile.fromCode("externs.js", "var window;"),
+            SourceFile.fromCode("input.js", code),
+            options);
+    assertEquals(1, compiler.getErrorCount());
+}

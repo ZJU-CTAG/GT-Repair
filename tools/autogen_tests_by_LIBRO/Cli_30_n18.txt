@@ -1,0 +1,17 @@
+public void testIssue108() {
+    class TestOptions {
+        @Option(name="--opt", required = true, help = true) String opt;
+        @Option(name="--other", required = true, help = true) String other;
+        @OptionGroup(exclusive = true, mutuallyExclusive = true) List<String> optGroup;
+    }
+    TestOptions opts = new TestOptions();
+    opts.optGroup = new ArrayList<String>();
+    opts.optGroup.add("opt");
+    opts.optGroup.add("other");
+
+    CmdLineParser parser = new CmdLineParser(opts);
+    Properties defaults = new Properties();
+    defaults.put("opt", "opt");
+    defaults.put("other", "other");
+    parser.parse(defaults);
+}

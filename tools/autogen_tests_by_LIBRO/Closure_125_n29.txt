@@ -1,0 +1,13 @@
+public void testIssue() {
+    Compiler compiler = new Compiler(new PrintStream(new NullOutputStream()));
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("test1.js", "var test = {}; " +
+                    "var test;")},
+            new CompilerOptions() {
+                {
+                    prettyPrint = true;
+                }
+            });
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

@@ -1,0 +1,28 @@
+public void testCLI1() {
+    try {
+        OptionBuilder.withLongOpt("targetx");
+        OptionBuilder.create();
+    } catch (Exception e) {
+        //
+    }
+    try {
+        OptionBuilder.withLongOpt("target");
+        OptionBuilder.create();
+    } catch (Exception e) {
+        fail("CLI-1.2 regression");
+    }
+}
+
+public void testCLI1parse() {
+    try {
+        new PosixParser().parse(new Options(), new String[]{"-targetx","opt"});
+    } catch (Exception e) {
+        //
+    }
+    try {
+        CommandLine cmd = new PosixParser().parse(new Options(), new String[]{"-target","opt"});
+        assertEquals("opt", cmd.getOptionValue("target"));
+    } catch (Exception e) {
+        fail("CLI-1.2 regression");
+    }
+}

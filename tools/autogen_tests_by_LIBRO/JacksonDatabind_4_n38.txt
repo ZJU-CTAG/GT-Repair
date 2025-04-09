@@ -1,0 +1,9 @@
+public void testIssue112 () throws Exception {
+    try {
+        mapper.readerForUpdating(new ArrayList<String>()).readValue(new StringReader("[1,2]"));
+        fail("should have thrown an error");
+    }
+    catch (InvalidFormatException e) {
+        assertEquals(-1, e.getPath().get(0).getIndex());
+    }
+}

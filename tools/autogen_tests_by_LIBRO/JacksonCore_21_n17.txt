@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    final String JSON = "{\"a\":123,\"array\":[1,2],\"ob\": {\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    final String EXPECTED = "{\"ob\":{\"value\":3}}";
+    JsonParser p0 = createParserUsingReader(JSON);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    JsonGenerator g = createGenerator(out);
+    while (p.nextToken() != null) {
+        g.copyCurrentEvent(p);
+    }
+    g.close();
+    String json = out.toString("UTF-8");
+    assertEquals(EXPECTED, json);
+}

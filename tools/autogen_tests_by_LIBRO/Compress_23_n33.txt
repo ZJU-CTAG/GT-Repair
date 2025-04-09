@@ -1,0 +1,18 @@
+public void testIssue7z() throws Exception {
+    File srcFile = new File(getClass().getResource("/compress-1.7-src.zip").getFile());
+    File dstFile = new File(getTargetDir(), "compress-1.7-src.7z");
+    SevenZOutputFile out = new SevenZOutputFile(dstFile);
+    out.setContentCompression(SevenZMethod.LZMA2);
+    out.setContentMethods(Collections.<ContentMethod>singletonList(new LZMA2Options(1 << 27)));
+    ZipArchiveEntry entry = new ZipArchiveEntry(srcFile, "compress-1.7-src.zip");
+    out.putArchiveEntry(entry);
+    FileInputStream in = new FileInputStream(srcFile);
+    try {
+        IOUtils.copy(in, out);
+    } finally {
+      in.close();
+    }
+    out.closeArchiveEntry();
+    out.finish();
+    SevenZFile input = new SevenZFile(dstFile);
+    entry = input.getNext

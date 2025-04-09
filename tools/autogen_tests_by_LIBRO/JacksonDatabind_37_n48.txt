@@ -1,0 +1,10 @@
+public void testRead() throws IOException {
+    final String s = "{\"version\":\"1.0\",\"schemas\":[{\"name\":\"FoodMart\",\"tables\":[{\"name\":\"time_by_day\",\"columns\":[{\"name\":\"time_id\"}]},{\"name\":\"sales_fact_1997\",\"columns\":[{\"name\":\"time_id\"}]}]}]}";
+    final JsonRoot jsonRoot = JsonUtil.mapper().readValue(s, JsonRoot.class);
+    assertNotNull(jsonRoot);
+    final JsonSchema jsonSchema = jsonRoot.schemas.get(0);
+    assertEquals("FoodMart", jsonSchema.name);
+    assertTrue(jsonSchema instanceof JsonMapSchema);
+    final JsonMapSchema jsonMapSchema = (JsonMapSchema) jsonSchema;
+    assertEquals("FoodMart", jsonMapSchema.name);
+}

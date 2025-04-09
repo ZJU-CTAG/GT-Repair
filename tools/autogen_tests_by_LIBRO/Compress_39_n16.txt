@@ -1,0 +1,13 @@
+public void testIssue109() throws IOException {
+    ZipFile zipFile = new ZipFile(new File("src/test/java/org/apache/commons/io/filefilter/testIssue109.zip"));
+    try {
+        Enumeration<ZipArchiveEntry> entries = zipFile.getEntriesInPhysicalOrder();
+        try {
+            entries.nextElement();
+        } catch (Exception e) {
+            assertTrue(e.getMessage().startsWith("Truncated ZIP file"));
+        }
+    } finally {
+        zipFile.close();
+    }
+}

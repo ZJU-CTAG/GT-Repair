@@ -1,0 +1,20 @@
+public void testArchiveStreamFactory() {
+    final String ENCODING = "UTF-8";
+    final String ENTRY_NAME = "Test-File.txt";
+    final String ENTRY_CONTENT = "Test";
+    byte[] byteBuffer = new byte[1024];
+    int bytesRead;
+
+    try {
+        ArchiveStreamFactory asf = new ArchiveStreamFactory();
+        ArchiveOutputStream aos = asf.createArchiveOutputStream(ArchiveStreamFactory.JAR, new FileOutputStream("test.jar"));
+        aos.setEncoding(ENCODING);
+        aos.putArchiveEntry(new ZipArchiveEntry(ENTRY_NAME));
+        aos.write(ENTRY_CONTENT.getBytes());
+        aos.closeArchiveEntry();
+        aos.close();
+
+        byte[] buffer = new byte[ENTRY_CONTENT.length()];
+        ArchiveInputStream ais = asf.createArchiveInputStream(new FileInputStream("test.jar"));
+        ais.setEncoding(ENCODING);
+        ArchiveEntry entry = ais.getNext

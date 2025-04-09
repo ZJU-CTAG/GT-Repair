@@ -1,0 +1,19 @@
+public void testIssue() {
+    String src = " /* @preserve Foo License */\n" +
+            "alert(\"foo\");\n";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(this.options);
+    this.options.setOutputCharset("UTF-8");
+    this.options.setPreserveLicenseComments(true);
+    this.options.setProcessJSDoc(true);
+    this.options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    this.options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    System.out.println(src);
+    TestErrorManager errorManager = new TestErrorManager();
+    Compiler compiler = new Compiler(errorManager);
+    compiler.compile(
+            ImmutableList.<SourceFile>of(),
+            ImmutableList.of(SourceFile.fromCode("[testcode]", src)),
+            options);
+    assertEquals(0, errorManager.getErrorCount());
+    assertEquals(1, errorManager.getWarningCount());
+    assertEquals(

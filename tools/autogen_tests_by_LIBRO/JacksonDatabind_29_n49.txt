@@ -1,0 +1,20 @@
+public void test() {
+    String json = "{\"a\": {\"name\": \"John\"}}";
+    PolymorphicPojo pojo = new ObjectMapper().readValue(json, PolymorphicPojo.class);
+    assertNotNull(pojo.a);
+    assertEquals("John", pojo.a.name);
+}
+
+class PolymorphicPojo {
+    @JsonTypeInfo(use = Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = Person.class, name = "person")
+    })
+    public AbstractPerson a;
+}
+
+abstract class AbstractPerson {
+    public String name;
+}
+
+class Person extends AbstractPerson {}

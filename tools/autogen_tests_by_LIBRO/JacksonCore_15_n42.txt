@@ -1,0 +1,9 @@
+public void testFilteringIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(Pojo.class, PojoMixin.class);
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(
+            mapper.getFactory().createGenerator(new ByteArrayOutputStream(), JsonEncoding.UTF8),
+            new SimpleBeanPropertyFilter(), false, null);
+    mapper.writer(new SimpleFilterProvider().addFilter("MyFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name"))).writeValue(delegate, new Pojo("Foo", "Bar"));
+    assertTrue(delegate.getAllowMultipleMatches());
+}

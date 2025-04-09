@@ -1,0 +1,9 @@
+public void testStringCollectionDeserializer() throws IOException {
+    CustomCollection<CustomString> coll = new CustomCollection<>();
+    coll.add(new CustomString("hello"));
+    coll.add(new CustomString("world"));
+    ObjectMapper objectMapper = new ObjectMapper();
+    String serialized = objectMapper.writeValueAsString(coll);
+    CustomCollection<CustomString> deserialized = objectMapper.readValue(serialized, new TypeReference<CustomCollection<CustomString>>() {});
+    assertEquals(coll, deserialized);
+}

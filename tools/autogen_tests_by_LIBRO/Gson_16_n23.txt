@@ -1,0 +1,10 @@
+public void testGsonTypeVariable() {
+    // This fails
+    new Gson().getAdapter(TestType.class);
+    // This passes
+    new GsonBuilder().enableComplexMapKeySerialization().create().getAdapter(TestType.class);
+}
+
+private static class TestType<K> {
+    TestType<? super K> superType;
+}

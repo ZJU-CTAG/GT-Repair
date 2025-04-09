@@ -1,0 +1,15 @@
+public void testOptionBuilderWithIllegalArgumentException() throws Exception {
+    Options options = new Options();
+    OptionBuilder.withLongOpt("test");
+    // With the following line commented, the test will pass.
+    OptionBuilder.withDescription("test");
+    try {
+        options.addOption(OptionBuilder.create());
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException iae) {
+        // Expected
+    }
+    // Next invocation of OptionBuilder will fail without the reset
+    OptionBuilder.withLongOpt("test2");
+    options.addOption(OptionBuilder.create());
+}

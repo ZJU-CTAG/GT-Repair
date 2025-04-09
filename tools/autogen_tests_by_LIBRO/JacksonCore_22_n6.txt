@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    FilteringGeneratorDelegate d = new FilteringGeneratorDelegate(new JsonFactory().createGenerator(new ByteArrayOutputStream()), new SimpleBeanPropertyFilter(), new SimpleFilterProvider().addFilter("filter1", SimpleBeanPropertyFilter.serializeAllExcept("b")));
+    d.writeStartObject();
+    d.writeFieldName("a");
+    d.writeNumber(1);
+    d.writeFieldName("b");
+    d.writeNumber(2);
+    d.writeFieldName("c");
+    d.writeNumber(3);
+    d.writeEndObject();
+    assertEquals(2, d.getMatchCount());
+}

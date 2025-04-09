@@ -1,0 +1,13 @@
+public void testNonStaticThreadLocal() throws Exception {
+	assertTrue(System.getProperty("java.version").startsWith("1.6."));
+
+	ClassPool pool = ClassPool.getDefault();
+	pool.appendSystemPath();
+	pool.appendClassPath(new ClassClassPath(this.getClass()));
+	pool.appendClassPath(new ClassClassPath(Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.lang3.builder.ToStringStyle")));
+	pool.appendClassPath(new ClassClassPath(Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.lang3.builder.HashCodeBuilder")));
+	CtClass toStringStyle = pool.getCtClass("org.apache.commons.lang3.builder.ToStringStyle");
+	CtClass hashCodeBuilder = pool.getCtClass("org.apache.commons.lang3.builder.HashCodeBuilder");
+
+	CtField field = toStringStyle.getField("CACHE");
+	field.setModifiers(Modifier.PRIVATE + Modifier.FINAL);

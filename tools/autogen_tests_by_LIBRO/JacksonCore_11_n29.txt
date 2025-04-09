@@ -1,0 +1,13 @@
+public void testIssueRepro() {
+    ObjectMapper mapper = new ObjectMapper();
+    ServerIndexPair sip = new ServerIndexPair(new byte[2080]);
+    for (int i = 0; i < 10000; ++i) {
+        byte[] s = mapper.writeValueAsBytes(ImmutableMap.of(UUID.randomUUID().toString(), sip));
+        Map<String, ServerIndexPair> metadata = mapper.readValue(s, new TypeReference<Map<String, ServerIndexPair>>(){});
+        for (Entry<String, ServerIndexPair> metadataEntry : metadata.entrySet()) {
+            String indexPairString = mapper.writeValueAsString(metadataEntry.getValue());
+            assertNotNull(indexPairString);
+        }
+        logger.error("Iteration: {}", i);
+    }
+}

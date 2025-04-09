@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String input = "{ \"a\" : \"\" }";
+    A a = mapper.readValue(input, A.class);
+    assertEquals(null, a.a);
+    String json = mapper.writeValueAsString(a);
+    assertEquals("{}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+static class A {
+    public final String a;
+    public A() {
+        a = "";
+    }
+}

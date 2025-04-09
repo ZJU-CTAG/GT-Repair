@@ -1,0 +1,26 @@
+public void testFilter() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectWriter writer = mapper.writer(
+            new FilteringGeneratorDelegate(mapper.getSerializerProvider(),
+                    new SimpleBeanPropertyFilter() {
+                        @Override
+                        protected boolean include(BeanPropertyWriter writer) {
+                            return true;
+                        }
+
+                        @Override
+                        protected boolean include(PropertyWriter writer) {
+                            return true;
+                        }
+                    }, false));
+
+    SimpleBean bean = new SimpleBean();
+    bean.setTheInt(1);
+    bean.setTheString("one");
+    bean.setTheOtherInt(2);
+    bean.setTheOtherString("two");
+
+    String json = writer.writeValueAsString(bean);
+    System.out.println(json);
+    assertEquals("{\"theString\":\"one\",\"theOtherString\":\"two\"}", json);
+}

@@ -1,0 +1,19 @@
+public void testGroupConstraints() throws Exception {
+    Options options = new Options();
+    OptionGroup groupA = new OptionGroup();
+    groupA.addOption(new Option("a"));
+    groupA.addOption(new Option("b"));
+    OptionGroup groupB = new OptionGroup();
+    groupB.addOption(new Option("c"));
+    groupB.addOption(new Option("d"));
+    groupB.setMinimum(2);
+    options.addOptionGroup(groupA);
+    options.addOptionGroup(groupB);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-a", "-d"});
+    assertTrue(cmd.hasOption('a'));
+    assertFalse(cmd.hasOption('b'));
+    assertFalse(cmd.hasOption('c'));
+    assertTrue(cmd.hasOption('d'));
+}

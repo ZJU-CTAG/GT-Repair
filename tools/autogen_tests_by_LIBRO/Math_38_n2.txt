@@ -1,0 +1,30 @@
+public void testBOBYQAOptimizer() {
+    final int dim = 3;
+
+    // the following is almost the same as in the test above
+    // except for the number of interpolation points
+    MultivariateRealFunction func = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            double prod = 1;
+            for (int i = 0; i < dim; i++) {
+                prod *= (x[i] - 1);
+            }
+            return prod;
+        }
+    };
+
+    MultivariateVectorialFunction grad = new MultivariateVectorialFunction() {
+        public double[] value(double[] x) {
+            double[] grad = new double[dim];
+            double prod = 1;
+            for (int i = 0; i < dim; i++) {
+                prod *= (x[i] - 1);
+            }
+            for (int i = 0; i < dim; i++) {
+                grad[i] = prod / (x[i] - 1);
+            }
+            return grad;
+        }
+    };
+
+    double[] startPoint = new double

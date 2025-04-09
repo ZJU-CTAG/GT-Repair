@@ -1,0 +1,23 @@
+public void testHandleOwnership() throws IOException {
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    InputStream input = new ByteArrayInputStream(new byte[0]);
+    IOContext context = new IOContext(new BufferRecycler(), null, false);
+
+    // write some bytes
+    for (int i = 0; i < 100; i++) {
+        stream.write(i);
+    }
+
+    // first buffer is too small, so it's replaced
+    assertEquals(0, context.allocWriteEncodingBuffer(input, 100).length);
+
+    // second one is just fine
+    assertEquals(100, context.allocWriteEncodingBuffer(input, 100).length);
+    assertEquals(100, context.allocWriteEncodingBuffer(input, 500).length);
+
+    // third is bigger, so it's replaced
+    assertEquals(500, context.allocWriteEncodingBuffer(input, 500).length);
+
+    // fourth is just fine
+    assertEquals(500, context.allocWriteEncodingBuffer(input, 500).length);
+    assertEquals(500, context.allocWriteEncoding

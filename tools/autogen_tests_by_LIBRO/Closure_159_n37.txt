@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(CommandLineRunner.getDefaultExterns(),
+            ImmutableList.of(SourceFile.fromCode("test.js",
+                    "function preload_check_all(id) {\n" +
+                    "    var checks = $(\":checkbox[name='"+id+"[]']\");\n" +
+                    "    checks.each(function() {\n" +
+                    "        this.checked = true;\n" +
+                    "        $(this).trigger('change');\n" +
+                    "    });\n" +
+                    "}\n" +
+                    "\n" +
+                    "$(document).ready(function

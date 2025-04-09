@@ -1,0 +1,23 @@
+public void testIssue108() {
+
+    // This is a simple test to show a large difference in the precision of estimates near the upper bound
+    // and near the lower bound.
+
+    // This is a simple model of a linear relationship with a random noise term.
+    // The true values of the model parameters are 4 for a, 1 for b and 0 for c.
+    // We will attempt to fit these using a CMAESOptimizer.
+    // We will fit the parameter a on the interval [0,10] and the parameter b on the interval [0,2].
+
+    // We will use a very large number of iterations (20000) to ensure that the optimizer has converged.
+    CMAESOptimizer opt = new CMAESOptimizer(
+                             20000, // Max Iterations
+                             0, // StopFitness
+                             true, // isActiveCMA
+                             10, // Diagonal Only
+                             0, // CheckFeasableCount
+                             1, // Replacements
+                             new MersenneTwister(), // randomGenerator
+                             false // generateStatistics
+                         );
+
+    double[] guess = {

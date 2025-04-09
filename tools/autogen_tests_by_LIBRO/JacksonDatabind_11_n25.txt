@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception
+{
+    final String DOC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"+
+        "<something>\n"+
+        " <entity>\n"+
+        "  <string>abc</string>\n"+
+        "  <int>123</int>\n"+
+        " </entity>\n"+
+        "</something>";
+
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(DeserializationConfig.Feature.USE_ANNOTATIONS, false);
+    Something value = mapper.readValue(new StringReader(DOC), Something.class);
+    assertNotNull(value.getEntity());
+}

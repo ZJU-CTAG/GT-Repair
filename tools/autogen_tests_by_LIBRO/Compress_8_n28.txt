@@ -1,0 +1,17 @@
+public void testTar() throws Exception {
+    // Create the tar file
+    File tarFile = File.createTempFile("test", ".tar");
+    tarFile.deleteOnExit();
+    TarArchiveOutputStream tarOut = new TarArchiveOutputStream(new FileOutputStream(tarFile));
+    TarArchiveEntry entry = new TarArchiveEntry("foo");
+    entry.setSize(0x1fffL);
+    tarOut.putArchiveEntry(entry);
+    tarOut.closeArchiveEntry();
+    tarOut.close();
+
+    // Open the tar file
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(new FileInputStream(tarFile));
+    entry = tarIn.getNextTarEntry();
+    assertEquals(0x1fffL, entry.getSize());
+    tarIn.close();
+}

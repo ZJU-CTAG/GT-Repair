@@ -1,0 +1,15 @@
+public void testEnumMap() throws Exception {
+    assertThat(new ObjectMapper().writeValueAsString(new MyMap()), is("{\"some-key\":\"SomeValue\"}"));
+}
+
+public static class MyMap {
+    @JsonProperty("some-key")
+    public EnumMap<MyEnum, String> map = new EnumMap<>(MyEnum.class);
+    public MyMap() {
+        map.put(MyEnum.SomeValue, "SomeValue");
+    }
+}
+
+public enum MyEnum {
+    @JsonProperty("SomeValue") SomeValue
+}

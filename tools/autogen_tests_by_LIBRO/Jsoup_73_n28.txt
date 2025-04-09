@@ -1,0 +1,12 @@
+public void testIssue146() throws Exception {
+    File htmlFile = new File("index.html");
+    Document doc = Jsoup.parse(htmlFile, "UTF-8", "");
+    
+    // Check if we can find element with some namespace
+    Element element = doc.select("html|meta").first();
+    assertEquals(element.tagName(), "html:meta");
+    
+    // Check if element that is following html:meta have html namespace
+    element = doc.select("meta").first();
+    assertEquals(element.tagName(), "meta");
+}

@@ -1,0 +1,17 @@
+public void testJsonStreamContexts() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    JsonGenerator gen = factory.createGenerator(System.out);
+    assertEquals(0, gen.getOutputContext().getEntryCount());
+
+    // write as String
+    gen.writeString("abc");
+    assertEquals(1, gen.getOutputContext().getEntryCount());
+
+    // convert to String
+    gen.writeNumber(123);
+    assertEquals(2, gen.getOutputContext().getEntryCount());
+
+    // convert to String
+    gen.writeBoolean(true);
+    assertEquals(3, gen.getOutputContext().getEntryCount());
+}

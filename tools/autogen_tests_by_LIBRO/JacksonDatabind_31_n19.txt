@@ -1,0 +1,17 @@
+public void testIssue() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final ObjectWriter objectWriter = objectMapper.writer(new AntPathFilter("name", "address.name"));
+    final ObjectNode obj = createObject();
+    final String jsonString = objectWriter.writeValueAsString(obj);
+    final String jsonString2 = objectMapper.convertValue(obj, String.class);
+    Assert.assertEquals(jsonString, jsonString2);
+}
+
+private ObjectNode createObject() {
+    final ObjectNode obj = new ObjectNode(JsonNodeFactory.instance);
+    obj.put("name", "John Doe");
+    final ObjectNode address = new ObjectNode(JsonNodeFactory.instance);
+    address.put("name", "Foo Street");
+    obj.put("address", address);
+    return obj;
+}

@@ -1,0 +1,20 @@
+public void testIssue268() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.initOptions(options);
+    Result result = compiler.compile(JSSourceFile.fromCode("testFile", "/**\n" +
+            " * @this {bug.Thing}\n" +
+            " */\n" +
+            "bug.sharedMethod = function() {};\n"),
+            JSSourceFile.fromCode("testFile", "/**\n" +
+                    " * @constructor\n" +
+                    " */\n" +
+                    "bug.A = function() {};\n"),
+            JSSourceFile.fromCode("testFile", "/**\n" +
+                    " * @constructor\n" +
+                    " */\n" +
+                    "bug.B = function() {};\n"),
+            JSSourceFile.fromCode("testFile", "/**\n" +
+                    " * @type {bug.A|bug.B}\n" +
+                    " */\n" +
+                    "bug.T

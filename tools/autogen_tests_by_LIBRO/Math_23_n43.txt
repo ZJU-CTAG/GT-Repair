@@ -1,0 +1,17 @@
+public void testBrentOptimizer() {
+    MultivariateFunction f = new MultivariateFunction() {
+
+        public double value(double[] point) {
+            return -point[0] * point[0];
+        }
+    };
+
+    double[] startPoint = {-1.0};
+    double[] lB = {-2.0};
+    double[] uB = {2.0};
+
+    MultivariateRealOptimizer optimizer = new BrentOptimizer(1e-9, 1e-14);
+    optimizer.optimize(100, f, GoalType.MINIMIZE, startPoint);
+    System.out.println("Point: " + optimizer.getPoint()[0]);
+    System.out.println("Value: " + optimizer.getValue());
+}

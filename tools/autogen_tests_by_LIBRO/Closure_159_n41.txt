@@ -1,0 +1,14 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compiler.options);
+    Result result = compiler.compile(
+        new File("lib/jquery.multicheck.js"),
+        new File("src/test/resources/jquery.multicheck.js")
+    );
+    if (!result.success) {
+        throw new RuntimeException(result.toString());
+    }
+    assertTrue(result.code.indexOf("function preload_check_all(") < 0);
+    assertTrue(result.code.indexOf("function a(") > 0);
+    assertTrue(result.code.indexOf("a(b)") > 0);
+}

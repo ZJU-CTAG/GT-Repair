@@ -1,0 +1,9 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    RemoteCall message = new RemoteCall(new CommandAPDU(), new ResponseReceiver());
+    String json = mapper.writeValueAsString(message);
+    RemoteCall value = mapper.readValue(json, RemoteCall.class);
+    assertEquals(CommandAPDU.class, value.getArgs()[0].getClass());
+}

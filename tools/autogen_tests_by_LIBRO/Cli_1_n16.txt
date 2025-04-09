@@ -1,0 +1,16 @@
+public void testCommandLine() {
+    String[] argv = {"-d"};
+    String debugOpt = "debug";
+    Option debug = OptionBuilder
+            .withArgName(debugOpt)
+            .withDescription("turn on debugging")
+            .withLongOpt(debugOpt)
+            .create('d');
+    Options options = new Options();
+    options.addOption(debug);
+    CommandLine commandLine = new GnuParser().parse(options, argv);
+    String dbg = commandLine.getOptionValue(debugOpt);
+    assertTrue(dbg == null);
+    dbg = commandLine.getOptionValue('d');
+    assertFalse(dbg == null);
+}

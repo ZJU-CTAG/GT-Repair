@@ -1,0 +1,14 @@
+public void testFilterDelegate() {
+    ObjectMapper mapper = new ObjectMapper();
+    FilteringGeneratorDelegate generator = new FilteringGeneratorDelegate(mapper.getFactory().createGenerator(new StringWriter()), new NameMatchFilter("id", "name"), false, false); //set _allowMultipleMatches to false
+    generator.writeStartObject();
+    generator.writeFieldName("id");
+    generator.writeNumber(1);
+    generator.writeFieldName("name");
+    generator.writeString("John Doe");
+    generator.writeFieldName("age");
+    generator.writeNumber(35);
+    generator.writeEndObject();
+    generator.flush();
+    generator.close();
+}

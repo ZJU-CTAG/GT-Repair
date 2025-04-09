@@ -1,0 +1,10 @@
+public void testIssue121() {
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("b", false, "toggle -b");
+    PosixParser parser = new PosixParser();
+    CommandLine cl = parser.parse(opts, new String[]{"-z", "-a", "foo"}, false);
+    assertEquals(false, cl.hasOption("z"));
+    assertEquals(true, cl.hasOption("a"));
+    assertEquals(false, cl.hasOption("b"));
+}

@@ -1,0 +1,8 @@
+public void testIssue107() {
+    File file = getFile("invalid-entry.jar");
+    try (ZipFile zipFile = new ZipFile(file)) {
+        ZipArchiveEntry entry = zipFile.getEntriesInPhysicalOrder("META-INF/maven/").iterator().next();
+        assertFalse(entry.isUnixSymlink());
+    }
+}
+

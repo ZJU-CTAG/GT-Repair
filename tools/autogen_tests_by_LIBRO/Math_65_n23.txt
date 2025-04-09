@@ -1,0 +1,16 @@
+public void testIssue108() {
+    double[][] o = new double[][] { {0}, {2}, {4}, {6}, {8} };
+    double[] w = new double[] { 1, 2, 4, 2, 1 };
+    double[] c = new double[] { 1, 2 };
+    double[] r = new double[] { 0, 0, 0, 0, 0 };
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    for (int i = 0; i < o.length; ++i) {
+        obs.add(o[i][0], r[i] + c[0] + c[1] * o[i][0], w[i]);
+    }
+    PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+    double[] coeff = fitter.fit(obs.toList());
+    double chisq = fitter.getChiSquare();
+    double rms = fitter.getRMS();
+    double expectedChisq = 0;
+    double expectedRms = 0;
+    for (

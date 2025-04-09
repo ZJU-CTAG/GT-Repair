@@ -1,0 +1,24 @@
+public void testNullAndEmpty() throws IOException
+{
+    LoggingEvent event = new LoggingEvent();
+    event.setArgumentArray(new Object[] { "Foo", null });
+
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder();
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    encoder.setOutputStream(bout);
+
+    encoder.loggingEventEncoded(event);
+    encoder.close();
+
+    byte[] data = bout.toByteArray();
+
+    LoggingEvent deserialized = new LoggingEvent();
+    LoggingJsonDecoder decoder = new LoggingJsonDecoder();
+    decoder.setOutputStream(deserialized);
+
+    InputStream in = new ByteArrayInputStream(data);
+    decoder.processData(in);
+
+    Object[] argumentArray = deserialized.getArgumentArray();
+    ArgumentArraySerializerTest.assertArgumentArrayNullAndEmpty(argumentArray);
+}

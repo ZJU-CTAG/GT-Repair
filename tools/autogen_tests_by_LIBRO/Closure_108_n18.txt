@@ -1,0 +1,17 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+
+    String code = "var goog = {};goog.scope;" +
+            "var ns = {};ns.sub = {};/** @constructor */ns.sub.C = function() {};" +
+            "goog.scope(function() {" +
+            "  var sub = ns.sub;" +
+            "  /** @type {sub.C} */var x = null;" +
+            "});";
+
+    Result result = compiler.compile(
+            JSSourceFile.fromCode("input", code),
+            JSSourceFile.fromCode("externs", ""));
+    assertTrue(!result.success);
+}

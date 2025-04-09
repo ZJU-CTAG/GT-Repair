@@ -1,0 +1,13 @@
+public void testWithTypeId() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"@class\":\"java.lang.String\",\"value\":\"foo\"}";
+    //String str = mapper.readValue(json, String.class); // this would fail
+    TestType<String> str = mapper.readValue(json, new TypeReference<TestType<String>>(){});
+    assertEquals("foo", str.value);
+}
+
+static class TestType<T> {
+    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+    public T value;
+}
+

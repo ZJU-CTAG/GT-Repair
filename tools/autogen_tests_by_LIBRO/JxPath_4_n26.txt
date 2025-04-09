@@ -1,0 +1,20 @@
+public void testJXPath() {
+    File f = new File("test.xml");
+    FileOutputStream fos = new FileOutputStream(f);
+    PrintStream ps = new PrintStream(fos);
+    ps.println("<?xml version='1.0' encoding='UTF-8'?>");
+    ps.println("<root>");
+    ps.println(" <value> 12324 56</value>");
+    ps.println("</root>");
+    ps.close();
+    fos.close();
+
+    InputStream is = new FileInputStream(f);
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+    is.close();
+    f.delete();
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    String value = (String) ctx.getValue("/root/value");
+    assertEquals("12324 56", value);
+}

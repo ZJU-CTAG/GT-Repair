@@ -1,0 +1,19 @@
+public void testUuid() throws Exception {
+    String text = "not a uuid";
+    ObjectMapper objectMapper = new ObjectMapper().addHandler(new DeserializationProblemHandler() {
+        @Override
+        public Object handleWeirdStringValue(DeserializationContext ctxt, Class<?> targetType, String valueToConvert, String failureMsg) throws IOException {
+            if (targetType == UUID.class) {
+                // do something
+                return null;
+            }
+            return super.handleWeirdStringValue(ctxt, targetType, valueToConvert, failureMsg);
+        }
+    });
+    try {
+        objectMapper.readValue(quote(text), UUID.class);
+        fail();
+    } catch (InvalidFormatException ignored) {
+        // ignore
+    }
+}

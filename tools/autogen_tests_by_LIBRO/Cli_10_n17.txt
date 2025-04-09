@@ -1,0 +1,14 @@
+public void testMissingOptions() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('a'));
+    opts.addOption(OptionBuilder.isRequired().create('b'));
+    String[] argv = new String[] { "-a", "-b" };
+    CommandLineParser parser = new GnuParser();
+    try {
+        CommandLine firstCL = parser.parse(opts, argv);
+        CommandLine secondCL = parser.parse(opts, new String[0]);
+        fail("Should have thrown exception");
+    } catch (ParseException e) {
+        // expected
+    }
+}

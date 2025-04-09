@@ -1,0 +1,13 @@
+public void testMinimalNegativeNumbers() {
+    StringWriter out = new StringWriter();
+    try {
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.MINIMAL);
+        printer.printRecord(Arrays.asList((Object) -1L, 1L));
+        printer.printRecord(Arrays.asList((Object) 0L, 0L));
+        printer.printRecord(Arrays.asList((Object) 1L, 1L));
+        printer.flush();
+    } catch (IOException e) {
+        Assert.fail(e.getMessage());
+    }
+    Assert.assertEquals("-1,1\n0,0\n1,1\n", out.toString());
+}

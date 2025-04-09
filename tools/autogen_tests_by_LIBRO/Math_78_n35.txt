@@ -1,0 +1,22 @@
+public void testIssue108() {
+    double start = 67.5;
+    double end = 112.5;
+    double tE = 90.0;
+    double gStart = g(start);
+    double gEnd = g(end);
+    // check the interval contains an event
+    double gT = g(tE);
+    if ((gStart <= 0 && gEnd >= 0) || (gStart >= 0 && gEnd <= 0)) {
+        double startT = tE;
+        // check we are not very close to the event
+        if ((gStart <= 0 && gEnd >= 0) || (gStart >= 0 && gEnd <= 0)) {
+            startT = end;
+        }
+        double newEnd;
+        for (newEnd = end; Math.abs(startT - tE) < 1.0e-6; newEnd += (end - start)) {
+            // increment the interval until the event is not on its boundary
+            startT = newEnd;
+            gStart = gEnd;
+            gEnd = g(newEnd);
+        }
+        // check we are not very close to the event

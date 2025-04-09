@@ -1,0 +1,22 @@
+public void testIssue110() {
+    Compiler.setLoggingLevel(Level.INFO);
+    CompilerOptions options = new CompilerOptions();
+    options.setExternExports(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceMapTestCase.EXTERNS,
+            Lists.newArrayList(SourceFile.fromCode("test.js",
+                    "/** @typedef {Object} */ var TestInterface;" +
+                            "function test(/** TestInterface */ t) { }" +
+                            "function test2(/** TestInterface= */ t) { }")),
+            options);
+    assertTrue(result.success);
+    assertEquals(
+            "/** @typedef {Object} */ var TestInterface;" +
+                    "function test(t) {" +
+                    "  TestInterface; var t;" +
+                    "}" +
+                    "function test2(t) {" +
+                    "  TestInterface; var t;" +
+                   

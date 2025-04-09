@@ -1,0 +1,36 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.readValue("{\"message\":\"error\"}", MyException.class);
+}
+
+@JsonIgnoreProperties("cause")
+public static final class MyException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    private String message;
+
+    public MyException() {
+    }
+
+    public MyException(String message) {
+        super(message);
+    }
+
+    public MyException(Throwable cause) {
+        super(cause);
+    }
+
+    public MyException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

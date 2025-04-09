@@ -1,0 +1,20 @@
+public void testLocale() throws Exception {
+    Locale defaultLocale = Locale.getDefault();
+    try {
+        Locale.setDefault(new Locale("fr", "FR"));
+        DateFormat df = FastDateFormat.getDateInstance();
+        Date date = df.parse("13 mars 11");
+        assertEquals(2011, date.getYear() + 1900);
+        assertEquals(2, date.getMonth());
+        assertEquals(13, date.getDate());
+        Locale.setDefault(new Locale("en", "US"));
+        try {
+            df.parse("3/13/11");
+            fail();
+        } catch (ParseException e) {
+            // expected
+        }
+    } finally {
+        Locale.setDefault(defaultLocale);
+    }
+}

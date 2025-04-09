@@ -1,0 +1,20 @@
+public void testPrototypeNotation() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.VERBOSE);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    SourceFile extern = SourceFile.fromCode("externs",
+            "/** @interface */ function MyParent() {}\n" +
+                    "/** @param {*} a */ MyParent.prototype.MyMethod = function(a) {};\n");
+    SourceFile input = SourceFile.fromCode("input",
+            "/** @constructor @implements {MyParent} */\n" +
+                    "function MyClass() {}\n" +
+                    "MyClass.prototype['MyMethod'] = function(a) {\n" +
+                    "  this.a2 = a;\n" +
+                    "}\n" +
+                    "window['My

@@ -1,0 +1,10 @@
+public void testQuadraticMin() throws MathException {
+        UnivariateRealFunction f = new QuadraticFunction();
+        BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+        UnivariateRealPointValuePair optimum =
+            optimizer.optimize(new MaxEval(100),
+                new UnivariateRealFunctionGoalAdapter(f),
+                GoalType.MINIMIZE,
+                new SearchInterval(-10, 10));
+        assertEquals(f.value(optimum.getPoint()), 0, 1e-10);
+    }

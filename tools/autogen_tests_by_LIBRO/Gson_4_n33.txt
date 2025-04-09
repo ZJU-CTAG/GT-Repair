@@ -1,0 +1,15 @@
+public void testJson7159() {
+    JsonFactory f = new JsonFactory();
+    Reader r = new StringReader("{\"a\":\"b\"}");
+    JsonParser jp = f.createJsonParser(r);
+    jp.setLenient(false);
+    jp.nextToken();
+    assertEquals(JsonToken.START_OBJECT, jp.getCurrentToken());
+    jp.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, jp.getCurrentToken());
+    assertEquals("a", jp.getCurrentName());
+    jp.nextToken();
+    assertEquals(JsonToken.VALUE_STRING, jp.getCurrentToken());
+    assertEquals("b", jp.getText());
+    jp.close();
+}

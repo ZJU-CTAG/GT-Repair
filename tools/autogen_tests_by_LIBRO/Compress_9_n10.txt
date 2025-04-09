@@ -1,0 +1,11 @@
+public void test() throws Exception {
+    OutputStream out = new FileOutputStream("test.tar");
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(out);
+    TarArchiveEntry entry = new TarArchiveEntry("foo");
+    tos.putArchiveEntry(entry);
+    tos.write("Hello world".getBytes());
+    tos.closeArchiveEntry();
+    tos.close();
+    assertEquals("foo", entry.getName());
+    assertEquals(11, entry.getSize());
+}

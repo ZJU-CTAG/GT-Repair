@@ -1,0 +1,21 @@
+public void testZipEntryEquals() throws Exception {
+    final File[] tmp = new File[3];
+    for (int i = 0; i < tmp.length; i++) {
+        tmp[i] = File.createTempFile("testzipentry" + i, ".tmp");
+    }
+    try {
+        final String text = "Hello World";
+        final String fileName = "test.txt";
+        final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(tmp[0]);
+        try {
+            final ZipArchiveEntry zae = new ZipArchiveEntry(fileName);
+            zos.putArchiveEntry(zae);
+            zos.write(text.getBytes());
+            zos.closeArchiveEntry();
+        } finally {
+            zos.close();
+        }
+        final ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(tmp[0]));
+        final ZipArchiveEntry zae = zais.getNextZipEntry();
+        zais.close();
+        final ZipFile zf = new ZipFile(tmp[0]);

@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkGlobalNamesLevel = CheckLevel.WARNING;
+    options.foldConstants = true;
+    options.removeDeadCode = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("testcode", "var a = 'test';")},
+            options);
+    String compiledCode = compiler.toSource();
+    assertEquals("var a=\"test\";", compiledCode);
+}

@@ -1,0 +1,19 @@
+public void testCommandLine() throws Exception {
+    Options options = new Options();
+    
+    final String debugOpt = "debug";
+    Option debug = OptionBuilder
+        .withArgName(debugOpt)
+        .withDescription("turn on debugging")
+        .withLongOpt(debugOpt)
+        .create('d');
+    
+    options.addOption(debug);
+    
+    // create the parser
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse( options, new String[] {"-d"} );
+    
+    String dbg = line.getOptionValue(debugOpt);
+    assertNotNull(dbg);
+}

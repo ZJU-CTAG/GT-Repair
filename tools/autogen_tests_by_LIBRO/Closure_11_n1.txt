@@ -1,0 +1,19 @@
+public void testIssue100() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.WARNING);
+    compiler.setPassConfig(new PassConfig(options));
+    SourceFile file = SourceFile.fromCode("test",
+            "var makeClass = function(protoMethods) {" +
+            " var clazz = function() { this.initialize.apply(this, arguments); }" +
+            " for (var i in protoMethods) { clazz.prototype[i] = protoMethods[i]; }" +
+            " return clazz;" +
+            "}" +
+            "/**" +
+            " * @constructor" +
+            " * @param {{name: string, height: number}} options" +
+            " */" +
+            "var Person = function(options) {};" +
+            "Person = makeClass(/** @lends Person.

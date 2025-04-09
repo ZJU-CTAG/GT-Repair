@@ -1,0 +1,17 @@
+public void testTypedef() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.STRICT_MODULE_DEP_CHECK, CheckLevel.OFF);
+
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> inputs = Arrays.asList(
+            SourceFile.fromCode("code",
+                    "goog.provide('a.b.c');  \n" +
+                    "goog.scope(function() {    \n" +
+                    "var b = a.b;    \n" +
+                    "var c = b.c;    \n" +
+                    "/** @typedef {string} */    \n" +
+                    "c.My

@@ -1,0 +1,22 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().create('a'));
+    options.addOption(OptionBuilder.isRequired().hasOptionalArg().create('b'));
+    options.addOption(OptionBuilder.hasArgs(2).create('c'));
+    options.addOption(OptionBuilder.hasArg().create('d'));
+    options.addOption(OptionBuilder.hasOptionalArgs(2).create('e'));
+
+    Properties props = new Properties();
+    props.setProperty("a", "true");
+    props.setProperty("b", "true");
+    props.setProperty("c", "true true");
+    props.setProperty("d", "true");
+    props.setProperty("e", "true true");
+
+    CommandLineParser parser = new GnuParser();
+
+    try {
+        CommandLine commandLine = parser.parse(options, null, props);
+        assertTrue(commandLine.hasOption('a'));
+        assertTrue(commandLine.hasOption('b'));
+        assertTrue(commandLine.hasOption('c')

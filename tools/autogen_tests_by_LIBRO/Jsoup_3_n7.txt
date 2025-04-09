@@ -1,0 +1,16 @@
+public void testIssueTest() {
+    String content = "<table><tr><td>content</td></tr></table>";
+    Document doc = Jsoup.parseBodyFragment(content);
+    Element table = doc.select("table").first();
+    table.append("<tr><td>more content</td></tr>");
+    assertEquals("<table>\n" +
+            " <tbody>\n" +
+            "  <tr>\n" +
+            "   <td>content</td>\n" +
+            "  </tr>\n" +
+            " </tbody>\n" +
+            " <tr>\n" +
+            "  <td>more content</td>\n" +
+            " </tr>\n" +
+            "</table>", table.outerHtml());
+}

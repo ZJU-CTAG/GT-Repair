@@ -1,0 +1,14 @@
+public void testBase64VariantWithTreeTraversingParser() throws IOException
+{
+    Base64Variant variant = Base64Variants.getDefaultVariant();
+    String text = "aGVsbG8gd29ybGQ=";
+    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+    String json = "\"" + variant.encode(bytes) + "\"";
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader().with(variant);
+    JsonNode node = mapper.readTree(json);
+    byte[] result = reader.treeAsTokens(node).nextValue().asText().getBytes(StandardCharsets.UTF_8);
+
+    assertThat(result).isEqualTo(bytes);
+}

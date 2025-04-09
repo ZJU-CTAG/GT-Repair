@@ -1,0 +1,22 @@
+public void testIssue1067() throws Exception {
+    final int maxEval = 10000;
+    final double min = -100;
+    final double max = 100;
+    final double startValue = 0;
+    final double expected = -0.27366;
+    final double absTol = 1.0e-5;
+    final double relTol = 1.0e-15;
+
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return (x - 2) * (x + 1) * (x - 1.5) * (x + 2);
+        }
+    };
+
+    final UnivariateRealOptimizer optimizer = new BrentOptimizer();
+    optimizer.setRelativeAccuracy(relTol);
+    optimizer.setAbsoluteAccuracy(absTol);
+    optimizer.setMaximalIterationCount(maxEval);
+    final UnivariateRealPointValuePair result = optimizer.optimize(f, GoalType.MINIMIZE, min, max, startValue);
+
+    final double value = result.getValue();

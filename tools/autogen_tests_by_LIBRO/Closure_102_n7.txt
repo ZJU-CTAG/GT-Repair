@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setLanguageVersion(Context.VERSION_1_8);
+    Parser p = new Parser(env, new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            //System.err.println(message + " at " + line + ":" + lineOffset);
+        }
+        public void error(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            //System.err.println(message + " at " + line + ":" + lineOffset);
+        }
+        public EvaluatorException runtimeError(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            return new EvaluatorException(message, sourceName, line,
+                    lineSource, lineOffset);
+        }
+    });
+    String s = "function name() { var arguments = Array.prototype.slice.call(arguments, 0); }";
+    p.parse(

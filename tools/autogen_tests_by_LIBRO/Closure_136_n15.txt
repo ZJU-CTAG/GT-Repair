@@ -1,0 +1,9 @@
+public void testSuper() {
+    String js = "$super = function() {};var obj = {method:function() {$super();}};var obj2 = {method:function() {$super();}};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setRenamingPolicy(VariableRenamingPolicy.ALL, PropertyRenamingPolicy.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(SourceFile.fromCode("input.js", js), null, options);
+    assertEquals("var obj={};obj.method=function(){$super()};var obj2={};obj2.method=function(){$super()}", compiler.toSource());
+}

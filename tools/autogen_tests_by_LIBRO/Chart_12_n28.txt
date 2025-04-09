@@ -1,0 +1,20 @@
+public void testIssue213() throws Exception {
+
+    DefaultPieDataset dataset0 = new DefaultPieDataset();
+    DefaultPieDataset dataset1 = new DefaultPieDataset();
+
+    JFreeChart chart = ChartFactory.createMultiplePieChart("Multiple Pie Chart", new CategoryToPieDataset(dataset0, "Series 0"), TableOrder.BY_ROW, true, false, false);
+    MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
+
+    // Uncomment the following to see the failure
+    //plot.setDataset(new CategoryToPieDataset(dataset1, "Series 1"));
+
+    // This works because dataset is wired to a listener
+    //plot.getPieChart().getPlot().getDataset().addChangeListener(new MyListener());
+
+    // This doesn't work because dataset is not wired to a listener
+    plot.getPieChart().getPlot().getDataset().addChangeListener(new MyListener());
+
+    dataset0.setValue("Type 1", 54.5);
+    dataset0.setValue("Type 2", 23.9);
+    dataset

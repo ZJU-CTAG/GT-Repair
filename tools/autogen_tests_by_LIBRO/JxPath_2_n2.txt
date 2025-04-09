@@ -1,0 +1,16 @@
+public void testExtensionNodeset() {
+ JXPathContext context = JXPathContext.newContext(new TestBean());
+ context.setLenient(true);
+ context.setFunctions(new ClassFunctions(TestFunctions.class, "test"));
+ Iterator iter = context.iterate("test:nodeSet()");
+ assertTrue(iter.hasNext());
+ TestBean bean = (TestBean) iter.next();
+ assertEquals(bean.count, 1);
+ assertTrue(iter.hasNext());
+ bean = (TestBean) iter.next();
+ assertEquals(bean.count, 2);
+ assertTrue(iter.hasNext());
+ bean = (TestBean) iter.next();
+ assertEquals(bean.count, 3);
+ assertFalse(iter.hasNext());
+}

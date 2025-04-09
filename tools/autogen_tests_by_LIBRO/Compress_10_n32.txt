@@ -1,0 +1,12 @@
+public void testReadWinzipUnicodeExtraFields() throws Exception {
+        final ZipFile zip = new ZipFile(getFile("unicode-winzip-extra-fields.zip"));
+        final Map<String, ZipArchiveEntry> entries = new HashMap<String, ZipArchiveEntry>();
+        for (ZipArchiveEntry zipArchiveEntry : zip.getEntries()) {
+            entries.put(zipArchiveEntry.getName(), zipArchiveEntry);
+        }
+        assertEquals(3, entries.size());
+        assertNotNull(zip.getInputStream(entries.get("\u00e4\u00f6\u00fc.txt")));
+        assertNotNull(zip.getInputStream(entries.get("\u00e4\u00f6\u00fc\u00df.txt")));
+        assertNotNull(zip.getInputStream(entries.get("\u00e4\u00f6\u00fc\u00e9.txt")));
+        zip.close();
+    }

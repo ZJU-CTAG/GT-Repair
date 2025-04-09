@@ -1,0 +1,11 @@
+public void testIssue107() {
+    // the root is at x=0.5
+    // the (x-1)^12 factor is here to make the polynomial vanish only at x=0.5
+    // the (x-0.5)^2 factor is here to make the polynomial very flat in the neighborhood of the root,
+    // thus testing the ability of the solver to properly update the bracketing points
+    PolynomialFunction f = new PolynomialFunction(new double[] { 0.0, -2.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0 });
+    double min = -1.0;
+    double max = 1.0;
+    UnivariateRealFunction derivative = f.polynomialDerivative();
+    UnivariateRealFunction secondaryDerivative = ((PolynomialFunction) derivative).polynomialDerivative();
+    BracketingNthOrderBrentSolver solver = new BracketingN

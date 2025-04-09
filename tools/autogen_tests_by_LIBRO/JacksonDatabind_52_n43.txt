@@ -1,0 +1,37 @@
+public void testExternalProperty() {
+    String json = "{\"id\":1,\"external_id\":null,\"external_type\":\"User\"}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    SomeEntity entity = mapper.readValue(json, SomeEntity.class);
+
+    assertNotNull(entity);
+    assertNotNull(entity.getExternalEntity());
+    assertEquals(Integer.valueOf(1), entity.getExternalEntity().getId());
+}
+
+public class SomeEntity {
+    private Integer id;
+    private Integer external_id;
+    private EntityType external_type;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getExternal_id() {
+        return external_id;
+    }
+
+    public void setExternal_id(Integer external_id) {
+        this.external_id = external_id;
+    }
+
+    public EntityType getExternal_type() {
+        return external_type;
+    }
+
+    public void setExternal_type

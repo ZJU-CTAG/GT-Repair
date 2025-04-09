@@ -1,0 +1,22 @@
+public void testInvalidTableContents() throws IOException {
+    String html = "<html>\n" +
+                  "    <body>\n" +
+                  "        <table>\n" +
+                  "            <tr>\n" +
+                  "                <td>\n" +
+                  "                    <table>\n" +
+                  "                        <tr>\n" +
+                  "                            <!--Comment-->\n" +
+                  "                            <table>\n" +
+                  "                                <p>Why am I here?</p>\n" +
+                  "                        </tr>\n" +
+                  "                    </table>\n" +
+                  "                </td>\n" +
+                  "            </tr>\n" +
+                  "        </table>\n" +
+                  "    </body>\n" +
+                  "</html>\n";
+    Document doc = Jsoup.parse(html);
+    doc.outputSettings().prettyPrint(true);
+    String rendered = doc.toString();
+    int endOfEmail = rendered.indexOf("Comment");

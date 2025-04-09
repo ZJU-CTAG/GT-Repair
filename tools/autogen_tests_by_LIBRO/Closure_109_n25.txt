@@ -1,0 +1,12 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setIdeMode(true);
+    options.setWarningLevel(DiagnosticGroups.ANALYZER_CHECKS, CheckLevel.OFF);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        options,
+        SourceFile.fromCode("testIssue108.js", "/** @type {function(new:?)} */ var foo = function() {};"),
+        SourceFile.fromCode("testIssue108.js", "/** @type {function(new:*)} */ var bar = function() {};"));
+    assertEquals(0, result.errors.length);
+}

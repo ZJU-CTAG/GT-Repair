@@ -1,0 +1,13 @@
+public void testOptimizationInnerVariable() throws Exception {
+    String[] inputs = new String[] {
+            "function getStack() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject().stack; } window['getStackTrace']=getStack;",
+            "function getStack() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject(); } window['getStackTrace']=getStack;"
+    };
+    for (String input : inputs) {
+        String optimized = compile(input);
+        assertFalse(optimized.contains("err"));
+        assertFalse(optimized.contains("Error"));
+        String optimized2 = compile(optimized);
+        assertEquals(optimized, optimized2);
+    }
+}

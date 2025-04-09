@@ -1,0 +1,17 @@
+public void testIssue108() {
+    DateTime date = new DateTime(2011, 6, 30, 12, 0, 0, 0);
+    DateTimeZone bst = DateTimeZone.forID("Europe/London");
+    DateTimeZone cet = DateTimeZone.forID("Europe/Paris");
+
+    DateTime endDate = new DateTime(2011, 10, 30, 12, 0, 0, 0);
+    DateTimeZone endBST = DateTimeZone.forID("Europe/London");
+    DateTimeZone endCET = DateTimeZone.forID("Europe/Paris");
+
+    DateTimeZone originalEnd = endDate.getZone();
+    DateTimeZone originalStart = date.getZone();
+
+    // First event starts at 2011-06-30T12:00:00.000+01:00, ends at 2011-10-30T12:00:00.000+01:00
+    PeriodicTimeZoneRule rule = new PeriodicTimeZoneRule("BST",
+        0, 0, 0,
+        PeriodicTimeZoneRule.TimeType.UTC_TIME,
+        // Starts at 2011-03-27T

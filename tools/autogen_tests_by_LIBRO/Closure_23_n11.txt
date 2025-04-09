@@ -1,0 +1,14 @@
+public void testFoldArraySideEffect() {
+    String[] tests = {
+        "console.log([console.log('hello, '), 'world!'][1]);",
+        "console.log([console.log('hello, '), 'world!'].map(String.prototype.trim)[1]);",
+        "console.log([console.log('hello, '), 'world!'].slice(0, 1)[1]);"
+    };
+    String expected = "console.log(\"world!\");";
+    for (String test : tests) {
+        Compiler compiler = new Compiler();
+        Result result = compiler.compile(EXTERNS, test, options);
+        assertTrue("Unexpected error compiling:\n" + test, result.success);
+        assertEquals(expected, compiler.toSource());
+    }
+}

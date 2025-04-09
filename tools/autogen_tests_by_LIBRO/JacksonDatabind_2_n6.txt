@@ -1,0 +1,13 @@
+public void testIssue() throws IOException {
+        X<Integer> v = new X<Integer>();
+        v.s = "test";
+        v.items = new ArrayList<Integer>();
+        v.items.add(new Integer(1));
+        v.items.add(new Integer(2));
+        v.items.add(new Integer(3));
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.valueToTree(v);
+        assertTrue(tree.isObject());
+        assertFalse(tree.get("items").isArray());
+        assertTrue(tree.get("items").isValueNode());
+}

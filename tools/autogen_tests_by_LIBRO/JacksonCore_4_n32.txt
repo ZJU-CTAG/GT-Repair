@@ -1,0 +1,13 @@
+public void testIssue() {
+    String longKey = StringUtils.repeat("A", 80000);
+    String json = "{\"" + longKey + "\":\"test\"}";
+
+    JsonFactory factory = new JsonFactory();
+    JsonParser parser = factory.createParser(json);
+
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+
+    parser.close();
+}

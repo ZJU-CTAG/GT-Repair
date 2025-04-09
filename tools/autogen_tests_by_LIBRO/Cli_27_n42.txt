@@ -1,0 +1,23 @@
+public void testLongOptionInGroup() {
+    Options options = new Options();
+
+    OptionGroup group = new OptionGroup();
+    group.addOption(OptionBuilder.withDescription("A")
+            .hasArg(false)
+            .isRequired(false)
+            .create("a"));
+    group.addOption(OptionBuilder.withDescription("B")
+            .hasArg(false)
+            .isRequired(false)
+            .create("b"));
+
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"-a"});
+    assertTrue(cmd.hasOption("a"));
+
+    group.setSelected(group.getOption("b"));
+    assertFalse(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+}

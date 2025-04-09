@@ -1,0 +1,16 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    Result result = compiler.compile(
+        externs(
+            SourceFile.fromCode("externs.js", "")),
+        ImmutableList.of(
+            SourceFile.fromCode("input.js",
+                "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+            SourceFile.fromCode("input2.js",
+                "/** @constructor \n * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }")
+        ),
+        options);
+    assertTrue(result.success);
+}

@@ -1,0 +1,17 @@
+public void testIssue816() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        CompilerOptions.builder()
+            .transformAmdModules(true)
+            .commonJsEntryModule("Bar.js")
+            .compilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+            .defineReplacement("goog.DEBUG", "false")
+            .addInput(SourceFile.fromCode("Bar.js", "module.exports = require('./lib/Foo');"))
+            .addInput(SourceFile.fromCode("lib/Foo.js", "module.exports = function () { return 1; }"))
+            .build(),
+        ImmutableList.of(
+            SourceFile.fromCode("Bar.js", "module.exports = require('./lib/Foo');"),
+            SourceFile.fromCode("lib/Foo.js", "module.exports = function () { return 1; }")));
+    assertTrue(result.success);
+    assertEquals(
+        "module.exports=function(){return 1};

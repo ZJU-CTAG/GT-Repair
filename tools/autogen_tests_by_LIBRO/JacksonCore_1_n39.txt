@@ -1,0 +1,15 @@
+public void testNan() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    JsonParser jp = mapper.getFactory().createParser("{\"value\":3.14}");
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken()); // "value"
+    assertEquals(JsonParser.NumberType.BIG_DECIMAL, jp.getNumberType());
+    assertEquals(new BigDecimal("3.14"), jp.getDecimalValue());
+    // And then things go bad...
+    assertToken(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    assertEquals(Double.NaN, jp.getDoubleValue());
+    assertEquals(JsonParser.NumberType.FLOAT, jp.getNumberType());
+    try {
+        jp.get

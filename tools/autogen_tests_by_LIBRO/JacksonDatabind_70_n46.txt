@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception
+{
+    final String CSV = "businessAddress.street,businessAddress.addon,businessAddress.zip,businessAddress.town,businessAddress.country,\n"
+            +"\"Street\",\"Addon\",\"Zip\",\"Town\",\"Country\",\n"
+            ;
+    CsvMapper mapper = new CsvMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Person result = mapper.readerFor(Person.class)
+            .with(CsvParser.Feature.TRIM_SPACES)
+            .readValue(CSV);
+
+    assertEquals("Street", result.businessAddress.street);
+    assertEquals("Zip", result.businessAddress.zip);
+}

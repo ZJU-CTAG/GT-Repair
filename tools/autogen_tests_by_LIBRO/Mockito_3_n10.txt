@@ -1,0 +1,13 @@
+public void testIssue108() {
+    final List<String> strings = new ArrayList<String>();
+
+    final Consumer<String[]> consumer = strings::addAll;
+    final ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+
+    consumer.accept(new String[]{"a", "b"});
+    verify(consumer).accept(captor.capture());
+
+    assertEquals(2, captor.getValue().length);
+    assertEquals("a", captor.getValue()[0]);
+    assertEquals("b", captor.getValue()[1]);
+}

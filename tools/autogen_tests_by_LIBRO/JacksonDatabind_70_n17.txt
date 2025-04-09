@@ -1,0 +1,17 @@
+public void testIssue123() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    CsvMapper csvMapper = new CsvMapper(mapper);
+    csvMapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
+    CsvSchema schema = csvMapper.schemaFor(Person.class).withHeader();
+    
+    Person p = csvMapper.readerFor(Person.class).with(schema)
+            .readValue(new File("src/test/resources/csv/case-insensitive-properties.csv"));
+    
+    assertEquals("Street", p.businessAddress.street);
+    assertEquals("Addon", p.businessAddress.addon);
+    assertEquals("Zip", p.businessAddress.zip);
+    assertEquals("Town", p.businessAddress.town);
+    assertEquals("Country", p.businessAddress.country);
+}

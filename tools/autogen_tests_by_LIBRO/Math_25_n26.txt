@@ -1,0 +1,16 @@
+public void testHarmonicGuesser() {
+    HarmonicFunction hf = new HarmonicFunction(1,0.1,1);
+    double[] data = new double[200];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = hf.value(i);
+    }
+    HarmonicFitter fitter = new HarmonicFitter(new LevenbergMarquardtOptimizer());
+    fitter.guessParameters(data);
+    ParameterGuesser guesser = new HarmonicFitter.ParameterGuesser(data);
+    double[] guess = guesser.guess();
+    double a = guess[0];
+    double omega = guess[1];
+    double phi = guess[2];
+    System.out.println(a + " " + omega + " " + phi);
+    assertTrue(a > 0);
+}

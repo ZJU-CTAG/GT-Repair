@@ -1,0 +1,14 @@
+public void testSubclassingDefaultPrettyPrinter() throws Exception
+{
+    final JsonFactory factory = new JsonFactory();
+    final ObjectMapper mapper = new ObjectMapper(factory);
+
+    // Ok for this to be subclass, but
+    final DefaultPrettyPrinter pp = new DefaultPrettyPrinter() {
+        @Override
+        public DefaultPrettyPrinter createInstance() {
+            return this;
+        }
+    };
+    mapper.writer(pp).writeValueAsString(new Object());
+}

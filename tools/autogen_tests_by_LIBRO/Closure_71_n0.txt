@@ -1,0 +1,11 @@
+public void testIssue() {
+    String js = "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }";
+    js += "\n/** @constructor \n * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }";
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test", js), options);
+    assertTrue(result.success);
+}

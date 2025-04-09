@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    ByteArrayInputStream in = new ByteArrayInputStream(new byte[0]);
+    Base64InputStream b64stream = new Base64InputStream(in, true, 0, null);
+    for (int i = 0; i < 10920; i++) {
+        int b = b64stream.read();
+        assertEquals(-1, b);
+    }
+    try {
+        b64stream.read();
+        fail("Expected EOFException");
+    } catch (EOFException expected) {
+        // expected
+    }
+}

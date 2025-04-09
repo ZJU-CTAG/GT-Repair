@@ -1,0 +1,17 @@
+public void testIssue() throws IOException {
+    InputStream is = getClass().getResourceAsStream("/test-data.tgz");
+    GzipCompressorInputStream gzIn = new GzipCompressorInputStream(is);
+    try {
+        TarArchiveInputStream tis = new TarArchiveInputStream(gzIn);
+        try {
+            TarArchiveEntry entry = null;
+            while ((entry = tis.getNextTarEntry()) != null) {
+                System.out.println("entry "+entry.getName());
+            }
+        } finally {
+            tis.close();
+        }
+    } finally {
+        gzIn.close();
+    }
+}

@@ -1,0 +1,13 @@
+public void testNull() throws Exception {
+    String expected = "test";
+    Foo mock = mock(Foo.class);
+    when(mock.bar(isNull(String.class))).thenReturn(expected);
+
+    assertEquals(expected, Whitebox.invokeMethod(mock, "bar", new Object[] { null }));
+}
+
+public class Foo {
+    public String bar(String str) {
+        return str;
+    }
+}

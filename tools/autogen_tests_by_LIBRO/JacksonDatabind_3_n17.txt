@@ -1,0 +1,12 @@
+public void testIssue107() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new AfterburnerModule());
+
+    LoggingEvent event = new LoggingEvent();
+    event.setArgumentArray(new String[] { "foo", null });
+
+    String json = objectMapper.writeValueAsString(event);
+    LoggingEvent actual = objectMapper.readValue(json, LoggingEvent.class);
+
+    assertEquals(event.getArgumentArray(), actual.getArgumentArray());
+}

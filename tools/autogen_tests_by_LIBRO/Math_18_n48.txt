@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    SimpleBounds bounds = new SimpleBounds(new double[]{0}, new double[]{1});
+    CMAESOptimizer optim = new CMAESOptimizer(30000, 1e-14, false, 0, 0, new MersenneTwister(), false, new SimplePointChecker<PointValuePair>(1, 1e-14));
+    PointValuePair pair = optim.optimize(new ObjectiveFunction(new MultivariateFunction() {
+        @Override
+        public double value(double[] x) {
+            return x[0] * x[0] * x[0];
+        }
+    }), GoalType.MINIMIZE, bounds, new InitialGuess(new double[]{0.5}));
+    System.out.println(pair.getValue());
+    System.out.println(pair.getPoint()[0]);
+}

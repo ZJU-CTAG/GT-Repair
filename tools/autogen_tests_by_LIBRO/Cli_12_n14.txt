@@ -1,0 +1,13 @@
+public void testPosixParserInteruptsDashTargetOptAsTarGetOpt() {
+    Options options = new Options();
+    Option option = new Option("t", "target", true, "Generate files for the specified target machine");
+    options.addOption(option);
+    PosixParser parser = new PosixParser();
+    try {
+        CommandLine parsedLine = parser.parse(options, new String[] { "-target", "foobar.com"});
+        assertTrue(parsedLine.hasOption("target"));
+        assertEquals("foobar.com", parsedLine.getOptionValue("target"));
+    } catch (ParseException pe) {
+        fail("Unexpected error: " + pe.getMessage());
+    }
+}

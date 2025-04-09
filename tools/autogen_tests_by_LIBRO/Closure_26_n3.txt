@@ -1,0 +1,24 @@
+public void testCommonJS() throws IOException {
+    CompilerOptions options = createCompilerOptions();
+    options.checkTypes = true;
+    options.processCommonJSModules = true;
+    options.transformAMDToCJSModules = true;
+    options.closurePass = true;
+    options.commonJSModulePathPrefix = "";
+    options.setCommonJSModulePathPrefix("");
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+
+    // The externs are set here for testing.
+    // TODO(rluble): Add externs for CommonJS and AMD to the compiler
+    // distribution.
+    List<SourceFile> externs = ImmutableList.<SourceFile> of(
+        SourceFile.fromCode("externs.js",
+            "exports = {};\n" +
+            "var module = {};\n" +
+            "module.exports = exports;\n" +
+            "var define = function() {};\n")
+    );
+
+    List<SourceFile> input = ImmutableList.<SourceFile> of

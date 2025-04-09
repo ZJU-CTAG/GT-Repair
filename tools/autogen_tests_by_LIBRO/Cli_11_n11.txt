@@ -1,0 +1,15 @@
+public void testPosixParserInterupts() {
+    Parser parser = new PosixParser();
+    Option target = new Option("t", "target", true, "Generate files for the specified target machine");
+    Options options = new Options();
+    options.addOption(target);
+    String[] args = new String[] {"-t", "foobar.com"};
+    CommandLine cl;
+    try {
+        cl = parser.parse(options, args);
+    } catch (ParseException pe) {
+        fail("Threw ParseException for valid input");
+    }
+    assertTrue(cl.hasOption("target"));
+    assertEquals("foobar.com", cl.getOptionValue("target"));
+}

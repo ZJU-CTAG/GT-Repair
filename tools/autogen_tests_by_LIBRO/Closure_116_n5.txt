@@ -1,0 +1,19 @@
+public void testIssue107() {
+    String source =
+        "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+        "  return (function (saved) {\n" +
+        "    return modifiesProp(obj) + saved;\n" +
+        "  })(obj[\"prop\"]);\n" +
+        "}\n";
+    CommandLineRunner runner = new CommandLineRunner(
+        new String[] {
+            "--compilation_level", "ADVANCED_OPTIMIZATIONS",
+            "--warning_level", "VERBOSE",
+            "--externs", "window.js",
+            "--js", source,
+            "--js_output_file", "out.js",
+        });
+    runner.doRun();
+    String out = FileUtils.readFileToString(new File("out.js"), "UTF-8");
+    assertTrue(out.contains("var HOLD=a.prop"));
+}

@@ -1,0 +1,13 @@
+public void testKMeansPlusPlusClusterer() {
+    List<Clusterable> clusters = new ArrayList<>();
+    for (double i = 0; i < 3; i++)
+        clusters.add(new DoublePoint(new double[]{i, i}));
+    int numClusters = 2;
+    KMeansPlusPlusClusterer<Clusterable> kmpp =
+        new KMeansPlusPlusClusterer<>(new Random(1));
+    List<CentroidCluster<Clusterable>> ans =
+        kmpp.cluster(clusters, numClusters, 1, new KMeansPlusPlusClusterer.EmptyClusterStrategy());
+    assertEquals(numClusters, ans.size());
+    assertEquals(1, ans.get(0).getPoints().size());
+    assertEquals(2, ans.get(1).getPoints().size());
+}

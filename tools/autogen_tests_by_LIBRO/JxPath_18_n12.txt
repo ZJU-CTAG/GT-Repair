@@ -1,0 +1,17 @@
+public void testIssue172() throws Exception {
+    final String expression = "//@*";
+
+    final XPath xpath = new XPath(expression, null,
+            new CachedMappingFunctionResolver(new ConstantMappingFunctionFactory(new AttributeContext())));
+
+    final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    final Element element = document.createElement("element");
+    element.setAttribute("name1", "value1");
+    element.setAttribute("name2", "value2");
+    element.setAttribute("name3", "value3");
+    document.appendChild(element);
+
+    final NodeList result = (NodeList) xpath.evaluate(document, XPathConstants.NODESET);
+
+    assertEquals(3, result.getLength());
+}

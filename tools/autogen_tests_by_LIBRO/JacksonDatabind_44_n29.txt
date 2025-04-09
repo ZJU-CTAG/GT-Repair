@@ -1,0 +1,25 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    String json = mapper.writeValueAsString(new MySubType());
+    System.out.println("json = "+json);
+    // now try to read back
+    MyBaseType bean = mapper.readValue(json, MyBaseType.class);
+    System.out.println("bean = "+bean); // should be MySubType?
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = MySubType.class)
+@JsonSubTypes({
+        @JsonSubTypes.Type(name = "sub", value = MySubType.class)
+})
+abstract class MyBaseType {
+    public int x = 1;
+}
+
+class MySubType extends MyBaseType {
+    public int y = 3;
+}

@@ -1,0 +1,11 @@
+public void testTrimString() {
+    String value = " 1234 56 ";
+    String xml = "<root><value>" + value + "</value></root>";
+    InputStream is = new ByteArrayInputStream(xml.getBytes());
+
+    Document document = readXml(is);
+    JXPathContext context = JXPathContext.newContext(document);
+    String result = (String) context.getValue("/root/value");
+    System.out.println("result=" + result + " value=" + value + " " + result.equals(value));
+    assertEquals(result, value);
+}

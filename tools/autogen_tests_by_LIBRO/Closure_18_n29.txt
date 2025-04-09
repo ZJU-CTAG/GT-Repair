@@ -1,0 +1,17 @@
+public void testIssue107() {
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setDependencyOptions(new DependencyOptions().setDependencySorting(true));
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("src1.js", "goog.require('src2');"),
+            SourceFile.fromCode("src2.js", "goog.require('src3');"),
+            SourceFile.fromCode("src3.js", "")
+    );
+    assertTrue(result.success);
+    String[] resultArr = compiler.toSource().split("\n");
+    assertEquals("goog.require('src2');",resultArr[0]);
+    assertEquals("goog.provide('src2');",resultArr[1]);
+    assertEquals("goog.require('src3');",resultArr[2]);
+    assertEquals("goog.provide('src3');",resultArr[3]);
+}

@@ -1,0 +1,14 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId,
+                                            TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return null;
+        }
+    });
+    mapper.readValue("{\"@class\":\"com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$Foo\"}", Object.class);
+}
+
+static class Foo {
+}

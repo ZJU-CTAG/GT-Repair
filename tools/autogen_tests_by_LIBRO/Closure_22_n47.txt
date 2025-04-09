@@ -1,0 +1,7 @@
+public void testClassifyNonRightmostExpressionsAsProblematic() {
+    String input = "void foo(int a, int b) { } void bar() { foo((1, 2, 42)); }";
+    String expectedOutput = "void foo(int a, int b) { } void bar() { foo((1, 3)); }";
+
+    String actualOutput = testTransformationOn(input, new SideEffectFreeExpressionTransformer());
+    assertEquals(expectedOutput, actualOutput);
+}

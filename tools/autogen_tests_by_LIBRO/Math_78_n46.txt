@@ -1,0 +1,23 @@
+public void testIssue108() {
+    StepHandler handler = new StepHandler() {
+        public void handleStep(StepInterpolator interpolator, boolean isLast) {
+            double t = interpolator.getCurrentTime();
+            double[] y = interpolator.getInterpolatedState();
+            System.out.println(t + " " + y[0]);
+        }
+    };
+    double[] y0 = new double[] { 0.0 };
+    double[] y = new double[] { 1.0 };
+    FirstOrderIntegrator integrator = new DormandPrince54Integrator(0, 10, 1.0e-8, 1.0e-8);
+    integrator.addEventHandler(new EventHandler() {
+        private double gLast = Double.NaN;
+        private boolean converged = false;
+        @Override
+        public int eventOccurred(double t, double[] y, boolean increasing) {
+            System.out.println(t + " " + y[0]);
+            if (!converged) {
+                return RESET_STATE;
+            }
+            return DONE;
+        }
+       

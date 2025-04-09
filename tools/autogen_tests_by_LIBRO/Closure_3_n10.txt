@@ -1,0 +1,7 @@
+public void testIssue158() {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            "function getStack() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject().stack; }" +
+            "window['getStackTrace']=getStack;");
+    assertTrue(compiler.getLastStatus().getErrorCount() > 0);
+}

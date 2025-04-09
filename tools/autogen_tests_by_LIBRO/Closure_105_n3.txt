@@ -1,0 +1,10 @@
+public void testIssueJoin() {
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader("$.fn.hasClass = function(selector) {\n return ( this.length > 0 ? \n !( ( ['', this[0].className, ''].join(' ') ).indexOf( ['', selector, \n''].join(' ') ) == -1 )\n : false );\n};"), null);
+    StringWriter out = new StringWriter();
+    compressor.compress(out, -1, true, false, false, true);
+    String result = out.toString();
+    assertFalse("shouldn't have \\n", result.contains("\\n"));
+    assertFalse("shouldn't have \\r", result.contains("\\r"));
+    assertEquals("$.fn.hasClass=function(a){return this.length>0?
+(\"\"+this[0].className).indexOf(\"\"+a)!=-1:false}", result);
+}

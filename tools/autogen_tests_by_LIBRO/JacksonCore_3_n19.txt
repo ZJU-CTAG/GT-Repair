@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    final String json = "{\"abc\":\"abc\"}";
+    final InputStream in = new ByteArrayInputStream(json.getBytes("utf-8"));
+    final ObjectMapper mapper = new ObjectMapper();
+    final UTF8StreamJsonParser parser = new UTF8StreamJsonParser(null, 0, in, mapper.getCodec(), null, new byte[1024], 0, 0, false);
+    assertEquals(0, parser._currInputRowStart);
+    parser.nextToken();
+    parser.nextToken();
+    parser.nextToken();
+    try {
+        parser.nextToken();
+    } catch (JsonParseException e) {
+        assertEquals(12, e.getLocation().getColumnNr());
+    }
+}

@@ -1,0 +1,14 @@
+public void testTarArchiveEntry() throws IOException {
+    File file = new File("target", "test.tar");
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(new FileOutputStream(file));
+    TarArchiveEntry tae = new TarArchiveEntry("test.txt");
+    tae.setSize(0x123456788);
+    taos.putArchiveEntry(tae);
+    taos.closeArchiveEntry();
+    taos.close();
+
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(file));
+    tae = tais.getNextTarEntry();
+    assertEquals(0x123456788, tae.getSize());
+    tais.close();
+}

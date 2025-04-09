@@ -1,0 +1,19 @@
+public void testMinMaxInGroup() {
+    try {
+        CommandLineParser parser = new PosixParser();
+        Options opts = new Options();
+        opts.addOption(OptionBuilder.withDescription("A").create('A'));
+        opts.addOption(OptionBuilder.withDescription("B").create('B'));
+        OptionGroup group = new OptionGroup();
+        group.addOption(OptionBuilder.withDescription("C").create('C'));
+        group.addOption(OptionBuilder.withDescription("D").create('D'));
+        group.setRequired(true);
+        group.setMinimum(2);
+        group.setMaximum(2);
+        opts.addOptionGroup(group);
+        parser.parse(opts, new String[]{"-A", "-B", "-C", "-D"});
+        fail();
+    } catch (ParseException e) {
+        assertTrue(e.getMessage().contains("2"));
+    }
+}

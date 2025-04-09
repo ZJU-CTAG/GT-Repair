@@ -1,0 +1,10 @@
+public void testIssue45() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
+    mapper.enable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+    mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    TestOuter.TestInner[] array = new TestOuter.TestInner[]{new TestOuter.TestInner(1, "one"), new TestOuter.TestInner(0, null)};
+    String value = mapper.writeValueAsString(array);
+    assertEquals("[[1,\"one\"],[0,null]]", value);
+}

@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    String json = "{\"a\":1,\"b\":2}";
+
+    JsonParser p = factory.createParser(json);
+    JsonParser p2 = factory.createParser(json);
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(p, p2);
+
+    sequence.nextToken(); // a
+    sequence.nextToken(); // 1
+    sequence.nextToken(); // b
+    sequence.nextToken(); // 2
+    sequence.nextToken(); // null
+
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken()); // null
+}

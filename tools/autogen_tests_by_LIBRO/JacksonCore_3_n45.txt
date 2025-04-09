@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonParser parser = mapper.getFactory().createParser(new ByteArrayInputStream("{ \"a\": 1 }".getBytes(StandardCharsets.UTF_8)));
+    JsonToken token = null;
+    while ((token = parser.nextToken()) != null) {
+        if (token == JsonToken.START_OBJECT) {
+            parser.close();
+        }
+    }
+}

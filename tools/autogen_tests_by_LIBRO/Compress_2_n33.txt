@@ -1,0 +1,15 @@
+public void testArArchive() throws IOException {
+    ArArchiveEntry entry1 = new ArArchiveEntry(1234, "test1.xml");
+    ArArchiveEntry entry2 = new ArArchiveEntry(4321, "test2.xml");
+    ArArchiveOutputStream aos = new ArArchiveOutputStream(new FileOutputStream(new File(testDir, "bla.ar")));
+    aos.putArchiveEntry(entry1);
+    aos.closeArchiveEntry();
+    aos.putArchiveEntry(entry2);
+    aos.closeArchiveEntry();
+    aos.close();
+    ArArchiveInputStream ais = new ArArchiveInputStream(new FileInputStream(new File(testDir, "bla.ar")));
+    ArchiveEntry ae = null;
+    while ((ae = ais.getNextEntry()) != null) {
+        if ("test2.xml".equals(ae.getName())) {
+            ais.close();
+            aos = new ArArchiveOutputStream(new FileOutputStream(new File(testDir, "

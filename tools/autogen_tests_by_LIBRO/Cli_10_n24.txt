@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+
+    try {
+        CommandLineParser parser = new GnuParser();
+        parser.parse(opts, new String[] { "-v" });
+        parser.parse(opts, new String[] {});
+        fail("Should have thrown ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue_JSC_DETERMINISTIC_TEST () {
+    String code = "var t = null;\n"
+        + "window.test = function() {\n"
+        + " if (t != null) {\n"
+        + " t = null;\n"
+        + " }\n"
+        + " t = 1;\n"
+        + "};\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setDeterministicInputs(true);
+    Result result = compiler.compile(CodePrinter.DEFAULT_TEMPLATE, code, options);
+    assertTrue(result.success);
+}

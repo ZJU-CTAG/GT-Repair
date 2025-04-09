@@ -1,0 +1,9 @@
+public void testIssue1599() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[\"org.apache.commons.collections.functors.InvokerTransformer\", \"java.lang.Runtime\"]", Object.class);
+    } catch (InvalidTypeIdException e) {
+        assertEquals("Could not resolve type id 'java.lang.Runtime' as a subtype of [simple type, class java.lang.Object]: known type ids = [String, Integer, java.lang.Class]\n at [Source: (String)\"[\"org.apache.commons.collections.functors.InvokerTransformer\", \"java.lang.Runtime\"]\"; line: 1, column: 52]", e.getMessage());
+    }
+}

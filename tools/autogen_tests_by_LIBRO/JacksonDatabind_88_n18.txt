@@ -1,0 +1,12 @@
+public void testPolymorphicTypeId() throws Exception {
+    doTestPolymorphicTypeId("com.fasterxml.jackson.databind.jsontype.impl.A");
+    doTestPolymorphicTypeId("com.fasterxml.jackson.databind.jsontype.impl.B");
+}
+
+public void doTestPolymorphicTypeId(String typeId) throws Exception
+{
+	String json = "{\"@type\":\"" + typeId + "\"}";
+	ObjectMapper mapper = new ObjectMapper();
+	mapper.enableDefaultTyping();
+	mapper.readValue(json, HashMap.class);
+}

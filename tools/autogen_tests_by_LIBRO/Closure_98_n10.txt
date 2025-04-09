@@ -1,0 +1,22 @@
+public void testIssue108() {
+  String input = 
+    "function foo() {\n" +
+    "var arr = [1, 2, 3, 4, 5];\n" +
+    "for (var i = 0, l = arr.length; i < l; i++) {\n" +
+    "var j = arr[i];\n" +
+    "(function() {\n" +
+    "var k = j;\n" +
+    "setTimeout(function() { console.log(k); }, 0);\n" +
+    "})();\n" +
+    "}\n" +
+    "}";
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+    null,
+    new CodeBuffer(input),
+    new CompilerOptions());
+  assertTrue(result.success);
+  assertTrue(result.errors.length == 0);
+  assertTrue(result.warnings.length == 0);
+  for (int i = 0; i < result.warnings.length; i++) {
+    System.out.println("warning : " + result

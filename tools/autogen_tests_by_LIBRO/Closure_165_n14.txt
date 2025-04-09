@@ -1,0 +1,18 @@
+public void testIssue1 () {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckVars(true);
+    options.setCheckAccessControls(true);
+    TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+    Compiler compiler = new Compiler();
+    JSSourceFile[] inputs = new JSSourceFile[]{JSSourceFile.fromCode("test.js", "/** @typedef {{name: string, id: number}} */\n" +
+            "var RecordType1;\n" +
+            "\n" +
+            "/**\n" +
+            " * @param {RecordType1} rec\n" +
+            " */\n" +
+            "var func = function(rec) {\n" +
+            " alert(rec.name2);\n" +
+            "};\n" +
+            "func({name: 'jim', id: 0});\n")};
+    Result result = compiler.compile(externs, inputs, options, testErrorReporter

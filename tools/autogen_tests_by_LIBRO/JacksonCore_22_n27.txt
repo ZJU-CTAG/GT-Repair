@@ -1,0 +1,15 @@
+public void testIssue107_matchCount() {
+    final AtLeastOneFilter filter = new AtLeastOneFilter();
+    final JsonParser parser = new MappingJsonFactory().createParser(new TestUtil.StringReader("{\"first\": [{\"second\": [{\"third\": [{\"fourth\":\"first\"}]}, {\"third\": [{\"fourth\":\"second\"}]}]}]}"));
+    parser.setCodec(new ObjectMapper());
+    final JsonParser filteredParser = new FilteringParserDelegate(parser, filter);
+    filteredParser.nextToken();
+    filteredParser.nextToken();
+    assertEquals(1, filter.getMatchCount());
+    filteredParser.nextToken();
+    filteredParser.nextToken();
+    assertEquals(2, filter.getMatchCount());
+    filteredParser.nextToken();
+    filteredParser.nextToken();
+    assertEquals(2, filter.getMatchCount());
+}

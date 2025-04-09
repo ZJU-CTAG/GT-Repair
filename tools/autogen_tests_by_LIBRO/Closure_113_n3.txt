@@ -1,0 +1,18 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.init(new ArrayList<SourceFile>(), new ArrayList<SourceFile>(), new CompilerOptions());
+    String code = "goog.require('test');\nvar a = test;";//+
+    //"\nfunction test(){};";
+    Node root = compiler.parseTestCode(code);
+    compiler.process(new Node(Token.BLOCK), root);
+
+    Node first = root.getFirstChild();
+    Node last = root.getLastChild();
+
+    assertTrue(first instanceof Node);
+    assertTrue(last instanceof Node);
+    assertEquals("var", first.getFirstChild().getString());
+    assertEquals("a", first.getFirstChild().getNext().getString());
+    assertEquals("=", first.getFirstChild().getNext().getNext().getString());
+    assertTrue(first.getFirstChild().getNext().getNext().getNext() instanceof Node);
+    assertEquals("test", first.getFirstChild().getNext().getNext().getNext().getFirstChild().get

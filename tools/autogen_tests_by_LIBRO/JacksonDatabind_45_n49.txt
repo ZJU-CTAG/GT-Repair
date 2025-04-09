@@ -1,0 +1,12 @@
+public void testNumberShapeRoundTrip() {
+    JsonFactory factory = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(factory);
+    ObjectWriter objectWriter = mapper.writer();
+
+    BigDecimal bigDecimal = new BigDecimal("3.141592653589793");
+    String json = objectWriter.writeValueAsString(bigDecimal);
+    assertEquals(json, "{\"@value\":\"3.141592653589793\"}");
+    JsonParser jp = factory.createParser(json);
+    BigDecimal bigDecimalAfterRoundTrip = jp.readValueAs(BigDecimal.class);
+    assertEquals(bigDecimal, bigDecimalAfterRoundTrip);
+}

@@ -1,0 +1,19 @@
+public void testMultiplePrefixes() throws Exception {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                 "<a:doc xmlns:a=\"ns\">" +
+                 "  <a:elem/>" +
+                 "  <b:elem xmlns:b=\"ns\"/>" +
+                 "</a:doc>";
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+    JXPathContext context = JXPathContext.newContext(document.getDocumentElement());
+    Iterator iter = context.iteratePointers("*");
+    int count = 0;
+    while (iter.hasNext()) {
+        count++;
+        NodePointer nodePointer = (NodePointer) iter.next();
+        QName name = nodePointer.getName();
+        assertNotNull(name);
+        assertEquals("ns", name.getNamespace

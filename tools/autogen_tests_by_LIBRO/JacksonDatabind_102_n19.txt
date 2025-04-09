@@ -1,0 +1,11 @@
+public void testIssue() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    assertEquals("{\"sqlDate\":\"2018-07-20\"}", mapper.writeValueAsString(new SqlDateContainer()));
+}
+
+private static class SqlDateContainer {
+    public java.sql.Date getSqlDate() {
+        return new java.sql.Date(1532119200000L);
+    }
+}

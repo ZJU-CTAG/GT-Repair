@@ -1,0 +1,20 @@
+public void testIssue1096() {
+    TypeAdapter<Date> typeAdapter = GsonHolder.newGson().getAdapter(Date.class);
+    assertTrue(typeAdapter instanceof DefaultDateTypeAdapter);
+    assertFalse(typeAdapter instanceof TreeTypeAdapter);
+    assertTrue(typeAdapter.toJson(null) == null);
+    assertTrue(typeAdapter.fromJson("null") == null);
+}
+
+public void testIssue1098() {
+    Gson gson = new Gson();
+    assertEquals("null", gson.toJson(null, Date.class));
+    assertNull(gson.fromJson("null", Date.class));
+    assertEquals("null", gson.toJson(null, Date[].class));
+    assertNull(gson.fromJson("null", Date[].class));
+}
+
+public void testIssue1095() {
+    Date d = new Date();
+    Gson gson = new Gson();
+    assertEquals("\"" + ISO8601Utils.format(d, false) + "\"", gson.to

@@ -1,0 +1,13 @@
+public void testIssue1091() throws IOException {
+    final String json = "[{\"foo\": \"bar\"},{\"foo\": \"baz\", \"baz\": {\"a\": \"a\"}},{\"foo\": \"baz\"}]";
+    final MappingIterator<Object> iterator = objectMapper.reader().readValues(json);
+    try {
+        while (iterator.hasNext()) {
+            final String value = (String) iterator.next();
+            System.out.println(value);
+        }
+    } catch (JsonProcessingException e) {
+        // expected
+    }
+    assertTrue(iterator.hasNext());
+}

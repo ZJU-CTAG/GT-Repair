@@ -1,0 +1,16 @@
+public void testJavascript() {
+    Reader reader = new StringReader("var x = { get 'x'() { return 1 } };\nvar x = { get 1() { return 1 } };");
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("test", reader), new ErrorReporter() {
+        @Override
+        public void warning(String s, String s1, int i, int i1, int i2, Object... objects) {
+            System.out.println("Warning " + s + " " + s1 + " " + i + " " + i1 + " " + i2 + " " + Arrays.toString(objects));
+        }
+
+        @Override
+        public void error(String s, String s1, int i, int i1, int i2, Object... objects) {
+            System.out.println("Error " + s + " " + s1 + " " + i + " " + i1 + " " + i2 + " " + Arrays.toString(objects));
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String

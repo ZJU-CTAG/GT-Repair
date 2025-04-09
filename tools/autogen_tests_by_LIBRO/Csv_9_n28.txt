@@ -1,0 +1,25 @@
+public void testToMap() throws IOException {
+    String csv = "a,b,c\r\n" +
+            "1,2,3";
+
+    CSVParser p = CSVParser.parse(csv, CSVFormat.DEFAULT);
+
+    Map<String, String> m;
+    for (CSVRecord r : p) {
+        m = r.toMap();
+        assertNotNull(m);
+        assertEquals("1", m.get("a"));
+        assertEquals("2", m.get("b"));
+        assertEquals("3", m.get("c"));
+    }
+
+    p = CSVParser.parse(csv, CSVFormat.DEFAULT.withHeader());
+
+    for (CSVRecord r : p) {
+        m = r.toMap();
+        assertNotNull(m);
+        assertEquals("1", m.get("a"));
+        assertEquals("2", m.get("b"));
+        assertEquals("3", m.get("c"));
+    }
+}

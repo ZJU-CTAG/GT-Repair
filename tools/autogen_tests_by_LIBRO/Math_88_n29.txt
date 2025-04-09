@@ -1,0 +1,15 @@
+public void testSimplexSolver() {
+    final SimplexSolver solver = new SimplexSolver();
+    solver.setMaxIterations(1000);
+    final Variable x = new Variable();
+    final Variable y = new Variable();
+    final Variable z = new Variable();
+    final Expression e1 = new Expression(x).plus(y).plus(z).minus(40.0);
+    final Expression e2 = new Expression(x).plus(y).minus(z).minus(20.0);
+    final Expression e3 = new Expression(x).minus(y).minus(z).minus(20.0);
+    solver.addConstraint(new Constraint(e1, OperatorType.EQ, 0.0));
+    solver.addConstraint(new Constraint(e2, OperatorType.EQ, 0.0));
+    solver.addConstraint(new Constraint(e3, OperatorType.EQ, 0.0));
+    final PointValuePair pvp = solver.optimize();
+    System.out.println(pvp);
+}

@@ -1,0 +1,12 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.processClosurePrimitives = false;
+    compiler.compile(
+        Collections.<SourceFile>emptyList(),
+        Collections.singleton(SourceFile.fromCode("file.js", "goog.provide('foo');")),
+        options);
+    // Shouldn't be empty.
+    assertEquals(
+        "goog.provide('foo');", compiler.toSource());
+}

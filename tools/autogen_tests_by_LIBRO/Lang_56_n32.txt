@@ -1,0 +1,28 @@
+public void testFastDateFormatSerializable() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    FastDateFormat fdf = FastDateFormat.getInstance(sdf, new TimeZone() {
+        public int getOffset(int era, int year, int month, int day, int dayOfWeek, int milliseconds) {
+            return 0;
+        }
+
+        public void setRawOffset(int offsetMillis) {
+
+        }
+
+        public int getRawOffset() {
+            return 0;
+        }
+
+        public boolean useDaylightTime() {
+            return false;
+        }
+
+        public boolean inDaylightTime(Date date) {
+            return false;
+        }
+    });
+    byte[] serialized = SerializationUtils.serialize(fdf);
+    FastDateFormat deserialized = (FastDateFormat) SerializationUtils.deserialize(serialized);
+    assertEquals(fdf, deserialized);
+    assertEquals(fdf.format(new Date()), deserialized.format(new Date()));
+}

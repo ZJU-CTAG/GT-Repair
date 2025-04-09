@@ -1,0 +1,14 @@
+public void testOriginalLineNumbersAreZeroBased() throws IOException {
+    StringWriter writer = new StringWriter();
+    UglifyJs uglifyJs = UglifyJs.builder()
+                                .withBeautifier(new Beautifier(new BeautifierConfig.Builder()
+                                                               .withSourceFile("foo.js")
+                                                               .withSource("x\ny\n")
+                                                               .build()))
+                                .build();
+    uglifyJs.compress(new JavaScriptSource("foo.js"), writer, false);
+    String generatedSourceMap = writer.toString();
+    int originalSourceLineNumberColumn = generatedSourceMap.indexOf("\"originalLine\":", generatedSourceMap.indexOf("\"original\""));
+    // First occurrence of "originalLine": is 1.
+    assertEquals(1, Integer.parseInt(generatedSourceMap.substring(originalSourceLineNumberColumn + "\"originalLine\":".length(), generatedSourceMap.indexOf(',', originalSourceLineNumberColumn))));
+}

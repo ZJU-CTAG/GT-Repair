@@ -1,0 +1,25 @@
+public void testIssue() throws IOException {
+    // create new file
+    final File file = new File(getTestDirectory(), "bla.ar");
+    file.deleteOnExit();
+    final Archive ouput = new Archive(file);
+    ouput.addFile(new File("src/test/resources/test1.xml"), "test1.xml");
+    ouput.addFile(new File("src/test/resources/test2.xml"), "test2.xml");
+    ouput.close();
+    
+    // delete test2.xml
+    final Archive input = new Archive(file);
+    ArchiveEntry entry;
+    while ((entry = input.getNextEntry()) != null) {
+        if ("test2.xml".equals(entry.getName())) {
+            input.deleteEntry();
+        }
+    }
+    input.close();
+    
+    // add test.txt
+    final Archive output = new Archive(file);
+    output.addFile(new File("src/test/resources/test.txt"), "test.txt");
+    output.close();
+    
+    //

@@ -1,0 +1,9 @@
+public void testIssue117() {
+    Options options = new Options();
+    options.addOption("foo", false, "foo");
+    HelpFormatter helpFormatter = new HelpFormatter();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    helpFormatter.printHelp(new PrintWriter(out), helpFormatter.getWidth(), "Usage", null, options, 2, 2, "\n\nFooter\n\n", true);
+    String s = out.toString();
+    assertTrue("\n\nFooter\n\n".equals(s.substring(s.length() - "\n\nFooter\n\n".length())));
+}

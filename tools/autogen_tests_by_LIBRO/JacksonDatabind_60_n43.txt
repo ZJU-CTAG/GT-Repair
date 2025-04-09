@@ -1,0 +1,29 @@
+public void testIssue107() {
+    CommandAPDU commandAPDU = new CommandAPDU(new byte[]{0x00, 0x00});
+    RemoteCall<String> remoteCall = new RemoteCall<>(commandAPDU, new ResponseReceiver());
+
+    JsonFilter jsonFilter = new JsonFilter();
+    String json = jsonFilter.write(remoteCall);
+    RemoteCall<String> result = jsonFilter.read(json, RemoteCall.class);
+    assertTrue(result.getCommand() instanceof CommandAPDU);
+}
+
+class JsonFilter {
+
+    private final ObjectMapper mapper;
+
+    public JsonFilter() {
+        this.mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.enableDefaultTyping();
+    }
+
+    public String write(Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T>

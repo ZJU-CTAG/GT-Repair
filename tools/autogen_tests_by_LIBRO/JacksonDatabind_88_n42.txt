@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    TypeFactory tf = mapper.getTypeFactory();
+    JavaType strType = TypeFactory.constructFromCanonical("java.lang.String");
+    JavaType intType = TypeFactory.constructFromCanonical("java.lang.Integer");
+    assertNotSame(strType, intType);
+
+    JavaType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, intType, intType);
+    assertNotSame(mapType, intType);
+
+    Map<String, String> result = mapper.readValue("{\"@type\":\"java.util.HashMap\",\"key\":1234}", strType);
+    assertEquals("{key=1234}", result.toString());
+
+    result = mapper.readValue("{\"@type\":\"java.util.HashMap\",\"key\":1234}", mapType);
+    assertEquals("{key=1234}", result.toString());
+}

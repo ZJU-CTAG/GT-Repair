@@ -1,0 +1,27 @@
+public void test() {
+    JSDocInfoBuilder jsdoc = new JSDocInfoBuilder(true);
+    jsdoc.recordInterface();
+    JSTypeExpression type = new JSTypeExpression(new Node(Token.QMARK), "string", -1);
+    jsdoc.recordType(type);
+    jsdoc.recordField("foobar");
+    JSDocInfo interfaceJsdoc = jsdoc.build();
+
+    JSDocInfoBuilder jsdoc2 = new JSDocInfoBuilder(true);
+    jsdoc2.recordConstructor();
+    jsdoc2.recordImplementedInterface(interfaceJsdoc);
+    JSDocInfo constructorJsdoc = jsdoc2.build();
+
+    Node n = new Node(Token.SCRIPT);
+    n.addChildToFront(
+        createFunction("I",
+            IR.block(
+                IR.empty(),
+                IR.returnNode(
+                    IR.objectlit())),
+            null));
+    n.addChildToFront(
+        createFunction("C",
+            IR.block(
+                IR.empty(),
+                IR.returnNode(
+                   

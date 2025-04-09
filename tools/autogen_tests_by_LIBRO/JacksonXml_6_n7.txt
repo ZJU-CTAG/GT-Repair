@@ -1,0 +1,26 @@
+public void testLargeBinary() throws IOException {
+    // Create a random 3MB stream of data
+    Random r = new Random();
+    InputStream is = new InputStream() {
+        int pos = 0;
+        @Override
+        public int read() throws IOException {
+            pos++;
+            if (pos <= 3000000) {
+                return r.nextInt(256);
+            } else {
+                return -1;
+            }
+        }
+    };
+    try {
+        XmlFactory f = new XmlFactory();
+        XmlGenerator xmlGenerator = f.createGenerator(System.out, JsonEncoding.UTF8);
+        xmlGenerator.writeStartObject();
+        xmlGenerator.writeBinary("binary", is, 3000000);
+        xmlGenerator.writeEndObject();
+        xmlGenerator.close();
+    } finally {
+        is.close();
+    }
+}

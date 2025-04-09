@@ -1,0 +1,15 @@
+public void testParse() {
+    String xhtml = "<!DOCTYPE html SYSTEM \"exampledtdfile.dtd\">" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">" +
+            "<head>\n" +
+            "    <title>Jsoup Test</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <p>Hello</p>\n" +
+            "</body>\n" +
+            "</html>";
+
+    Document doc = Jsoup.parse(xhtml, "", Parser.xmlParser());
+    String doctype = doc.childNode(0).outerHtml();
+    assertTrue("Doctype should contain the SYSTEM keyword", doctype.contains("SYSTEM"));
+}

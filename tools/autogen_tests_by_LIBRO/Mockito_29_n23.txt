@@ -1,0 +1,14 @@
+public void testCaptorVerifyIssue() {
+    //GIVEN
+    List<String> listMock = mock(List.class);
+    ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
+
+    //WHEN
+    listMock.add("one");
+    listMock.add("two");
+
+    //THEN
+    assertThat(listMock, hasSize(2));
+    verify(listMock, times(1)).add(valueCapture.capture());
+    assertThat(valueCapture.getValue(), is("one"));
+}

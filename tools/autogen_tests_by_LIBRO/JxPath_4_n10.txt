@@ -1,0 +1,13 @@
+public void testJXPath() {
+    final String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+            + "<config>\n"
+            + "  <entry key=\"key\">\n"
+            + "    <value> value </value>\n"
+            + "  </entry>\n"
+            + "</config>";
+    final Document doc = DocumentHelper.parseText(xml);
+
+    final JXPathContext ctx = JXPathContext.newContext(doc);
+    String value = (String) ctx.getValue("/config/entry[@key='key']/value");
+    assertEquals(" value ", value);
+}

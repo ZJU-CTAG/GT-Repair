@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCollapseProperties(true);
+    options.setCollapsePropertiesOnExternTypes(true);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> sources = Arrays.asList(SourceFile.fromCode("input", "function () { return function () { var arg = arguments; setTimeout(function() { alert(arg); }, 0); } }"));
+
+    Result result = com.google.javascript.jscomp.Compiler.compile(externs, sources, options);
+
+    String sourceCode = result.compiledSource;
+    assertEquals("function(){return function(){setTimeout(function(){alert(arguments)},0)}}", sourceCode);
+}

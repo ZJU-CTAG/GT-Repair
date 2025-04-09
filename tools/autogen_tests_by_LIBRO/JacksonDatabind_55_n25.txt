@@ -1,0 +1,24 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    String test = mapper.writeValueAsString(new Test());
+    System.out.println(test);
+}
+
+public static class Test {
+    @JsonProperty("item1")
+    public SomeEnum item = SomeEnum.ITEM_1;
+    
+    @JsonProperty("map")
+    public Map<SomeEnum, String> map = new HashMap<>();
+    
+    public Test() {
+        map.put(SomeEnum.ITEM_1, "test");
+    }
+}
+
+public enum SomeEnum {
+    @JsonProperty("item1")
+    ITEM_1,
+    @JsonProperty("item2")
+    ITEM_2;
+}

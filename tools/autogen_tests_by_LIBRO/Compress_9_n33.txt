@@ -1,0 +1,16 @@
+public void testTarArchiveOutputStream() throws Exception {
+        File sSource = new File("/tmp/test.tar");
+        FileOutputStream myOutputStream = new FileOutputStream(sSource);
+        ArchiveOutputStream sTarOut = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, myOutputStream);
+        TarArchiveEntry sEntry = new TarArchiveEntry(sSource);
+        sTarOut.putArchiveEntry(sEntry);
+        int iRead = 1024;
+        while (iRead > 0) {
+            sTarOut.write(new byte[8192]);
+            iRead--;
+        }
+        sLog.info("Processed: "+sTarOut.getBytesWritten()+" bytes. File Len: "+sSource.length());
+        sTarOut.closeArchiveEntry();
+        sTarOut.close();
+        sLog.info("Processed: "+sTarOut.getBytesWritten()+" bytes. File Len: "+sSource.length());
+    }

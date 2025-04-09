@@ -1,0 +1,16 @@
+public void testIssue108() {
+    double[] residuals = {0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10};
+    double[] weights = {1., 0.1, 10., 1., 0.1, 10., 1., 0.1, 10., 1.};
+    double[] residualsWeights = new double[residuals.length];
+    for (int i = 0; i < residuals.length; ++i) {
+        residualsWeights[i] = residuals[i] * weights[i];
+    }
+    chiSquare = new ChiSquare();
+    for (double r : residualsWeights) {
+        chiSquare.addValue(r, 1.0);
+    }
+    final double chi2 = chiSquare.getChiSquare();
+    // now let's compute it properly
+    double chi = 0;
+    for (int i = 0; i < residuals.length; ++i) {
+        chi += weights[i] * residuals[i] * residuals

@@ -1,0 +1,14 @@
+public void testIssue() {
+    String str = "(new Foo()).setLocation('http://www.google.com/');";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.STRICT_MISSING_REQUIRE, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setStrictModeInput(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(new JSSourceFile[] {
+            JSSourceFile.fromCode("testIssue.js", str)
+    }, options);
+}

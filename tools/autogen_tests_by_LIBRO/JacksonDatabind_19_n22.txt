@@ -1,0 +1,11 @@
+public void testProperties() throws Exception
+{
+    Properties props = new Properties();
+    props.put("foo", "bar");
+    ObjectMapper mapper = new ObjectMapper();
+    // will work fine:
+    assertEquals(quote("bar"), mapper.writeValueAsString(props));
+    // but not this:
+    props.put("baz", "quux");
+    assertEquals(quote("quux"), mapper.writeValueAsString(props));
+}

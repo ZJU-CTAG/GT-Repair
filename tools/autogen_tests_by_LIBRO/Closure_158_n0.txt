@@ -1,0 +1,23 @@
+public void test() {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.ERROR);
+
+    options.addWarningsGuard(new WarningsGuard() {
+        @Override
+        public CheckLevel level(JSError error) {
+            return CheckLevel.OFF;
+        }
+        
+        public JSErrorLevel errorLevel() {
+            return JSErrorLevel.ERROR;
+        }
+    });
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[0], new

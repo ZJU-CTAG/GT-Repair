@@ -1,0 +1,31 @@
+public void testAnnotationBundles() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(AnnotationBundles.class, AnnotationBundlesMixin.class);
+    AnnotationBundles result = mapper.readValue("{\"bar\":\"boo\"}", AnnotationBundles.class);
+    assertEquals("boo", result.stuff);
+}
+
+@Target({ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@JacksonAnnotationsInside
+@JsonProperty("bar")
+@interface ExposeStuff {
+
+}
+
+abstract class AnnotationBundlesMixin {
+    @ExposeStuff
+    abstract String getStuff();
+}
+
+class AnnotationBundles {
+    String stuff;
+
+    public AnnotationBundles(@JsonProperty("bar") String stuff) {
+        this.stuff = stuff;
+    }
+
+    public String getStuff() {
+        return stuff;
+    }
+}

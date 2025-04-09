@@ -1,0 +1,28 @@
+public void testIssue51() throws Exception
+{
+    MyObject myObject = new MyObject();
+    myObject.setId(1);
+    myObject.setName("foo");
+    
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.registerModule(new Hibernate5Module());
+    
+    String json = mapper.writeValueAsString(myObject);
+    
+    // deserialize again
+    MyObject deserializedObject = mapper.readValue(json, MyObject.class);
+    assertEquals(1, deserializedObject.getId());
+    assertEquals("foo", deserializedObject.getName());
+}
+
+@Entity
+@Table(name = "my_object")
+@SuppressWarnings("serial")
+public class MyObject implements Serializable {
+    
+    @Id
+    @GeneratedValue
+    @Type(type="int")
+    @Column(name

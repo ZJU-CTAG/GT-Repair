@@ -1,0 +1,18 @@
+public void testIssue113() throws Exception {
+    TarArchiveInputStream tarIn = null;
+    try {
+        tarIn = new TarArchiveInputStream(new FileInputStream("src/test/resources/issue113.tar"));
+        TarArchiveEntry entry;
+        while ((entry = tarIn.getNextTarEntry()) != null) {
+            if (entry.getName() != null && entry.getName().equals("foo")) {
+                byte[] buf = new byte[2048];
+                int len;
+                while ((len = tarIn.read(buf)) > 0) {
+                    // do nothing
+                }
+            }
+        }
+    } finally {
+        tarIn.close();
+    }
+}

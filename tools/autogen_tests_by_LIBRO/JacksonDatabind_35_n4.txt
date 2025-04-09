@@ -1,0 +1,18 @@
+public void testRepro() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    JaxbAnnotationModule module = new JaxbAnnotationModule();
+    mapper.registerModule(module);
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(new Foo("foo"));
+    System.out.println("jsonString = " + jsonString);
+    Foo foo = mapper.readValue(jsonString, Foo.class);
+    assertEquals("foo", foo.value);
+}
+@XmlRootElement(name = "foo")
+@XmlAccessorType(XmlAccessType.FIELD)
+public static class Foo {
+    @XmlElement(name = "abcd")
+    public String value;
+    public Foo

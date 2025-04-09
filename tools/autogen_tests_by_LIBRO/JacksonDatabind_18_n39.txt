@@ -1,0 +1,15 @@
+public void testMappingIteratorErrorRecovery() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "[{ \"a\": [{ \"b\": true, \"c\": \"foobar\" }] }";
+    MappingIterator<Map<String, Object>> it = mapper.reader(Map.class).readValues(json);
+    assertNotNull(it);
+    assertTrue(it.hasNext());
+    try {
+        it.next();
+    } catch (JsonMappingException e) {
+        // good
+    } catch (Exception e) {
+        fail("Expected JsonMappingException, got "+e.getClass().getName());
+    }
+    assertFalse(it.hasNext());
+}

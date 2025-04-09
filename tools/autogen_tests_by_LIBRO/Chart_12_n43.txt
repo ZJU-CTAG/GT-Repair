@@ -1,0 +1,15 @@
+public void testMultiplePiePlot() throws Exception {
+    DefaultPieDataset dataset1 = new DefaultPieDataset();
+    dataset1.setValue("first", 1);
+    dataset1.setValue("second", 2);
+    DefaultPieDataset dataset2 = new DefaultPieDataset();
+    dataset2.setValue("first", 3);
+    dataset2.setValue("second", 4);
+    MultiplePiePlot mpp = new MultiplePiePlot(new PieDataset[] { dataset1, dataset2 });
+    JFreeChart chart = new JFreeChart(mpp);
+    ChartPanel panel = new ChartPanel(chart);
+    panel.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, null));
+    BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = image.createGraphics();
+    panel.getChart().draw(g2, new Rectangle2D.Double(0, 0, 400, 400), null, null);
+}

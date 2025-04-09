@@ -1,0 +1,9 @@
+public void testIssue1149() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    Map<EnumKey, EnumValue> map = new EnumMap<>(EnumKey.class);
+    map.put(EnumKey.A, EnumValue.A);
+    map.put(EnumKey.B, EnumValue.B);
+    assertEquals("{\"A\":{\"value\":\"A\"},\"B\":{\"value\":\"B\"}}", mapper.writeValueAsString(map));
+}

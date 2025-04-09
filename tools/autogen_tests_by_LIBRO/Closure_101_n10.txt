@@ -1,0 +1,12 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.processClosurePrimitives = false;
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("externs", " ")),
+        ImmutableList.of(SourceFile.fromCode("code", "goog.provide('a');")),
+        options);
+    assertEquals(
+        "goog.provide('a');\n", compiler.toSource());
+}

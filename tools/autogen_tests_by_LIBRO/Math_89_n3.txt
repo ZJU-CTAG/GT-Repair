@@ -1,0 +1,15 @@
+public void testFrequency() {
+    Frequency f = new Frequency();
+    f.addValue("abc");
+    f.addValue("abc");
+    f.addValue("def");
+    f.addValue(null);
+    assertEquals(3, f.getSumFreq());
+    assertEquals(2, f.getUniqueCount());
+    
+    final Object OBJ = new Object();
+    f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    assertEquals(4, f.getSumFreq());
+    assertEquals(1, f.getCount(OBJ));
+    assertEquals(0.25, f.getPct(OBJ), 0.000001);
+}

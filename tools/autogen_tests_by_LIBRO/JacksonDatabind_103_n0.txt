@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception
+{
+    final String JSON = "{\"value\":\"not-a-boolean\"}";
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+        mapper.readValue(JSON, BooleanPOJO.class);
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        assertTrue(msg.contains(" at [Source: "));
+        assertTrue(msg.contains("[value=not-a-boolean]"));
+        assertTrue(msg.contains(" at [Source: "));
+        assertTrue(msg.contains("[value=not-a-boolean]"));
+    }
+}
+
+// for [databind#1176]
+static class BooleanPOJO {
+    public Boolean value;
+}

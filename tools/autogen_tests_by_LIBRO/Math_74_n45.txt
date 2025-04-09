@@ -1,0 +1,11 @@
+public void testBug107() {
+    PVCoordinates    pv  = new PVCoordinates(new Vector3D(1.0e7, 1.0e7, 1.0e7), new Vector3D(1.0e2, 1.0e2, 1.0e2));
+    KeplerianOrbit   o   = new KeplerianOrbit(pv, FramesFactory.getEME2000(), new AbsoluteDate(new DateComponents(2004, 01, 01), new TimeComponents(23, 30, 00.000), TimeScalesFactory.getUTC()), 3.986004415e14);
+    double           minStep = 0.001;
+    double           maxStep = 100000.0;
+    double           dP       = 1.0e-13;
+    AdaptiveStepsizeIntegrator integrator =
+        new DormandPrince853Integrator(minStep, maxStep, dP, dP);
+    double stopTime = Constants.JULIAN_DAY;
+    SpacecraftState finalState = integrator.integrate(new EquinoctialOrbit(o),
+                                

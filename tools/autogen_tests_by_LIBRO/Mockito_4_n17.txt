@@ -1,0 +1,28 @@
+public void testVerifyZeroInteractions_WithDefaultAnswer() {
+    List mockOne = mock(List.class, new Answer() {
+        public Object answer(InvocationOnMock invocation) {
+            return null;
+        }
+    });
+
+    List mockTwo = mock(List.class, new Answer() {
+        public Object answer(InvocationOnMock invocation) {
+            return null;
+        }
+    });
+
+    //using mocks
+    mockOne.add("test");
+    mockOne.add("test2");
+
+    mockTwo.add("test");
+    mockTwo.add("test2");
+
+    verify(mockOne).add("test");
+
+    //ok
+    verifyZeroInteractions(mockOne);
+
+    //fails
+    verifyZeroInteractions(mockTwo);
+}

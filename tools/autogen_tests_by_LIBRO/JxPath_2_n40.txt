@@ -1,0 +1,20 @@
+public void testIssue119() {
+        String xml =
+            "<foo><bar/><bar/><bar/></foo>";
+        JXPathContext context = JXPathContext.newContext(new InputSource(new StringReader(xml)));
+        context.getNamespaceContext().registerNamespace("ems", "ems");
+        Pointer ptr = (Pointer) context.selectSingleNode("ems:observations()");
+        assertTrue(ptr instanceof NodePointer);
+        Iterator it = ((NodePointer) ptr).iteratePointers();
+        assertNotNull(it);
+        assertTrue(it.hasNext());
+
+        xml =
+            "<foo>\n"
+            + "  <bar>a</bar>\n"
+            + "  <bar>b</bar>\n"
+            + "  <bar>c</bar>\n"
+            + "</foo>\n";
+        context = JXPathContext.newContext(new InputSource(new StringReader(xml)));
+        context.getNamespaceContext().registerNamespace("ems", "ems");
+        Object result =

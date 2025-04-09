@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+
+    // Jar
+    JarArchiveEntry entry = new JarArchiveEntry("test.txt");
+    entry.setSize(1);
+    JarArchiveOutputStream jarOut = (JarArchiveOutputStream) factory.createArchiveOutputStream(
+            ArchiveStreamFactory.JAR, new FileOutputStream("target/test.jar"));
+    jarOut.putArchiveEntry(entry);
+    jarOut.write(0);
+    jarOut.closeArchiveEntry();
+    jarOut.close();
+
+    JarArchiveInputStream jarIn = (JarArchiveInputStream) factory.createArchiveInputStream(
+            ArchiveStreamFactory.JAR, new FileInputStream("target/test.jar"));
+    assertEquals(1, jarIn.read());
+    assertNull(jarIn.getEncoding());
+    jarIn.close();
+
+    // ARJ
+    entry = new ArjArchiveEntry("test.txt");
+    entry.setSize(1);
+    ArjArchiveOutputStream arjOut = (Arj

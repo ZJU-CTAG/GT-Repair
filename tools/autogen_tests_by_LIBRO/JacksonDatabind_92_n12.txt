@@ -1,0 +1,13 @@
+public void testSerializeUsingInterface() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+
+    // create interface and class to use as type
+    Object instance = mapper.readValue(
+            "{\"a\":1,\"b\":2,\"c\":\"c\"}",
+            Object.class);
+
+    assertNotNull(instance);
+    assertTrue(instance instanceof InterfaceWithOverrides);
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        "function I() {};\n" +
+        "/** @type {string} */\n" +
+        "I.prototype.foobar;\n" +
+        "/**\n" +
+        " * @constructor\n" +
+        " * @implements {I}\n" +
+        " */\n" +
+        "function C() {\n" +
+        " this.foobar = 2;\n" +
+        "}\n" +
+        "/** @type {I} */\n" +
+        "var test = new C();\n" +
+        "alert(test.foobar);", true);
+    assertFalse(result.success);
+    assertEquals(2, result.errors.length);
+    assertEquals("Bad type annotation. Unknown type foobar", result.errors[0].description);
+    assertEquals("initializing variable\nfound   : number\nrequired: string", result.errors[1].description);
+}
+``

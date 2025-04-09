@@ -1,0 +1,11 @@
+public void testIssue166() {
+    CommandLine cmd = new CommandLine(new Object());
+    Option option = cmd.addOption(Option.builder("f").longName("foo").hasArgument().build());
+    assertNull(option.getType());
+    cmd.parseArgs("-f", "bar");
+    assertNull(cmd.getParsedOptionValue("f"));
+
+    option.setType(String.class);
+    cmd.parseArgs("-f", "bar");
+    assertEquals("bar", cmd.getParsedOptionValue("f"));
+}

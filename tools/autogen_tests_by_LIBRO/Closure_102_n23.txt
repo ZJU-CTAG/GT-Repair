@@ -1,0 +1,10 @@
+public void testIssue106() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Result result = com.google.javascript.jscomp.CommandLineRunner.main(
+                                new String[]{"--compilation_level", "SIMPLE_OPTIMIZATIONS", "--js", "function name() { var arguments = Array.prototype.slice.call(arguments, 0); }"});
+    assertTrue(result.errors.isEmpty());
+}

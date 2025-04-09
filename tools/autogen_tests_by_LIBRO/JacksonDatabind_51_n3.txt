@@ -1,0 +1,18 @@
+public void testIssueDefault() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.registerModule(new CustomMessTypeIdResolverModule());
+
+    TypeReference<Mess<String>> typeReference = new TypeReference<Mess<String>>() {
+    };
+    Mess<String> mess = new Mess<String>();
+    mess.setPayload("Payload!");
+    mess.setCreated(new DateTime());
+    mess.setType(MessType.TYPE1);
+
+    String json = mapper.writerFor(typeReference).writeValueAsString(mess);
+    System.out.println(json);
+
+    Mess<String> mess2 = mapper.readValue(json, typeReference);
+    assertEquals(mess, mess2);
+}

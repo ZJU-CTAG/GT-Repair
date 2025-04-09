@@ -1,0 +1,23 @@
+public void testIssue107() {
+    File tempDir = null;
+    try {
+        tempDir = File.createTempFile("TEST", "TEST");
+        if (!tempDir.delete()) {
+            throw new IOException("Could not delete file: " + tempDir.getAbsolutePath());
+        }
+        if (!tempDir.mkdirs()) {
+            throw new IOException("Could not create directory: " + tempDir.getAbsolutePath());
+        }
+        String baseName = "text";
+        StringBuilder sb = new StringBuilder(baseName);
+        while (sb.length() < 100) {
+            sb.append(baseName);
+        }
+        File child = new File(tempDir, sb.toString());
+        if (!child.mkdirs()) {
+            throw new IOException("Could not create directory: " + child.getAbsolutePath());
+        }
+        TarUtilities.tar(tempDir, new File("target/test.tar"));
+    } finally {
+        if (tempDir != null) {
+            FileUtils.deleteQuietly(tempDir

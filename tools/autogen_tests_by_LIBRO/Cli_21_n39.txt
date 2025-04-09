@@ -1,0 +1,9 @@
+public void testIssue630() {
+    final NumberValidator validator = NumberValidator.getNumberInstance();
+    validator.setMinimum(1);
+    validator.setMaximum(1);
+    final Argument<Number> numArg = aBuilder.withValidator(validator).create();
+    final Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+    final Group options = gBuilder.withOption(numOpt).create();
+    gParser.parse(options, new String[] {"--num", "-0.1"});
+}

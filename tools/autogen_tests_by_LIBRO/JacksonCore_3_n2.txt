@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+   final String JSON = "{\n" +
+   "  \"name\" : \"John Doe\",\n" +
+   "  \"age\" : 33,\n" +
+   "  \"phone\" : [\"555-111-1224\", \"555-222-1234\"]\n" +
+   "}";
+   ByteArrayInputStream input = new ByteArrayInputStream(JSON.getBytes());
+   UTF8StreamJsonParser parser = new UTF8StreamJsonParser(null, JsonParser.Feature.STRICT_DUPLICATE_DETECTION.getMask(), input, null, null, null, 0, JSON.length(), true);
+   try {
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken();
+      parser.nextToken(); // Exception here
+      parser.nextToken();
+    } catch (JsonParseException e) {
+        System.out.println("Column:" + e.getLocation().getColumnNr()); //

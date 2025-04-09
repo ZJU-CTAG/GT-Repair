@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    try {
+        mapper.readValue("\"\"", int.class);
+        fail();
+    } catch (JsonMappingException e) {
+        assertEquals("Cannot coerce empty String (\"\") into a value of type int", e.getMessage());
+    }
+}

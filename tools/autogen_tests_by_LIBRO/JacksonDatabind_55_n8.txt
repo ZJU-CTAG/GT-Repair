@@ -1,0 +1,16 @@
+public void testEnumMapKeys() throws Exception {
+	ObjectMapper mapper = new ObjectMapper();
+	mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	EnumMap<MyEnum, String> map = new EnumMap<>(MyEnum.class);
+	map.put(MyEnum.MY_VALUE, "value");
+	System.out.println(mapper.writeValueAsString(map));
+	// prints {"MY_VALUE":"value"}
+	// but I want it to print {"myValue":"value"}
+}
+
+public enum MyEnum {
+	@JsonProperty("myValue")
+	MY_VALUE,
+	@JsonProperty("myOtherValue")
+	MY_OTHER_VALUE
+}

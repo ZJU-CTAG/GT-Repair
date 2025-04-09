@@ -1,0 +1,21 @@
+public void testSolnBadGuess() {
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        private double d = 0;
+
+        @Override
+        public double value(final double x) {
+            return Math.cos(x) - x + d;
+        }
+    };
+
+    final double min = 0;
+    final double max = 10;
+    final double initial = 5;
+
+    try {
+        final double soln = new BrentSolver().solve(f, min, max, initial);
+        fail();
+    } catch (final IllegalArgumentException e) {
+        // expected
+    }
+}

@@ -1,0 +1,8 @@
+public void testIssue108() {
+    final Option opt = OptionBuilder.hasArg().withArgName("argname").withLongOpt("arg").create("arg");
+    final CommandLine cl = new PosixParser().parse(new Options().addOption(opt), new String[]{"--arg", "value"});
+    assertEquals(1, cl.getOptions().length);
+    assertEquals("value", cl.getOptionValue("arg"));
+    assertEquals("value", cl.getOptionValue("arg", "default"));
+    assertEquals(1, cl.getArgList().size());
+}

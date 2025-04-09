@@ -1,0 +1,19 @@
+public void testPolymorphicTypeHandling() throws Exception
+{
+    // first, try "normal" polymorphic handling
+    ObjectMapper mapper = jsonMapperBuilder()
+        .addMixIn(Base.class, BaseMixin.class)
+        .build();
+    Base result = (Base) mapper.readValue("{\"baseField\":\"value\"}", Sub.class);
+    assertNotNull(result);
+    assertEquals("value", result.getBaseField());
+
+    // then try with "default impl"
+    mapper = jsonMapperBuilder()
+        .addMixIn(Base.class, BaseMixin.class)
+        .build();
+    BaseWithDefault result2 = mapper.readValue("{\"baseField\":\"value\"}", BaseWithDefault.class);
+    assertNotNull(result2);
+    assertEquals("value", result2.getBaseField());
+    assertEquals(123, result2.getDefaultField());
+}

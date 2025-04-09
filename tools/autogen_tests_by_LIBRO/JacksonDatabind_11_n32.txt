@@ -1,0 +1,10 @@
+public void testIssue102() {
+    Something something = new Something();
+    something.setEntity(new Ruleform());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    String json = mapper.writeValueAsString(something);
+    Something something2 = mapper.readValue(json, Something.class);
+    assertNotNull(something2.getEntity());
+    assertEquals(Ruleform.class, something2.getEntity().getClass());
+}

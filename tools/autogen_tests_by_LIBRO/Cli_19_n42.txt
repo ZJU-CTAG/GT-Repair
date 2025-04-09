@@ -1,0 +1,11 @@
+public void testUnexpectedToken() throws Exception
+{
+    Options opts = new Options();
+    opts.addOption("a", false, "Option 'a' with no argument");
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[]{"-z", "-a", "foo"};
+    CommandLine cmd = parser.parse(opts, args, true);
+    assertTrue("Option 'a' is not set", cmd.hasOption("a"));
+    assertEquals("Unexpected number of arguments", 1, cmd.getArgs().length);
+    assertEquals("Unexpected argument found", "foo", cmd.getArgs()[0]);
+}

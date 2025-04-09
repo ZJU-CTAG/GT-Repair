@@ -1,0 +1,14 @@
+public void test() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+    StringWriter stringWriter = new StringWriter();
+    ToXmlGenerator toXmlGenerator = new ToXmlGenerator(objectMapper, stringWriter);
+    toXmlGenerator.writeStartObject();
+    toXmlGenerator.writeFieldName("name");
+    toXmlGenerator.writeString("hello");
+    toXmlGenerator.writeFieldName("byteArray");
+    toXmlGenerator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[10]), 10);
+    toXmlGenerator.writeEndObject();
+    toXmlGenerator.flush();
+    System.out.println(stringWriter.toString());
+}

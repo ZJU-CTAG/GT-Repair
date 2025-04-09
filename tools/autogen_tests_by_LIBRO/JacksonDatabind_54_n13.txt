@@ -1,0 +1,12 @@
+public void testOptional() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+
+    assertEquals("{\"b\":null}", mapper.writeValueAsString(new JsonResult()));
+}
+
+public class JsonResult {
+    private Object a = Optional.empty();
+    private Object b = Optional.empty();
+}

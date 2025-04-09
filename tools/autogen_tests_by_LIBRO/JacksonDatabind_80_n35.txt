@@ -1,0 +1,11 @@
+public void testAnnotatedBaseType() throws IOException {
+    String json = "{\n" +
+            "  \"name\" : \"Bob\",\n" +
+            "  \"@type\" : \"father\"\n" +
+            "}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.registerSubtypes(new NamedType(Father.class, "father"));
+    Parent p = mapper.readValue(json, Parent.class);
+    assertTrue(p instanceof Father);
+}

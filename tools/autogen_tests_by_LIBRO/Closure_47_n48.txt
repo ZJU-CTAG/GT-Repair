@@ -1,0 +1,18 @@
+public void testIssue108() {
+    SourceMapGenerator generator = new SourceMapGenerator();
+    
+    generator.addMapping(
+        new FilePosition(1, 2), // line, column
+        new FilePosition(3, 4), // sourceFile, line, column
+        "bar.js");
+    
+    String source = generator.toJson();
+    
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String,Object> map = mapper.readValue(source, new TypeReference<HashMap<String,Object>>() {});
+    
+    // Line is one based instead of zero based
+    @SuppressWarnings("unchecked")
+    List<Number> line = (List<Number>) ((List<Object>) map.get("mappings")).get(0);
+    assertEquals(0, line.get(0).intValue());
+}

@@ -1,0 +1,13 @@
+public void testIssue108() {
+	Map<String, Object> map = new HashMap<String, Object>();
+	map.put("name", "Porsche");
+	map.put("engineType", "diesel");
+	map.put("type", "car");
+	String json = JSON.encode(map);
+	try {
+		Car car = JSON.decode(json, Car.class);
+		fail("Should not have been able to decode a " + car.getType());
+	} catch (RuntimeException e) {
+		// expected
+	}
+}

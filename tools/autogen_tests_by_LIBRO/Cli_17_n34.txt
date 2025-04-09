@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("a").create('a'));
+    options.addOption(OptionBuilder.withLongOpt("b").create('b'));
+    Options opts = new Options();
+    opts.addOption("a");
+    opts.addOption("b");
+    String[] args = new String[] {"-azb"};
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(opts, args);
+    assertTrue(line.getOptions().length == 1); // this fails
+    assertEquals("zb", line.getOptionValue('a'));
+    assertNull(line.getOptionValue('b'));
+}

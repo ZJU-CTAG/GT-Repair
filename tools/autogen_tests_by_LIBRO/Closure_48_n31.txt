@@ -1,0 +1,14 @@
+public void testIssue109() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+      "/** @constructor */\n"
+    + "var myclass = function() { }\n"
+    + "/** @param {boolean} success */\n"
+    + "myclass.prototype.fn = function(success) { }\n"
+    + "myclass.prototype.test = function() {\n"
+    + "  this.fn();\n"
+    + "  this.fn = function() { };\n"
+    + "}\n"
+    );
+    assertTrue(result.success);
+}

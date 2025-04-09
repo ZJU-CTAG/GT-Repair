@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(SerializationFeature.INDENT_OUTPUT, true);
+    final JsonNodeFactory jsonNodeFactory = om.getNodeFactory();
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonNodeFactory.objectNode(), jsonNodeFactory) {
+        @Override
+        protected boolean include(JsonParser parser) throws IOException {
+            boolean include = super.include(parser);
+            if (include) {
+                //System.out.println(parser.getCurrentName() + ": " + parser.getValueAsString());
+            } else {
+                //System.out.println("dropped: " + parser.getCurrentName() + " => " + parser.getValueAsString());
+            }
+            return include;
+        }
+    };
+    filteringParserDelegate.setPathMatcher(FilteringParserDelegate.DEFAULT_PATH_MATCHER);
+    JsonNode node = om.readTree(new StringReader("{\n" +
+            "  \"id\":

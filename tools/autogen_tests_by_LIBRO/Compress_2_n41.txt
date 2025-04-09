@@ -1,0 +1,18 @@
+public void testArchiveDelete() throws Exception {
+  final String arFile = "target/test.ar";
+  final String testFile = "../LICENSE.txt";
+  final String testFile2 = "../NOTICE.txt";
+  final String testEntry = "test";
+  final String testEntry2 = "test2";
+  ArArchiveOutputStream ar = new ArArchiveOutputStream(new FileOutputStream(arFile));
+  ar.putArchiveEntry(new ArArchiveEntry(testEntry, testFile.length()));
+  IOUtils.copy(new FileInputStream(testFile), ar);
+  ar.closeArchiveEntry();
+  ar.putArchiveEntry(new ArArchiveEntry(testEntry2, testFile.length()));
+  IOUtils.copy(new FileInputStream(testFile2), ar);
+  ar.closeArchiveEntry();
+  ar.close();
+  ArArchiveInputStream ar2 = new ArArchiveInputStream(new FileInputStream(arFile));
+  ar2.getNextEntry();
+  ar2.getNextEntry();
+  ar

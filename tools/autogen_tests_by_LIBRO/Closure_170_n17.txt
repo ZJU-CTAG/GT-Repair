@@ -1,0 +1,15 @@
+public void testIssue199() {
+    String js = "function Test(n) { var i = 0; return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i } var dummy = \"6chars\"; console && console.log( Test(dummy) );";
+    String expected = "function Test(a) { return 0 } var dummy = \"6chars\"; console && console.log(Test(dummy))";
+    String optimized = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    }).compress(0, 0, 0, false, false, false, false, false, false, false);
+    assertEquals(

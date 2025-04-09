@@ -1,0 +1,12 @@
+public void testWriteBinaryInputStream() throws IOException {
+        //ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().registerModule(new XmlModule());
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ToXmlGenerator generator = mapper.getXmlFactory().createGenerator(bos, JsonEncoding.UTF8);
+        generator.writeStartObject();
+        generator.writeBinaryField("myfield", inputStream, inputStreamLength);
+        generator.writeEndObject();
+        generator.close();
+        String expectedXml = "<ObjectNode><myfield>abcd</myfield></ObjectNode>";
+        assertEquals(expectedXml, bos.toString("UTF-8"));
+    }

@@ -1,0 +1,19 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    DeserializationProblemHandler problemHandler = new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) {
+            return Void.class;
+        }
+    };
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(problemHandler);
+    mapper.enableDefaultTyping();
+
+    final String json = "{\"@class\":\"com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$TestObject\"}";
+
+    try {
+        mapper.readValue(json, Object.class);
+        fail("Should have thrown JsonMappingException!");
+    } catch (JsonMappingException e) {
+        assertEquals("Could not find creator property with name 'value' (in class com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$TestObject) (through reference

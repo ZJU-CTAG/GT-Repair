@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    String testStr = "Test string with unicode: \u20AC";
+    byte[] testStrBytes = testStr.getBytes("UTF-16LE");
+    byte[] testBOMBytes = "\uFEFF".getBytes("UTF-16LE");
+    byte[] testData = new byte[testStrBytes.length + testBOMBytes.length];
+    System.arraycopy(testBOMBytes, 0, testData, 0, testBOMBytes.length);
+    System.arraycopy(testStrBytes, 0, testData, testBOMBytes.length, testStrBytes.length);
+    ByteArrayInputStream testDataStream = new ByteArrayInputStream(testData);
+    Document doc = Jsoup.parse(testDataStream, null, "");
+    assertEquals(testStr, doc.text());
+}

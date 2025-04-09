@@ -1,0 +1,22 @@
+public void testZipArchiveInputStreamGetNextZipEntryShouldVerifyCompressedSizeIsKnownForBzip2ImplodeEtc() throws Exception {
+    byte[] data = "test".getBytes("UTF-8");
+
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    ZipOutputStream stream = new ZipOutputStream(buffer);
+    stream.putNextEntry(new ZipEntry("test"));
+    stream.write(data);
+    stream.closeEntry();
+    stream.close();
+
+    byte[] zipped = buffer.toByteArray();
+
+    // truncate the compressed size
+    zipped[16] = 0;
+    zipped[17] = 0;
+    zipped[18] = 0;
+    zipped[19] = 0;
+
+    // zip4j says:
+    // net.lingala.zip4j.exception.ZipException: bad zip file offset (G:\ziptest\test.zip):  not an actual entry
+    // at net.lingala.zip4j.core.HeaderReader.readLocalFileHeader(HeaderReader.java:116)
+    // at net.lingala.

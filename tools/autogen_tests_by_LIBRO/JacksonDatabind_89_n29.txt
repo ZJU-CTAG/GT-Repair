@@ -1,0 +1,14 @@
+public void testBlockPolymorphicDeserialization()
+        throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    // test for CVE-2017-15095
+    mapper.enableDefaultTyping();
+    try {
+        mapper.readValue("[\"org.apache.commons.collections.Transformer\"]", Object.class);
+        fail("Should have failed");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "trying to resolve");
+        verifyException(e, "Transformer");
+    }
+}

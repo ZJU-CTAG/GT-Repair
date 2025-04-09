@@ -1,0 +1,26 @@
+public void testToMap() {
+    String input =
+            "a,b,c\n" +
+            "1,2,3\n" +
+            "4,5,6\n" +
+            "7,8,9\n";
+
+    Reader inputStreamReader = new StringReader(input);
+
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    CSVParser parser = new CSVParser(inputStreamReader, format);
+
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(3, records.size());
+    assertEquals(3, records.get(0).toMap().size());
+    assertEquals(3, records.get(1).toMap().size());
+    assertEquals(3, records.get(2).toMap().size());
+    parser.close();
+
+    for (CSVRecord record : records) {
+        assertEquals(3, record.toMap().size());
+    }
+
+    inputStreamReader = new StringReader(input);
+    format = CSVFormat.DEFAULT;
+    parser = new CSVParser(input

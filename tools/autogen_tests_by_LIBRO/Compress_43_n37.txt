@@ -1,0 +1,23 @@
+public void testIssue() {
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new ByteArrayOutputStream());
+    zos.setMethod(ZipArchiveOutputStream.DEFLATED);
+    ZipArchiveEntry ze = new ZipArchiveEntry("test");
+    ze.setMethod(ZipArchiveOutputStream.DEFLATED);
+    ze.setSize(1L);
+    try {
+        zos.putArchiveEntry(ze);
+        zos.write(new byte[1]);
+        zos.closeArchiveEntry();
+        zos.close();
+    } catch (IOException e) {
+        // ignore
+    }
+    byte[] data = ((ByteArrayOutputStream) zos.getStream()).toByteArray();
+    assertEquals(
+        "The value of the `Version Needed to Extract` field " +
+        "in the local file header and in the central directory " +
+        "should be the same",
+        data[8], data[60]);
+    assertEquals(
+        "The value of the `Version Needed to Extract` field " +
+        "should

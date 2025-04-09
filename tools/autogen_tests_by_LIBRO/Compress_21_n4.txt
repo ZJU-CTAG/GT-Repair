@@ -1,0 +1,26 @@
+public void testArchiveCreation() {
+    File directory = new File("src/test/resources/issue107");
+    File archive = new File("target/issue107.7z");
+    SevenZOutputFile sevenZOutput = null;
+    try {
+        sevenZOutput = new SevenZOutputFile(archive);
+        for (File file : directory.listFiles()) {
+            SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, file.getName());
+            sevenZOutput.putArchiveEntry(entry);
+            if (!file.isDirectory()) {
+                if (file.length() > 0) {
+                    FileInputStream in = new FileInputStream(file);
+                    IOUtils.copy(in, sevenZOutput);
+                    in.close();
+                }
+            }
+            sevenZOutput.closeArchiveEntry();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (sevenZOutput != null) {
+                sevenZOutput.close();
+            }
+        } catch (IOException e

@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final String result = new ClosureCompiler(
+            CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT,
+            new CompilerOptions()).compile(
+            "function func(a, b) {" +
+            " var results;" +
+            " if (a) {" +
+            " results = {};" +
+            " results.prop1 = {a: 3};" +
+            " }" +
+            " if (b) {" +
+            " results = results || {};" +
+            " results.prop2 = 'prop2';" +
+            " } else {" +
+            " results = results || {};" +
+            " results.prop3 = 'prop3';" +
+            " }" +
+            " return results;" +
+            "}");
+    assertThat(result, containsString("JSC_TYPE_MISMATCH"));
+}

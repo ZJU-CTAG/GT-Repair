@@ -1,0 +1,17 @@
+public void testIssue103() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(baos);
+    zos.putArchiveEntry(new ZipArchiveEntry("singlefile.txt"));
+    zos.write("a".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+    byte[] bytes = baos.toByteArray();
+    // Truncate the file
+    byte[] truncated = new byte[bytes.length - 1];
+    System.arraycopy(bytes, 0, truncated, 0, truncated.length);
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(truncated));
+    ZipArchiveEntry zae = zis.getNextZipEntry();
+    assertEquals("singlefile.txt", zae.getName());
+    // Read should throw an error
+    zis.read(new byte[1]);
+}

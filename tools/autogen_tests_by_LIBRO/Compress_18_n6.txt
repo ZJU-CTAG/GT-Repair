@@ -1,0 +1,13 @@
+public void testWriteLongDirectory() throws IOException {
+    String prefix = "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+    String filename = prefix;
+    String directory = prefix + "/";
+    String longDirectory = directory + directory + directory + directory + directory + directory + directory + directory + directory;
+    String longFilename = longDirectory + filename;
+    File src = new File(longDirectory);
+    File target = new File("/tmp/test.tar");
+    try {
+        src.mkdirs();
+        src.deleteOnExit();
+        new File(longFilename).createNewFile();
+        TarUtilities.

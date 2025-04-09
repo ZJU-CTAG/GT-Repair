@@ -1,0 +1,31 @@
+public void testSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializerProvider().setNullValueSerializer(new NullSerializer());
+    assertEquals("null", mapper.writeValueAsString(new Foo()));
+}
+
+@JsonAutoDetect
+@JsonSerialize(using = FooSerializer.class)
+public class Foo {
+    @JsonValue
+    public String foo() {
+        return "bar";
+    }
+}
+
+public class FooSerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo value, JsonGenerator jgen,
+            SerializerProvider provider) throws IOException,
+            JsonProcessingException {
+        jgen.writeString("foo");
+    }
+}
+
+public class NullSerializer extends JsonSerializer<Object> {
+    @Override
+    public void serialize(Object value, JsonGenerator jgen,
+            SerializerProvider provider) throws IOException,
+            JsonProcessingException {
+        jgen.writeString("null");
+    }

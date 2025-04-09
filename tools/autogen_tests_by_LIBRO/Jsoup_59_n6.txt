@@ -1,0 +1,13 @@
+public void testControlCharClean() {
+    String[] controlChars = new String[31];
+    for (int i = 0; i < 31; i++) {
+        if (i == 0 || (i >= 9 && i <= 10) || (i >= 12 && i <= 13))
+            continue;
+        String s = String.valueOf((char) i);
+        controlChars[i] = s;
+    }
+
+    String in = "<a/" + StringUtils.join(controlChars, "") + ">";
+    String out = Jsoup.clean(in, Whitelist.none());
+    assertEquals(in, out);
+}

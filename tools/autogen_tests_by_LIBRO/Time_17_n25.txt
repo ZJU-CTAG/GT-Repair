@@ -1,0 +1,12 @@
+public void testWithLaterOffsetAtOverlap() {
+    DateTime dt = new DateTime(2012, 2, 25, 5, 5, 5, 5).millisOfDay().withMaximumValue();
+    assertEquals("2012-02-25T23:59:59.999-02:00", dt.toString());  // Were are at the first 23:** of the day.
+    // At this point dtch have the -03:00 offset
+
+    dt = dt.plus(60001);
+    assertEquals("2012-02-25T23:01:00.000-03:00", dt.toString());  // Were are at the first minute of the second 23:** of the day. Ok its correct
+    // At this point dtch have the -03:00 offset
+
+    dt = dt.withEarlierOffsetAtOverlap();
+    assertEquals("2012-02-25T23:01:00.000-02:00", dt.toString());  // Were are at the first minute of the first 23:** of the day. Ok its correct
+    // At this point dtch have

@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckSymbols(true);
+    test(
+        TypeValidator.TYPE_VALIDATION_LEVEL_LOOSE,
+        "function f(x) {}; f(/** @type {string} */ (true));",
+        "function f(a) {} f(true);",
+        DiagnosticType.warning(
+            "JSC_TYPE_MISMATCH\_WARNING",
+            "actual parameter 1 of f does not match formal parameter\n"
+                + "found   : boolean\n"
+                + "required: (string|null)"),
+        null);
+}

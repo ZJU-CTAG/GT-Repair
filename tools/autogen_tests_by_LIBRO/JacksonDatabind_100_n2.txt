@@ -1,0 +1,8 @@
+public void testBase64Variant() throws Exception {
+    String json = "\"AQID\"";
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode root = mapper.readTree(json);
+    byte[] expected = Base64Variants.getDefaultVariant().decode(json);
+    byte[] actual = root.binaryValue();
+    assertArrayEquals(expected, actual);
+}

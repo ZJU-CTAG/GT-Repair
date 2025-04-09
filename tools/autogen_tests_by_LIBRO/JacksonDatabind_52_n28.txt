@@ -1,0 +1,9 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    String json = "{\"id\":\"test\",\"values\":[{\"value\":\"2\"}]}";
+    Foo foo = mapper.readValue(json, Foo.class);
+    assertNotNull(foo);
+    assertEquals(1, foo.values.size());
+    assertEquals(Integer.class, foo.values.get(0).getClass());
+}

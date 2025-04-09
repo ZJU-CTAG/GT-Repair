@@ -1,0 +1,17 @@
+public void testResolutionNearUpperBound() {
+    final double lowerBound = 0, upperBound = 1;
+    final double[] guess = new double[]{0.5}; // guess is also the lower bound in this case
+
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        @Override
+        public double[] value(double[] x) {
+            return new double[]{(x[0]-guess[0])*(x[0]-guess[0])};
+        }
+    };
+
+    CMAESOptimizer cma = new CMAESOptimizer();
+    SimpleBounds b = new SimpleBounds(new double[]{lowerBound}, new double[]{upperBound});
+    double[] res = cma.optimize(f, GoalType.MINIMIZE, guess, b);
+
+    assertEquals(guess[0], res[0], Double.MIN_VALUE);
+}

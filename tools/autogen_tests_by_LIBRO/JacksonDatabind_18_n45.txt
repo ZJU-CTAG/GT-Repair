@@ -1,0 +1,26 @@
+public void testReadValues() throws Exception
+{
+    final String JSON = aposToQuotes("{'value':[{'a':1},{'b':2}]}");
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader r = mapper.reader()
+            .withType(Map.class)
+            .withValueToUpdate(new HashMap<String,Object>());
+    MappingIterator<Map<String,Object>> it = r.readValues(JSON);
+    Map<String,Object> value = null;
+
+    // should be able to read 1st value fine
+    assertTrue(it.hasNext());
+    value = it.nextValue();
+    assertEquals(1, value.size());
+    assertEquals(Integer.valueOf(1), value.get("a"));
+
+    // and then should get an exception:
+    try {
+        it.nextValue();
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "short");
+    }
+    
+    // and then no more values:
+    assertFalse(

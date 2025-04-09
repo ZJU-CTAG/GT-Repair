@@ -1,0 +1,16 @@
+public void testSingletonGetterRemoval() {
+    String js = "goog.provide('foo');"
+            + "var foo = function() {"
+            + "  this.values = [];"
+            + "};"
+            + "goog.addSingletonGetter(foo);"
+            + "foo.prototype.add = function(value) {"
+            + "  this.values.push(value)"
+            + "};";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            null, new JSSourceFile[] {JSSourceFile.fromCode("testSingletonGetterRemoval", js)},
+            new CompilerOptions());
+    assertTrue(result.success);
+}

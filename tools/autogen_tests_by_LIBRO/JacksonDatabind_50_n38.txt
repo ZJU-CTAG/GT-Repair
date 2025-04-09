@@ -1,0 +1,9 @@
+public void testIssue1255() throws JsonParseException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.addMixIn(BaseClass.class, BaseClassMixin.class);
+    mapper.addMixIn(DerivedClass1.class, DerivedClass1Mixin.class);
+    mapper.addMixIn(DerivedClass2.class, DerivedClass2Mixin.class);
+
+    String json = "{\"derivedClasses\":[{\"@id\":1,\"@class\":\"com.example.DerivedClass1\",\"baseClass\":{\"@id\":2,\"@class\":\"com.example.BaseClass\"},\"derivedClass\":{\"@id\":3,\"@class\":\"com.example.DerivedClass2\"}},{\"@id\":3,\"@class\":\"com.example.DerivedClass2\",\"baseClass

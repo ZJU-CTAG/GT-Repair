@@ -1,0 +1,12 @@
+public void testHtml() {
+    String html = getHtml();
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+}
+
+private String getHtml() throws IOException {
+    URL url = new URL("https://files.fm/u/v43yemgb");
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+        return reader.lines().collect(Collectors.joining("\n"));
+    }
+}

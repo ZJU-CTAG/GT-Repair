@@ -1,0 +1,8 @@
+public void testIssueEnumPolymorphism() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new KotlinModule());
+
+    String json = "{\"kind\":\"CONTACT\",\"to\":{\"name\":\"Foo\"}}";
+    Invite invite = mapper.readValue(json, Invite.class);
+    assertEquals(ContactInvite.class, invite.getClass());
+}

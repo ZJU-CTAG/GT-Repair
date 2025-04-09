@@ -1,0 +1,10 @@
+public void testNamespaces() throws Exception {
+    String html = "<html><head><title>test</title></head><body><div><p>test</p></div></body></html>";
+    Document doc = Jsoup.parse(html);
+    doc.getElementsByTag("html").first().attr("xmlns", "http://www.w3.org/1999/xhtml");
+    doc.getElementsByTag("html").first().attr("xmlns:o", "urn:schemas-microsoft-com:office:office");
+
+    DOMImplementation domImplementation = doc.getImplementation();
+    DocumentType docType = domImplementation.createDocumentType("html", "-//W3C//DTD XHTML 1.0 Transitional//EN", "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd");
+    Document w3cDoc = domImplementation.createDocument("http://www.w3.org/1999/xhtml", "html", docType);
+    w3cDoc.setXmlStandalone(true);

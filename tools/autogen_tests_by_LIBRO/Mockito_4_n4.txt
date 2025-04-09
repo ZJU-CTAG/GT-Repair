@@ -1,0 +1,15 @@
+public void testClassCastException() {
+    final String var = "test";
+    final String var2 = "test2";
+
+    @SuppressWarnings("unchecked")
+    List<Object> mock = mock(List.class, withSettings().defaultAnswer(RETURNS_MOCKS));
+
+    mock.add(var);
+    mock.add(var2);
+
+    verify(mock, atLeastOnce()).add(var);
+    verify(mock, atLeastOnce()).add(var2);
+
+    verifyZeroInteractions(mock);
+}

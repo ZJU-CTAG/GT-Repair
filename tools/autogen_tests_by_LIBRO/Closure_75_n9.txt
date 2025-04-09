@@ -1,0 +1,25 @@
+public void testClosure() throws Exception {
+        Reader in = new FileReader(new File("src/test/resources/swfobject.js"));
+        Reader in2 = new FileReader(new File("src/test/resources/jquery.js"));
+
+        // Minify the input
+        JavaScriptCompressor compressor = new JavaScriptCompressor(in, new ErrorReporter(){
+
+            public void warning(String arg0, String arg1, int arg2, String arg3, int arg4) {
+                System.out.println(arg0);
+                System.out.println(arg1);
+            }
+
+            public void error(String arg0, String arg1, int arg2, String arg3, int arg4) {
+                System.out.println(arg0);
+                System.out.println(arg1);
+            }
+
+            public EvaluatorException runtimeError(String arg0, String arg1, int arg2, String arg3, int arg4) {
+                System.out.println(arg0);
+                System.out.println(arg1);
+                return null;
+            }
+
+        });
+        // Close the input

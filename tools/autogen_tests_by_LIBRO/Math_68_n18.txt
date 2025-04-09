@@ -1,0 +1,15 @@
+public void testIssue108() {
+    final double[] guess = {1, 1, 1};
+    final double[] xval = {0, 1, 2};
+    final double[] yval = {1, 1, 2};
+    final CurveFitter<PolynomialFunction.Parametric> fitter = new CurveFitter<PolynomialFunction.Parametric>(
+            new LevenbergMarquardtOptimizer(new VectorialConvergenceChecker(1e-10, 1e-10)));
+    for (int i = 0; i < xval.length; i++) {
+        fitter.addObservedPoint(xval[i], yval[i]);
+    }
+    final double[] best = fitter.fit(new PolynomialFunction.Parametric(), guess);
+    for (int i = 0; i < xval.length; i++) {
+        final double residual = yval[i] - best[0];
+        Assert.assertEquals(0, residual, 2e-10);
+    }
+}

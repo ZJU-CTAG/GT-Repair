@@ -1,0 +1,12 @@
+public void testCatchE() {
+    assertEquals("FAIL: ", catchE("5"));
+    assertEquals("FAILError: ", catchE("throw new Error('x')"));
+}
+private String catchE(String expr) {
+    try {
+        return "FAIL" + JsRuntime.eval("try {" + expr + "} catch(e) { e.name + ': ' + e.message }").toString();
+    }
+    catch (JsException e) {
+        return e.getMessage();
+    }
+}

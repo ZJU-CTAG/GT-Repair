@@ -1,0 +1,13 @@
+public void test_filtering_generator_delegate_match_count() throws Exception
+{
+    StringWriter writer = new StringWriter();
+    JsonGenerator generator = new JsonFactory().createGenerator(writer);
+    // TODO: why does FilteringGeneratorDelegate.getMatchCount() always return 0?
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(generator,
+            new SimpleBeanPropertyFilter(), false, new HashSet<String>());
+    delegate.writeString("foo");
+    delegate.writeNumber(123);
+    assertEquals(2, delegate.getMatchCount());
+    generator.close();
+    assertEquals("\"foo\":123", writer.toString());
+}

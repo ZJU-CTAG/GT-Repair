@@ -1,0 +1,19 @@
+public void testBrentOptimizer() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return Math.cos(x) + 0.5 * x;
+        }
+    };
+    BrentOptimizer optimizer = new BrentOptimizer();
+    for (double x0 = -2; x0 < 2; x0 += 0.01) {
+        for (double x1 = x0 + 0.01; x1 < x0 + 0.1; x1 += 0.01) {
+            double fx0 = f.value(x0);
+            double fx1 = f.value(x1);
+            double y = optimizer.optimize(f, GoalType.MAXIMIZE, x0, x1).getPoint();
+            double fy = f.value(y);
+            if (fy < Math.min(fx0, fx1)) {
+                fail("optimizer failed for (" + x0 + ", " + x1 + ")");
+            }
+        }
+    }
+}

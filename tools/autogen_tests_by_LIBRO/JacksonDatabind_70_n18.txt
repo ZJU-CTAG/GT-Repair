@@ -1,0 +1,13 @@
+public void testCaseInsensitive() throws IOException {
+    ObjectMapper mapper = new CsvMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    final String json = "businessAddress.Street,businessAddress.addon,businessAddress.zip,businessAddress.town,businessAddress.country\n" +
+            "\"Street\",\"addon\",\"12345\",\"town\",\"country\"";
+    Person person = mapper.readerFor(Person.class).readValue(json);
+    assertNotNull(person.businessAddress);
+    assertEquals("Street", person.businessAddress.street);
+    assertEquals("addon", person.businessAddress.addon);
+    assertEquals("12345", person.businessAddress.zip);
+    assertEquals("town", person.businessAddress.town);
+    assertEquals("country", person.businessAddress.country);
+}

@@ -1,0 +1,11 @@
+public void testIssue() {
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(ImmutableList.<SourceFile>of(
+      SourceFile.fromCode("test.js", "alert(1;")),
+      ImmutableList.<SourceFile>of(), options);
+  assertEquals(
+      "test.js:1: ERROR - Parse error. missing ) after argument list\n" +
+      "alert(1;\n" +
+      " ^\n",
+      Joiner.on("").join(result.errors));
+}

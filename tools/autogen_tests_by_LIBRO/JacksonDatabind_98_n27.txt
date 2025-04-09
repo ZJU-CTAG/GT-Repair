@@ -1,0 +1,17 @@
+public void testIssue33() throws Exception {
+    // test data
+    final String json =
+            aposToQuotes(
+                "{'kind':'CONTACT',"
+                +"'to':{'name':'Foo'}}"
+        );
+
+    // deserialize
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new KotlinModule());
+    Invite invite = mapper.readValue(json, Invite.class);
+
+    // verify
+    assertEquals(Invite.Kind.CONTACT, invite.getKind());
+    assertEquals("Foo", invite.getTo().getName());
+}

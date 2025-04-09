@@ -1,0 +1,19 @@
+public void testParseByteDataUTF16BE() throws IOException {
+    String text = "おはようございます";
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+    DataOutputStream dataOutStream = new DataOutputStream(outStream);
+    dataOutStream.writeShort(0xfeff);
+    dataOutStream.writeChars(text);
+    dataOutStream.close();
+    String result = DataUtil.parseByteData(outStream.toByteArray(),
+            Charset.forName("UTF-16"));
+    assertEquals(text, result);
+}
+public void testParseByteDataUTF16LE() throws IOException {
+    String text = "おはようございます";
+    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+    DataOutputStream dataOutStream = new DataOutputStream(outStream);
+    dataOutStream.writeShort(0xfffe);
+    dataOutStream.writeChars(text);
+    dataOutStream.close();
+    String result = DataUtil.parse

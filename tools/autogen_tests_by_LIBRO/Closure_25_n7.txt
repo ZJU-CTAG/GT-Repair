@@ -1,0 +1,15 @@
+public void testInference() {
+    final JSTypeRegistry registry = new JSTypeRegistry(null, null);
+    final JSType stringType = registry.createFromTypeString("string");
+    final JSType numberType = registry.createFromTypeString("number");
+    final JSType undefinedType = registry.createFromTypeString("undefined");
+    final JSType anyType = registry.getNativeType(JSTypeNative.NO_TYPE);
+    final JSType numberOrUndefinedType = registry.createUnionType(numberType, undefinedType);
+    final JSType stringOrUndefinedType = registry.createUnionType(stringType, undefinedType);
+    final JSType numberOrStringOrUndefinedType = registry.createUnionType(stringOrUndefinedType, numberOrUndefinedType);
+    final JSType stringOrUndefinedOrNumberType = registry.createUnionType(stringOrUndefinedType,
+            numberOrUndefinedType);
+    final JSType numberOrStringOrUndefinedType2 = registry.createUnionType(numberOrUndefinedType,
+            stringOrUndefinedType);
+
+   

@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    String h = "<html><body><script>alert('hello');</script>Hello!</body></html>";
+    HtmlParser parser = new HtmlParser();
+    HtmlDocument doc = parser.parseDocument(h, Jsoup.parser().settings(
+            ParseSettings.htmlDefault()
+                    .withEscapeMode(Entities.EscapeMode.xhtml)
+    ));
+    assertTrue(doc.text().startsWith("Hello!"));
+}

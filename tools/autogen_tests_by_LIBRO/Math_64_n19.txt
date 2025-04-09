@@ -1,0 +1,13 @@
+public void testLevenbergMarquardt() {
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    RealMatrix coefficients = new Array2DRowRealMatrix(new double[][] { { 2, -1, 0 }, { -1, 2, -1 }, { 0, -1, 2 } }, false);
+    RealVector constants = new ArrayRealVector(new double[] { 1, -2, 1 }, false);
+    RealVector weights = new ArrayRealVector(new double[] { 1, 1, 1 }, false);
+    MultivariateJacobianFunction f = new MultivariateJacobianFunction() {
+        /** {@inheritDoc} */
+        @Override
+        public Pair<RealVector, RealMatrix> value(RealVector point) {
+            double[] p = point.toArray();
+            return new Pair<RealVector, RealMatrix>(new ArrayRealVector(new double[] {
+                    p[0] * p[0] + p[1] * p[1] + p[2] * p[2] - 1,
+                    p[0] * p

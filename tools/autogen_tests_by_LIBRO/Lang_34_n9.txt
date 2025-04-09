@@ -1,0 +1,19 @@
+public void testThreadLocalLeaks() {
+    StringBuilder sb = new StringBuilder(64);
+    for(int i = 0; i < 65536; i++) {
+        sb.append('A');
+    }
+    String bigString = sb.toString();
+    ObjectWithBigString owbs = new ObjectWithBigString(bigString);
+    // trigger the creation of the ThreadLocal by calling toString
+    owbs.toString();
+    Set<SoftReference<Object>> softRefs = new HashSet<SoftReference<Object>>();
+    // if the ThreadLocal is not removed, then the String will not be GC'd
+    for(int i = 0; i < 64; i++) {
+        ObjectWithBigString owbs2 = new ObjectWithBigString(bigString);
+        softRefs.add(new SoftReference<Object>(owbs2));
+    }
+    // we should now have 64 SoftReferences to 64 copies of a long String
+    // these should get GC'd but the ThreadLocal will prevent it
+    // I have observed that if I iterate over 2^17 objects, then the
+    // SoftReferences get GC

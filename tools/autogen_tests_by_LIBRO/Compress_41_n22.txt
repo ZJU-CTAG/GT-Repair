@@ -1,0 +1,11 @@
+public void testBadEntry() throws Exception {
+    final byte[] zipData = new byte[]{80, 75, 3, 4, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    final ByteArrayInputStream in = new ByteArrayInputStream(zipData);
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(in);
+    try {
+        zis.getNextZipEntry();
+        fail();
+    } catch (final IOException e) {
+    }
+    assertNull(zis.getNextZipEntry());
+}

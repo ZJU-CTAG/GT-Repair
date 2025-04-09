@@ -1,0 +1,24 @@
+public void testIssue() {
+    // Module A
+    ClosureModule mA = new ClosureModule();
+    mA.add(new ClosureProvide("apps"));
+    mA.add(new ClosureRequire("apps.foo.bar.B"));
+    mA.add(new ClosureRequire("apps.foo.bar.C"));
+
+    // Module B
+    ClosureModule mB = new ClosureModule();
+    mB.add(new ClosureProvide("apps.foo.bar.B"));
+    mB.add(new ClosureRequire("apps"));
+
+    // Module C
+    ClosureModule mC = new ClosureModule();
+    mC.add(new ClosureProvide("apps.foo.bar.C"));
+    mC.add(new ClosureRequire("apps"));
+
+    ClosureBuilder cb = new ClosureBuilder();
+    cb.add(mA);
+    cb.add(mB);
+    cb.add(mC);
+
+    ClosureModule m = cb.build();
+    assertEquals("var apps

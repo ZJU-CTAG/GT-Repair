@@ -1,0 +1,12 @@
+public void testPosixFormatTar() throws IOException {
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream("src/test/resources/tartest/posix_format_tar.tar"))) {
+        TarArchiveEntry tarEntry = tais.getNextTarEntry();
+        assertEquals("normal file", tarEntry.getName());
+        assertEquals(0, tarEntry.getUserId());
+
+        tarEntry = tais.getNextTarEntry();
+        assertEquals("uid file", tarEntry.getName());
+        // The uid in the tar file is 0xfffffff9, which is -7 in Java.
+        assertEquals(-7, tarEntry.getUserId());
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue108() {
+    // Issue 108
+    String expected = "function f(){" +
+            "var a=[],b;" +
+            "a.push(b=[]);" +
+            "b[0]=1;" +
+            "return a" +
+            "}";
+
+    String code = "function f(){" +
+            "var a=[],b;" +
+            "a.push(b=[]);" +
+            "b[0]=1;" +
+            "return a" +
+            "}";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(JSSourceFile.fromCode("testIssue108", code));
+
+    assertEquals(expected, compiler.toSource());
+}

@@ -1,0 +1,21 @@
+public void testTokenBufferInCreator() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+public static final class Value {
+    private final int a;
+    private final String b;
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        JsonParser parser = buffer.asParser();
+        JsonToken current = parser.nextToken();
+        assertTrue("START_OBJECT expected, but was: " + current, current == JsonToken.START_OBJECT);
+        int a = parser.nextIntValue(-1);
+        String b = parser.nextTextValue();
+        current = parser.nextToken();
+        assertTrue("END_OBJECT expected, but was: " + current, current == JsonToken.END_OBJECT);
+        return new Value(a, b);
+   

@@ -1,0 +1,13 @@
+public void testIssue125() {
+    String js = "/** @param {Object} a */\n" +
+                "function f(a) {\n" +
+                "  a.prototype = '__proto';\n" +
+                "}\n" +
+                "/** @param {Object} a */\n" +
+                "function g(a) {\n" +
+                "  a.prototype = function(){};\n" +
+                "}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(js, null, new CompilerOptions());
+    assertFalse(result.success);
+}

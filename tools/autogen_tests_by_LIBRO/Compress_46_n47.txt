@@ -1,0 +1,11 @@
+public void testIssue108() {
+    // JDK 9 javadoc issue : ZipEntry.getTime() returns the value in DOS format
+    DateTime expected = new DateTime(2017, 9, 14, 11, 56);
+    // This is the current behavior with JDK 8
+    DateTime actual = new DateTime(new ZipEntry("test").getTime());
+    assertEquals(expected, actual);
+    // This is the new behavior with JDK 9
+    expected = new DateTime(2017, 9, 15, 11, 56);
+    actual = new DateTime(new ZipEntry("test").getTime());
+    assertEquals(expected, actual);
+}

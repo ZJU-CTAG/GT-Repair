@@ -1,0 +1,10 @@
+public void testEncoding() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    String encoding = "UTF-8";
+    factory.setEntryEncoding(encoding);
+    InputStream is = new ByteArrayInputStream(new byte[0]);
+    ArchiveInputStream ais = factory.createArchiveInputStream(ArchiveStreamFactory.JAR, is);
+    assertTrue(ais instanceof JarArchiveInputStream);
+    JarArchiveInputStream jais = (JarArchiveInputStream) ais;
+    assertEquals(encoding, jais.getEntryEncoding());
+}

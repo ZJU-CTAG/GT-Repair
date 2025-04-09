@@ -1,0 +1,18 @@
+public void testIssue0() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String code = "/** @const */ var main = {};\n" +
+            "/**\n" +
+            " * @suppress {reportUnknownTypes,checkTypes}\n" +
+            " */\n" +
+            "goog.scope(function() {\n" +
+            "  /**\n" +
+            "   * @suppress {reportUnknownTypes,checkTypes}\n" +
+            "   */\n" +
+            "  var a = foo, b, c = 1;\n" +
+            "});\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(Externs.EXTERNS, new JSSourceFile[] { JSSourceFile.fromCode("testcode", code) }, options);
+    assertTrue(result.success);
+}

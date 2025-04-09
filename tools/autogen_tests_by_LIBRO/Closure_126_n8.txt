@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String js = "try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    Script script = new Script("b", js);
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    try {
+        engine.eval(script);
+        fail("Should have thrown an exception");
+    } catch (ScriptException e) {
+        assertEquals("ReferenceError: \"b\" is not defined.", e.getMessage());
+    }
+}

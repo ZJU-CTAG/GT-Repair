@@ -1,0 +1,17 @@
+public void testBadVariableInliningInClosure() {
+    String code =
+            "function foo() {\n" +
+                    " var arr = [1, 2, 3, 4, 5];\n" +
+                    " for (var i = 0, l = arr.length; i < l; i++) {\n" +
+                    " var j = arr[i];\n" +
+                    " (function() {\n" +
+                    " var k = j;\n" +
+                    " setTimeout(function() { console.log(k); }, 0);\n" +
+                    " })();\n" +
+                    " }\n" +
+                    "}\n" +
+                    "foo();\n";
+    ArrayList<CompilerWarning> warnings = new ArrayList<CompilerWarning>();
+    String compressedCode = ClosureCompiler.compile(code, warnings);
+    assertTrue(warnings.isEmpty());
+}

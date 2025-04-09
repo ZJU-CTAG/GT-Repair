@@ -1,0 +1,15 @@
+public void testDuplicateHeaders() throws IOException {
+    String csvString = "Col1,Col2,Col2,Col3,Col4\n" +
+            "1,2,3,4,5\n" +
+            "4,5,6,7,8";
+    Reader reader = new StringReader(csvString);
+    CSVParser parser = new CSVParser(reader, CSVFormat.RFC4180.withHeader("Col1", "Col2", "Col2", "Col3", "Col4"));
+    Map<String, Integer> headerMap = parser.getHeaderMap();
+    assertEquals(5, headerMap.size());
+    assertEquals(0, (int) headerMap.get("Col1"));
+    assertEquals(1, (int) headerMap.get("Col2"));
+    assertEquals(2, (int) headerMap.get("Col2"));
+    assertEquals(3, (int) headerMap.get("Col3"));
+    assertEquals(4, (int) headerMap.get("Col4"));
+}
+``

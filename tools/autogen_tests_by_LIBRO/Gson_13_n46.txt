@@ -1,0 +1,11 @@
+public void testNegativeZero() {
+    String json = "[-0]";
+    TypeAdapter<Number> numberTypeAdapter = new Gson().getAdapter(Number.class);
+    Number[] numbers = numberTypeAdapter.fromJson(json);
+    assertEquals(1, numbers.length);
+    assertEquals("-0", numbers[0].toString());
+    StringWriter stringWriter = new StringWriter();
+    numberTypeAdapter.toJson(numbers, stringWriter);
+    String json2 = stringWriter.toString();
+    assertEquals(json, json2);
+}

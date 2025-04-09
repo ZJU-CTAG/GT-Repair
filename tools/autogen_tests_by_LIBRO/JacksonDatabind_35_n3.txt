@@ -1,0 +1,19 @@
+public void testTypeIdAsObjectId() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_OBJECT);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.registerModule(new ParameterNamesModule());
+    // setup:
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public ObjectIdInfo findObjectIdInfo(Annotated ann) {
+            ObjectIdInfo info = super.findObjectIdInfo(ann);
+            if (info != null) {
+                return info;
+            }
+            // else: try to use type information
+            if (ann instanceof AnnotatedClass) {
+                Class<?> cls = ((AnnotatedClass) ann).getRawType();
+                return new ObjectIdInfo(new PropertyName(cls.getSimpleName()), cls, null, null);
+            }
+            return null;

@@ -1,0 +1,13 @@
+public void testIssue683() throws JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final EnumMap<MyEnum, String> enumMap = new EnumMap<>(MyEnum.class);
+        enumMap.put(MyEnum.FOO, "bar");
+        objectMapper.writeValueAsString(enumMap); // {"FOO":"bar"}
+}
+
+enum MyEnum {
+    @JsonProperty("foo")
+    FOO,
+    @JsonProperty("bar")
+    BAR;
+}

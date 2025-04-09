@@ -1,0 +1,23 @@
+public void testFilteringParserDelegate() throws Exception {
+    String input = "{\n"
+            +"  \"a\":123,\n"
+            +"  \"array\":[1,2],\n"
+            +"  \"ob\": {\n"
+            +"    \"value0\":2,\n"
+            +"    \"value\":3,\n"
+            +"    \"value2\":4\n"
+            +"  },\n"
+            +"  \"b\":true\n"
+            +"}";
+    JsonParser p0 = createJsonParserUsingReader(input);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+                true, // includePath
+                false // multipleMatches
+             );
+    StringWriter sw = new StringWriter();
+    JsonGenerator g0 = createJsonGeneratorUsingWriter(sw);
+    g0.copyCurrentStructure(p);
+    g0.flush();
+    String output = sw.toString();
+    JsonNode outputNode = new ObjectMapper().

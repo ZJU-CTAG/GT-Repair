@@ -1,0 +1,7 @@
+public void testIssue() {
+    Parser parser = Parser.xmlParser().settings(ParseSettings.htmlDefault);
+    Document document = Jsoup.parse("<div>test</DIV><p></p>", "", parser);
+    assertEquals("<div>\n test\n</div>\n<p></p>", document.toString()); // fail -> toString() = "<div>\n test\n <p></p>\n</div>"
+    document = Jsoup.parse("<DIV>test</div><p></p>", "", parser);
+    assertEquals("<div>\n test\n</div>\n<p></p>", document.toString()); // pass
+}

@@ -1,0 +1,12 @@
+public void testPrefixes() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new ByteArrayInputStream(XML.getBytes()));
+    JXPathContext ctx = JXPathContext.newContext(new DOMParser().parseXML(XML));
+
+    Pointer p = ctx.iteratePointers("//*[name()='elem']").next();
+    assertEquals("a:elem", p.asPath());
+    p = ctx.iteratePointers("//*[name()='elem']").next();
+    assertEquals("b:elem", p.asPath());
+}

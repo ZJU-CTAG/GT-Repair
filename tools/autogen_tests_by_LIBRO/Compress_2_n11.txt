@@ -1,0 +1,18 @@
+public void testAr() throws Exception {
+    File arFile = new File("/tmp/bla.ar");
+    if (arFile.exists()) {
+        arFile.delete();
+    }
+    ArArchiveEntry entry1 = new ArArchiveEntry("test1.xml", 43);
+    ArArchiveEntry entry2 = new ArArchiveEntry("test2.xml", 43);
+    ArArchiveEntry entry3 = new ArArchiveEntry("test3.txt", 43);
+    ArArchiveOutputStream ar = new ArArchiveOutputStream(new FileOutputStream(arFile));
+    ar.setLongFileMode(ArArchiveOutputStream.LONGFILE_GNU);
+    ar.putArchiveEntry(entry1);
+    ar.putArchiveEntry(entry2);
+    ar.closeArchiveEntry();
+    ar.closeArchiveEntry();
+    ar.putArchiveEntry(entry3);
+    ar.close();
+    ArArchiveInputStream ar2 = new ArArchiveInputStream(new FileInputStream(arFile));
+    ArArchiveEntry entry = ar2.getNextEntry();

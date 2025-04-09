@@ -1,0 +1,20 @@
+public void testSerializationUtils() throws Exception {
+    Object o = new ObjectWithClass();
+    Object clone = SerializationUtils.clone(o);
+    assertEquals(o, clone);
+}
+
+static class ObjectWithClass implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Class intClass = int.class;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ObjectWithClass) {
+            ObjectWithClass other = (ObjectWithClass) obj;
+            return intClass.equals(other.intClass);
+        }
+        return false;
+    }
+}

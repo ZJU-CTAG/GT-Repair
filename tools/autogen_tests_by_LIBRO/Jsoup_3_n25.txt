@@ -1,0 +1,16 @@
+public void testTableRow() {
+    Document doc = null;
+    try {
+        doc = Jsoup.connect("http://www.google.com").get();
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+    Element table = doc.select("table").first();
+    assertNotNull(table);
+    Element tr = new Element(Tag.valueOf("tr"), "");
+    Element td = new Element(Tag.valueOf("td"), "");
+    td.append("Hello world");
+    tr.appendChild(td);
+    table.appendChild(tr);
+    assertEquals("<table>...<tr><td>Hello world</td></tr></table>", table.outerHtml());
+}

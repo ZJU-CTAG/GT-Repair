@@ -1,0 +1,16 @@
+public void testClosure() {
+  ClosureCompiler c = new ClosureCompiler();
+  c.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.VERBOSE);
+  Result r = c.compile(
+      "var ns = {};" +
+      "(function() {" +
+      "  /** @param {string=} b */" +
+      "  ns.a = function(b) {}" +
+      "})();" +
+      "function d() {" +
+      "  ns.a();" +
+      "  ns.a(123);" +
+      "}"
+  );
+  assertEquals(0, r.warnings.length);
+}

@@ -1,0 +1,9 @@
+public void testBlockMoreTypes() throws Exception
+{
+    final String JSON = "{\"@type\":\"java.lang.invoke.SerializedLambda\",\"implClass\":\"com.acme.MyClass/0x000000080008a6a0\",\"implMethodName\":\"foo\",\"implMethodSignature\":\"()V\",\"instantiatedMethodType\":\"()Ljava/util/function/Supplier;\",\"capturingClass\":\"com.acme.MyClass\",\"capturingParent\":{},\"functionalInterfaceClass\":\"java.lang.Class\",\"functionalInterfaceMethodName\":\"get\",\"functionalInterfaceMethodSignature\":\"()Ljava/lang/Object;\",\"functionalInterfaceMethodKind\":\"6\",\"implMethodKind\":\"6\",\"instantiatedMethodType\":\"()Ljava/util/function/Supplier;\"}";
+
+    try {
+        SerializedLambda lambda = MAPPER.readValue(JSON, SerializedLambda.class);
+        fail("Should not pass");
+    } catch (InvalidDefinitionException e) {
+        verifyException(e, "not allowed to deserialize");

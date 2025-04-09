@@ -1,0 +1,16 @@
+public void test_read_truncated() throws Exception {
+    byte[] data = new byte[770];
+    InputStream is = BZip2CompressorInputStreamTest.class.getResourceAsStream("testdata.bz2");
+    is.read(data);
+    assertEquals(770, is.available());
+    is.close();
+    
+    is = new ByteArrayInputStream(data);
+    is = new BZip2CompressorInputStream(is);
+    int count = 0;
+    while (is.read() != -1) {
+        count++;
+    }
+    is.close();
+    assertEquals(770, count);
+}

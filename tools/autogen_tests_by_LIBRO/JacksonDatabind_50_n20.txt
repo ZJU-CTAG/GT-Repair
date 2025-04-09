@@ -1,0 +1,12 @@
+public void testIssue1420() throws Exception
+{
+    // First, demonstrate that deserialization of a collection and a Map works.
+    String json = "[{\"@id\":12,\"field1\":\"blah\"},{\"@id\":13,\"field1\":\"blah\"}]";
+    List<TestObject> list = objectMapper.readValue(json, new TypeReference<List<TestObject>>() {});
+    assertEquals(12, list.get(0).id);
+    assertEquals(13, list.get(1).id);
+    json = "{\"12\":{\"@id\":12,\"field1\":\"blah\"},\"13\":{\"@id\":13,\"field1\":\"blah\"}}";
+    Map<String, TestObject> map = objectMapper.readValue(json, new TypeReference<Map<String, TestObject>>() {});
+    assertEquals(12, map.get("12").id);
+    assertEquals(13, map.get("13").id);
+    // Now demonstrate that deserialization of a single object does not work.

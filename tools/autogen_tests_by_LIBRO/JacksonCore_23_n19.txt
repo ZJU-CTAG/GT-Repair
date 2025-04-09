@@ -1,0 +1,22 @@
+public void testDefaultPrettyPrinter() throws Exception
+{
+    // first, serialize "vanilla" ObjectMapper
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter sw = new StringWriter();
+    mapper.writeValue(sw, new Foo());
+    String json = sw.toString();
+    assertEquals("{\"a\":1}", json);
+
+    // then try to deserialize with "custom PrettyPrinter", to ensure it works
+    mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    sw = new StringWriter();
+    mapper.writeValue(sw, new Foo());
+    json = sw.toString();
+    assertEquals("{\n  \"a\" : 1\n}", json);
+
+    // but sub-classing does not work
+    mapper = new ObjectMapper();
+    mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+    mapper.getSerializationConfig().setPrettyPrinter(new CustomPrettyPrinter());
+    sw

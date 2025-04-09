@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+
+    Result result = compiler.compile(options, "function closureCompilerTest(someNode) {\n"
+            + " var nodeId;\n"
+            + " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n"
+            + "}\n");
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+
+    String compiled = compiler.toSource();
+    assertEquals("function closureCompilerTest(b){b.id&&(b=parseInt(b.substr

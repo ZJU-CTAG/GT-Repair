@@ -1,0 +1,10 @@
+public void testIssue111() {
+    String js = "var x=0,y=1;x||y=8";
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    try {
+        engine.eval(js);
+        fail();
+    } catch (ScriptException e) {
+        assertThat(e.getCause().getClass().getName(), containsString("syntax error"));
+    }
+}

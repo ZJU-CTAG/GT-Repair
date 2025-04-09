@@ -1,0 +1,19 @@
+public void testIssue() {
+  int dim = 2;
+  RandomGenerator rg = new JDKRandomGenerator();
+  double[] min = new double[dim];
+  double[] max = new double[dim];
+  Arrays.fill(min, -1.0);
+  Arrays.fill(max, 1.0);
+  UnivariateFunction f = new SinFunction();
+  CMAESOptimizer opt = new CMAESOptimizer(100, .1, true, 0, 10, rg, false, dim);
+  final PointValuePair result = opt.optimize(new MaxEval(200),
+      new ObjectiveFunction(f),
+      GoalType.MAXIMIZE,
+      new InitialGuess(new double[dim]),
+      new SimpleBounds(min, max),
+      new CMAESOptimizer.PopulationSize(20),
+      new CMAESOptimizer.Sigma(new double[dim]));
+  double[] point = result.getPoint();
+  System.out.println(result.getValue());
+  System.out.println(Arrays.toString(point));

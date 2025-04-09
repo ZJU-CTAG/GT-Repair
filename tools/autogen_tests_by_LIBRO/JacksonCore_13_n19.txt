@@ -1,0 +1,18 @@
+public void testIssue116() throws Exception
+{
+    StringWriter sw = new StringWriter();
+
+    JsonFactory f = new JsonFactory();
+    f.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    JsonGenerator g = f.createJsonGenerator(ObjectWriteContext.empty(), sw);
+    g.writeStartObject();
+    g.writeFieldName("firstName");
+    g.writeString("John");
+    g.writeFieldName("lastName");
+    g.writeString("Smith");
+    g.writeEndObject();
+    g.close();
+
+    Assert.assertEquals("{firstName: \"John\", lastName: \"Smith\"}", sw.toString());
+    sw.close();
+}

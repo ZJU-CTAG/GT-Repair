@@ -1,0 +1,22 @@
+public void testDefaultedOptionWithArgument() {
+    Options options = new Options();
+    Option o = new Option("o", "option", true, "Option with argument default");
+    o.setArgName("argument");
+    o.setArgs(1);
+    o.setOptionalArg(false);
+    options.addOption(o);
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cl = parser.parse(options, new String[]{"-o"});
+        assertEquals("argument", cl.getOptionValue("o"));
+    } catch (ParseException e) {
+        fail("Unexpected exception: " + e);
+    }
+
+    try {
+        CommandLine cl = parser.parse(options, new String[]{"-o", "override"});
+        assertEquals("override", cl.getOptionValue("o"));
+    } catch (ParseException e) {
+        fail("Unexpected exception: " + e);
+    }
+}

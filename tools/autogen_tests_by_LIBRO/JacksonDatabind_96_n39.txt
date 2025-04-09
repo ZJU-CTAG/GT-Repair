@@ -1,0 +1,30 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new MyPropertyNamingStrategy());
+    mapper.registerModule(new JavaTimeModule());
+    String json = mapper.writeValueAsString(new MyValue());
+    MyValue value = mapper.readValue(json, MyValue.class);
+}
+
+private static class MyValue {
+    private final LocalDate date;
+
+    @JsonCreator
+    public MyValue(@JsonProperty("date") LocalDate date) {
+        this.date = date;
+    }
+
+    @JsonGetter("date")
+    public LocalDate getDate() {
+        return date;
+    }
+}
+
+@Override
+public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
+    return method.getAnnotation(JsonGetter.class).value();
+}
+
+@Override
+public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {

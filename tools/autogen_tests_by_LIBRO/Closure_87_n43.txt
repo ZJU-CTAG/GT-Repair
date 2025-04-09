@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setOutputCharset("UTF-8");
+    options.setSourceMapOutputPath("test.min.js.map");
+    options.setSourceMapFormat(SourceMap.Format.V3);
+    options.setSourceMapDetailLevel(SourceMap.DetailLevel.ALL);
+    options.setSourceMapLocationMappings(
+            new SourceMap.LocationMapping[]{
+                    new SourceMap.LocationMapping("/Users/foo/bar/src", "/Users/foo/bar/src")
+            }
+    );
+    Compiler.setLoggingLevel(Level.OFF);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[]{
+                    JSSourceFile.fromCode("src.js", "function foo(e){\n" +

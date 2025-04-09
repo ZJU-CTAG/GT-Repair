@@ -1,0 +1,39 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(Foo.class, FooMixin.class);
+
+    String json = mapper.writeValueAsString(new Foo("result"));
+    Assert.assertEquals("{\"bar\":\"result\"}", json);
+}
+
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
+@JacksonAnnotationsInside
+@JsonProperty("bar")
+public @interface ExposeStuff { }
+
+@JsonDeserialize(builder=Foo.Builder.class)
+public class Foo {
+    private final String stuff;
+
+    private Foo(Builder b) {
+        stuff = b.stuff;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @ExposeStuff
+    public String getStuff() {
+        return stuff;
+    }
+
+    public static class Builder {
+        private String stuff;
+
+        public Builder withStuff(String stuff) {
+            this.stuff = stuff;
+            return this;
+        }

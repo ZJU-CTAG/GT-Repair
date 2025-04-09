@@ -1,0 +1,15 @@
+public void testIssueXXX() {
+    double[] upper = {1.0, 5.0, 5.0, 5.0};
+    double[] lower = {-1.0, -5.0, -5.0, -5.0};
+    final MultivariateRealFunction f = new MultivariateRealFunction() {
+            public double value(double[] x) {
+                return x[0] * x[3] * (x[0] + x[1] + x[2]) + x[2];
+            }
+        };
+    SimpleBounds bounds = new SimpleBounds(lower, upper);
+    MultivariateRealOptimizer optimizer = new PowellOptimizer();
+    MultivariateRealPointValuePair optimum = optimizer.optimize(
+        100, f, GoalType.MINIMIZE, new double[] { 0.1, 0.3, 0.7, 0.9 },
+        new SimpleValueChecker(-1.0e-20, 1.0e-20));
+    assertTrue(optimum.getValue() < 1.0e-19);
+}

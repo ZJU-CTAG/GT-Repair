@@ -1,0 +1,24 @@
+public void testInjection() {
+    TextView txtNextStep = mock(TextView.class);
+    TextView txtGateView = mock(TextView.class);
+    TextView txtGateLabel = mock(TextView.class);
+    injectMocks(new InjectedClass(txtGateView, txtGateLabel));
+    assertNotNull(txtGateView);
+    assertNotNull(txtNextStep);
+    assertNotSame(txtNextStep, txtGateView);
+    assertSame(txtNextStep, txtGateLabel);
+}
+
+private void injectMocks(InjectedClass injectedClass) {
+    MockitoAnnotations.initMocks(injectedClass);
+}
+
+@RunWith(RobolectricTestRunner.class)
+@Config(shadows = MyShadowResources.class)
+public class InjectionTest {
+    @Test
+    public void testInjection() {
+        TextView txtNextStep = mock(TextView.class);
+        TextView txtGateView = mock(TextView.class);
+        TextView txtGateLabel = mock(TextView.class);
+        injectM

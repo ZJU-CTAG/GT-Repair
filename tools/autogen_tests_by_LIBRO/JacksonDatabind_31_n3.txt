@@ -1,0 +1,29 @@
+public void testAntPathFilter () throws Exception {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final AntPathFilterProvider filterProvider = new AntPathFilterProvider();
+        filterProvider.addInclusionPath("/foo/bar");
+        objectMapper.setFilterProvider(filterProvider);
+        
+        final JsonNode rootNode = objectMapper.valueToTree(new TestObject());
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
+        
+        final String json = objectMapper.convertValue(rootNode, String.class);
+        System.out.println(json);
+    }
+
+public class TestObject {
+        
+        private String foo = "foo";
+        private String bar = "bar";
+        private String baz = "baz";
+        
+        public String getFoo() {
+            return foo;
+        }
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+        public String getBar() {
+            return bar;
+        }
+        public void setBar(

@@ -1,0 +1,23 @@
+public void testClosureCompilerIssue() {
+    String source = 
+        "/\*\* @preserve \*/\n" +
+        "var t = null;\n" +
+        "\n" +
+        "window.test = function()\n" +
+        "{\n" +
+        " if (t != null) {\n" +
+        " t = null;\n" +
+        " }\n" +
+        "\n" +
+        " t = 1;\n" +
+        "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("source", source) },
+            new JSSourceFile[] { },
+            options);
+    assertTrue(result

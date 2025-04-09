@@ -1,0 +1,16 @@
+public void testFilteringParserDelegate() throws IOException {
+    final String jsonField = "field";
+    final String jsonValue = "value";
+    final String jsonString = "{\"" + jsonField + "\":\"" + jsonValue + "\"}";
+    final StringWriter stringWriter = new StringWriter(jsonString.length());
+
+    final FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(
+        new JsonGeneratorDelegate(new JsonFactory().createGenerator(stringWriter)), new MatchAlways());
+    filteringGeneratorDelegate.writeStringField(jsonField, jsonValue);
+    filteringGeneratorDelegate.flush();
+    final JsonParserDelegate jsonParserDelegate = new JsonParserDelegate(
+        new JsonFactory().createParser(stringWriter.toString()));
+    assertEquals(1, jsonParserDelegate.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParserDelegate.getCurrentToken());
+    assertEquals(jsonField, jsonParserDelegate.getCurrentName());
+    assertEquals(1, jsonParserDe

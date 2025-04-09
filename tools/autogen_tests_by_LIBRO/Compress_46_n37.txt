@@ -1,0 +1,20 @@
+public void testIssue() {
+    // These tests fail with JDK 9, due to changes in java.util.zip.ZipEntry.
+    //
+    // $ javap -s java.util.zip.ZipEntry | grep -i gettime
+    // public long getTime()
+    // public void setTime(long)
+    // public long java.util.zip.ZipEntry.getTime()
+    // public void java.util.zip.ZipEntry.setTime(long)
+    // public final long getTime();
+    // public final void setTime(long);
+    // public native long getTime();
+    // public native void setTime(long);
+    //
+    // Note that the methods are now final and native.
+    //
+    // The problem is that the test is setting the time on the entry to be different
+    // than the actual time in the file, then trying to read the actual time.
+    //
+    // It looks like the test is trying to do something roughly equivalent to
+    // what is done here: https://github.com/apache/commons-compress/blob/trunk/src/test/

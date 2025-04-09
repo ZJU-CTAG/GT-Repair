@@ -1,0 +1,11 @@
+public void testThreadLocal() throws Exception {
+    final ToStringStyle style = ToStringStyle.SHORT_PREFIX_STYLE;
+    assertEquals("Object@42[a=1]", style.toString(new Object() {
+        int a = 1;
+    }, 42));
+    Field field = style.getClass().getDeclaredField("fieldSeparator");
+    field.setAccessible(true);
+    ThreadLocal<String> tl = (ThreadLocal<String>) field.get(style);
+    assertNotNull("ThreadLocal Field", tl);
+    assertEquals("Initial ThreadLocal Value", "[", tl.get());
+}

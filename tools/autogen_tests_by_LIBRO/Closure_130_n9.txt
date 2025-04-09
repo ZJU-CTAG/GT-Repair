@@ -1,0 +1,9 @@
+public void testIssue108() {
+    String source = "function () { return function () { setTimeout(function() { alert(arguments); }, 0); }}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    compiler.compile(SourceFile.fromCode("test.js", source), options);
+    String result = compiler.toSource();
+    assertEquals(source, result);
+}

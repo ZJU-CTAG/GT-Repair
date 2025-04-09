@@ -1,0 +1,16 @@
+public void testProcessCommonJSModules() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    options.setPrettyPrint(true);
+    compiler.compile(
+            SourceFile.fromCode("echo.js", "define(function() { return {\n"
+            + "  echo: function(val) {\n"
+            + "    window.console.log(val);\n"
+            + "  }\n"
+            + "}});"),
+            SourceFile.fromCode("echo-main.js", "var echo = require('echo');\n"
+            + "echo.echo('hello world');"),
+            options);
+}

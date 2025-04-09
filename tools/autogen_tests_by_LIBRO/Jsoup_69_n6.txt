@@ -1,0 +1,21 @@
+public void testFormRemoval() {
+    String html = "<form>" +
+            "<input name='alpha' value='1' type='hidden'/>" +
+            "<input name='beta' value='2' type='hidden'/>" +
+            "</form>";
+    Document doc = Jsoup.parse(html);
+    assertEquals(2, doc.select("input[type=hidden]").size());
+    Element input = doc.select("input[name=alpha]").first();
+    input.remove();
+    assertEquals(1, doc.select("input[type=hidden]").size());
+
+    FormElement form = (FormElement) doc.select("form").first();
+    assertEquals(1, form.select("input[type=hidden]").size());
+
+    List<Connection.KeyVal> data = form.formData();
+    assertEquals(1, data.size());
+
+    Connection.KeyVal kv = data.get(0);
+    assertEquals("beta", kv.key());
+    assertEquals("2", kv.value());
+}

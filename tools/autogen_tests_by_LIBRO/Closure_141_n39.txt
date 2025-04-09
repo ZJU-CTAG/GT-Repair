@@ -1,0 +1,12 @@
+public void testClosureIssue() {
+    SimpleScriptContext ctx = new SimpleScriptContext();
+    ctx.setAttribute("Math", Math.class, ScriptContext.ENGINE_SCOPE);
+    ctx.setAttribute("goog", System.class, ScriptContext.ENGINE_SCOPE);
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    try {
+        engine.eval("(Math.sin||Math.cos)(0)", ctx);
+        fail("should have thrown");
+    } catch(ScriptException se) {
+        assertEquals("missing ; before statement (<Unknown source>#1)", se.getMessage());
+    }
+}

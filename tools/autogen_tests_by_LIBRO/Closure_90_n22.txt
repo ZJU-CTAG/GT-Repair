@@ -1,0 +1,30 @@
+public void testThisTypedef() {
+    String js = LINE_JOINER.join(
+        "goog.provide('bug');",
+        "",
+        "/**",
+        " * @this {bug.Thing}",
+        " */",
+        "bug.sharedMethod = function() {};",
+        "",
+        "/**",
+        " * @constructor",
+        " */",
+        "bug.A = function() {};",
+        "",
+        "/**",
+        " * @constructor",
+        " */",
+        "bug.B = function() {};",
+        "",
+        "/**",
+        " * @type {bug.A|bug.B}",
+        " */",
+        "bug.Thing = goog.typedef;");
+
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, js, options);
+    assertFalse(

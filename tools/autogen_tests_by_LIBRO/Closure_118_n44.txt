@@ -1,0 +1,16 @@
+public void testIssueWithCompiler() {
+    try {
+        File f = new File("src/test/resources/issue/default.js");
+        CompilerOptions opt = new CompilerOptions();
+        CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(opt.getOptions());
+        Result result = new Compiler().compile(
+                SourceFile.fromCode("externs.js", ""),
+                ImmutableList.of(SourceFile.fromFile(f)),
+                opt);
+        String output = result.toSource();
+        System.out.println(output);
+        assertTrue(output.contains("bar1"));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

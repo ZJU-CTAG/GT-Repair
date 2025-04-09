@@ -1,0 +1,15 @@
+public void testDefineString() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initCompilerOptionsIfTesting();
+
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setPrettyPrint(true);
+    //options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+
+    compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test.js", "/** @define {string} */\ntest.VERSION = \"\";")},
+            options);
+}

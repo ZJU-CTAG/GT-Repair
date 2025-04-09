@@ -1,0 +1,22 @@
+public void testVarCheckCrash() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setIdeMode(true);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler compiler = new Compiler();
+    compiler.setPassConfig(new DefaultPassConfig(options));
+    compiler.setErrorManager(new BasicErrorManager() {
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            if (level.equals(CheckLevel.ERROR)) {
+                throw new RuntimeException();
+            }
+        }
+    });
+
+    JSSourceFile[] jssrcs = {
+            JSSourceFile.fromCode("core.js",
+                    "var jQuery = function(a,b){return new jQuery.fn.init(a,b)};\n" +
+                            "jQuery.fn = jQuery.prototype = {};\n" +
+                            "jQuery.fn.init = function(a,b){

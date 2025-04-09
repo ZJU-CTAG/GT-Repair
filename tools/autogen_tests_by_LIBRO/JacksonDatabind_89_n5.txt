@@ -1,0 +1,10 @@
+public void testDeserialize_Polymorphic() throws Exception
+{
+    String json = String.format("{\"%s\":\"a\",\"%s\":{\"%s\": 0}}",
+            JSON.DEFAULT_TYPE_KEY, "data", "blah");
+    ObjectMapper m = new ObjectMapper();
+    m.setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL));
+    Object result = m.readValue(json, Object.class);
+    assertTrue(result instanceof Map);
+    assertEquals(DefaultTypingTestBase.class.getName(), ((Map)result).get(JSON.DEFAULT_TYPE_KEY));
+}

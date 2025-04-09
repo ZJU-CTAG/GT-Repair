@@ -1,0 +1,16 @@
+public void testIssue824() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(createJodaModule());
+    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    System.out.println(objectMapper.getSerializationConfig().getTimeZone());
+    objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    System.out.println(objectMapper.getSerializationConfig().getTimeZone());
+    System.out.println(objectMapper.writeValueAsString(new DateTime(1988, 6, 25, 20, 30, DateTimeZone.UTC)));
+}
+
+private static SimpleModule createJodaModule() {
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(DateTime.class, new DateTimeSerializer(
+            new JacksonJodaDateFormat(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+                    .withZoneUTC())));
+    return

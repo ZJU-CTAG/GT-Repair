@@ -1,0 +1,21 @@
+public void testUnboundedSolutionException() {
+	SimplexSolver simplexSolver = new SimplexSolver();
+	
+	double[][] q = generateCoeffsMxR(M, R);
+	double[][] x = generateCoeffsNxR(N, R);
+	
+	LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] {0, 1}, 0);
+	Collection constraints = new ArrayList();
+	
+	for (int subject = 0; subject < R; subject++) {
+		
+		double[] qRow = getRow(q, subject);
+		double[] xRow = getRow(x, subject);
+		
+		constraints.add(new LinearConstraint(qRow, Relationship.GEQ, -q[M-1][subject]));
+		constraints.add(new LinearConstraint(xRow, Relationship.GEQ, 0));
+	}
+	
+	// add non-negative constraint
+	double[] nonNegativeConstraint = new double[R];
+	Arrays.fill(nonNegative

@@ -1,0 +1,14 @@
+public void testCustomFormat() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    final Site site = new Site();
+    final Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.YEAR, 2012);
+    cal.set(Calendar.MONTH, Calendar.JANUARY);
+    cal.set(Calendar.DAY_OF_MONTH, 1);
+    site.setCreatedDate(new java.sql.Date(cal.getTimeInMillis()));
+    final String str = mapper.writeValueAsString(site);
+    assertEquals("{\"createdDate\":\"2012-01-01\"}", str);
+}
+

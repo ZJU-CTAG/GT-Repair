@@ -1,0 +1,23 @@
+public void testIssue() {
+    // create a cubic function
+    final double x2 = 3 * 3;
+    final double x3 = 3 * x2;
+    final double x4 = 3 * x3;
+    final double x5 = 3 * x4;
+    final double x6 = 3 * x5;
+    final double x7 = 3 * x6;
+    final UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            return -x7 + (-6 * x6) + (21 * x5) + (-42 * x4) + (48 * x3) + (-27 * x2) + (6 * x) + 1;
+        }
+    };
+
+    // create a solver
+    final UnivariateRealSolver solver = new BrentOptimizer(1e-10, 1e-14);
+
+    // find the function's maximum
+    final double min = solver.optimize(new UnivariateRealFunction() {
+        public double value(final double x) {
+            return -f.value(x);
+        }
+    }, GoalType.MINIMIZE

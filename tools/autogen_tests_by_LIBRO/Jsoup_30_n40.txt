@@ -1,0 +1,11 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse(
+            "<html><a href='#'><b>1</b></a><a href='#'><i><b>2</b></i></a></html>");
+    Whitelist whitelist = new Whitelist();
+    whitelist.addTags("b");
+    whitelist.addAttributes("a", "href");
+    Document clean = new Cleaner(whitelist).clean(doc);
+    assertEquals("<html>\n" + "<head></head>\n" + "<body>\n"
+            + "<a href=\"#\"><b>1</b></a>\n" + "<a href=\"#\"><b>2</b></a>\n"
+            + "</body>\n" + "</html>", clean.html());
+}

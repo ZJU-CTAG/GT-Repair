@@ -1,0 +1,16 @@
+public void testTagAttrRegexPrefixed() {
+    String html = "<div><table class=x></table><table class=xy></table><table class=xyz></table></div>";
+    Document doc = Jsoup.parse(html);
+
+    // should be 2, fails
+    assertEquals(2, doc.select("div table[class~=x|y]").size());
+    // should be 2, fails
+    assertEquals(2, doc.select("div > table[class~=x|y]").size());
+    // should be 1, fails
+    assertEquals(1, doc.select("div + table[class~=x|y]").size());
+    // should be 2, fails
+    assertEquals(2, doc.select("div ~ table[class~=x|y]").size());
+
+    // should be 3, ok
+    assertEquals(3, doc.select("div, table[class~=x|y]").size());
+}

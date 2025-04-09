@@ -1,0 +1,16 @@
+public void testUnwrapped() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    CsvMapper csvMapper = mapper.registerModule(new CsvJacksonModule());
+    CsvSchema schema = csvMapper.schemaFor(Person.class).withHeader();
+
+    // works
+    MappingIterator<Person> deser = csvMapper.readerFor(Person.class).with(schema).readValues(getClass().getResourceAsStream("/csv/person.csv"));
+    // fails
+    //MappingIterator<Person> deser = csvMapper.readerFor(Person.class).with(schema).with(mapper).readValues(getClass().getResourceAsStream("/csv/person.csv"));
+
+    List<Person> persons = deser.readAll();
+
+    assertEquals(2, persons.size());

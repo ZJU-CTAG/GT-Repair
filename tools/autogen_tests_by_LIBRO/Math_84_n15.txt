@@ -1,0 +1,15 @@
+public void testMultiDirectionalCorrectStart() {
+    OptimizationProblem problem = new OptimizationProblem();
+    problem.addDecisionVariable("x1", -Double.MAX_VALUE, Double.MAX_VALUE);
+    problem.addConstraint(new ObjectiveFunction(new double[]{-1.0, -1.0}, -10.0));
+    problem.setObjectiveGoal(GoalType.MINIMIZE);
+    problem.setObjectiveFunction(new ObjectiveFunction(new double[]{1.0, 1.0}));
+    SimplexSolver solver = new SimplexSolver();
+    solver.setSolutionHook(new SolutionHook() {
+        @Override
+        public void hook(double[] solution) {
+            System.out.println(Arrays.toString(solution));
+        }
+    });
+    solver.solve(problem);
+}

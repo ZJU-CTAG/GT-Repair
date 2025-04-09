@@ -1,0 +1,15 @@
+public void testRootAtEndpoint() {
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(final double x) {
+            return x * x - 2;
+        }
+    };
+    // root at -sqrt(2)
+    final double root1 = -Math.sqrt(2);
+    assertEquals(root1, new BrentSolver().solve(f, root1 - 1, root1 + 1, root1 + 1), 1e-15);
+    assertEquals(root1, new BrentSolver().solve(f, root1 - 1, root1 + 1, root1 - 1), 1e-15);
+    // root at +sqrt(2)
+    final double root2 = Math.sqrt(2);
+    assertEquals(root2, new BrentSolver().solve(f, root2 - 1, root2 + 1, root2 + 1), 1e-15);
+    assertEquals(root2, new BrentSolver().solve(f, root2 - 1, root2 + 1, root2 - 1), 1

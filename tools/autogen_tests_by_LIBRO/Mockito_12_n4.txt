@@ -1,0 +1,14 @@
+public void testMultipleArguments() {
+    final Object[] args = new Object[] { "str", 42 };
+    Foo foo = mock(Foo.class);
+    foo.bar("str", 42);
+
+    ArgumentCaptor<Object> argCaptor = ArgumentCaptor.forClass(Object.class);
+    verify(foo).bar(argCaptor.capture(), argCaptor.capture());
+
+    assertArrayEquals(args, argCaptor.getAllValues().toArray());
+}
+
+public interface Foo {
+    void bar(Object... args);
+}

@@ -1,0 +1,8 @@
+public void testIssue() throws IOException {
+    final ObjectMapper om = new ObjectMapper();
+    final JavaType t = om.getTypeFactory().constructParametricType(Foo.class, String.class);
+    final Foo<String> foo = new Foo<>();
+    final String json = om.writeValueAsString(foo);
+    System.out.println(json); // [{"id":"foo"}]
+    assertEquals(foo, om.readValue(json, t));
+}

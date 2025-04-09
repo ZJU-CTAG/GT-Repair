@@ -1,0 +1,12 @@
+public void testIssue201() {
+    Option opt = new Option("o", "output", true, "output file");
+    opt.setOptionalArg(true);
+    opt.setArgName("file");
+    opt.setType(new File());
+    opt.setDefault("foo");
+    Options opts = new Options();
+    opts.addOption(opt);
+    CommandLineParser cmdParser = new PosixParser();
+    CommandLine cmd = cmdParser.parse(opts, new String[]{"-o", "bar"});
+    assertEquals(new File("bar"), cmd.getOptionObject("o"));
+}

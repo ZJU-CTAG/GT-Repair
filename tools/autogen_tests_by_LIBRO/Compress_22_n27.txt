@@ -1,0 +1,11 @@
+public void test_read_truncated() throws Exception {
+    File temp = File.createTempFile("temp", ".bin");
+    temp.deleteOnExit();
+    FileOutputStream out = new FileOutputStream(temp);
+    out.write(BZ2File_data);
+    out.close();
+    BZip2CompressorInputStream bin = new BZip2CompressorInputStream(new FileInputStream(temp));
+    byte[] data = new byte[1000];
+    int count = bin.read(data);
+    assertEquals(770, count);
+}

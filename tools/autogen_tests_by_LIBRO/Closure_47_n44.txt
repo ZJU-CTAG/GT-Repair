@@ -1,0 +1,16 @@
+public void testSourceMap() throws IOException, URISyntaxException {
+    String source = "var x = 'Hello, world!';";
+    String sourceMap = SourceMapGeneratorFactory.getInstance(SourceMap.Format.V3)
+            .withSourceMapLocationMapping("source.js", "source.js.map")
+            .withFileName("source.js")
+            .withSourceContent("source.js", source)
+            .generateSourceMap(new FileReader("source.js"), new StringReader(source));
+
+    SourceMapConsumer consumer = new SourceMapConsumerFactory().createSourceMapConsumer(sourceMap);
+    consumer.visitMappings(new SourceMapConsumerV3() {
+        @Override
+        public void visitMapping(String generatedFilePath, String originalFilePath, String sourceRoot, String originalFileName, String generatedLine, String generatedColumn, String originalLine, String originalColumn, String name) {
+            assertEquals(0, Integer.parseInt(originalLine));
+        }
+    });
+}

@@ -1,0 +1,29 @@
+public void testIssue107() {
+    Options options = buildCommandLineOptions();
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = null;
+    try {
+        commandLine = parser.parse(options, new String[] {"-t", "-something"});
+    } catch (ParseException e) {
+        System.out.println("Invalid parameters. " + e.getMessage() + NEW_LINE);
+        System.exit(EXIT_CODE_ERROR);
+    }
+    assertFalse(commandLine.hasOption("o"));
+}
+
+public static Options buildCommandLineOptions() {
+
+
+ Options options = new Options();  
+
+ OptionGroup group = new OptionGroup();  
+
+ group.addOption(new Option("s", "search", false, "Search for a String"));  
+
+ group.addOption(new Option("t", "tokens", false, "Search for tokens"));  
+
+ options.addOptionGroup(group);  
+
+ options.addOption(new Option("o", "output", true, "Output directory"));  
+
+ options.addOption(new Option("f", "file", false,

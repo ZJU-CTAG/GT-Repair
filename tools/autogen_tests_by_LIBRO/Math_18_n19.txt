@@ -1,0 +1,23 @@
+public void testCMAESOptimizerWithBounds() {
+    double lowerBound = 0;
+    double upperBound = 1;
+    SimpleBounds bounds = new SimpleBounds(lowerBound, upperBound);
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    PointValuePair best = optimizer.optimize(
+        new MaxEval(1000),
+        new ObjectiveFunction(new ExampleFunction()),
+        GoalType.MINIMIZE,
+        bounds,
+        new InitialGuess(new double[] {0.1, 0.9}),
+        new CMAESOptimizer.Sigma(new double[] {0.1, 0.1}),
+        new CMAESOptimizer.PopulationSize(20)
+    );
+    System.out.println("Best guess is: " + Arrays.toString(best.getPoint()));
+}
+
+public static class ExampleFunction implements MultivariateFunction {
+    @Override
+    public double value(double[] x) {
+        return x[0] * x[1];
+    }
+}

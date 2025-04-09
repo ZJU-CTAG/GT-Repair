@@ -1,0 +1,19 @@
+public void testParserDelegate() throws Exception {
+  JsonFactory jsonFactory = new JsonFactory();
+
+  JsonParser parser = jsonFactory.createParser(JSON_STRING);
+  JsonGenerator generator = jsonFactory.createGenerator(System.out);
+
+  FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(generator, new PropertyNameFilter("date"));
+  filteringGeneratorDelegate.allowMultipleMatches(); // just to be sure
+
+  JsonParser filteredParser = new FilteringParserDelegate(parser, new PropertyNameFilter("date"));
+
+  while (!filteredParser.isClosed()) {
+    JsonToken token = filteredParser.nextToken();
+    if (token != null) {
+      filteringGeneratorDelegate.writeFieldName(filteredParser.getCurrentName());
+      filteringGeneratorDelegate.copyCurrentEvent(filteredParser);
+    }
+  }
+}

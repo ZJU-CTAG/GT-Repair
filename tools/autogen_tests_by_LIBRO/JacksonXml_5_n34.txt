@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    XmlMapper xmlMapper = new XmlMapper();
+    XmlMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .enable(MapperFeature.USE_ANNOTATIONS, false)
+            .enable(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    System.out.println(noAnnotationsXmlMapper.writeValueAsString(new TestAnnotated()));
+    System.out.println(xmlMapper.writeValueAsString(new TestAnnotated()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public class TestAnnotated {
+
+}

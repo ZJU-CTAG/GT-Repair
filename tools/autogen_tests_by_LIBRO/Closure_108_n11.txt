@@ -1,0 +1,22 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(
+            SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js", "var goog = {};"
+                    + "goog.scope;"
+                    + "var ns = {};"
+                    + "ns.sub = {};"
+                    + "/** @constructor */"
+                    + "ns.sub.C = function() {};"
+                    + "goog.scope(function() {"
+                    + "var sub = ns.sub;"
+                    + "/** @type {sub.C} */"
+                    + "var x = null;"
+                    + "});"),
+            options);

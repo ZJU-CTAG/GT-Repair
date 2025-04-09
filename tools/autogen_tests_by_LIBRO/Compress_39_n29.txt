@@ -1,0 +1,17 @@
+public void testZipFile() throws Exception {
+    final File tmpFile = File.createTempFile("tmp", null);
+    try {
+        final FileOutputStream zipfile = new FileOutputStream(tmpFile);
+        zipfile.write(new byte[] {80,75,5,6});
+        zipfile.close();
+
+        try {
+            final ZipFile zf = new ZipFile(tmpFile);
+        } catch (final ZipException ze) {
+            System.out.println(ze.getMessage());
+            assertTrue(ze.getMessage().contains("corrupt"));
+        }
+    } finally {
+        tmpFile.delete();
+    }
+}

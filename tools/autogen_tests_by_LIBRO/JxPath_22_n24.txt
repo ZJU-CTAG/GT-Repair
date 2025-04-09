@@ -1,0 +1,11 @@
+public void testResettingDefaultNamespace() {
+    Document doc = XMLUtils.newDocument();
+    Element e = doc.createElementNS("test111", "foo");
+    Element bar = doc.createElementNS("bla", "bar");
+    bar.setTextContent("a");
+    e.appendChild(bar);
+    Element test = doc.createElementNS(null, "test");
+    e.appendChild(test);
+    DOMNodePointer pointer = new DOMNodePointer(e);
+    assertEquals("/foo[1]/bar[1]/test[1]", pointer.asPath());
+}

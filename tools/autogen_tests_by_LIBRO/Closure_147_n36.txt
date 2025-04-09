@@ -1,0 +1,22 @@
+public void testIssue_144() {
+    String source = "var NS = {\n" +
+            " read: function()\n" +
+            " {\n" +
+            " return this.foo;\n" +
+            " },\n" +
+            "\n" +
+            " write: function()\n" +
+            " {\n" +
+            " this.foo = 123;\n" +
+            " }\n" +
+            "};";
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    compilerEnv.setAllowSharpComments(true);
+    compilerEnv.setRecordingComments(true);
+    compilerEnv.setIdeMode(true);
+    compilerEnv.setWarningAsError(true);
+    compilerEnv.setStrictMode(false);
+    ErrorReporter compilationErrorReporter = compilerEnv.getErrorReporter();
+    Parser p = new Parser(compilerEnv, compilationErrorReporter);
+    ScriptOrFnNode tree = p.parse

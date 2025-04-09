@@ -1,0 +1,9 @@
+public void testIssueW3C() {
+    String html = "<html><head><title>First parse</title></head>"
+            + "<body><p>Parsed HTML into a doc.</p><fb:like href=\"http://www.facebook.com/platform\" send=\"true\" width=\"450\" show_faces=\"true\" font=\"\">"
+            + "</fb:like></body></html>";
+    Document doc = Jsoup.parse(html);
+    org.w3c.dom.Document w3cDoc = new W3CDom().fromJsoup(doc);
+    assertEquals("First parse", w3cDoc.getElementsByTagName("title").item(0).getTextContent());
+    assertEquals("http://www.facebook.com/platform", w3cDoc.getElementsByTagName("fb:like").item(0).getAttributes().getNamedItem("href").getTextContent());
+}

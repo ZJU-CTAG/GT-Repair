@@ -1,0 +1,18 @@
+public void testIssue134() throws Exception {
+    String js =
+        "var Foo = function() {" +
+        " var self = this;" +
+        " window.setTimeout(function() {" +
+        " window.location = self.location;" +
+        " }, 0);" +
+        "}" +
+        "Foo.prototype.setLocation = function(loc) {" +
+        " this.location = loc;" +
+        "};" +
+        "(new Foo()).setLocation('http://www.google.com/');";
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("input", js));
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+    assertTrue(compiler.getResult().success);
+}

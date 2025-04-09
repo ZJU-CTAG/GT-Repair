@@ -1,0 +1,25 @@
+public void testSerializeConcurrentNavigableMap() throws Exception {
+    NavMapPOJO navMapPOJO = new NavMapPOJO();
+    navMapPOJO.setMap(new ConcurrentSkipListMap<>());
+    navMapPOJO.getMap().put("key1", "value1");
+
+    String json = new Gson().toJson(navMapPOJO);
+    System.out.println(json);
+
+    navMapPOJO = new Gson().fromJson(json, NavMapPOJO.class);
+
+    assertEquals(1, navMapPOJO.getMap().size());
+    assertEquals("value1", navMapPOJO.getMap().get("key1"));
+}
+
+private static class NavMapPOJO {
+    private ConcurrentNavigableMap<String, String> map;
+
+    public ConcurrentNavigableMap<String, String> getMap() {
+        return map;
+    }
+
+    public void setMap(ConcurrentNavigableMap<String, String> map) {
+        this.map = map;
+    }
+}

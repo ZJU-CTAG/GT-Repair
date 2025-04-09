@@ -1,0 +1,15 @@
+public void testProperties()
+    throws Exception {
+    String json = "{\"prop1\":\"prop1Value\",\"prop2\":\"prop2Value\"}";
+    Properties properties = new Properties();
+    properties.setProperty("prop1", "prop1Value");
+    properties.setProperty("prop2", "prop2Value");
+
+    // Deserializing is fine
+    Properties properties2 = new ObjectMapper().readValue(json, Properties.class);
+    assertEquals(properties, properties2);
+    // But serializing fails
+    assertEquals(json, new ObjectMapper().writeValueAsString(properties));
+    // Instead the result is:
+    // {"prop1":{"value":"prop1Value"},"prop2":{"value":"prop2Value"}}
+}

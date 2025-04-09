@@ -1,0 +1,19 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.OFF);
+    options.setCheckSuspiciousCode(false);
+    options.setCheckTypes(false);
+    options.setClosurePass(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.OFF, PropertyRenamingPolicy.OFF);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", "goog.scope(function() {\n var x = function(){};\n});"),
+            SourceFile.fromCode("externs.js", ""),
+            options);
+    assertTrue(result.success);
+}

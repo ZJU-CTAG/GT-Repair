@@ -1,0 +1,18 @@
+public void testIterateRangeBounds() {
+    double[] values = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+
+    // test a lower bound greater than the upper bound
+    Range range = new Range(1.0, -1.0);
+    List ranges = DatasetUtilities.iterateRangeBounds(range, values, false);
+    assertTrue(ranges.isEmpty());
+
+    // test an infinite lower bound
+    range = new Range(-Double.MAX_VALUE, 1.0);
+    ranges = DatasetUtilities.iterateRangeBounds(range, values, false);
+    assertEquals(1, ranges.size());
+    Range rangeB = (Range) ranges.get(0);
+    assertEquals(1.0, rangeB.getLowerBound(), EPSILON);
+    assertEquals(1.0, rangeB.getUpperBound(), EPSILON);
+
+    // test an infinite upper bound
+    range = new Range(1.0, Double.

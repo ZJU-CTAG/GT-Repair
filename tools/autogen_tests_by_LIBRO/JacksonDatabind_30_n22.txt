@@ -1,0 +1,23 @@
+public void testIssue29() throws Exception {
+        ObjectMapper m = new ObjectMapper();
+
+        BigDecimal bd1 = new BigDecimal("-10000000000.0000000001");
+        BigDecimal bd2 = new BigDecimal("-10000000000.0000000001");
+        assertEquals(bd1, bd2);
+
+        Wrapper w = new Wrapper();
+        w.typeEnum = Type.BIG_DECIMAL;
+        w.value = bd1;
+        assertEquals(bd1, w.value);
+
+
+        String json = m.writeValueAsString(w);
+        System.out.println("JSON: " + json);
+
+        Wrapper w2 = m.readValue(json, Wrapper.class);
+
+        System.out.println("WRAPPER: " + w2);
+
+        assertEquals(w.typeEnum, w2.typeEnum);
+        assertEquals(w.value, w2.value);
+}

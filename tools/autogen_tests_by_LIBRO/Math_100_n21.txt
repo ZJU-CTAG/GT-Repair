@@ -1,0 +1,18 @@
+public void testBoundParameters() {
+    final SimpleProblem problem = new SimpleProblem();
+
+    final Parameter p = new Parameter("p", 1.0);
+    p.setBounds(new double[] { 0.0, 10.0 });
+    problem.addParameter(p);
+
+    problem.addMeasurement(new SimpleMeasurement(new double[] { 1.0 }, new double[] { 1.0 }, new double[] { 1.0 }));
+
+    final AbstractEstimator estimator = new AbstractEstimator() {};
+    estimator.estimate(problem);
+
+    try {
+        estimator.getCovariances();
+    } catch (ArrayIndexOutOfBoundsException e) {
+        Assert.fail("It is expected that all parameters are considered in the estimation");
+    }
+}

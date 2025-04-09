@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    final String INPUT = "{\"a\":{\"b\":{\"c\":\"value\"}}}";
+    final String EXPECTED_OUTPUT = "{\"a\":{\"b\":{\"c\":\"value\"}}}";
+    final String EXPECTED_OUTPUT_FILTERED = "{\"a\":{\"b\":{}}}";
+
+    JsonNode inputNode = JsonLoader.fromString(INPUT);
+
+    // filter it
+    AntPathFilterProvider filterProvider = new AntPathFilterProvider("a.b.c");
+    JsonNode filteredNode = filterProvider.process(inputNode);
+
+    String filteredJson = filteredNode.toString();
+
+    // convert it
+    ObjectMapper mapper = new ObjectMapper();
+    JsonConverter converter = new JsonConverter(String.class, mapper);
+    String convertedJson = converter.convert(filteredNode);
+
+    assertEquals(EXPECTED_OUTPUT_FILTERED, filteredJson);
+    assertEquals(EXPECTED_OUTPUT, convertedJson

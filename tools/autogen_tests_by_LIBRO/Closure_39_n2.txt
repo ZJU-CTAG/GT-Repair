@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("externs", "/** @typedef {(boolean|number|string|!Array|!Object)} */ var test;\n"));
+    List<SourceFile> inputs = Arrays.asList(
+        SourceFile.fromCode("node", "/** @param {{a:number,b:number,...}|{a:number,...}} node */\n"
+                + "var foo = function(node) {\n"
+                + "  var a = node.a;\n"
+                + "  var b = node.b || 1;\n"
+                + "  var c = node.c;\n"
+                + "};"),
+        SourceFile.fromCode("node", "/** @type {!test} */ var node =

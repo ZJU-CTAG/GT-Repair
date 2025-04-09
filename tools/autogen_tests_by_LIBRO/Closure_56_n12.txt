@@ -1,0 +1,12 @@
+public void testLastWarningOrErrorInOutputIsTruncated() {
+    Compiler compiler = createCompiler();
+    CompilerOptions options = createCompilerOptions();
+    options.setPrintTree(true);
+    Node tree = compile(compiler, options, "alert(foo);\nalert(bar);");
+    assertEquals(2, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+    assertEquals("variable foo is undefined\n" +
+            "alert(foo);\n" +
+            "^", compiler.getErrors()[0]);
+    assertEquals("variable bar is undefined", compiler.getErrors()[1]);
+}

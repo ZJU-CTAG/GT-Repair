@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    CSVFormat format = CSVFormat.newFormat('\'').withHeader();
+    CSVParser parser = new CSVParser(new StringReader(""), format.withNullString(""));
+    Iterator<CSVRecord> it = parser.iterator();
+    assertTrue(it.hasNext());
+    CSVRecord rec = it.next();
+    assertFalse(it.hasNext());
+    assertEquals(0, rec.size());
+}

@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper()
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    final String json = "{\"message\":\"Blah\"}";
+    try {
+        mapper.readValue(json, MyException.class);
+    } catch (final JsonMappingException e) {
+        fail("This test should not fail on Google App Engine");
+    }
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+    public MyException(final String message) {
+        super(message);
+    }
+    public MyException() {
+        super();
+    }
+}

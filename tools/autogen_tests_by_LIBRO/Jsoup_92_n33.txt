@@ -1,0 +1,7 @@
+public void testDuplicatedAttributes() {
+    String html = "<html><head><title title='foo'>First / Last</title></head><body><p title='foo'>Hello</p><p title='bar'>There</p></body></html>";
+    Document doc = Jsoup.parse(html);
+    Element title = doc.getElementsByTag("title").get(0);
+    assertEquals("First / Last", title.ownText());
+    assertEquals("foo", title.attr("title")); // Fails because Jsoup retains the last attribute
+}

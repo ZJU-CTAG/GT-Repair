@@ -1,0 +1,14 @@
+public void testEscapeXML() {
+    String xml = "";
+    xml += "&#x10000;"; // surrogate pair
+    xml += "&#x1FFFE;";
+    xml += "&#x1FFFF;";
+    xml += "&#x200000;";
+    String expected = "";
+    expected += "&#65536;";
+    expected += "&#131070;";
+    expected += "&#131071;";
+    expected += "&#2097152;";
+    String result = StringEscapeUtils.escapeXml(xml);
+    assertEquals(expected, result);
+}

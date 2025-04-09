@@ -1,0 +1,21 @@
+public void testArArchive() throws Exception {
+    File src = new File(getTestDirectory(), "bla.ar");
+    ArArchiveEntry entry = new ArArchiveEntry(src, "test1.xml");
+    entry.setSize(1);
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(src));
+    out.putArchiveEntry(entry);
+    out.write(1);
+    out.closeArchiveEntry();
+    entry = new ArArchiveEntry(src, "test2.xml");
+    entry.setSize(1);
+    out.putArchiveEntry(entry);
+    out.write(1);
+    out.closeArchiveEntry();
+    out.close();
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(src));
+    ArchiveEntry e = in.getNextEntry();
+    assertNotNull(e);
+    in.close();
+    File expectedFile = new File(getTestDirectory(), "bla.ar");
+    ArArchiver archiver = new ArArchiver();
+    archiver.set

@@ -1,0 +1,17 @@
+public void testIssue() {
+    compiler = new Compiler();
+    SourceFile externs = SourceFile.fromCode("externs", "");
+    SourceFile input = SourceFile.fromCode("input", "console.log([console.log('hello, '), 'world!'][1]);");
+    compiler.compile(externs, input, options);
+    Node last = getLastCompiler().getRoot().getFirstChild();
+    assertEquals(Token.EXPR_RESULT, last.getType());
+    Node consoleLog = last.getFirstChild();
+    assertEquals(Token.CALL, consoleLog.getType());
+    Node arg = consoleLog.getFirstChild().getNext();
+    assertEquals(Token.ARRAYLIT, arg.getType());
+    assertEquals(2, arg.getChildCount());
+    Node array0 = arg.getFirstChild();
+    assertEquals(Token.CALL, array0.getType());
+    Node array1 = array0.getNext();
+    assertEquals(Token.STRING, array1.getType());
+    assertEquals

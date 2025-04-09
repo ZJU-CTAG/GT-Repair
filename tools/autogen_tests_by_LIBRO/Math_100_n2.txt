@@ -1,0 +1,22 @@
+public void testEstimationCovariance() throws Exception {
+    final double[][] points = new double[][] {
+            new double[] { 2.0, 2.0 },
+            new double[] { 3.0, 3.0 },
+            new double[] { 2.0, 4.0 },
+        };
+
+        final double[] weights = new double[] { 1.0, 1.0, 1.0 };
+
+        final WeightedObservedPoints obs = new WeightedObservedPoints();
+        for (int i = 0; i < points.length; i++) {
+            obs.add(points[i][0], points[i][1], weights[i]);
+        }
+
+        final double initialA = 1.0;
+        final double initialB = 2.0;
+        final double initialC = -1.0;
+
+        final ModelFunction model = new ModelFunction(initialA, initialB, initialC);
+        final LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+
+        final AbstractEstimator estimator = new AbstractEstimator(optimizer, new

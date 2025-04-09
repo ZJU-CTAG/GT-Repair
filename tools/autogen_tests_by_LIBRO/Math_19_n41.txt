@@ -1,0 +1,18 @@
+public void testNaN() throws Exception {
+    OptimizationData[] optimizationDataArray = {
+            new MaxEval(200),
+            new InitialGuess(new double[]{0.4}),
+            new ObjectiveFunction(new TestNaN()),
+            new Bounds(new double[]{-Double.MAX_VALUE}, new double[]{Double.MAX_VALUE})};
+
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    PointValuePair optimum = optimizer.optimize(optimizationDataArray);
+    assertFalse(Double.isNaN(optimum.getPoint()[0]));
+}
+
+static class TestNaN implements MultivariateFunction {
+    @Override
+    public double value(double[] doubles) {
+        return 1;
+    }
+}

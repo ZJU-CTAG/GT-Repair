@@ -1,0 +1,33 @@
+public void testConvergenceChecks() {
+    try {
+        final int n = 1;
+        final AbstractScalarOptimizer optimizer = new BaseAbstractScalarOptimizer() {
+
+            @Override
+            protected double doOptimize() {
+                return 0;
+            }
+
+            @Override
+            protected void parseOptimizationData(OptimizationData... optData) {
+            }
+        };
+        optimizer.setConvergenceChecker(new ConvergenceChecker<PointValuePair>() {
+
+            public boolean converged(int iteration,
+                                     PointValuePair previous,
+                                     PointValuePair current) {
+                return true;
+            }
+
+            public boolean converged(int iteration,
+                                     PointValuePair[] previous,
+                                     PointValuePair[] current) {
+                return true;
+            }
+        });
+        optimizer.setMaxIterations(n);
+        optimizer.optimize(OptimizationDataUtils.buildEmptyOptimizationData(),
+                           new Target() {
+
+                               public void compute(double[] x, double[] r) {

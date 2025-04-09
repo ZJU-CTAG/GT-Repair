@@ -1,0 +1,18 @@
+public void testIf() {
+    Script script = new ScriptBuilder()
+            .addParam("es", "double[]")
+            .addParam("esi", "int")
+            .addObject("a", new double[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } })
+            .addObject("b", new double[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } })
+            .addSource("if( es[--esi][ es[esi+1] ] === 1){")
+            .addSource(" es[esi] = 0;")
+            .addSource("}")
+            .addSource("else{")
+            .addSource(" es[esi] = 1;")
+            .addSource("}")
+            .build();
+    double[] es = new double[] { 1, 0, 0, 1, 0, 0, 1, 0, 0 };
+    script.setParam("es", es);
+    script.setParam("esi", es.length);
+    script.eval();
+    assertEquals(es

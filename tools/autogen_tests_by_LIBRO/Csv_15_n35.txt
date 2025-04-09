@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    final String[] expected = {"あ", "い", "う"};
+    final String[] data = {"あ", "い", "う"};
+    final StringWriter writer = new StringWriter();
+    final CSVFormat csvFormat = CSVFormat.EXCEL;
+    final CSVPrinter csvPrinter = new CSVPrinter(writer, csvFormat);
+    csvPrinter.printRecord(data);
+    csvPrinter.flush();
+    csvPrinter.close();
+    final String actual = writer.toString();
+    assertEquals(expected[0], actual.substring(0, 3));
+    assertEquals(expected[1], actual.substring(4, 5));
+    assertEquals(expected[2], actual.substring(6, 7));
+}

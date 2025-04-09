@@ -1,0 +1,16 @@
+public void testIssue165() {
+        CompilerOptions options = new CompilerOptions();
+        options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+        options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+        TestErrorReporter testErrorReporter = new TestErrorReporter(null, null);
+        Compiler compiler = new Compiler();
+        compiler.compile(SourceFile.fromCode("externs",
+                "/** @interface */ function MyParent() {}"
+                + "/** @param {*} a */ MyParent.prototype.MyMethod = function(a) {}"),
+                SourceFile.fromCode("js",
+                "/** @constructor @implements {MyParent} */ function MyClass() {}"
+                + "MyClass.prototype['MyMethod'] = function(a) { this.a2 = a; };"
+                + "window['MyClass'] = MyClass;"),
+                options, testErrorReporter);
+        assertFalse(testErrorReporter.hasErrors());
+    }

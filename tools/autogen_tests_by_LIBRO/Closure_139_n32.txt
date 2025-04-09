@@ -1,0 +1,17 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setThirdParty(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode(
+            "testcode.js",
+            LINE_JOINER.join(
+              "function assert(b) {if (!b) throw 'error'}",
+              "assert(f() === 1)",
+              "var f = function() {return 2;}",
+              "assert(f() === 2)",
+              "function f() {return 1;}"
+        )), options);
+}

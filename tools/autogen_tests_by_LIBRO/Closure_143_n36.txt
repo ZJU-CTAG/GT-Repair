@@ -1,0 +1,17 @@
+public void testIssue108() {
+    assertEquals("1.0.0", replace("test.VERSION", "1.0.0", "test.js"));
+}
+
+private String replace(String name, String value, String script) {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = Lists.newArrayList(SourceFile.fromCode("externs", ""));
+    List<SourceFile> sources = Lists.newArrayList(SourceFile.fromCode("input", script));
+    compiler.compile(externs, sources, new CompilerOptions());
+    assertTrue(compiler.getErrors().isEmpty());
+    assertTrue(compiler.getWarnings().isEmpty());
+    String code = compiler.toSource();
+    System.out.println(code);
+    Pattern pattern = Pattern.compile("var " + name + "=\".*?\"");
+    Matcher matcher = pattern.matcher(code);
+    assertTrue("Cannot find variable " + name + " in " + code, matcher.find());
+    return matcher.group(0).replace

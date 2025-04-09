@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Compiler.setLoggingLevel(Level.CONFIG);
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    CompilerInput input1 = new CompilerInput(SourceFile.fromCode("input1.js",
+        "window[\"foo\"] = function (obj, modifiesProp) {" +
+        "  return (function (saved) {" +
+        "    return modifiesProp(obj) + saved;" +
+        "  })(obj[\"prop\"]);" +
+        "};"));
+    compiler.compile(ImmutableList.<SourceFile>of(), ImmutableList.of(input1), options);
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", compiler.toSource());
+}
+

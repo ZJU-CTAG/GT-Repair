@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    JsonNode node = JsonNodeFactory.instance.objectNode()
+            .put("a", "a")
+            .put("b", "b")
+            .put("c", "c");
+    ObjectMapper mapper = new ObjectMapper();
+
+    FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filter",
+            SimpleBeanPropertyFilter.filterOutAllExcept("a", "c"));
+    mapper.setFilterProvider(filterProvider);
+    Assert.assertEquals("{\"a\":\"a\",\"c\":\"c\"}", mapper.writeValueAsString(node));
+}

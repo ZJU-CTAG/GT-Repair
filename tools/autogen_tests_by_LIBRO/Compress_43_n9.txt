@@ -1,0 +1,18 @@
+public void testZipLocalFieldVsCentralDirectoryField() throws Exception {
+    File testFile = new File(System.getProperty("java.io.tmpdir"), "test.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(testFile);
+    zos.setUseZip64(Zip64Mode.Always);
+    zos.putArchiveEntry(new ZipArchiveEntry("test1.txt"));
+    zos.write("test1".getBytes());
+    zos.closeArchiveEntry();
+    zos.flush();
+    zos.finish();
+    zos.close();
+
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, new FileInputStream(testFile));
+    assertNotNull(ais);
+    ZipArchiveEntry entry = (ZipArchiveEntry) ais.getNextEntry();
+    assertNotNull(entry);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    IOUtils.copy(ais, baos);
+    assertEquals("test1", baos.toString

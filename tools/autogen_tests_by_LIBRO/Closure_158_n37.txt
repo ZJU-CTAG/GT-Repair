@@ -1,0 +1,16 @@
+public void testOrderOfFlags() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, srcs, options);
+    assertTrue(result.success);
+
+    assertEquals(CheckLevel.OFF, options.getWarningLevel(DiagnosticGroups.CHECK_REGEXP));
+    assertEquals(CheckLevel.ERROR, options.getWarningLevel(DiagnosticGroups.CHECK_TYPES));
+    assertEquals(CheckLevel.WARNING, options.getWarningLevel(DiagnosticGroups.CHECK_VARIABLES));
+}

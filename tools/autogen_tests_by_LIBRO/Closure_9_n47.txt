@@ -1,0 +1,10 @@
+public void testIssue924() {
+    Compiler compiler = new Compiler();
+
+    List<SourceFile> inputs = ImmutableList.of(
+            SourceFile.fromCode(
+                    "Foo.js", "(function(){window.lib={};})();window['module$lib$Foo']=function(){};"));
+    Result result = compiler.compile(ImmutableList.of(), inputs, new CompilerOptions());
+    assertEquals(result.errors.toString(), 0, result.errors.length());
+    assertEquals(result.warnings.toString(), 0, result.warnings.length());
+}

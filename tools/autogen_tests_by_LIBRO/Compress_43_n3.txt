@@ -1,0 +1,27 @@
+public void testIssue() throws Exception {
+    final File tempFile = File.createTempFile("zip-file-header-", ".zip");
+
+    try {
+        final ZipArchiveOutputStream out = new ZipArchiveOutputStream(new BufferedOutputStream(new FileOutputStream(tempFile)));
+
+        try {
+            out.putArchiveEntry(new ZipArchiveEntry("test"));
+            out.write("test".getBytes());
+            out.closeArchiveEntry();
+        } finally {
+            out.close();
+        }
+
+        final ZipFile zipFile = new ZipFile(tempFile);
+
+        try {
+            final Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+
+            while (entries.hasMoreElements()) {
+                final ZipArchiveEntry entry = entries.nextElement();
+
+                if (!entry.isDirectory()) {
+                    assertEquals(10, entry.getSize());
+                    assertEquals(ZipArchiveEntry.STORED, entry.getMethod());
+                    assertEquals(20, entry.getCompressedSize());
+                    assertEquals(0, entry.get

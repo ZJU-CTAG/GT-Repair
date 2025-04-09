@@ -1,0 +1,25 @@
+public void testBug() {
+  assertThat(new ObjectMapper().writeValueAsString(new TestClass()), containsString("\"not_serialized_value\":\"not_serialized_value\""));
+}
+
+@JsonAutoDetect
+public static class TestClass {
+
+  private final Map<String, String> parameters = new LinkedHashMap<String, String>() {{
+    put("not_serialized_key", "not_serialized_value");
+  }};
+
+  @JsonAnyGetter
+  @JsonSerialize(keyUsing = MyKeySerializer.class)
+  public Map<String, String> getParameters() {
+    return parameters;
+  }
+}
+
+public static class MyKeySerializer extends JsonSerializer<String> {
+
+  @Override
+  public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    jgen.writeFieldName("serialized_key");
+  }
+}

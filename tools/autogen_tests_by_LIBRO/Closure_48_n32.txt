@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    TestErrorReporter testErrorReporter = new TestErrorReporter(
+            null, null);
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("testcase",
+                    "/** @constructor */\n" + 
+                    "var myclass = function() { \n" + 
+                    "}\n" + 
+                    "/** @param {boolean} success */\n" + 
+                    "myclass.prototype.fn = function(success) { }\n" + 
+                    "\n" + 
+                    "myclass.prototype.test = function() {\n" + 
+                    "this.fn();\n" + 
+                    "this.fn = function() { };\n" + 
+                    "}\n")),
+            testErrorReporter);
+    assertEquals(1, testErrorReporter.getErrorCount());
+}

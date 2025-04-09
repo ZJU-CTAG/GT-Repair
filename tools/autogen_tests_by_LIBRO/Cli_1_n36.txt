@@ -1,0 +1,18 @@
+public void testOptionValue() {
+
+        Options opts = new Options();
+        opts.addOption("a", "alpha", false, "the alpha option");
+        opts.addOption("b", "bravo", true, "the bravo option");
+        opts.addOption("c", "charlie", false, "the charlie option");
+
+        CommandLineParser parser = new PosixParser();
+        CommandLine cl = parser.parse(opts, new String[] { "-a", "-b" , "foo" , "-c"});
+
+        assertTrue("a", cl.hasOption("a"));
+        assertTrue("a long", cl.hasOption("alpha"));
+        assertEquals("b", "foo", cl.getOptionValue("b"));
+        assertEquals("b long", "foo", cl.getOptionValue("bravo"));
+        assertTrue("c", cl.hasOption("c"));
+        assertTrue("c long", cl.hasOption("charlie"));
+
+    }

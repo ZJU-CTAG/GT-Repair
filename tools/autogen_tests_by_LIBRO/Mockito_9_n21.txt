@@ -1,0 +1,27 @@
+public void testIssue121() throws Exception {
+    final Counter counter = spy(new Counter() {
+        @Override
+        protected int getCounter() {
+            return -1;
+        }
+    });
+
+    assertEquals(-1, counter.getCounter());
+    assertEquals(0, counter.count());
+
+    doReturn(0).when(counter).getCounter();
+    assertEquals(0, counter.getCounter());
+    assertEquals(1, counter.count());
+
+    doReturn(1).when(counter).getCounter();
+    assertEquals(1, counter.getCounter());
+    assertEquals(2, counter.count());
+}
+
+static abstract class Counter {
+    public int count() {
+        return 1 + getCounter();
+    }
+
+    protected abstract int getCounter();
+}

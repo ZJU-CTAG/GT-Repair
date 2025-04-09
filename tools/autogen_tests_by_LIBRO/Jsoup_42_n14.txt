@@ -1,0 +1,10 @@
+public void testCheckBox() {
+  Document doc = Jsoup.parse("<form><input type='checkbox' name='c' checked></form>");
+  Elements els = doc.select("input");
+  assertEquals(1, els.size());
+  FormElement form = (FormElement) els.first().parent();
+  List<Connection.KeyVal> data = form.formData();
+  assertEquals(1, data.size());
+  assertEquals("c", data.get(0).key());
+  assertEquals("on", data.get(0).value());
+}

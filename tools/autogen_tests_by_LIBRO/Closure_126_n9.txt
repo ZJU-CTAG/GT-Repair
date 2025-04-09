@@ -1,0 +1,15 @@
+public void testBreakInFinally() throws Exception {
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("rhino");
+    engine.eval("var x = 0;\n" +
+                "b: {\n" +
+                "  try {\n" +
+                "    throw('throw me');\n" +
+                "  } finally {\n" +
+                "    /* fake catcher */;\n" +
+                "    break b;\n" +
+                "  }\n" +
+                "}\n" +
+                "x = 1;");
+    assertEquals(1, engine.get("x"));
+}

@@ -1,0 +1,13 @@
+public void testIssue107() {
+    String json =
+            "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+    // can't read item2 - which is valid
+    System.out.println(objectMapper.readValue(json, CallRecord.class));
+
+    json = "{\"version\":0.0,\"application\":\"123\"},{\"item\":{\"type\":\"xevent\",\"location\":\"location1\"}";
+    System.out.println(objectMapper.readValue(json, CallRecord.class));
+
+    json = "{\"item\":{\"type\":\"xevent\",\"location\":\"location1\"}, \"version\":0.0,\"application\":\"123\"}";
+    // order matters: move item to the fornt, now it can't read application property
+    System.out.println(objectMapper.readValue(json, CallRecord.class));
+}

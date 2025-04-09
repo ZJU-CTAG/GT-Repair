@@ -1,0 +1,14 @@
+public void testLargeUid() throws Exception {
+    final TarArchiveEntry entry = new TarArchiveEntry("foo");
+    entry.setUserId(0x80000000);
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(bos);
+    tos.setBigNumberMode(BigNumberMode.POSIX);
+    tos.putArchiveEntry(entry);
+    tos.closeArchiveEntry();
+    tos.close();
+    byte[] data = bos.toByteArray();
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(data));
+    TarArchiveEntry result = tis.getNextTarEntry();
+    assertEquals(entry, result);
+}

@@ -1,0 +1,24 @@
+public void testTruncatedZipFile() throws IOException {
+    File testFile = new File(getTestDirectory(), "test.zip");
+    ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(testFile);
+    zipOut.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zipOut.write("test".getBytes());
+    zipOut.closeArchiveEntry();
+    zipOut.close();
+
+    // truncate file
+    RandomAccessFile raf = new RandomAccessFile(testFile, "rw");
+    raf.setLength(raf.length() - 10);
+    raf.close();
+
+    // read file
+    ZipFile zf = new ZipFile(testFile);
+    ZipArchiveInputStream zin = new ZipArchiveInputStream(new FileInputStream(testFile));
+    try {
+        assertEquals(null, zin.getNextZipEntry());
+        fail();
+    } catch (Exception e) {
+        // expected
+    }
+    zf.close();
+}

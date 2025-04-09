@@ -1,0 +1,19 @@
+public void testFail() throws Exception {
+    try {
+        mapper.readValue("[ 1, true ]", List.class);
+    } catch (JsonMappingException e) {
+        e.printStackTrace();
+        fail("should not get exception, got: "+e);
+    }
+}
+
+@SuppressWarnings("serial")
+public void testFail2() throws Exception {
+    try {
+        mapper.readValue("[ 1, true ]",
+                new TypeReference<List<String>>() { });
+    } catch (JsonMappingException e) {
+        e.printStackTrace();
+        fail("should not get exception, got: "+e);
+    }
+}

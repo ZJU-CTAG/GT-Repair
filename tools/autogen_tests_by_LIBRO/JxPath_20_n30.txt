@@ -1,0 +1,14 @@
+public void testRelationalOperations() {
+    JXPathContext ctx = JXPathContext.newContext(null);
+    ctx.setLenient(false);
+    ctx.getVariables().declareVariable("var1", new Integer(0));
+    ctx.getVariables().declareVariable("var2", new Integer(0));
+    ctx.getVariables().declareVariable("var3", new Integer(1));
+
+    assertEquals(Boolean.FALSE, ctx.getValue("$var1 + $var2 > $var3"));
+    assertEquals(Boolean.FALSE, ctx.getValue("$var1 + $var2 >= $var3"));
+    assertEquals(Boolean.TRUE, ctx.getValue("$var1 + $var2 < $var3"));
+    assertEquals(Boolean.TRUE, ctx.getValue("$var1 + $var2 <= $var3"));
+
+    ctx.getVariables().declareVariable("var4", new Integer[]{0, 0});
+    ctx.getVariables

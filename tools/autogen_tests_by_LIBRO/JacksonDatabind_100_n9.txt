@@ -1,0 +1,16 @@
+public void test_treeTraversingParser() throws Exception
+{
+    final Base64Variant variant = Base64Variants.getDefaultVariant();
+    final byte[] binary = new byte[] { 1, 2, 3 };
+    final String encoded = variant.encode(binary);
+    final TextNode node = new TextNode(encoded);
+    final TreeTraversingParser parser = new TreeTraversingParser(node);
+    parser.setCodec(new ObjectMapper());
+    parser.nextToken();
+    parser.nextToken();
+    final int count = parser.readBinaryValue(variant, null);
+    assertEquals(binary.length, count);
+    final byte[] result = new byte[binary.length];
+    parser.getBinaryValue(variant, result, 0, binary.length);
+    assertArrayEquals(binary, result);
+}

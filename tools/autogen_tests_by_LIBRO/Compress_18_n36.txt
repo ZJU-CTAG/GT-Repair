@@ -1,0 +1,11 @@
+public void testLongDirectoryName() throws Exception {
+    File output = File.createTempFile("commons-compress-", ".tar");
+    output.deleteOnExit();
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(new FileOutputStream(output));
+    tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+    TarArchiveEntry tea = new TarArchiveEntry(new File("src/test/resources/longDirectoryName/"));
+    tos.putArchiveEntry(tea);
+    tos.write(new byte[0]);
+    tos.closeArchiveEntry();
+    tos.close();
+}

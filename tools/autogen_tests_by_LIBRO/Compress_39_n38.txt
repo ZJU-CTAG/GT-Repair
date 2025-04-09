@@ -1,0 +1,13 @@
+public void testIssue106() throws IOException {
+    File zipFile = new File(getClass().getResource("/io/openvalidation/common/utils/zip/test.zip").getFile());
+    try (ZipFile zip = new ZipFile(zipFile)) {
+        Enumeration<? extends ZipEntry> entries = zip.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.isDirectory()) {
+                continue;
+            }
+            InputStream stream = zip.getInputStream(entry);
+        }
+    }
+}

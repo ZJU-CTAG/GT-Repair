@@ -1,0 +1,15 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    List<SourceFile> inputs = new ArrayList<>();
+    inputs.add(SourceFile.fromCode("test", "var t = null;\n" +
+            "window.test = function() {\n" +
+            " if (t != null) {\n" +
+            " t = null;\n" +
+            " }\n" +
+            "\n" +
+            " t = 1;\n" +
+            "};\n"));
+    Result result = compiler.compile(externs, inputs, options);
+    assertFalse(result.success);
+}

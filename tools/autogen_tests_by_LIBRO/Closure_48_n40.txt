@@ -1,0 +1,16 @@
+public void testIssue176() {
+    String SOURCECODE =
+            "/** @constructor */" +
+            "var myclass = function() { };" +
+            "/** @param {boolean} success */" +
+            "myclass.prototype.fn = function(success) { };" +
+            "myclass.prototype.test = function() { " +
+            "this.fn();" +
+            "this.fn = function() { };" +
+            "}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SOURCECODE, new CompilerOptions());
+    assertEquals(1, result.warnings.length);
+    assertEquals("actual parameter 1 of myclass.fn does not match formal parameter",
+            result.warnings[0].description);
+}

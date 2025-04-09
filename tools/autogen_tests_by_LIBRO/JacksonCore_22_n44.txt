@@ -1,0 +1,19 @@
+public void testIssue() throws Exception
+{
+    JsonFactory f = new JsonFactory();
+    f.enable(JsonParser.Feature.ALLOW_COMMENTS);
+    String json = "{\"a\":1,\"b\":2,\"c\":3}";
+    JsonParser p = f.createParser(json);
+
+    // set up filter
+    TokenFilter filter = TokenFilter.INCLUDE_ALL;
+
+    // and create a generator, using filtering
+    FilteringParserDelegate delegate = new FilteringParserDelegate(p, filter, false, false);
+    JsonGenerator g = f.createGenerator(System.out);
+    while (delegate.nextToken() != null) {
+        delegate.copyCurrentEvent(g);
+    }
+    g.close();
+    p.close();
+}

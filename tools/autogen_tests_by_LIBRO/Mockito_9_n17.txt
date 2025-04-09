@@ -1,0 +1,18 @@
+public void testIssue121() {
+    MyAbstractClass spy = Mockito.spy(new MyAbstractClass() {
+        public String getMe() {
+            return getMeImpl();
+        }
+    });
+    Mockito.doReturn("test").when(spy).getMeImpl();
+
+    assertEquals("test", spy.getMe());
+}
+
+abstract class MyAbstractClass {
+    public abstract String getMeImpl();
+
+    public String getMe() {
+        return getMeImpl();
+    }
+}

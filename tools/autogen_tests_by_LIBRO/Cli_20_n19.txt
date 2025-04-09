@@ -1,0 +1,9 @@
+public void testStopAtNonOption() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasArg().create("a"));
+    options.addOption(OptionBuilder.hasArg().create("b"));
+    PosixParser parser = new PosixParser();
+    CommandLine line = parser.parse(options, new String[] { "--zop", "-abfoo" }, true);
+    assertEquals("foo", line.getOptionValue("b"));
+    assertEquals("-abfoo", line.getArgs()[0]);
+}

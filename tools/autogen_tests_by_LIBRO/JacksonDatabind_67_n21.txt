@@ -1,0 +1,19 @@
+public void testMapDeserialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule());
+    ImmutableMap.Builder<ResponseStatus, String> builder = ImmutableMap.builder();
+    builder.put(ResponseStatus.OK, "ok");
+    builder.put(ResponseStatus.BAD, "bad");
+    builder.put(ResponseStatus.UNKNOWN, "unknown");
+    ImmutableMap<ResponseStatus, String> responseStatusMap = builder.build();
+
+    String serializedResponseStatusMap = mapper.writeValueAsString(responseStatusMap);
+    System.out.println(serializedResponseStatusMap);
+
+    Map deserializedResponseStatusMap = mapper.readValue(serializedResponseStatusMap, Map.class);
+    assertEquals(responseStatusMap, deserializedResponseStatusMap);
+}
+
+public enum ResponseStatus {
+    OK, BAD, UNKNOWN
+}

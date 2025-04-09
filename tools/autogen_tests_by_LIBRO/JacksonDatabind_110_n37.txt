@@ -1,0 +1,10 @@
+public void testIssue110_1() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final Collection<?> exp = Collections.unmodifiableList(new LinkedList<>(Arrays.asList("first", "second")));
+    final String json = mapper.writeValueAsString(exp);
+    final Collection<?> act = mapper.readValue(json, Collection.class);
+
+    assertEquals(exp, act);
+    assertEquals(exp.getClass(), act.getClass());
+}

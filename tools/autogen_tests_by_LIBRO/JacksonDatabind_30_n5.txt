@@ -1,0 +1,7 @@
+public void testBigDecimal() throws IOException {
+    final String json = "{\"test\":\"-10000000000.0000000001\"}";
+    final ObjectMapper m = new ObjectMapper();
+    m.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    final TestClass tc = m.readValue(json, TestClass.class);
+    assertEquals(BigDecimal.valueOf(-10000000000.0000000001), tc.test);
+}

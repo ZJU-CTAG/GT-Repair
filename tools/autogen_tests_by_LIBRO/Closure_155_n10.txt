@@ -1,0 +1,14 @@
+public void testIssue107() {
+    String script =
+        "function d3_call(callback) {\n" +
+        " var f = callback;\n" +
+        " arguments[0] = this;\n" +
+        " f.apply(this, arguments);\n" +
+        " return this;\n" +
+        "}";
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
+    jsEngine.eval(script);
+    String f = jsEngine.get("d3_call").toString();
+    Assert.assertEquals("function d3_call(a){a.apply(this,arguments);return this}", f);
+}

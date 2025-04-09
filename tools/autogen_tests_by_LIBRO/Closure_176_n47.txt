@@ -1,0 +1,11 @@
+public void testIssue108() {
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    String code = "function MyClass() { this.value = 1; }\n" +
+            "MyClass.prototype.show = function() { window.console.log(this.value) }\n" +
+            "/* @type {MyClass} */ var x = null;\n" +
+            "x.show();";
+    ClosureCompiler.main(new String[]{"--compilation_level", "SIMPLE_OPTIMIZATIONS", "--warning_level", "VERBOSE" }, pw, pw, code);
+    String out = sw.toString();
+    assertTrue(out.contains("This type cannot be null"));
+}

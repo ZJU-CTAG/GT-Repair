@@ -1,0 +1,17 @@
+public void testPosixParser() throws Exception {
+    Options options = new Options();
+    Option opt = new Option("t", "target", true, "target");
+    options.addOption(opt);
+    String[] args = {"-t", "foobar.com"};
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(options, args);
+
+    assertEquals("foobar.com", line.getOptionValue("t"));
+
+    args = new String[]{"-target", "foobar.com"};
+
+    line = parser.parse(options, args);
+
+    assertEquals("foobar.com", line.getOptionValue("target"));
+}

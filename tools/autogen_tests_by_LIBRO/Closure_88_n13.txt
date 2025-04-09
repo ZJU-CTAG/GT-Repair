@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String code = "function closureCompilerTest(someNode) { var nodeId; return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); }";
+    CompilerCli compiler = new CompilerCli();
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("test", code));
+    compiler.setExterns(externs);
+    compiler.setInputs(inputs);
+    compiler.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    Result result = compiler.run();
+    System.out.println(result.success ? compiler.toSource() : compiler.getErrors()[0]);
+}

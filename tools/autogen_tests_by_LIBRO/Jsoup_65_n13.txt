@@ -1,0 +1,9 @@
+public void testParserErrorOnTemplateInsideTr() throws IOException {
+    String html = "<html><body><table><tr>"
+        + "<th></th><th>Name</th><template is='dom-if' if='{{smoothingEnabled}}'>"
+        + "<th>Smoothed</th></template><th>Value</th><th>Step</th><th>Time</th><th>Relative</th></tr></table></body></html>";
+    Parser parser = Parser.htmlParser();
+    Document document = parser.parseInput(html, "");
+    Element table = document.select("table").first();
+    assertNotNull(table);
+}

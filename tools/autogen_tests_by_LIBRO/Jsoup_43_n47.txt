@@ -1,0 +1,14 @@
+public void testIssue10() {
+    String h = "<doc><tab id=1><tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "<tr><td>Cell1</td><td>Cell2</td></tr>" +
+        "</tab></doc>";
+    Document doc = Jsoup.parse(h);
+    Element tab = doc.select("tab").first();
+    assertEquals(7, tab.children().size());
+    assertEquals(1, tab.child(1).elementSiblingIndex());
+    assertEquals(5, tab.child(5).elementSiblingIndex());

@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    Options opts = new Options();
+    opts.addOption("a", false, "toggle -a");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+
+    Properties properties = new Properties();
+    properties.setProperty( "a", "false" );
+    properties.setProperty( "c", "no" );
+    properties.setProperty( "e", "0" );
+
+    CommandLine cmd = parser.parse(opts, null, properties);
+    assertTrue( !cmd.hasOption("a") );
+    assertTrue( !cmd.hasOption("c") );
+    assertFalse( !cmd.hasOption("e") );
+    assertEquals("0", cmd.getOptionValue("e"));
+}

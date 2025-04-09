@@ -1,0 +1,20 @@
+public void testNullString() throws IOException {
+    String nullString = "";
+    String nullString2 = null;
+    String csv = "foo\n"
+            + "bar\n";
+
+    CSVParser parser = new CSVParser(new StringReader(csv), CSVFormat.EXCEL.withNullString(nullString));
+    List<CSVRecord> records = parser.getRecords();
+    parser.close();
+    Assert.assertEquals(records.get(0).get("foo"), "");
+    Assert.assertEquals(records.get(1).get("foo"), "bar");
+
+    parser = new CSVParser(new StringReader(csv), CSVFormat.EXCEL.withNullString(nullString2));
+    records = parser.getRecords();
+    parser.close();
+    Assert.assertNull(records.get(0).get("foo"));
+    Assert.assertEquals(records.get(1).get("foo"), "bar");
+
+    parser = new CSVParser(new StringReader(csv), CSVFormat.EXCEL);
+   

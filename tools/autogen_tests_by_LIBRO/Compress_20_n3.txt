@@ -1,0 +1,14 @@
+public void testIssue109() throws Exception {
+    File file = new File("src/test/resources/cpio-trailer-mode-nonzero.cpio");
+    try (FileInputStream fis = new FileInputStream(file)) {
+        ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(fis);
+        ArchiveEntry entry = ais.getNextEntry();
+        assertNotNull(entry);
+        assertEquals("hello", entry.getName());
+        entry = ais.getNextEntry();
+        assertNotNull(entry);
+        assertEquals("world", entry.getName());
+        entry = ais.getNextEntry();
+        assertNull(entry);
+    }
+}

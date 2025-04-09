@@ -1,0 +1,18 @@
+public void testWinZipUnicodeExtra() throws IOException {
+    File archive = getFile("UNICODE.ZIP");
+    ZipFile zf = new ZipFile(archive);
+    try {
+        ZipArchiveEntry ze = zf.getEntry("\u00f4\u00f5\u00f6.txt");
+        assertNotNull(ze);
+        assertEquals(ze.getName(), "\u00f4\u00f5\u00f6.txt");
+        assertEquals(ze.getSize(), 7L);
+        assertEquals(ze.getCompressedSize(), 7L);
+        assertEquals(ze.getCrc(), 0x1e1b845fL);
+        assertEquals(ze.getMethod(), ZipEntry.STORED);
+        
+        InputStream in = zf.getInputStream(ze);
+        assertNotNull(in);
+        byte[] data = IOUtils.toByteArray(in);
+        assertNotNull(data);
+        assertEquals(data.length, 7);
+        assertEquals(new String(data,

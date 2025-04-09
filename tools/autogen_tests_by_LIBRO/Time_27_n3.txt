@@ -1,0 +1,17 @@
+public void testPeriodFormatter() {
+    PeriodFormatterBuilder builder = new PeriodFormatterBuilder();
+    final PeriodFormatter periodFormatter = builder.appendDays().appendSuffix("D")
+            .appendHours().appendSuffix("h")
+            .appendMinutes().appendSuffix("m")
+            .appendSecondsWithMillis().appendSuffix("s")
+            .toFormatter();
+    Period p = periodFormatter.parsePeriod("1D1h1m1s");
+    assertEquals(1, p.getDays());
+    assertEquals(1, p.getHours());
+    assertEquals(1, p.getMinutes());
+    assertEquals(1, p.getSeconds());
+    assertEquals(0, p.getMillis());
+    assertEquals("1D1h1m1s", periodFormatter.print(p));
+    assertEquals("1D1h1m1s000", periodFormatter.print(p) + "000");
+
+    PeriodFormatterBuilder pfmtbuilder2 = new PeriodFormatterBuilder().appendLit

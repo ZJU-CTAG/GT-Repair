@@ -1,0 +1,21 @@
+public void testGroupMinMax() throws Exception {
+    OptionGroup group = new OptionGroup();
+    group.addOption(Option.builder("a").desc("Option a").build());
+    group.addOption(Option.builder("b").desc("Option b").build());
+    OptionGroup group2 = new OptionGroup();
+    group2.addOption(Option.builder("c").desc("Option c").build());
+    group2.addOption(Option.builder("d").desc("Option d").build());
+
+    Options options = new Options();
+    options.addOptionGroup(group2);
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new DefaultParser();
+    CommandLine commandLine = parser.parse(options, " -c -b ".split(" "));
+    assertTrue(commandLine.hasOption("b"));
+    assertTrue(commandLine.hasOption("c"));
+
+    commandLine = parser.parse(options, " -b ".split(" "));
+    assertTrue(commandLine.hasOption("b"));
+
+    CommandLine commandLine2 = parser.parse(options, " -b -c ".split

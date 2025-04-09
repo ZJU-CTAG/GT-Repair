@@ -1,0 +1,16 @@
+public void testDeserializationWithUntrustedType() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    // works by default
+    final String json = "{\"@type\":\"java.lang.ProcessBuilder\",\"command\":[\"id\"]}";
+    mapper.readValue(json, Object.class);
+
+    // fails when default typing is disabled
+    mapper.disableDefaultTyping();
+    try {
+        mapper.readValue(json, Object.class);
+        fail("Expected JsonMappingException");
+    } catch (JsonMappingException e) {
+        // expected
+    }
+}

@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    final File tarFile = new File(getTestDir(), "issue108.tar");
+    TarArchiveInputStream in = new TarArchiveInputStream(new FileInputStream(tarFile));
+    try {
+        TarArchiveEntry entry = in.getNextTarEntry();
+        while (entry != null) {
+            int count;
+            byte[] data = new byte[1024];
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            while ((count = in.read(data, 0, 1024)) != -1) {
+                out.write(data, 0, count);
+            }
+            byte[] byteArray = out.toByteArray();
+            assertTrue(byteArray.length > 0);
+            entry = in.getNextTarEntry();
+        }
+    } finally {
+        in.close();
+    }
+}

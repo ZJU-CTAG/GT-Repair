@@ -1,0 +1,8 @@
+public void testIssue107() throws Exception {
+    try (ZipArchiveInputStream zis = new ZipArchiveInputStream(getClass().getResourceAsStream("/test.zip"));
+         ZipFile zf2 = new ZipFile(getClass().getResource("/test.zip").getFile())) {
+        ZipArchiveEntry entry = zis.getNextZipEntry();
+        ZipEntry ze = zf2.getEntry(entry.getName());
+        assertEquals(ze, entry);
+    }
+}

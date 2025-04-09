@@ -1,0 +1,25 @@
+public void testTypeSafety() throws Exception {
+    ValuedEnum enum1 = ValuedEnum.getEnum(MyEnum.class, 1);
+    ValuedEnum enum2 = ValuedEnum.getEnum(YourEnum.class, 1);
+
+    assertTrue(enum1.getEnumClass() != enum2.getEnumClass()); // different sub-classes
+    assertTrue(enum1.compareTo(enum2) == 0); // not type-safe...
+}
+
+public enum MyEnum implements ValuedEnum {
+    ONE(1);
+    private int i;
+
+    MyEnum(int i) {
+        this.i = i;
+    }
+}
+
+public enum YourEnum implements ValuedEnum {
+    ONE(1);
+    private int i;
+
+    YourEnum(int i) {
+        this.i = i;
+    }
+}

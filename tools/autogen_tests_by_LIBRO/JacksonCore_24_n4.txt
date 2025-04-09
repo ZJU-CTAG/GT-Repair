@@ -1,0 +1,11 @@
+public void testCoerceFailure() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("1234567", byte.class);
+        fail("Should have failed");
+    } catch (JsonProcessingException e) {
+        verifyException(e, "out of allowed range");
+        verifyException(e, "for `byte`");
+    }
+}

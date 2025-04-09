@@ -1,0 +1,22 @@
+public void testIssue108() throws IOException {
+    JsonFactory f = new JsonFactory();
+
+    //this is the only line that is needed to change to make this work
+    f.configure(JsonGenerator.Feature.DEFAULT_FILTER, new FilteringGeneratorDelegate(
+            new JsonGeneratorDelegate(f.createGenerator(System.out, JsonEncoding.UTF8), true, null), false, null,
+            new BeanPropertyFilter() {
+                @Override
+                public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider,
+                                             PropertyWriter writer) throws Exception {
+                    provider.defaultSerializeField(pojo, jgen, writer);
+                }
+
+                @Override
+                public void serializeAsElement(Object elementValue, JsonGenerator jgen, SerializerProvider provider,
+                                               PropertyWriter writer) throws Exception {
+                    provider.defaultSerializeValue(elementValue, jgen);
+                }
+            }, null));
+    ObjectMapper mapper = new ObjectMapper(f);
+
+    FilterProvider filterProvider = new Simple

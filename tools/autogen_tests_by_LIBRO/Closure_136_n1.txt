@@ -1,0 +1,10 @@
+public void testSuper() {
+    String result = Compiler.compile("var a = { b: function() { return \"a\"; } };\n" +
+            "var b = a;\n" +
+            "b.prototype = { b: function() { return $super() + \"b\"; } };\n" +
+            "var c = new b();\n" +
+            "c.b();\n", new CompilerOptions());
+    assertEquals("var a = {b: function() {\n  return \"a\";\n}}; var b = a;" +
+            "var $super$$4 = function($super_0, $instance) {\n  return function() { return $super_0.apply(" +
+            "$instance, arguments); };\n};b.prototype = {b: function() {\n  return ($super$$4(a.b, this))() + \"b\";\n}};var c = new b(); c.b();", result);
+}

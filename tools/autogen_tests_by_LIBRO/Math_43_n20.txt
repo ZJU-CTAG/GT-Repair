@@ -1,0 +1,15 @@
+public void testStandardDeviation() {
+    SummaryStatistics stats = new SummaryStatistics();
+    stats.setVarianceImpl(new Variance(false));
+    stats.addValue(1);
+    stats.addValue(2);
+    stats.addValue(3);
+    stats.addValue(4);
+    double sd = stats.getStandardDeviation();
+    //org.apache.commons.math.stat.descriptive.moment.Variance.getResult()
+    //returns the population variance, so NaN
+    System.out.println("sd = " + sd);
+    //hard-coded workaround
+    sd = FastMath.sqrt(stats.getSecondMoment() / stats.getN());
+    System.out.println("sd = " + sd);
+}

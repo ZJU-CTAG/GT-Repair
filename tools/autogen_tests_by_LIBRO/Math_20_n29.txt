@@ -1,0 +1,23 @@
+public void testCMAESOptimizerBounds(){
+   int dim = 1;
+   boolean isActiveCMA = true;
+   double stopFitness = 1e-9;
+   int maxEvaluations = Integer.MAX_VALUE;
+   double sigma = 1.0;
+   double checkFeasableCount = 0.0;
+   RandomGenerator random = new Well19937a(0);
+   PointValuePair optimum;
+   MultivariateOptimizer opt = null;
+   MultivariateFunction f = new MultivariateFunction() {
+
+      @Override
+      public double value(double[] point) {
+         return point[0]*point[0] - Math.log(1 + point[0]*point[0]);
+      }
+   };
+   double[] lower = new double[]{-1};
+   double[] upper = new double[]{1};
+   CMAESOptimizer optimizer = new CMAESOptimizer(maxEvaluations, stopFitness, isActiveCMA, dim, sigma, random);
+   optimizer.setRepairFunction(new RepairFunction() {
+
+      @Override

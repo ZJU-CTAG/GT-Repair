@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("test.js", "alert(1;"));
+    Result result = compiler.compile(
+            EXTERNS, inputs, new CompilerOptions());
+    assertEquals(1, result.errors.length);
+    assertEquals("test.js:1: ERROR - Parse error. missing ) after argument list\n" +
+            "alert(1;\n" +
+            " ^\n",
+            Joiner.on("\n").join(result.errors));
+}
+public void testIssue108a() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("test.js", "alert(1;\n"));
+    Result result = compiler.compile(
+            EXTERNS, inputs, new CompilerOptions());
+    assertEquals(1, result.errors.length);
+    assertEquals("test.js

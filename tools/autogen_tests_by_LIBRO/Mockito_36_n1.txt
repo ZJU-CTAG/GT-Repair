@@ -1,0 +1,27 @@
+public void testRule() {
+    final String result = "result";
+
+    class TestClass {
+        @Rule
+        public MockitoRule rule = MockitoJUnit.rule();
+
+        @Mock
+        private Foo foo;
+        @Mock
+        private Bar bar;
+
+        @Test
+        public void test1() throws Exception {
+            when(foo.doSomething()).thenReturn(result);
+            assertEquals(result, foo.doSomething());
+        }
+
+        @Test
+        public void test2() throws Exception {
+            when(bar.doSomething()).thenReturn(result);
+            assertEquals(result, bar.doSomething());
+        }
+    }
+    TestClass test = new TestClass();
+    JUnitCore.runClasses(test.getClass());
+}

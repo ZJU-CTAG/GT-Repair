@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String json = "{'date':'2015-01-32'}";
+    ObjectMapper obMap = new ObjectMapper();
+    obMap.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    try {
+        obMap.readValue(json, DateSerializationTest.TestObject.class);
+        fail("lenient date parsing should fail");
+    } catch (IOException e) {
+    }
+}

@@ -1,0 +1,25 @@
+public void testTarInputStream() throws Exception {
+    File archive = File.createTempFile("test", ".tar");
+    try {
+        TarArchiveOutputStream taos = new TarArchiveOutputStream(new FileOutputStream(archive));
+        taos.putArchiveEntry(new TarArchiveEntry("entry"));
+        taos.closeArchiveEntry();
+        taos.close();
+        
+        // Corrupt the archive by replacing the last byte with 0xFF.
+        randomAccessFileForWriting(archive).seek(archive.length() - 1).write(0xFF);
+        try (TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(archive))) {
+            tais.getNextTarEntry();
+            fail();
+        } catch (IOException e) {
+            // Expected.
+        }
+    } finally {
+        archive.delete();
+    }
+}
+
+private static RandomAccessFile randomAccessFileForWriting(final File file) {
+    try {
+        return new RandomAccessFile(file, "rw");
+    } catch (FileNotFoundException e) {

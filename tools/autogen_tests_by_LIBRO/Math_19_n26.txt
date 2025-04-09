@@ -1,0 +1,34 @@
+public void test(){
+    double[] lowerBound = new double[3];
+    double[] upperBound = new double[3];
+    Arrays.fill(lowerBound, -Double.MAX_VALUE);
+    Arrays.fill(upperBound, Double.MAX_VALUE);
+    CMAESOptimizer optimizer = new CMAESOptimizer(300, 1E-10, true, 0, 0, new RandomGenerator() {
+        @Override
+        public double nextDouble() {
+            return 0;
+        }
+
+        @Override
+        public void setSeed(long seed) {
+
+        }
+
+        @Override
+        public void clear() {
+
+        }
+    }, false, 1E-10);
+    try {
+        optimizer.optimize(
+                new MaxEval(100),
+                new ObjectiveFunction(new MultivariateFunction() {
+                    @Override
+                    public double value(double[] doubles) {
+                        return 1;
+                    }
+                }),
+                GoalType.MAXIMIZE,
+                new InitialGuess(new double[3]),
+                new SimpleBounds(lowerBound, upperBound)
+       

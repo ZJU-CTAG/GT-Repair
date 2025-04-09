@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.disableDefaultTyping();
+    mapper.addMixInAnnotations(Vehicle.class, VehicleMixIn.class);
+    SimpleModule module = new SimpleModule("Test", Version.unknownVersion());
+    module.addAbstractTypeMapping(Vehicle.class, Car.class);
+    mapper.registerModule(module);
+    try {
+        mapper.readValue("{\"type\":\"truck\"}", Vehicle.class);
+        fail("Expected a JsonMappingException");
+    } catch (JsonMappingException e) {
+        assertThat(e.getMessage(), equalTo("Can not instantiate value of type [simple type, class nl.jqno.equalsverifier.integration.jodatime.Vehicle] from String value ('truck'); no single-String constructor/factory method\n at [Source: {\"type\":\"truck\"}; line: 1, column: 19]"));
+    }

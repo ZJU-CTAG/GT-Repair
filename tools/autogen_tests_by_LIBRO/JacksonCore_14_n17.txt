@@ -1,0 +1,30 @@
+public void testIssue108() throws IOException
+{
+    StringWriter sw = new StringWriter();
+    final char[] buffer = new char[128];
+    //Writer writer = new Writer()
+    Writer writer = new Writer()
+    {
+        @Override
+        public void write(char[] cbuf, int off, int len) throws IOException {
+            if (cbuf.length != buffer.length) {
+                throw new IllegalArgumentException("Buffer was not the same size");
+            }
+        }
+
+        @Override
+        public void flush() throws IOException {
+        }
+
+        @Override
+        public void close() throws IOException {
+        }
+    };
+    CopyWriter copyWriter = new CopyWriter(writer, true);
+    char[] chars = "abcdefg".toCharArray();
+    for (int i = 0; i < 10; i++) {
+        copyWriter.write(chars);
+        copyWriter.flush();
+    }
+    copyWriter.close();
+}

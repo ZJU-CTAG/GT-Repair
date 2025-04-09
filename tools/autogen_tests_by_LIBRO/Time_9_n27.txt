@@ -1,0 +1,32 @@
+public void testMaxOffset() {
+    try {
+        DateTimeZone.forOffsetHoursMinutes(24, 0);
+        fail("Expected exception");
+    } catch (IllegalArgumentException expected) {
+        // success
+    }
+
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 60);
+        fail("Expected exception");
+    } catch (IllegalArgumentException expected) {
+        // success
+    }
+
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 0).parse("24:00:00.000");
+        fail("Expected exception");
+    } catch (IllegalArgumentException expected) {
+        // success
+    }
+
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 0).parse("23:60:00.000");
+        fail("Expected exception");
+    } catch (IllegalArgumentException expected) {
+        // success
+    }
+
+    try {
+        DateTimeZone.forOffsetHoursMinutes(23, 0).parse("23:00:60.000");
+        fail("Expected exception");

@@ -1,0 +1,18 @@
+public void testBounds() throws EstimationException {
+    final Parameter p1 = new Parameter("p1");
+    p1.setBounds(1.0, 2.0);
+    final Parameter p2 = new Parameter("p2");
+    final double[] initial = { 2.0, 2.0 };
+    final double[] target = { 2.0, 2.0 };
+    final EstimationProblem problem = new EstimationProblem(new TestMeasurement(p1, p2), initial, target);
+    final AbstractEstimator estimator = new AbstractEstimator(problem) {
+        protected void estimate(final LeastSquaresProblem lsp) {
+        }
+    };
+    estimator.estimate();
+    final double[][] cov = estimator.getCovariances();
+    assertEquals(cov.length, 2);
+    assertEquals(cov[0].length, 2);
+    assertEquals(cov[1].length, 2);
+    assertEquals(cov[0][0], 0.0, 1.0e-10);
+    assertEquals(

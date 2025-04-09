@@ -1,0 +1,20 @@
+public void testByteArray() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final byte[] input = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    // First, using default ObjectMapper; should fail
+    try {
+        byte[] output = mapper.readValue(mapper.writeValueAsBytes(input), byte[].class);
+        fail("Should not pass, ObjectMapper has no special handling for byte[]");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Don't know how to convert value of type");
+        verifyException(e, "byte[]");
+        verifyException(e, "to `embedded` object");
+    }
+
+    // then check that adding simple module works
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addSerializer(byte[].class, new ByteArraySerializer());
+    mapper.registerModule(module);
+    byte[] output = mapper.readValue(mapper.writeValueAsBytes(input), byte[].class

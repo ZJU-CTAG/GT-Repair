@@ -1,0 +1,15 @@
+public void testGammaDistributionSerialization() throws Exception {
+    GammaDistribution dist = new GammaDistribution(2, 3);
+    GammaDistribution dist2 = (GammaDistribution) TestUtils.serializeAndRecover(dist);
+    TestUtils.assertEquals(dist, dist2, 10e-12);
+
+    final double[] samples = new double[10000];
+
+    for (int i = 0; i < samples.length; ++i) {
+        samples[i] = dist.sample();
+    }
+
+    for (int i = 0; i < samples.length; ++i) {
+        assertEquals(samples[i], dist2.sample(), 0d);
+    }
+}

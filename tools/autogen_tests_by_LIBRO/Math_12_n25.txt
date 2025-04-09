@@ -1,0 +1,11 @@
+public void testClone() throws Exception {
+    GammaDistribution gd = new GammaDistribution(100, 0.01);
+    GammaDistribution clone = (GammaDistribution) SerializationUtils.clone(gd);
+
+    assertEquals("mean", gd.getNumericalMean(), clone.getNumericalMean(), 0.1);
+    assertEquals("variance", gd.getNumericalVariance(), clone.getNumericalVariance(), 0.1);
+
+    for(int i=0; i<100; i++) { // enough to find a discrepancy if there is one
+        assertEquals("sample", gd.sample(), clone.sample(), 0);
+    }
+}

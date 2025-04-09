@@ -1,0 +1,17 @@
+public void testIssue16() {
+    VariableResolver resolver = new VariableResolver();
+    NodeSet nodeSet = new NodeSet();
+    nodeSet.setResolver(resolver);
+    resolver.addNamespace("NAMESPACE", "NAMESPACE");
+    nodeSet.add(new Element("A", "NAMESPACE", "A"));
+    nodeSet.add(new Element("B", "NAMESPACE", "B"));
+    resolver.addVariable(new Variable("A"), nodeSet);
+    nodeSet = new NodeSet();
+    nodeSet.setResolver(resolver);
+    nodeSet.add(new Element("C", "NAMESPACE", "C"));
+    nodeSet.add(new Element("D", "NAMESPACE", "D"));
+    resolver.addVariable(new Variable("B"), nodeSet);
+    List<Expression> expressions = new ArrayList<Expression>();
+    expressions.add(new CoreVariable("A"));
+    expressions.add(new CoreVariable("B"));
+    CoreOperationUnion operation = new CoreOperationUnion

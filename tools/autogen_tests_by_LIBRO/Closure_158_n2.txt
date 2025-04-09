@@ -1,0 +1,21 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+
+    compiler.compile(SourceFile.fromCode("foo", "var x = 0;"), SourceFile.fromCode("bar", "var x = 0;"), options);
+
+    JSError[] warnings = compiler.getWarnings();
+    JSError[] errors = compiler.getErrors();
+
+    System.out.println("Warnings: " + warnings.length);
+    for (JSError warning : warnings) {
+        System.out.println("\t" + warning.description);
+    }
+    System.out.println("Errors: " + errors.length);
+    for (JSError error : errors) {
+        System.out.println("\t" + error.description);
+    }
+
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(1, compiler.getWarnings().length);
+}

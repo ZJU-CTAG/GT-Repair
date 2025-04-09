@@ -1,0 +1,9 @@
+public void testIssue2() throws Exception {
+    String source = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += \"2\"; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("test", source) }, options);
+    String compiled = compiler.toSource();
+    assertTrue(compiled.indexOf("\"1\"") < 0);
+    assertTrue(compiled.indexOf("\"2\"") < 0);
+}

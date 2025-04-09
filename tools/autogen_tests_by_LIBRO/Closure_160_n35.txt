@@ -1,0 +1,12 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckVars(true);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setCheckSymbols(true);
+    test("x = {}; x.y = 1;", options,
+        "Line 1: WARNING - dangerous use of the global this object\n" +
+        "Line 1: ERROR - variable x is undefined\n" +
+        "x = {}; x.y = 1;\n" +
+        "^",
+        null, MISSING_PROPERTIES, VAR);
+}

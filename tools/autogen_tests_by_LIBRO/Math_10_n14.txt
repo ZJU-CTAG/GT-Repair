@@ -1,0 +1,11 @@
+public void testAtan2SpecialCases() {
+    double referenceAtan2 = FastMath.atan2(1, 0);
+    double[] x = new double[] { 0, 0, 1, 1 };
+    double[] y = new double[] { 0, 1, 0, 1 };
+    DerivativeStructure dsX = new DerivativeStructure(x.length, 1, 0, x[0]);
+    DerivativeStructure dsY = new DerivativeStructure(y.length, 1, 0, y[0]);
+    DerivativeStructure dsAtan2 = dsY.atan2(dsX);
+    assertEquals("partial y", 1, dsAtan2.getPartialDerivative(1), 0);
+    assertEquals("partial x", -1, dsAtan2.getPartialDerivative(2), 0);
+    assertEquals("value", referenceAtan2, dsAtan2.getValue(), 0);
+}

@@ -1,0 +1,24 @@
+public void testDelegateDeserialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertEquals(1, value.a);
+    assertNull(value.b);
+}
+
+public static class Value {
+    public int a;
+    public Object b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        // Why we can't read both attributes here?
+        try {
+            value.a = buffer.readValueAs(Integer.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        value.b = buffer.readValueAs(Object.class);
+        return value;
+    }
+}

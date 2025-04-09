@@ -1,0 +1,25 @@
+public void testIssue114() {
+    String source = "var NS = {\n" +
+            " read: function()\n" +
+            " {\n" +
+            " return this.foo;\n" +
+            " },\n" +
+            "\n" +
+            " write: function()\n" +
+            " {\n" +
+            " this.foo = 123;\n" +
+            " }\n" +
+            "};\n" +
+            "\n" +
+            "// only the non-inline notation warns in 0616 release\n" +
+            "NS.write2 = function()\n" +
+            "{\n" +
+            " this.foo = 123;\n" +
+            "};\n" +
+            "\n";
+    TestErrorReporter testErrorReporter = TestErrorReporter.forNoErrors();
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(SourceFile.fromCode("[testcode]", source),
+            testErrorReporter);
+    assertEquals(

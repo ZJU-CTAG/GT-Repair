@@ -1,0 +1,16 @@
+public void testIssue107() throws Exception {
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    try (ArchiveOutputStream aos = factory.createArchiveOutputStream(ArchiveStreamFactory.JAR, bos)) {
+        aos.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+        aos.write("foo".getBytes(StandardCharsets.UTF_8));
+        aos.closeArchiveEntry();
+    }
+    try (ArchiveInputStream ais = factory.createArchiveInputStream(ArchiveStreamFactory.JAR, new ByteArrayInputStream(bos.toByteArray()))) {
+        final ZipArchiveEntry entry = (ZipArchiveEntry) ais.getNextEntry();
+        assertEquals("foo.txt", entry.getName());
+        final ByteArrayOutputStream content = new ByteArrayOutputStream();
+        IOUtils.copy(ais, content);
+        assertEquals("foo", content.toString(StandardCharsets.UTF_8.name()));
+    }
+}

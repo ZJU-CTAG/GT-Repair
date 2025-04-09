@@ -1,0 +1,14 @@
+public void testZipArchiveInputStream() throws IOException {
+    File inputFile = new File(getClass().getResource("/test-inflater.zip").getPath());
+    try (FileInputStream fis = new FileInputStream(inputFile)) {
+        ArchiveInputStream ais = new ZipArchiveInputStream(fis);
+        ArchiveEntry entry = ais.getNextEntry();
+        byte[] buffer = new byte[1024];
+        int n = 0;
+        int offset = 0;
+        while ((n = ais.read(buffer, offset, 1024)) != -1) {
+            offset += n;
+        }
+        ais.close();
+    }
+}

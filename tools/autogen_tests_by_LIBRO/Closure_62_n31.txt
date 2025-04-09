@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test.js", "alert(1;\n")
+    }, new ErrorManager() {
+        public void println(CheckLevel level, JSError error) {
+            assertTrue(error.description.contains("^"));
+        }
+        public void printSummary() {}
+        public JSError[] getErrors() { return null; }
+        public JSError[] getWarnings() { return null; }
+        public void generateReport() {}
+    });
+}

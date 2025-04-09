@@ -1,0 +1,14 @@
+public void testIssue10101() throws IOException {
+    File file = new File("src/tests/resources/issue10101.html");
+    Document doc = Jsoup.parse(file, "UTF-8", "http://example.com/");
+
+    // three selectors that you provided, I changed them so they would match something.
+    Elements elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)");
+    assertTrue(elements.size() > 0);
+
+    elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Send & Pay)");
+    assertTrue(elements.size() > 0);
+
+    elements = doc.select("div.a-row.a-spacing-medium span.a-color-price:contains(Varies)");
+    assertTrue(elements.size() > 0);
+}

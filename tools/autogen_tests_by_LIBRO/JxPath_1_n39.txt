@@ -1,0 +1,10 @@
+public void testRootAccess() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element root = doc.createElement("root");
+    root.setAttribute("id", "1234");
+    doc.appendChild(root);
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("/root/@id/text()", "1234", context.selectSingleNode("//root/@id/text()"));
+}

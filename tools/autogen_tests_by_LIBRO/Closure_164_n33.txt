@@ -1,0 +1,18 @@
+public void testIssue() {
+    TypeChecker tc = new TypeChecker();
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        EXTERNS,
+        "/** @param {function(string,number):boolean} param */\n"
+            + "function func(param) {}\n"
+            + "/** @type {function(string,number,boolean):boolean} */\n"
+            + "function paramFunc1() {}\n"
+            + "/** @type {function(string):boolean} */\n"
+            + "function paramFunc2() {}\n"
+            + "func(paramFunc1);\n"
+            + "func(paramFunc2);\n");
+    assertEquals(1, result.errors.length);
+    assertEquals(Compiler.TYPE_MISMATCH_WARNING, result.errors[0].type);
+    assertEquals(6, result.errors[0].line);
+    assertEquals(3, result.errors[0].getCharno());
+    assertEquals("function

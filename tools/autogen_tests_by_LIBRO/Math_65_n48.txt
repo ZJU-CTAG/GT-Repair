@@ -1,0 +1,15 @@
+public void testRMS() {
+    RealMatrix m = new Array2DRowRealMatrix(new double[][] {
+                { 2, 1, 0, 0, 0, 0, 0 },
+                { 1, 2, 1, 0, 0, 0, 0 },
+                { 0, 1, 2, 1, 0, 0, 0 },
+                { 0, 0, 1, 2, 1, 0, 0 },
+                { 0, 0, 0, 1, 2, 1, 0 },
+                { 0, 0, 0, 0, 1, 2, 1 },
+                { 0, 0, 0, 0, 0, 1, 2 }
+    });
+    RealVector v = new ArrayRealVector(new double[] { 1, 2, 3, 4, 5, 6, 7 });
+    DecompositionSolver solver = new LUDecomposition(m).getSolver();
+    RealVector x = solver.solve(v);
+    AbstractLeastSquares ls = new AbstractLeastSquares(new LeastSquaresProblem(m, v, solver)) {
+        public double evaluate(double[] p) {

@@ -1,0 +1,11 @@
+public void testImplicitCtorNames() throws Exception
+{
+    ObjectMapper om = JsonMapper.builder()
+            .addModule(new Jdk8Module())
+            .propertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy())
+            .build();
+    final String json = "{\"input_string\":\"test\"}";
+    final ObjectWriter writer = om.writerFor(ConstructorArgument.class);
+    final ConstructorArgument result = writer.readValue(json);
+    assertEquals("test", result.getInputString());
+}

@@ -1,0 +1,12 @@
+public void testRequireCall() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckRequires(CheckLevel.ERROR);
+    options.setCheckSymbols(true);
+
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", "goog.require('foo');"),
+            SourceFile.fromCode("test.js", "goog.provide('foo'); var foo;"), options);
+    assertTrue(result.success);
+}

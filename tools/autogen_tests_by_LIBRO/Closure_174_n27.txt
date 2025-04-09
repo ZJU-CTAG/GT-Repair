@@ -1,0 +1,8 @@
+public void testIssue108() {
+    final Compiler compiler = new Compiler();
+    final TestErrorManager errorManager = new TestErrorManager(false);
+    compiler.setErrorManager(errorManager);
+    final String js = "goog.provide('main');\ngoog.scope (function (){\n var a = foo, b, c = 1;\n});";
+    compiler.compile(SourceFile.fromCode("source", js));
+    errorManager.assertErrors("source:3: ERROR - variable a redefined");
+}

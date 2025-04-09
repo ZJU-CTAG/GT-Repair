@@ -1,0 +1,23 @@
+public void testIssue() {
+    test("function assert(b) {if (!b) throw 'error';}" +
+            "assert(f() === 1);" +
+            "var f = function() {return 2;};" +
+            "assert(f() === 2);" +
+            "function f() {return 1;};");
+}
+
+private void test(String js) {
+    JsCompressor compressor = new JsCompressor(new StringReader(js));
+    StringWriter out = new StringWriter();
+    compressor.compress(out, -1, true, false, false, true);
+    String compressed = out.toString();
+    System.out.println(compressed);
+    try {
+        Context.enter().evaluateString(
+                new ImporterTopLevel(), compressed, "test", 1, null);
+    } catch (Exception e) {
+        e.printStackTrace();
+        fail("Should not raise exception");
+    }
+    //assertEquals("", compressed);
+}

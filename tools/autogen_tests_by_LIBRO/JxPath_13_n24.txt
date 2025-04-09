@@ -1,0 +1,8 @@
+public void testCustomPrefixes() throws Exception {
+    XPath xpath = new XPath(
+            "/*[local-name()='ElementA' and namespace-uri()='urn:test']/*[local-name()='ElementB' and namespace-uri()='urn:test']");
+    xpath.addNamespace("test", "urn:test");
+    xpath.setNamespaceContextPointer(new SimpleNamespaceContext());
+    XObject result = xpath.execute(new Document(), XPath.SELECT);
+    assertEquals("MY VALUE", result.str());
+}

@@ -1,0 +1,11 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("[test]", "function name() { var arguments = Array.prototype.slice.call(arguments, 0); }"), options);
+    assertTrue(result.success);
+    String js = compiler.toSource();
+    assertTrue(js.contains("var arguments=Array.prototype.slice.call(arguments,0);"));
+}

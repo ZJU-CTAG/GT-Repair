@@ -1,0 +1,35 @@
+public void testEquals() {
+    assertFalse(StringUtils.equals("foo", new Name() {
+        @Override
+        public int length() {
+            return 3;
+        }
+        @Override
+        public char charAt(int index) {
+            return "foo".charAt(index);
+        }
+        @Override
+        public CharSequence subSequence(int start, int end) {
+            return "foo".subSequence(start, end);
+        }
+    }));
+}
+
+static class Name implements CharSequence {
+    @Override
+    public int length() {
+        return 3;
+    }
+    @Override
+    public char charAt(int index) {
+        return "foo".charAt(index);
+    }
+    @Override
+    public CharSequence subSequence(int start, int end) {
+        return "foo".subSequence(start, end);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    String html = "<HTML>\n" +
+            "<body>\n" +
+            " <div>\n" +
+            "  <script language=\"JavaScript1.1\">\n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>\n" +
+            " </div>\n" +
+            "</body>\n" +
+            "</HTML>";
+    Document doc = Jsoup.parse(html);
+    assertEquals("<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <div> \n" +
+            "   <script language=\"JavaScript1.1\">\n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "   </script>\n" +
+            "  </div>\n" +
+            " </body>\n" +
+            "</html>", doc.html

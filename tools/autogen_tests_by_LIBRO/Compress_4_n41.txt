@@ -1,0 +1,16 @@
+public void testIssue967() throws Exception {
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new TarArchiveOutputStream(baos);
+
+    ArchiveEntry ae = new TarArchiveEntry("test");
+    aos.putArchiveEntry(ae);
+    aos.write(new byte[1024]);
+    aos.closeArchiveEntry();
+
+    // Calling finish() here means the output is corrupt.
+    // I don't think we should allow the user to do this.
+    aos.finish();
+
+    aos.close();
+}

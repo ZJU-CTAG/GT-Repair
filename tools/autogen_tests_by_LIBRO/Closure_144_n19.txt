@@ -1,0 +1,10 @@
+public void testVoid() {
+    String code = "function f() {\n}";
+    JSHint linter = new JSHint();
+    linter.load(code);
+    // linter.configure(java.util.Collections.singletonMap("undef", true));
+    linter.configure(java.util.Collections.singletonMap("unused", true));
+    List<Error> errors = linter.check();
+    assertEquals(1, errors.size());
+    assertEquals("'f' is defined but never used.", errors.get(0).reason);
+}

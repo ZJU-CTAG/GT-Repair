@@ -1,0 +1,9 @@
+public void testComments() {
+    String input = "/* @preserve Foo License */\n" + "alert(\"foo\");\n";
+    String output = compile(input, "--warning_level=VERBOSE");
+    assertEquals(
+            "stdin:1: WARNING - Parse error. Non-JSDoc comment has annotations. Did you mean to start it with '/*\u002A'?\n"
+                    + "/* @preserve Foo License */\n" + "^\n" + "\n"
+                    + "0 error(s), 1 warning(s)\n",
+            getWarnings(output));
+}

@@ -1,0 +1,24 @@
+public void testFrequency() {
+    final Object OBJ = new Object();
+    final String STRING = "STRING";
+    final String OTHER_STRING = "OTHER_STRING";
+    final Integer INTEGER = new Integer(1);
+    final Integer OTHER_INTEGER = new Integer(2);
+
+    // create the frequency
+    Frequency f = new Frequency();
+
+    f.addValue(OBJ); // this ought to fail, but doesn't, causing the unexpected behaviour below
+    f.addValue(OBJ); // this will fail, as expected
+    f.addValue(STRING);
+    f.addValue(STRING);
+    f.addValue(OTHER_STRING);
+    f.addValue(INTEGER);
+    f.addValue(INTEGER);
+    f.addValue(OTHER_INTEGER);
+
+    // Check the counts
+    assertEquals(1, f.getCount(OBJ));
+    assertEquals(2, f.getCount(STRING));
+    assertEquals(1, f.getCount(OTHER_STRING));
+    assertEquals(2,

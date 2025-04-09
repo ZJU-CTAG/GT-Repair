@@ -1,0 +1,22 @@
+public void testIssue() {
+    String input = " window[\"anchor\"] = function (obj, modifiesProp) {"
+        + " return (function (saved) {" + " return modifiesProp(obj) + saved;"
+        + " })(obj[\"prop\"]);" + " }";
+
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    options.setPrettyPrint(false);
+    options.setGenerateExports(true);
+    options.setExportLocalPropertyDefinitions(true);
+
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+
+    try {
+        externs.add(SourceFile.fromFile("externs.

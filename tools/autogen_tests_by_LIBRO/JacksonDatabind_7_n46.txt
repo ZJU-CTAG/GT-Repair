@@ -1,0 +1,27 @@
+public void testTokenBuffer() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    Value value = objectMapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertEquals(1, value.c.size());
+    assertEquals(Value.A.class, value.c.get(0).getClass());
+}
+
+public static class Value {
+    public static enum A {
+        A
+    }
+    public static enum B {
+        B
+    }
+    public final List<Object> c;
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        List<Object> c = new ArrayList<>();
+        while (buffer.hasCurrentToken()) {
+            if (buffer.currentToken() == JsonToken.FIELD_NAME) {
+                buffer.nextToken();
+                switch (buffer.currentText()) {
+                    case "a":
+                        c.add(buffer.readValueAs(A.class));
+                        break;
+                    case "b":
+                        c.add(buffer.read

@@ -1,0 +1,21 @@
+public void testIssueNamedAttributes() {
+  String xml = 
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
+  "<ElementA A:myAttr=\"Mytype\">"+
+   " <B:ElementB>MY VALUE</B:ElementB>"+
+  "</ElementA>";
+
+  try {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new InputSource(new StringReader(xml)));
+
+    DOMNodePointer pointer = new DOMNodePointer(doc);
+    pointer.registerNamespace("A", "/http...");
+    pointer.registerNamespace("B", "/http...");
+    String result = (String) pointer.getValue("/ElementA/B:ElementB");
+    assertEquals("MY VALUE", result);
+    result = (String) pointer.getValue("/ElementA/@A:myAttr");
+    assertEquals("Mytype", result);
+  } catch (Exception e) {
+    e.printStackTr

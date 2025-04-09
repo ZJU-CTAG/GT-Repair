@@ -1,0 +1,10 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.bindExtensionFunction(new Count());
+    Pattern pattern = compiler.compile("count(//@*)");
+    XdmNode doc = S9apiUtils.getDocumentBuilder().build(
+            new StreamSource(new StringReader(
+                    "<a attr1='val1' attr2='val2'/>")));
+    MatchIterator mi = pattern.matches(doc);
+    assertEquals(2, mi.count());
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String source = "function makeClass(base, f) {\n" +
+            "  if (f === undefined) {\n" +
+            "    f = base;\n" +
+            "    base = Object;\n" +
+            "  }\n" +
+            "  var c = function() { this.init.apply(this, arguments); };\n" +
+            "  if (f.prototype instanceof base) {\n" +
+            "    c.prototype = f.prototype;\n" +
+            "  } else {\n" +
+            "    var proto = function() {};\n" +
+            "    proto.prototype = base.prototype;\n" +
+            "    c.prototype = new proto();\n" +
+            "    c.prototype.constructor = c;\n" +
+            "    c.prototype.superclass = base.prototype;\n" +
+            "    for (var i in f.prototype) {\n" +
+            "      c.prototype[i] = f.prototype[i];\n

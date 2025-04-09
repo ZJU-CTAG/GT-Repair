@@ -1,0 +1,28 @@
+public void testDeprecatedTypeConstruction() throws Exception
+{
+    TypeFactory tf = mapper.getTypeFactory();
+    JavaType t = SimpleType.construct(JsonNode.class);
+    assertNotNull(t);
+    assertSame(tf, t.getTypeHandler());
+    assertSame(t, tf.constructType(JsonNode.class));
+
+    assertTrue(t.isContainerType());
+    assertFalse(t.isArrayType());
+    assertTrue(t.isConcrete());
+    assertFalse(t.isAbstract());
+    assertFalse(t.isThrowable());
+
+    assertEquals(0, t.containedTypeCount());
+
+    assertNull(t.getKeyType());
+    assertNull(t.getContentType());
+
+    assertTrue(t.hasGenericTypes());
+    assertFalse(t.hasRawClass(String.class));
+    assertTrue(t.hasRawClass(JsonNode.class));
+
+    assertFalse(t.isCollectionLikeType());
+    assertFalse(t.isMapLikeType());
+
+    assertNull(t.getValueHandler());
+    assertNull(t.getType

@@ -1,0 +1,8 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.SEVERE);
+    Result result = compiler.compile(new JSSourceFile[]{ JSSourceFile.fromCode("input.js", "var foo = function bar(){var bar;alert(bar)};")}, options);
+    assertEquals("var foo=function(){alert(void 0)};", compiler.toSource());
+}

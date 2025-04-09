@@ -1,0 +1,26 @@
+public void testToStringStyleThreadLocal() throws Exception {
+    ToStringStyle style = new ToStringStyle();
+    style.setUseClassName(true);
+    style.setUseFieldNames(true);
+    style.setUseIdentityHashCode(false);
+    style.setContentStart("[");
+    style.setContentEnd("]");
+    style.setFieldSeparator(",");
+
+    ToStringStyle.setDefaultStyle(style);
+
+    // ThreadLocal will be created here
+    assertEquals("[name:TestClass,value:1]", new TestClass(1).toString());
+
+    // ThreadLocal created in ToStringStyle will not be cleaned up,
+    // causing a memory leak
+
+    Field field = ToStringStyle.class.getDeclaredField("THREADLOCAL_DEFAULTSTYLE");
+    field.setAccessible(true);
+    ThreadLocal<?> threadLocal = (ThreadLocal<?>) field.get(null);
+
+    ThreadLocal<?> threadLocalCopy = copyThreadLocal(threadLocal);
+
+    assertNotNull(threadLocalCopy);
+    assertNotNull(threadLocalCopy.get());
+

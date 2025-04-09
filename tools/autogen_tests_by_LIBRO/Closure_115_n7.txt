@@ -1,0 +1,22 @@
+public void testIssue108() {
+    String input =
+            "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+            "  return (function (saved) {\n" +
+            "    return modifiesProp(obj) + saved;\n" +
+            "  })(obj[\"prop\"]);\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+    compilerOptions.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    compilerOptions.addWarningsGuard(new WarningsGuard() {
+        @Override
+        public CheckLevel level(JSError error) {
+            return CheckLevel.WARNING;
+        }
+    });
+    ExternsExports.loadExterns(
+            compiler,
+            compilerOptions,
+            Immutable

@@ -1,0 +1,13 @@
+public void testBase64Stream() throws Exception {
+    byte[] original = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    ByteArrayInputStream bais = new ByteArrayInputStream(original);
+    Base64InputStream b64is = new Base64InputStream(bais, true);
+    byte[] decoded = new byte[9];
+    int read = 0;
+    int offset = 0;
+    while (read >= 0) {
+        read = b64is.read(decoded, offset, decoded.length - offset);
+        offset += read;
+    }
+    assertTrue(Arrays.equals(original, decoded));
+}

@@ -1,0 +1,9 @@
+public void testBase64() throws Exception {
+    JsonParser parser = mapper.getFactory().createParser(new Base64Variant("MIME", "MIME", true, 'M', 76),
+            mapper.writer().writeValueAsBytes(new String(Base64.getEncoder().encode("Hello".getBytes()))));
+    String value = null;
+    while (parser.nextValue() != JsonToken.END_OBJECT) {
+        value = parser.getValueAsString();
+    }
+    assertEquals("Hello", value);
+}

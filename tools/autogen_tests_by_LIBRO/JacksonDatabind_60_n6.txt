@@ -1,0 +1,12 @@
+public void testPolymorphicTypeLost () {
+    ResponseReceiver rr = new ResponseReceiver() {
+        byte[] getBytes() { return new byte[]{1,2,3}; }
+    };
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    String json = mapper.writeValueAsString(rr);
+    assertEquals("{\n  \"@class\" : \"com.fasterxml.jackson.databind.bug.PolymorphicTypeLost$1\",\n  \"bytes\" : \"AQID\"\n}", json);
+    Object rr2 = mapper.readValue(json, Object.class);
+    assertEquals("com.fasterxml.jackson.databind.bug.PolymorphicTypeLost$1", rr2.getClass().getName());
+}

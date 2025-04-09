@@ -1,0 +1,20 @@
+public void testIssue804() {
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+  options.setEmitUseStrict(false);
+  compiler.disableThreads();
+  List<SourceFile> externs = new ArrayList<>();
+  List<SourceFile> jsFiles = new ArrayList<>();
+  jsFiles.add(SourceFile.fromCode("foo",
+        "define(function() {\n"
+      + "  var Foo = function() {\n"
+      + "    console.log('foo');\n"
+      + "  };\n"
+      + "  return Foo;\n"
+      + "});\n"));
+  jsFiles.add(SourceFile.fromCode("bar",
+        "define(['lib/Foo'], function(Foo) {\n"
+      + "  var Bar = function() {\n"
+      + "    console.log('bar');\n"
+      + "  };\n"

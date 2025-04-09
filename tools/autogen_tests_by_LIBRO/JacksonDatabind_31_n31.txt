@@ -1,0 +1,11 @@
+public void testJsonStreamContextsWriteAndConvert() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writer();
+
+    JsonStreamContext ctxt = mapper.getFactory().getGeneratorFactory()._createJsonGenerator(new StringWriter(), JsonEncoding.UTF8).getOutputContext();
+    assertEquals(JsonStreamContext.TYPE_ROOT, ctxt.getCurrentValue());
+
+    mapper.convertValue(new Object(), ObjectNode.class);
+    mapper.getFactory().getGeneratorFactory()._createJsonGenerator(new StringWriter(), JsonEncoding.UTF8).getOutputContext();
+    assertEquals(JsonStreamContext.TYPE_ROOT, ctxt.getCurrentValue());
+}

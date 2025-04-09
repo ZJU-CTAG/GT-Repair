@@ -1,0 +1,26 @@
+public void testIssueFlexJSType() {
+
+		// Setup the configuration for the MarkerAnnotation
+		Configuration configuration = new Configuration();
+		configuration.setAttribute("jsdoc.marker.enabled", "none");
+
+		// Create the builder which will create the AST. The builder
+		// is configured with the configuration.
+		ASTReader reader = new ASTReader(configuration);
+
+		// Read the compilation unit
+		CompilationUnit unit = reader.read("src/test/resources/java/lang/String.java", null);
+
+		// Get the type declaration of the class A
+		TypeDeclaration type = (TypeDeclaration) unit.types().get(0);
+
+		// Get the method foo()
+		MethodDeclaration method = type.getMethods()[0];
+
+		// Get the return type of the method foo()
+		Type returnType = method.getReturnType();
+
+		// Get the type binding of the return type
+		ITypeBinding typeBinding = returnType.resolveBinding();
+
+		// Get the fully qualified name for the return type

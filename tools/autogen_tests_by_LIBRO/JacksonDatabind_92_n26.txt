@@ -1,0 +1,22 @@
+public void testCVE() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    // block a couple of types, as they had been brought up
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL,
+            As.PROPERTY);
+    mapper.disableDefaultTyping();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+
+    // try to create a number of JDK types and verify class is as expected
+    for (Class<?> cls : new Class<?>[] {
+            // from org.apache.commons.collections:
+            InvokerTransformer.class,
+            MapTransformer.class,
+            // from org.apache.commons.collections4
+            InstantiateTransformer.class,
+            // from org.apache.commons.collections.functors
+            InvokerTransformer.class,
+            // from org.apache.commons.collections.functors.InvokerTransformer
+            InstantiateTransformer.class,
+            // from org.codehaus

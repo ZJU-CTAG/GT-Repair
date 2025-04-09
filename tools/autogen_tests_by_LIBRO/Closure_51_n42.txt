@@ -1,0 +1,7 @@
+public void testIssue146() {
+    String n = "-0.0";
+    JsonParser jp = new MappingJsonFactory().createJsonParser(n);
+    jp.enable(Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    assertEquals(-0.0, jp.getDoubleValue());
+}

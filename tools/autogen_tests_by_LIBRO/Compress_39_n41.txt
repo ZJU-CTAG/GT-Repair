@@ -1,0 +1,17 @@
+public void testDefectiveZip() {
+    try {
+        String zipFile = "test.zip";
+        FileOutputStream fos = new FileOutputStream(zipFile);
+        fos.write(new byte[] {'a','b','c','d','e','f'});
+        fos.close();
+
+        ZipFile zf = new ZipFile(zipFile);
+        Enumeration<? extends ZipEntry> entries = zf.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry ze = entries.nextElement();
+            System.out.println(ze.getName());
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

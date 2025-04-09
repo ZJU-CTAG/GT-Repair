@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final Employee emp = mapper.readValue(
+            "{\"emp_id\": 1234, \"emp_age\": 30, \"emp_first_name\": \"John\", \"emp_last_name\": \"Doe\"}",
+            Employee.class
+    );
+    System.out.println(emp.getAge()); // 30
+    System.out.println(emp.getId()); // 1234
+    System.out.println(emp.getName()); // null
+
+    final Employee emp2 = mapper.readValue(
+            "{\"emp_first_name\": \"John\", \"emp_last_name\": \"Doe\", \"emp_age\": 30, \"emp_id\": 1234}",
+            Employee.class
+    );
+    System.out.println(emp2.getAge()); // 30
+    System.out.println(emp2.getId()); // 1234
+    System.out.println(emp2.getName()); // Name Object
+
+    final Employee emp3 = mapper.readValue(
+           

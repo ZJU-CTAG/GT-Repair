@@ -1,0 +1,25 @@
+public void testIssue() {
+    JXPathContext context = JXPathContext.newContext(new ElementA());
+    context.registerNamespace("A", "http://www.apache.org");
+    context.registerNamespace("B", "http://www.apache.org");
+    context.getPointer("/A:ElementA/B:ElementB").setValue("OK");
+    assertEquals("OK", ((ElementB) context.getPointer("/A:ElementA/B:ElementB").getNode()).getValue());
+}
+
+public static class ElementA {
+    private ElementB elementB = new ElementB();
+    private String myAttr = "Mytype";
+    
+    public ElementB getElementB() {
+        return elementB;
+    }
+    public void setElementB(ElementB elementB) {
+        this.elementB = elementB;
+    }
+    public String getMyAttr() {
+        return myAttr;
+    }
+    public void setMyAttr(String myAttr) {
+        this.myAttr = myAttr;
+    }
+}

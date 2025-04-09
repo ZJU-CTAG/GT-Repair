@@ -1,0 +1,11 @@
+public void testCharSequenceKey() throws Exception
+{
+    CharSequenceMapBean bean = MAPPER.readValue("{\""+String.valueOf(new char[]{0x61, 0x62, 0x63})+"\":\"value\"}", CharSequenceMapBean.class);
+    assertNotNull(bean);
+    assertEquals("value", bean.map.get("abc"));
+    assertEquals("value", bean.map.get(new StringBuilder("abc")));
+}
+
+public static class CharSequenceMapBean {
+    public Map<CharSequence, String> map;
+}

@@ -1,0 +1,12 @@
+public void testGroupConstraints() throws ParseException {
+    Options options = new Options();
+    GroupBuilder builder = new GroupBuilder();
+    Group groupA = builder.withName("A").withOption(new Option("a", "a")).create();
+    Group groupB = builder.withName("B").withOption(new Option("b", "b")).withMinimum(1)
+            .withMaximum(1).withSubGroup(groupA).create();
+    options.addOptionGroup(groupA);
+    options.addOptionGroup(groupB);
+    CommandLineParser parser = new DefaultParser();
+    CommandLine line = parser.parse(options, new String[] { "-a" });
+    assertEquals(line.getOptions().length, 2);
+}

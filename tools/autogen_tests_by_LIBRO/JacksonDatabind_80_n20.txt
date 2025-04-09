@@ -1,0 +1,28 @@
+public void testIssue106() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Animal.class);
+    mapper.getDeserializationConfig().addMixInAnnotations(Animal.class, AnimalMixin.class);
+
+    Animal result = mapper.readValue("{ \"type\" : \"animal\" }", Animal.class);
+    assertEquals(Animal.class, result.getClass());
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="type")
+@JsonSubTypes(value={
+        @JsonSubTypes.Type(value=Animal.class, name="animal"),
+        @JsonSubTypes.Type(value=Cat.class, name="cat")
+})
+abstract class AnimalMixin
+{
+}
+
+abstract class Animal
+{
+    abstract public String getType();
+}
+
+class Cat extends Animal
+{
+    public String getType() { return "cat"; }
+}

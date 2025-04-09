@@ -1,0 +1,16 @@
+public void testTarArchiveOutputStream () throws IOException, ArchiveException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream ();
+    try (ArchiveOutputStream aos = new TarArchiveOutputStream (baos)) {
+        aos.putArchiveEntry(new TarArchiveEntry("name"));
+        aos.write("content".getBytes());
+        aos.closeArchiveEntry();
+        aos.close();
+    }
+    // Shouldn't be able to finish after closing.
+    try {
+        ((TarArchiveOutputStream) aos).finish();
+        fail("able to finish after close");
+    } catch (IOException ioe) {
+        // expected
+    }
+}

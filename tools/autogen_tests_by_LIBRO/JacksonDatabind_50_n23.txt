@@ -1,0 +1,24 @@
+public void testDeserialization() throws IOException {
+    String json = "{\n" +
+            "  \"id\": \"0\",\n" +
+            "  \"name\": \"Name\",\n" +
+            "  \"embedded\": {\n" +
+            "    \"embedded\": {\n" +
+            "      \"id\": \"1\",\n" +
+            "      \"name\": \"Name\",\n" +
+            "      \"embedded\": {\n" +
+            "        \"id\": \"2\",\n" +
+            "        \"name\": \"Name\",\n" +
+            "        \"embedded\": null\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Entity.class, new EntityDeserializer());
+    mapper.registerModule(module);
+
+    Entity entity = mapper.readValue(json, Entity.class);
+    assert

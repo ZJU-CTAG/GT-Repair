@@ -1,0 +1,20 @@
+public void testNamespaces() {
+    String xml =
+            "<ElementA xmlns=\"http://default.uri\" xmlns:A=\"http://uriA\" xmlns:B=\"http://uriB\" A:myAttr=\"Mytype\">" +
+                    " <B:ElementB>MY VALUE</B:ElementB>" +
+                    "</ElementA>";
+    Document document = builder.parse(new ByteArrayInputStream(xml.getBytes()));
+    DOMNodePointer pointer = new DOMNodePointer(document);
+    pointer.setNamespaceResolver(new NamespaceResolver() {
+        public String translateNamespacePrefixToUri(String prefix) {
+            if (prefix.equals("A"))
+                return "http://uriA";
+            if (prefix.equals("B"))
+                return "http://uriB";
+            return null;
+
+        }
+    });
+    assertEquals("Mytype", pointer.getValue("@A:myAttr"));
+    assertEquals("MY VALUE", pointer.getValue("B:ElementB"));
+}

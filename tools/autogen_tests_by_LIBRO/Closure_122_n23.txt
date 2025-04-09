@@ -1,0 +1,15 @@
+public void testInconsistentComments() {
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setCheckSymbols(false);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(false);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    String code = "/\*! @preserve Foo License \*/\nalert(\"foo\");";
+    Result result = compiler.compile(null,
+            SourceFile.fromCode("in.js", code),
+            options);
+    assertTrue(result.success);
+    assertEquals("\nalert(\"foo\");\n", result.source);
+}

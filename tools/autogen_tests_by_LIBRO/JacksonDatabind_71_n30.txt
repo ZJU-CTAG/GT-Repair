@@ -1,0 +1,10 @@
+public void testCharSequenceMapKey() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final Map<CharSequence,String> map = new LinkedHashMap<CharSequence,String>();
+    map.put("a", "b");
+    final String json = mapper.writeValueAsString(map);
+    final TypeReference<Map<CharSequence,String>> type = new TypeReference<Map<CharSequence,String>>() { };
+    final Map<CharSequence,String> result = mapper.readValue(json, type);
+    assertEquals(map, result);
+}

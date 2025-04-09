@@ -1,0 +1,10 @@
+public void testArgumentsOptimization() {
+    assertEquals("function(a){arguments[0]=this;a.apply(this,arguments);return this}",
+                 new JavaScriptCompressor(new StringReader("function d3_call(callback) {" +
+                                                           " var f = callback;" +
+                                                           " arguments[0] = this;" +
+                                                           " f.apply(this, arguments);" +
+                                                           " return this;" +
+                                                           "}"),
+                                          null).compress("").toString());
+}

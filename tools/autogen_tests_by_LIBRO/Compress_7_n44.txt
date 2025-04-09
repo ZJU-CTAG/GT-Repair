@@ -1,0 +1,10 @@
+public void testTarUtils() throws IOException {
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    TarOutputStream tarOutputStream = new TarOutputStream(out);
+    tarOutputStream.setLongFileMode(TarOutputStream.LONGFILE_GNU);
+    tarOutputStream.putNextEntry(new TarEntry("0302-0601-3±±±F06±W220±ZB±HECKMODUL±±±±±±±±±LALALA±±±CAN±±DC±±±04±060302±MOE.model"));
+    tarOutputStream.close();
+    final byte[] bytes = out.toByteArray();
+    TarArchiveInputStream tarInputStream = new TarArchiveInputStream(new ByteArrayInputStream(bytes));
+    TarArchiveEntry entry = tarInputStream.getNextTarEntry();
+    assertEquals("0302-0601-3±±±F06±W220±ZB±HECKMODUL±±±±±±±±±LALALA±±±CAN±±DC±±±04±060302±MOE

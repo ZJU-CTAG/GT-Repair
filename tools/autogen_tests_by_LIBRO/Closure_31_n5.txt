@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+  // Compile with --manage_closure_dependencies and --compilation_level WHITESPACE_ONLY.
+  Compiler compiler = new Compiler();
+  compiler.setManageClosureDependencies(new Boolean(true));
+  compiler.setPrintAst(new Boolean(true));
+  compiler.setPrintTree(new Boolean(true));
+  compiler.setCompilationLevel(CompilationLevel.WHITESPACE_ONLY);
+  CompilerOptions options = new CompilerOptions();
+  compiler.initOptions(options);
+  String js = ""
+      + "/** @constructor */\n"
+      + "function Foo() {}\n"
+      + "/** @param {string} s */\n"
+      + "Foo.prototype.bar = function(s) { alert(s); };\n"
+      + "\n"
+      + "/** @constructor */\n"
+      + "function Baz() { this.foo_ = new Foo(); }\n"
+      + "Baz.prototype.baz = function() {\n"

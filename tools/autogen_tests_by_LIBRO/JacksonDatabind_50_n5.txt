@@ -1,0 +1,12 @@
+public void testIssue471() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+
+    final String json = "{\"id\":1,\"name\":\"name1\",\"children\":[{\"id\":2,\"name\":\"name2\"},{\"id\":3,\"name\":\"name3\"}]}";
+    final JsonNode jsonNode = mapper.readTree(json);
+    final TestJson testJson = mapper.treeToValue(jsonNode, TestJson.class);
+    assertEquals(2, testJson.getChildren().size());
+    assertEquals(testJson, testJson.getChildren().get(0).getParent());
+    assertEquals(testJson, testJson.getChildren().get(1).getParent());
+}

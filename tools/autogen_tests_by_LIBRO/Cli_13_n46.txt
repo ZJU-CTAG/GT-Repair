@@ -1,0 +1,30 @@
+public void testIssue() {
+    class Test {
+        @Option(name = "-p", aliases = {"--proxy"}, usage = "Proxy Server", required = false)
+        private String proxyServer = "proxy.example.com";
+    }
+    
+    Test test = new Test();
+    CmdLineParser parser = new CmdLineParser(test);
+    
+    try {
+        parser.parseArgument(new String[]{"-p", "proxy.example.org"});
+        fail("Expected exception");
+    } catch (CmdLineException e) {
+        //expected
+    }
+    
+    parser = new CmdLineParser(test);
+    
+    try {
+        parser.parseArgument(new String[]{"--proxy", "proxy.example.org"});
+        fail("Expected exception");
+    } catch (CmdLineException e) {
+        //expected
+    }
+    
+    parser = new CmdLineParser(test);
+    
+    try {
+        parser.parseArgument(new String[]{"--proxy"});
+        assertEquals("proxy.example.com", test.proxyServer);

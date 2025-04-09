@@ -1,0 +1,21 @@
+public void testEnumMap() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String json = objectMapper.writeValueAsString(new EnumMapTest());
+    System.out.println(json);
+}
+
+public class EnumMapTest {
+    private final EnumMap<MyEnum, Integer> enumMap = new EnumMap<>(MyEnum.class);
+
+    public EnumMapTest() {
+        enumMap.put(MyEnum.ONE, 1);
+    }
+}
+
+public enum MyEnum {
+    @JsonProperty("one")
+    ONE,
+
+    @JsonProperty("two")
+    TWO
+}

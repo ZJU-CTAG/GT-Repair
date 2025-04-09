@@ -1,0 +1,14 @@
+public void testIssue108 () {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Person p = mapper.readValue(
+            "{\n" +
+                    "  \"businessAddress.street\" : \"My Street\",\n" +
+                    "  \"businessAddress.addon\" : \"My Addon\",\n" +
+                    "  \"businessAddress.zip\" : \"My Zip\",\n" +
+                    "  \"businessAddress.town\" : \"My Town\",\n" +
+                    "  \"businessAddress.country\" : \"My Country\"\n" +
+                    "}"
+            , Person.class);
+    assertEquals("My Street", p.businessAddress.street);
+}

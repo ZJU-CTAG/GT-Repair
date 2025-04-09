@@ -1,0 +1,14 @@
+public void testIssue_jmhType_Negative_1_001() throws Throwable {
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectReader objectReader = objectMapper.readerFor(MyBean.class);
+
+    MyBean intRef = objectReader.readValue(" {\"refRef\": 2 } ");
+    assertNotNull(intRef.refRef);
+    assertNotNull(intRef.refRef.get());
+    assertEquals(intRef.refRef.get().get(), new Integer(2));
+
+    MyBean nullRef = objectReader.readValue(" {\"refRef\": null } ");
+    assertNotNull(intRef.refRef);
+    assertNotNull(intRef.refRef.get());
+    assertNull(intRef.refRef.get().get());
+}

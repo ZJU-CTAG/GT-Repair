@@ -1,0 +1,11 @@
+public void testIssue172() {
+    XPath xpath = new XPath("count(//@*)");
+    Document document = DocumentUtils.getDocument(
+            "<root><element a='1' b='2<3'/></root>");
+    try {
+        Integer count = (Integer) xpath.evaluate(document, XPathConstants.NUMBER);
+        assertEquals(new Integer(2), count);
+    } catch (XPathExpressionException e) {
+        fail("XPathExpressionException should not be thrown");
+    }
+}

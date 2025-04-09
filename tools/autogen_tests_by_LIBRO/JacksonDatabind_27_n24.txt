@@ -1,0 +1,8 @@
+public void testIssue107() throws IOException {
+    final ObjectMapper mapper = mapperForSer();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    final String json = mapper.writeValueAsString(new ExternalIdBean.ExtIdImpl("extId"));
+
+    final ExternalIdBean result = mapper.readValue(json, ExternalIdBean.class);
+    assertEquals("extId", result.getExternalId().getValue());
+}

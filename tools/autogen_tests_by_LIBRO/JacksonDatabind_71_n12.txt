@@ -1,0 +1,12 @@
+public void testCharSequenceKey() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final TypeFactory typeFactory = TypeFactory.defaultInstance();
+    final JavaType mapType = typeFactory.constructMapType(Map.class, CharSequence.class, Double.class);
+    final Map<CharSequence, Double> map = mapper.readValue(
+            "{\"foo\": -99.99, \"bar\": -99.99, \"baz\": -99.99}",
+            mapType);
+    assertEquals(3, map.size());
+    assertEquals(Double.valueOf(-99.99), map.get("foo"));
+    assertEquals(Double.valueOf(-99.99), map.get("bar"));
+    assertEquals(Double.valueOf(-99.99), map.get("baz"));
+}

@@ -1,0 +1,16 @@
+public void testAsPropertyTypeDeserializerRespectsAcceptEmptyStringAsNullObject() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    AnnotationIntrospector annotationIntrospector = new JacksonAnnotationIntrospector();
+    objectMapper.setAnnotationIntrospector(annotationIntrospector);
+    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    DummyEntity dummyEntity = objectMapper.readValue("{\"dummyString\":\"\"}", DummyEntity.class);
+
+    assertNull(dummyEntity.dummyString);
+}
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public static class DummyEntity {
+    public String dummyString;
+}

@@ -1,0 +1,13 @@
+public void testIssue107() {
+    final CSVFormat format = CSVFormat.EXCEL.withIgnoreEmptyLines().withHeader();
+    final String csv = "A,B,C,,\na,b,c,d,e";
+    final Map<String, String> record = format
+        .parse(new StringReader(csv))
+        .iterator()
+        .next();
+    assertEquals("a", record.get("A"));
+    assertEquals("b", record.get("B"));
+    assertEquals("c", record.get("C"));
+    assertEquals("d", record.get(""));
+    assertEquals("e", record.get(null));
+}

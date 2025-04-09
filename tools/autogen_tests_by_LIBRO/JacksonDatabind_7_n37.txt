@@ -1,0 +1,26 @@
+public void test() throws Exception {
+	ObjectMapper mapper = new ObjectMapper();
+	final Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+	assertNotNull(value);
+}
+
+class Value {
+	public String a;
+	public String b;
+
+	public Value() {
+	}
+
+	@JsonCreator
+	public static Value from(TokenBuffer buffer) throws IOException {
+		final Value value = new Value();
+		final JsonParser parser = buffer.asParser();
+		parser.nextToken();
+		final JsonToken current = parser.getCurrentToken();
+		System.out.println("Current token = " + current);
+		System.out.println("Buffered tokens = " + parser.getText());
+		while (parser.nextToken() != JsonToken.END_OBJECT) {
+			final String name = parser.getCurrentName();
+			final JsonToken nextToken = parser.nextToken();
+			if (nextToken.isNumeric()) {
+			

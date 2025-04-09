@@ -1,0 +1,23 @@
+public void testZipFile() throws Exception {
+
+    ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+    entry.setSize(1000);
+
+    ZipArchiveEntry entry2 = new ZipArchiveEntry("test.txt");
+    entry2.setSize(1000);
+
+    assertTrue("Two zip entries created with the same name should be equal", entry.equals(entry2));
+    assertEquals("Two zip entries created with the same name should have the same hashcode", entry2.hashCode(), entry.hashCode());
+
+    entry = new ZipArchiveEntry("test");
+    entry.setSize(1000);
+
+    entry2 = new ZipArchiveEntry("test");
+    entry2.setSize(1000);
+
+    assertFalse("Two zip entries created with the same name, but different extension should not be equal", entry.equals(entry2));
+    assertFalse("Two zip entries created with the same name, but different extension should not have the same hashcode", entry2.hashCode(), entry.hashCode());
+
+    entry = new ZipArchiveEntry("test2");
+    entry.setName("test.txt");
+   

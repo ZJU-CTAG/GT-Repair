@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+  String json = "{\"a\":1}";
+  JsonFactory jsonFactory = new JsonFactory();
+  JsonParser jsonParser = jsonFactory.createParser(json);
+  JsonToken jsonToken = jsonParser.nextToken();
+  Assert.assertEquals(JsonToken.START_OBJECT, jsonToken);
+  jsonToken = jsonParser.nextToken();
+  Assert.assertEquals(JsonToken.FIELD_NAME, jsonToken);
+  Assert.assertEquals("a", jsonParser.getText());
+  jsonToken = jsonParser.nextToken();
+  Assert.assertEquals(JsonToken.VALUE_NUMBER_INT, jsonToken);
+  Assert.assertEquals(1, jsonParser.getIntValue());
+  jsonToken = jsonParser.nextToken();
+  Assert.assertEquals(JsonToken.END_OBJECT, jsonToken);
+  jsonToken = jsonParser.nextToken();
+  Assert.assertNull(jsonToken);
+}
+
+public void testIssue108_1() throws IOException {

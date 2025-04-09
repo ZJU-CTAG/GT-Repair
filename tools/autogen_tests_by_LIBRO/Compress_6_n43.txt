@@ -1,0 +1,15 @@
+public void testIssue108() {
+    File testFile = new File("target", "testIssue108.zip");
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(testFile));
+    try {
+        Set<ZipArchiveEntry> entries = new HashSet<ZipArchiveEntry>();
+        for (String name : new String[] { "a.txt", "b.txt", "c.txt" }) {
+            ZipArchiveEntry ze = new ZipArchiveEntry(name);
+            entries.add(ze);
+            zos.putNextEntry(ze);
+        }
+        assertEquals(3, entries.size());
+    } finally {
+        zos.close();
+    }
+}

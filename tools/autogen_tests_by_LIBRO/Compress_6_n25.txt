@@ -1,0 +1,15 @@
+public void testIssue() throws IOException {
+    ZipOutputStream zipOut = new ZipOutputStream(new ByteArrayOutputStream());
+    // create a large number of filenames with the same hash
+    String[] names = new String[1000];
+    for (int i = 0; i < names.length; i++) {
+        names[i] = Integer.toString(i) + ".txt";
+    }
+    // create an arbitrary number of entries with the same hash
+    for (int i = 0; i < 10; i++) {
+        for (String name : names) {
+            zipOut.putNextEntry(new ZipArchiveEntry(name));
+            zipOut.closeEntry();
+        }
+    }
+}

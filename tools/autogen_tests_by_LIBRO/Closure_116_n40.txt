@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    String input = "window['anchor'] = function (obj, modifiesProp) {" +
+            "return (function (saved) {" +
+            "return modifiesProp(obj) + saved;" +
+            "})(obj['prop']);" +
+            "}";
+    Result result = compiler.compile(
+            CommandLineRunner.getDefaultExterns(),
+            ImmutableList.of(SourceFile.fromCode("input.js", input)),
+            options
+    );
+
+    if (result.success) {
+        assertEquals("window.anchor=function(b,a){var HOLD=b.prop;return a(b)+HOLD};", compiler.toSource());
+    }

@@ -1,0 +1,19 @@
+public void testCompiler() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.closurePass = true;
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.processCommonJSModules = true;
+    options.transformAMDToCJSModules = true;
+    options.commonJSModulePathPrefix = "lib/";
+    options.setManageClosureDependencies(new ManageClosureDependencies(
+            ImmutableList.of("lib/Foo"),
+            ImmutableList.of(new ModuleIdentifier("Bar"))));
+    options.setCheckDeterminism(true);
+    compiler.compile(
+            ImmutableList.<SourceFile>of(SourceFile.fromCode("Foo", "define(function() {});"),
+            SourceFile.fromCode("Bar", "define(['Foo'], function(foo) {});")),
+            Immutable

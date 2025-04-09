@@ -1,0 +1,15 @@
+public void testIssue126() {
+    try {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss.SSS ZZZ");
+        DateTime dt = formatter.parseDateTime("12/19/2012 13:05:34.000 +07:00");
+        assertEquals(2012, dt.getYear());
+        assertEquals(12, dt.getMonthOfYear());
+        assertEquals(19, dt.getDayOfMonth());
+        assertEquals(13, dt.getHourOfDay());
+        assertEquals(5, dt.getMinuteOfHour());
+        assertEquals(34, dt.getSecondOfMinute());
+        assertEquals(0, dt.getMillisOfSecond());
+        assertEquals("+07:00", dt.getZone().getID());
+        assertEquals(7, dt.getZone().getOffset(dt.getMillis()) / (60 * 60 * 1000));
+    } catch (IllegalArgumentException iae) {
+        // DateTime

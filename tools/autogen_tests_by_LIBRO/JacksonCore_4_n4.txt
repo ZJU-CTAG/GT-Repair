@@ -1,0 +1,12 @@
+public void testKeyLength() throws IOException {
+    final int len = 262145;
+    final char[] chars = new char[len];
+    Arrays.fill(chars, 'a');
+    try {
+        final String json = new String(chars) + ": \"value\"}";
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.readValue(json, Map.class);
+        fail("Should fail because key is too long");
+    } catch (ArrayIndexOutOfBoundsException e) {
+    }
+}

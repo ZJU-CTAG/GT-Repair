@@ -1,0 +1,14 @@
+public void testErrorColumn() throws IOException {
+    String json = "{\"foo\":1";
+    byte[] bytes = json.getBytes("UTF-8");
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonParser parser = jsonFactory.createJsonParser(inputStream);
+    parser.nextToken();
+    try {
+        parser.nextToken();
+        fail("Should throw an exception");
+    } catch (JsonParseException e) {
+        assertTrue(e.getMessage().contains("column 10"));
+    }
+}

@@ -1,0 +1,23 @@
+public void testWriteContext() throws JsonProcessingException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    String objectAsString = objectMapper.writeValueAsString(new TestDTO());
+
+    JsonFactory jsonFactory = objectMapper.getFactory();
+    JsonParser parser = jsonFactory.createParser(objectAsString);
+    FilterProvider filterProvider = new SimpleFilterProvider().addFilter("myFilter", new AntPathPropertyFilter());
+    JsonGenerator generator = objectMapper.getFactory().createGenerator(System.out);
+
+    parser.nextToken();
+
+    while (parser.hasCurrentToken()) {
+
+        JsonStreamContext writeContext = generator.getOutputContext();
+        System.out.println(writeContext);
+
+        JsonToken token = parser.nextToken();
+        JsonStreamContext readContext = parser.getParsingContext();
+
+        if (token.isScalarValue() && readContext.inObject()) {
+            String currentName = readContext.getCurrentName();
+            if (currentName.equals("intProperty")) {
+                int value = parser.getIntValue();

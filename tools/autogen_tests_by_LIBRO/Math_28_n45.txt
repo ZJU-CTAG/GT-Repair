@@ -1,0 +1,16 @@
+public void testUnboundedSolutionException() {
+    int ENTITIES_COUNT = 15;
+    int ENTITIES_TYPE = 3;
+    int ENTITY_PARAMETERS_COUNT = 9;
+    int UNIT_COUNT = 3;
+
+    Random random = new Random();
+    SimplexSolver solver = new SimplexSolver();
+
+    // First iteration is runned with predefined set of input data with which the Solver gives back an appropriate result
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { -0.0, -1.0 }, 0);
+    Collection constraints = new ArrayList();
+    constraints.add(new LinearConstraint(new double[] { 0.0, -1.0 }, Relationship.GEQ, -4.0));
+    constraints.add(new LinearConstraint(new double[] { 0.0, 1.0 }, Relationship.GEQ, 0.0));
+    constraints.add(new LinearConstraint(new double[] { 0.0, 1.0 }, Relationship.LEQ, 10.0));
+    PointValuePair solution = solver.optim

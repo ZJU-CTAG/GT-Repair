@@ -1,0 +1,18 @@
+public void testDeserializationWithDeserializationProblemHandler() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public boolean handleUnknownTypeId(DeserializationContext context,
+            JavaType targetType, String typeId, TypeIdResolver idResolver,
+            String failureMsg) throws IOException {
+            context.reportInputMismatch(targetType, "handleUnknownTypeId called");
+            return true;
+        }
+    });
+    final String json = "{\"@type\":\"nonexistent\",\"value\":\"test\"}";
+    try {
+        objectMapper.readValue(json, TestClass.class);
+    } catch (JsonMappingException e) {
+        assertTrue(e.getMessage().contains("handleUnknownTypeId called"));
+    }
+}

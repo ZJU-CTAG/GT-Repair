@@ -1,0 +1,8 @@
+public void testISO8601() throws Exception {
+    DateTime dt = new DateTime(DateTimeZone.forID("GMT-02"));
+    String date = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        .create().toJson(dt);
+    DateTime dt2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        .create().fromJson(date, DateTime.class);
+    assertEquals(dt, dt2);
+}

@@ -1,0 +1,26 @@
+public void testIssue107_2() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+        .disable(MapperFeature.AUTO_DETECT_FIELDS)
+        .disable(MapperFeature.AUTO_DETECT_GETTERS)
+        .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+        .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+
+    SimpleModule module = new SimpleModule();
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    Person person = new PersonImpl();
+    String json = mapper.writeValueAsString(person);
+
+    assertEquals("{\"city\":null}", json);
+}
+
+public interface Contact {
+    String getCity();
+}
+
+public class ContactImpl implements Contact {
+    @Override
+    public String getCity() {
+        return "some city";

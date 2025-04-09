@@ -1,0 +1,14 @@
+public void testPreNewline_Issue107() {
+    Document doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    Element pre = doc.select("pre").get(0);
+    assertEquals(" abc def", pre.text());
+    assertEquals("\nabc  def", pre.childNodes().get(0).getWholeText());
+}
+
+public void testTextareaNewline_Issue107() {
+    Document doc = Jsoup.parse("<textarea>\nabc  def</textarea>");
+    Element textarea = doc.select("textarea").get(0);
+    assertEquals(" abc def", textarea.text());
+    assertEquals("\nabc  def", textarea.childNodes().get(0).getWholeText());
+}
+

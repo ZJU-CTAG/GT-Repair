@@ -1,0 +1,15 @@
+public void testTypeIdWithNullTypeId() throws Exception {
+    //polymorphic type ids are always required
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\n" +
+            "\"somePolymorphicProperty\": [\n" +
+            "{\"@type\":\"type2\",\"value\":\"value2\"},\n" +
+            "{\"@type\":\"type1\",\"value\":\"value1\"},\n" +
+            "{\"@type\":null,\"value\":\"value3\"}\n" +
+            "]\n" +
+            "}";
+    final TypeWithPolymorphicProperty obj = mapper.readValue(json, TypeWithPolymorphicProperty.class);
+
+    assertEquals(TypeWithPolymorphicProperty.SomePolymorphicProperty.class, obj.getSomePolymorphicProperty().get(0).getClass());
+    assertEquals(TypeWithPolymorphicProperty.SomePolymorphicProperty2.class, obj.getSomePolymorphicProperty().get(1).getClass());
+    assertEquals(TypeWithPolymorphic

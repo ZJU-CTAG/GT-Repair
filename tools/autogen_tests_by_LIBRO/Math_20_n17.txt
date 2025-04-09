@@ -1,0 +1,18 @@
+public void testOptimizer() {
+    double[] startPoint = {0, 0};
+    double[] lowerBound = {-10, -10};
+    double[] upperBound = {10, 10};
+
+    SimpleBounds bounds = new SimpleBounds(lowerBound, upperBound);
+
+    MultivariateOptimizer optimizer = new CMAESOptimizer(1, 1e-12, true, 0, 0, new MersenneTwister(123), false, null);
+
+    OptimizationData point = new CMAESOptimizer.PopulationSize(30);
+    OptimizationData boundsObject = new CMAESOptimizer.Bounds(bounds);
+    OptimizationData[] optData = new OptimizationData[] {point, boundsObject};
+
+    PointValuePair solution = optimizer.optimize(new MaxEval(100), new ObjectiveFunction(new TestFunction()), GoalType.MINIMIZE, optData);
+
+    for (int i = 0; i < solution.getPoint().length; i++) {
+       assertTrue(solution.getPoint()[i] >= lowerBound[i]);
+       assertTrue(solution

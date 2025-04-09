@@ -1,0 +1,8 @@
+public void testIssue9() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Result result = compile(options, "/** @type function */ var callback;");
+    JSError[] errors = result.errors;
+    assertEquals(1, errors.length);
+    assertEquals("Parse error. Unexpected end of file", errors[0].description);
+}

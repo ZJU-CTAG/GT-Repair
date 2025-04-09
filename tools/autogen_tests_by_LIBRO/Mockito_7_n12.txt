@@ -1,0 +1,12 @@
+public void testDeepStubbingWithGenericReturn() {
+    DeepStubber deepStubber = new DeepStubber() {
+        public Object deepStub(Object value) {
+            return "Hello World.";
+        }
+    };
+
+    MyClass1 myMock1 = mock(MyClass1.class, withSettings().defaultAnswer(new ReturnsDeepStubs()));
+    when(myMock1.getNested().getNested().returnSomething()).thenReturn("Hello World.");
+    assertEquals("Hello World.", myMock1.getNested().getNested().returnSomething());
+    assertEquals("Hello World.", myMock1.getNested().getNested().returnSomething());
+}

@@ -1,0 +1,16 @@
+public void testTypeIdForPolymorphicTypes() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Foo.class);
+    mapper.registerSubtypes(Bar.class);
+    mapper.addMixInAnnotations(Foo.class, MixIn.class);
+    mapper.addMixInAnnotations(Bar.class, MixIn.class);
+    final TypeIdResolver<String> resolver = mapper.typeIdResolverInstance(null, new TypeFactory().constructType(String.class));
+    final String id = resolver.idFromValue(new Foo());
+    final JavaType type = resolver.typeFromId(id);
+    assertEquals(Foo.class, type.getRawClass());
+    final TypeIdResolver<String> resolver2 = mapper.typeIdResolverInstance(null, new TypeFactory().constructType(String.class));
+    final JavaType type2 = resolver2.typeFromId(id);
+    assertEquals(Foo.class, type2.getRawClass());
+}
+
+public static

@@ -1,0 +1,15 @@
+public void testIssue1090() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final JavaType t = TypeFactory.defaultInstance().constructType(Foo.class);
+    final ObjectWriter w = mapper.writerFor(t);
+    assertEquals("{\"b\":\"v\"}", w.writeValueAsString(new Foo("v")));
+}
+
+public class Foo {
+    public String b;
+
+    public Foo(String b) {
+        this.b = b;
+    }
+}

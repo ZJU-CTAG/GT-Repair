@@ -1,0 +1,19 @@
+public void testResolveTypes() {
+    CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setResolveAmbiguousFunctionNames(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES, CheckLevel.WARNING);
+    options.setSummaryDetailLevel(3);
+    options.setClosurePass(true);
+    options.setStrictModeInput(true);
+    options.setStrictMissingPropertyChecks(true);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(EXTERNS, srcs, options);
+    assertTrue(result.success);
+}

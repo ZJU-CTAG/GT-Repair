@@ -1,0 +1,27 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setPrintWarnings(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new TestErrorManager(TestErrorManager.Mode.VERBOSE));
+    SourceFile extern = SourceFile.fromCode("externs.js", "var window;");
+    SourceFile input = SourceFile.fromCode("input.js", "alert(foo);\nalert(bar);");
+    compiler.compile(extern, input, options);
+}
+
+static class TestErrorManager implements ErrorManager {
+    enum Mode {
+        VERBOSE,
+        DEFAULT
+    }
+
+    private final Mode mode;
+
+    TestErrorManager(Mode mode) {
+        this.mode = mode;
+    }
+
+    @Override
+    public void println(CheckLevel level, JSError error) {
+        System.err.println(error);

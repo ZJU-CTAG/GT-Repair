@@ -1,0 +1,19 @@
+public void testConvergenceChecker() {
+    final double rel = 1e-10;
+    final double abs = 1e-6;
+    final Vector2D p = new Vector2D(1, 2);
+    final Vector2D q = new Vector2D(3, 4);
+    ConvergenceChecker<Pair<Vector2D,Vector2D>> checker =
+        new SimpleVectorialValueChecker(rel, abs);
+    assertFalse(checker.converged(5, p, q));
+    assertTrue(checker.converged(6, p, p));
+
+    checker = new SimpleVectorialValueChecker(0, abs);
+    assertFalse(checker.converged(0, p, q));
+    assertTrue(checker.converged(0, p, p));
+
+    checker = new SimpleVectorialValueChecker(rel, 0);
+    assertFalse(checker.converged(0, p, q));
+    assertTrue(checker.converged(0, p, p));
+
+    checker = new SimpleVectorialValueCheck

@@ -1,0 +1,12 @@
+public void testBigDecimalSchema() throws Exception
+{
+    final String json = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(BasicValuedSchemaTest.class);
+    final String schema = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(MAPPER.schemaFor(BasicValuedSchemaTest.class)).replaceAll(
+        "\\)\\(\n[ ]*\"type\"\\s*:\\s*\"string\"", "),\n  (\"type\": \"string\"");
+    assertEquals(aposToQuotes(schema), aposToQuotes(json));
+}
+
+static class BasicValuedSchemaTest {
+  public BigDecimal attr0 = BigDecimal.ZERO;
+  public BigDecimal attr1 = BigDecimal.TEN;
+}

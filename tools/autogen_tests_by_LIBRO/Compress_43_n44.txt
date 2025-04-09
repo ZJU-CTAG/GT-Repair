@@ -1,0 +1,17 @@
+public void testDataDescriptor() throws Exception {
+    final File output = new File("target/test.zip");
+    try (OutputStream os = new BufferedOutputStream(new FileOutputStream(output))) {
+        final ArchiveOutputStream zos = new ZipArchiveOutputStream(os);
+        zos.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+        zos.write("Hello".getBytes());
+        zos.closeArchiveEntry();
+        zos.close();
+    }
+    try (RandomAccessFile raf = new RandomAccessFile(output, "rw")) {
+        raf.seek(ZipArchiveOutputStream.LFH\_VERSION\_NEEDED\_OFFSET);
+        final short versionNeededToExtract = raf.readShort();
+        assertEquals(2, versionNeededToExtract);
+        raf.seek(raf.length() - ZipArchiveOutputStream.WORD);
+        final short versionNeededToExtractCD = raf.readShort();
+        assertEquals(2, versionNeededToExtractCD);
+    }

@@ -1,0 +1,16 @@
+public void testFastDateFormatGetDateInstanceLocaleChange() {
+    final Locale LOCALE_FR = Locale.FRANCE;
+    final Locale LOCALE_UK = Locale.UK;
+    final int DATE_STYLE = FastDateFormat.SHORT;
+    
+    FastDateFormat fdfUK = FastDateFormat.getDateInstance(DATE_STYLE, LOCALE_UK);
+    FastDateFormat fdfFR = FastDateFormat.getDateInstance(DATE_STYLE, LOCALE_FR);
+    FastDateFormat fdfDef = FastDateFormat.getDateInstance(DATE_STYLE);
+    
+    assertEquals(LOCALE_UK, fdfUK.getLocale());
+    assertEquals(LOCALE_FR, fdfFR.getLocale());
+    assertEquals(Locale.getDefault(), fdfDef.getLocale());
+    
+    assertFalse(fdfUK.getPattern().equals(fdfDef.getPattern()));
+    assertFalse(fdfFR.getPattern().equals(fdfDef.getPattern()));
+    assert

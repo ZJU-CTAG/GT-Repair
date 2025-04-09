@@ -1,0 +1,27 @@
+public void testIssue108() {
+    // given
+    @Command(name = "test", version = "1.0")
+    class App {
+        @Option(names = "-x", required = true) boolean x;
+        @Option(names = "-y", required = true) boolean y;
+    }
+
+    // when
+    App app = new App();
+    CommandLine commandLine = new CommandLine(app);
+    commandLine.parseWithDefaults("-x");
+
+    // then the defaults processing doesn't set y to true
+    assertTrue(app.x);
+    assertFalse(app.y);
+
+    // when
+    commandLine = new CommandLine(app);
+    Properties properties = new Properties();
+    properties.setProperty("x", "true");
+    commandLine.parseWithDefaults(properties);
+
+    // then the defaults processing doesn't set y to true
+    assertTrue(app.x);
+    assertFalse(app.y);
+}

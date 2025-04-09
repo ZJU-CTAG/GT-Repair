@@ -1,0 +1,9 @@
+public void testIssue100() throws Exception {
+    try {
+        mapper.readValue("[\"A\", \"B\"]", List.class);
+        fail("Exception expected");
+    } catch (MismatchedInputException e) {
+        assertEquals(1, e.getPath().size());
+        assertEquals(1, e.getPath().get(0).getIndex());
+    }
+}

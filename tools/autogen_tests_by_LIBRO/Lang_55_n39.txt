@@ -1,0 +1,20 @@
+public void testIssue108() {
+    StopWatch sw = new StopWatch();
+    sw.start();
+    sw.suspend();
+
+    // Time 1 (ok)
+    assertEquals(0, sw.getTime());
+
+    sw.resume();
+    sw.suspend();
+
+    // Time 2 (ok)
+    assertEquals(0, sw.getTime());
+
+    sw.resume();
+    sw.stop();
+
+    // Time 2 (should be, but is Time 3 => NOT ok)
+    assertEquals(0, sw.getTime());
+}

@@ -1,0 +1,10 @@
+public void testEmptyStringToInt() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        assertEquals(0, i);
+    } catch (IOException e) {
+        assertTrue(e.getMessage().contains("empty String"));
+    }
+}

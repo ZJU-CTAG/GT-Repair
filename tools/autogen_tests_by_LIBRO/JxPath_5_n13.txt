@@ -1,0 +1,11 @@
+public void testUnionOfVariableAndNode() {
+    JXPathContext context = JXPathContext.newContext(null);
+    context.setPointerFactory(new TestBeanPointerFactory());
+    TestBean bean = new TestBean();
+    bean.setB(new TestBean());
+    bean.setStringArray(new String[] { "hello", "world" });
+    bean.getB().setStringArray(new String[] { "goodbye", "world" });
+    context.getVariables().declareVariable("var", bean);
+    List list = context.selectNodes("$var | /MAIN/A");
+    assertEquals(4, list.size());
+}

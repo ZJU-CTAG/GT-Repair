@@ -1,0 +1,15 @@
+public void testIssue55 () throws Exception
+{
+    String json = "{\"x\":1,\"y\":\"\"}";
+    // Works fine, with null for empty String
+    Point2 p = MAPPER.readValue(json, Point2.class);
+    assertEquals(1, p.x);
+    assertNull(p.y);
+    
+    // but fails to bind JSON properly with Afterburner module:
+    ObjectMapper mapper = new ObjectMapper()
+        .registerModule(new AfterburnerModule());
+    p = mapper.readValue(json, Point2.class);
+    assertEquals(1, p.x);
+    assertEquals("", p.y);
+}

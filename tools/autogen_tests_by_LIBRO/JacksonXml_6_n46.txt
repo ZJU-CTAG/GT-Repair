@@ -1,0 +1,12 @@
+public void testIssueWithInputStream() throws Exception {
+    final StringWriter writer = new StringWriter();
+    final ToXmlGenerator generator = new ToXmlGenerator(ObjectMapper.XmlMapper.sharedXmlMapper().getFactory().createGenerator(writer));
+    generator.writeStartObject();
+    generator.writeFieldName("binary");
+    generator.writeBinary(Base64Variants.getDefaultVariant(), new ByteArrayInputStream(new byte[] { 0, 1, 2, 3 }), 4);
+    generator.writeEndObject();
+    generator.close();
+    final String xml = writer.toString();
+    Assert.assertEquals("<ObjectNode><binary>AAECAw==</binary></ObjectNode>", xml);
+}
+

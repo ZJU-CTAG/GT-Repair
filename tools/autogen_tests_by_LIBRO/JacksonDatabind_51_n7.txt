@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule("test", Version.unknownVersion()) {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addAbstractTypeResolver(new SimpleAbstractTypeResolver() {
+                @Override
+                public JavaType findTypeMapping(DeserializationConfig config,
+                        JavaType type) {
+                    if (type.getRawClass() == X.class) {
+                        return TypeFactory.defaultInstance().constructParametricType(X.class, String.class);
+                    }
+                    return super.findTypeMapping(config, type);
+                }
+            });
+        }
+    });
+    om.readValue("{\"a\":\"foo\"}", X.class);
+}

@@ -1,0 +1,17 @@
+public void testDuplicateHeader() {
+    CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader("A","B","C","A");
+    assertEquals(4, csvFormat.getHeader().length);
+    assertEquals("A", csvFormat.getHeader()[0]);
+    assertEquals("B", csvFormat.getHeader()[1]);
+    assertEquals("C", csvFormat.getHeader()[2]);
+    assertEquals("A", csvFormat.getHeader()[3]);
+    assertEquals("A", csvFormat.getHeaderMap().get("A"));
+    assertEquals("B", csvFormat.getHeaderMap().get("B"));
+    assertEquals("C", csvFormat.getHeaderMap().get("C"));
+    try {
+        csvFormat.print(new PrintWriter("testdupe.csv"));
+        fail("Expected IllegalArgumentException");
+    } catch (Throwable t) {
+        assertEquals(IllegalArgumentException.class, t.getClass());
+    }
+}

@@ -1,0 +1,15 @@
+public void testIssue134() throws Exception {
+    EntityWithObjectId entity = new EntityWithObjectId();
+    entity.id = new ObjectId();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    String json = mapper.writeValueAsString(entity);
+
+    // now, let's deserialize it...
+    entity = mapper.readValue(json, EntityWithObjectId.class);
+    assertNotNull(entity.id);
+}
+
+public static class EntityWithObjectId {
+    public ObjectId id;
+}

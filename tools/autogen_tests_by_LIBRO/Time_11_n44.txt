@@ -1,0 +1,17 @@
+public void testDateTimeZoneBuilder() throws Exception {
+    final DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
+
+    builder.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+    builder.setStandardOffset(3600000);
+    builder.addRecurringSavings("", 3600000, 1601, Integer.MAX_VALUE, 'w', 3, -1, 1, false, 7200000);
+    builder.addRecurringSavings("", 0, 1601, Integer.MAX_VALUE, 'w', 10, -1, 1, false, 10800000);
+
+    final DateTimeZone dtz1 = builder.toDateTimeZone("TestDTZ1", true);
+    assertEquals(dtz1.getID(), "TestDTZ1");
+
+    final DateTimeZone dtz2 = builder.toDateTimeZone("TestDTZ1", true);
+    assertEquals(dtz2.getID(), "TestDTZ1");
+
+    final ExecutorService executor = Executors.newSingleThreadExecutor();
+    try {
+        final Future<DateTimeZone> result =

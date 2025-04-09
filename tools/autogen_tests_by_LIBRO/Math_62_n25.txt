@@ -1,0 +1,33 @@
+public void testMisc() {
+
+    // MATH-397
+    try {
+        new AbstractScalarOptimizer() {
+            @Override
+            protected RealPointValuePair doOptimize() {
+                return null;
+            }
+        }.optimize(new MaxEval(100),
+                   new ObjectiveFunction(new MultivariateFunction() {
+                       public double value(double[] x) {
+                           return 0;
+                       }
+                   }),
+                   GoalType.MINIMIZE,
+                   new double[] { 0 });
+        Assert.fail("an exception should have been thrown");
+    } catch (ConvergenceException cex) {
+        // expected
+    } catch (Exception e) {
+        Assert.fail("wrong exception caught");
+    }
+
+    // MATH-404
+    try {
+        new LevenbergMarquardtOptimizer() {
+            @Override
+            public PointVectorValuePair optimize(OptimizationData... optData) {
+                return null;
+            }
+        }.optimize(new MaxEval(100),
+                   new ObjectiveFunction(new MultivariateVectorFunction

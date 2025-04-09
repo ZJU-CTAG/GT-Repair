@@ -1,0 +1,24 @@
+public void testRequiredOptions() {
+    Group group = new GroupBuilder()
+    .withName("test")
+    .withOption(new OptionBuilder()
+        .withShortName("c")
+        .withArgument(new ArgumentBuilder()
+            .withName("arg")
+            .withMinimum(1)
+            .withMaximum(1)
+            .create())
+        .create())
+    .withOption(new OptionBuilder()
+        .withShortName("h")
+        .withMinimum(0)
+        .create())
+    .create();
+    List<String> tokens = new LinkedList<String>();
+    tokens.add("-c");
+    tokens.add("arg");
+    CommandLine cl = new Parser().parse(group, tokens);
+    assertEquals(
+        Collections.singletonList("-h"),
+        cl.getMissingOptions());
+}

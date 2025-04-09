@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    Options options = new Options();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setThirdParty(true);
+    options.skipAllCompilerPasses();
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(source, options);
+    assertTrue(result.success);
+}
+
+private static final String source =
+        "function assert(b) {if (!b) throw \"error\"}\n" +
+        "assert(f() === 1)\n" +
+        "var f = function() {return 2;}\n" +
+        "assert(f() === 2)\n" +
+        "function f() {return 1;}\n";

@@ -1,0 +1,17 @@
+public void testIssue959() {
+    List<Range> list = new ArrayList<Range>();
+    list.add(new Range(1.0, 2.0));
+    list.add(new Range(3.0, 4.0));
+    list.add(new Range(5.0, 6.0));
+    Range range = DatasetUtilities.iterateRangeBounds(list);
+    assertEquals(1.0, range.getLowerBound(), EPSILON);
+    assertEquals(6.0, range.getUpperBound(), EPSILON);
+
+    list = new ArrayList<Range>();
+    list.add(new Range(1.0, 2.0));
+    list.add(new Range(3.0, 2.0));
+    list.add(new Range(5.0, 6.0));
+    range = DatasetUtilities.iterateRangeBounds(list);
+    assertEquals(1.0, range.getLowerBound(), EPSILON);
+    assertEquals(6.0, range.getUpperBound(), EPSILON);
+}

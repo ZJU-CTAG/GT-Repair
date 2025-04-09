@@ -1,0 +1,16 @@
+public void testIssue106() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setRenamePrefixNamespace("");
+    options.setOutputCharset("UTF-8");
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(Externs.EXTERNS,
+                     new JSSourceFile[] { JSSourceFile.fromCode("foo.js", "function Foo() {\n" +
+                                                                        " var self = this;\n" +
+                                                                        " window.setTimeout(function() {\n" +
+                                                                        " window.location = self.location;\n" +
+                                                                        " }, 0);\n" +

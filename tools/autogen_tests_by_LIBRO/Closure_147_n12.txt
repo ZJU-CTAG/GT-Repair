@@ -1,0 +1,21 @@
+public void testIssue144() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        CompilerOptions.builder()
+        .setLanguageIn(LanguageMode.ECMASCRIPT5)
+        .setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING)
+        .build(),
+        SourceFile.fromCode("testcode",
+        "var NS = { " +
+        "  read: function()" +
+        "  { return this.foo; }," +
+        "  write: function()" +
+        "  { this.foo = 123; }" +
+        "};" +
+        "NS.write2 = function() { this.foo = 123; };"
+        ));
+    JSError[] warnings = result.warnings;
+    assertEquals(2, warnings.length);
+    assertEquals(TypeCheck.WRONG_ARGUMENT_COUNT, warnings[0].getType());
+    assertEquals(TypeCheck.WRONG_ARGUMENT_COUNT, warnings[

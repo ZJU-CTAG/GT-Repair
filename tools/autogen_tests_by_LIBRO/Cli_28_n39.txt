@@ -1,0 +1,18 @@
+public void testDefaultOptionsMayBePartiallyProcessed() {
+	Options options = new Options();
+	options.addOption("a", false, "toggle -a");
+	options.addOption("c", "c", false, "toggle -c");
+	options.addOption(OptionBuilder.hasOptionalArg().create('e'));
+
+	Properties properties = new Properties();
+	properties.setProperty("a", "false");
+	properties.setProperty("c", "no");
+	properties.setProperty("e", "0");
+
+	try {
+		parser.parse(options, null, properties);
+		fail("Expected ParseException due to incompatible default value for option -a");
+	} catch (ParseException e) {
+		// expected
+	}
+}

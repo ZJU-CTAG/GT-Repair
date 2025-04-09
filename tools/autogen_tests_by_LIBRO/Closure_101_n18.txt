@@ -1,0 +1,10 @@
+public void testPrimitiveProcessing() {
+    CommandLineRunner runner = new CommandLineRunner(new String[] {"--process_closure_primitives=false", "--js", "testdata/testPrimitiveProcessing.js"});
+    runner.setRunInCommandLine(false);
+    runner.setCheckDependencies(false);
+    runner.doRun();
+    assertThat(runner.getCompiler().getErrorCount(), equalTo(0));
+
+    String compiled = runner.getCompiler().toSource();
+    assertThat(compiled, containsString("goog.require('goog.string');"));
+}

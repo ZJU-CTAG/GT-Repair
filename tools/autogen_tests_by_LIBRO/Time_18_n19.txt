@@ -1,0 +1,13 @@
+public void testIssue130() {
+    GregorianCalendar gc = new GregorianCalendar();
+    gc.setGregorianChange(new Date(Long.MIN_VALUE));
+    gc.set(1500, 1, 29);
+    DateTime jdt = new DateTime(gc.getTimeInMillis(), JulianChronology.getInstanceUTC());
+    assertEquals(1500, jdt.getYear());
+    assertEquals(2, jdt.getMonthOfYear());
+    assertEquals(29, jdt.getDayOfMonth());
+    DateTime gjdt = new DateTime(gc.getTimeInMillis(), GJChronology.getInstanceUTC());
+    assertEquals(1500, gjdt.getYear());
+    assertEquals(2, gjdt.getMonthOfYear());
+    assertEquals(29, gjdt.getDayOfMonth());
+}

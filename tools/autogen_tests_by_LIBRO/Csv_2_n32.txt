@@ -1,0 +1,13 @@
+public void testCSVRecord() throws Exception {
+
+    String csv = "a,b";
+    CSVParser parser = new CSVParser(new StringReader(csv), CSVFormat.newBuilder().withHeader("A", "B", "C").build());
+    CSVRecord rec = parser.iterator().next();
+    try {
+        rec.get("C");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        return;
+    }
+    fail("Should have thrown ArrayIndexOutOfBoundsException");
+}
+

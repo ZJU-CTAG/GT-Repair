@@ -1,0 +1,19 @@
+public void testBug_jackson_databind_JsonMappingException_allowMultipleMatches() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(mapper.getFactory().createParser(new StringReader("{\"A\":\"foo\"}")), new PropertyFilter() {
+        @Override
+        public boolean include(BeanPropertyWriter writer) {
+            return false;
+        }
+        @Override
+        public boolean include(PropertyWriter writer) {
+            return false;
+        }
+    }, true);
+    Assert.assertTrue(filteringParserDelegate.getAllowMultipleMatches());
+    try {
+        final ObjectNode node = mapper.readValue(filteringParserDelegate, ObjectNode.class);
+        Assert.fail("An exception is expected to be thrown here.");
+    } catch (JsonMappingException e) {
+        Assert.assertEquals(JsonMappingException.class, e.getClass());
+        Assert.assertEquals("Can not resolve PropertyFilter with id '

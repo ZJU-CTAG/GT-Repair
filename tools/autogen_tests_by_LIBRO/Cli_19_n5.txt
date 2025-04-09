@@ -1,0 +1,12 @@
+public void testPosixParserStopAtNonOptionFlag() throws Exception {
+
+Options options = new Options();
+Option option = new Option("a", false, "option");
+option.setRequired(true);
+options.addOption(option);
+
+PosixParser parser = new PosixParser();
+CommandLine line = parser.parse(options, new String[]{"-z", "-a", "foo"}, true);
+
+assertTrue(line.getOptionValue("a").equals("foo"));
+}

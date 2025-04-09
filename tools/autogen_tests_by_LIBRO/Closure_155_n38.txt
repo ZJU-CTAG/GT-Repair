@@ -1,0 +1,17 @@
+public void testOverzealousArgumentsOptimisation() {
+    String js = "function d3_call(callback) { var f = callback; arguments[0] = this; f.apply(this, arguments); return this; }";
+    ScriptableObject scope = cx.initStandardObjects();
+    cx.evaluateString(scope, js, "test.js", 1, null);
+    Object f = scope.get("d3_call", scope);
+    assertInstanceof(f, Function.class);
+    Object result = ((Function) f).call(cx, scope, scope, new Object[] {
+            new Callable() {
+                public Object call(Context cx, Scriptable scope,
+                        Scriptable thisObj, Object[] args) {
+                    assertSame(thisObj, args[0]);
+                    assertSame(thisObj, args[1]);
+                    return "abc";
+                }
+            } });
+    assertEquals("abc", result);
+}

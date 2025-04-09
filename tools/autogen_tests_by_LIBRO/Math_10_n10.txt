@@ -1,0 +1,19 @@
+public void testIssue108() {
+    DerivativeStructure ds = new DerivativeStructure(1, 1, 5);
+    
+    double y = -0.0;
+    double x = +0.0;
+    double expected = Math.atan2(y, x);
+    double actual = ds.var("x", x).var("y", y).atan2("y", "x").getPartialDerivative(1, 0);
+    Assert.assertEquals(expected, actual, 1e-15);
+    
+    y = +0.0;
+    x = +0.0;
+    expected = Math.atan2(y, x);
+    actual = ds.var("x", x).var("y", y).atan2("y", "x").getPartialDerivative(1, 0);
+    Assert.assertEquals(expected, actual, 1e-15);
+    
+    y = -0.0;
+    x = -0.0;
+    expected = Math.atan2(y, x);
+    actual = ds.var("x", x).

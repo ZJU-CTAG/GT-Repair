@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    // @see https://issues.apache.org/jira/browse/CLI-59
+    final Options options = new Options();
+    final Option option = new Option("t", "test", true, "test");
+    option.setRequired(false);
+    options.addOption(option);
+
+    final CommandLineParser parser = new PosixParser();
+    final CommandLine cmd = parser.parse(options, new String[] {"-t", "-something"});
+
+    assertTrue(cmd.hasOption('t'));
+    assertEquals("-something", cmd.getOptionValue('t'));
+}

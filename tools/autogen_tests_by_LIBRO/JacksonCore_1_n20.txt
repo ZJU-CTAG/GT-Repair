@@ -1,0 +1,13 @@
+public void testBigDecimalWithNaN() throws Exception {
+    String json = "1.0e+1";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    JsonParser parser = mapper.getFactory().createParser(json);
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, parser.nextToken());
+    try {
+        parser.getDecimalValue();
+        fail();
+    } catch (JsonParseException expected) {
+        assertEquals(NumberFormatException.class, expected.getCause().getClass());
+    }
+}

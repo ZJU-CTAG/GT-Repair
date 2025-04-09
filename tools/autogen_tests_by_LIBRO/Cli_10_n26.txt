@@ -1,0 +1,21 @@
+public void testMissingOptions() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+    GnuParser parser = new GnuParser();
+    try {
+        parser.parse(opts, new String[]{});
+        fail("Should have thrown exception");
+    } catch (ParseException e) {
+        // ok
+    }
+    opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().create('v'));
+    parser = new GnuParser();
+    try {
+        parser.parse(opts, new String[]{"-v"});
+        parser.parse(opts, new String[]{});
+        fail("Should have thrown exception");
+    } catch (ParseException e) {
+        // ok
+    }
+}

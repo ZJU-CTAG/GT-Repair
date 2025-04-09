@@ -1,0 +1,18 @@
+public void testIssue185() throws Exception {
+    DateTimeSerializerBase serializer = new DateTimeSerializerBase(DateTime.class) {
+        @Override
+        public JsonNode getSchema(SerializerProvider provider, Type typeHint) {
+            return null;
+        }
+
+        @Override
+        public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+            // do nothing
+        }
+    };
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(DateTime.class, serializer);
+
+    String json = new ObjectMapper().registerModule(module).writeValueAsString(DateTime.now());
+    assertTrue(json.contains("\"" + ISOChronology.getInstance().dayOfYear().getFieldName() + "\":"));
+}

@@ -1,0 +1,12 @@
+public void testUnionSorting() throws TransformerException {
+    String xml = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    String xpath = "string(/MAIN/B | /MAIN/A)";
+
+    XPathFactory xpf = XPathFactory.newInstance();
+    XPath xp = xpf.newXPath();
+    XPathExpression xpe = xp.compile(xpath);
+
+    InputSource inputSource = new InputSource(new StringReader(xml));
+    String result = (String) xpe.evaluate(inputSource, XPathConstants.STRING);
+    assertEquals("avalue", result);
+}

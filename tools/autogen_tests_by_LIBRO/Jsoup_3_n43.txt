@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String html = "<table><tr><td>Before</td></tr></table>";
+    Document doc = Jsoup.parse(html);
+    Element table = doc.select("table").first();
+    table.append("<tr><td>After</td></tr>");
+    assertEquals("<table>\n" +
+            " <tbody>\n" +
+            "  <tr>\n" +
+            "   <td>Before</td>\n" +
+            "  </tr>\n" +
+            "  <tr>\n" +
+            "   <td>After</td>\n" +
+            "  </tr>\n" +
+            " </tbody>\n" +
+            "</table>", table.outerHtml());
+}

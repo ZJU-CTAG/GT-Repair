@@ -1,0 +1,14 @@
+public void testRequiredOptions() {
+    final Commandline commandline = new Commandline();
+    commandline.addOption("h", new Switch("h"));
+    commandline.addOption("c", new Argument());
+    commandline.addOption("d", new Argument());
+
+    final List requiredOptions = new ArrayList();
+    requiredOptions.add(commandline.getOption("h"));
+    requiredOptions.add(commandline.getOption("d"));
+
+    // this succeeds; the commandline has both required options
+    commandline.parse(new String[] { "-c", "foo", "-d", "bar", "-h" });
+    assertEquals(requiredOptions, commandline.getRequiredOptions());
+}

@@ -1,0 +1,22 @@
+public void testAcceptCaseInsensitiveProperties() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    String json = "{\"businessAddress.Zip\":\"12345\",\"businessAddress.Town\":\"Somewhere\",\"businessAddress.Country\":\"Nowhere\"}";
+    Person p = mapper.readValue(json, Person.class);
+    assertEquals("12345", p.businessAddress.zip);
+    assertEquals("Somewhere", p.businessAddress.town);
+    assertEquals("Nowhere", p.businessAddress.country);
+}
+
+public static class Person {
+    @JsonUnwrapped(prefix = "businessAddress.")
+    public Address businessAddress;
+}
+
+public static class Address {
+    public String street;
+    public String addon;
+    public String zip = "";
+    public String town;
+    public String country;
+}

@@ -1,0 +1,24 @@
+public void testTypedefs() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setExternExports(true);
+
+    Result result = compiler.compile(
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("test", "var a = new TestObj();"),
+        },
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("testTypedef", "/**\n" +
+                " * @constructor\n" +
+                " */\n" +
+                "var TestObj = function() {};\n" +
+                "/**\n" +
+                " * @typedef {{\n" +
+                " *  foo: string,\n" +
+                " *  bar: number\n" +
+                " * }} \n" +
+                " */\n" +
+                "TestObj.Foo;\n" +
+                "\n" +
+                "/**\n" +
+                " * @param {TestObj.Foo=} arg\

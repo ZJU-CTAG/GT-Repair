@@ -1,0 +1,8 @@
+public void testShouldNotEscapeNullString() {
+    CsvFormat csvFormat = new CsvFormat('|', '\\');
+    csvFormat.setNullString("\\N");
+    CsvPrinter csvPrinter = new CsvPrinter(new StringWriter(), csvFormat);
+    csvPrinter.printAndEscape("\\N");
+    csvPrinter.flush();
+    assertEquals("\\N", csvPrinter.getWriter().toString());
+}

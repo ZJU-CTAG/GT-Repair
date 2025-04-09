@@ -1,0 +1,24 @@
+public void testIssue114() {
+    ProblemDefinition pbDef = new ProblemDefinition(new ODESolver());
+    pbDef.addFunction("g", new SwitchingFunction() {
+
+        public double g(double t, double[] y) {
+            if (t <= 90) {
+                return t - 90;
+            } else if (t <= 135) {
+                return 90 - t;
+            } else {
+                return t - 135;
+            }
+        }
+    });
+
+    // integrate the problem from 0 to 112.5, with a step of 45/2
+    double minStep = 45.0 / 2;
+    double maxStep = 45.0 / 2;
+    double scalAbsoluteTolerance = 1.0e-15;
+    double scalRelativeTolerance = 1.0e-15;
+    AdaptiveStepSizeIntegrator integrator = new DormandPrince54Integrator(minStep, maxStep,
+            scalAbsoluteTolerance, scalRelativeTolerance);
+    integrator.addEventHandler(new SwitchHandler(pbDef), 0.1, 1.0e-12, 1000);
+    double

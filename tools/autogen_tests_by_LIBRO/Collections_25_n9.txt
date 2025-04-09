@@ -1,0 +1,26 @@
+public void testCollatedIterator_nullComparator() {
+    List<String> list1 = new ArrayList<String>(2);
+    list1.add("d");
+    list1.add("b");
+
+    List<String> list2 = new ArrayList<String>(2);
+    list2.add("a");
+    list2.add("c");
+
+    List<String> list3 = new ArrayList<String>(2);
+    list3.add("c");
+    list3.add("b");
+
+    @SuppressWarnings("unchecked")
+    Iterator<String> iter = IteratorUtils.collatedIterator(null,
+        list1.iterator(), list2.iterator(), list3.iterator());
+
+    List<String> result = new ArrayList<String>(6);
+    IteratorUtils.addAll(result, iter);
+
+    assertEquals(6, result.size());
+
+    assertEquals("d", result.get(0));
+    assertEquals("b", result.get(1));
+    assertEquals("a", result.get(2));
+    assertEquals("c",

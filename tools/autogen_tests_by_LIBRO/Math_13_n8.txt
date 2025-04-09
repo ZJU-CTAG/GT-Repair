@@ -1,0 +1,27 @@
+public void testIssue108() {
+    final int n = 41200;
+    Weight[] w = new Weight[n];
+    for (int i = 0; i < n; ++i) {
+        w[i] = new Weight(1, i);
+    }
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+
+        @Override
+        public double[] value(double[] x) {
+            double[] y = new double[n];
+            for (int i = 0; i < n; ++i) {
+                y[i] = i * x[0] + i * x[1] + i * x[2];
+            }
+            return y;
+        }
+
+    };
+    MultivariateMatrixFunction j = new MultivariateMatrixFunction() {
+
+        @Override
+        public double[][] value(double[] x) {
+            double[][] jm = new double[n][3];
+            for (int i = 0; i < n; ++i) {
+                jm[i][0] = i;
+                jm[i][1] = i;
+                jm[i][

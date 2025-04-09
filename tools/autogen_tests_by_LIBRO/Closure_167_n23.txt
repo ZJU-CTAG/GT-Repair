@@ -1,0 +1,14 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setExtraAnnotationNames(Sets.newHashSet("jsType"));
+    options.setPrettyPrint(true);
+    options.setEmitUseStrict(false);
+    compiler.compile(
+        SourceFile.fromCode("inloop-externs.js", "var ns = {}; /** @typedef {Object} */ ns.Thing;"),
+        SourceFile.fromCode("inloop.js", "ns.MyClass = function(thing) { /** @type {ns.Thing} */ this.thing_ = thing; }; " +
+        "ns.MyClass.prototype.doIt = function() { var subthing = this.thing_.subthing; " +
+        "for (var i = 0; i < subthing.noprop; i++) { window.console.log(i); } };" +
+        "var thing = /**

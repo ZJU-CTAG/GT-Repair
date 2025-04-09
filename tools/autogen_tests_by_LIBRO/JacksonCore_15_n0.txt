@@ -1,0 +1,22 @@
+public void testFilteringGeneratorDelegate() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    StringWriter stringWriter = new StringWriter();
+    JsonGenerator jsonGenerator = factory.createGenerator(stringWriter);
+
+    FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(jsonGenerator, new JsonFilterProvider() {
+        @Override
+        public PropertyFilter findPropertyFilter(Object filterId, Object valueToFilter) {
+            return SimpleBeanPropertyFilter.serializeAllExcept(new String[] { "name" });
+        }
+    });
+
+    filteringGeneratorDelegate.writeStartObject();
+    filteringGeneratorDelegate.writeStringField("name", "john");
+    filteringGeneratorDelegate.writeStringField("firstname", "doe");
+    filteringGeneratorDelegate.writeEndObject();
+
+    filteringGeneratorDelegate.flush();
+
+    String expected = "{\"firstname\":\"doe\"}";
+    Assert.assertEquals(expected, stringWriter.toString());
+}

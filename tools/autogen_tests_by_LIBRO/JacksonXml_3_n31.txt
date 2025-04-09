@@ -1,0 +1,15 @@
+public void testIssue129() throws IOException {
+	String xml = "<test attr1='1' attr2='2'><child attr3='3'></child></test>";
+	FromXmlParser parser = (FromXmlParser) mapper.getFactory().createParser(xml);
+	assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+	assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+	assertEquals("attr1", parser.getCurrentName());
+	assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+	assertEquals("1", parser.getText());
+	assertEquals("1", parser.nextTextValue());
+	assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+	assertEquals("attr2", parser.getCurrentName());
+	assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+	assertEquals("2", parser.getText());
+	assertEquals("2", parser.nextTextValue());
+	assertEquals(J

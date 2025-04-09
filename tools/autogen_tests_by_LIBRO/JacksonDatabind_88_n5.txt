@@ -1,0 +1,12 @@
+public void testGenericTypes() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, true);
+    mapper.addMixInAnnotations(Map.class, MixInForPolymorphic.class);
+    String json = "{\"@class\":\"java.util.HashMap\", \"foo\":\"bar\"}";
+    // This should throw an exception but it doesn't
+    mapper.readValue(json, Map.class);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+abstract class MixInForPolymorphic {
+}

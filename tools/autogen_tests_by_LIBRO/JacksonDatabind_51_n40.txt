@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.registerModule(new SimpleModule()
+            .addAbstractTypeMapping(Message.class, MessageImpl.class)
+            .setTypeIdResolver(new MyTypeIdResolver()));
+
+    final Message<String> message = mapper.readValue("{ \"id\" : \"10\", \"type\" : \"MessageImpl\", \"payload\" : \"hi\" }", Message.class);
+    assertEquals("10", message.getId());
+    assertEquals("hi", message.toString());
+}

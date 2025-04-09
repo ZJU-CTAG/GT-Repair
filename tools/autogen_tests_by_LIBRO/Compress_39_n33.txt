@@ -1,0 +1,9 @@
+public void testIssue108() throws IOException {
+    final String expectedError = "Unexpected end of ZLIB input stream";
+    try {
+        new ZipInputStream(new ByteArrayInputStream(new byte[0]));
+        fail("Expected EOFException with message: " + expectedError);
+    } catch (EOFException e) {
+        assertEquals(expectedError, e.getMessage());
+    }
+}

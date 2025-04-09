@@ -1,0 +1,20 @@
+public void testIssue107() {
+    String[] files = new String[] {
+        "test-input/closure-compiler/issue-107/a.js",
+        "test-input/closure-compiler/issue-107/b.js"
+    };
+    
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setDependencyOptions(new DependencyOptions().setDependencySorting(true));
+    
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(compilerOptions);
+    String[] extern = new String[] { "test-input/closure-compiler/issue-107/extern.js" };
+    Compiler compiler = new Compiler();
+    compiler.compile(extern, files, compilerOptions);
+    
+    assertEquals("failure", 0, compiler.getErrorCount());
+    
+    List<String> compiled = compiler.sortedDependencies();
+    assertEquals("expected 2 sorted dependencies", 2, compiled.size());
+    assertEquals("1st dependency

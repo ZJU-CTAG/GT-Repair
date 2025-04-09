@@ -1,0 +1,20 @@
+public void testIssue36() {
+    InputStream is = getClass().getResourceAsStream("/Issue36.js");
+    String js = IOUtils.toString(is);
+    String expected = IOUtils.toString(getClass().getResourceAsStream("/Issue36-expected.js"));
+    String actual = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message);
+            } else {
+                System.err.println("\n[ERROR] "

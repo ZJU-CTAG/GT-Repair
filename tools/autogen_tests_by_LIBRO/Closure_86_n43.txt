@@ -1,0 +1,21 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            CompilerOptions.builderFor(Type.ADVANCED_OPTIMIZATIONS)
+            .setSourceMapOutputPath("/tmp/example.js.map")
+            .setSourceMapDetailLevel(SourceMap.DetailLevel.ALL)
+            .build(),
+            SourceFile.fromCode("/tmp/example.js",
+                    "function Foo() {\n" +
+                    "  var self = this;\n" +
+                    "  window.setTimeout(function() {\n" +
+                    "    window.location = self.location;\n" +
+                    "  }, 0);\n" +
+                    "}\n" +
+                    "\n" +
+                    "Foo.prototype.setLocation = function(loc) {\n" +
+                    "  this.location = loc;\n" +
+                    "};\n" +
+                    "\n" +
+                    "(new Foo()).setLocation('http://www.google.com/');\

@@ -1,0 +1,10 @@
+public void testTAR() throws Exception {
+    TarArchiveInputStream tis = new TarArchiveInputStream(new FileInputStream(new File("src/test/resources/issue-107.tar")));
+    try {
+        TarArchiveEntry entry = tis.getNextTarEntry();
+        assertEquals(TarConstants.NAMELEN, entry.getName().length());
+        assertEquals(TarConstants.DEFAULT_RCDSIZE, entry.getSize() % TarConstants.DEFAULT_RCDSIZE);
+    } finally {
+        tis.close();
+    }
+}

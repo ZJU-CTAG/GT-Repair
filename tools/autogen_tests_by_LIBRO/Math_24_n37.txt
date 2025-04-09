@@ -1,0 +1,17 @@
+public void testBrentOptimizer() {
+  final UnivariateRealFunction f = new UnivariateRealFunction() {
+    @Override
+    public double value(double x) {
+      return Math.pow(x-3, 2);
+    }
+  };
+  final BrentOptimizer b = new BrentOptimizer();
+  b.optimize(new UnivariateRealFunction() {
+    @Override
+    public double value(double x) {
+      return f.value(x) + 1e-7 * x;
+    }
+  });
+  assertTrue(b.getResult() > 3.0);
+  assertEquals(3.0, b.getResult(), 1e-3);
+}

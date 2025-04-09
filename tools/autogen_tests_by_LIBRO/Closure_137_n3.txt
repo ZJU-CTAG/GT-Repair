@@ -1,0 +1,29 @@
+public void testIssue216() {
+    Global global = new Global();
+    global.init(new ContextFactory());
+
+    ScriptableObject scope = global;
+    try {
+        scope.put("test", scope, new Closure(global));
+        global.compileString("test();", "test.js", 1, null).exec(global.getContext(), scope);
+    } finally {
+        Context.exit();
+    }
+}
+
+public class Closure implements Callable {
+    public Closure(Scriptable scope) {
+        this.scope = scope;
+    }
+
+    public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+        if (t != null) {
+            t = null;
+        }
+        t = 1;
+        return null;
+    }
+
+    private Scriptable scope;
+    private Object t = null;
+}

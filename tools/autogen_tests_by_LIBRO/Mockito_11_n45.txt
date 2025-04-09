@@ -1,0 +1,17 @@
+public void testMockitoIssueWithCustomVerificationMode() {
+    String mock = mock(String.class);
+
+    mock.startsWith("mockito");
+
+    verify(mock, new FirstInvocationVerificationMode()).startsWith("mockito");
+}
+
+public class FirstInvocationVerificationMode implements VerificationMode {
+
+    public void verify(VerificationData data) {
+        if (data.getAllInvocations().size() != 1) {
+            throw new VerificationAssertionError();
+        }
+    }
+}
+

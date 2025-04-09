@@ -1,0 +1,18 @@
+public void testIssue113() throws Exception {
+    MyClass a = mock(MyClass.class);
+    MyClass b = mock(MyClass.class);
+    MyClass c = mock(MyClass.class);
+    MyClass d = mock(MyClass.class);
+    when(d.get()).thenReturn(a, b, c);
+
+    MyClass result = mock(MyClass.class);
+    when(a.get()).thenReturn(result);
+    when(b.get()).thenReturn(result);
+    when(c.get()).thenReturn(result);
+
+    MyClass tested = new MyClass(d);
+
+    assertSame(result, tested.get());
+    assertSame(result, tested.get());
+    assertSame(result, tested.get());
+}

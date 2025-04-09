@@ -1,0 +1,24 @@
+public void testIssue108() {
+    final BasicEventGenerator gen = new BasicEventGenerator(1);
+    final Event event0 = gen.generate();
+    final Event event1 = gen.generate();
+    final Event event2 = gen.generate();
+    final Event event3 = gen.generate();
+    BasicSimulator sim = new BasicSimulator();
+    BasicEventHandler handler = new BasicEventHandler() {
+        @Override
+        public boolean handle(Event event) {
+            System.out.println(event);
+            return true;
+        }
+    };
+    sim.addHandler(event0, handler);
+    sim.addHandler(event1, handler);
+    sim.addHandler(event2, handler);
+    sim.addHandler(event3, handler);
+    sim.addEvent(event0);
+    sim.addEvent(event1);
+    sim.addEvent(event2);
+    sim.addEvent(event3);
+    sim.run();
+}

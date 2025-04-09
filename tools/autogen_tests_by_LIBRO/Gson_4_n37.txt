@@ -1,0 +1,21 @@
+public void testRFC7159() throws IOException {
+    StringWriter writer = new StringWriter();
+    JsonWriter jsonWriter = new JsonWriter(writer);
+    jsonWriter.beginArray();
+    jsonWriter.value(1);
+    jsonWriter.value(2);
+    jsonWriter.value(3);
+    jsonWriter.endArray();
+    jsonWriter.close();
+
+    String json = writer.toString();
+    JsonReader reader = new JsonReader(new StringReader(json));
+    assertEquals(JsonToken.BEGIN_ARRAY, reader.peek());
+    assertEquals(1, reader.nextInt());
+    assertEquals(JsonToken.NUMBER, reader.peek());
+    assertEquals(2, reader.nextInt());
+    assertEquals(JsonToken.NUMBER, reader.peek());
+    assertEquals(3, reader.nextInt());
+    assertEquals(JsonToken.END_ARRAY, reader.peek());
+    reader.close();
+}

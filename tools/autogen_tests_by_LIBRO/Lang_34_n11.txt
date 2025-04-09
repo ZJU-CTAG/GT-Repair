@@ -1,0 +1,18 @@
+public void testToStringStyle() {
+    ToStringStyle style = ToStringStyle.SHORT_PREFIX_STYLE;
+    Field[] fields = ToStringStyle.class.getDeclaredFields();
+    for (Field field : fields) {
+        if (Modifier.isStatic(field.getModifiers())) {
+            continue;
+        }
+        if (field.getType().isAssignableFrom(ThreadLocal.class)) {
+            field.setAccessible(true);
+            try {
+                ThreadLocal<Integer> tl = (ThreadLocal<Integer>) field.get(style);
+                assertNull(tl.get());
+            } catch (IllegalAccessException iae) {
+                throw new RuntimeException(iae);
+            }
+        }
+    }
+}

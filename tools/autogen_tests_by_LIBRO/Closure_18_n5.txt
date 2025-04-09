@@ -1,0 +1,16 @@
+public void testDepSorting() throws Exception {
+    Compiler compiler = new Compiler(new TestErrorManager());
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setDependencyOptions(new DependencyOptions());
+    compiler.compile(
+            CompilerTestCase.js(
+                    "function f1() {return 'f1';}",
+                    "function f2() {return f1();}",
+        "function f3() {return f2();}"),
+        CompilerTestCase.js(
+                "function f2() {return 'f2';}",
+        "function f3() {return 'f3';}"));
+    compiler.toSource();
+    assertEquals(3, compiler.getResult().dependencies.getModuleDependencies().size());
+}

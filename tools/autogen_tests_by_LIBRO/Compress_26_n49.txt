@@ -1,0 +1,16 @@
+public void testSkip() throws Exception {
+    CipherInputStream input = new CipherInputStream(new ByteArrayInputStream(new byte[100]),
+            new Cipher() {
+                int pos = 0;
+                public void init(int mode, byte[] bytes) throws InvalidKeyException {
+                }
+                public int doFinal(byte[] bytes, int off, int len) throws ShortBufferException, IllegalBlockSizeException, BadPaddingException {
+                    System.arraycopy(bytes, pos, bytes, off, len);
+                    pos += len;
+                    return len;
+                }
+            });
+    assertEquals(input.read(), 0);
+    assertEquals(input.read(new byte[10]), 10);
+    assertEquals(IOUtils.skip(input, 1000), 90);
+}

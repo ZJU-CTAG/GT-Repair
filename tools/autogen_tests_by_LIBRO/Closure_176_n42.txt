@@ -1,0 +1,25 @@
+public void testNullableType() {
+    final String js = "" +
+            "/**\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function MyClass() {\n" +
+            "  this.value = 1;\n" +
+            "}\n" +
+            "MyClass.prototype.show = function() {\n" +
+            "  window.console.log(this.value)\n" +
+            "}\n" +
+            "/**\n" +
+            " * @type {MyClass}\n" +
+            " */\n" +
+            "var x = null;\n" +
+            "x.show();\n";
+    try {
+        Compiler.compile(js, new ErrorReporter() {
+            @Override
+            public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {

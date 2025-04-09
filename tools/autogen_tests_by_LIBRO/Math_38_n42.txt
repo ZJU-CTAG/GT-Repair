@@ -1,0 +1,15 @@
+public void testOptimizer() {
+    MultivariateVectorialFunction func = new MultivariateVectorialFunction() {
+        public double[] value(double[] x) {
+            double[] f = new double[2];
+            f[0] = x[0] + x[1] - 1.0;
+            f[1] = x[0] - x[1] - 1.0;
+            return f;
+        }
+    };
+    // RealPointValuePair result = optim.optimize(100000, func, goal, startPoint);
+    final double[] lB = boundaries == null ? null : boundaries[0];
+    final double[] uB = boundaries == null ? null : boundaries[1];
+    BOBYQAOptimizer optim = new BOBYQAOptimizer(2*dim+1);
+    RealPointValuePair result = optim.optimize(maxEvaluations, func, goal, startPoint, lB, uB);
+}

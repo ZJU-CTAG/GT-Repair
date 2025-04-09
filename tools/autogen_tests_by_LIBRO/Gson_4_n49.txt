@@ -1,0 +1,11 @@
+public void testJsonReaderWriter() {
+    String json = "{ \"value\": 1 }";
+    JsonReader reader = Json.createReader(new StringReader(json));
+    JsonStructure jsonStructure = reader.read();
+    StringWriter sw = new StringWriter();
+    JsonWriterFactory factory = Json.createWriterFactory(null);
+    JsonWriter writer = factory.createWriter(sw);
+    writer.write(jsonStructure);
+    writer.close();
+    assertEquals(json, sw.toString());
+}

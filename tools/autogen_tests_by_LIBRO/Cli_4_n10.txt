@@ -1,0 +1,17 @@
+public void testIssue108() throws ParseException {
+
+    Options options = new Options();
+    Option target = new Option("t", "target", false, "Generate files for the specified target machine");
+    options.addOption(target);
+    
+    Options posixOptions = new Options();
+    Option targetPosix = new Option("t", "target", true, "Generate files for the specified target machine");
+    posixOptions.addOption(targetPosix);
+
+    String[] args = {"-target", "foobar.com"};
+    CommandLine cl = new PosixParser().parse(options, args);
+    assertEquals("-target", cl.getOptionValue("t"));
+    
+    cl = new PosixParser().parse(posixOptions, args);
+    assertEquals("foobar.com", cl.getOptionValue("t"));
+}

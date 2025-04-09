@@ -1,0 +1,10 @@
+public void testUnwrapped() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    String json = "{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}";
+    Bean bean = mapper.readValue(json, Bean.class);
+    Assert.assertEquals(1, bean.x);
+    Assert.assertEquals(2, bean.w.a);
+    Assert.assertEquals(3, bean.y);
+    Assert.assertEquals(4, bean.w.b);
+}

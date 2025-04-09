@@ -1,0 +1,7 @@
+public void testGetResult() throws MathException {
+    SinFunction f = new SinFunction();
+    UnivariateRealOptimizer underlying = new BrentOptimizer(1e-10, 1e-14);
+    MultiStartUnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(underlying, 4, f);
+    optimizer.optimize(f, GoalType.MINIMIZE, -100.0, 100.0);
+    assertEquals(optimizer.getOptima()[0], optimizer.getResult(), 0.0);
+}

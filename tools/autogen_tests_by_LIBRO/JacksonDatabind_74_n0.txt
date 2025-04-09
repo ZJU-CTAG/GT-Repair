@@ -1,0 +1,12 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    Bar bar = mapper.readValue("{\"fubar\":\"\"}", Bar.class);
+    assertNull(bar.fubar);
+}
+
+class Bar {
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = AsPropertyTypeDeserializer.class, as = Double.class)
+    public Double fubar = null;
+}

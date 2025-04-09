@@ -1,0 +1,31 @@
+public void testSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new FooSerializer());
+    mapper.registerModule(module);
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    assertEquals("{}", mapper.writeValueAsString(new Bar()));
+}
+
+class FooSerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+        jgen.writeEndObject();
+    }
+    @Override
+    public Class<Foo> handledType() {
+        return Foo.class;
+    }
+}
+
+class Foo {
+    private String value;
+    public String getValue() {
+        return value;
+    }
+}
+
+class Bar extends Foo {
+    @JsonValue

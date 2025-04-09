@@ -1,0 +1,28 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    String expected = "{\"key\":\"value\"}";
+    assertEquals(expected, mapper.writeValueAsString(new TestClass()));
+
+    expected = "{\"key\":\"value\"}";
+    assertEquals(expected, mapper.writeValueAsString(new TestClass2()));
+}
+
+@JsonSerialize(using = MySerializer.class)
+class TestClass {
+    public static final Map<String, String> parameters = Collections.singletonMap("key", "value");
+
+    @JsonAnyGetter
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+}
+@JsonSerialize(keyUsing = MyKeySerializer.class)
+class TestClass2 {
+    public static final Map<String, String> parameters = Collections.singletonMap("key", "value");
+
+    @JsonAnyGetter
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+}

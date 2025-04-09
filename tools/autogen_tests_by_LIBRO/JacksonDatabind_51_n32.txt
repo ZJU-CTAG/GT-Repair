@@ -1,0 +1,37 @@
+public void testMess() {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule().addValueInstantiator(new ValueInstantiator() {
+        @Override
+        public String getValueTypeDesc() {
+            return "mess";
+        }
+
+        @Override
+        public void configure(DeserializationConfig config, BeanDescription beanDesc) {
+            config.with(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+        }
+
+        @Override
+        public boolean canCreateUsingDefault() {
+            return true;
+        }
+
+        @Override
+        public Object createUsingDefault(DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return new Mess<Integer>();
+        }
+
+        @Override
+        public String getTypeId() {
+            return "mess";
+        }
+
+        @Override
+        public TypeIdResolver getTypeIdResolver() {
+            return new TypeIdResolver() {
+                @Override
+                public void init(JavaType baseType) {
+                }
+
+                @Override
+                public String idFrom

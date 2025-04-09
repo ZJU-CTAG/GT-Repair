@@ -1,0 +1,8 @@
+public void testIssue108() {
+    String js = "/** @type {function(new:?)} */ var foo = function() {};\n" +
+                "/** @type {function(new:*)} */ var bar = function() {};";
+    WarningReporterImpl reporter = new WarningReporterImpl(CheckLevel.ERROR);
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("foo.js", js)), compilerOptions);
+    assertEquals(2, reporter.getErrorCount());
+}

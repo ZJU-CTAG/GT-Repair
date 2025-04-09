@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    JsonGenerator jsonGenerator = new JsonFactory().createJsonGenerator(byteArrayOutputStream);
+    jsonGenerator.writeStartObject();
+
+    try {
+        jsonGenerator.writeString("stringField");
+        fail("Expected exception");
+    } catch (JsonGenerationException e) {
+        // expected
+    }
+
+    jsonGenerator.writeEndObject();
+    jsonGenerator.close();
+
+    assertEquals("{}", byteArrayOutputStream.toString("UTF-8"));
+}

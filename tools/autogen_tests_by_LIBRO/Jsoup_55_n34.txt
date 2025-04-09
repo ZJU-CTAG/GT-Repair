@@ -1,0 +1,8 @@
+public void testIssue108() {
+    String html = "<img /onerror=\"a()\"/>";
+    Document doc = Jsoup.parse(html);
+    assertEquals(1, doc.select("img").size());
+    assertEquals(1, doc.select("img[onerror]").size());
+    assertEquals(0, doc.select("img[nerror]").size());
+    assertEquals(0, doc.select("img[/onerror]").size());
+}

@@ -1,0 +1,20 @@
+public void testIssue1099() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.registerSubtypes(MySub.class);
+    MySub input = new MySub();
+    input.setName("abc");
+    String json = mapper.writeValueAsString(input);
+    MySub output = mapper.readValue(json, MySub.class);
+    assertEquals(input.name, output.name);
+    assertEquals(input.id, output.id);
+}
+
+static class MyBase {
+    public String name;
+}
+
+static class MySub extends MyBase {
+    public int id = 13;
+}

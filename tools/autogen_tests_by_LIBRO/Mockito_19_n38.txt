@@ -1,0 +1,21 @@
+public void testInjectMocks() {
+    TextView txtGateView = mock(TextView.class);
+    TextView txtNextView = mock(TextView.class);
+    TextView txtGateLabel = mock(TextView.class);
+    TextView txtNextStep = mock(TextView.class);
+
+    // This mocks out the txtNextStep
+    when(txtNextStep.getContext()).thenReturn(mock(Context.class));
+
+    // Should inject txtNextStep
+    Gate t = new Gate(mock(Context.class));
+    assertThat(t.txtNextView, is(sameInstance(txtNextStep)));
+
+    // Should inject txtGateView
+    Gate t2 = new Gate(mock(Context.class));
+    assertThat(t2.txtGateView, is(sameInstance(txtGateView)));
+
+    // Messes up
+    Gate t3 = new Gate(mock(Context.class));
+    assertThat(t3.txtNextView, is(sameInstance(txtNextStep)));
+    assertThat(t3.txtGateView, is(same

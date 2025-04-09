@@ -1,0 +1,19 @@
+public void testIssue164() throws Exception {
+    File tempFile = File.createTempFile("commons-compress-issue-164", ".zip");
+    tempFile.deleteOnExit();
+    try (ZipArchiveOutputStream zip = new ZipArchiveOutputStream(tempFile)) {
+        zip.setLevel(0);
+        ZipArchiveEntry entry = new ZipArchiveEntry("test");
+        entry.setMethod(ZipMethod.UNSHRINKING.getCode());
+        zip.putArchiveEntry(entry);
+        zip.write("test".getBytes("UTF-8"));
+        zip.closeArchiveEntry();
+    }
+
+    try (ZipArchiveInputStream zip = new ZipArchiveInputStream(tempFile)) {
+        zip.getNextZipEntry();
+        fail("Expected an exception");
+    } catch (Exception e) {
+        // expected, but the exception may be a NullPointerException
+    }
+}

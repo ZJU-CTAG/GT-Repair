@@ -1,0 +1,11 @@
+public void testIssue107() {
+    try {
+        mapper.readerForUpdating(dbUpdViaNode).readValue(jsonBNode);
+        Assert.fail("Should throw UnrecognizedPropertyException");
+    } catch (UnrecognizedPropertyException e) {
+        Assert.assertEquals("Unrecognized field \"i\" (class myorg.TestDeserTest$DataB), not marked as ignorable (2 known properties: \"da\", \"k\"]", e.getMessage());
+        Assert.assertEquals("da", e.getPath().get(0).getFieldName());
+        Assert.assertEquals("i", e.getPath().get(1).getFieldName());
+        Assert.assertEquals("dbUpdViaNode", e.getPath().get(1).getFromObject().toString());
+    }
+}

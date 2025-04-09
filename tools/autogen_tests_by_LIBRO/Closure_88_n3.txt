@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    
+    Compiler compiler = new Compiler();
+    List<SourceFile> input = new ArrayList<>();
+    input.add(SourceFile.fromCode("input", "function closureCompilerTest(someNode) { var nodeId; return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); }"));
+    
+    Result result = compiler.compile(externs, input, options);
+    String ecmascript5 = compiler.toSource();
+    System.out.println(ecmascript5);
+}

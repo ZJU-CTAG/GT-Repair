@@ -1,0 +1,15 @@
+public void testAsPropertyTypeDeserializerIgnoresDeserializationFeature() {
+    Issue107Deserializer deserializer = new Issue107Deserializer();
+    String emptyString = "";
+    assertFalse(deserializer.isEmptyString(emptyString));
+}
+
+public class Issue107Deserializer extends AsPropertyTypeDeserializer {
+    public Issue107Deserializer() {
+        super(String.class, null, null);
+    }
+
+    public boolean isEmptyString(String string) {
+        return DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT.enabledIn(_config);
+    }
+}

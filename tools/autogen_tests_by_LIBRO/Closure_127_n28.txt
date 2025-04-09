@@ -1,0 +1,9 @@
+public void testFinallyBreak() {
+    Script s = new Script("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')");
+    try {
+        s.eval();
+        fail("should throw");
+    } catch (ThrowException e) {
+        assertEquals("throw me", e.getThrown().toString());
+    }
+}

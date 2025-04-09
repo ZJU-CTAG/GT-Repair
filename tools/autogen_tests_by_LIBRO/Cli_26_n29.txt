@@ -1,0 +1,20 @@
+public void testOptionBuilderReset() throws IOException {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("test")
+            .withDescription("test")
+            .hasArg(false)
+            .create("t"));
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[] { "-target", "opt" });
+        fail("An IllegalArgumentException should have been thrown");
+    } catch (IllegalArgumentException e) {
+        // Expected
+    }
+    try {
+        parser.parse(options, new String[] { "-test" });
+        fail("A MissingOptionException should have been thrown");
+    } catch (MissingOptionException e) {
+        // Expected
+    }
+}

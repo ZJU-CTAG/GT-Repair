@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    Global global = new Global();
+    Context context = Context.enter();
+    try {
+        ScriptableObject scope = context.initStandardObjects(global);
+        context.evaluateString(scope, "var s = new String('hello');", "test", 1, null);
+        context.evaluateString(scope, "var i = s.toLowerCase.indexOf('l');", "test", 1, null);
+        context.evaluateString(scope, "var c = s.toLowerCase.substr(0, 1);", "test", 1, null);
+    } finally {
+        Context.exit();
+    }
+}

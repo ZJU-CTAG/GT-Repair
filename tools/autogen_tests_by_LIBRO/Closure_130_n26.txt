@@ -1,0 +1,10 @@
+public void testArguments() {
+    String code = "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.collapsePropertiesOnExternTypes = true;
+    compiler.compile(JSSourceFile.fromCode("", ""), JSSourceFile.fromCode("", code), options);
+    String result = compiler.toSource();
+    assertEquals(code, result);
+}

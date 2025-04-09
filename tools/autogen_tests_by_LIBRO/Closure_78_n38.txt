@@ -1,0 +1,22 @@
+public void testIssue112() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+
+    String js = "1/0";
+    String expected = "1/0;";
+    String compiled = compile(js);
+    assertEquals(expected, compiled);
+}
+
+protected String compile(String js) {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("foo.js", js) },
+            options);
+    return compiler.toSource();
+}

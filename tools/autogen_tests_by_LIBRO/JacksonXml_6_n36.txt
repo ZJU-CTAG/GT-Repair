@@ -1,0 +1,11 @@
+public void testWriteBinaryWithInputStream() throws IOException {
+    StringWriter stringWriter = new StringWriter();
+    ToXMLGenerator xmlGenerator = new ToXMLGenerator(stringWriter);
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeFieldName("value");
+    xmlGenerator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("Hello, world!".getBytes()), 0);
+    xmlGenerator.writeEndObject();
+    xmlGenerator.close();
+    String xml = stringWriter.toString();
+    assertEquals("<value>SGVsbG8sIHdvcmxkIQ==</value>", xml);
+}

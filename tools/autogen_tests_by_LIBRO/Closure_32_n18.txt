@@ -1,0 +1,32 @@
+public void testPreserve() {
+    String source = "/**
+     * @preserve
+     *
+     * This
+     * was
+     * ASCII
+     * Art
+     */";
+
+    String output = JsMin.minify(source, new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println(line + ": " + lineOffset + ": " + message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println(line + ": " + lineOffset + ": " + message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);
+        }
+    });
+    assertEquals("/**
+* @preserve
+*
+* This
+* was
+* ASCII
+* Art
+* */",

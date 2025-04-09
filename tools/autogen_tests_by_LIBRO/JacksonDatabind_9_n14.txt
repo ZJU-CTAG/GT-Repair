@@ -1,0 +1,12 @@
+public void testClassAsKey() throws Exception {
+    Map<Class<? extends Object>, String> map = new HashMap<>();
+    map.put(ArrayList.class, "ArrayList");
+    map.put(HashMap.class, "HashMap");
+
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+    System.out.println(json);
+    Map<Class<? extends Object>, String> map2 = mapper.readValue(json, new TypeReference<Map<Class<? extends Object>, String>>() {
+    });
+    assertEquals(map, map2);
+}

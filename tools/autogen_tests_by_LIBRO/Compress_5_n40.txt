@@ -1,0 +1,15 @@
+public void testTruncatedZip() {
+    String filename = getClass().getResource("/test1.zip").getFile();
+    try {
+        ZipFile zf = new ZipFile(filename);
+        ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(filename));
+        ZipArchiveEntry ze;
+        while ((ze = zis.getNextZipEntry()) != null) {
+            System.out.println(ze.getName());
+            assertEquals(zf.getInputStream(ze).read(), zis.read());
+        }
+        assertEquals(-1, zis.read());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

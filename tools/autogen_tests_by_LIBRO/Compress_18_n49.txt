@@ -1,0 +1,16 @@
+public void testLongDirectoryName() throws Exception {
+    File parentDir = File.createTempFile("foo", null);
+    parentDir.delete();
+    parentDir.mkdirs();
+    parentDir.deleteOnExit();
+
+    File subDir = new File(parentDir, "PaxHeaders.X/layers/openstreetmap__osm.disy.net/.tiles/1.0.0/openstreetmap__osm.disy.net/default/");
+    subDir.mkdirs();
+    File testFile = new File(subDir, "test.bin");
+    testFile.createNewFile();
+
+    File tarFile = File.createTempFile("commons-compress-long-directory-name-test", ".tar");
+    tarFile.deleteOnExit();
+
+    TarUtilities.tar(parentDir.getAbsolutePath(), tarFile.getAbsolutePath());
+}

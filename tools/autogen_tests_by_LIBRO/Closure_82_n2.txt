@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Scriptable scope = new ImporterTopLevel();
+	Context cx = Context.enter();
+    try {
+	    cx.setOptimizationLevel(-1);
+	    String s = "var s = new String(\"hello\"); alert(s.toLowerCase.indexOf(\"l\"));";
+	    cx.evaluateString(scope, s, "<cmd>", 1, null);
+	    assertEquals(0, Context.getCurrentContext().getErrorReporter().getWarningCount());
+	    assertEquals(0, Context.getCurrentContext().getErrorReporter().getErrorCount());
+    } finally {
+	    Context.exit();
+    }
+}

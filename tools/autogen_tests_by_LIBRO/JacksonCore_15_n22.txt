@@ -1,0 +1,6 @@
+public void testIssue108() throws Exception {
+    String json = "{ \"a\":{ \"b\":{ \"c\":\"d\" }, \"e\":[{ \"f\":\"g\" }, { \"f\":\"g\" }] } }";
+    ObjectMapper mapper = new ObjectMapper();
+    FilteringParserDelegate dlg = new FilteringParserDelegate(mapper.getFactory().createParser(new ByteArrayInputStream(json.getBytes())), new SimpleBeanPropertyFilter("f"), true, true);
+    assertEquals("{\"a\":{\"e\":[{\"f\":\"g\"},{\"f\":\"g\"}]}}", dlg.getFilteredContentText());
+}

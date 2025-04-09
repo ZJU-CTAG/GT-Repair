@@ -1,0 +1,18 @@
+public void testIssue1351() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        String json = mapper.writeValueAsString(new Bean(null));
+        System.out.println(json);
+        assertEquals("{\"value\":null}", json);
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public static class Bean {
+        @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+        private String value;
+
+        public Bean(String value) {
+            this.value = value;
+        }
+    }

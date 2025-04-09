@@ -1,0 +1,25 @@
+public void test108() {
+    try {
+        String source =
+            "goog.scope(function() {\n" +
+            " var x = function(){};\n" +
+            "});";
+        CompilerOptions options = new CompilerOptions();
+        options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+        options.setCheckTypes(true);
+        options.setClosurePass(true);
+        options.setOptimizeArgumentsArray(true);
+        options.setVariableRenaming(VariableRenamingPolicy.ALL);
+        options.setGenerateExports(true);
+        CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+
+        Compiler compiler = new Compiler();
+        Result result = compiler.compile(
+                SourceFile.fromCode("input.js", source),
+                SourceFile.fromCode("externs.js", ""),
+                options);
+        assertTrue(result.success);
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+}

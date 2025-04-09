@@ -1,0 +1,19 @@
+public void testXML() throws Exception {
+    String xmlData = "<root><id>1</id></root>";
+
+    XmlMapper xmlMapper = new XmlMapper();
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+
+    final String xml = "<?xml version=\"1.0\" ?><root><id>1</id></root>";
+    HashMap<String, Object> result = xmlMapper.readValue(xml, new TypeReference<HashMap<String, Object>>() {
+    });
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping();
+
+    objectMapper.writeValueAsString(result);
+
+    String result2 = xmlMapper.writeValueAsString(result);
+    assertEquals(xmlData, result2);
+}

@@ -1,0 +1,20 @@
+public void testIssue() {
+    String code = "function Test(n) {\n" +
+            " var i = 0;\n" +
+            " return typeof n !== 'undefined' ? (i = n.length) : (n = 'foo'), i\n" +
+            "}\n" +
+            "var dummy = '6chars';\n" +
+            "console && console.log( Test(dummy) );";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setLineLengthThreshold(500);
+
+    Result result = new Result();
+    SourceFile input = SourceFile.fromCode("input", code);
+    List<SourceFile> inputs = ImmutableList.of(input);
+    Compiler compiler = new Compiler();
+
+    compiler.compile(externs, inputs, options, result

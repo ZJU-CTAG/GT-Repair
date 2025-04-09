@@ -1,0 +1,12 @@
+public void testVarargs() {
+    final List<String[]> list = Arrays.asList(new String[]{"foo", "bar"});
+    final List<String> list1 = Arrays.asList("foo", "bar");
+    final ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    new Foo().bar(list);
+    verify(new Foo()).bar(captor.capture());
+    assertEquals(list1, Arrays.asList(captor.getValue()));
+}
+
+class Foo {
+    void bar(List<String> values) {}
+}

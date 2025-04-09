@@ -1,0 +1,19 @@
+public void testSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("TestModule", new Version(1, 0, 0, null)) {
+        @Override public void setupModule(SetupContext context) {
+            context.addSerializers(new TestSerializers());
+        }
+    });
+
+    assertEquals("\"serialized-A\"", mapper.writeValueAsString(new A("asdf")));
+    assertEquals("\"serialized-B\"", mapper.writeValueAsString(new B("asdf")));
+}
+
+public static class TestSerializers extends Serializers.Base {
+    @Override public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
+        if (type.getRawClass() == A.class) {
+            return new JsonSerializer<A>() {
+                @Override public void serialize(A value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+                    jgen.writeString("serialized-A");
+                }

@@ -1,0 +1,9 @@
+public void testIssue() throws Exception {
+    String testDoc = "<root xmlns:A='http://a' A:attr='a'/>";
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new InputSource(new StringReader(testDoc)));
+
+    DOMNodePointer ptr = new DOMNodePointer(doc);
+    assertEquals("/root/@{http://a}attr", ptr.xpathForAttribute("attr", "http://a"));
+}

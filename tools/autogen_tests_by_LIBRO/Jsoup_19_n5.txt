@@ -1,0 +1,28 @@
+public void testCID() {
+
+    // this is good
+    String html = "<img src=\"cid:123123@test.com\" />";
+
+    Whitelist w = Whitelist.none();
+    w.addTags("img");
+    w.addAttributes("img", "src");
+    w.addProtocols("img", "src", "cid");
+
+    Cleaner cleaner = new Cleaner(w);
+    Document doc = cleaner.clean(Jsoup.parse(html));
+    String output = doc.outerHtml();
+
+    // this is bad
+    String htmlBad = "<img src=\"cid:123123\">";
+
+    Whitelist w2 = Whitelist.none();
+    w2.addTags("img");
+    w2.addAttributes("img", "src");
+    w2.addProtocols("img", "src", "cid");
+
+    Cleaner cleaner2 = new Cleaner(w2);
+    Document doc2 = cleaner2.clean(Jsoup.parse(htmlBad));
+    String output2 = doc2.outerHtml();
+
+    assertEquals(html, output);
+   

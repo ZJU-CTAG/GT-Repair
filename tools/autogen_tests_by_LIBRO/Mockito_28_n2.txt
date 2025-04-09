@@ -1,0 +1,15 @@
+public void testIssue109() {
+    try {
+        Widget mock = mock(Widget.class);
+        //mock.someMethod(anyInt(), eq(2));
+        //mock.someOther(anyInt(), eq("2"));
+        verify(mock).someMethod(anyInt(), eq(2));
+        verify(mock).someOther(anyInt(), eq("2"));
+    } catch (Throwable t) {
+        StringWriter writer = new StringWriter();
+        t.printStackTrace(new PrintWriter(writer));
+        String stackTrace = writer.toString();
+        assertTrue(stackTrace, stackTrace.contains("(String) 2"));
+        assertTrue(stackTrace, stackTrace.contains("(Integer) 2"));
+    }
+}

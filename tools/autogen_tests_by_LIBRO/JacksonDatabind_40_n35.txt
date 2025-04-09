@@ -1,0 +1,17 @@
+public void testIssue109() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        assertEquals(0, i);
+    } catch (JsonMappingException e) {
+        fail("Should not throw an exception");
+    }
+
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should throw an exception");
+    } catch (JsonMappingException e) {
+        // pass
+    }
+}

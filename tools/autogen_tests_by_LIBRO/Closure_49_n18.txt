@@ -1,0 +1,13 @@
+public void testIssue18() {
+    String js = "var foo = function bar(){var bar; alert(bar)};";
+    Compiler compiler = new Compiler();
+    compiler.compile(ResourceLoader.DEFAULT_CHARSET, new File(""), new File(""),
+            js);
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setPrettyPrint(true);
+    Result result = compiler.compile(options, "", js);
+    assertEquals("var foo = function() {\n  alert(void 0);\n};\n", result.getCompiledSource());
+}

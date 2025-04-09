@@ -1,0 +1,13 @@
+public void testNotRecognized7z() throws IOException {
+    SevenZFile input = new SevenZFile(new File(arcName));
+    try {
+        SevenZArchiveEntry entry;
+        while ((entry = input.getNextEntry()) != null) {
+            byte[] content = new byte[(int) entry.getSize()];
+            input.read(content, 0, content.length);
+            System.out.println(entry.getName() + ": " + new String(content, "UTF-8"));
+        }
+    } finally {
+        input.close();
+    }
+}

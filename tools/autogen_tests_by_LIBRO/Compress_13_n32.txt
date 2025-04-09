@@ -1,0 +1,14 @@
+public void testArchiveInputStreamWithUmlaut() throws Exception {
+    File f = new File("testdata/archiveTestWithUmlaut.zip");
+    InputStream is = new BufferedInputStream(new FileInputStream(f));
+
+    try {
+        ArchiveInputStream archiveInputStream = new ArchiveStreamFactory().createArchiveInputStream(is);
+        ArchiveEntry entry;
+        while ((entry = archiveInputStream.getNextEntry()) != null) {
+            System.out.println("EntryName: " + entry.getName() + " (" + entry.getSize() + " bytes) " + (entry.isDirectory() ? "dir" : "file"));
+        }
+    } finally {
+        is.close();
+    }
+}

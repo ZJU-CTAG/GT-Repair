@@ -1,0 +1,9 @@
+public void testPAXHeaders() throws Exception {
+    File tarFile = TestUtils.getFile("compress/test2.tar");
+    try (TarArchiveInputStream inputStream =
+        new TarArchiveInputStream(new FileInputStream(tarFile))) {
+        TarArchiveEntry entry = inputStream.getNextTarEntry();
+        assertNotNull(entry);
+        assertEquals("aws-sdk-2.2.16/package.json", entry.getName());
+    }
+}

@@ -1,0 +1,15 @@
+public void testNextTextValue() throws IOException {
+    String xml = "<root><a attr=\"attribute\">content</a></root>";
+    XmlFactory f = new XmlFactory();
+    XmlMapper m = new XmlMapper(f);
+    FromXmlParser p = (FromXmlParser) m.getFactory().createParser(xml);
+    assertEquals("root", p.nextTag());
+    assertEquals("a", p.nextTag());
+    assertEquals("attribute", p.nextTextValue());
+    assertEquals("content", p.nextTextValue());
+    assertEquals("a", p.nextTag());
+    assertEquals("root", p.nextTag());
+    assertNull(p.nextTag());
+    assertNull(p.nextTextValue());
+    p.close();
+}

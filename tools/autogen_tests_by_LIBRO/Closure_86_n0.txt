@@ -1,0 +1,23 @@
+public void testIssueXXXXX() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            null, null,
+            "function Foo() {" +
+            "    var self = this;" +
+            "    window.setTimeout(function() {" +
+            "        window.location = self.location;" +
+            "    }, 0);" +
+            "}" +
+            "" +
+            "Foo.prototype.setLocation = function(loc) {" +
+            "    this.location = loc;" +
+            "};" +
+            "" +
+            "(new Foo()).setLocation('http://www.google.com/');"
+            );
+    assertTrue(result.success);
+    assertEquals(
+            "function Foo(){var a=this;window.setTimeout(function(){window.location=a.location},0)}" +
+            "Foo.prototype.setLocation=function(a){this.location=a};(new Foo).setLocation('http://www.google.com/')",
+            result.source);
+}

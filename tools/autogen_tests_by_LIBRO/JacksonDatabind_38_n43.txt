@@ -1,0 +1,23 @@
+public void testSimpleTypeConstruct() throws Exception
+{
+    // Used to work
+    ObjectMapper mapper = new ObjectMapper();
+    String[] input = mapper.readValue("[\"foobar\"]", String[].class);
+    assertEquals(1, input.length);
+    assertEquals("foobar", input[0]);
+
+    // Now fails due to missing code
+    TypeFactory tf = mapper.getTypeFactory();
+    JavaType type = SimpleType.construct(String[].class);
+    assertFalse(type.isArrayType());
+    assertTrue(type.isCollectionLikeType());
+    assertFalse(type.isContainerType());
+    assertFalse(type.isEnumType());
+    assertFalse(type.isFinal());
+    assertFalse(type.isInterface());
+    assertFalse(type.isMapLikeType());
+    assertFalse(type.isPrimitive());
+    assertTrue(type.isReferenceType());
+    assertTrue(type.isTypeOrSubTypeOf(Object.class));
+    // note: fails since type resolution not good enough
+    assertTrue(type.isTypeOrSub

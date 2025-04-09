@@ -1,0 +1,16 @@
+public void testRead() throws Exception {
+    File file = File.createTempFile(getClass().getName(), ".7z");
+    file.deleteOnExit();
+    File archive = getFile("test1.7z");
+    FileUtils.copyFile(archive, file);
+    SevenZFile sevenZFile = new SevenZFile(file);
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertNotNull(entry);
+    assertEquals("test1.xml", entry.getName());
+    assertEquals(CompressionMethod.LZMA2, entry.getMethod());
+    assertEquals(0, entry.getCrcValue());
+    byte [] content = new byte[(int) entry.getSize()];
+    IOUtils.readFully(sevenZFile, content);
+    sevenZFile.close();
+    assertArrayEquals(FileUtils.readFileToByteArray(getFile("test1.xml")), content);
+}

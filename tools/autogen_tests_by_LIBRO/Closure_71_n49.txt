@@ -1,0 +1,10 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            "function Foo() { this.x_ = 3; }\n"
+            + "function SubFoo() { this.x_ = 3; }",
+            new CompilerOptions());
+    JSError[] errors = result.errors;
+    assertEquals(1, errors.length);
+    assertTrue(errors[0].description.contains("PRIVATE"));
+}

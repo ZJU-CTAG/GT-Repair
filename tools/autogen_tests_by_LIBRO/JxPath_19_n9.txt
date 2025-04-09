@@ -1,0 +1,11 @@
+public void testIssue() {
+    String xml = "<a:doc xmlns:a=\"ns\"><a:elem/><b:elem xmlns:b=\"ns\"/></a:doc>";
+    JXPathContext context = JXPathContext.newContext(XMLUtils.newDocument(xml));
+    int count = 0;
+    for (Iterator iter = context.iteratePointers("//*"); iter.hasNext();) {
+        Pointer pointer = (Pointer) iter.next();
+        count++;
+        System.out.println("Element " + count + ": " + pointer.getNode().getNodeName());
+    }
+    assertEquals(2, count);
+}

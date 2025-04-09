@@ -1,0 +1,19 @@
+public void testExternExport() {
+    String source = "var myObj = {};"
+        + "myObj.prop = function(opt_param) {};"
+        + "myObj.prop = function(param) {};"
+        + "/** @typedef {{a: string, b: (string|undefined)}} */ myObj.TypeDef;"
+        + "myObj.prop = function(param1, param2) {};"
+        + "myObj.prop = function(param1, opt_param2) {};";
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(false);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        externsInputs,
+        Arrays.asList(JsAst.fromString(source, "test")),
+        options);
+    String externExports =
+        Joiner.

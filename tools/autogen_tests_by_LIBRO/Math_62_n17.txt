@@ -1,0 +1,15 @@
+public void testConvergenceCheckerCallbacks() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 10 }, 0);
+    Collection l = new ArrayList();
+    l.add(new LinearConstraint(new double[] { 1, 1 }, Relationship.GEQ, 2));
+    l.add(new LinearConstraint(new double[] { 10, 1 }, Relationship.LEQ, 20));
+    final List converged = new ArrayList();
+    ConstrainedOptimizer optimizer = new SimplexOptimizer(1e-2, 1e-2, true) {
+        public PointValuePair optimize(OptimizationData... optData) {
+            PointValuePair result = super.optimize(optData);
+            converged.add(result);
+            return result;
+        }
+    };
+    optimizer.setConvergenceChecker(new SimpleScalarValueChecker(1e-3, 1e-3, Integer.MAX_VALUE));
+    optimizer.optimize(f, new LinearConstraintSet(l), GoalType.MINIMIZE,

@@ -1,0 +1,10 @@
+public void testTarUtils () throws IOException {
+    File file = new File(getClass().getResource("/test.tar").getFile());
+    TarArchiveInputStream tarInputStream = new TarArchiveInputStream(new FileInputStream(file));
+    TarArchiveEntry tarEntry = tarInputStream.getNextTarEntry();
+    while (tarEntry != null) {
+        String name = tarEntry.getName();
+        assertEquals(tarEntry.getName(), TarUtils.parseName(tarEntry.getNameBytes()));
+        tarEntry = tarInputStream.getNextTarEntry();
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue() throws IOException {
+    StringWriter writer = new StringWriter();
+    CsvFormat format = new CsvFormat();
+    format.setNullString("\\N");
+    format.setEscape('\\');
+    CsvPrinter printer = new CsvPrinter(writer, format);
+    printer.print("test");
+    printer.print(null);
+    printer.print("test");
+    printer.flush();
+    assertEquals("\"test\",\\N,\"test\"", writer.toString());
+}

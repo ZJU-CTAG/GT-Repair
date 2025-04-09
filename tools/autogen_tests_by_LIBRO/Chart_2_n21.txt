@@ -1,0 +1,13 @@
+public void testIssue959() {
+    DefaultIntervalCategoryDataset d = new DefaultIntervalCategoryDataset();
+    d.add(1.0, 2.0, 0.0, 0.0, "R1", "C1");
+    d.add(3.0, 4.0, 0.0, 0.0, "R1", "C2");
+    Range r = DatasetUtilities.iterateRangeBounds(d);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(4.0, r.getUpperBound(), EPSILON);
+    r = DatasetUtilities.iterateRangeBounds(d, true);
+    assertEquals(2.0, r.getLowerBound(), EPSILON);
+    assertEquals(4.0, r.getUpperBound(), EPSILON);
+    r = DatasetUtilities.iterateRangeBounds(d, false);
+    assertEquals(1.0, r.getLowerBound(), EPSILON);
+    assertEquals(3.0

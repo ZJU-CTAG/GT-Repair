@@ -1,0 +1,28 @@
+public void testIssue() {
+    MyBean bean = new MyBean();
+    bean.setParameters(Collections.singletonMap("foo", "bar"));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValueAsString(bean);
+}
+
+public static class MyBean {
+    private Map<String, String> parameters;
+
+    @JsonSerialize(using = MySerializer.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, String> parameters) {
+        this.parameters = parameters;
+    }
+}
+
+public static class MySerializer extends JsonSerializer<Map<String, String>> {
+
+    @Override
+    public void serialize(Map<String, String> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeStartObject();
+        for (Map.Entry<String, String> e : value.entrySet()) {
+            jgen.writeString

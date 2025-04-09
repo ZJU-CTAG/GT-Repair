@@ -1,0 +1,13 @@
+public void testDefine() {
+    CompilerOptions options = new CompilerOptions();
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("[externs]", ""),
+            Arrays.asList(SourceFile.fromCode("[input]", "/** @define {string} */\ntest.VERSION = \"\";")),
+            options);
+    assertTrue(result.success);
+    String compiled = compiler.toSource();
+    assertFalse(compiled.contains("test.VERSION"));
+    assertTrue(compiled.contains("1.0.0"));
+}

@@ -1,0 +1,18 @@
+public void testFix() throws IOException
+{
+    JsonFactory jf = new JsonFactory();
+    
+    StringWriter sw = new StringWriter();
+    UTF8JsonGenerator g = (UTF8JsonGenerator) jf.createGenerator(sw);
+    
+    g.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    
+    g.writeStartObject();
+    g.writeFieldName("field");
+    g.writeString("value");
+    g.writeEndObject();
+    
+    g.close();
+    
+    assertEquals("{field:\"value\"}", sw.toString());
+}

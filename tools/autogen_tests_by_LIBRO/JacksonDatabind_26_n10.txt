@@ -1,0 +1,10 @@
+public void testSerialization() throws IOException {
+    ObjectMapper m = new ObjectMapper();
+    ObjectReader r = m.reader();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream o = new ObjectOutputStream(out);
+    o.writeObject(r);
+    o.close();
+    // works in 2.5.3, fails in 2.6:
+    // java.io.NotSerializableException: org.codehaus.jackson.map.deser.impl.CompactStringObjectMap
+}

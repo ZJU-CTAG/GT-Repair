@@ -1,0 +1,10 @@
+public void testDfpMultiply() {
+    Dfp d = new Dfp(Decimal64Field.getInstance(), "0.1");
+    for (int i = 0; i < 10000; ++i) {
+        Dfp m = d.multiply(i);
+        Dfp r = d.multiply(i / 10.0);
+        // Check if the multiply(int n) method is consistent with the multiply(double x) method.
+        // For 9999, this is not the case due to rounding errors in double arithmetic.
+        assertEquals(i == 9999 ? "0.9999" : m.toString(), r.toString());
+    }
+}

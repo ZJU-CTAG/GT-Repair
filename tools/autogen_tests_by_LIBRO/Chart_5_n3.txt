@@ -1,0 +1,14 @@
+public void testAddOrUpdate() {
+    XYSeries series = new XYSeries("Series", true, true);
+    XYDataItem item = null;
+    series.addOrUpdate(new Day(1, 1, 2007), 1.0);
+    series.addOrUpdate(new Day(2, 1, 2007), 2.0);
+    series.addOrUpdate(new Day(3, 1, 2007), 3.0);
+    series.addOrUpdate(new Day(4, 1, 2007), 4.0);
+    series.addOrUpdate(new Day(5, 1, 2007), 5.0);
+    // Add a duplicate
+    series.addOrUpdate(new Day(5, 1, 2007), 6.0);
+    item = series.getDataItem(4);
+    assertEquals(new Day(5, 1, 2007), item.getX());
+    assertEquals(6.0, item.getYValue(), EPSILON);
+}

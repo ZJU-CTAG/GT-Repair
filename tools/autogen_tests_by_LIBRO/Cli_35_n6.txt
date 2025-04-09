@@ -1,0 +1,8 @@
+public void testIssueLongOptFalseAmbiguous() {
+    Options options = new Options();
+    options.addOption(Option.builder().longOpt("importToOpen").hasArg().argName("FILE").build());
+    options.addOption(Option.builder("i").longOpt("import").hasArg().argName("FILE").build());
+    CommandLineParser parser = new DefaultParser();
+    CommandLine commandLine = parser.parse(options, "--import=FILE".split(" "));
+    assertTrue(commandLine.hasOption("import"));
+}

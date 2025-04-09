@@ -1,0 +1,9 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("1.js", "var foo = 5;") });
+    assertEquals("'use strict';var foo = 5;\n", compiler.toSource());
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("2.js", "var foo = 5;") });
+    assertEquals("'use strict';var foo = 5;\n", compiler.toSource());
+}

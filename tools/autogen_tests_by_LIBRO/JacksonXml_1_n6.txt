@@ -1,0 +1,26 @@
+public void testIssue130() throws IOException {
+    String json = "{\"records\":[[{\"fields\":[{\"name\":\"id\",\"value\":\"1\"}]}],[{\"fields\":[{\"name\":\"id\",\"value\":\"2\"}]}],[]]}";
+    List<List<Record>> records = mapper.readValue(json, new TypeReference<List<List<Record>>>() { });
+    assertEquals(3, records.size());
+    assertEquals(1, records.get(0).size());
+    assertEquals(1, records.get(1).size());
+    assertEquals(0, records.get(2).size());
+}
+
+public static class Record {
+    private List<Field> fields = new ArrayList<Field>();
+
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
+}
+
+public static class Field {
+    private String name;
+    private String value;
+
+    public void setName(String

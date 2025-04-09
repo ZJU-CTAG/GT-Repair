@@ -1,0 +1,20 @@
+public void testFilteringParserDelegate1() throws Exception {
+    String json = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    InputStream in = new ByteArrayInputStream(json.getBytes("UTF-8"));
+    JsonFactory f = new JsonFactory();
+    JsonParser p0 = f.createJsonParser(in);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = f.createJsonGenerator(sw);
+    while (p.nextToken() != null) {
+        g.copyCurrentEvent(p);
+    }
+    p.close();
+    g.close();
+    String expected = "{\"ob\":{\"value\":3}}";
+    assertEquals(expected, sw.toString());
+}

@@ -1,0 +1,8 @@
+public void testIssue129() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+    StringWriter sw = new StringWriter();
+    writer.writeValue(sw, new DateTime(2014, 1, 1, 0, 0, DateTimeZone.UTC));
+    assertEquals("\"2014-01-01T00:00:00.000Z\"", sw.toString());
+}

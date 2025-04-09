@@ -1,0 +1,8 @@
+public void testArchiveStreamFactoryWithEncoding() throws Exception {
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    final byte[] data = "Hello World!".getBytes("UTF-8");
+    final ByteArrayInputStream input = new ByteArrayInputStream(data);
+    final ArjArchiveInputStream inputStream = (ArjArchiveInputStream) factory.createArchiveInputStream("arj", input, "UTF-8");
+    final ArchiveEntry entry = inputStream.getNextEntry();
+    assertEquals("Hello World!", IOUtils.toString(inputStream, "UTF-8"));
+}

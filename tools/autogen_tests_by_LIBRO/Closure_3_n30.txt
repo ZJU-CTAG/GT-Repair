@@ -1,0 +1,27 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkTypes = true;
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            "function getStack() {" +
+            " var getErrorObject = function() {" +
+            " try {" +
+            " throw Error(\"\");" +
+            " } catch(err) {" +
+            " return err;" +
+            " }" +
+            " };" +
+            " return getErrorObject().stack;" +
+            "}" +
+            "window['getStackTrace']=getStack;",
+            options);
+    assertEquals("function getStack() {\n" +
+            "  var a;\n" +
+            "  try {\n" +
+            "    throw Error(\"\");\n" +
+            "  } catch (e$$0) {\n" +
+            "    a = e$$0;\n" +
+            "  }\n" +
+            "  return a.stack;\n" +
+            "

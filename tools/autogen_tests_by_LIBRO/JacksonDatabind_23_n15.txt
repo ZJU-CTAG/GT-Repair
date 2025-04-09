@@ -1,0 +1,18 @@
+public void testIssue() throws IOException
+{
+    ObjectMapper m = new ObjectMapper();
+    m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    String json = m.writeValueAsString(new Bean());
+    System.out.println(json);
+    assertEquals(aposToQuotes("{'id':0,'name':null}"), json);
+
+    Bean b = m.readValue(json, Bean.class);
+    assertEquals(0, b.id);
+    assertEquals(null, b.name);
+}
+
+// for [Issue#55]
+public static class Bean {
+   public int id = 0;
+   public String name = null;
+}

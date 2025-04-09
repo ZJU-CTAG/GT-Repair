@@ -1,0 +1,14 @@
+public void testWrongInstance() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writer(new CustomPrettyPrinter()).writeValueAsString(new SimpleString());
+    assertEquals("[ \"abc\" ]", json);
+}
+
+protected static class CustomPrettyPrinter extends DefaultPrettyPrinter
+{
+    @Override
+    public DefaultPrettyPrinter createInstance() {
+        return new CustomPrettyPrinter();
+    }
+}

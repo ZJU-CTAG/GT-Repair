@@ -1,0 +1,16 @@
+public void testIssue630() throws Exception
+{
+    Map<Class<?>, String> map = new HashMap<>();
+    map.put(ArrayList.class, "ArrayList");
+    map.put(HashMap.class, "HashMap");
+
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+    System.out.println(json);
+
+    Map<Class<?>, String> result = mapper.readValue(json, new TypeReference<Map<Class<?>, String>>(){});
+    assertNotNull(result);
+    assertEquals(2, result.size());
+    assertEquals("ArrayList", result.get(ArrayList.class));
+    assertEquals("HashMap", result.get(HashMap.class));
+}

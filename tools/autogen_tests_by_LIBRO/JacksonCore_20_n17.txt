@@ -1,0 +1,10 @@
+public void testJsonGeneratorWriteEmbeddedBytes() throws IOException {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    JsonGenerator gen = JSON_F.createGenerator(bytes);
+    gen.writeStartObject();
+    gen.writeFieldName("byteArray");
+    gen.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("{\"byteArray\":[1,2,3]}", bytes.toString(StandardCharsets.UTF_8.name()));
+}

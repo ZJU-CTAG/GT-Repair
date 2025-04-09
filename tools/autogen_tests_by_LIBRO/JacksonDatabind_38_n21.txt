@@ -1,0 +1,25 @@
+public void testDeprecatedSimpleTypeConstruction() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getDeserializationConfig().set(Feature.USE_GETTERS_AS_SETTERS, false);
+    mapper.getDeserializationConfig().set(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String JSON = aposToQuotes("{'name':'T','values':['x','y']}");
+    POJO pojo = mapper.readValue(JSON, POJO.class);
+    assertNotNull(pojo);
+}
+
+final class POJO {
+    public String name;
+    public List<String> values = new ArrayList<String>();
+
+    public POJO() { }
+
+    public POJO(String name) {
+        this.name = name;
+    }
+  
+    public void setValues(List<String> values) {
+        this.values = values;
+    }
+}

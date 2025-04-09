@@ -1,0 +1,17 @@
+public void testBrentOptimizer() {
+    // a function that has a minimum for x=1.1
+    UnivariateRealFunction function = new UnivariateRealFunction() {
+        public double value(double x) {
+            return (x-1.1) * (x-1.1);
+        }
+    };
+    // the optimizer
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariateRealPointValuePair optimum =
+        optimizer.optimize(new MaxEval(100),
+                           new UnivariateRealFunctionPenaltyAdapter(function, new LinearConstraint(new double[] {0.0}, Relationship.GEQ, 0.0)),
+                           GoalType.MINIMIZE,
+                           new SearchInterval(0.0, 2.0));
+    // is the optimum at the expected location?
+    assertEquals(1.1, optimum.getPoint(), 0.0);
+}

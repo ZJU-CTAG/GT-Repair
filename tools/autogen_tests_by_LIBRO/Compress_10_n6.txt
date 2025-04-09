@@ -1,0 +1,14 @@
+public void testUTF8ZipFile() throws IOException {
+    File archive = getFile("bla.zip");
+    ZipFile zf = new ZipFile(archive);
+    try {
+        for(Enumeration<? extends ZipEntry> e = zf.getEntries(); e.hasMoreElements(); ) {
+            ZipEntry ze = e.nextElement();
+            InputStream in = zf.getInputStream(ze);
+            assertNotNull(in);
+            in.close();
+        }
+    } finally {
+        zf.close();
+    }
+}

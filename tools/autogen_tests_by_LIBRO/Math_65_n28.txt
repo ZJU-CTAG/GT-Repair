@@ -1,0 +1,15 @@
+public void testChiSquare() {
+	WeightedObservedPoint[] observations = new WeightedObservedPoint[3];
+    observations[0] = new WeightedObservedPoint(1.0, 0.0, 1.0);
+    observations[1] = new WeightedObservedPoint(1.0, 1.0, 2.0);
+    observations[2] = new WeightedObservedPoint(1.0, 2.0, 4.0);
+
+    LeastSquaresBuilder builder = new LeastSquaresBuilder();
+    for (WeightedObservedPoint observation : observations) {
+        builder.addObservedPoint(observation);
+    }
+    builder.build();
+    AbstractLeastSquaresProblem lsp = builder.getProblem();
+    lsp.getChiSquare();
+    assertEquals(0.0, lsp.getRMS(), 0.0);
+}

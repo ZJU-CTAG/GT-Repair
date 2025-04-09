@@ -1,0 +1,12 @@
+public void testBrentMinimizer() {
+    final double rel = 1.0e-15;
+    final double abs = 1.0e-10;
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x*x - 1e-4;
+        }
+    };
+    double result = new BrentOptimizer(rel, abs).optimize(f, GoalType.MINIMIZE, -3.0, 3.0).getPoint();
+    System.out.println(result);
+    assertEquals(0, result, 1e-4);
+}

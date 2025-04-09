@@ -1,0 +1,18 @@
+public void testIssue() throws IOException {
+    try (FileInputStream fis = new FileInputStream("test.tar");
+         TarArchiveInputStream tis = new TarArchiveInputStream(fis)) {
+        TarArchiveEntry entry = tis.getNextTarEntry();
+        while (entry != null) {
+            System.out.println(entry.getName() + " " + entry.getSize());
+            if (!entry.isDirectory()) {
+                int bufferSize = 1024;
+                byte[] buffer = new byte[bufferSize];
+                int read;
+                while ((read = tis.read(buffer, 0, bufferSize)) != -1) {
+                    // do nothing
+                }
+            }
+            entry = tis.getNextTarEntry();
+        }
+    }
+}

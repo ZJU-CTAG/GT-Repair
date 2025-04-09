@@ -1,0 +1,16 @@
+public void testIssue() throws Exception
+{
+    final String JSON = aposToQuotes("{'@type':'BIG_DECIMAL','value':-10000000000.0000000001}");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    Wrapper w = mapper.readValue(JSON, Wrapper.class);
+    assertEquals(BigDecimal.class, w.value.getClass());
+    assertEquals(new BigDecimal("-10000000000.0000000001"), w.value);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="@type")
+@JsonSubTypes({ @JsonSubTypes.Type(name="BIG_DECIMAL", value=BigDecimal.class) })
+static class Wrapper {
+    public Object value;
+}

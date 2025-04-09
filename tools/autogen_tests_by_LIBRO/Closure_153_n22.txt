@@ -1,0 +1,17 @@
+public void testNamespaceDeclaration() throws Exception {
+  Reader r = new FileReader("src/test/resources/namespace.js");
+  try {
+    StringWriter w = new StringWriter();
+    try {
+      if(!JsMin.isParsingSupported()) {
+        fail("Parsing not supported");
+      }
+      JsMin.minify(r, w, true);
+    } finally {
+      w.close();
+    }
+    assertEquals("if(!Node)var Node={};", w.toString());
+  } finally {
+    r.close();
+  }
+}

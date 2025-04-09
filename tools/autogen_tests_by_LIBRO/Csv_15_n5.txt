@@ -1,0 +1,16 @@
+public void testIssue_TEST_CJK_UTF8() throws Exception {
+    String testString = "あ,い,う";
+    StringWriter out = new StringWriter();
+    CSVParser parser = null;
+    try {
+        CSVPrinter printer = new CSVPrinter(out, CSVFormat.EXCEL.withQuote('"'));
+        printer.printRecord(parser.parse(testString).getRecords().get(0));
+        String s = out.toString();
+        System.out.println("testIssue_TEST_CJK_UTF8:" + s);
+        assertEquals("\"あ\",い,う", s);
+    } finally {
+        if (parser != null) {
+            parser.close();
+        }
+    }
+}

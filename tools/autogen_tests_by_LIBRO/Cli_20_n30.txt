@@ -1,0 +1,14 @@
+public void testStopAtNonOptionWhenUnrecognizedLongOption() throws Exception {
+    Options options = new Options();
+    options.addOption("a", "enable-a", false, "turn [a] on or off");
+    options.addOption("b", "bfile", true, "set the value of [b]");
+
+    PosixParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{"--zop", "-abfoo"}, true);
+
+    assertEquals(2, cmd.getOptions().length);
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+
+    assertEquals("foo", cmd.getOptionValue("b"));
+}

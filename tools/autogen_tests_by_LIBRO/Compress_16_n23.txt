@@ -1,0 +1,14 @@
+public void testAIFFFile() throws Exception {
+  final InputStream stream =
+      ArchiveStreamFactoryTest.class.getResourceAsStream(
+          "/test-documents/testAIFF.aif");
+  try {
+    final ArchiveInputStream in = new ArchiveStreamFactory()
+        .createArchiveInputStream(stream);
+    fail("Non-tar file wrongly recognised as tar");
+  } catch (ArchiveException e) {
+    // expected
+  } finally {
+    IOUtils.closeQuietly(stream);
+  }
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Function<String, String> f1 = s -> s;
+    f1.setAlwaysCall(true);
+    Function<String, String> f2 = s -> s ;
+
+    Map<String, Function<String, String>> map = new HashMap<>();
+    map.put("f1", f1);
+    map.put("f2", f2);
+
+    Function<String, String> f = map.get(Math.random() > 0.5 ? "f1" : "f2");
+    if (f.getAlwaysCall()) f.apply("");
+}
+
+public interface Function<T, R> extends BiFunction<T, R, R> {
+
+    boolean getAlwaysCall();
+    void setAlwaysCall(boolean alwaysCall);
+}

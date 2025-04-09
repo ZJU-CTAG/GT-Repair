@@ -1,0 +1,18 @@
+public void testTarDetection()
+        throws Exception {
+    InputStream is = new FileInputStream(new File(getFile("testAIFF.aif")));
+    try {
+        ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        ArchiveInputStream ais = factory.createArchiveInputStream(is);
+        try {
+            assertEquals(TarArchiveInputStream.class, ais.getClass());
+            fail();
+        } catch (ArchiveException ex) {
+            assertTrue(ex.getMessage().startsWith("No Archiver found"));
+        } finally {
+            ais.close();
+        }
+    } finally {
+        is.close();
+    }
+}

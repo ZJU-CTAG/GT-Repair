@@ -1,0 +1,17 @@
+public void testDeleteFile() throws Exception {
+    final File archive = getFile("bla.ar");
+    final File originalFile = getFile("test2.xml");
+    final File deleteFile = getFile("test2.xml");
+    final File expectedFile = getFile("test1.xml");
+    final ArchiveInputStream in = getArchiveStream(archive, true);
+    final ArchiveOutputStream out = getArchiveStream(new File(getTempDir(), archive.getName()), false);
+    assertEquals("input stream is at first entry", "test1.xml", in.getNextEntry().getName());
+    assertEquals("input stream is at second entry", "test2.xml", in.getNextEntry().getName());
+    assertNull("input stream exhausted", in.getNextEntry());
+    ArchiveEntry entry = null;
+    while ((entry = in.getNextEntry()) != null) {
+        if (entry.getName().equals(deleteFile.getName())) {
+            continue;
+        }
+        out.putArchiveEntry(entry);
+        IOUtils.copy(in, out

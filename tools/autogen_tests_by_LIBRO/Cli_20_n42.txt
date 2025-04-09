@@ -1,0 +1,11 @@
+public void testStopAtNonOption() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("a").create('a'));
+    options.addOption(OptionBuilder.withLongOpt("b").hasArg().create('b'));
+
+    CommandLineParser parser = new PosixParser();
+
+    CommandLine cmd = parser.parse(options, new String[]{"--zop", "-abfoo"}, true);
+
+    assertEquals("[--zop, -a, -b, foo]", Arrays.toString(cmd.getArgs()));
+}

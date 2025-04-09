@@ -1,0 +1,27 @@
+public void testIssue109() throws IOException {
+
+    System.out.println("Enhanced for loop, no peeking:");
+    CSVParser parser = new CSVParser(new BufferedReader(new StringReader(FIVE_ROWS)), CSVFormat.DEFAULT);
+    int recordNumber = 0;
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        System.out.println(recordNumber + " -> " + record.get(0));
+        if (recordNumber >= 2) {
+            break;
+        }
+    }
+    // CSVParser.iterator() returns a new iterator, but the lexer isn't reset so we can pick up
+    // where we left off.
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        System.out.println(recordNumber + " -> " + record.get(0));
+    }
+    // Enhanced for loop, no peeking:
+    // 1 -> 1
+    // 2 -> 2
+    // 3 -> 3
+    // 4 -> 4
+    // 5 -> 5
+
+
+    System.out.println("\nEnhanced for loop, with

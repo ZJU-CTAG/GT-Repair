@@ -1,0 +1,31 @@
+public void testInjectMocks() {
+    final FinalClass finalClass = new FinalClass();
+    final FinalClass finalClass2 = new FinalClass();
+    final MockitoService mockitoService = new MockitoService() {
+        public <T> T mock(Class<T> classToMock) {
+            return classToMock.cast(finalClass);
+        }
+    };
+    final TestClassWithFinalField testClass = new TestClassWithFinalField(finalClass2) {
+        @Override
+        protected MockitoService createMockitoService() {
+            return mockitoService;
+        }
+    };
+    System.out.println(finalClass);
+    System.out.println(finalClass2);
+    System.out.println(testClass.getFinalClass());
+}
+
+public static class TestClassWithFinalField {
+    private final FinalClass finalClass;
+
+    public TestClassWithFinalField(FinalClass finalClass) {
+        this.finalClass = finalClass;
+    }
+
+    public FinalClass getFinalClass() {
+        return finalClass;
+    }
+
+    protected MockitoService createMockito

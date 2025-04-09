@@ -1,0 +1,11 @@
+public void testIssue49() {
+    final String csv = "A,B,C,,\na,b,c,d,e";
+    final List<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(new StringReader(csv)).getRecords();
+    assertEquals(1, records.size());
+    final Map<String, Integer> headerMap = records.get(0).toMap();
+    assertEquals(4, headerMap.size());
+    assertEquals(Integer.valueOf(0), headerMap.get("A"));
+    assertEquals(Integer.valueOf(1), headerMap.get("B"));
+    assertEquals(Integer.valueOf(2), headerMap.get("C"));
+    assertFalse(headerMap.containsKey(""));
+}

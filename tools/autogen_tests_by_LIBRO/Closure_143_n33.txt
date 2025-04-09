@@ -1,0 +1,23 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    CommandLineRunner runner = null;
+    try {
+        runner = new CommandLineRunner(new PrintStream(out), new PrintStream(err), System.in,
+                new Compiler(), options);
+        runner.setDefine("test.VERSION", "\"1.0.0\"");
+    }
+    catch (IOException e) {
+        fail(e.getMessage());
+    }
+
+    runner.addSource("test.js");
+
+    if (!runner.shouldRunCompiler()) {
+        fail("Compile failed.");
+    }
+
+    runner.run();
+}

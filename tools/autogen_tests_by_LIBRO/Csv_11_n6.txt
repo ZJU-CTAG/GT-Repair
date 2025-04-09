@@ -1,0 +1,15 @@
+public void testEmptyOrNullHeaders() throws Exception {
+    String input = "";
+
+    CsvPreference prefs = new CsvPreference.Builder('"', ',', "\n")
+        .nullString("")
+        .build();
+
+    ICsvListReader listReader = new CsvListReader(new StringReader(input), prefs);
+
+    List<String> header = listReader.getHeader(true);
+    assertNotNull(header);
+    assertEquals(0, header.size());
+
+    listReader.close();
+}

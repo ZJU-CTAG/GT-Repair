@@ -1,0 +1,24 @@
+public void testCovariance() {
+    double[] values = new double[] {1, 2, 3};
+    double[] weights = new double[] {2, 2, 2};
+    double[] parameters = new double[] {10, 1};
+    ParameterGuesser guesser = new ParameterGuesser(values, weights, parameters);
+    assertEquals(0.0, guesser.guessParametersErrors()[0], 0.0);
+    assertEquals(0.0, guesser.guessParametersErrors()[1], 0.0);
+}
+
+private class ParameterGuesser extends AbstractEstimator {
+    ParameterGuesser(double[] values, double[] weights, double[] parameters) {
+        super(values, weights, parameters);
+    }
+
+    @Override
+    protected TheoreticalValuesFunction getModelFunction() {
+        return new TheoreticalValuesFunction() {
+            @Override
+            public double partialDerivative(int i, double[] variables, double... parameters) {
+                return 0;
+            }
+
+            @Override
+            public double value(double x, double... parameters

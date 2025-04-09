@@ -1,0 +1,21 @@
+public void testIssue125() {
+    final NodeList nodes = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(new InputSource(new StringReader(
+                    "<root><a><b/></a><c><b/></c></root>")))
+            .getDocumentElement().getChildNodes();
+    JXPathContext ctx = JXPathContext.newContext(new Object() {
+        public NodePointer childOf(NodePointer node) {
+            return new NodePointer(node, nodes.item(1));
+        }
+        public NodeSet childrenOf(NodePointer node) {
+            return new BasicNodeSet(
+                    new NodePointer[] {
+                            new NodePointer(node, nodes.item(0)),
+                            new NodePointer(node, nodes.item(1))
+                    });
+        }
+    });
+    ctx.registerNamespace("test", "urn:apache:commons:jxpath");
+    ctx.registerFunction("test", "childOf", JXPathTestExtensionFunctions.class);
+    ctx.registerFunction("test

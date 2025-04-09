@@ -1,0 +1,16 @@
+public void testFastDateParser_Space() {
+    String format = "yyyy-MM-dd HH:mm:ss.SSS";
+    FastDateParser fdp = new FastDateParser(format, Locale.UK, TimeZone.getTimeZone("GMT"));
+    SimpleDateFormat sdp = new SimpleDateFormat(format);
+    sdp.setTimeZone(TimeZone.getTimeZone("GMT"));
+    String date = "2011-01-01 12:00:00.000";
+    assertEquals(sdp.parse(date), fdp.parse(date));
+    date = "2011-01-01 12:00:00.000 ";
+    try {
+        sdp.parse(date);
+        fail("Expected exception");
+    } catch (ParseException e) {
+        // expected
+    }
+    assertEquals(sdp.parse("2011-01-01 12:00:00.000"), fdp.parse(date));
+}

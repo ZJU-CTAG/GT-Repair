@@ -1,0 +1,15 @@
+public void testArchiveStreamFactory() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream bzip2 = new BZip2CompressorInputStream(new ByteArrayInputStream("test".getBytes()));
+    ArchiveInputStream ain = factory.createArchiveInputStream(bzip2);
+    InputStream bzip2 = new BZip2CompressorInputStream(new ByteArrayInputStream("test".getBytes()));
+    ArchiveInputStream ain = factory.createArchiveInputStream(bzip2, "UTF-8");
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    ArchiveOutputStream aout = factory.createArchiveOutputStream(bout);
+    aout.close();
+    bout.close();
+    bzip2 = new BZip2CompressorInputStream(new ByteArrayInputStream(bout.toByteArray()));
+    ain = factory.createArchiveInputStream(bzip2, "UTF-8");
+    // ...
+}
+  

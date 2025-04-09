@@ -1,0 +1,18 @@
+public void testBrentOptimizer() {
+    final double[] start = new double[] {-2};
+    final double[] end = new double[] {2};
+    final double[] expected = new double[] {0};
+    final double[] actual = new double[1];
+    final double tolerance = 1.0e-4;
+    final UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) throws FunctionEvaluationException {
+            return -x*x;
+        }
+    };
+    final UnivariateOptimizer optimizer = new BrentOptimizer();
+    final UnivariatePointValuePair result = optimizer.optimize(100, f, GoalType.MAXIMIZE, start, end);
+    actual[0] = result.getPoint();
+    double error = FastMath.abs(expected[0] - actual[0]);
+    assertEquals(expected[0], actual[0], tolerance);
+    assertTrue(error < tolerance);
+}

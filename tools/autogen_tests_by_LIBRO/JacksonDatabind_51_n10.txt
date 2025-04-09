@@ -1,0 +1,27 @@
+public void testTypeInfo() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new TestModule());
+    final String json = "{\"x\":1,\"_t\":\"abc\"}";
+    final Message msg = mapper.readValue(json, Message.class);
+    assertNotNull(msg);
+    assertTrue(msg instanceof A);
+}
+
+static class TestModule extends SimpleModule {
+    public TestModule() {
+        super("TestModule", new Version(1, 0, 0, null, null, null));
+    }
+
+    @Override
+    public void setupModule(SetupContext context) {
+        super.setupModule(context);
+        context.addAbstractTypeResolver(new MessageResolver());
+    }
+}
+
+static class MessageResolver extends AbstractTypeResolver {
+    @Override
+    public JavaType resolveAbstractType(DeserializationConfig config,
+                                        JavaType type) {
+        if (type.getRawClass().isAssignableFrom(Message.class)) {
+            final String name = type.findTypeProperty("_t").

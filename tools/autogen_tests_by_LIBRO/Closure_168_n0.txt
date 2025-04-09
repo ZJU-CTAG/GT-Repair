@@ -1,0 +1,12 @@
+public void testIssue141() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.checkTypes = true;
+    options.checkVars = true;
+    options.checkGlobalThisLevel = CheckLevel.ERROR;
+    options.setWarningLevel(DiagnosticGroups.USELESS_CODE, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.ERROR);
+
+    String code = "var makeClass=function(a){var b=function(){this.initialize.apply(this,arguments)};for(var c in a)b.prototype[c]=a[c];return b};var Person=function(a){};Person=makeClass({initialize:function(a){this.name=a},getName:function(){return this.name},say:function(a){window.console.log(this.getName(1)+\" says: \"+a)}});var

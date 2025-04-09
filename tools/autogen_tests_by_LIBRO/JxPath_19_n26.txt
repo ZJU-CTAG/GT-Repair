@@ -1,0 +1,14 @@
+public void testPointers() throws Exception {
+    Node root = XMLUtils.newDocument("<a:doc xmlns:a='ns'><a:elem/><b:elem xmlns:b='ns'/></a:doc>").getDocumentElement();
+    JXPathContext ctx = JXPathContext.newContext(root);
+    ctx.setLenient(true);
+    Pointer p;
+    int counter = 0;
+    for (Iterator it = ctx.iteratePointers("elem"); it.hasNext(); ) {
+        p = (Pointer) it.next();
+        Node n = (Node) p.getNode();
+        assertEquals("elem", n.getLocalName());
+        counter++;
+    }
+    assertEquals(2, counter);
+}

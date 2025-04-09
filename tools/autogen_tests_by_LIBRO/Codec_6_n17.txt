@@ -1,0 +1,16 @@
+public void testBase64InputStream() throws Exception{
+    String inputData = "Hello World";
+    String encodedData = Base64.encodeBase64String(inputData.getBytes("UTF-8"));
+    String expectedData = new String(Base64.decodeBase64(encodedData), "UTF-8");
+
+    InputStream in = new ByteArrayInputStream(encodedData.getBytes("UTF-8"));
+    InputStreamReader isr = new InputStreamReader(new Base64InputStream(in, true), "UTF-8");
+
+    StringWriter sw = new StringWriter();
+    char[] buf = new char[1024];
+    int n = 0;
+    while (-1 != (n = isr.read(buf))) {
+        sw.write(buf, 0, n);
+    }
+    assertEquals(expectedData, sw.toString());
+}

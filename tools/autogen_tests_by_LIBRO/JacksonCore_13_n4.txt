@@ -1,0 +1,21 @@
+public void testFieldNameQuoting() throws IOException {
+    final StringWriter sw = new StringWriter();
+    final JsonFactory f = new JsonFactory();
+    final JsonGenerator g = f.createGenerator(sw);
+    final JsonFactory f1 = new JsonFactory();
+    final JsonGenerator g1 = f1.createGenerator(sw);
+    g.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    g.writeStartObject();
+    g.writeFieldName("field1");
+    g.writeString("value1");
+    g.writeFieldName("field2");
+    g.writeString("value2");
+    g.writeEndObject();
+    g.close();
+    g1.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
+    g1.writeStartObject();
+    g1.writeFieldName("field1");
+    g1.writeString("value1");
+    g1.writeFieldName("field2");
+    g1.writeString("value2");
+    g1

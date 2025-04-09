@@ -1,0 +1,12 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    try {
+        mapper.readValue(aposToQuotes("{'a':'X'}"), Issue108Bean.class);
+    } catch (InvalidFormatException e) {
+        String msg = e.getMessage();
+        assertNotNull(msg);
+        assertFalse(msg.contains(" at [source:"));
+    }
+}

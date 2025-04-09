@@ -1,0 +1,21 @@
+public void testCommonJS() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setPrettyPrint(true);
+    options.setClosurePass(true);
+    options.setProcessCommonJSModules(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    JSSourceFile[] files1 = new JSSourceFile[] {
+            JSSourceFile.fromCode("echo.js", "define(function() {\n" +
+                    " return {\n" +
+                    " echo: function(val) {\n" +
+                    " window.console.log(val);\n" +
+                    " }\n" +
+                    "}});\n"),
+    };
+    JSSourceFile[] files2 = new JSSourceFile[] {
+            JSSourceFile.fromCode("echo-main.js", "var echo = require('echo');\n" +
+                    "echo.echo('hello world');\n"),
+    };
+    Result result

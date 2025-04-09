@@ -1,0 +1,22 @@
+public void testGroupMinimum() throws ParseException {
+    Options options = new Options();
+    options.addOption(new Option("one", "one"));
+    options.addOption(new Option("two", "two"));
+    OptionGroup groupA = new OptionGroup();
+    groupA.addOption(new Option("three", "three"));
+    groupA.addOption(new Option("four", "four"));
+    groupA.setRequired(true);
+    Group groupB = new Group(null, groupA);
+    groupB.setMinimum(2);
+    options.addOptionGroup(groupA);
+    CommandLineParser parser = new DefaultParser();
+    try {
+        parser.parse(options, new String[]{"--one", "--two", "--three", "--four"});
+        fail("groupB should have been short of its minimum");
+    } catch (MissingGroupException e) {
+        // success
+    }
+    try {
+        parser.parse(options, new String[]{"--one", "--four"});
+        fail("groupB should have been short of its minimum");
+    } catch

@@ -1,0 +1,22 @@
+public void testWriting7zEmptyEntries() throws Exception {
+    final int n = 8;
+    final File folder = File.createTempFile("empty-folder-", "-test");
+    folder.delete();
+    folder.mkdir();
+
+    for (int i = 0; i < n; i++) {
+        File.createTempFile("empty-file-", "-test", folder);
+    }
+
+    final File output = File.createTempFile("empty-archive-", ".7z");
+    SevenZOutputFile outputFile = new SevenZOutputFile(output);
+
+    outputFile.setContentCompression(SevenZMethod.LZMA2);
+    outputFile.setContentMethods(Collections.singletonList(SevenZMethod.LZMA2));
+
+    for (File file : folder.listFiles()) {
+        outputFile.putArchiveEntry(new SevenZArchiveEntry(file, file.getName()));
+        if (file.length() > 0) {
+            try (InputStream inputStream = new FileInputStream(file)) {
+                StreamUtils.copy(inputStream, outputFile);
+            }

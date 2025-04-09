@@ -1,0 +1,21 @@
+public void testIssueFromStringDeserializer() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    String nullStr = "null";
+    String invalidUUID = "invalid";
+    String validUUID = UUID.randomUUID().toString();
+    String[] inputs = new String[] { nullStr, invalidUUID, validUUID };
+
+    for (String input : inputs) {
+        try {
+            final UUID uuid = mapper.readValue(quote(input), UUID.class);
+            assertEquals(input, uuid == null ? nullStr : uuid.toString());
+        } catch (JsonProcessingException e) {
+            assertNotNull(input, e.getMessage());
+        }
+    }
+}
+
+protected final String quote(String str) {
+    return str == null ? "null" : ('"' + str + '"');
+}

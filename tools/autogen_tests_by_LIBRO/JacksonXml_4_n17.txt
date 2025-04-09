@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    XmlMapper mapper = new XmlMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    String xml = mapper.writeValueAsString(null);
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><null/>", xml);
+
+    mapper = new XmlMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    xml = mapper.withRootName("root").writeValueAsString(null);
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>", xml);
+}

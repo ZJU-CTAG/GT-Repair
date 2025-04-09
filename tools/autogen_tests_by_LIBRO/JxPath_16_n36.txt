@@ -1,0 +1,22 @@
+public void testJaxenNode() {
+    {
+        // test Jaxen implementation
+        org.jaxen.dom.DOMXPath xpath = new org.jaxen.dom.DOMXPath( "*/node()" );
+        Node dom = new DOMXPathTest().buildDomTree();
+        List results = xpath.selectNodes( dom );
+        assertEquals( 6, results.size() );
+    }
+}
+
+public Node buildDomTree() {
+    try {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.newDocument();
+        Element root = document.createElementNS( "", "root" );
+        document.appendChild( root );
+        root.appendChild( document.createTextNode( "text" ) );
+        root.appendChild( document.createComment( "comment" ) );
+        root.appendChild( document.createProcessingInstruction( "pi", "data" ) );
+        Element child = document.createElementNS(

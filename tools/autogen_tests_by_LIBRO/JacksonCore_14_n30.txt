@@ -1,0 +1,12 @@
+public void testIssue110 () throws IOException {
+    char[] chars = new char[1024];
+    IOContext ioContext = new IOContext(new BufferRecycler(), this, false);
+    for (int i = 1; i <= chars.length; i++) {
+        char[] buffer = ioContext.allocTokenBuffer(i);
+        assertEquals(i, buffer.length);
+        for (int j = 0; j < i; j++) {
+            buffer[j] = chars[j];
+        }
+        assertTrue(Arrays.equals(buffer, chars));
+    }
+}

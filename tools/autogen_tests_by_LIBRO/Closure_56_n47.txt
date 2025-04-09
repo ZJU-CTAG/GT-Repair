@@ -1,0 +1,19 @@
+public void testLastWarningOrErrorIsTruncated() {
+    Compiler compiler = new Compiler();
+
+    String code = "alert(foo);\n" +
+                  "alert(bar);\n";
+
+    compiler.disableThreads();
+    compiler.setErrorManager(new ErrorManager(new PrintWriter(System.err)) {
+
+        @Override
+        public void println(CheckLevel level, JSError error) {
+            System.out.println(level + " - " + error.description);
+        }
+
+    });
+    compiler.compile(SourceFile.fromCode("test.js", code));
+    assertEquals(2,
+            compiler.getErrorManager().getErrorCount());
+}

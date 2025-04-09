@@ -1,0 +1,12 @@
+public void testExceptionIndex() {
+    try {
+        objectMapper.readValue("[{\"id\":1},{\"id\":\"A\"}]", new TypeReference<List<TestListObj>>() {
+        });
+    } catch (JsonMappingException e) {
+        if (e.getPathReference() instanceof CollectionDeserializer.CollectionReferring) {
+            CollectionDeserializer.CollectionReferring collectionReferring =
+                    (CollectionDeserializer.CollectionReferring) e.getPathReference();
+            Assert.assertEquals(1, collectionReferring.getIndex());
+        }
+    }
+}

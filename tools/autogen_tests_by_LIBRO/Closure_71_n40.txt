@@ -1,0 +1,21 @@
+public void testVisibilityRedeclaredError() {
+    Compiler.setLoggingLevel(Level.INFO);
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(
+        DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("foo.js",
+                "/** @constructor */ function Foo() {\n" +
+                "  /** @private */ this.x_ = 3;\n" +
+                "}\n"),
+            JSSourceFile.fromCode("subfoo.js",
+                "/** @constructor\n" +
+                "  * @extends {Foo} */ function SubFoo() {\n" +
+                "  /** @private */ this.x_ = 3;\n" +
+                "}\n")
+        },

@@ -1,0 +1,21 @@
+public void testIssue108() {
+    HtmlCanvas html = new HtmlCanvas();
+    Document doc = null;
+    try {
+        html.table();
+            html.tr();
+                html.td();
+                    html.write("cell 1");
+                html._td();
+                html.td();
+                    html.write("cell 2");
+                html._td();
+            html._tr();
+        html._table();
+
+        doc = Jsoup.parse(html.toHtml());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    assertEquals(2, doc.select("table").size());
+}

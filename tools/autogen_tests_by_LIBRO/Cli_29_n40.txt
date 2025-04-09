@@ -1,0 +1,10 @@
+public void testIssue108() {
+    Options opts = new Options();
+    opts.addOption("b", "balloo", true, "yay this is a balloo");
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(opts, new String[] { "--balloo", "this is a \"test\"" });
+    assertEquals("this is a \"test\"", cmd.getOptionValue("balloo"));
+
+    cmd = parser.parse(opts, new String[] { "--balloo", "this is a \'test\'" });
+    assertEquals("this is a \'test\'", cmd.getOptionValue("balloo"));
+}

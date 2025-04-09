@@ -1,0 +1,14 @@
+public void testNonDefaultWithString() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    m.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    assertEquals("{}", m.writeValueAsString(new BeanWithDefault()));
+    assertEquals("{\"s\":\"\"}", m.writeValueAsString(new BeanWithDefault("")));
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+static class BeanWithDefault {
+    public String s;
+    public BeanWithDefault() { this(""); }
+    public BeanWithDefault(String s) { this.s = s; }
+}

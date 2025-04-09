@@ -1,0 +1,20 @@
+public void testBuggedRequires() throws Exception {
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.of(SourceFiles.makeTestCode(
+            "test.js",
+            "var goog = {};",
+            "goog.addDependency('', ['A', 'B'], []);",
+            "goog.provide('A');",
+            "goog.provide('B');",
+            "goog.provide('C');",
+            "goog.require('A');",
+            "goog.require('B');",
+            "goog.require('C');",
+            "goog.require('D');"
+    ));
+    List<SourceFile> externs = ImmutableList.of(SourceFiles.makeTestCode(
+            "externs.js",
+            "/** @constructor */ function Object() {}",
+            "Object.prototype.toString = function() {};",
+            "/** @constructor */ function Array() {}",
+            "/** @param {*} var_args */ Array.prototype.push = function(var_

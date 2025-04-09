@@ -1,0 +1,11 @@
+public void testEmitOptionalModuleExportsOverride() {
+    String js = "require(['echo'], function (echo) { echo.echo('hello world'); });";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.initOptions(options);
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("echo-main.js", js) },
+        new JSSourceFile[] { JSSourceFile.fromCode("echo.js", "define(function() { return { echo: function(val) { window.console.log(val); }}});") },
+        options);
+}

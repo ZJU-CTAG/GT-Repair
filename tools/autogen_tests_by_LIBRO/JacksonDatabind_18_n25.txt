@@ -1,0 +1,14 @@
+public void testIssue511() throws Exception
+{
+    final ObjectMapper m = new ObjectMapper();
+    final List<String> values = new ArrayList<String>();
+    try {
+        MappingIterator<String> it = m.reader(String.class).readValues("\"foo\" \"bar\n}");
+        while (it.hasNextValue()) {
+            values.add(it.next());
+        }
+        fail("Should have failed");
+    } catch (MismatchedInputException e) {
+        assertEquals(2, values.size());
+    }
+}

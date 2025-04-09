@@ -1,0 +1,17 @@
+public void testIssue131() {
+    String input = "var foo = function bar(){\n" +
+        " var bar;\n" +
+        " alert(bar)\n" +
+        " };"
+        ;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(
+        EXTERNS,
+        input,
+        options);
+    assertTrue(result.success);
+    assertEquals("function bar(){alert(void 0)}",
+            compiler.toSource());
+}

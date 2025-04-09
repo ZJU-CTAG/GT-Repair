@@ -1,0 +1,48 @@
+public void testExternalIdDeser() throws Exception {
+    String json = "{\"id\":\"123\",\"data\":{\"id\":\"abc\",\"text\":\"text\"}}";
+    Message msg = new ObjectMapper().readValue(json, Message.class);
+    assertEquals("123", msg.getId());
+    assertEquals("abc", msg.getData().getId());
+}
+
+public class Message {
+
+    private String id;
+    private Data data;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+}
+
+public abstract class Data {
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+}
+
+public class TextData extends Data {
+
+    private String text;
+

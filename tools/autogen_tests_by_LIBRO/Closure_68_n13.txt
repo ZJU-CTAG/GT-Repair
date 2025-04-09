@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js",
+                    "/**\n" +
+                    " * @type function\n" +
+                    " */\n" +
+                    "var callback;\n"
+            ));
+    assertFalse(result.success);
+    assertEquals(1, result.warnings.length);
+    assertEquals(3, result.warnings[0].getLineno());
+    assertTrue(result.warnings[0].toString().contains("expected '('"));
+}

@@ -1,0 +1,11 @@
+public void testXmlRootNameForNull() {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.setSerializerProvider(new XmlSerializerProvider()
+            .withRootName("forNull")
+            .withRootName(null, "forNull")
+            .withRootName(Integer.class, "forNull")
+    );
+    assertEquals("<forNull></forNull>", mapper.writeValueAsString(null));
+    assertEquals("<forNull></forNull>", mapper.writeValueAsString(0));
+}

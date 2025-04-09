@@ -1,0 +1,13 @@
+public void testBigDecimalIntrospection() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first: verify that works ok
+    assertEquals("{\"type\":\"number\"}", mapper.writeValueAsString(mapper.getSerializationConfig().introspect(SimpleType.construct(BigDecimal.class))));
+    // but then: let's try to fail it, just to be sure...
+    try {
+        mapper.getSerializationConfig().introspect(SimpleType.construct(BigInteger.class));
+        fail("Expected failure for BigInteger");
+    } catch (JsonMappingException e) {
+        verifyException(e, "can not find");
+    }
+}

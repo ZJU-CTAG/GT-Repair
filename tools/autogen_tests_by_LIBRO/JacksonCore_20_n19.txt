@@ -1,0 +1,17 @@
+public void testJSONGeneratorWriteEmbeddedObject() throws Exception
+{
+    final String JSON = "{\"data\":\"foo\"}";
+    final byte[] DATA = { 0 };
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().with(Feature.WRITE_EMBEDDED_OBJECTS);
+    Map<String,Object> map = mapper.readValue(JSON, Map.class);
+    map.put("data", DATA);
+    String json = mapper.writeValueAsString(map);
+    // {
+    //   "data": "foo"
+    // }
+    //
+    // No JSON for binary data found, perhaps due to missing support for
+    // writeEmbeddedObject()?
+    assertEquals("{\"data\":\"foo\"}", json);
+}

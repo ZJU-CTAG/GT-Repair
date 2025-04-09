@@ -1,0 +1,13 @@
+public void testIssue137() {
+    Compiler c = new Compiler();
+    c.initOptions(new CompilerOptions());
+    c.getOptions().setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    result = c.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("testcode",
+            "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }\n" +
+            "/** @constructor \n * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }"),
+        },
+        new CompilerOptions());
+    assertEquals(0, result.errors.length);
+}

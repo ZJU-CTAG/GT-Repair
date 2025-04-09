@@ -1,0 +1,12 @@
+public void testIf() throws Exception {
+    String input = "if( es[--esi][ es[esi+1] ] === 1){ es[esi] = 0;}else{ es[esi] = 1;}";
+    String expected = "es[--esi] = 1 === es[esi][es[esi + 1]] ? 0 : 1;";
+
+    Parser parser = new Parser(new Lexer(new InputStreamReader(new ByteArrayInputStream(input.getBytes()))));
+    CompilationUnit compilationUnit = parser.CompilationUnit();
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    new Visitors.ToC().visit(compilationUnit, new PrintWriter(out));
+    String actual = out.toString();
+
+    assertEquals(expected, actual);
+}

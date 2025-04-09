@@ -1,0 +1,19 @@
+public void testTarArchiveEntry() throws IOException {
+    String fileName = "file_name.txt";
+    String fileNameWithSpace = fileName + " ";
+
+    File file = File.createTempFile("tar", "test");
+    file.deleteOnExit();
+
+    org.apache.commons.compress.archivers.tar.TarArchiveOutputStream taos = new org.apache.commons.compress.archivers.tar.TarArchiveOutputStream(new FileOutputStream(file));
+    TarArchiveEntry tae = new TarArchiveEntry(fileName);
+    tae.setSize(500);
+    taos.write(fileName.getBytes(), 0, fileName.getBytes().length);
+    taos.closeArchiveEntry();
+    taos.close();
+
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(file));
+    tae = tais.getNextTarEntry();
+    assertNotNull(tae);
+    assertEquals(fileName, tae.getName());
+    assertEquals(500, tae.get

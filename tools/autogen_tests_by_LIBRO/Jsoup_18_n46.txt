@@ -1,0 +1,17 @@
+public void testIssue107() {
+    String html = "<div id=1>\n" +
+            "  <div id=2>\n" +
+            "    <img\n" +
+            "      width=100\n" +
+            "      height=100/>\n" +
+            "  </div>\n" +
+            "</div>";
+
+    Document doc = Jsoup.parse(html);
+    String outerHtml = doc.select("div[id=2]").first().outerHtml();
+
+    Document doc2 = Jsoup.parse(outerHtml);
+    assertEquals(1, doc2.select("img").size());
+    assertEquals("100", doc2.select("img").first().attr("width"));
+    assertEquals("100", doc2.select("img").first().attr("height"));
+}

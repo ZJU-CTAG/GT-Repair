@@ -1,0 +1,25 @@
+public void testBoolean() {
+    String s = "function some_function() {\n" +
+            " var fn1;\n" +
+            " var fn2;\n" +
+            "\n" +
+            " if (any_expression) {\n" +
+            " fn2 = external_ref;\n" +
+            " fn1 = function (content) { return fn2(); }\n" +
+            " }\n" +
+            "\n" +
+            " return {\n" +
+            " method1: function () {\n" +
+            " if (fn1) fn1();\n" +
+            " return true;\n" +
+            " },\n" +
+            " method2: function () {\n" +
+            " return false;\n" +
+            " }\n" +
+            " }\n" +
+            "}";
+    CompilerRunner runner = new CompilerRunner();
+    runner.setJs(s);
+    runner.run();
+    assertEquals("function some_function() {\n" +
+            " var a, b;\

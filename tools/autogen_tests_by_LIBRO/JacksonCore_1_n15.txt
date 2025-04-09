@@ -1,0 +1,13 @@
+public void testParsingOfNaN() throws Exception {
+    // given
+    final String json = "[{\"value\":NaN}]";
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+
+    // when
+    final List<Object> parsed = mapper.readValue(json, List.class);
+
+    // then
+    assertEquals(1, parsed.size());
+    assertEquals(Double.NaN, parsed.get(0));
+}

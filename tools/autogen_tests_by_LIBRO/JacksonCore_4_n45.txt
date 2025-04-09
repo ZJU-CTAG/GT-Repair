@@ -1,0 +1,11 @@
+public void testKeyLength() throws Exception {
+    String json = "{\"" + StringUtils.repeat("01234567890", MAX_SEGMENT_LEN + 1) + "\":1}";
+
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.readTree(json);
+        fail("Should throw exception");
+    } catch (Exception e) {
+        assertTrue(e.getMessage().contains("Too long key"));
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssueNested1() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+    mapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+
+    Definition d = mapper.readValue(new File("src/test/resources/def.json"), Definition.class);
+    assertEquals(1, d.getRecords().size());
+    List<Record> r = d.getRecords();
+    assertEquals(1, r.size());
+    assertEquals(1, r.get(0).getFields().size());
+}

@@ -1,0 +1,8 @@
+public void testOverzealousArgumentsOptimisation() {
+  final String source = "function d3_call(callback) { var f = callback; arguments[0] = this; f.apply(this, arguments); return this; }";
+  ScriptEngineManager mgr = new ScriptEngineManager();
+  ScriptEngine engine = mgr.getEngineByName("JavaScript");
+  Object result = engine.eval(source);
+  final String actual = engine.eval("d3_call.toString()").toString();
+  assertEquals("function d3_call(a){arguments[0]=this;a.apply(this,arguments);return this}", actual);
+}

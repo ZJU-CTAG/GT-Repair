@@ -1,0 +1,9 @@
+public void testHashCodeBuilderThreadLocal() throws Exception {
+    ThreadLocal<HashCodeBuilder> tl = new ThreadLocal<HashCodeBuilder>();
+    tl.set(new HashCodeBuilder());
+    tl.get().appendSuper(new Object());
+    tl = null;
+    System.gc();
+    Thread.sleep(3000);
+    assertEquals(0, ThreadLocal.values().size());
+}

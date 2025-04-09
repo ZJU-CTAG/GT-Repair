@@ -1,0 +1,29 @@
+public void testScope() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.initOptions(options);
+
+    String js =
+            "var goog = {};" +
+            "goog.scope;" +
+
+            "var ns = {};" +
+            "ns.sub = {};" +
+            "/** @constructor */" +
+            "ns.sub.C = function() {};" +
+
+            "goog.scope(function() {" +
+            " var sub = ns.sub;" +
+            " /** @type {sub.C} */" +
+            " var x = null;" +
+            "});";
+
+    Result result = compiler.compile(
+            EXTERNS,
+            ImmutableList.of(SourceFile.fromCode("input.js", js)),
+            options
+    );
+
+    assertEquals(result.errors.toString(), 0, result.errors.length);
+    assertEquals(result.warnings.toString

@@ -1,0 +1,14 @@
+public void testBasicVariableSelection() {
+    final LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 0, 0, 0 }, 0);
+    final List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 2, 1, 0 }, Relationship.EQ, 6));
+    constraints.add(new LinearConstraint(new double[] { 0, 1, 1 }, Relationship.EQ, 2));
+    final SimplexTableau tableau = new SimplexTableau(f, constraints, true, true);
+    tableau.dropPhase1Objective();
+    tableau.discardArtificialVariables();
+    assertEquals(3, tableau.getNumVariables());
+    assertEquals(2, tableau.getNumObjectiveFunctions());
+    assertEquals(2, tableau.getNumDecisionVariables());
+    assertEquals(1, tableau.getOriginalNumDecisionVariables());
+    assertEquals(1, tableau.getNumSlackVariables());
+    assertEqu

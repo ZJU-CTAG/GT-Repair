@@ -1,0 +1,15 @@
+public void test() {
+    File f = new File("src/test/resources/test.tgz");
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(f))));
+
+    TarArchiveEntry entry = tarIn.getNextTarEntry();
+
+    while (entry != null) {
+        System.out.println(entry.getName());
+        entry = tarIn.getNextTarEntry();
+    }
+    tarIn.close();
+}

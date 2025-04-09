@@ -1,0 +1,17 @@
+public void testSubClass() {
+    JsonFactory jsonFactory = new JsonFactory();
+
+    // We read from a reader, as we don't know how long the data will be
+    StringReader stringReader = new StringReader("{\"@type\":\"org.codehaus.jackson.FasterXML.Truck\"}");
+    JsonParser jsonParser = jsonFactory.createJsonParser(stringReader);
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(new SimpleModule("test", new Version(1, 0, 0, null))
+        .addAbstractTypeMapping(Vehicle.class, Car.class));
+    try {
+        objectMapper.readValue(jsonParser, Car.class);
+        fail("we should have gotten an exception");
+    } catch (JsonMappingException e) {
+        // expected.
+    }
+}

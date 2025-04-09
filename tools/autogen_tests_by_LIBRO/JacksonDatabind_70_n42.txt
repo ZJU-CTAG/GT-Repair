@@ -1,0 +1,27 @@
+public void testUnwrappedWithCsv() throws Exception
+{
+    final ObjectMapper mapper = newMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    final CsvMapper csvMapper = csvMapper(mapper);
+    final CsvSchema schema = csvMapper.schemaFor(Person.class).withHeader();
+
+    final Person input = new Person();
+    input.businessAddress = new Address(null, null, null, null, null);
+    final String csv = csvMapper.writer(schema).writeValueAsString(input);
+    Person output = csvMapper.readerFor(Person.class).with(schema).readValue(csv);
+    assertEquals(input, output);
+}
+
+public static class Person {
+    @JsonUnwrapped
+    public Address businessAddress;
+}
+
+public static class Address {
+    public String street;
+    public String addon;
+    public String zip = "";
+    public String town;
+    public String country;
+
+    public Address

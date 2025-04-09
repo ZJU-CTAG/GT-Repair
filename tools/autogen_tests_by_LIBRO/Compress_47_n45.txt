@@ -1,0 +1,15 @@
+public void testBzip2UnknownSize() throws IOException {
+    byte[] data = new byte[5000];
+    data[0] = 'B';
+    data[1] = 'Z';
+    ZipArchiveEntry ze = new ZipArchiveEntry("name");
+    ze.setMethod(ZipMethod.BZIP2.getCode());
+
+    try {
+        ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(data));
+        zis.getNextZipEntry();
+        fail("Should have thrown ZipException due to unknown size");
+    } catch (ZipException e) {
+        // expected
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue115() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{ \"x\": 1, \"y\": 2, \"w\": { \"a\": 3, \"b\": 4 } }";
+    Bean bean = mapper.readValue(json, Bean.class);
+    assertEquals(1, bean.x);
+    assertEquals(2, bean.y);
+    assertEquals(3, bean.w.a);
+    assertEquals(4, bean.w.b);
+}

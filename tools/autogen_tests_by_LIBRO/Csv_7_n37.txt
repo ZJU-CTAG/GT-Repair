@@ -1,0 +1,14 @@
+public void testIssue() throws IOException {
+    String s = "Col1,Col2,Col2,Col3,Col4\n"
+            + "1,2,3,4,5\n"
+            + "4,5,6,7,8";
+    Reader in = new StringReader(s);
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+            .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    Iterable<CSVRecord> records = myFormat.parse(in);
+    for (CSVRecord record : records) {
+        for (int index=0; index<record.size(); index++) {
+            assertEquals(record.get(index), record.get(record.getHeader(index)));
+        }
+    }
+}

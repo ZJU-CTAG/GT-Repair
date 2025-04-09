@@ -1,0 +1,30 @@
+public void testOutOfMemory() {
+
+    final Pattern dummyPattern = Pattern.compile("dummy");
+    final String dummyFormatName = "dummy";
+
+    Map<String, Object> formatRegistry = new HashMap<String, Object>();
+    formatRegistry.put(dummyFormatName, new FormatFactory() {
+        @Override
+        public Format getFormat(String name, String arguments,
+                Configuration configuration) {
+            if (dummyFormatName.equals(name)) {
+                return new DummyFormat();
+            }
+            return null;
+        }
+    });
+
+    ExtendedMessageFormat mf = new ExtendedMessageFormat("it''s a {dummy} 'test'!", formatRegistry);
+    String formattedPattern = mf.format(new String[] {"great"});
+    System.out.println(formattedPattern);
+
+}
+
+
+private static class DummyFormat extends Format {
+    private static final long serialVersionUID = 1L;
+    private static final Pattern dummyPattern = Pattern.compile("dummy");
+
+    @Override
+    public StringBuffer format(Object obj, StringBuffer toAppendTo,

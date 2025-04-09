@@ -1,0 +1,11 @@
+public void testIssue127() {
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine rhino = mgr.getEngineByName("rhino");
+    Object result = null;
+    try {
+        result = rhino.eval("b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")");
+    } catch (ScriptException e) {
+        e.printStackTrace();
+    }
+    assertEquals("ok then...", result);
+}

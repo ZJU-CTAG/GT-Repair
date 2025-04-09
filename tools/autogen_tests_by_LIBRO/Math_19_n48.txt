@@ -1,0 +1,14 @@
+public void testWideBounds() {
+    final double MIN_BOUND = Double.NEGATIVE_INFINITY;
+    final double MAX_BOUND = Double.POSITIVE_INFINITY;
+    CMAESOptimizer optimizer = new CMAESOptimizer(Integer.MAX_VALUE, 1e-10, false, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-10, 1e-10));
+    optimizer.optimize(new MaxEval(1), new ObjectiveFunction(new MultivariateFunction() {
+        @Override
+        public double value(double[] point) {
+            if (Double.isNaN(point[0])) {
+                throw new AssertionError();
+            }
+            return 0;
+        }
+    }), GoalType.MINIMIZE, new double[1]);
+}

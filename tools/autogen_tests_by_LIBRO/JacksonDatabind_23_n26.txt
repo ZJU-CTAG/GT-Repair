@@ -1,0 +1,26 @@
+public void test() throws Exception
+{
+    final ObjectMapper m = new ObjectMapper();
+    assertEquals("{\"a\":1}", m.writeValueAsString(new Bean(1, null)));
+    assertEquals("{\"a\":1}", m.writeValueAsString(new Bean(1, " ")));
+}
+
+@JsonFilter("myFilter")
+static class Bean
+{
+    public final int a;
+    public final String b;
+
+    @JsonCreator
+    public Bean(@JsonProperty("a") int a,
+            @JsonProperty("b") String b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    @JsonProperty
+    public int getA() { return a; }
+
+    @JsonProperty
+    public String getB() { return b; }
+}

@@ -1,0 +1,14 @@
+public void testLevenbergMarquardtOptimizer() {
+    VectorialPointValuePair optimum = new LevenbergMarquardtOptimizer().optimize(
+        new MaxEval(1),
+        new ObjectiveFunction(new MultivariateDifferentiableVectorFunction() {
+            public double[] value(double[] point) { return point; }
+            public DerivativeStructure[] value(DerivativeStructure[] point) {
+                return point;
+            }
+        }),
+        GoalType.MINIMIZE,
+        new double[] {-5, -5},
+        new double[] {5, 5},
+        new VectorialConvergenceChecker(new double[] {0, 0}));
+}

@@ -1,0 +1,23 @@
+public void testIssue1313() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.addKeyDeserializerModifier(new KeyDeserializerModifier() {
+
+                @Override
+                public KeyDeserializer modifyKeyDeserializer(DeserializationConfig config,
+                        JavaType type, KeyDeserializer deserializer) {
+                    if (!type.isEnumType()) {
+                        return super.modifyKeyDeserializer(config, type, deserializer);
+                    }
+                    return new KeyDeserializer() {
+                        @Override
+                        @SuppressWarnings("unchecked")
+                        public Object deserializeKey(String key,
+                                DeserializationContext ctxt) throws IOException,
+                                JsonProcessingException {
+                            Class<? extends Enum> rawClass = (Class<Enum<?>>) type
+                                    .getRawClass();
+                            return Enum.valueOf(rawClass

@@ -1,0 +1,14 @@
+public void testPolymorphicDeserialization() throws Exception
+{
+    // first: simplest, most basic case
+    String JSON = aposToQuotes("{'@type':'java.lang.Class','val':'java.lang.ProcessBuilder'}");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    Object ob = mapper.readValue(JSON, Object.class);
+    assertTrue(ob instanceof Class<?>);
+    Class<?> cls = (Class<?>) ob;
+    assertEquals("java.lang.ProcessBuilder", cls.getName());
+    // and then use it:
+    ProcessBuilder pb = new ProcessBuilder("ls");
+    assertSame(pb.getClass(), cls);
+}

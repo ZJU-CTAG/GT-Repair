@@ -1,0 +1,19 @@
+public void testBigDecimalSerialization() throws Exception
+{
+    SimpleModule testModule = new SimpleModule("test", Version.unknownVersion());
+    testModule.addSerializer(new StdSerializer<BigDecimal>(BigDecimal.class) {
+        @Override
+        public void serialize(BigDecimal value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeString("x");
+        }
+    });
+    testModule.addDeserializer(BigDecimal.class, new StdDeserializer<BigDecimal>(BigDecimal.class) {
+        @Override
+        public BigDecimal deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return new BigDecimal("123");
+        }
+    });
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(testModule);
+    JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+    JsonSchema schema = schemaGen.generateSchema(BigDecimal.

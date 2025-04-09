@@ -1,0 +1,9 @@
+public void testWithMethodInvoker() throws Exception {
+    String json = "{\"@type\":\"org.apache.commons.beanutils.MethodUtils\",\"methodName\":\"getProtectionDomain\",\"targetObject\":{\"@type\":\"java.lang.Class\",\"val\":\"com.sun.rowset.JdbcRowSetImpl\"}}";
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.enableDefaultTyping();
+    assertThrows(JsonMappingException.class, () -> {
+        mapper.readValue(json, Object.class);
+    });
+}

@@ -1,0 +1,11 @@
+public void testIssue108() {
+    class Test {
+        public void method(String... args) {
+        }
+    }
+    Test test = mock(Test.class);
+    test.method("1", "2", "3");
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(test).method(captor.capture(), captor.capture(), captor.capture());
+    assertEquals(Arrays.asList("1", "2", "3"), captor.getAllValues());
+}

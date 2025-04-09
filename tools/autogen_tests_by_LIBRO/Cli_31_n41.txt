@@ -1,0 +1,12 @@
+public void testOptionBuilderWithArg() {
+    Option opt = OptionBuilder.withArgName("arg")
+            .create("f");
+    StringBuffer sb = new StringBuffer();
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.printHelp(sb, 80, "cmd", null, Collections.singletonList(opt), HelpFormatter.DEFAULT_LEFT_PAD,
+            HelpFormatter.DEFAULT_DESC_PAD, null, true);
+    String expected =
+            "usage: cmd" + LINE_SEPARATOR + " -f <arg>" + LINE_SEPARATOR + LINE_SEPARATOR + " -f <arg>"
+                    + LINE_SEPARATOR;
+    assertEquals(expected, sb.toString());
+}

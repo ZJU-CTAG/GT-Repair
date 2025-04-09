@@ -1,0 +1,10 @@
+public void testNextValue() throws XMLStreamException {
+FailingFromXMLParser parser = new FailingFromXMLParser("<a><b c=\"d\">e</b></a>", new TestXmlFactory());
+assertTrue(parser.nextTag() == XMLStreamConstants.START_ELEMENT);
+assertEquals("a", parser.getLocalName());
+assertTrue(parser.nextTag() == XMLStreamConstants.START_ELEMENT);
+assertEquals("b", parser.getLocalName());
+assertEquals("d", parser.nextTextValue()); // This will return null
+assertTrue(parser.nextTag() == XMLStreamConstants.END_ELEMENT);
+assertTrue(parser.nextTag() == XMLStreamConstants.END_ELEMENT);
+}

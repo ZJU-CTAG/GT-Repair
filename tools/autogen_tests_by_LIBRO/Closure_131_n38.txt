@@ -1,0 +1,10 @@
+public void testIssue108() {
+    try {
+        UglifyJs.minify("var test={\n" +
+                "\"a\\u0004b\":\"c\"\n" +
+                "};", new UglifyJsOptions());
+        fail();
+    } catch (UglifyJsException e) {
+        assertTrue(e.getMessage().startsWith("Invalid character in identifier"));
+    }
+}

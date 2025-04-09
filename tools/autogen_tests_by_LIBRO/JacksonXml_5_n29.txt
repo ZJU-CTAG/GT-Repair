@@ -1,0 +1,14 @@
+public void testDataBinding() throws Exception {
+    ObjectMapper xmlMapper = new XmlMapper();
+    xmlMapper.configure(MapperFeature.USE_ANNOTATIONS, false);
+    ObjectMapper xmlMapperUsingAnnotations = new XmlMapper();
+    
+    String xml = xmlMapper.writeValueAsString(new MyData());
+    assertEquals("<MyData/>", xml);
+    xml = xmlMapperUsingAnnotations.writeValueAsString(new MyData());
+    assertEquals("<myname/>", xml);
+}
+@JacksonXmlRootElement(localName = "myname")
+static class MyData {
+    
+}

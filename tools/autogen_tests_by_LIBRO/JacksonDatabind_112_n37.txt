@@ -1,0 +1,25 @@
+public void testStringCollectionDeserializerWithCustomCollection() throws Exception {
+    String json = "{\n" +
+            "  \"collection\" : [\"A\", \"B\"]\n" +
+            "}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+            .addDeserializer(CustomCollection.class, new CustomCollectionDeserializer()));
+    ObjectWithCustomCollection result = mapper.readValue(json, ObjectWithCustomCollection.class);
+
+    assertEquals(2, result.collection.size());
+    assertEquals("A", ((List<String>) result.collection).get(0));
+    assertEquals("B", ((List<String>) result.collection).get(1));
+}
+
+@SuppressWarnings("serial")
+public static class CustomCollection<T> extends ArrayList<T> {
+    public CustomCollection() {
+        super();
+    }
+    public CustomCollection(ArrayList<T> list) {
+        super(list);
+    }
+    public CustomCollection<T> toImmutable() {
+        return new

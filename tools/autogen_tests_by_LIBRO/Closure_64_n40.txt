@@ -1,0 +1,10 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.STRICT_MISSING_PROPERTIES, CheckLevel.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(JSSourceFile.fromCode("get_num.js", "var getNum = function() { return 5; };"), JSSourceFile.fromCode("alert.js", "alert(getNum());"), options);
+    assertEquals("'use strict';\nalert(5);\n", result.toSource());
+}

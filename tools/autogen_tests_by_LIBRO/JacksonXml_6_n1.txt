@@ -1,0 +1,15 @@
+public void testIssue108() {
+    byte[] inputBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    InputStream input = new ByteArrayInputStream(inputBytes);
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    ToXmlGenerator generator = new ToXmlGenerator(null, JsonEncoding.UTF8, null, output, JsonWriteContext.createRootContext(null), true);
+
+    generator.writeStartArray();
+    generator.writeBinary(Base64Variants.getDefaultVariant(), input, inputBytes.length);
+    generator.writeEndArray();
+
+    generator.close();
+
+    String xml = new String(output.toByteArray());
+    assertEquals("<array>AQIDBAUGBwg=</array>", xml);
+}

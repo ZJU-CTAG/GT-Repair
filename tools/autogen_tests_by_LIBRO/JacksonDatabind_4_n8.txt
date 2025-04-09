@@ -1,0 +1,29 @@
+public void testDeserializer() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "[\"value1\"],[\"value2\"]";
+        mapper.readValue(json, Test.class);
+}
+
+public class Test {
+    @JsonDeserialize(using = MyDeserializer.class)
+    private ArrayList<String> values = new ArrayList<String>();
+
+    public ArrayList<String> getValues() {
+        return values;
+    }
+
+    public void setValues(ArrayList<String> values) {
+        this.values = values;
+    }
+}
+
+public class MyDeserializer extends StdDeserializer<String> {
+    public MyDeserializer() {
+        super(String.class);
+    }
+
+    @Override
+    public String deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        throw new MappingException("Forced error");
+    }
+}

@@ -1,0 +1,16 @@
+public void testExample() {
+    String html = "<html><head></head><body><script type=\"text/javascript\">\n" +
+"\n" +
+"var inside = true;\n" +
+"\n" +
+"</script>\n" +
+"\n" +
+"this should be outside.\n" +
+"\n" +
+"</body>\n" +
+"</html>";
+    Document doc = Jsoup.parse(html);
+    Element script = doc.select("script").first();
+    assertEquals("text is in script tag", "var inside = true;\n\n\n\nthis should be outside.\n\n", script.html());
+    assertEquals("text is not in body", "this should be outside.\n", doc.body().html());
+}

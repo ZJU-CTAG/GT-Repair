@@ -1,0 +1,11 @@
+public void testAsPropertyTypeDeserializer() throws IOException {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
+    public static class Foo {
+        // public Foo() { }
+        public Foo(String value) { }
+    }
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    Foo foo = mapper.readValue("\"\"", Foo.class);
+    assertNull(foo);
+}

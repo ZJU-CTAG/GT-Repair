@@ -1,0 +1,15 @@
+public void testWithView() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+
+    final Foo foo = new Foo();
+    foo.setBar(new Bar());
+
+    // This is fine, works as expected
+    final String value = mapper.writeValueAsString(foo);
+    System.out.println(value);
+
+    // This should fail, but is currently allowed by the code
+    // This should fail at least on deserialization since we don't have a type id.
+    mapper.readerWithView(Bar.class).readValue(value);
+}

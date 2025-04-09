@@ -1,0 +1,21 @@
+public void testReferenceIndex() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[1, 2, \"3\"]", int[].class);
+        fail();
+    } catch (MismatchedInputException e) {
+        assertEquals(2, e.getPath().get(0).getIndex());
+    }
+    try {
+        mapper.readValue("[1, 2, \"3\"]", new TypeReference<List<Integer>>() { });
+        fail();
+    } catch (MismatchedInputException e) {
+        assertEquals(2, e.getPath().get(0).getIndex());
+    }
+    try {
+        mapper.readValue("[1, 2, \"3\"]", new TypeReference<Set<Integer>>() { });
+        fail();
+    } catch (MismatchedInputException e) {
+        assertEquals(2, e.getPath().get(0).getIndex());
+    }
+}

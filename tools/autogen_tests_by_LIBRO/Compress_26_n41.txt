@@ -1,0 +1,24 @@
+public void testIssue108() throws Exception {
+    CipherInputStream cis = new CipherInputStream(new ByteArrayInputStream(new byte[1024]), new DummyCipher());
+    assertEquals(1024, IOUtils.skip(cis, 2147483647L));
+}
+
+private static class DummyCipher extends Cipher {
+    @Override
+    public void init(int opmode, Key key) throws InvalidKeyException {
+    }
+    @Override
+    public void init(int opmode, Key key, AlgorithmParameterSpec params) throws InvalidKeyException, InvalidAlgorithmParameterException {
+    }
+    @Override
+    public void init(int opmode, Key key, AlgorithmParameters params) throws InvalidKeyException, InvalidAlgorithmParameterException {
+    }
+    @Override
+    public void init(int opmode, Key key, SecureRandom random) throws InvalidKeyException {
+    }
+    @Override
+    public void init(int opmode, Certificate certificate) throws InvalidKeyException {
+    }
+    @Override
+    public byte[] update(byte[] input, int inputOffset, int inputLen) {
+        return new byte

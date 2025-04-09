@@ -1,0 +1,8 @@
+public void testTokenBuffer() {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree("{\"a\":1}");
+    TokenBuffer buffer = new TokenBuffer(mapper, false);
+    buffer.copyCurrentStructure(node);
+    Value value = mapper.readValue(buffer.asParser(), Value.class);
+    assertEquals(1, value.a);
+}

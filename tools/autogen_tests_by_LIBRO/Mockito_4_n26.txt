@@ -1,0 +1,21 @@
+public void test_issue() throws Exception {
+    //given
+    final Foo mockedFoo = mock(Foo.class, new StrictAnswer());
+    final Bar bar = new Bar();
+
+    //when
+    bar.perform(mockedFoo);
+
+    //then
+    verifyZeroInteractions(mockedFoo);
+}
+
+static class Foo {
+    void execute() {}
+}
+
+static class Bar {
+    void perform(Foo foo) {
+        foo.execute();
+    }
+}

@@ -1,0 +1,19 @@
+public void testAdvancedRenameDelete() {
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(
+            "function A(){this._x=1}\n"
+          + "A.prototype.func1 = function() { this._x = 2; this.func2(); }\n"
+          + "A.prototype.func2 = function() { this._x = 3; this.func3(); }\n"
+          + "window.A = A;"),new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[ERROR] " + message

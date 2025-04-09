@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    try {
+        JsonParser parser = MAPPER.createParser("123true");
+        parser.nextToken();
+        parser.getIntValue();
+        parser.nextToken();
+        parser.getBooleanValue();
+    } catch (JsonParseException e) {
+        // expected, because there is no space between integer and boolean
+        return;
+    }
+    fail();
+}

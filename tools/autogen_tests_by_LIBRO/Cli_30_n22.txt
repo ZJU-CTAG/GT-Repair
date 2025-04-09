@@ -1,0 +1,26 @@
+public void testIssue108() {
+    @Command(separator = "=")
+    class App {
+        @Option(names = {"--long"}, required = true)
+        String longOption;
+
+        @Option(names = {"--long2"})
+        String longOption2;
+    }
+    App app = new App();
+    CommandLine cmd = new CommandLine(app);
+    try {
+        cmd.parse("--long=test", "-long2=test2");
+        fail("Expected ParseException");
+    } catch (ParseException expected) {
+        assertTrue(expected.getMessage().contains("--long"));
+        assertTrue(expected.getMessage().contains("--long2"));
+    }
+
+    Properties props = new Properties();
+    props.put("long", "test");
+    props.put("long2", "test2");
+    cmd.parse(props);
+    assertEquals("test", app.longOption);
+    assertEquals("test2", app.longOption2);
+}

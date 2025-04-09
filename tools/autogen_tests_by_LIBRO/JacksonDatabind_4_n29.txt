@@ -1,0 +1,8 @@
+public void testIssue117() {
+    try {
+        OBJECT_MAPPER.readValue("[{\"name\":\"blah\"}, {\"name\":\"blah\", \"age\":10}]", new TypeReference<Collection<Person>>(){});
+        fail("Exception expected");
+    } catch (JsonMappingException e) {
+        assertEquals(1, e.getLocation().getIndex());
+    }
+}

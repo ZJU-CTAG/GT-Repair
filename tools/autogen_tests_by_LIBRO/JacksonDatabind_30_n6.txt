@@ -1,0 +1,8 @@
+public void testBigDecimal() throws Exception
+{
+    BigDecimal number = new BigDecimal("-10000000000.0000000001");
+    String json = MAPPER.writeValueAsString(new MyWrapper(number));
+    // {"type":"BIG_DECIMAL","objectValue":-1.0000000000E+10}
+    MyWrapper result = MAPPER.readValue(json, MyWrapper.class);
+    assertEquals(number, result.value);
+}

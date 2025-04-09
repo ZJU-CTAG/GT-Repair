@@ -1,0 +1,17 @@
+public void testIssue() {
+  String js = "var i = 0; lab1: do{ lab2: do{ i++; if (true) { break lab2; } else { break lab1; } } while(false); } while(false); console.log(i);";
+  Compiler compiler = new Compiler();
+  Node ast = new JsAst(new JsInput(js)).getAstRoot(compiler);
+  ast.traverse(new AbstractPostOrderCallback() {
+    public void visit(NodeTraversal t, Node n, Node parent) {
+      if (n.getType() == Token.BLOCK) {
+        System.out.println("block: " + n.toStringTree());
+      }
+    }
+  });
+  CompilerOptions options = new CompilerOptions();
+  options.prettyPrint = false;
+  options.setClosurePass(true);
+  compiler.compile(null, ast, options);
+  String output = compiler.toSource();
+  assertEquals("var a=0;do{a++;break}while(0);console.log(a);", output);

@@ -1,0 +1,15 @@
+public void testParseHang() throws IOException {
+    String path = "/home/iori/Desktop/GHC/clueweb12b13/0000tw/01/00i0-KZD8uY7Y.warc.gz";
+    InputStream is = new FileInputStream(path);
+    GZIPInputStream gz = new GZIPInputStream(is);
+    BufferedReader br = new BufferedReader(new InputStreamReader(gz));
+    String line = null;
+    StringBuilder sb = new StringBuilder();
+    while ((line = br.readLine()) != null) {
+        sb.append(line);
+        sb.append("\n");
+    }
+    String html = sb.toString();
+    Document doc = Jsoup.parse(html);
+    assertNotNull(doc);
+}

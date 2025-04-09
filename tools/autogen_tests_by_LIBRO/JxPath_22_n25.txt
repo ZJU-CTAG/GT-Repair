@@ -1,0 +1,14 @@
+public void test() {
+    String xml = "<b:foo xmlns:b=\"bla\" xmlns=\"test111\"><b:bar>a</b:bar><test xmlns=\"\"></test></b:foo>";
+    try {
+        InputSource source = new InputSource(new StringReader(xml));
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source);
+        JXPathContext ctx = JXPathContext.newContext(doc);
+        // ctx.setNamespaceContextPointer(new NodePointer(doc));
+        Node firstNode = ((NodePointer) ctx.iterate("//test").next()).getNode();
+        JXPathContext ctx2 = JXPathContext.newContext(firstNode);
+        System.out.println("asPath: " + ((NodePointer) ctx2.iterate(".").next()).asPath());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

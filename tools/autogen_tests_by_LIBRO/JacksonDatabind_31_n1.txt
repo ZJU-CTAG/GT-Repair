@@ -1,0 +1,14 @@
+public void testJacksonConvertBehavior() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setFilters(new AntPathMatcherFilter("$.a.e", false));
+
+    ObjectNode rootNode = mapper.createObjectNode();
+    rootNode.put("a", "test");
+
+    String json = mapper.writeValueAsString(rootNode);
+    System.out.println("json = " + json);
+
+    // when using convertValue the filter is applied
+    String json2 = mapper.convertValue(rootNode, String.class);
+    System.out.println("json2 = " + json2);
+}

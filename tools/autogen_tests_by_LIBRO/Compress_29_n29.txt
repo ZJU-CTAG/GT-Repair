@@ -1,0 +1,19 @@
+public void testEncoding() throws Exception {
+    // We create a test file with a non-ASCII name
+    File f = new File(dir, "test.txt");
+    FileOutputStream fout = new FileOutputStream(f);
+    fout.write(42);
+    fout.close();
+    f = new File(dir, "test\u00e9.txt");
+    fout = new FileOutputStream(f);
+    fout.write(42);
+    fout.close();
+    // We create a Zip archive with UTF-8 encoding
+    OutputStream out = new FileOutputStream(new File(dir, "test.zip"));
+    ArchiveOutputStream aOut = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, out);
+    aOut.setEncoding("UTF-8");
+    ArchiveEntry entry = aOut.createArchiveEntry(f, "test\u00e9.txt");
+    aOut.putArchiveEntry(entry);
+    aOut.write(42);
+    aOut.closeArchiveEntry();
+    aOut.close();

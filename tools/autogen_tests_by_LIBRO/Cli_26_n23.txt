@@ -1,0 +1,18 @@
+public void testOptionBuilderReset() {
+    try {
+        OptionBuilder.create();
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+    
+    OptionBuilder.withDescription("foo");
+    OptionBuilder.hasArgs(1);
+    OptionBuilder.isRequired(true);
+
+    OptionBuilder.create("x");
+    
+    // The following line fails on IBM JDK 6 running on Maven 2.0.10, because
+    // OptionBuilder is not resetted properly.
+    OptionBuilder.create();
+}

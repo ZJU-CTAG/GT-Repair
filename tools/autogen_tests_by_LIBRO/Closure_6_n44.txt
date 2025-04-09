@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String src = "/** @constructor */\n" +
+            "function F() {}\n" +
+            "F.prototype.bar = function() { this.baz(); };\n" +
+            "F.prototype.baz = function() { };\n\n" +
+            "/** @constructor */\n" +
+            "function G() {}\n" +
+            "G.prototype.bar = F.prototype.bar;";
+    String expected = "F.prototype.bar";
+    String result = process(src);
+    assertEquals(expected, result);
+}

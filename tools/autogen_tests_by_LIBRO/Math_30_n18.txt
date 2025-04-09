@@ -1,0 +1,14 @@
+public void testLargeDataSet() {
+    int size = 1500;
+    RandomData rd = new RandomDataImpl(new Well19937c(1));
+    double[] x = new double[size];
+    double[] y = new double[size];
+    for (int i = 0; i < size; i++) {
+        x[i] = rd.nextUniform(-10, 10);
+        y[i] = rd.nextUniform(-10, 10);
+    }
+    MannWhitneyUTest mwu = new MannWhitneyUTest();
+    double p = mwu.mannWhitneyUTest(x, y);
+    System.out.println(p);
+    assertEquals(0.0, p, 0.5);
+}

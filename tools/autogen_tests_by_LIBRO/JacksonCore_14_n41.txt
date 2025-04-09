@@ -1,0 +1,15 @@
+public void testIssue233() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    IOContext ioc = new IOContext(new BufferRecycler(), null, false);
+    byte[] buf = ioc.allocReadWriteEncodingBuffer(50, 100);
+    assertEquals(100, buf.length);
+    buf[0] = 'x';
+    buf = ioc.allocReadWriteEncodingBuffer(50, 100);
+    assertEquals(100, buf.length);
+    buf[0] = 'y';
+    buf[1] = 'z';
+    final byte[] input = new byte[] { 'x', 'y', 'z' };
+    baos.write(input);
+    byte[] result = baos.toByteArray();
+    assertArrayEquals(input, result);
+}

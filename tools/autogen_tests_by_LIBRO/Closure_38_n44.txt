@@ -1,0 +1,7 @@
+public void testIssue108() {
+    String code = "function test(g) {return g--0.0;}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("foo", code)), options);
+    assertEquals("function test(g){return g--0.0}", compiler.toSource());
+}

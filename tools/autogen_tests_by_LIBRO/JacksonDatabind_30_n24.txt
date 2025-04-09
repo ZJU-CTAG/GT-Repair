@@ -1,0 +1,13 @@
+public void testIssue119() throws Exception {
+    Wrapper w = new Wrapper();
+    w.typeEnum = Type.BIG_DECIMAL;
+    w.value = new BigDecimal("-10000000000.0000000001");
+
+    String json = MAPPER.writeValueAsString(w);
+    Wrapper w2 = MAPPER.readValue(json, Wrapper.class);
+
+    assertEquals(w.typeEnum, w2.typeEnum);
+    assertTrue(String.format("Expected %s = %s; got back %s = %s",
+            w.value.getClass().getSimpleName(), w.value.toString(), w2.value.getClass().getSimpleName(), w2.value.toString()),
+            w.value.equals(w2.value));
+}

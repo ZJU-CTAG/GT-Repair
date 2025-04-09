@@ -1,0 +1,25 @@
+public void testInterfaceProperties() {
+        String[] js = {
+                "/**\n" +
+                " * @interface\n" +
+                " */\n" +
+                "function I() {};\n" +
+                "\n" +
+                "/** @type {string} */\n" +
+                "I.prototype.foobar;\n" +
+                "\n" +
+                "/**\n" +
+                " * @constructor\n" +
+                " * @implements {I}\n" +
+                " */\n" +
+                "function C() {\n" +
+                " // No warning generated here.\n" +
+                " this.foobar = 2;\n" +
+                "};\n" +
+                "\n" +
+                "/** @type {I} */\n" +
+                "var test = new C(); \n" +
+                "alert(test.foobar);",
+        };
+        for (String jsSrc : js) {
+            testSrc(jsSrc, Diag.interface_with_data_member

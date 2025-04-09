@@ -1,0 +1,11 @@
+public void testParseWithSystemIdentifier() {
+    String html = "<!DOCTYPE html SYSTEM \"exampledtdfile.dtd\"><div><p>Hello world</p></div>";
+
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    assertTrue(doc.hasDoctype());
+    assertEquals("html", doc.doctype().name());
+    assertEquals("SYSTEM", doc.doctype().attr("type"));
+    assertEquals("exampledtdfile.dtd", doc.doctype().attr("fpi"));
+    assertEquals("exampledtdfile.dtd", doc.doctype().systemId());
+
+}

@@ -1,0 +1,20 @@
+public void testGroupMinimums() {
+    CommandLine cmd = new CommandLine(new Object());
+    Group b = new Group(cmd, "b", "Group B", 0, 1);
+    Group a = new Group(b, "a", "Group A", 1, 1);
+    Option option1 = Option.builder("1").build();
+    Option option2 = Option.builder("2").build();
+    a.addOption(option1);
+    b.addOption(option2);
+    assertTrue(b.isValid(cmd));
+    assertFalse(cmd.hasOption("1"));
+    assertFalse(cmd.hasOption("2"));
+    cmd.addOption(option1);
+    assertTrue(b.isValid(cmd));
+    assertTrue(cmd.hasOption("1"));
+    assertFalse(cmd.hasOption("2"));
+    cmd.addOption(option2);
+    assertTrue(b.isValid(cmd));
+    assertTrue(cmd.hasOption("1"));
+    assertTrue(cmd.hasOption("2"));
+}

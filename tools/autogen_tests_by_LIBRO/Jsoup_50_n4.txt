@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    String test = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In rhoncus, sapien non volutpat.";
+    String expected = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In rhoncus, sapien non volutpat.";
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    Writer writer = new OutputStreamWriter(out, "UTF-16BE");
+    writer.write(test);
+    writer.flush();
+    byte[] data = out.toByteArray();
+
+    String actual = StringUtils.toEncodedString(data, Charset.forName("UTF-16"));
+    assertEquals(expected, actual);
+}

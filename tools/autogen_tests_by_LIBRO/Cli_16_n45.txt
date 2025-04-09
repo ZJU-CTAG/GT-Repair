@@ -1,0 +1,19 @@
+public void testGroupMinimum() throws Exception {
+    Options opt = new Options();
+    {
+        OptionGroup g = new OptionGroup();
+        g.addOption(new Option("a", "option a"));
+        g.addOption(new Option("b", "option b"));
+        opt.addOptionGroup(g);
+    }
+    {
+        OptionGroup g = new OptionGroup();
+        g.addOption(new Option("v", "option v"));
+        opt.addOptionGroup(g);
+    }
+
+    CommandLineParser parser = new GnuParser();
+    CommandLine cmd = parser.parse(opt, new String[]{"-a", "-v"});
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("v"));
+}

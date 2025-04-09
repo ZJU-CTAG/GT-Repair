@@ -1,0 +1,10 @@
+public void testIssue_1() {
+    String jsInput = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += '2'; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    String jsCompiled = ClosureCompiler.compile(jsInput);
+    jsCompiled = jsCompiled.replace("undefined", "1");
+    jsCompiled = jsCompiled.replace("undefined", "2");
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine engine = factory.getEngineByName("JavaScript");
+    Object result = engine.eval(jsCompiled);
+    assertEquals("1212", result);
+}

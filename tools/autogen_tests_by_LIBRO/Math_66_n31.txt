@@ -1,0 +1,24 @@
+public void testBrentMinimizer() {
+
+        // The following is a test-case for Brent's method as implemented in
+        // the class BrentOptimizer.
+        // The test-case is based on a similar test-case in SciPy.
+
+        UnivariateFunction f = new UnivariateFunction() {
+                public double value(double x) {
+                        return ((x - 1) * x + 2) * x - 1;
+                }
+        };
+
+        // The interval is defined as [a,b]
+        double a = 0;
+        double b = 3;
+
+        UnivariateRealSolver solver = new BrentOptimizer(1.0e-10, 1.0e-10);
+        // Test-case for Brent method.
+        double tol = 1.0e-10;
+        double actual = solver.minimize(100, f, a, b);
+        double expected = 1.83931034;
+
+        assertEquals(expected, actual, tol);
+}

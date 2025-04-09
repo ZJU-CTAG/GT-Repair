@@ -1,0 +1,10 @@
+public void testCustomTypeIdResolver() throws Exception {
+    TypeIdResolver resolver = new CustomTypeIdResolver();
+    String json = "{\"@type\":\"test.TestSubclass\",\"id\":1,\"foo\":\"bar\"}";
+    TestClass result = new ObjectMapper()
+        .setDeserializationConfig(new DeserializationConfig.Impl()
+            .withTypeIdResolver(resolver, resolver))
+        .readValue(json, TestClass.class);
+    assertEquals(1, result.getId());
+    assertEquals("bar", result.getFoo());
+}

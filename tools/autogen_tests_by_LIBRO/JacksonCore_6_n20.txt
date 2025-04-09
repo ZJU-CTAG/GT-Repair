@@ -1,0 +1,12 @@
+public void testInvalidIndex() {
+    JsonNode node = JsonNodeFactory.instance.objectNode()
+        .put("00", true)
+        .put("01", true)
+        .put("02", true);
+    JsonPointer pointer = new JsonPointer("/00");
+    assertTrue(pointer.matches(node));
+    pointer = new JsonPointer("/01");
+    assertFalse(pointer.matches(node));
+    pointer = new JsonPointer("/02");
+    assertFalse(pointer.matches(node));
+}

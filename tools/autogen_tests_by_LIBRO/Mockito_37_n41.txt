@@ -1,0 +1,14 @@
+public void testRule() throws Exception {
+    final IMocksControl control = EasyMock.createControl();
+    final ICalculator mock = control.createMock(ICalculator.class);
+    control.replay();
+    final MockitoRule rule = new MockitoRule(this, mock);
+    rule.apply(new Statement() {
+        @Override
+        public void evaluate() throws Throwable {
+            Assert.assertTrue(rule.getTest() instanceof MockitoRuleTest);
+            Assert.assertSame(mock, rule.getMock(ICalculator.class));
+        }
+    }, Description.EMPTY).evaluate();
+    control.verify();
+}

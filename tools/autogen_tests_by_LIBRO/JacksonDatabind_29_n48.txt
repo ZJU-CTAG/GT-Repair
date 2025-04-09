@@ -1,0 +1,19 @@
+public void testHandleNullTypeId() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.JAVA_LANG_OBJECT, "@class");
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, true);
+    mapper.setSerializationInclusion(Include.NON_NULL);
+
+    final A a = new A(new B(1, null));
+    final String json = mapper.writeValueAsString(a);
+
+    assertEquals("{\"@class\":\"com.fasterxml.jackson.datatype.joda.issue.JodaTestBase$A\",\"b\":{\"number\":1}}", json);
+
+    final A deserializedA = mapper.readValue(json, A.class);
+    assertNotNull(deserializedA.getB());
+    assertEquals(1, deserializedA.getB().getNumber());
+    assertNull(deserializedA.getB().getName());
+}
+
+public static class A {

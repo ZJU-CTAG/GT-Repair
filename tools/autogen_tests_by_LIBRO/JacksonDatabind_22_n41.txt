@@ -1,0 +1,29 @@
+public void testIssue118() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializerFactory(new BeanSerializerFactory(new SerializerFactoryConfig()));
+    SimpleModule module = new SimpleModule("MyModule", new Version(1, 0, 0, null));
+    module.addSerializer(MyPojo.class, new MyPojoSerializer());
+    mapper.registerModule(module);
+    MyPojo pojo = new MyPojo("test");
+
+    String json = mapper.writeValueAsString(pojo);
+
+    assertEquals("\"test\"", json);
+}
+
+public static class MyPojo {
+    private final String value;
+
+    public MyPojo(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+}
+
+public static class MyPojoSerializer extends JsonSerializer<MyPojo> {
+    @Override
+    public void serialize(MyPojo value, JsonGenerator jgen, SerializerProvider provider) throws IO

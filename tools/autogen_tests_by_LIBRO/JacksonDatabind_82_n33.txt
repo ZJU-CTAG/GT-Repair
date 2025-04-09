@@ -1,0 +1,20 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonTest json = new JsonTest("user", "password");
+    try {
+        assertEquals("{\"username\":\"user\"}", mapper.writeValueAsString(json));
+    } catch (JsonProcessingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+
+    String jsonString = "{ \"username\":\"username\",\"password\":\"password\" }";
+    try {
+        json = mapper.readValue(jsonString, JsonTest.class);
+        assertEquals("password", json.getPassword());
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+
+}

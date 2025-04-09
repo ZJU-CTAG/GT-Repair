@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    final String csv = "\"A\",\"B\",\"C\",\"\",\"\"\n" +
+            "\"a\",\"b\",\"c\",\"d\",\"e\"";
+    final Reader r = new StringReader(csv);
+    final CSVParser p = new CSVParser(r, CSVFormat.EXCEL);
+    final List<CSVRecord> records = p.getRecords();
+    p.close();
+    assertEquals(2, records.size());
+    assertEquals("a", records.get(0).get("A"));
+    assertEquals("b", records.get(0).get("B"));
+    assertEquals("c", records.get(0).get("C"));
+    assertEquals("d", records.get(0).get(""));
+    assertEquals("e", records.get(0).get(""));
+}

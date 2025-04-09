@@ -1,0 +1,25 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("\"a\"", Boolean.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        if (!e.getMessage().contains("[source: ")) {
+            fail("Should contain location information");
+        }
+        if (countOccurences(e.getMessage(), "[source: ") != 1) {
+            fail("Should contain location information once, but was "
+                    + countOccurences(e.getMessage(), "[source: "));
+        }
+    }
+}
+
+private int countOccurences(String string, String substring) {
+    int count = 0;
+    int n = 0;
+    while ((n = string.indexOf(substring, n)) != -1) {
+        count++;
+        n++;
+    }
+    return count;
+}

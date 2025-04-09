@@ -1,0 +1,24 @@
+public void testIssue() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,true);
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    om.configure(SerializationFeature.INDENT_OUTPUT, true);
+    om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    om.registerModule(new JodaModule());
+    String json = "{\"id\":\"\"}";
+    TestBean bean = om.readerFor(TestBean.class).readValue(json);
+}
+
+public class TestBean {
+
+    private ObjectId id;
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+}

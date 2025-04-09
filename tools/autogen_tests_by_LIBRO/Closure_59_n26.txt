@@ -1,0 +1,8 @@
+public void testGlobalThis() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    compiler.compile(JSSourceFile.fromCode("testGlobalThis.js", "var o = {}; o.globalThis = 0;"), options);
+    assertEquals(0, compiler.getWarnings().length);
+}

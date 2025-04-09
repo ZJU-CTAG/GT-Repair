@@ -1,0 +1,20 @@
+public void testExtendedBufferedReader() {
+    // LF only
+    ExtendedBufferedReader in = new ExtendedBufferedReader(new StringReader("123\n456\n789"));
+    assertEquals(1, in.getLineNumber());
+    assertEquals("123", in.readLine());
+    assertEquals(2, in.getLineNumber());
+    assertEquals("456", in.readLine());
+    assertEquals(3, in.getLineNumber());
+    assertEquals("789", in.readLine());
+    assertEquals(3, in.getLineNumber());
+    assertEquals(null, in.readLine());
+    assertEquals(3, in.getLineNumber());
+
+    // CR followed by LF
+    in = new ExtendedBufferedReader(new StringReader("123\r\n456\r\n789"));
+    assertEquals(1, in.getLineNumber());
+    assertEquals("123", in.readLine());
+    assertEquals(2, in.getLineNumber());
+    assertEquals("456", in.readLine());
+    assertEquals(

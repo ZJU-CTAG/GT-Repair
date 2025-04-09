@@ -1,0 +1,15 @@
+public void testIssue108() {
+    RealMatrix m = new Array2DRowRealMatrix(new double[][] {
+        { 1, 2, 3, 4 },
+        { 2, 5, 3, 4 },
+        { 7, 2, 9, 4 }
+    }, false);
+    RealVector b = new ArrayRealVector(new double[] { 1, 2, 3 });
+    try {
+        new QRDecompositionImpl(m).solve(b);
+    } catch (SingularMatrixException e) {
+        // expected
+        return;
+    }
+    fail("an exception should have been thrown");
+}

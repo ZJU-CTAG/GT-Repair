@@ -1,0 +1,9 @@
+public void testIssue123() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
+    final String json = mapper.writeValueAsString(new TestIssue123.Container());
+    assertEquals("{\"a\":\"2018-10-01T00:00:00Z\",\"b\":\"2018-10-01T00:00:00Z\"}", json);
+}

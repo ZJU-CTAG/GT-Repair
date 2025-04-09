@@ -1,0 +1,9 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true);
+    final String json = "{\"type\": \"BIG_DECIMAL\", \"objectValue\": -10000000000.0000000001}";
+    final Wrapper wrapper = mapper.readValue(json, Wrapper.class);
+    assertEquals(Type.BIG_DECIMAL, wrapper.getType());
+    assertTrue(wrapper.getValue() instanceof BigDecimal);
+    assertEquals(new BigDecimal("-10000000000.0000000001"), wrapper.getValue());
+}

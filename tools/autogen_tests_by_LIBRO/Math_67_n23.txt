@@ -1,0 +1,9 @@
+public void testMultiStartUnivariateRealOptimizer() {
+    MultiStartUnivariateRealOptimizer optim =
+      new MultiStartUnivariateRealOptimizer(new BrentOptimizer(1e-10, 1e-14), 5);
+    UnivariateRealFunction func = new Gaussian(0, 1);
+    double min = optim.optimize(func, GoalType.MINIMIZE, -10, 10);
+    assertEquals(0, optim.getResult(), 1e-5);
+    assertEquals(min, optim.getResult(), 1e-5);
+    assertEquals(0, optim.getFunctionValue(), 1e-5);
+}

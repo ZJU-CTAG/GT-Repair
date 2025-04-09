@@ -1,0 +1,16 @@
+public void testIssue108() {
+    BrentOptimizer optimizer = new BrentOptimizer(1e-15, 1e-13);
+    final double[] x = {2.0};
+    double fx = 0.0;
+    for (int i = 0; i < 100; i++) {
+        UnivariatePointValuePair result = optimizer.optimize(new MaxEval(100), new UnivariateObjectiveFunction(new UnivariateFunction() {
+
+            public double value(double x) {
+                return Math.exp(-x * x) + Math.exp(-(x - 2) * (x - 2));
+            }
+        }), GoalType.MAXIMIZE, new SearchInterval(0, 3));
+        assertEquals(0.0, result.getValue(), 1e-15);
+        assertEquals(1.0, result.getPoint(), 1e-15);
+        fx = result.getValue();
+    }
+}

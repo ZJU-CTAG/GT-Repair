@@ -1,0 +1,18 @@
+public void testPrototypeAssignment() {
+    GlobalScope scope = new GlobalScope(null);
+    scope.addProperty("SubClass", new Constructor(SubClass.class));
+    scope.addProperty("SuperClass", new Constructor(SuperClass.class));
+    assertTrue(CompilerUtils.compileJs(scope, "SubClass.prototype = new SuperClass();"));
+    assertFalse(CompilerUtils.compileJs(scope, "window['SubClassInstance'] = new SubClass();"));
+}
+
+static class SuperClass {
+    public void CustomMethod() {
+    }
+}
+
+static class SubClass extends SuperClass {
+    public void CustomMethod() {
+        this.myProperty = "value";
+    }
+}

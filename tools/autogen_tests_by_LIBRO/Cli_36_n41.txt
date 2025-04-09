@@ -1,0 +1,21 @@
+public void testOptionComparator() throws IOException {
+    Options options = new Options();
+
+    OptionGroup group1 = new OptionGroup();
+    group1.addOption(Option.builder("h").desc("help").build());
+    group1.addOption(Option.builder("s").desc("silent").build());
+    group1.addOption(Option.builder("b").desc("beep").build());
+
+    OptionGroup group2 = new OptionGroup();
+    group2.addOption(Option.builder("t").desc("talk").build());
+    group2.addOption(Option.builder("c").desc("chat").build());
+
+    options.addOptionGroup(group1);
+    options.addOptionGroup(group2);
+    options.addOption(Option.builder("a").desc("alpha").build());
+    options.addOption(Option.builder("o").desc("omega").build());
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    ByteArrayOutputStream actual = new ByteArrayOutputStream();
+    formatter.printHelp(new PrintWriter(actual), 80

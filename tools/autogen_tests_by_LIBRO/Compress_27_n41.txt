@@ -1,0 +1,12 @@
+public void testRegression() throws Exception {
+    InputStream is = new GzipCompressorInputStream(getClass().getResourceAsStream("/test.tar.gz"));
+    try {
+        TarArchiveInputStream tarInputStream = new TarArchiveInputStream(is);
+        TarArchiveEntry entry;
+        while ((entry = tarInputStream.getNextTarEntry()) != null) {
+            System.out.println(entry.getName() + " " + entry.getUserName() + "/" + entry.getGroupName());
+        }
+    } finally {
+        is.close();
+    }
+}

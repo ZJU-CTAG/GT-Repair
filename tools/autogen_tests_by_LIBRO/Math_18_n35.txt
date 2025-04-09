@@ -1,0 +1,13 @@
+public void testCMAES(){
+        double[][] input = new double[][]{{0d},{1d},{2d},{3d},{4d},{5d},{6d},{7d},{8d},{9d}};
+        double[][] output = new double[][]{{1d},{2d},{3d},{4d},{5d},{6d},{7d},{8d},{9d},{10d}};
+        SimpleRegression regression = new SimpleRegression();
+        for(int i = 0; i < output.length; i++){
+            regression.addData(input[i][0], output[i][0]);
+        }
+        CurveFitter<ParametricUnivariateFunction> fitter = new CurveFitter<ParametricUnivariateFunction>(new LevenbergMarquardtOptimizer());
+        fitter.addObservedData(input, output);
+
+        ParametricUnivariateFunction function = new ParametricUnivariateFunction(){
+            public double value(double x, double... parameters) {
+                return parameters[0] + parameters

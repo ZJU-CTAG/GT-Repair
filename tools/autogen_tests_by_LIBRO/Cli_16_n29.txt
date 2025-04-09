@@ -1,0 +1,29 @@
+public void testGroupConstraints() throws Exception {
+    A a = new A();
+    B b = new B();
+    C c = new C();
+    CommandLine commandLine = new PosixParser().parse(new Options().addOption(a).addOption(b).addOption(c), new String[]{"-a", "-b", "-c"});
+    assertTrue(commandLine.hasOption(a.getOpt()));
+    assertTrue(commandLine.hasOption(b.getOpt()));
+    assertTrue(commandLine.hasOption(c.getOpt()));
+}
+
+class A extends Option {
+    A() {
+        super("a", "A");
+    }
+}
+
+class B extends Option {
+    B() {
+        super("b", "B");
+        this.addOption(new A());
+        this.addOption(new C());
+    }
+}
+
+class C extends Option {
+    C() {
+        super("c", "C");
+    }
+}

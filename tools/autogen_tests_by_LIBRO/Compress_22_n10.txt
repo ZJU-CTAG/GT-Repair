@@ -1,0 +1,10 @@
+public void testTruncatedFile() throws IOException {
+    File file = new File("src/test/resources/bz2/truncated.bz2");
+    try (FileInputStream fis = new FileInputStream(file)) {
+        try (BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(fis)) {
+            byte[] buffer = new byte[1024];
+            int n = bzIn.read(buffer, 0, buffer.length);
+            assertEquals(769, n);
+        }
+    }
+}

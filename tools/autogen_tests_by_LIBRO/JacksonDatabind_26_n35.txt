@@ -1,0 +1,15 @@
+public void testSerializability() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.reader();
+    byte[] json = "{}".getBytes();
+    mapper.reader(Map.class).readValue(json);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(reader);
+    oos.flush();
+    byte[] byteArray = baos.toByteArray();
+    ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    ObjectReader newReader = (ObjectReader) ois.readObject();
+    newReader.readValue(json);
+}

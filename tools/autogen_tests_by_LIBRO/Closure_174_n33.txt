@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setCheckTypes(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            SourceFile.fromCode("in",
+                    "goog.provide('main');\n"+
+                    "goog.scope(function (){\n"+
+                    "var a = 3, b = a, c = 1;\n"+
+                    "});"),
+            options);
+    assertEquals(0, compiler.getErrorCount());
+}

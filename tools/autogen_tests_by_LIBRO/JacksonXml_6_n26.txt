@@ -1,0 +1,13 @@
+public void testWriteBinaryWithInputStream() throws Exception {
+    XMLStreamWriter xmlStreamWriter = EasyMock.createMock(XMLStreamWriter.class);
+    EasyMock.expect(xmlStreamWriter.writeStartElement(EasyMock.<String>anyObject())).andReturn(xmlStreamWriter);
+    EasyMock.expect(xmlStreamWriter.writeCharacters(EasyMock.<String>anyObject())).andReturn(xmlStreamWriter);
+    EasyMock.expect(xmlStreamWriter.writeEndElement()).andReturn(xmlStreamWriter);
+    EasyMock.expect(xmlStreamWriter.writeEndDocument()).andReturn(xmlStreamWriter);
+    EasyMock.replay(xmlStreamWriter);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ToXmlGenerator toXmlGenerator = new ToXmlGenerator(xmlStreamWriter, new ObjectMapper(), JsonEncoding.UTF8);
+    toXmlGenerator.writeStartObject();
+    toXmlGenerator.writeFieldName("myByteArray");
+    toXmlGenerator.writeBinary

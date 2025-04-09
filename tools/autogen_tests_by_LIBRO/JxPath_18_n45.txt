@@ -1,0 +1,15 @@
+public void testIssue172() {
+    final String xml = "<?xml version=\"1.0\"?>\n" +
+            "<root xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
+            "    <a xlink:href=\"foo\"/>\n" +
+            "    <b xlink:href=\"bar\"/>\n" +
+            "</root>";
+    final String xpath = "/root/a/attribute::xlink:href";
+    final InputSource inputSource = new InputSource(new StringReader(xml));
+    final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
+    final XPathFactory xPathFactory = XPathFactory.newInstance();
+    final XPath xpathExpression = xPathFactory.newXPath();
+    final XPathExpression xPathCompiled = xpathExpression.compile(xpath);
+    final String result = xPathCompiled.evaluate(document);
+    assertEquals("foo", result);
+}

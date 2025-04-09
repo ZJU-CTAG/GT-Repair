@@ -1,0 +1,10 @@
+public void testNanAsDecimal() throws IOException
+{
+    ObjectMapper om = new ObjectMapper();
+    om.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+    try {
+        om.readValue("NaN", BigDecimal.class);
+    } catch (JsonMappingException e) {
+        verifyException(e, "Null");
+    }
+}

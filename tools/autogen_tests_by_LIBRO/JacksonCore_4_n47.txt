@@ -1,0 +1,10 @@
+public void testJsonKeyLength() throws IOException {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 262145; i++) {
+        sb.append('a');
+    }
+    String key = sb.toString();
+    String json = String.format("{\"%s\":{}}", key);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.readValue(json, Map.class); // ArrayIndexOutOfBoundsException
+}

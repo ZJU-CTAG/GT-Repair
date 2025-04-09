@@ -1,0 +1,20 @@
+public void testIssue28() {
+    Element div = new Element(Tag.valueOf("div"), "http://example.com");
+    div.addClass("class1");
+    assertTrue(div.hasClass("class1"));
+
+    // clone a new element.
+    Element newDiv = div.clone();
+    assertTrue(newDiv.hasClass("class1"));
+
+    // add a new class name to the new element.
+    newDiv.addClass("class2");
+    assertTrue(newDiv.hasClass("class2"));
+    // the old element should not have "class2"
+    assertFalse(div.hasClass("class2"));
+
+    // adding a class to the old element should not affect the new element.
+    div.addClass("class3");
+    assertTrue(div.hasClass("class3"));
+    assertFalse(newDiv.hasClass("class3"));
+}

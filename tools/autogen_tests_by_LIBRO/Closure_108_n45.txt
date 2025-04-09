@@ -1,0 +1,22 @@
+public void testBug() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    final Result result = compiler.compile(
+            CompilerOptionsTest.EXTERNS,
+            Lists.newArrayList(
+                    SourceFile.fromCode("input", "var goog = {};\n"
+                            + "goog.scope;\n"
+                            + "\n"
+                            + "var ns = {};\n"
+                            + "ns.sub = {};\n"
+                            + "/** @constructor */\n"
+                            + "ns.sub.C = function() {};\n"
+                            + "\n"
+                            + "\n"
+                            + "goog.scope(function() {\n"
+                            + " var sub = ns.sub;\n"
+                            + " /** @type {sub.C} */\n"
+                            + " var x = null;\n"
+                            + "});\n

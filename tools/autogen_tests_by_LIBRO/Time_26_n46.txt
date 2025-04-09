@@ -1,0 +1,12 @@
+public void testIssue60() {
+    DateTimeZone usCentral = DateTimeZone.forID("US/Central");
+    DateTimeZone ausNSW = DateTimeZone.forID("Australia/NSW");
+    DateTime usStandard = new DateTime(2008, 11, 2, 0, 0, usCentral);
+    DateTime usDaylight = new DateTime(2008, 11, 2, 1, 0, usCentral);
+    DateTime australiaStandard = new DateTime(2008, 4, 5, 15, 0, ausNSW);
+    DateTime australiaDaylight = new DateTime(2008, 4, 5, 16, 0, ausNSW);
+    assertTrue(usCentral.isStandardOffset(usStandard.getMillis()));
+    assertTrue(usCentral.isStandardOffset(usDaylight.getMillis()));
+    assertFalse(ausNSW.isStandardOffset(australiaStandard.getMillis()));
+    assertFalse(ausNSW.isStandardOffset(australiaDaylight.getMillis()));
+    assertTrue(usDaylight.getMillis() !=

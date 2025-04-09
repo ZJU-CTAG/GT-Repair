@@ -1,0 +1,10 @@
+public void testIssue111() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    EnumMap<MyEnum,Integer> result = m.readValue("{\"a\":1}",
+            new TypeReference<EnumMap<MyEnum,Integer>>() { });
+    assertEquals(1, result.size());
+    assertEquals((Integer) 1, result.get(MyEnum.A));
+}
+
+public static enum MyEnum { A, B }

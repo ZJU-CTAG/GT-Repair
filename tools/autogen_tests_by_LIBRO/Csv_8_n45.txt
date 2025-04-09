@@ -1,0 +1,9 @@
+public void testDuplicateHeaders() {
+    try {
+        new CSVFormat(CSVFormat.DEFAULT.getDelimiter(), CSVFormat.DEFAULT.getQuoteCharacter(),
+            CSVFormat.DEFAULT.getQuoteMode(), new String[]{"a", "b", "a"}, false, false);
+        fail("duplicate header should not be allowed");
+    } catch (IllegalArgumentException e) {
+        assertEquals("header contains a duplicate entry: a", e.getMessage());
+    }
+}

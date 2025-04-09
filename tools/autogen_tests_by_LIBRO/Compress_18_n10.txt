@@ -1,0 +1,14 @@
+public void testIssue107a() throws Exception {
+    String entryName = "PaxHeaders.X/layers/openstreetmap__osm.disy.net/.tiles/1.0.0/openstreetmap__osm.disy.net/default/"; // length: 114, length2: 102
+    File tmp = File.createTempFile("testissue107a", ".tar");
+    tmp.deleteOnExit();
+    try (TarArchiveOutputStream taos = new TarArchiveOutputStream(new FileOutputStream(tmp))) {
+        taos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+        TarArchiveEntry tae = new TarArchiveEntry(entryName);
+        tae.setMode(TarArchiveEntry.DEFAULT_DIR_MODE);
+        taos.putArchiveEntry(tae);
+        taos.write(new byte[] {1,2,3});
+        taos.closeArchiveEntry();
+        taos.close();
+    }
+}

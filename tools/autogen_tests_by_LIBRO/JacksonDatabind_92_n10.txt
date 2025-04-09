@@ -1,0 +1,21 @@
+public void testIssue144() throws Exception
+{
+    // First: verify that original issue works
+    String JSON = "{\"a\" : { \"@type\" : \"java.lang.ProcessBuilder\", \"command\" : \"touch /tmp/success\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        Object ob = mapper.readValue(JSON, Object.class);
+    } catch (Exception e) {
+        // good
+    }
+    
+    // and then verify that new case is blocked too
+    
+    JSON = "{\"a\" : { \"@type\" : \"java.lang.Module\", \"name\" : \"java.base\"}}";
+    mapper = new ObjectMapper();
+    try {
+        Object ob = mapper.readValue(JSON, Object.class);
+    } catch (Exception e) {
+        // good
+    }
+}

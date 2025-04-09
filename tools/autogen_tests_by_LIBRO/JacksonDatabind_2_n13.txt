@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+    .addSerializer(ListAttribute.class, new ListAttributeSerializer()));
+    ListAttribute<String> attr = new ListAttribute<String>(String.class,
+"listAttr");
+    attr.add("a");
+    JsonNode tree = mapper.valueToTree(attr);
+    assertTrue(tree instanceof ObjectNode);
+    ObjectNode node = (ObjectNode) tree;
+    assertEquals("listAttr", node.get("itemType").getTextValue());
+    JsonNode items = node.get("items");
+    assertNotNull(items);
+    assertTrue(items instanceof ArrayNode);
+    ArrayNode array = (ArrayNode) items;
+    assertEquals(1, array.size());
+    JsonNode item = array.get(0);
+    assertNotNull(item);
+    assertTrue(item instanceof TextNode);
+    assertEquals("a", item.getTextValue());
+}

@@ -1,0 +1,11 @@
+public void testBrentOptimizer() {
+    double[] x = new double[]{0, 1, 2, 3, 4, 5};
+    double[] y = new double[]{0, 0, 1, 0, 0, 1};
+    PolynomialFunction f = new PolynomialFunction(y);
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    // this should return 0.5, but returns 0.9999999999999456
+    UnivariatePointValuePair result = optimizer.optimize(new MaxEval(100),
+            new ObjectiveFunction(f), GoalType.MAXIMIZE,
+            new SearchInterval(x[0], x[x.length-1]));
+    assertEquals(0.5, result.getPoint(), 1e-6);
+}

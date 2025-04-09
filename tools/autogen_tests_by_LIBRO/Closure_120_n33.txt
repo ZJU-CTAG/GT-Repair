@@ -1,0 +1,19 @@
+public void testOptimize() {
+    String js = "var uid;function reset() {uid = Math.random();}function doStuff() {reset();var _uid = uid;if (uid < 0.5) {doStuff();}if (_uid !== uid) {throw 'reset() was called';}}doStuff();";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("warning: "+message);
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("error: "+message);
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("runtime error: "+message);
+            return new EvaluatorException(message);
+        }
+    });
+
+    try {
+        Reader in = new StringReader(

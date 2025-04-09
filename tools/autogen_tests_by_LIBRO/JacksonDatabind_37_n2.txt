@@ -1,0 +1,23 @@
+public void testRead() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    InputStream is = getClass().getClassLoader().getResourceAsStream("model.json");
+    JsonRoot root = mapper.readValue(is, JsonRoot.class);
+}
+public class JsonRoot {
+    private final List<JsonSchema> schemas;
+
+    @JsonCreator
+    public JsonRoot(@JsonProperty("schemas") List<JsonSchema> schemas) {
+        this.schemas = schemas;
+    }
+
+    @JsonProperty
+    public List<JsonSchema> getSchemas() {
+        return schemas;
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = JsonMapSchema.class, name = "custom"),
+            @JsonSubTypes.Type(value = JsonFlatSchema.class, name = "flat")})
+    public static class JsonSche

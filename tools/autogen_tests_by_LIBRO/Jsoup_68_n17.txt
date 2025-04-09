@@ -1,0 +1,14 @@
+public void testJson2() throws Exception {
+        String url = "http://www.fsepb.gov.cn";
+        Connection con = Jsoup.connect(url).timeout(3000);
+        con.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0");
+        Response rs = con.execute();//获取响应
+        Document d1 = Jsoup.parse(rs.body());//转换为Dom树
+        List<Element> et = d1.select("a");//获取a标签
+        System.out.println(et.size());
+        //获取img标签中src属性的值
+        for (Element e : et) {
+            String url2 = e.attr("abs:href");
+            if(url2.startsWith("http")){
+                System.out.println(url2);
+            }

@@ -1,0 +1,12 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption("f", "foo", false, "foo option");
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(writer, 1000, "cliTest", "footer1: \nfooter2: \n", options, 3, 3, "", true);
+    String footer = writer.getBuffer().toString();
+    int footer1 = footer.indexOf("footer1:");
+    int footer2 = footer.indexOf("footer2:");
+    assertTrue(footer1 >= 0);
+    assertTrue(footer2 >= 0);
+}

@@ -1,0 +1,16 @@
+public void testIssue132() throws IOException {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setManageClosureDependencies(true);
+    options.closurePass = true;
+
+    Compiler compiler = new Compiler();
+    compiler.init(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("test1.js", "goog.provide('test');"),
+                    JSSourceFile.fromCode("test2.js", "goog.require('test');") },
+            new JSSourceFile[] {},
+            options);
+    compiler.parseInputs();
+    assertNotNull(compiler.getRoot().getVar("test"));
+}

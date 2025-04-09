@@ -1,0 +1,22 @@
+public void testIssue1255() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+
+    Node node = new Node();
+    Node child1 = new Node();
+    Node child2 = new Node();
+    node.Children.add(child1);
+    node.Children.add(child2);
+    child1.Parent = node;
+    child2.Parent = node;
+
+    String json = mapper.writeValueAsString(node);
+    System.out.println(json);
+
+    Node deserialized = mapper.readValue(json, Node.class);
+    System.out.println(mapper.writeValueAsString(deserialized));
+}

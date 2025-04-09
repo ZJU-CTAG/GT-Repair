@@ -1,0 +1,11 @@
+public void testJsoupClean() {
+    String url = "http://blog.sina.com.cn/s/blog_501a5b1f0102dx6z.html";
+    String page = IOUtils.toString(new URL(url), "gbk");
+    Document doc = Jsoup.parse(page);
+    String title = doc.getElementsByClass("titName SG_txta").text();
+    String content = doc.getElementsByClass("articalContent").html();
+    System.out.println("title: " + title);
+    System.out.println("content:\n" + content);
+    String cleanContent = Jsoup.clean(content, Whitelist.relaxed());
+    System.out.println("clean content:\n" + cleanContent);
+}

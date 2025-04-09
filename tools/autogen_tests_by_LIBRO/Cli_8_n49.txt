@@ -1,0 +1,12 @@
+public void testHelpFormatter() {
+    HelpFormatter formatter = new HelpFormatter();
+
+    Options options = new Options();
+    options.addOption(new Option("f", "foo", false, "foo"));
+    options.addOption(new Option("b", "bar", false, "bar"));
+    options.addOption(new Option("z", "baz", false, "baz"));
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    formatter.printHelp(new PrintWriter(out), 80, "app", "app", options, 0, 0, null);
+    assertTrue(out.toString().indexOf("foobarbaz") > 0);
+}

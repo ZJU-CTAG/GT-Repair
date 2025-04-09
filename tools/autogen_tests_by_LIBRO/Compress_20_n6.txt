@@ -1,0 +1,9 @@
+public void testCPIOReader() throws Exception {
+    CPIOArchiveInputStream cpio = new CPIOArchiveInputStream(getClass().getResourceAsStream("/test.cpio"));
+    ArchiveEntry cpioEntry = cpio.getNextEntry();
+    assertNotNull(cpioEntry);
+    assertEquals(0x71c7, cpioEntry.getMode());
+    assertEquals("test.txt", cpioEntry.getName());
+    assertEquals(0, cpio.available());
+    assertNull(cpio.getNextEntry());
+}

@@ -1,0 +1,17 @@
+public void testDOMNodePointerAsPath() throws Exception {
+    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = builderFactory.newDocumentBuilder();
+    Document document = builder.newDocument();
+    Element root = document.createElementNS("bla", "b:foo");
+    root.setAttributeNS("bla", "xmlns:b", "bla");
+    root.setAttributeNS(null, "xmlns", "test111");
+    Element bar = document.createElementNS("bla", "b:bar");
+    bar.setTextContent("a");
+    Element test = document.createElementNS(null, "test");
+    root.appendChild(bar);
+    root.appendChild(test);
+    document.appendChild(root);
+    DOMNodePointer pointer = new DOMNodePointer(document);
+    Assert.assertEquals("/b:foo", pointer.getValue().getNodeName());
+    Assert.assertEquals("/b:foo/b:bar[1]", pointer.getValuePointer().asPath());
+    System.out.println

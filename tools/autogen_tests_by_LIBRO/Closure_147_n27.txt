@@ -1,0 +1,13 @@
+public void testIssue144() throws Exception {
+  CompilerRunner runner = new CompilerRunner();
+  runner.setSourceLevel(CompilerRunner.SourceLevel.ES3);
+  runner.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+  Result result = runner.compile(
+      "/* @constructor */ function Foo() {}",
+      "var f = new Foo();",
+      "f.prop = 'test';");
+  assertEquals(1, result.warnings.length);
+  assertEquals(
+      "JSC_USED_GLOBAL_THIS: dangerous use of the global this object",
+      result.warnings[0].description);
+}

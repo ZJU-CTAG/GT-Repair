@@ -1,0 +1,8 @@
+public void testCleanCleaner() {
+    String html = "<a/\u0000>";
+    Whitelist whitelist = Whitelist.basic();
+    Cleaner cleaner = new Cleaner(whitelist);
+    Document doc = Jsoup.parse(html);
+    Document cleanDoc = cleaner.clean(doc);
+    assertEquals("<a></a>", cleanDoc.toString());
+}

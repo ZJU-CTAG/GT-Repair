@@ -1,0 +1,19 @@
+public void testIssueWithJsonUnwrapped() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+    final Person person = mapper.readValue("{\"businessADdress.street\":\"Main Street\", \"businessADdress.zip\":\"K1A 0B1\", \"businessADdress.town\":\"Ottawa\", \"businessADdress.country\":\"Canada\"}", Person.class);
+    assertEquals("Main Street", person.businessAddress.street);
+    assertEquals("K1A 0B1", person.businessAddress.zip);
+    assertEquals("Ottawa", person.businessAddress.town);
+    assertEquals("Canada", person.businessAddress.country);
+}
+
+public class Person {
+    @JsonUnwrapped(prefix = "businessAddress.")
+    public Address businessAddress;
+}
+
+public class Address {
+    public String street

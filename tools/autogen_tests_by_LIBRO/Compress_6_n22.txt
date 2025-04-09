@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    File file = new File("target/foobar.zip");
+    ZipArchiveOutputStream zout = new ZipArchiveOutputStream(file);
+    zout.setLevel(Deflater.BEST_COMPRESSION);
+    zout.setEncoding("UTF-8");
+    zout.setMethod(ZipArchiveOutputStream.DEFLATED);
+    zout.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS);
+    zout.setFallbackToUTF8(true);
+    zout.setUseLanguageEncodingFlag(true);
+
+    List<String> names = new ArrayList<>();
+    int n = 100;
+    for (int i=0; i<n; i++) {
+        names.add("test" + i);
+    }
+    names.add("test");
+    Collections.shuffle(names);
+    for (String name : names) {
+        ZipArchiveEntry entry = new ZipArchiveEntry(name);
+        zout.putArchiveEntry(entry);
+       

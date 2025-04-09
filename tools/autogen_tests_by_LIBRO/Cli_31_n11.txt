@@ -1,0 +1,14 @@
+public void testHelpFormatter() {
+    Options options = new Options();
+
+    options.addOption(Option.builder("c").longOpt("cmd")
+            .hasArg()
+            .argName("command")
+            .build());
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("myarg");
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(new PrintWriter(writer), HelpFormatter.DEFAULT_WIDTH, "mycmd", "myheader", options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, "myfooter");
+    assertTrue(writer.toString().contains("myarg"));
+}

@@ -1,0 +1,14 @@
+public void testMaxKeyLength () {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 65536; i++) {
+        sb.append("abcdefghijklmnopqrstuvwxyz0123456789");
+    }
+    String key = sb.toString();
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        objectMapper.readValue("{\"" + key + "\":\"test\"}", Map.class);
+        fail("should throw exception");
+    } catch (ArrayIndexOutOfBoundsException e) {
+        // ok
+    }
+}

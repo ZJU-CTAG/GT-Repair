@@ -1,0 +1,9 @@
+public void testIssue138() throws CommandLineException {
+    Argument numArg = aBuilder.withValidator(NumberValidator.getNumberInstance()).withMinimum(1).withMaximum(1).create();
+    Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+    Group options = gBuilder.withOption(numOpt).create();
+
+    CommandLineParser parser = new CommandLineParser();
+    parser.setGroup(options);
+    parser.parse(new String[] { "--num", "-0.1" });
+}

@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    final FileInputStream fis = new FileInputStream("src/test/resources/test7.zip");
+    try {
+        final ZipArchiveInputStream zis = new ZipArchiveInputStream(fis);
+        try {
+            ZipArchiveEntry ze = zis.getNextZipEntry();
+            assertNull(ze);
+        } finally {
+            zis.close();
+        }
+    } finally {
+        fis.close();
+    }
+}

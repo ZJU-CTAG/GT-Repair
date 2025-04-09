@@ -1,0 +1,15 @@
+public void testAfter() {
+    Runnable runnable = Mockito.mock(Runnable.class);
+    Mockito.verify(runnable, Mockito.never()).run(); // passes as expected
+    try {
+        Mockito.verify(runnable, Mockito.after(1000).never()).run(); // passes as expected
+    } catch (VerificationAssertionError e) {
+        fail("after(1000) should not throw an exception");
+    }
+    try {
+        Mockito.verify(runnable, Mockito.after(-1000).atLeastOnce()).run(); // passes incorrectly
+        fail("after(-1000) should throw an exception");
+    } catch (VerificationAssertionError e) {
+        // Expected
+    }
+}

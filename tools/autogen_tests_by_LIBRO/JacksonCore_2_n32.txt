@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("123true", Boolean.class);
+        fail("No exception thrown");
+    } catch (JsonMappingException e) {
+        assertEquals("Unexpected token (VALUE_NUMBER_INT), expected VALUE_TRUE: need JSON Boolean that is not number", e.getMessage());
+    }
+}

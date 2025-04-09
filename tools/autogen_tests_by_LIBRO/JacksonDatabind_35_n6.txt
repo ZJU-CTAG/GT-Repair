@@ -1,0 +1,19 @@
+public void testObjectIdSerialization() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    //mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    ObjectIdGenerator<Long> generator = new ObjectIdGenerators.LongIdGenerator();
+
+    TestObjectWithId obj = new TestObjectWithId();
+    obj.id = generator.generateId(obj);
+    obj.name = "Foo";
+
+    String json = mapper.writeValueAsString(obj);
+    System.out.println(json);
+
+    TestObjectWithId obj2 = mapper.readValue(json, TestObjectWithId.class);
+    assertEquals("Should have same id", obj.id, obj2.id);

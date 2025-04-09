@@ -1,0 +1,19 @@
+public void testIssue107() {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("xxxxMM'w'ww");
+    SimpleModule module = new SimpleModule("MyModule", new Version(1, 0, 0, null));
+    module.addSerializer(String[].class, new JsonSerializer<String[]>() {
+        @Override
+        public void serialize(String[] strings, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+            jgen.writeStartArray();
+            for (String string : strings) {
+                jgen.writeObject(string);
+            }
+            jgen.writeEndArray();
+        }
+    });
+    module.addDeserializer(String[].class, new JsonDeserializer<String[]>() {
+        @Override
+        public String[] deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            JsonToken t = jp.getCurrentToken();
+            if (t == JsonToken.START_ARRAY) {
+                List

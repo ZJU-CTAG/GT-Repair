@@ -1,0 +1,18 @@
+public void testAttributes() throws Exception {
+    XmlMapper m = new XmlMapper();
+    try (JsonParser p = m.createParser(
+            "<root attr='value'>"
+            +"<child>text</child>"
+            +"</root>")) {
+        assertToken(JsonToken.START_OBJECT, p.nextToken());
+        assertToken(JsonToken.FIELD_NAME, p.nextToken());
+        assertEquals("attr", p.getCurrentName());
+        assertEquals("value", p.nextTextValue());
+        assertToken(JsonToken.START_ARRAY, p.nextToken());
+        assertToken(JsonToken.START_OBJECT, p.nextToken());
+        assertToken(JsonToken.FIELD_NAME, p.nextToken());
+        assertEquals("child", p.getCurrentName());
+        assertEquals("text", p.nextTextValue());
+        assertToken(JsonToken.END_OBJECT, p.nextToken());
+    }
+}

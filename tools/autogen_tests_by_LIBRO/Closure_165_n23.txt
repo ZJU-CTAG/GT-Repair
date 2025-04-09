@@ -1,0 +1,21 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.checkTypes = true;
+    options.checkVars = true;
+    options.setCheckSymbols(true);
+    compiler.initOptions(options);
+    Result result = compiler.compile(
+        CLOSURE_DEFS +
+        "var /** @type {Record} */ a;" +
+        "a.foo = 3;",
+        new JSSourceFile[]{JSSourceFile.fromCode("testcode",
+            "/** @record @struct */\n" +
+            "var Record = function() {};\n" +
+            "/** @type {number} */\n" +
+            "Record.prototype.foo;")},
+        options);
+    assertEquals(1, result.errors.length);
+    assertEquals("Property foo never defined on a",
+        result.errors[0].description);
+}

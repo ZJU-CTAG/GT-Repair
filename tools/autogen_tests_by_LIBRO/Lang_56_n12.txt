@@ -1,0 +1,10 @@
+public void testSerialization() throws Exception {
+    FastDateFormat fdf = FastDateFormat.getInstance("yyyyMMdd");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(fdf);
+    oos.close();
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    FastDateFormat fdf2 = (FastDateFormat) ois.readObject();
+    assertSame(fdf, fdf2);
+}

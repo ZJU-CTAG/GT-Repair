@@ -1,0 +1,17 @@
+public void testIssue() {
+    try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("commons-io-pax.tar")) {
+        try (TarArchiveInputStream tis = new TarArchiveInputStream(is)) {
+            TarArchiveEntry entry = null;
+            while ((entry = tis.getNextTarEntry()) != null) {
+                System.out.println(entry.getName() + ": " + entry.getSize());
+                if (entry.isDirectory()) {
+                    continue;
+                }
+                byte[] data = IOUtils.toByteArray(tis);
+                System.out.println("  " + data.length);
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

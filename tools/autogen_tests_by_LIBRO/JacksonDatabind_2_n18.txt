@@ -1,0 +1,18 @@
+public void testRefText() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.registerSubtypes(ReferenceText.class);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+false);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+false);
+
+    mapper.addMixIn(ReferenceText.class, ReferenceTextMixIn.class);
+    String json = "{\"qid\":\"q1\", \"values\":[{\"itemType\":\"date\",
+\"items\":[{\"date\":\"2011-01-01\"}]}]}";
+    ReferenceText rt = mapper.readValue(json, ReferenceText.class);
+    JsonNode tree = mapper.valueToTree(rt);
+    assertTrue(tree.has("qid"));
+    assertTrue(tree.has("values"));
+    System.out.println(tree);
+    assertTrue(tree.get("values").get(

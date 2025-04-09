@@ -1,0 +1,17 @@
+public void testLongDirName() throws IOException {
+    final String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+    final int n = path.length();
+    final StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < n * 2; i++) {
+        sb.append('x');
+    }
+    sb.append(File.separatorChar);
+    final String longDir = sb.toString();
+    final File targz = new File(path, "longDir.tar.gz");
+    final TarArchiveOutputStream tos = new TarArchiveOutputStream(new GZIPOutputStream(new FileOutputStream(targz)));
+    tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    final TarArchiveEntry entry = new TarArchiveEntry(longDir);
+    tos.putArchiveEntry(entry);
+    tos.closeArchiveEntry();
+    tos.close();
+}

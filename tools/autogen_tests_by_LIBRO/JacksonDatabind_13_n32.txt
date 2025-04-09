@@ -1,0 +1,23 @@
+public void testIdAbsent() throws Exception {
+    ObjectMapper m = new ObjectMapper();
+    m.addMixInAnnotations(IdAbsent.class, JsonIdAbsentMixIn.class);
+
+    IdAbsent src = new IdAbsent();
+    src.id = 2;
+    src.name = "Foo";
+
+    String json = m.writeValueAsString(src);
+
+    IdAbsent result = m.readValue(json, IdAbsent.class);
+    assertNull(result.id);
+    assertEquals("Foo", result.name);
+}
+
+public static class IdAbsent {
+    public Integer id;
+    public String name;
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.None.class)
+public abstract class JsonIdAbsentMixIn {
+}

@@ -1,0 +1,14 @@
+public void testNamespace() throws Exception {
+    DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+    domFactory.setNamespaceAware(true);
+    Document doc = domFactory.newDocumentBuilder().parse(new InputSource(new StringReader(
+        "<?xml version='1.0'?>"
+            + "<a:doc xmlns:a='ns'>"
+            + "  <a:elem>A</a:elem>"
+            + "  <b:elem xmlns:b='ns'>B</b:elem>"
+            + "</a:doc>")));
+    JXPathContext context = JXPathContext.newContext(doc);
+    for (Iterator<?> iter = context.iteratePointers("//*"); iter.hasNext();) {
+        System.out.println(iter.next());
+    }
+}

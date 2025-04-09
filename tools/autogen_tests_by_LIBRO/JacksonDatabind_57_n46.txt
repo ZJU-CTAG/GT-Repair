@@ -1,0 +1,14 @@
+public void testIssue107() {
+    ObjectReader reader = new ObjectMapper().reader();
+    byte[] data = "{}".getBytes();
+    JsonParser parser = reader.getFactory().createParser(data, 1, data.length - 2);
+    try {
+        parser.nextToken();
+        reader.readValue(parser);
+        fail("Expected a JsonParseException");
+    } catch (JsonParseException e) {
+        assertEquals("Unexpected end-of-input: expected close marker for OBJECT (from [Source: (byte[])" +
+                "{; line: 1, column: 1])\n at [Source: (byte[])" +
+                "{; line: 1, column: 2]", e.getMessage());
+    }
+}

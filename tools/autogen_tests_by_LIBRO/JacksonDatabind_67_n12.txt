@@ -1,0 +1,17 @@
+public void testIssue110() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+    mapper.registerModule(new SimpleModule().addKeyDeserializer(TestEnum.class, new KeyDeserializer() {
+        @Override
+        public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return key.toUpperCase();
+        }
+    }).addDeserializer(TestEnum.class, new JsonDeserializer<TestEnum>() {
+        @Override
+        public TestEnum deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            return TestEnum.valueOf(jp.getValueAsString().toUpperCase());
+        }
+    }));
+
+    Map<TestEnum, String> value = mapper.readValue("{\"first\":\"foo\"}", new TypeReference<Map<

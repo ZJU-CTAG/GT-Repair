@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String js = "(function () {\n" +
+            "  /**\n" +
+            "   * @param {!Object} argument\n" +
+            "   * @return {undefined}\n" +
+            "   */\n" +
+            "  function f(argument) {\n" +
+            "    ...//use argument\n" +
+            "    var variable = ...;\n" +
+            "    ...//argument not used anymore\n" +
+            "  }\n" +
+            "})();";
+    String options = "compilation_level=WHITESPACE_ONLY";
+    String obfuscatedJs = ClosureCompiler.compile(js, options);
+    System.out.println(obfuscatedJs);
+}

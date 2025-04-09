@@ -1,0 +1,23 @@
+public void testPosixParser() {
+    String[] args = new String[]{"-t"};
+    Options opts = new Options();
+    opts.addOption(new Option("t", "target", true, "Generate files for the specified target machine"));
+    CommandLineParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    try {
+        parsedLine = parser.parse(opts, args);
+    } catch (ParseException pe) {
+        fail("Should have parsed -t");
+    }
+    assertNotNull(parsedLine);
+    assertTrue(parsedLine.hasOption("t"));
+    assertFalse(parsedLine.hasOption("target"));
+    assertEquals("", parsedLine.getOptionValue("t"));
+    args = new String[]{"-target"};
+    try {
+        parsedLine = parser.parse(opts, args);
+    } catch (ParseException pe) {
+        fail("Should have parsed -target");
+    }
+    assertNotNull(parsedLine);
+    assertFalse(parsedLine.

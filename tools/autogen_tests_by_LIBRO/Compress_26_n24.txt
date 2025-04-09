@@ -1,0 +1,27 @@
+public void testIssue() throws Exception {
+    InputStream is = new CipherInputStream(new ByteArrayInputStream(new byte[10]), new NullCipher());
+    long skipped = IOUtils.skip(is, 5);
+    assertEquals(5, skipped);
+}
+
+private class NullCipher extends Cipher {
+
+    public int doFinal(byte[] arg0, int arg1) throws IllegalBlockSizeException, BadPaddingException {
+        return 0;
+    }
+
+    public byte[] doFinal(byte[] arg0) throws IllegalBlockSizeException, BadPaddingException {
+        return null;
+    }
+
+    public int doFinal(byte[] arg0, int arg1, int arg2, byte[] arg3) throws ShortBufferException, 
+            IllegalBlockSizeException, BadPaddingException {
+        return 0;
+    }
+
+    public int doFinal(ByteBuffer arg0, ByteBuffer arg1) throws ShortBufferException, 
+            IllegalBlockSizeException, BadPaddingException {
+        return 0;
+    }
+
+    public int update(byte[] arg0, int arg1, int arg2, byte[] arg3)

@@ -1,0 +1,18 @@
+public void testEmptyContent() throws IOException {
+    final ObjectMapper MAPPER = new ObjectMapper();
+    final String EMPTY = "  \t\n\r   ";
+
+
+    JsonNode n = MAPPER.readTree(EMPTY);
+    assertNull(n);
+
+
+    n = MAPPER.readValue(EMPTY, JsonNode.class);
+    assertNotNull(n);
+    assertTrue(n.isMissingNode());
+
+
+    n = MAPPER.reader(JsonNode.class).readTree(EMPTY);
+    assertNotNull(n);
+    assertTrue(n.isMissingNode());
+}

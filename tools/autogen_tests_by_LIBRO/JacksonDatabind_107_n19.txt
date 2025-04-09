@@ -1,0 +1,17 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser p,
+                JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
+            return true;
+        }
+
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.defaultInstance().constructSimpleType(Void.class, new JavaType[0]);
+        }
+    });
+    mapper.enableDefaultTyping();
+    Object readValue = mapper.readValue("[\"java.lang.String\"]", Object.class);
+    System.out.println(readValue);
+}

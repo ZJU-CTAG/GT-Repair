@@ -1,0 +1,7 @@
+public void testIssue148() {
+    DateTimeFormatter f = DateTimeFormat.forPattern("dd MMM");
+    DateTime dt = new DateTime(2010, 2, 1, 0, 0);
+    DateTimeParserBucket bucket = new DateTimeParserBucket(0, dt, null, ISOChronology.getInstanceUTC());
+    f.getParser().parseInto(bucket, "29 feb", 0);
+    assertEquals(2010, bucket.computeMillis(true, ISOChronology.getInstanceUTC()).getYear());
+}

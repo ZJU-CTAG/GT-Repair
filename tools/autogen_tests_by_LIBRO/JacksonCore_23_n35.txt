@@ -1,0 +1,20 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationConfig(SerializationConfig.with(new MyPrettyPrinter()));
+    String json = mapper.writeValueAsString(new MyPojo());
+    System.out.println(json);
+    assertEquals(json, "{\"key\":\"value\"}");
+}
+
+class MyPrettyPrinter extends DefaultPrettyPrinter {
+    @Override
+    public DefaultPrettyPrinter createInstance() {
+        DefaultPrettyPrinter pp = new DefaultPrettyPrinter();
+        pp.setRootSeparator(linefeed);
+        return pp;
+    }
+}
+
+class MyPojo {
+    public String key = "value";
+}

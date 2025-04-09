@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    WindSpeed windSpeed = mapper.readValue("<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>", WindSpeed.class);
+    assertNotNull(windSpeed);
+    assertEquals("kt", windSpeed.getUnits());
+    assertEquals(27, windSpeed.getValue());
+    assertEquals(1, windSpeed.getRadius().size());
+    WindSpeed.Radius radius = windSpeed.getRadius().get(0);
+    assertEquals(20, radius.getValue());
+}

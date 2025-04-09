@@ -1,0 +1,11 @@
+public void testBlacklist() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    // use blacklisting
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.setMixIns(Collections.<Class<?>, Class<?>>singletonMap(Object.class, MyMixinForJdk7u2.class));
+    // verify non-blacklisted
+    assertEquals("{\"@class\":\"jackson.issue.CVE_2017_15095$MyMixinForJdk7u2\"}", mapper.writeValueAsString(new MyMixinForJdk7u2()));
+    assertEquals("{\"@class\":\"jackson.issue.CVE_2017_15095$MyMixinForJdk7u2\"}", mapper.writeValueAsString(new MyMixinForJdk7u2()));
+    // verify blacklisted
+    try {
+        mapper.writeValueAsString(new MyMixinForJdk7u2(new InnerClass()));

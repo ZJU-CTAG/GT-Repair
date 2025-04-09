@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    final String data = "12345678901\0" + "12345678901" + "12345678901";
+    final TarArchiveInputStream in = new TarArchiveInputStream(new ByteArrayInputStream(data.getBytes()));
+    final TarArchiveEntry entry = in.getNextTarEntry();
+    assertNotNull(entry);
+    assertEquals(12345678901L, entry.getSize());
+    in.close();
+}

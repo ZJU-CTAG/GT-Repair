@@ -1,0 +1,17 @@
+public void testIssue() {
+    final int numParams = 40000;
+    final int numEval = 1;
+    MultivariateVectorFunction mvf = new MultivariateVectorFunction() {
+        @Override
+        public double[] value(double[] point) {
+            return new double[numEval];
+        }
+    };
+    MultivariateVectorOptimizer optimizer = new CMAESOptimizer(50000, 1e-10, true, 0, 0, new MersenneTwister(), false, new SimplePointChecker(1e-10, 1e-10));
+    optimizer.optimize(new MaxEval(1),
+                   new ObjectiveFunction(mvf),
+                   GoalType.MAXIMIZE,
+                   SimpleBounds.unbounded(numParams),
+                   new InitialGuess(new double[numParams]),
+                   new InitialGuess(new double[numParams]));
+}

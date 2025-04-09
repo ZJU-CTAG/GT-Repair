@@ -1,0 +1,24 @@
+public void testConstructorRefinements() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    //mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    //mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.registerModule(new JaxbAnnotationModule());
+
+    // first, verify that "int" is the type of property; then add annotation
+    {
+        String json = mapper.writeValueAsString(new MyValue(Integer.valueOf(13)));
+        assertEquals(quote("value")+":13}", json);
+    }
+    {
+        String json = mapper.writeValueAsString(new MyValue(13));
+        assertEquals(quote("value")+":13}", json);
+    }
+
+    // then verify that annotation does not change type
+    {
+        String json = mapper.writeValueAsString(new MyValue2(13));
+        assertEquals(quote("value")+":13}", json);
+    }
+    {
+       

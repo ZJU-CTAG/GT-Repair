@@ -1,0 +1,22 @@
+public void testIssue() {
+    String js = "var A = new Class({ foo : function() { return 'foo'; }});\n" +
+            "var B = new Class({ Extends: A, foo: function() { return this.$super() + 'bar'; }});\n" +
+            "var b = new B();\n" +
+            "var result = b.foo();\n" +
+            "result;\n";
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            CompilerOptions.builder()
+                    .setLanguageIn(LanguageMode.ECMASCRIPT5)
+                    .setLanguageOut(LanguageMode.ECMASCRIPT5)
+                    .setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+                    .build(),
+            SourceFile.fromCode("source", js));
+
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+
+    String compiled = compiler.toSource();
+    assertTrue(compiled.cont

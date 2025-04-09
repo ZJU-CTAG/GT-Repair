@@ -1,0 +1,10 @@
+public void testIntParsing() throws Exception {
+    String json = "{\"x\": -4294967295}";
+    try {
+        JsonNode tree = mapper.readTree(json);
+        mapper.readerFor(IntClass.class).readValue(tree);
+        fail("Should not have parsed to int");
+    } catch (JsonParseException e) {
+        // pass
+    }
+}

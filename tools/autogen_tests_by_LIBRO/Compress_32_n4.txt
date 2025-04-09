@@ -1,0 +1,9 @@
+public void testLargeIds() throws Exception {
+    File f = getFile("testposix.tar");
+    TarArchiveInputStream in = new TarArchiveInputStream(new FileInputStream(f));
+    TarArchiveEntry entry = in.getNextTarEntry();
+    assertNotNull(entry);
+    assertEquals("test1", entry.getName());
+    assertEquals(4294967294L, entry.getUserId());
+    assertEquals(4294967294L, entry.getGroupId());
+}

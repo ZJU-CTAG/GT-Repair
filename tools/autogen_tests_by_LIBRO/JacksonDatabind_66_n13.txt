@@ -1,0 +1,21 @@
+public void testEnumKeyDeserializer() throws IOException {
+    // test data
+    String json = "{\"someMap\": {\"FOO\": \"bar\"}}";
+
+    // mapper with module
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addDeserializer(SuperTypeEnum.class, new JsonDeserializer<SuperTypeEnum>() {
+        @Override
+        public SuperTypeEnum deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                throws IOException {
+
+            return SuperTypeEnum.valueOf(jsonParser.getText());
+        }
+    });
+    mapper.registerModule(simpleModule);
+
+    // test
+    SuperType superType = mapper.readValue(json, SuperType.class);
+    assertEquals("Deserialized someMap.FOO should equal bar", "bar", superType.getSomeMap().get(SuperTypeEnum.FOO));
+}

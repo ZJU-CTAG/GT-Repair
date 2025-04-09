@@ -1,0 +1,11 @@
+public void testNamespaceSelector() {
+    Document doc = DocumentHelper.createDocument();
+    Element root = doc.addElement("xml");
+    root.addNamespace("x", "foo");
+    root.addAttribute("x:pop", "a");
+
+    XPath xpath = DocumentHelper.createXPath("/xml/@*");
+    List attributes = xpath.selectNodes(doc);
+
+    assertEquals("Namespace attribute not found", 1, attributes.size());
+}

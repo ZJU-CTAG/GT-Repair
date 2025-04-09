@@ -1,0 +1,16 @@
+public void testFilteringParserDelegateLastEndObjectMissed() throws Exception {
+    String in = "{\"a\":123,\"array\":[1,2],\"ob\": {\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    JsonParser p0 = JSON_F.createParser(in);
+    JsonParser p = new FilteringParserDelegate(p0,
+        new NameMatchFilter("value"),
+        true, // includePath
+        false // multipleMatches
+    );
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("ob", p.getCurrentName());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("value", p.getCurrentName());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(3, p.

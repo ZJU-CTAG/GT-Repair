@@ -1,0 +1,24 @@
+public void testIssue(){
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(Foo.class, new MyFooSerializer());
+    mapper.registerModule(module);
+
+    Foo foo = new Foo();
+    String json = mapper.writeValueAsString(foo);
+    System.out.println(json);
+}
+
+public static class MyFooSerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("custom");
+    }
+}
+
+public static class Foo {
+    @JsonValue
+    public String getValue() {
+        return "jsonvalue";
+    }
+}

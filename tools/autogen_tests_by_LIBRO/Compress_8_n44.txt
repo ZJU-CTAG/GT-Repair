@@ -1,0 +1,20 @@
+public void testParseHeader() throws IOException {
+    File file = File.createTempFile("test", "tar");
+    file.deleteOnExit();
+
+    try (FileOutputStream fos = new FileOutputStream(file)) {
+        try (TarArchiveOutputStream taos = new TarArchiveOutputStream(fos)) {
+            TarArchiveEntry tae = new TarArchiveEntry("entry");
+            tae.setSize(1234567890123L);
+            tae.setMode(777);
+            taos.putArchiveEntry(tae);
+            byte[] data = "abcdefghijklmnopqrstuvwxyz".getBytes();
+            taos.write(data);
+            taos.closeArchiveEntry();
+        }
+    }
+
+    try (FileInputStream fis = new FileInputStream(file)) {
+        try (TarArchiveInputStream tais = new TarArchiveInputStream(fis)) {
+            TarArchiveEntry tae = tais.getNextTarEntry();
+            assertEquals(1234567890123L, tae.get

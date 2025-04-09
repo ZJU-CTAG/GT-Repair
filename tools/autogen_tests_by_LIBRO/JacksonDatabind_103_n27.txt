@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    String json = "[\"a\"]";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, new TypeReference<List<Integer>>() { });
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        int ix = msg.indexOf(" at [Source");
+        if (ix >= 0) {
+            ix = msg.indexOf(" at [Source", ix+12);
+            if (ix >= 0) {
+                fail("Should not have 2nd occurrence of location info, got: "+msg);
+            }
+        }
+    }
+}

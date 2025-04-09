@@ -1,0 +1,18 @@
+public void testConcurrentNavigableMapSerialization() {
+    Map<String, Integer> map = new ConcurrentSkipListMap<String, Integer>();
+    map.put("a", 1);
+    map.put("b", 2);
+    map.put("c", 3);
+    map.put("d", 4);
+    map.put("e", 5);
+    map.put("f", 6);
+    map.put("g", 7);
+    map.put("h", 8);
+    map.put("i", 9);
+    map.put("j", 10);
+
+    String json = gson.toJson(map);
+    ConcurrentNavigableMap<String, Integer> map2 = gson.fromJson(json, new TypeToken<ConcurrentNavigableMap<String, Integer>>() {
+    }.getType());
+    assertEquals(map, map2);
+}

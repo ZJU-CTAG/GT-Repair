@@ -1,0 +1,23 @@
+public void testMultiplePrefix() throws Exception {
+    // build document
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    Element root = doc.createElementNS("ns", "a:doc");
+    Element child1 = doc.createElementNS("ns", "a:elem");
+    Element child2 = doc.createElementNS("ns", "b:elem");
+    root.appendChild(child1);
+    root.appendChild(child2);
+    doc.appendChild(root);
+
+    // test
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    Pointer ptr = null;
+    int count = 0;
+    for (Iterator iter = context.iteratePointers("//*"); iter.hasNext();) {
+        ptr = (Pointer) iter.next();
+        System.out.println("Found " + ptr);
+        count++;
+    }
+    assertEquals("Found wrong number of elements", 2, count);

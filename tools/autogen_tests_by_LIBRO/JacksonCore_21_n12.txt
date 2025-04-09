@@ -1,0 +1,25 @@
+public void testFilteringParserDelegate() throws Exception {
+    final JsonFactory jsonFactory = new JsonFactory();
+    final JsonParser p0 = jsonFactory.createJsonParser(
+            "{\n" +
+               "  \"a\":123,\n" +
+               "  \"array\":[1,2],\n" +
+               "  \"ob\": {\n" +
+               "    \"value0\":2,\n" +
+               "    \"value\":3,\n" +
+               "    \"value2\":4\n" +
+               "  },\n" +
+               "  \"b\":true\n" +
+               "}"
+    );
+
+    final JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+            );
+
+    while (p.nextToken() != null) {
+        System.out.println(p.getCurrentToken());
+        if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+            System.out.print(p

@@ -1,0 +1,17 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    Void.class.equals((Void) new ObjectMapper().readerFor(Void.class)
+            .withAttribute(DeserializationProblemHandler.DESERIALIZATION_PROBLEM_HANDLER,
+                    new DeserializationProblemHandler() {
+                        @Override
+                        public JavaType handleUnknownTypeId(DeserializationContext ctxt,
+                                                            JavaType baseType,
+                                                            String subTypeId,
+                                                            TypeIdResolver idResolver,
+                                                            String failureMsg) throws IOException {
+                            // Returning the correct type works fine
+                            return TypeFactory.defaultInstance().constructType(Void.class);
+                        }
+                    })
+            .readValue("{\"value\":\"abc\"}"));
+}
+

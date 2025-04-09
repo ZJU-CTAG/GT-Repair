@@ -1,0 +1,38 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    final String json = "{\"data\":[\"foo\", \"bar\"]}";
+    final DataObject dataObject = mapper.readValue(json, DataObject.class);
+    assertEquals(2, dataObject.data.size());
+}
+
+public class DataObject {
+  @JsonDeserialize(as = ImmutableDataCollection.class)
+  public DataCollection data = new DataCollection();
+}
+
+public class DataCollection extends AbstractCollection<String> {
+
+  private List<String> data = new ArrayList<>();
+
+  @Override
+  public Iterator<String> iterator() {
+    return data.iterator();
+  }
+
+  @Override
+  public int size() {
+    return data.size();
+  }
+
+  @Override
+  public boolean add(String s) {
+    return data.add(s);
+  }
+}
+
+public class ImmutableDataCollection extends DataCollection {
+
+  @Override
+  public boolean add(String s) {
+    throw new IllegalStateException("Immutable collection");
+  }

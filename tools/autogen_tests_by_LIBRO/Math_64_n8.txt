@@ -1,0 +1,28 @@
+public void testOptimize() {
+        MultivariateDifferentiableVectorFunction f = new MultivariateDifferentiableVectorFunction() {
+            @Override
+            public VectorValuePair value(final double[] point) {
+                return new VectorValuePair(point, new double[]{point[0]*point[0], point[0] * point[1]});
+            }
+
+            @Override
+            public int getDimension() {
+                return 2;
+            }
+
+            @Override
+            public MultivariateMatrixFunction jacobian() {
+                return new MultivariateMatrixFunction() {
+                    @Override
+                    public double[][] value(double[] point)
+                            throws IllegalArgumentException {
+                        return new double[][] {{2 * point[0], 0}, {point[1], point[0]}};
+                    }
+                };
+            }
+        };
+
+        double[] target = {-1.0, 0.0};
+        double[] weights = {1.0, 1.0};
+        LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+        Vect

@@ -1,0 +1,21 @@
+public void testOptionBuilder() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.create("a"));
+    options.addOption(OptionBuilder.create("b"));
+    try {
+        new PosixParser().parse(options, new String[]{"-a", "1", "-b", "2", "-b"});
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        // Expected
+    }
+    new PosixParser().parse(options, new String[]{"-a", "1", "-b", "2"});
+}
+
+public void testOptionBuilderWithArgument() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("name").create("a"));
+    options.addOption(OptionBuilder.create("b"));
+    try {
+        new PosixParser().parse(options, new String[]{"-a", "1", "-b", "2", "-b"});
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {

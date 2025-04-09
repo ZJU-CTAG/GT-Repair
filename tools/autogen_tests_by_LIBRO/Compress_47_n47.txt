@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    // create a zip file with a bzip2 entry
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(bos);
+    zos.setMethod(ZipArchiveOutputStream.BZIP2);
+    zos.putArchiveEntry(new ZipArchiveEntry("test"));
+    zos.write("test".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+    byte[] bytes = bos.toByteArray();
+    // change the compressed size to UNKNOWN
+    bytes[42] = 0xFF;
+    bytes[43] = 0xFF;
+    bytes[44] = 0xFF;
+    bytes[45] = 0xFF;
+    // try to read the zip
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(bytes));
+    zis.getNextZipEntry();
+}

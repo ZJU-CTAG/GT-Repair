@@ -1,0 +1,12 @@
+public void testIssue198() {
+    String js = "var x = '1'; try { x += somefunction(); } catch(e) {} x += '2'; try { x += somefunction(); } catch(e) {} document.write(x);";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(externs, ImmutableList.of(jsSource(js)), options);
+    System.out.println(result.success);
+    System.out.println(result.errors.toString());
+    System.out.println(result.warnings.toString());
+    System.out.println(compiler.toSource(result.js));
+}

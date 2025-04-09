@@ -1,0 +1,14 @@
+public void testJacksonWithCustomCollection() throws Exception {
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+
+    ObjectNode node = mapper.createObjectNode();
+    node.putObject("myCollection").put("item1", "a").put("item2", "b");
+    node.putObject("myCollection2").put("item1", "a").put("item2", "b");
+
+    MyPojo pojo = mapper.treeToValue(node, MyPojo.class);
+    assertEquals(2, pojo.myCollection.size());
+    assertEquals(2, pojo.myCollection2.size());
+}

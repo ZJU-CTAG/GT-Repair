@@ -1,0 +1,32 @@
+public void testIssue108() {
+    ObjectMapper mapper = new ObjectMapper();
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(mapper.getFactory().createGenerator(new ByteArrayOutputStream()), new SimpleBeanPropertyFilter());
+    delegate.setAllowMultipleMatches(false);
+    // Now it should throw an exception if a property is serialized multiple times.
+    MyPojo pojo = new MyPojo();
+    pojo.setName("foo");
+    pojo.setName2("bar");
+    mapper.writeValue(delegate, pojo);
+}
+
+public static class MyPojo {
+    private String name;
+    private String name2;
+
+    @JsonProperty
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty
+    public String getName2() {
+        return name2;
+    }
+
+    @JsonProperty
+    public void setName2(String name2) {

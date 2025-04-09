@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    String json = "{\"businessAddress.street\":\"123 main street\",\"businessAddress.zip\":\"1234\",\"businessAddress.town\":\"Somewhere\"}";
+    Person person = mapper.readValue(json, Person.class);
+    assertEquals("123 main street", person.businessAddress.street);
+    assertEquals("1234", person.businessAddress.zip);
+    assertEquals("Somewhere", person.businessAddress.town);
+}

@@ -1,0 +1,13 @@
+public void testClosure()
+{
+    String js = "goog.require('foo');\ngoog.require('bar');";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkRequires = true;
+    Result result = compiler.compile(SourceFile.fromCode("input.js", js), options);
+
+    assertTrue(result.success);
+    assertEquals("goog.require('foo');\n", compiler.toSource());
+}

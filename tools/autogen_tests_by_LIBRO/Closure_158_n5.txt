@@ -1,0 +1,23 @@
+public void testIssue108() {
+    CompilationLevel level = CompilationLevel.WHITESPACE_ONLY;
+    WarningLevel warningLevel = WarningLevel.DEFAULT;
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    String[] jscomp_warning = {"checkTypes", "fileoverviewTags"};
+    String[] jscomp_error = {"accessControls", "checkRegExp"};
+    String[] jscomp_off = {"nonStandardJsDocs"};
+
+    Compiler.setLoggingLevel(Level.FINER);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    compiler.compile(
+        new JSSourceFile[]{JSSourceFile.fromCode("testissue108.js", "")},
+        new JSSourceFile[]{},
+        options);
+
+    List<JSError> errors = compiler.getResult().errors;
+    for (JSError

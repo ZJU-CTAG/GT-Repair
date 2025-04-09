@@ -1,0 +1,12 @@
+public void testIssue() {
+    String code = "function(functionToCheck) { var getType; getType = {}; return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]'; };";
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint=true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", code), options);
+    assertEquals(0, result.errors.length);
+//    compiler.toSource();
+}

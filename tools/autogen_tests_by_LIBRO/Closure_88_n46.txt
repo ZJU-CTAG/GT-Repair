@@ -1,0 +1,16 @@
+public void testIssue() {
+    SimpleOptimizer o = new SimpleOptimizer();
+    CompilerOptions opts = new CompilerOptions();
+    opts.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    Node n = o.optimize("function closureCompilerTest(someNode) {\n" +
+            " var nodeId;\n" +
+            " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n" +
+            "}\n", opts);
+    CodePrinter p = new CodePrinter.Builder(n)
+            .setOutputTypes(false)
+            .setPrettyPrint(true)
+            .setCompactPrint(false)
+            .build();
+    String expected = "function closureCompilerTest(someNode) {\n" +
+            "  var nodeId;\n" +
+            "  return ((nodeId = someNode.id) && (nodeId = parseInt(nodeId.substr(1), 10)) && nodeId > 0);\n" +

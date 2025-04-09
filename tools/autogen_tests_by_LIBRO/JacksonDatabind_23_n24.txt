@@ -1,0 +1,14 @@
+public void testIssue() throws Exception
+{
+    String input = "{\"int\":5,\"string\":\"foo\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+    Container c = mapper.readValue(input, Container.class);
+    assertEquals(5, c.intValue);
+    assertEquals(null, c.stringValue);
+}
+
+public class Container {
+    public int intValue;
+    public String stringValue;
+}

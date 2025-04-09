@@ -1,0 +1,22 @@
+public void testRecordTypeInvalidPropertyNotReportedOnFunctionWithThisAnnotation() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            CompilerOptions.builder()
+                    .setLanguageIn(LanguageMode.ECMASCRIPT5)
+                    .setClosurePass(true)
+                    .setPrettyPrint(true)
+                    .setVariableRenaming(VariableRenamingPolicy.ALL)
+                    .setApplyInputSourceMaps(false)
+                    .setGenerateExports(true)
+                    .setExportLocalPropertyDefinitions(true)
+                    .setWarningsGuard(new WarningsGuards(CompilerOptions.DiagnosticGroups.LINT_CHECKS))
+                    .setCheckTypes(true)
+                    .setExternsValidation(CompilerOptions.ExternsValidation.ALL)
+                    .setEnvironment(CompilerEnvironment.BROWSER)
+                    .build(),
+            SourceFile.fromCode(
+                    "repro.js",
+                    ""
+                            + "var makeClass = function(protoMethods) {\n"
+                           

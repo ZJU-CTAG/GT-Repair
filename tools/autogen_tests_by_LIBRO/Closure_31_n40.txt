@@ -1,0 +1,22 @@
+public void testIssue112() throws Exception {
+    String[] args = {
+        "--js", "externs.js",
+        "--js", "input1.js",
+        "--js", "input2.js",
+        "--js_output_file", "output.js",
+        "--manage_closure_dependencies",
+        "--only_closure_dependencies"
+    };
+
+    CompilerOptions options = new CompilerOptions();
+    options.setManageClosureDependencies(true);
+    options.setOnlyClosureDependencies(true);
+
+    Compiler compiler = new Compiler();
+    compiler.compile(CommandLineRunner.getDefaultExterns(),
+        ImmutableList.of(SourceFile.fromCode("input1.js",
+            "goog.addDependency('input2.js', ['input2'], []);")),
+        options);
+    assertEquals(compiler.toSource(),
+        "goog.addDependency('input2.js', ['input2'], []);");
+}

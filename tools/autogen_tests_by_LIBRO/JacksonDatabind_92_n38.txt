@@ -1,0 +1,15 @@
+public void testCVE201715095() throws IOException {
+    // use 'manual' mapper so that we are not using default instance from ObjectMapper:
+    ObjectMapper mapper = new ObjectMapper();
+    // ensure we can use polymorphic deserializer
+    mapper.enableDefaultTyping();
+    // and then verify that we get a security exception for types we want to block
+    for (String clsName : new String[] {
+            "sun.reflect.annotation.AnnotationInvocationHandler",
+            "org.apache.commons.collections.functors.InvokerTransformer",
+            "org.apache.commons.collections.functors.InstantiateTransformer",
+            "org.codehaus.groovy.runtime.ConvertedClosure",
+            "org.codehaus.groovy.runtime.MethodClosure",
+            "org.springframework.beans.factory.ObjectFactory",
+            "com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl",
+            "org.apache.xalan.xsltc.trax.TemplatesImpl",

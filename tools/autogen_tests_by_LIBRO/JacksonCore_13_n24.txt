@@ -1,0 +1,23 @@
+public void testIssue109() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = mapper.getFactory().createJsonGenerator(sw);
+    g.setRootValueSeparator(null);
+    g.setPrettyPrinter(null);
+    g.setSchema(null);
+    g.writeFieldName("b");
+    g.writeString("\u00A9");
+    g.flush();
+    assertEquals("{\"b\":\"\u00A9\"}", sw.toString());
+
+    sw = new StringWriter();
+    mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    g = mapper.getFactory().createJsonGenerator(sw);
+    g.setRootValueSeparator(null);
+    g.setPrettyPrinter(null);
+    g.setSchema(null);
+    g.writeFieldName("b");
+    g.writeString("\u00A9");
+    g.flush();
+   

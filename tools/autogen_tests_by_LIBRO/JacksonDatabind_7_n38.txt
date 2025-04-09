@@ -1,0 +1,35 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{\"a\":1,\"b\":null}", Value.class);
+    assertEquals(1, value.getA());
+    assertNull(value.getB());
+}
+
+
+class Value {
+    private final Integer a;
+    private final Integer b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Integer a = null;
+        Integer b = null;
+
+        while (buffer.nextToken() != null) {
+            switch (buffer.currentToken()) {
+                case FIELD_NAME:
+                    switch (buffer.currentName()) {
+                        case "a":
+                            buffer.nextToken();
+                            a = buffer.readValueAs(Integer.class);
+                            break;
+                        case "b":
+                            buffer.nextToken();
+                            b = buffer.readValueAs(Integer.class);
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        return new Value(a,

@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+        // setup
+        ObjectMapper mapper = new ObjectMapper();
+
+        // test
+        try {
+            mapper.readValue("", Object.class);
+        } catch (JsonParseException e) {
+            assertEquals("Unexpected character ('\\x14' (code 20)) in numeric value", e.getMessage());
+            assertEquals("[Source: ; line: 1, column: 1]", e.getLocation().toString());
+        }
+    }

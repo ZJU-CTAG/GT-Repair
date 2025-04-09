@@ -1,0 +1,17 @@
+public void testReproduceableCrashWithSwitch() {
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  JSSourceFile[] inputs = {JSSourceFile.fromCode("test.js",
+      "function a(b) {\n" +
+      " switch (b.v) {\n" +
+      " case 'SWITCH':\n" +
+      " if (b.i >= 0) {\n" +
+      " return b.o;\n" +
+      " } else {\n" +
+      " return undefined;\n" +
+      " }\n" +
+      " break;\n" +
+      " }\n" +
+      "}") };
+  compiler.compile(CommandLineRunner.getDefaultExterns(), inputs, new CompilerOptions());
+}

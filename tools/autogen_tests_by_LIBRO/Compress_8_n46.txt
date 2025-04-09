@@ -1,0 +1,18 @@
+public void testTarArchiveEntry() {
+    String data =
+        "drwxr-xr-x  0 root root       0 Mar  8 00:00 .\n" +
+        "drwxr-xr-x  0 root root     204 Mar  8 00:00 ..\n" +
+        "drwxr-xr-x  0 root root       0 Mar  8 00:00 etc\n" +
+        "-rw-r--r--  0 root root     798 Mar  8 00:00 x\n";
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TarOutputStream tos = new TarOutputStream(baos);
+    tos.putNextEntry(new TarArchiveEntry("x"));
+    tos.write(data.getBytes("UTF-8"));
+    tos.closeEntry();
+    tos.close();
+
+    byte[] tar = baos.toByteArray();
+
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(tar));
+    TarArchiveEntry tae = tis.getNextTar

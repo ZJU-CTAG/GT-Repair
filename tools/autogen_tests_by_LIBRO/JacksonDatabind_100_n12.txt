@@ -1,0 +1,15 @@
+public void testTreeTraversingParser() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(JsonParser.Feature.ALLOW_YAML_COMMENTS);
+    final Base64Variant BASE64_STANDARD = Base64Variants.getDefaultVariant();
+    final Base64Variant BASE64_URL = Base64Variants.getDefaultVariant().withPadChar('_');
+    JsonNode node = mapper.readTree("---\n" +
+            "binary (base64): %YWJj\n" +
+            "binary (base64_url): %YWJj\n");
+    assertEquals("abc", new String(node.get("binary (base64)").binaryValue()));
+    assertEquals("abc", new String(node.get("binary (base64_url)").binaryValue()));
+    JsonParser parser = new TreeTraversingParser(node, mapper);
+    parser.nextToken();
+    assertEquals("binary (base64)", parser.currentName());
+    assertEquals(JsonToken.

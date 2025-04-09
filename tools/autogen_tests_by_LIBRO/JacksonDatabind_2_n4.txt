@@ -1,0 +1,23 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    X<String> x = new X<String>();
+    x.s = "foo";
+    x.items = new ArrayList<String>();
+    x.items.add("bar");
+    x.items.add("bas");
+    x.items.add("bat");
+    mapper.setSerializationInclusion(Inclusion.NON_NULL);
+    mapper.setSerializationInclusion(Inclusion.NON_DEFAULT);
+    mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS,
+false);
+    mapper.registerModule(new SimpleModule("foo",
+Version.unknownVersion()) {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addBeanSerializerModifier(new BeanSerializerModifier()
+{
+                @Override
+                public JsonSerializer<?>
+modifySerializer(SerializationConfig config, BeanDescription
+beanDesc, JsonSerializer<?> serializer) {
+                    if (beanDesc

@@ -1,0 +1,14 @@
+public void testSevenZFile() throws Exception {
+    /* create empty archive */
+    final File archive = new File(dir, "test.7z");
+    SevenZOutputFile out = new SevenZOutputFile(archive);
+    SevenZArchiveEntry entry = out.createArchiveEntry(new TestFile(dir, "test.txt"));
+    out.putArchiveEntry(entry);
+    out.closeArchiveEntry();
+    out.close();
+    /* verify empty archive */
+    SevenZFile in = new SevenZFile(archive);
+    assertNotNull(in.getNextEntry());
+    assertEquals(0, in.read(new byte[0], 0, 0));
+    in.close();
+}

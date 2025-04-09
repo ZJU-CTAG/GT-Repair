@@ -1,0 +1,18 @@
+public void testIssue() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        objectMapper.readValue(objectMapper.writeValueAsBytes(new Outer()), Outer.class);
+    } catch (JsonMappingException e) {
+        JsonMappingException.Reference reference = e.getPath().get(0);
+        assertEquals("ReferenceChainTest$Outer[\"inner\"]", reference.toString());
+    }
+}
+static class Outer {
+    public Inner inner = new Inner();
+}
+static class Inner {
+    public int x;
+    @JsonCreator public static Inner create(@JsonProperty("x") int x) {
+        throw new RuntimeException("test-exception");
+    }
+}

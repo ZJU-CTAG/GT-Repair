@@ -1,0 +1,9 @@
+public void testExternalId () throws Exception {
+    String json = "{\"id\":\"id-1\",\"ref\":{\"id\":\"ref-id-1\"}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    ObjectNode tree = mapper.readValue(json, ObjectNode.class);
+
+    assertEquals("id-1", tree.get("id").asText());
+    assertEquals("ref-id-1", tree.get("ref").get("id").asText());
+}

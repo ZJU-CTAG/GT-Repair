@@ -1,0 +1,10 @@
+public void test() throws Exception {
+    CustomObjectMapper om = new CustomObjectMapper();
+    om.registerModule(new JavaTimeModule());
+    XBook<String> book = new XBook<>();
+    book.author = "me";
+    book.field = "hello";
+    XBook reserializedBook = om.readValue(om.writeValueAsBytes(book), XBook.class);
+    assertEquals(book.author, reserializedBook.author);
+    assertEquals(book.field, reserializedBook.field);
+}

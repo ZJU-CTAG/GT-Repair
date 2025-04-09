@@ -1,0 +1,15 @@
+public void testIssue104() {
+    String input = "window[\"anchor\"] = function (obj, modifiesProp) {\n"
+        + "  return (function (saved) {\n"
+        + "    return modifiesProp(obj) + saved;\n"
+        + "  })(obj[\"prop\"]);\n"
+        + "}";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setOptimizationLevel(CompilerOptions.OptimizationLevel.ADVANCED_OPTIMIZATIONS);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(EXTERNS_HTML5, input, options);
+    assertTrue(result.

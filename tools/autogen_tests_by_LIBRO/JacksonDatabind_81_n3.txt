@@ -1,0 +1,26 @@
+public void testIssuePrimitiveVsWrapper() throws Exception
+{
+    ObjectMapper mapper = JaxbAnnotationModule.setupObjectMapper(new ObjectMapper());
+    DateAsTimestamp dt = new DateAsTimestamp();
+    dt.date = new Date();
+    String json = mapper.writeValueAsString(dt);
+    DateAsTimestamp rt = mapper.readValue(json, DateAsTimestamp.class);
+    assertNotNull(rt.date);
+}
+
+static class DateAsTimestamp {
+    @XmlJavaTypeAdapter(TimestampAdapter.class)
+    public Date date;
+}
+
+static class TimestampAdapter extends XmlAdapter<Long, Date> {
+    @Override
+    public Date unmarshal(Long v) throws Exception {
+        return (v == null) ? null : new Date(v.longValue());
+    }
+
+    @Override
+    public Long marshal(Date v) throws Exception {
+        return (v == null) ? null : Long.valueOf(v.getTime());
+    }
+}

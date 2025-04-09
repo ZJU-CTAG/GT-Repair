@@ -1,0 +1,15 @@
+public void testMissingProperty() throws Exception {
+    Configuration config = Configuration.builder()
+        .addOptions(new ClosureJsChecker())
+        .setMode(Mode.VERBOSE)
+        .build();
+
+    String source = "function C2() {}\n" +
+        "function C3(c2) {\n" +
+        "  this.c2_;\n" +
+        "  use(this.c2_.prop);\n" +
+        "}\n";
+    JsChecker jsChecker = config.getChecker();
+    SourceFile file = JsAstScanner.scanSingleFile(new File("C2.js"), new SourceFile("C2.js", source));
+    jsChecker.analyse(file, new TreeVisitorContext(config, file));
+}

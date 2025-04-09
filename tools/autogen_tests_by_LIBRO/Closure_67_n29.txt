@@ -1,0 +1,12 @@
+public void testAdvancedCompilation() {
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    compiler.compile(externs, jssource, options);
+    assertEquals("function a(){this.a=1}\n"
+                  + "a.prototype.func1=a.prototype.b=function(){this.a=2;this.c()};\n"
+                  + "window.A=a;", compiler.toSource());
+
+}

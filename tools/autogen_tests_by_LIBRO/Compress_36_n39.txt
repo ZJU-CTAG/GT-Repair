@@ -1,0 +1,13 @@
+public void testReadEmptyArchive() throws Exception {
+    byte[] archive = ZipUtils.getByteArray(getClass(), "test.7z");
+    SevenZFile sevenZ = new SevenZFile(new ByteArrayInputStream(archive));
+
+    SevenZArchiveEntry entry = sevenZ.getNextEntry();
+    // read the first entry
+    sevenZ.read(new byte[(int) entry.getSize()]);
+
+    // read the second entry (empty)
+    entry = sevenZ.getNextEntry();
+    assertEquals(0, entry.getSize());
+    sevenZ.read(new byte[(int) entry.getSize()]);
+}

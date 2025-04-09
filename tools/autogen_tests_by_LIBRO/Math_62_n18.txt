@@ -1,0 +1,24 @@
+public void testMath397() {
+    final List<Integer> l = new ArrayList<Integer>();
+    final int n = 10000;
+    final int max = 100;
+    for (int i = 0; i < n; i++) {
+        l.add(new Integer(i % max));
+    }
+    Collections.shuffle(l);
+
+    final int[] data = new int[n];
+    for (int i = 0; i < n; i++) {
+        data[i] = l.get(i);
+    }
+
+    // Create the histogram.
+    final Histogram histogram = new Histogram(data, max);
+
+    // Create the histogram descriptor.
+    final HistogramOptimizer.Histogram histogramDescriptor = new HistogramOptimizer.Histogram(histogram.getBinCounts());
+
+    // Get mean and standard deviation of the data set.
+    final double sigma = Math.sqrt(histogram.getBinStats()[1]);
+    final double mu = histogram.getBinStats()[0];
+    final double min = histogram.getBin

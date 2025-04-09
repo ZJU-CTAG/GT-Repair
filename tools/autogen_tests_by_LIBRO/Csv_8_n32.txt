@@ -1,0 +1,14 @@
+public void testCsvParser() throws Exception {
+    CSVFormat format = new CSVFormat('#', ',', '"', '\\', true, false, false, false, true, "UTF-8");
+    CSVParser parser = new CSVParser(new StringReader("#Column1,Column2\nvalue1,value2"), format);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(1, records.size());
+    assertEquals("value1", records.get(0).get("Column1"));
+    assertEquals("value2", records.get(0).get("Column2"));
+}
+
+public void testCsvParserWithDuplicateHeaders() throws Exception {
+    CSVFormat format = new CSVFormat('#', ',', '"', '\\', true, false, false, false, true, "UTF-8");
+    CSVParser parser = new CSVParser(new StringReader("#Column1,Column1\nvalue1,value2"), format);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(1,

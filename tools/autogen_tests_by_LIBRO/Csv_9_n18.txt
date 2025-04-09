@@ -1,0 +1,10 @@
+public void testToMap() throws IOException {
+    CSVParser parser = CSVParser.parse("foo,bar\n1,2", CSVFormat.DEFAULT.withHeader());
+    assertEquals(1, parser.getRecords().size());
+    CSVRecord record = parser.getRecords().get(0);
+    assertEquals(2, record.toMap().size());
+    parser = CSVParser.parse("foo,bar\n1,2", CSVFormat.DEFAULT.withSkipHeaderRecord());
+    assertEquals(1, parser.getRecords().size());
+    record = parser.getRecords().get(0);
+    assertNull(record.toMap());
+}

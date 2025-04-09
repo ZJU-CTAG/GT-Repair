@@ -1,0 +1,25 @@
+public void testIssue110() {
+    CommandLineRunner runner = new CommandLineRunner(new String[0]);
+    runner.addDefaultOptions();
+    runner.setPrintTree(false);
+    runner.setPrintAst(false);
+    runner.setProcessObjects(false);
+    runner.setCustomParsingCallback(new DefaultErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("WARN: " + message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("ERROR: " + message);
+        }
+    });
+    try {
+        runner.doRun(new String[] {
+            "test/data/test110.js"
+        });
+    } catch (IOException ex) {
+        Assert.fail(ex.getMessage());
+    }
+}

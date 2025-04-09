@@ -1,0 +1,11 @@
+public void testComments() {
+    String js = "/**\n * Interface\n * @interface\n */\nA = function() {};\n\n" +
+            "/**\n * @param {string} a\n */\nA.prototype.foo = function(a) {};\n\n" +
+            "/**\n * @constructor\n * @implements {A}\n */\nB = function() {};\n\n" +
+            "/**\n * @inheritDoc\n */\nB.prototype.foo = function(a) {\n" +
+            " alert(a.substring(0)); // ERROR - could not determine the type of this expression\n" +
+            "};";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js);
+    assertTrue(result.success);
+}

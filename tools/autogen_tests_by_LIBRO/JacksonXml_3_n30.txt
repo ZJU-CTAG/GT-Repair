@@ -1,0 +1,27 @@
+public void testNextTextValueForAttributes() throws IOException {
+    final String xml = "<?xml version=\"1.0\"?><data><a attr=\"foo\"/></data>";
+    try (final XmlFactory f = new XmlFactory()) {
+        try (final XmlParser p = f.createParser(xml)) {
+            boolean find;
+            while (true) {
+                final JsonToken t = p.nextToken();
+                if (t == null) {
+                    break;
+                }
+                if (t == JsonToken.START_OBJECT) {
+                    find = true;
+                    continue;
+                }
+                if (t == JsonToken.END_OBJECT) {
+                    break;
+                }
+                if (t == JsonToken.FIELD_NAME) {
+                    if (p.getCurrentName().equals("a")) {
+                        find = true;
+                        continue;
+                    }
+                    continue;
+                }
+                if (t == JsonToken.VALUE_STRING && find) {
+                    assertEquals("foo", p.getText());
+                    break;

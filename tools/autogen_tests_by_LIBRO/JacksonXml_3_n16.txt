@@ -1,0 +1,16 @@
+public void test_XML_nextTextValue_ATTRIBUTE() throws Exception
+{
+    final String XML = "<tag attr='attrVal' />";
+    XmlFactory xmlFactory = new XmlFactory();
+    FromXmlParser p = xmlFactory.createParser(XML);
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("tag", p.getCurrentName());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("attr", p.getCurrentName());
+    assertEquals("attrVal", p.nextTextValue());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    p.close();
+}

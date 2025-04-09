@@ -1,0 +1,18 @@
+public void testMissingOptions() {
+    Options opts = new Options();
+    opts.addOption("format", false, "format");
+    opts.addOption("source", false, "source");
+    opts.addOption("properties", false, "properties");
+    //CommandLineParser parser = new PosixParser();
+    CommandLineParser parser = new BasicParser();
+    try {
+        CommandLine line = parser.parse(opts, new String[] { "-format", "-source", "-properties" });
+        assertEquals(true, line.hasOption("format"));
+        assertEquals(true, line.hasOption("source"));
+        assertEquals(true, line.hasOption("properties"));
+    } catch (MissingOptionException e) {
+        fail("Expected MissingOptionException but got " + e);
+    } catch (ParseException e) {
+        fail("Expected ParseException but got " + e);
+    }
+}

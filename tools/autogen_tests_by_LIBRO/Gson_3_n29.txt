@@ -1,0 +1,12 @@
+public void testNavigableMap() {
+    TestObject src = new TestObject();
+    src.map.put("123", "abc");
+    String json = GsonUtils.format(src);
+    TestObject res = GsonUtils.parse(json, TestObject.class);
+    assertEquals(src.map, res.map);
+}
+
+public class TestObject implements Serializable {
+    private static final long serialVersionUID = 1L;
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+}

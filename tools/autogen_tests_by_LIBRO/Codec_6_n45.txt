@@ -1,0 +1,13 @@
+public void testBug() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Base64OutputStream b64os = new Base64OutputStream(baos, true);
+    for(int i=0; i < 10*3; i++) {
+        b64os.write(i);
+    }
+    b64os.close();
+    InputStream in = new ByteArrayInputStream(baos.toByteArray());
+    InputStreamReader isr = new InputStreamReader(new Base64InputStream(in, true));
+    char[] chars = new char[10];
+    int read = isr.read(chars);
+    assertEquals(10, read);
+}

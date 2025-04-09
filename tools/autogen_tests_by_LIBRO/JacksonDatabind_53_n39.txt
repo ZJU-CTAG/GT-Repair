@@ -1,0 +1,13 @@
+public void testInterfaceResolution() throws Exception {
+    JsonNode json = ObjectMapperFactory.getObjectMapper().readTree("{\"something\":[{\"id\":\"a uuid\",\"property\":\"value\"}]}");
+    assertTrue(json.has("something"));
+    assertNotNull(json.get("something"));
+    assertTrue(json.get("something").isArray());
+    assertEquals(1, json.get("something").size());
+    Map<UUID, Foo> actual = ObjectMapperFactory.getObjectMapper().convertValue(json, new TypeReference<Map<UUID, Foo>>() {
+    });
+    assertEquals(1, actual.size());
+    Foo foo = actual.values().iterator().next();
+    assertEquals("value", foo.property);
+    assertEquals(UUID.fromString("a uuid"), foo.id);
+}

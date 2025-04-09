@@ -1,0 +1,24 @@
+public void testIssue108() {
+    String source = "/**\n" +
+                    " * @constructor\n" +
+                    " */\n" +
+                    "function C2() {}\n" +
+                    "\n" +
+                    "/**\n" +
+                    " * @constructor\n" +
+                    " */\n" +
+                    "function C3(c2) {\n" +
+                    "  /**\n" +
+                    "   * @type {C2}\n" +
+                    "   * @private\n" +
+                    "   */\n" +
+                    "  this.c2_;\n" +
+                    "\n" +
+                    "  use(this.c2_.prop);\n" +
+                    "}\n";
+
+    final List<Issue> issues = CompilerTestCase.compile(source);
+    assertEquals(1, issues.size());
+    final Issue issue = issues.get(0);
+    assertEquals("Property prop never defined on C2", issue.getMessage());
+}

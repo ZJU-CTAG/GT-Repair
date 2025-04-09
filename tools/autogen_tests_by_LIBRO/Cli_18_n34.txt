@@ -1,0 +1,22 @@
+public void testIssue108() {
+    class MyOptions extends Options {
+        MyOptions() {
+            addOption("a", "aaa", false, "aaa");
+        }
+    }
+    MyOptions options = new MyOptions();
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd;
+    try {
+        cmd = parser.parse(options, new String[] { "-z", "-a", "foo", "bar" });
+        assertTrue(cmd.hasOption("a"));
+        assertEquals(1, cmd.getOptions().length);
+        assertEquals(2, cmd.getArgList().size());
+        cmd = parser.parse(options, new String[] { "-z", "-a", "foo", "bar" }, true);
+        assertFalse(cmd.hasOption("a"));
+        assertEquals(0, cmd.getOptions().length);
+        assertEquals(4, cmd.getArgList().size());
+    } catch (ParseException e) {
+        throw new RuntimeException(e);
+    }
+}

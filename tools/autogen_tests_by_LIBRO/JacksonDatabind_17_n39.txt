@@ -1,0 +1,18 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping()
+            .enable(MapperFeature.AUTO\_DETECT\_GETTERS)
+            .enable(MapperFeature.REQUIRE\_SETTERS\_FOR\_GETTERS)
+            .disable(MapperFeature.USE\_GETTERS\_AS\_SETTERS)
+            .disable(MapperFeature.CAN\_OVERRIDE\_ACCESS\_MODIFIERS)
+            .enable(SerializationFeature.INDENT\_OUTPUT)
+            .disable(SerializationFeature.FAIL\_ON\_EMPTY\_BEANS);
+    Foo foo = new Foo("bar");
+    try {
+        mapper.readTree(mapper.writeValueAsString(foo));
+    } catch (Exception e) {
+        // should throw exception for lack of type info
+        return;
+    }
+    fail();
+}

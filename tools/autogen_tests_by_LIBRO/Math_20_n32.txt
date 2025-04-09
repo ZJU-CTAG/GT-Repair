@@ -1,0 +1,15 @@
+public void testCMAESOptimizer() {
+    double[] lower = { -1.0 };
+    double[] upper = { 1.0 };
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.optimize(new MaxEval(100),
+                       new ObjectiveFunction(new TestProblem(
+                               new double[] { -1.0 }, new double[] { 1.0 }
+                             )),
+                       GoalType.MINIMIZE,
+                       SimpleBounds.unbounded(1),
+                       new InitialGuess(new double[] { 0.5 }),
+                       new CMAESOptimizer.PopulationSize(10),
+                       new CMAESOptimizer.Sigma(new double[] { 0.1 }),
+                       new CMAESOptimizer.CMAESOptimizer(10));
+}

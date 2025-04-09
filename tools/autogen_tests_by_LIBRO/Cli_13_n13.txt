@@ -1,0 +1,16 @@
+public void testArgs() throws UnrecognizedOptionException {
+        String[] args = new String[]{"-f","Test1","-f","Test2"};
+
+        Option opt = new Option("f", "foo", true, "desc");
+        opt.setArgs(1);
+        opt.setValue("default");
+
+        Options options = new Options();
+        options.addOption(opt);
+
+        CommandLineParser parser = new PosixParser();
+        CommandLine line = parser.parse(options, args);
+
+        // line.getValue("f") returns "Test1"
+        // I would expect line.getValue("f") to return "Test2"
+}

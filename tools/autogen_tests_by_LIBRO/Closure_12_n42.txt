@@ -1,0 +1,29 @@
+public void testTryCatch() {
+    String function = "function a() { "
+            + "var x = '1';"
+            + "try {"
+            + "x += somefunction();"
+            + "} catch(e) {"
+            + "}"
+            + "x += \"2\";"
+            + "try {"
+            + "x += somefunction();"
+            + "} catch(e) {"
+            + "}"
+            + "document.write(x);"
+            + "}"
+            + "a();"
+            + "a();";
+    
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(
+            SourceFile.fromCode("testcode.js", function), options);
+    assertTrue(result.success);
+    
+    String expected = "function b() {"
+            + "var a;"
+            + "try {"
+            + "a = '1' + somefunction()"
+            + "}catch(c) {"

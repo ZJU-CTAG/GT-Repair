@@ -1,0 +1,8 @@
+public void testIndexInException() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[1, \"text\"]", new TypeReference<List<Integer>>() {});
+    } catch (JsonMappingException e) {
+        assertEquals(1, e.getLocation().getIndex());
+    }
+}

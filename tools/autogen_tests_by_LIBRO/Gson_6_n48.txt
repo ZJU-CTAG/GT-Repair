@@ -1,0 +1,16 @@
+public void testNullTypeAdapter() {
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullTypeAdapterFactory()).create();
+
+    gson.fromJson("{'name':'test'}", Person.class);
+}
+
+private static class NullTypeAdapterFactory implements TypeAdapterFactory {
+
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+        return null;
+    }
+}
+
+private static class Person {
+    public String name;
+}

@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    String[] args = {"-target"};
+    String[] args2 = {"-target", "foobar.com"};
+    String[] args3 = {"-t"};
+    String[] args4 = {"-t", "foobar.com"};
+    Options options = new Options();
+    options.addOption("target", true, "Generate files for the specified target machine");
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse( options, args );
+    CommandLine line2 = parser.parse( options, args2 );
+    CommandLine line3 = parser.parse( options, args3 );
+    CommandLine line4 = parser.parse( options, args4 );
+    assertTrue(line.hasOption("target"));
+    assertEquals("", line.getOptionValue("target"));
+    assertTrue(line2.hasOption("target"));
+    assertEquals("foobar.com", line2.getOptionValue("target"));
+    assertTrue(line3.hasOption("t"));
+    assertEquals("", line3

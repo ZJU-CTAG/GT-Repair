@@ -1,0 +1,24 @@
+public void testToStringStyleThreadLocalCleanup() throws Exception {
+    ClassLoader cl = new URLClassLoader(new URL[]{ new File("build/lang-3.0-rc2.jar").toURL() }, null) {
+        public void close() throws IOException {
+            super.close();
+
+            System.out.println("Classloader closed");
+        }
+    };
+
+    Class c = cl.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+
+    // trigger static initializer
+    c.newInstance();
+
+    Thread.sleep(1000);
+
+    System.gc();
+
+    // if ToStringStyle.stylePerThread is not correctly cleaned up, the weak
+    // reference we expect to be removed will not be
+    assertFalse(ToStringStyle.stylePerThread.get().getClass().getClassLoader() == cl);
+
+    cl.close();
+}

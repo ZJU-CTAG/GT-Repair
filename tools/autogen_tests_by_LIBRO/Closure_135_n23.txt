@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String source = "function SuperClass () {}"
+    + "SuperClass.prototype.CustomMethod = function() {}"
+    + "/** @constructor @extends {SuperClass} */"
+    + "function SubClass () {}"
+    + "SubClass.prototype = new SuperClass();"
+    + "/** @override */"
+    + "SubClass.prototype.CustomMethod = function() {"
+    + "  this.myProperty = 'value';"
+    + "}"
+    + "window['SubClassInstance'] = new SubClass();";
+
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_GLOBAL_THIS, CheckLevel.WARNING);
+    options.setWarningLevel(Diagnostic

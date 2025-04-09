@@ -1,0 +1,18 @@
+public void testObjectId() throws Exception {
+    @JacksonXmlRootElement(localName = "root")
+    class Request {
+        @JacksonXmlProperty(isAttribute = true)
+        @JacksonXmlID
+        public String id;
+    }
+
+    ObjectMapper mapper = XmlMapper.builder()
+            .addModule(new JaxbAnnotationModule())
+            .enable(SerializationFeature.WRAP_ROOT_VALUE)
+            .build();
+
+    Request request = new Request();
+    request.id = "id";
+    String expected = "<Request id=\"id\" xmlns:ns2=\"http://www.w3.org/2000/xmlns/\" ns2:id=\"id\"/>";
+    assertEquals(expected, mapper.writeValueAsString(request));
+}

@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    ObjectNode root = mapper.createObjectNode();
+    root.put("x", 1);
+    root.put("a", 2);
+    root.put("y", 3);
+    root.put("b", 4);
+
+    Bean bean = mapper.readerFor(Bean.class)
+            .with(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .readValue(root);
+
+    assertEquals(1, bean.x);
+    assertEquals(3, bean.y);
+    assertNotNull(bean.w);
+    assertEquals(2, bean.w.a);
+    assertEquals(4, bean.w.b);
+}

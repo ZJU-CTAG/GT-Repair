@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    File file = File.createTempFile("test", ".zip");
+    FileOutputStream fos = null;
+    try {
+        fos = new FileOutputStream(file);
+        ZipOutputStream zos = new ZipOutputStream(fos);
+        zos.close();
+        fos.close();
+        fos = null;
+        ZipFile zf = new ZipFile(file);
+        zf.close();
+    } finally {
+        IOUtils.closeQuietly(fos);
+        file.delete();
+    }
+}

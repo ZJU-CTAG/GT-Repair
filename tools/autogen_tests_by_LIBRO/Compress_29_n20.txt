@@ -1,0 +1,11 @@
+public void testArchiveStreamFactory() throws Exception {
+    final String encoding = "UTF-8";
+    final InputStream is = new ByteArrayInputStream(new byte[0]);
+    ArchiveInputStream aisUTF8 = ArchiveStreamFactory.DEFAULT.createArchiveInputStream(ArchiveStreamFactory.ARJ, is, encoding);
+    ArchiveInputStream aisCpio = ArchiveStreamFactory.DEFAULT.createArchiveInputStream(ArchiveStreamFactory.CPIO, is, encoding);
+    ArchiveInputStream aisDump = ArchiveStreamFactory.DEFAULT.createArchiveInputStream(ArchiveStreamFactory.DUMP, is, encoding);
+    ArchiveInputStream aisJar = ArchiveStreamFactory.DEFAULT.createArchiveInputStream(ArchiveStreamFactory.JAR, is, encoding);
+    ArchiveOutputStream aosJar = ArchiveStreamFactory.DEFAULT.createArchiveOutputStream(ArchiveStreamFactory.JAR, new ByteArrayOutputStream(), encoding);
+    
+    assertEquals(encoding, aisUTF8.getEncoding());
+    assertEquals(encoding, aisCpio.getEncoding());

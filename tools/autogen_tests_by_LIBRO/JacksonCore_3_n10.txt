@@ -1,0 +1,13 @@
+public void testIssue111() throws Exception {
+    JsonFactory jsonFactory = new JsonFactory();
+    jsonFactory.setCodec(new ObjectMapper());
+    JsonParser jsonParser = jsonFactory.createJsonParser(new ByteArrayInputStream(new byte[0]));
+    try {
+        jsonParser.nextToken();
+        fail("Expected exception");
+    }
+    catch (JsonParseException e) {
+        String message = e.getMessage();
+        assertTrue( message.contains(" at column 0") );
+    }
+}

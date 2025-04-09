@@ -1,0 +1,18 @@
+public void testFinish() throws IOException {
+    final ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos1 = new ZipArchiveOutputStream(out1);
+    aos1.write("test".getBytes());
+    aos1.close();
+    final byte[] bytes1 = out1.toByteArray();
+    assertTrue("zip is not finished", ZipArchiveOutputStream.isFinished(bytes1));
+
+    final ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos2 = new ZipArchiveOutputStream(out2);
+    aos2.write("test".getBytes());
+    aos2.finish();
+    aos2.close();
+    final byte[] bytes2 = out2.toByteArray();
+    assertTrue("zip is not finished", ZipArchiveOutputStream.isFinished(bytes2));
+
+    assertEquals("bytes are not equal", bytes1, bytes2);
+}

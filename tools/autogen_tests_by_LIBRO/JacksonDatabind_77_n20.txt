@@ -1,0 +1,10 @@
+public void testJsonInjection() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+
+    String json = "[\"org.apache.commons.collections.functors.InvokerTransformer\",\"trans\",{\"i.last\":\"foo\"},{\"i.last\":\"foo\"}]";
+    mapper.readValue(json, Object.class);
+}

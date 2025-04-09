@@ -1,0 +1,19 @@
+public void testIssue121() {
+    final MyClass stub = Mockito.mock(MyClass.class, Mockito.CALLS_REAL_METHODS);
+    Mockito.when(stub.call()).thenReturn("test");
+    assertEquals("test", stub.call());
+}
+
+interface MyInterface {
+    String call();
+}
+
+public abstract class MyClass implements MyInterface {
+    public String call() {
+        return callPrivate();
+    }
+
+    private String callPrivate() {
+        return call();
+    }
+}

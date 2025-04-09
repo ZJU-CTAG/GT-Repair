@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    JsonParser jp = new JsonFactory().createJsonParser(json);
+    jp.nextToken();
+    JsonPointer pointer = JsonPointer.compile("/0");
+    JsonPointer pointer2 = JsonPointer.compile("/00");
+    assertEquals(JsonToken.START_ARRAY, jp.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, pointer.match(jp));
+    assertEquals(JsonToken.NOT_AVAILABLE, pointer2.match(jp));
+}

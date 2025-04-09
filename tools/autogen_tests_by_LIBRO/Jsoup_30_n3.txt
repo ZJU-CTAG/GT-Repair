@@ -1,0 +1,7 @@
+public void testIssue163() throws IOException {
+    String url = "http://blog.sina.com.cn/s/blog_501a5b1f0102dx6z.html";
+    String html = Jsoup.connect(url).get().html();
+    Document dirty = Jsoup.parse(html);
+    Document clean = new Cleaner(Whitelist.relaxed().addTags("wbr")).clean(dirty);
+    assertTrue(dirty.html().length() > clean.html().length());
+}

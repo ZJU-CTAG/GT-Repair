@@ -1,0 +1,14 @@
+public void testException() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{ \"value\":2147483648 }", TestObject.class);
+    }
+    catch (JsonParseException ex) {
+        // should throw InputCoercionException instead
+        assertTrue(ex.getMessage().contains("Overflow"));
+    }
+}
+
+public static class TestObject {
+    public int value;
+}

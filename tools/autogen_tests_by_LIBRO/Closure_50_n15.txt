@@ -1,0 +1,11 @@
+public void testOptimisation() throws Exception {
+    String code = "var my_jquery_selectors = []; alert(my_jquery_selectors.join(','));";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(SourceFile.fromCode("foo.js", code), options);
+    assertTrue(result.success);
+    assertEquals("var a=[];alert(a.join());", compiler.toSource());
+}

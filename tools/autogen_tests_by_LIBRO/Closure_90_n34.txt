@@ -1,0 +1,27 @@
+public void testIssue108() {
+    String code =
+        "/**\n" +
+        " * @this {bug.Thing}\n" +
+        " */\n" +
+        "bug.sharedMethod = function() {};\n" +
+        "\n" +
+        "/**\n" +
+        " * @constructor\n" +
+        " */\n" +
+        "bug.A = function() {};\n" +
+        "\n" +
+        "/**\n" +
+        " * @constructor\n" +
+        " */\n" +
+        "bug.B = function() {};\n" +
+        "\n" +
+        "/**\n" +
+        " * @type {bug.A|bug.B}\n" +
+        " */\n" +
+        "bug.Thing = goog.typedef;";
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(code, new CompilerOptions());
+
+    assertTrue(result.success);
+}

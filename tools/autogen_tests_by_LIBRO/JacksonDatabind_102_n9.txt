@@ -1,0 +1,15 @@
+public void testSqlDateSerializer() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    
+    final String expected = "{\"date\":\"2020-01-01\"}";
+    mapper.writeValueAsString(new DateHolder(new java.sql.Date(1577836800000L)));
+}
+
+private static class DateHolder {
+    private final java.sql.Date date;
+
+    private DateHolder(final java.sql.Date date) {
+        this.date = date;
+    }
+}

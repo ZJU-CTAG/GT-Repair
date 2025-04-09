@@ -1,0 +1,12 @@
+public void testNamespaceIssue() throws Exception {
+    org.w3c.dom.Document doc = XMLUnit.buildControlDocument("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<ns:foo xmlns:ns=\"bla\" xmlns=\"test111\">\n" +
+            "    <ns:bar>a</ns:bar>\n" +
+            "    <test xmlns=\"\"></test>\n" +
+            "</ns:foo>");
+
+    DOMXPath xpath = new DOMXPath("//*[local-name()='test']");
+    NodePointer pointer = (NodePointer) xpath.selectSingleNode(doc);
+    String asPath = pointer.asPath();
+    assertEquals("/ns:foo/test", asPath);
+}

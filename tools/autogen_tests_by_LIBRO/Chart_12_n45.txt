@@ -1,0 +1,15 @@
+public void testMultiplePiePlot() {
+    DefaultPieDataset dataset = new DefaultPieDataset();
+    dataset.setValue("A", 1);
+    dataset.setValue("B", 2);
+    dataset.setValue("C", 3);
+
+    MultiplePiePlot mpp = new MultiplePiePlot(dataset);
+    mpp.setDataExtractOrder(TableOrder.BY_ROW);
+    JFreeChart chart = new JFreeChart(mpp);
+    JFreeChartTester.assertChart(chart, 500, 300);
+
+    // now change the data and confirm that the chart updates
+    dataset.setValue("A", 2);
+    JFreeChartTester.assertChart(chart, 500, 300);
+}

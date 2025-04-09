@@ -1,0 +1,14 @@
+public void testIssue107() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd 'a'");
+    FastDateParser fdp = new FastDateParser("yyyy-MMM-dd 'a'", TimeZone.getDefault());
+    Date d1 = sdf.parse("2011-Jan-01 a");
+    Date d2 = fdp.parse("2011-Jan-01 a");
+    assertEquals(d1, d2);
+    try {
+        d1 = sdf.parse("2011-Jan-01   a");
+    } catch (ParseException pe) {
+        // expected
+    }
+    d2 = fdp.parse("2011-Jan-01   a");
+    assertEquals(d1, d2);
+}

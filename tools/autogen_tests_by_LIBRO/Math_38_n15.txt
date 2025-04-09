@@ -1,0 +1,17 @@
+public void testBOBYQAOptimizer() {
+    final int dim = 2;
+    double[] min = new double[dim];
+    double[] max = new double[dim];
+    Arrays.fill(min, -10);
+    Arrays.fill(max, +10);
+    final double[][] boundaries = { min, max };
+    final int maxEvaluations = 1000;
+    final UnivariateRealFunction func = new Rosenbrock();
+    final GoalType goal = GoalType.MINIMIZE;
+    double[] expected = { 1, 1 };
+    double[] startPoint = { -1.2, 1 };
+    // BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 1);
+    BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 2);
+    RealPointValuePair result = optim.optimize(maxEvaluations, func, goal, startPoint,
+        boundaries[0], boundaries[1]);
+    System.out.println(func.getClass().getName() + " = "

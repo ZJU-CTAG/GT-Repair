@@ -1,0 +1,25 @@
+public void testEventStateChange() throws MathException {
+        double[] y = {1.0, 0.0, 0.0};
+        AbstractIntegrator integrator =
+                new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+        integrator.addEventHandler(new EventHandler() {
+                private boolean m_reset = false;
+                private boolean m_forward = true;
+                private double m_previousEvent = Double.NaN;
+                public int eventOccurred(double t, double[] y) {
+                        if (!m_reset) {
+                                m_reset = true;
+                                return RESET_STATE;
+                        } else {
+                                return STOP;
+                        }
+                }
+                public double g(double t, double[] y) {
+                        if (m_reset) {
+                                m_reset = false;
+                                m_forward = !m_forward;
+                        }
+                        if (m_forward) {
+                                return y[2];
+                        } else {
+                                return -

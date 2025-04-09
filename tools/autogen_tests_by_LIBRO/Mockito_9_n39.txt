@@ -1,0 +1,23 @@
+public void testIssue121() {
+
+    final Foo foo = new Foo() {
+        public String getBar() {
+            return "bar";
+        }
+        public String foo() {
+            return getBar();
+        }
+    };
+
+    Foo spy = Mockito.spy(foo);
+    Mockito.when(spy.getBar()).thenReturn("not bar");
+
+    assertEquals("not bar", spy.foo());
+}
+
+public static abstract class Foo {
+    public abstract String getBar();
+    public String foo() {
+        return getBar();
+    }
+}

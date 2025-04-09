@@ -1,0 +1,19 @@
+public void testDeserializeEmptyObjectNode() throws Exception
+{
+    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectNode EMPTY = MAPPER.createObjectNode();
+    final ObjectNode NOT_EMPTY = MAPPER.createObjectNode().put("k", "v");
+
+    // Deserializing an empty ObjectNode directly works
+    MAPPER.readValue(MAPPER.writeValueAsString(EMPTY), ObjectNode.class);
+
+    // Deserializing a non-empty ObjectNode directly works
+    MAPPER.readValue(MAPPER.writeValueAsString(NOT_EMPTY), ObjectNode.class);
+
+    // Deserializing an empty ObjectNode to a field in a class works
+    MyValue v1 = MAPPER.readValue(MAPPER.writeValueAsString(EMPTY), MyValue.class);
+    assertEquals(EMPTY, v1.getObject());
+
+    // Deserializing an non-empty ObjectNode to a field in a class works
+    MyValue v2 = MAPPER.readValue(MAPPER.writeValueAsString(NOT_EMPTY), MyValue.class);
+    assertEqu

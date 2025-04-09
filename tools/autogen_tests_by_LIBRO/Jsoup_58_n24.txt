@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String htmlFragment = "<html></html>";
+
+    Assert.assertEquals(false, Jsoup.isValid(htmlFragment, new Whitelist()));
+    Assert.assertEquals(false, Jsoup.isValid(htmlFragment, Whitelist.none()));
+    Assert.assertEquals(false, Jsoup.isValid(htmlFragment, Whitelist.simpleText()));
+    Assert.assertEquals(false, Jsoup.isValid(htmlFragment, Whitelist.none()));
+
+    Whitelist whitelist = new Whitelist();
+    whitelist.addTags("p");
+
+    Assert.assertEquals(false, Jsoup.isValid(htmlFragment, whitelist));
+
+    Document dirty = Parser.parseBodyFragment(htmlFragment, "");
+    Cleaner cleaner = new Cleaner(Whitelist.none());
+
+    Assert.assertEquals(false, cleaner.isValid(dirty));
+}

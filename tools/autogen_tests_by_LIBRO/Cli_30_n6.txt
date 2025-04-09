@@ -1,0 +1,28 @@
+public void testOptionsWithDefaultOption() {
+    @Command(
+        name = "test",
+        description = "Command with default option",
+        defaultOption = "b"
+    )
+    class Test {
+        @Option(
+            name = "--alpha",
+            required = true,
+            description = "Option alpha"
+        )
+        public String alpha;
+
+        @Option(
+            name = "--beta",
+            required = true,
+            description = "Option beta"
+        )
+        public String beta;
+    }
+
+    CliSpec<Test> spec = CliSpec.create(Test.class);
+    CommandLine<Test> cli = spec.parse(new String[] {}, new Properties());
+    assertTrue(cli.getOptions().contains("--beta"));
+    assertFalse(cli.getOptions().contains("--alpha"));
+    assertTrue(cli.getOptions().contains("--beta"));
+}

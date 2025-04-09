@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = JsonMapper.builder().build();
+    BigDecimal bd = new BigDecimal("0.0000000005");
+    JsonNode jsonNode = mapper.valueToTree(bd);
+    assertEquals("5.0E-10", jsonNode.asText());
+    jsonNode = mapper.valueToTree(new Test(bd));
+    assertEquals("5.0E-10", jsonNode.get("value").asText());
+}

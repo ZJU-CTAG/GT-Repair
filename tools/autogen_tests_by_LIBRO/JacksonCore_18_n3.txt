@@ -1,0 +1,9 @@
+public void testIssue107() {
+    try {
+        ObjectMapper mapper = new ObjectMapper().enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+        mapper.writeValueAsString(new java.math.BigDecimal("9.223372E+1010671858"));
+        fail();
+    } catch (JsonProcessingException e) {
+        assertEquals(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, e.getProcessor().getConfig().isEnabled(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN));
+    }
+}

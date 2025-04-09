@@ -1,0 +1,8 @@
+public void testSnakeCase() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModule(new JavaTimeModule());
+    String json = "{\"date_of_birth\":1557962528000}";
+    Person person = mapper.readValue(json, Person.class);
+    assertEquals(1557962528000L, person.dateOfBirth.toEpochMilli());
+}

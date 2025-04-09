@@ -1,0 +1,15 @@
+public void testIssue108() {
+    DateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    DateFormat us = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss.SSS");
+    Date date = iso.parse("2013-07-02T12:34:56.789");
+    String expected = "07/02/2013 12:34:56.789";
+    String actual = us.format(date);
+    assertEquals(expected, actual);
+    // FastDateFormat format is not the same
+    FastDateFormat fdf = FastDateFormat.getInstance("MM/dd/yyyy HH:mm:ss.SSS");
+    assertEquals(expected, fdf.format(date));
+    // fix the format string
+    fdf = FastDateFormat.getInstance("MM/dd/'yyyy' HH:mm:ss.SSS");
+    assertEquals(expected, fdf.format(date));
+    // DateUtils.format only accepts a DateFormat
+    assertEquals(expected, DateFormatUtils.

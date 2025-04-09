@@ -1,0 +1,14 @@
+public void testIssue1351() throws Exception {
+    final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    final String nonDefault = "";
+    final String defaultString = null;
+
+    final ClassWithString cws = new ClassWithString();
+    cws.setNonDefault(nonDefault);
+    cws.setDefaultString(defaultString);
+
+    // Serialize with NON_DEFAULT
+    final String json = OBJECT_MAPPER.writeValueAsString(cws);
+    assertFalse(json.contains("defaultString"));
+}

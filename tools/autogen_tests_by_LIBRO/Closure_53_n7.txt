@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String source = "function go(e){var a=e.match(/[a-z]+/gi),b=0;if(a){for(var c,d=0;c=a[d];++d)b+=c.charCodeAt(0);return b}return-1}";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(source, new SimpleErrorManager());
+    if (!result.success) {
+        StringBuilder sb = new StringBuilder();
+        for (JSError error : result.errors) {
+            sb.append(error.toString()).append(System.lineSeparator());
+        }
+        throw new RuntimeException(sb.toString());
+    }
+}

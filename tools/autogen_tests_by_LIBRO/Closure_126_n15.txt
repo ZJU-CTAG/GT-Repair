@@ -1,0 +1,7 @@
+public void testRestrictedFinally() {
+    Parser parser = new Parser();
+    String source = "b: try { throw \"throw me\" } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")";
+    List<Statement> statements = parser.parse(source, "test");
+    assertEquals(1, statements.size());
+    assertEquals("console.log(ok then...)", statements.get(0).toSource());
+}

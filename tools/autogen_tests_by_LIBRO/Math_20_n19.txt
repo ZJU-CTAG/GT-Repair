@@ -1,0 +1,17 @@
+public void testCMAESOptimizer() {
+    MultivariateFunction f = new MultivariateFunction() {
+
+        public double value(double[] x) {
+            return x[0];
+        }
+    };
+    double[] min = new double[] { -1 };
+    double[] max = new double[] { 1 };
+    MultivariateOptimizer optimizer = new CMAESOptimizer(0, new RandomGenerator() {
+
+        public double nextDouble() {
+            return 0;
+        }
+    }, false, 0, 0, 0, 0);
+    PointValuePair result = optimizer.optimize(new ObjectiveFunction(f), new MaxEval(1000), new CMAESOptimizer.PopulationSize(4), new CMAESOptimizer.Sigma(new double[] { 1 }), new SimpleBounds(min, max), new InitialGuess(new double[] { 0 }), new CMAESOptimizer.DiagonalOnly(true), new CMAESOptimizer.GenerationCount(1), new CMAESOptimizer.CheckFeasableCount(0));
+    assertTrue(result.

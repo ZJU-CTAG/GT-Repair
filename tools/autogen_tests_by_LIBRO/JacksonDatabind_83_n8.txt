@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(AnnotationIntrospector.pair(
+            new JacksonAnnotationIntrospector(),
+            new JaxbAnnotationIntrospector(TypeFactory.defaultInstance())));
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES); // TODO: maybe use JacksonCamelCaseStrategy
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.USE_LONG_FOR_INTS, true); // TODO: review the behavior
+
+    mapper.registerModule(new JavaTimeModule());
+    JsonFormat.Value value = JsonFormat.Value.construct(JsonFormat.Shape.STRING, Locale.US, Date

@@ -1,0 +1,15 @@
+public void testPrototypeDeclaration() {
+    assertEquals(3, new MyClass().MyMethod(3).a2);
+}
+
+public class MyClass {
+    {
+        MyClass.prototype["MyMethod"] = new Closure(this) {
+            public Object call(Object a) {
+                a2 = a;
+                return this;
+            }
+            private Object a2;
+        };
+    }
+}

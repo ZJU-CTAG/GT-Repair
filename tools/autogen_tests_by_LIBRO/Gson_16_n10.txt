@@ -1,0 +1,16 @@
+public void testIssue() {
+    Gson gson = new Gson();
+    try {
+        gson.fromJson("{}", TestType.class);
+        fail();
+    } catch (StackOverflowError e) {
+        // expected
+    }
+}
+
+private static class TestType {
+    TestType<? super X> superType;
+}
+
+private static class X {
+}

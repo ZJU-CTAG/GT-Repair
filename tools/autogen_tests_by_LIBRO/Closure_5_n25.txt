@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    FileInputStream in = new FileInputStream("src/test/resources/issue108.js");
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setOptimizationLevel(CompilerEnvirons.OPTIMIZATION_LEVEL_SIMPLE_OPTIMIZATIONS);
+    env.setRecordingLocalJsDocComments(true);
+    env.setAllowSharpComments(true);
+    env.setRecordingComments(true);
+    env.setOptimizationLevel(CompilerEnvirons.OPTIMIZATION_SIMPLE);
+    env.setRecoverFromErrors(true);
+
+    Parser p = new Parser(env, new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName

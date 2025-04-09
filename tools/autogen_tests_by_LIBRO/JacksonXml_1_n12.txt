@@ -1,0 +1,8 @@
+public void testIssue129() {
+    String json = "{\"records\":[{\"fields\":[]},{\"fields\":[{\"label\":\"foo\"}]}]}";
+    Definition definition = OBJECT_MAPPER.readValue(json, Definition.class);
+    assertEquals(2, definition.getRecords().size());
+    assertEquals(0, definition.getRecords().get(0).getFields().size());
+    assertEquals(1, definition.getRecords().get(1).getFields().size());
+    assertEquals("foo", definition.getRecords().get(1).getFields().get(0).getLabel());
+}

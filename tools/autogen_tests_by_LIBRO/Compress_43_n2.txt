@@ -1,0 +1,22 @@
+public void testIssue() throws Exception {
+    File file = new File("target/result.zip");
+    FileOutputStream fout = new FileOutputStream(file);
+    ZipArchiveOutputStream out = new ZipArchiveOutputStream(fout);
+    final Random rnd = new Random(0L);
+    final byte[] buf = new byte[10];
+    final ZipArchiveEntry entry = new ZipArchiveEntry("test");
+    entry.setMethod(ZipEntry.DEFLATED);
+    out.putArchiveEntry(entry);
+    while (rnd.nextDouble() < 0.9) {
+        rnd.nextBytes(buf);
+        out.write(buf);
+    }
+    out.closeArchiveEntry();
+    out.close();
+    fout.close();
+
+    ZipFile zipFile = new ZipFile(file);
+    final Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    if (entries.hasMoreElements()) {
+        final ZipArchiveEntry e = entries.nextElement();
+        assertEquals(ZipArchiveOutputStream.VERSION\_

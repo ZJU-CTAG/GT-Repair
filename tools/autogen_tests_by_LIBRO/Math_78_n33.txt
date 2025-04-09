@@ -1,0 +1,22 @@
+public void testIssue108() {
+    EventHandler[] functions = new EventHandler[] { new SwitchingFunction(90, 135) };
+    double t0 = 67.5;
+    double t1 = 112.5;
+    double t = t0;
+    double dt = t1 - t0;
+    double g0 = functions[0].g(t, new double[8]);
+    while (t < t1) {
+        double g1 = functions[0].g(t + dt, new double[8]);
+        if (g0 * g1 <= 0) {
+            // event detected in this step
+            break;
+        }
+        t += dt;
+        dt *= 1.001;
+        g0 = g1;
+    }
+    if (t >= t1) {
+        // event not detected in this step
+        throw new AssertionError("event was not detected");
+    }
+}

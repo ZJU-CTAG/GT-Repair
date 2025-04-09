@@ -1,0 +1,9 @@
+public void testVehicle() throws JsonParseException, JsonMappingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("VehicleModule", new Version(1, 0, 0, null));
+    module.addAbstractTypeMapping(Vehicle.class, Car.class);
+    mapper.registerModule(module);
+
+    Truck truck = mapper.readValue(new File("src/test/resources/vehicle.json"), Truck.class);
+    assertEquals(4, truck.getAxles());
+}

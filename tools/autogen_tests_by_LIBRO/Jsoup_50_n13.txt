@@ -1,0 +1,9 @@
+public void testUtf16StreamsWithBomAreProcessedAsUtf8() throws IOException {
+    byte[] utf16BEBOM = new byte[] {(byte) 0xFE, (byte) 0xFF};
+    byte[] utf16LEBOM = new byte[] {(byte) 0xFF, (byte) 0xFE};
+    byte[] utf8BOM = new byte[] {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+    byte[] someContent = new byte[] {(byte) 0xC0, (byte) 0xA0, (byte) 0xE0, (byte) 0x80, (byte) 0xA0, (byte) 0xF0, (byte) 0x80, (byte) 0x80, (byte) 0x80, (byte) 0xF1, (byte) 0x80, (byte) 0x80, (byte) 0x80};
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    InputStream is = null;
+    try {
+        baos.write(

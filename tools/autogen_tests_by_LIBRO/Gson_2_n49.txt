@@ -1,0 +1,11 @@
+public void testIssue108() { 
+    GsonBuilder gb = new GsonBuilder();   
+    gb.registerTypeHierarchyAdapter(Vehicle.class, new VehicleAdapter());
+    gb.registerTypeHierarchyAdapter(Car.class, new CarAdapter());
+    gb.registerTypeHierarchyAdapter(Truck.class, new TruckAdapter());
+    Gson gson = gb.create();
+    Truck truck = new Truck();
+    String json = gson.toJson(truck);
+    System.out.println(json);
+    Car car = gson.fromJson(json, Car.class);
+}

@@ -1,0 +1,11 @@
+public void testCaptor() {
+    doNothing().when(mockedList).add(argThat(new ArgumentMatcher<String>() {
+        @Override
+        public boolean matches(Object argument) {
+            return !argument.equals("test");
+        }
+    }), anyString());
+    mockedList.add("test", "test");
+    verify(mockedList).add(captor.capture(), anyString());
+    assertEquals("test", captor.getValue());
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setCheckRequires(CheckLevel.OFF);
+    options.setCheckMissingReturn(CheckLevel.OFF);
+    options.setCheckProvides(CheckLevel.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            CompilerOptions.builder()
+                .setOptions(options)
+                .setTracerMode(TracerMode.ALL)
+                .build(),
+            SourceFile.fromCode("testcode",
+                    "/** @constructor */\n" +
+                    "function Foo() {\n" +
+                    "  var self = this;\n" +
+                    "  window.setTimeout(function() {\n" +
+                    "    window.location = self.location;\n" +
+                    "  }, 0);\n" +
+                    "}\

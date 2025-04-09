@@ -1,0 +1,12 @@
+public void testJsonPropertyAccess() throws JsonProcessingException {
+    TestPojo pojo = new TestPojo();
+    pojo.setFirstName("first");
+    pojo.setLastName("last");
+    ObjectMapper om = new ObjectMapper();
+    String json = om.writeValueAsString(pojo);
+    assertEquals("{\"firstName\":\"first\",\"lastName\":\"last\",\"fullName\":\"first last\"}", json);
+    TestPojo pojo2 = om.readValue(json, TestPojo.class);
+    assertEquals("first", pojo2.getFirstName());
+    assertEquals("last", pojo2.getLastName());
+    assertEquals("first last", pojo2.getFullName());
+}

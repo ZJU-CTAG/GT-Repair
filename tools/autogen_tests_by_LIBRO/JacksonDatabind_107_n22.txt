@@ -1,0 +1,17 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.setMixInAnnotation(Dummy.class, DummyMixIn.class);
+    mapper.registerModule(module);
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) {
+            return ctxt.constructType(Void.class);  // ALWAYS RETURN NULL!
+        }
+    });
+    mapper.enableDefaultTyping();
+
+    String jsonString = "{\"@id\":1,\"@type\":\"com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$Dummy\",\"field1\":\"hello\"}";
+    Dummy dummy = mapper.readValue(jsonString, Dummy.class);
+    assertEquals(1, dummy.id);
+    assertEquals

@@ -1,0 +1,16 @@
+public void testPOJONodesInTree() throws IOException {
+    ListAttributeSerializer s = new ListAttributeSerializer();
+    ListAttribute a = new ListAttribute();
+    a.setItemJsonKey("X");
+    a.getItems().add(new X());
+    JsonGenerator jgen = new JsonFactory().createJsonGenerator(System.out,
+JsonEncoding.UTF8);
+    s.serialize(a, jgen, null);
+    jgen.flush();
+
+    JsonNode n = new ObjectMapper().valueToTree(a);
+    assertEquals(2, n.size());
+    assertEquals("X", n.get("itemType").getTextValue());
+    assertTrue(n.get("items") instanceof POJONode);
+    assertEquals(1, n.get("items").size());
+}

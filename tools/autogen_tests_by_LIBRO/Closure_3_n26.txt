@@ -1,0 +1,21 @@
+public void testIssue111() {
+    String js = "function getStack() { " +
+            "var getErrorObject = function() { " +
+            "try { " +
+            "throw Error(\"\"); " +
+            "} catch(err) { " +
+            "return err; " +
+            "} " +
+            "}; " +
+            "return getErrorObject().stack; " +
+            "} " +
+            "window['getStackTrace']=getStack;";
+    System.out.println(js);
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test", js)}, options);
+    String result = compiler.toSource();
+    System.out.

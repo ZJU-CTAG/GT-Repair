@@ -1,0 +1,26 @@
+public void testBrentSolver() {
+    // setup
+    final int maxIterations = 3;
+    final double startValue = 1.0e-6;
+    final double expectedRoot = 1.0;
+    final double absoluteAccuracy = 1.0e-8;
+    final double relativeAccuracy = 1.0e-8;
+
+    // given
+    UnivariateRealFunction function = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x - expectedRoot;
+        }
+    };
+
+    // when
+    BracketingNthOrderBrentSolver solver = new BracketingNthOrderBrentSolver(absoluteAccuracy, relativeAccuracy);
+    solver.getAllowedSolution();
+    // then
+    try {
+        solver.solve(maxIterations, function, startValue);
+        Assert.fail("solve should have thrown an exception");
+    } catch (TooManyEvaluationsException e) {
+        // expected
+    }
+}

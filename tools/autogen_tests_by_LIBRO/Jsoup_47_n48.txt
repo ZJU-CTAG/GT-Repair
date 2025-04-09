@@ -1,0 +1,6 @@
+public void testIssue105() {
+    String html = "<html><head><script>alert(document.getElementById('link').getAttribute('data-my-attr'))</script></head><body><a id='link' href='#' data-my-attr='&lt;&amp;&gt;&quot;&#39;'>link</a></body></html>";
+    Document doc = Jsoup.parse(html);
+    Element link = doc.select("#link").first();
+    assertEquals("<&>\"'", link.attr("data-my-attr"));
+}

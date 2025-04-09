@@ -1,0 +1,14 @@
+public void testFormatLongOctalOrBinaryBytes () {
+    byte[] b = new byte[1];
+    byte[] b2 = new byte[2];
+    byte[] b4 = new byte[4];
+    byte[] b8 = new byte[8];
+    byte[] b16 = new byte[16];
+    b[0] = (byte)-128;
+    b2[0] = (byte)-128;
+    b2[1] = (byte)-128;
+    // This is a bug. We expect the result of formatLongBinary to be used, but it is not.
+    assertEquals ("2000000000000000", TarUtils.formatLongOctalOrBinaryBytes(b, 1, 0));
+    assertEquals ("-0200000000000000", TarUtils.formatLongOctalOrBinaryBytes(b, 1, 1));
+    assertEquals ("-0200000000000000", TarUtils.formatLongOctalOrBinaryBytes(b2, 2, 0));
+    assertEquals ("-0200000000000000", TarUtils.formatLongOctalOrBinaryBytes(b2, 2, 1));

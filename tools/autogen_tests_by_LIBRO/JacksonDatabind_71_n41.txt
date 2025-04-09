@@ -1,0 +1,7 @@
+public void testDeserializeCharSequenceKeys() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    Map<CharSequence, Map<CharSequence, String>> map = mapper.readValue("{\"hello\": {\"world\": \"yes\"}}",
+            new TypeReference<Map<CharSequence, Map<CharSequence, String>>>() {});
+    assertEquals("yes", map.get("hello").get("world"));
+}

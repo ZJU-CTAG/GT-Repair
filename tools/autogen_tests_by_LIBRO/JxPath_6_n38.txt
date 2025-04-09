@@ -1,0 +1,11 @@
+public void testIssue108() {
+    JexlEngine jexl = new JexlEngine();
+    JexlContext jc = new MapContext();
+    jc.set("d", new String[]{"a", "b"});
+    Object o = jexl.createExpression("$d = 'a'").evaluate(jc);
+    assertTrue((Boolean) o);
+    o = jexl.createExpression("$d = 'b'").evaluate(jc);
+    assertTrue((Boolean) o);
+    o = jexl.createExpression("$d = 'c'").evaluate(jc);
+    assertFalse((Boolean) o);
+}

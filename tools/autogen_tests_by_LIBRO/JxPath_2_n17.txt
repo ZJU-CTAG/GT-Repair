@@ -1,0 +1,13 @@
+public void testNodeSet() {
+    JXPathContext ctx = JXPathContext.newContext(new TestBean());
+    ctx.registerNamespace("test", TestBean.class);
+    assertEquals(2, ctx.selectNodes("test:nodeSet()").size());
+}
+private static class TestBean {
+    public BasicNodeSet nodeSet() {
+        BasicNodeSet ns = new BasicNodeSet();
+        ns.add(new NodePointer(null, null, "one", 0));
+        ns.add(new NodePointer(null, null, "two", 0));
+        return ns;
+    }
+}

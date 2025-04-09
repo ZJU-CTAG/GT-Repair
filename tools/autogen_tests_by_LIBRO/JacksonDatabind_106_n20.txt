@@ -1,0 +1,18 @@
+public void testTreeTraversingParser() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
+    mapper.disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+
+    String tree = "{\"x\": -1}";
+    String string = "{\"x\": -1}";
+
+    JsonNode treeNode = mapper.readTree(tree);
+    JsonParser treeParser = treeNode.traverse();
+    JsonParser stringParser = mapper.getFactory().createParser(string);
+
+    IntClass fromTree = mapper.readValue(treeParser, IntClass.class);
+    IntClass fromString = mapper.readValue(stringParser, IntClass.class);
+
+    assertEquals

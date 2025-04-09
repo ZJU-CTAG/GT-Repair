@@ -1,0 +1,15 @@
+public void test_issue_107() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    mapper.writeValueAsString(new Pojo());
+    final String json = mapper.convertValue(new Pojo(), String.class);
+    System.out.println(json);
+}
+
+@JsonFilter("filter-107")
+public static class Pojo {
+    @JsonProperty("id")
+    public Integer id = 1;
+}

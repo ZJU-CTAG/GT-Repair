@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String js = "isFunction = function(functionToCheck) { var getType; getType = {}; return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]'; };";
+    String expected = "function(a){return a&&\"[object Function]\"===a.apply(a)}";
+    String result = compile(js, Level.SIMPLE_OPTIMIZATIONS);
+    assertEquals(expected, result);
+}
+
+public void testIssue108b() {
+    String js = "isFunction = function(functionToCheck) { var getType; getType = []; return functionToCheck && getType.toString.apply(functionToCheck) === '[object Function]'; };";
+    String expected = "function(a){var b=[];return a&&\"[object Function]\"===b.toString.apply(a)}";
+    String result = compile(js, Level.SIMPLE_OPTIMIZATIONS);
+    assertEquals(expected, result);
+}

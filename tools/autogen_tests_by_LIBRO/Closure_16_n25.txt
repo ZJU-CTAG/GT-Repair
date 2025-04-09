@@ -1,0 +1,20 @@
+public void testJSCompiler() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input1.js",
+        Joiner.on('\n').join(
+            "goog.provide('a.b.c');",
+            "goog.scope(function() {",
+            "var b = a.b;",
+            "var c = b.c;",
+            "/* @typedef {string} */",
+            "c.MyType;",
+            "/* @param {c.MyType} x The variable. */",
+            "c.myFunc = function(x) {};",
+            "});")
+    ));
+    Result result = compiler.compile(Collections.EMPTY_LIST, inputs, options);
+    assertTrue(result.

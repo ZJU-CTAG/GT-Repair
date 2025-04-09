@@ -1,0 +1,16 @@
+public void testIssue118() {
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+    options.setDefineToBooleanLiteral("test.DEBUG", false);
+    options.setDefineToNumberLiteral("test.PI", 3.14);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("[externs]", ""),
+        ImmutableList.of(SourceFile.fromCode("[test.js]",
+            "/** @define {string} */\ntest.VERSION = \"\";\n" +
+            "/** @define {boolean} */\ntest.DEBUG = true;\n" +
+            "/** @define {number} */\ntest.PI = 3.14;\n")),
+        options);
+    assertTrue(result.success);
+    assertEqu

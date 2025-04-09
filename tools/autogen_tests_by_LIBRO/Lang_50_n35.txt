@@ -1,0 +1,10 @@
+public void testLocaleChange() {
+    Locale origLocale = Locale.getDefault();
+    Locale.setDefault(Locale.US);
+    FastDateFormat fdf = FastDateFormat.getDateInstance(DateFormat.SHORT);
+    FastDateFormat localFdf = FastDateFormat.getDateInstance(DateFormat.SHORT, Locale.UK);
+    assertEquals(localFdf.format(new Date()), fdf.format(new Date()));
+    Locale.setDefault(Locale.FRENCH);
+    assertEquals(localFdf.format(new Date()), fdf.format(new Date()));
+    Locale.setDefault(origLocale);
+}

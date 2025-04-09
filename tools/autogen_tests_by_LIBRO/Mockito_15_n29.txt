@@ -1,0 +1,12 @@
+public void testIssue() {
+    MyClass direct = new MyClass();
+    MyClass mock = mock(MyClass.class);
+    ArgumentCaptor<List> ac = ArgumentCaptor.forClass(List.class);
+    mock.addAll(Arrays.asList(1, 2, 3));
+    verify(mock).addAll(ac.capture());
+    List<Integer> captured = ac.getValue();
+    assertEquals(3, captured.size());
+    assertEquals(1, (int)captured.get(0));
+    assertEquals(2, (int)captured.get(1));
+    assertEquals(3, (int)captured.get(2));
+}

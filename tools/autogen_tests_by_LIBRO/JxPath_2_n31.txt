@@ -1,0 +1,14 @@
+public void testGetExistingNodeSet() {
+    // given
+    Map<String, Object> namespace = new HashMap<String, Object>();
+    namespace.put("test", new SimpleNodeSet());
+    JXPathContext context = JXPathContext.newContext(new Object());
+    context.setNamespaceContextPointer(new JXPathContextReferenceImpl(context, namespace));
+
+    // when
+    List result = context.selectNodes("test:nodeSet()/foo");
+
+    // then
+    assertEquals(1, result.size());
+    assertEquals("baz", result.get(0));
+}

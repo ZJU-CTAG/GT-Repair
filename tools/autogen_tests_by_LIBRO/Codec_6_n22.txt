@@ -1,0 +1,13 @@
+public void testIssue084() throws Exception {
+    String testString = "Hello World";
+    String encodedString = Base64.encodeBase64String(testString.getBytes());
+    String decodedString;
+
+    ByteArrayInputStream in = new ByteArrayInputStream(encodedString.getBytes());
+    try {
+        decodedString = IOUtils.toString(new InputStreamReader(new Base64InputStream(in, true)));
+        assertEquals(testString, decodedString);
+    } catch (IOException ex) {
+        fail("Should not throw IOException");
+    }
+}

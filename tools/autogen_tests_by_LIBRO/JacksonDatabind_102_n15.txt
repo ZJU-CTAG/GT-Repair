@@ -1,0 +1,10 @@
+public void testFormatForSqlDateSerializer() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    java.util.Date date = new java.util.Date();
+    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+    assertEquals("\"" + date.toString() + "\"", mapper.writeValueAsString(date));
+    assertEquals("\"" + sqlDate.toString() + "\"", mapper.writeValueAsString(sqlDate));
+}

@@ -1,0 +1,20 @@
+public void testNPE() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+    String json = "{\"@class\":\"org.springframework.security.core.Authentication\",\"authorities\":[\"java.util.ArrayList\",[]]}";
+
+    Authentication authentication = mapper.readValue(json, Authentication.class);
+}
+
+public class Authentication {
+    private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+    public List<GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+}

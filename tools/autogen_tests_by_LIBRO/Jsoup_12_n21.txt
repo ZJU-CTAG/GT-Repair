@@ -1,0 +1,8 @@
+public void testIssue108() {
+    Parser parser = Parser.htmlParser();
+    Document doc = parser.parse("<div><table class=x></table></div>");
+    assertEquals(0, doc.select("div table[class~=x|y]").size());
+    assertEquals(0, doc.select("div > table[class~=x|y]").size());
+    assertEquals(0, doc.select("div + table[class~=x|y]").size());
+    assertEquals(0, doc.select("div ~ table[class~=x|y]").size());
+}

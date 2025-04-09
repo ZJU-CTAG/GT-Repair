@@ -1,0 +1,16 @@
+public void testIssue107() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setFilterProvider(new SimpleFilterProvider().addFilter("myFilter", new AntPathPropertyFilter("root.test", "root.type")));
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+    JsonGenerator jsonGenerator = mapper.getFactory().createGenerator(System.out);
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("test");
+    jsonGenerator.writeString("SOME_TEXT");
+    jsonGenerator.writeFieldName("type");
+    jsonGenerator.writeString("SOME_TYPE");
+    jsonGenerator.writeEndObject();
+    jsonGenerator.flush();
+
+    mapper.createObjectNode().with("root").put("test", "SOME_TEXT").put("type", "SOME_TYPE").toString();
+}

@@ -1,0 +1,10 @@
+public void testNot() {
+    String html = "<div><p>One</p><p>Two</p><p>Three</p></div>";
+    Document doc = Jsoup.parse(html);
+    assertEquals(3, doc.select("div p:not(:has(b))").size());
+    assertEquals(3, doc.select("div p:not([id=none])").size());
+    assertEquals(3, doc.select("div p:not([id])").size());
+    assertEquals(1, doc.select("div p:not(:eq(1))").size());
+    assertEquals(2, doc.select("div p:not(:eq(1), :eq(2))").size());
+    assertEquals(1, doc.select("div p:not(:eq(1)):not(:eq(2))").size());
+}

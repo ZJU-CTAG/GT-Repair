@@ -1,0 +1,10 @@
+public void testIssue105() throws IOException, ParserConfigurationException, SAXException {
+    File input = new File("test.html");
+    Document doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
+    assertEquals("UTF-8", doc.outputSettings().charset().displayName());
+    Element html = doc.selectFirst("html");
+    assertEquals("http://www.w3.org/1999/xhtml", html.namespaceURI());
+    assertEquals("http://www.w3.org/1999/xhtml", html.selectFirst("head").namespaceURI());
+    assertEquals("http://www.w3.org/1999/xhtml", html.selectFirst("body").namespaceURI());
+    assertEquals("http://www.w3.org/1999/xhtml", html.selectFirst("div").namespaceURI());
+}

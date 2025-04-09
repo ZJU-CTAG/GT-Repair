@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    Map<String, Object> map = new HashMap<>();
+    map.put("foo", new InvokerTransformer("getMethod", new Class[]{String.class}, new Object[]{"toString"}));
+    Map props = TransformedMap.decorate(map, null, null);
+    Field f = props.getClass().getDeclaredField("map");
+    f.setAccessible(true);
+    assertTrue(((Map) f.get(props)).get("foo") instanceof InvokerTransformer);
+    assertEquals("toString", ((AnnotationInvocationHandler) props.get("foo")).get());
+}

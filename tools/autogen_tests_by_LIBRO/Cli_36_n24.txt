@@ -1,0 +1,21 @@
+public void testIssue108() {
+    OptionGroup group = new OptionGroup();
+    Option h = Option.builder("h").build();
+    Option s = Option.builder("s").build();
+    Option b = Option.builder("b").build();
+    Option t = Option.builder("t").build();
+    group.addOption(h).addOption(s).addOption(b).addOption(t);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    options.addOption(Option.builder("o").build());
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    formatter.printHelp("cmd", "", options, null);
+    checkOutput("cmd", "usage: cmd\n"
+            + "\n"
+            + " -h,--h       \n"
+            + " -s,--s       \n"
+            + " -b,--b       \n"
+            + " -t,--t       \n"
+            + " -o,--o       \n"
+            + "\n");

@@ -1,0 +1,25 @@
+public void testIssue108() {
+    String code =
+        "/**\n"
+        + " * @constructor\n"
+        + " */\n"
+        + "function C2() {}\n"
+        + "\n"
+        + "/**\n"
+        + " * @constructor\n"
+        + " */\n"
+        + "function C3(c2) {\n"
+        + "  /**\n"
+        + "   * @type {C2}\n"
+        + "   * @private\n"
+        + "   */\n"
+        + "  this.c2_;\n"
+        + "  use(this.c2_.prop);\n"
+        + "}\n"
+        + "\n"
+        + "function use(x) { }\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, code, compilerOptions);
+    assertTrue(result.success);
+    assertEquals("Property prop never defined on C2",
+        Iterables.getLast(

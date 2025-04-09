@@ -1,0 +1,13 @@
+public void testNextTextValue() throws XMLStreamException, IOException {
+    XMLInputFactory factory = XMLInputFactory.newFactory();
+    XMLStreamReader reader = factory.createXMLStreamReader(new StringReader("<root><node attr=\"value\" /></root>"));
+    XmlFactory xmlFactory = new XmlFactory();
+    FromXmlParser parser = (FromXmlParser) xmlFactory.createParser(reader);
+    parser.nextToken(); // to JsonToken.START_OBJECT
+    parser.nextToken(); // to JsonToken.FIELD_NAME
+    parser.nextToken(); // to JsonToken.START_OBJECT
+    parser.nextToken(); // to JsonToken.FIELD_NAME
+    parser.nextToken(); // to JsonToken.START_OBJECT
+    parser.nextToken(); // to JsonToken.FIELD_NAME
+    assertEquals("value", parser.nextTextValue()); // returns null
+}

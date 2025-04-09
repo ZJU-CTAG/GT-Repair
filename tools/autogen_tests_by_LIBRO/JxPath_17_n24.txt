@@ -1,0 +1,20 @@
+public void testNamespacedAttributeNotSelectedWithWildcard() throws Exception {
+    Document xmlDocument = DocumentHelper.parseText(
+            "<xml xmlns:x='foo' x:pop='a'/>");
+
+    XPath xpath = DocumentHelper.createXPath("//xml/@*");
+
+    Attribute popAttribute = (Attribute) xpath.selectSingleNode(xmlDocument);
+
+    assertNotNull(popAttribute);
+    assertEquals("pop", popAttribute.getName());
+    assertEquals("a", popAttribute.getValue());
+
+    {
+        popAttribute = (Attribute) xpath.selectSingleNode(xmlDocument);
+
+        assertNotNull(popAttribute);
+        assertEquals("pop", popAttribute.getName());
+        assertEquals("a", popAttribute.getValue());
+    }
+}

@@ -1,0 +1,25 @@
+public void testSingleQuote() {
+    Map<String, Object> formatRegistry = new HashMap<String, Object>();
+    formatRegistry.put(DummyFormatFactory.DUMMY_FORMAT, new DummyFormatFactory());
+
+    ExtendedMessageFormat mf = new ExtendedMessageFormat("it''s a {dummy} 'test'!", formatRegistry);
+    String formattedPattern = mf.format(new String[] {"great"});
+    assertEquals("it's a great test!", formattedPattern);
+}
+
+static class DummyFormatFactory implements FormatFactory {
+    public static final String DUMMY_FORMAT = "dummy";
+    public Format getFormat(String s, String s1, Locale locale) {
+        return new Format() {
+            @Override
+            public StringBuffer format(Object o, StringBuffer stringBuffer, FieldPosition fieldPosition) {
+                return stringBuffer.append(o);
+            }
+
+            @Override
+            public Object parseObject(String s, ParsePosition parsePosition) {
+                return null;
+            }
+        };
+    }
+}

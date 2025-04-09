@@ -1,0 +1,11 @@
+public void testIssue107() throws IOException {
+    File f = new File("test.zip");
+
+    try (ZipFile zf = new ZipFile(f)) {
+        try (ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(f))) {
+            ZipArchiveEntry zae1 = zf.getEntry("test/foo.txt");
+            ZipArchiveEntry zae2 = zais.getNextZipEntry();
+            assertEquals(zae1, zae2);
+        }
+    }
+}

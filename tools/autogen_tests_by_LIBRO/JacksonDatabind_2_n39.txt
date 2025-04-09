@@ -1,0 +1,11 @@
+public void testObjectField() throws IOException {
+    ListAttribute la = new ListAttribute("s", Arrays.asList("s", "t"));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("ListAttribute",
+Version.unknownVersion()).addSerializer(ListAttribute.class, new
+ListAttributeSerializer()));
+    JsonNode jn = mapper.valueToTree(la);
+    assertEquals(2, jn.size());
+    assertEquals("s", jn.get("itemType").asText());
+    assertEquals(2, jn.get("items").size());
+}

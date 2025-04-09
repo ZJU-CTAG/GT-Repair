@@ -1,0 +1,16 @@
+public void testIssue() {
+	StateMachine sm = getMachine();
+	sm.initialize();
+	sm.process("a");
+	sm.process("c");
+	assertEquals("A", sm.getState());
+}
+
+public StateMachine getMachine() {
+	StateMachine sm = new StateMachine("initial");
+	sm.configure("initial").permit("a", "A");
+	sm.configure("A").permit("b", "B");
+	sm.configure("B").permit("c", "C");
+	sm.configure("C").permit("d", "D");
+	return sm;
+}

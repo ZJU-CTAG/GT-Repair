@@ -1,0 +1,21 @@
+public void testZipOutputStream() throws IOException {
+    byte[] data = "Hello World".getBytes();
+    int n = 100;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipOutputStream zos = new ZipOutputStream(baos);
+    try {
+        for (int i = 0; i < n; i++) {
+            zos.putNextEntry(new ZipArchiveEntry("test" + i));
+            zos.write(data);
+        }
+    } finally {
+        zos.close();
+    }
+    byte[] bytes = baos.toByteArray();
+    ZipFile zf = new ZipFile(new ByteArrayInputStream(bytes));
+    assertEquals(n, zf.size());
+    for (int i = 0; i < n; i++) {
+        ZipArchiveEntry ze = zf.getEntry("test" + i);
+        assertNotNull(ze);
+        assertEquals(data.length, ze.getSize());
+        assertEquals(data.length, zf.getInputStream(ze).read(new byte[data.

@@ -1,0 +1,18 @@
+public void testIssue113() {
+    final String code =
+            "/** @param {string} x */\n" +
+                    "function g(x) {}\n" +
+                    "/** @param {undefined} x */\n" +
+                    "function f(x) {\n" +
+                    " if (x != undefined) { g(x); }\n" +
+                    "}";
+    final Compiler compiler = new Compiler();
+    final Result result = compiler.compile(
+            CompilerOptions.builder()
+                    .setWarningLevel(
+                            DiagnosticGroups.VERBOSE,
+                            CheckLevel.WARNING)
+                    .build(),
+            SourceFile.fromCode("[test code]", code));
+    assertTrue(result.success);
+}

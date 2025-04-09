@@ -1,0 +1,13 @@
+public void testIssue1011() {
+    String html = "<div class=\"a-row a-spacing-medium\">" +
+            "<span class=\"a-size-base a-text-bold\">I'll Ship & Pay</span>" +
+            "<span class=\"a-size-base\">" +
+            "<span class=\"a-color-price\">Varies</span>" +
+            "</span>" +
+            "</div>";
+
+    Document doc = Jsoup.parse(html);
+    assertEquals(0, doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)").size());
+    assertEquals(0, doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Send & Pay)").size());
+    assertEquals(0, doc.select("div.a-row.a-spacing-medium span.a-color-price:contains(Varies)").size());
+}

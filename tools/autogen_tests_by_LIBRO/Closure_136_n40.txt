@@ -1,0 +1,21 @@
+public void testIssue83 () {
+    String source =
+        "var AnotherObject = Class.create({\n" +
+        "    initialize: function() {\n" +
+        "        this.message = 'Hello World!';\n" +
+        "        alert(this.message);\n" +
+        "    }\n" +
+        "});\n" +
+        "var myObject = new AnotherObject();";
+
+    Compiler compiler = new Compiler();
+    SourceFile extern = SourceFile.fromCode("externs.js", "");
+    Result result = compiler.compile(extern,
+        SourceFile.fromCode("source.js", source),
+        new CompilerOptions()
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT5)
+            .setGenerateExports(true)
+            .setPrettyPrint(false)
+            .setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+            .setWarningLevel(DiagnosticGroups.MISSING_PROP

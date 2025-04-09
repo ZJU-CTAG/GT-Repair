@@ -1,0 +1,10 @@
+public void testReadValuesArrayOffsetLength() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    String[] array = new String[] {"one", "two"};
+    JsonParser jsonParser = objectMapper.getFactory().createParser(new StringReader("[\"one\",\"two\"]"));
+    JsonToken jsonToken = jsonParser.nextToken();
+    // now simulate an array with offset and length
+    jsonParser.setCurrentValue(array, 1, 1); // offset is one, length is one, only "two" will be returned
+    assertEquals("two", objectMapper.readValue(jsonParser, String.class));
+}

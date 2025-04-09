@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler compiler = new Compiler(System.err);
+    compiler.initOptions(options);
+
+    String code = "var Sub=function(){};Sub.prototype={a:function(){}};var B=function(){};"
+        + "B.prototype={__proto__:Sub.prototype};var b=new B;b.a();";
+    Result result = compiler.compile("test.js", code, options);
+    assertEquals("", result.success);
+}

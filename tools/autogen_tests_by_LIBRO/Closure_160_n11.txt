@@ -1,0 +1,21 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addWarningsGuard(new WarningsGuard() {
+        @Override
+        public CheckLevel level(JSError error) {
+            return error.getDefaultLevel();
+        }
+    });
+    options.checkSymbols = true;
+    options.checkTypes = true;
+    options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARS, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    String javascript = "foo = {};\n" +
+            "foo.bar = function() { alert(this.baz); };\n";
+    JSError[] warnings = CompilerRunner.compile(
+            options,
+            new Compiler(),
+            new CompilerOptions(),
+            new JSSourceFile[]{JSSourceFile.fromCode("test.js", javascript)},
+           

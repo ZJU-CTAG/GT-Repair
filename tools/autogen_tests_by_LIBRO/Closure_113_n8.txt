@@ -1,0 +1,12 @@
+public void testRequireProcessing() {
+    Compiler compiler = new Compiler();
+    compiler.init(
+            Lists.<SourceFile>newArrayList(),
+            Lists.newArrayList(SourceFile.fromCode("fake", "goog.require('foo');")),
+            new CompilerOptions());
+    compiler.parse();
+    List<JSError> errors = Lists.newArrayList();
+    compiler.process(new ProcessClosurePrimitives(compiler, false), errors);
+    assertEquals(1, errors.size());
+    assertEquals("required symbol 'foo' provided by closure", errors.get(0).description);
+}

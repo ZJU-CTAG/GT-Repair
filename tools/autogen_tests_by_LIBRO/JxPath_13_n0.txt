@@ -1,0 +1,15 @@
+public void testIssueUndefinedNamespace() {
+    String xml =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            + "<ns1:A xmlns:ns1=\"http://apache.org/A\" xmlns:ns2=\"http://apache.org/B\">"
+            + "  <ns2:B>Hello</ns2:B>"
+            + "  <ns1:B ns1:attr=\"value\"/>"
+            + "</ns1:A>";
+
+    JXPathContext ctx = JXPathContext.newContext(
+        new InputSource(new StringReader(xml)));
+    ctx.registerNamespace("ns1", "http://apache.org/A");
+    ctx.registerNamespace("ns2", "http://apache.org/B");
+    assertEquals("Hello", ctx.getValue("/ns1:A/ns2:B"));
+    assertEquals("value", ctx.getValue("/ns1:A/ns1:B/@attr"));
+}

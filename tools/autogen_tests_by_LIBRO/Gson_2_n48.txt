@@ -1,0 +1,23 @@
+public void testTypeHierarchyAdapters() {
+    final TypeHierarchyAdapterFactory typeHierarchyAdapterFactory = new TypeHierarchyAdapterFactory();
+
+    final Car car = new Car();
+    final Truck truck = new Truck();
+
+    final Gson gson = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Vehicle.class, typeHierarchyAdapterFactory.create(Vehicle.class,
+                    new TypeToken<Car>() {}, new TypeToken<Truck>() {}))
+            .create();
+
+    final String truckJson = gson.toJson(truck);
+    final String carJson = gson.toJson(car);
+
+    assertEquals(truck, gson.fromJson(truckJson, Vehicle.class));
+    assertEquals(car, gson.fromJson(carJson, Vehicle.class));
+
+    try {
+        gson.fromJson(carJson, Truck.class);
+        fail("Invalid JSON should not be parsed");
+    } catch (JsonSyntaxException e) {
+        // OK
+    } catch (

@@ -1,0 +1,12 @@
+public void testVersion1110() throws Exception {
+    String url = "http://www.bhem.gov.cn";
+    String content = IOUtils.toString(new URL(url), "gb2312");
+    Parser parser = new Parser(content);
+    NodeFilter filter = new NodeClassFilter(LinkTag.class);
+    NodeList list = parser.extractAllNodesThatMatch(filter);
+    for (int i = 0; i < list.size(); i++) {
+        LinkTag link = (LinkTag) list.elementAt(i);
+        String linkUrl = link.extractLink();
+        System.out.println(linkUrl);
+    }
+}

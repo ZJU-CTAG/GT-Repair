@@ -1,0 +1,31 @@
+public void testDeletion() throws Exception {
+    final File archive = new File("target/ar-test.ar");
+    final File file1 = new File("target/ar-test.txt");
+    final File file2 = new File("target/ar-test-2.txt");
+    ArchiveOutputStream os = new ArchiveStreamFactory()
+        .createArchiveOutputStream("ar", new FileOutputStream(archive));
+    os.putArchiveEntry(new ArchiveEntry() {
+        @Override
+        public boolean equals(final Object other) {
+            return false;
+        }
+        @Override
+        public int getGroupId() {
+            return 0;
+        }
+        @Override
+        public String getName() {
+            return file1.getName();
+        }
+        @Override
+        public int getUserId() {
+            return 0;
+        }
+        @Override
+        public int hashCode() {
+            return 0;
+        }
+    });
+    os.write(new byte[] { 0, 1, 2 });
+    os.closeArchiveEntry();
+    os.putArchiveEntry(new ArchiveEntry

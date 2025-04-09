@@ -1,0 +1,10 @@
+public void testIssue123() {
+    List<String> mockList = mock(List.class);
+
+    mockList.addAll(asList("foo", "bar"));
+    verify(mockList).addAll(argThat(hasItems("foo", "bar")));
+
+    ArgumentCaptor<List<String>> captor = ArgumentCaptor.forClass(List.class);
+    verify(mockList).addAll(captor.capture());
+    assertEquals(asList("foo", "bar"), captor.getValue());
+}

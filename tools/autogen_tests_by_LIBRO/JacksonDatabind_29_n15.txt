@@ -1,0 +1,7 @@
+public void testDeserializePolymorphicType() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(PolymorphicType.class, "type"));
+    PolymorphicType readValue = mapper.readValue(
+            "{\"type\":\"type\",\"name\":\"value\"}", PolymorphicType.class);
+    assertEquals("value", readValue.getName());
+}

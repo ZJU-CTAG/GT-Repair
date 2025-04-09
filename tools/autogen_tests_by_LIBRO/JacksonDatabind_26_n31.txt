@@ -1,0 +1,13 @@
+public void testIssue102() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer();
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    ObjectOutputStream out = new ObjectOutputStream(bytes);
+    out.writeObject(writer);
+    out.close();
+    bytes.close();
+    ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()));
+    ObjectReader reader = (ObjectReader) in.readObject();
+    in.close();
+    assertEquals(mapper, reader.getCodec());
+}

@@ -1,0 +1,22 @@
+public void testIssueWithJsonAnyGetter() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    // doesn't work
+    System.out.println(mapper.writeValueAsString(new IssueWithJsonAnyGetter()));
+    // works
+    System.out.println(mapper.writeValueAsString(new IssueWithJsonAnyGetter2()));
+}
+
+@JsonSerialize(using = MySerializer.class)
+public class IssueWithJsonAnyGetter {
+    private Map<String, String> parameters = new HashMap<String, String>();
+
+    @JsonAnyGetter
+    public Map<String, String> getParameters() {
+        parameters.put("foo", "bar");
+        return parameters;
+    }
+
+    public static class MySerializer extends JsonSerializer<Map<String, String>> {
+        @Override
+        public void serialize(Map<String, String> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException

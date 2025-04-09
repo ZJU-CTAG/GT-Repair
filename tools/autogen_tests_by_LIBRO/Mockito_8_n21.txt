@@ -1,0 +1,11 @@
+public void testIssue110() {
+    class Self<T extends Self<T>> {
+        T self() {
+            return null;
+        }
+    }
+
+    GenericMetadataSupport genericMetadata = inferFrom(Self.class).resolveGenericReturnType(firstNamedMethod("self", Self.class));
+
+    assertThat(genericMetadata.rawType()).isEqualTo(Self.class);
+}

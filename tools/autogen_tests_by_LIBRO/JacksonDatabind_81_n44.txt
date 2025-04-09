@@ -1,0 +1,14 @@
+public void testIssuePrimitiveRefinement() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final String json = mapper.writeValueAsString(new IssuePrimitiveRefinementBean());
+    assertEquals("{\"value\":1}", json);
+    final IssuePrimitiveRefinementBean result = mapper.readValue(json, IssuePrimitiveRefinementBean.class);
+    assertEquals(Integer.valueOf(1), result.value);
+}
+
+public static class IssuePrimitiveRefinementBean {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+    public Object value = 1;
+}

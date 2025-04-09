@@ -1,0 +1,30 @@
+public void testPropertyUtilsGetNestedProperty_bug_114() {
+    A a = new A();
+    a.setB(new B());
+    a.getB().setC(new C());
+    a.getB().getC().setD(new D());
+    a.getB().getC().getD().setE(new E());
+    a.getB().getC().getD().getE().setF(new F());
+    assertEquals(new F(), PropertyUtils.getNestedProperty(a, "b.c.d.e.f"));
+}
+private static class A {
+    private B b;
+    public B getB() {
+        return b;
+    }
+    public void setB(B b) {
+        this.b = b;
+    }
+}
+private static class B {
+    private C c;
+    public C getC() {
+        return c;
+    }
+    public void setC(C c) {
+        this.c = c;
+    }
+}
+private static class C {
+    private D d;
+    public D

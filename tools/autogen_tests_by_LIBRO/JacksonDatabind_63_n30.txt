@@ -1,0 +1,8 @@
+public void testReferenceChain() {
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = new JsonFactory().createGenerator(sw);
+    JsonMappingException e = new JsonMappingException(gen, "Test exception");
+    e.prependPath(new Reference(this, "test1"));
+    e.prependPath(new Reference(this, "test2"));
+    assertEquals("test1[\"test2\"]", e.getPathReference());
+}

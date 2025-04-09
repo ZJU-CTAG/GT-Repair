@@ -1,0 +1,18 @@
+public void testIssue1079() throws Exception
+{
+    // first with empty context
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType t = mapper.getTypeFactory().constructType(Object.class, null);
+    assertEquals(Object.class, t.getRawClass());
+    // and then with non-empty context
+    ObjectReader r = mapper.readerFor(Object.class);
+    t = mapper.getTypeFactory().constructType(Object.class, r.getTypeFactory().constructType(Object.class));
+    assertEquals(Object.class, t.getRawClass());
+    // and then with null context
+    try {
+        mapper.getTypeFactory().constructType(Object.class, (JavaType) null);
+        fail("Should not pass");
+    } catch (IllegalArgumentException e) {
+        verifyException(e, "Can not pass null");
+    }
+}

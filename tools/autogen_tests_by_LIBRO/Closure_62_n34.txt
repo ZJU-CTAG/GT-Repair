@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {JSSourceFile.fromCode("test.js", "alert(1;")},
+        new CompilerOptions());
+    assertEquals(
+        Joiner.on('\n').join(
+            "test.js:1: ERROR - Parse error. missing ) after argument list",
+            "alert(1;",
+            " ^",
+            "",
+            "1 error(s), 0 warning(s)"),
+        compiler.toSource());
+}

@@ -1,0 +1,16 @@
+public void testIssue124() throws Exception {
+    class Options {
+        @Option(name = "a", required = true)
+        boolean a;
+        @Option(name = "b", required = true)
+        boolean b;
+    }
+    Options options = new Options();
+    CommandLineParser parser = new GnuParser();
+    String[] args = new String[] {"--a"};
+    Properties defaults = new Properties();
+    defaults.put("b", "true");
+    parser.parse(args, options, defaults);
+    assertTrue(options.a);
+    assertTrue(options.b);
+}

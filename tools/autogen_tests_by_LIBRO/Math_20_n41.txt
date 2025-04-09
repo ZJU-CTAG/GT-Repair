@@ -1,0 +1,23 @@
+public void testOptimize() throws Exception {
+    final int n = 2;
+    final double minimum = -100;
+    final double maximum = 100;
+    final double[] lower = new double[n];
+    final double[] upper = new double[n];
+    for (int i = 0; i < n; i++) {
+      lower[i] = minimum;
+      upper[i] = maximum;
+    }
+    final double[] start = new double[n];
+    for (int i = 0; i < n; i++) {
+      start[i] = 0;
+    }
+
+    final CMAESOptimizer optimizer = new CMAESOptimizer(2, 1e-9, true, 0, 0, new MersenneTwister(), false, null);
+    final PointValuePair optimum = optimizer.optimize(new MaxEval(10000),
+            new ObjectiveFunction(new MultivariateFunction() {
+                @Override
+                public double value(double[] point) {
+                    double s = 0;
+                    for (int i = 0; i < n; i++) {
+                        s += point[i

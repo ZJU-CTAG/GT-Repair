@@ -1,0 +1,18 @@
+public void testToStringStyleThreadLocals() throws Exception {
+    ClassLoader cl = getClass().getClassLoader();
+    Class<?> classWithThreadLocal = cl.loadClass("org.apache.commons.lang3.builder.ToStringStyle");
+    Field[] fields = classWithThreadLocal.getDeclaredFields();
+    Field tlField = null;
+    for (Field field : fields) {
+        if (field.getType().equals(ThreadLocal.class)) {
+            field.setAccessible(true);
+            tlField = field;
+            break;
+        }
+    }
+    assertNotNull(tlField);
+    Object o = tlField.get(null);
+    assertNotNull(o);
+    // Make sure we can remove it
+    ((ThreadLocal<?>) o).remove();
+}

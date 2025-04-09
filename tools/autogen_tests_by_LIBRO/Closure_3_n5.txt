@@ -1,0 +1,21 @@
+public void testOptimization() {
+    String javascript = "function getStack() {\n" + 
+    "var getErrorObject = function() {\n" + 
+    "try {\n" + 
+    "throw Error(\"\");\n" + 
+    "} catch(err) {\n" + 
+    "return err;\n" + 
+    "}\n" + 
+    "};\n" + 
+    "return getErrorObject().stack;\n" + 
+    "}\n" + 
+    "window['getStackTrace']=getStack;";
+    String result = CompilerRunner.compile(CompilerOptions.advancedOptions("SIMPLE_OPTIMIZATIONS"), javascript);
+    assertEquals("function getStack() {\n" + 
+    " try {\n" + 
+    " throw Error(\"\");\n" + 
+    " }\n" + 
+    " catch(a) {\n" + 
+    " }\n" + 
+    " return a.stack;\n" + 
+    "} window.

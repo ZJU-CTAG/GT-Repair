@@ -1,0 +1,11 @@
+public void testIssue106() {
+    String[] data = new String[] { "あ", "い", "う" };
+    try (CSVPrinter printer = new CSVPrinter(new StringWriter(), CSVFormat.EXCEL.withIgnoreEmptyLines(true))) {
+        printer.printRecord(data);
+        printer.flush();
+        assertEquals("\"あ\",い,う\n", printer.getOut().toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+        fail("Should not have thrown any exceptions: " + e.getMessage());
+    }
+}

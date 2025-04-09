@@ -1,0 +1,22 @@
+public void testSkip() throws IOException {
+    final String expected = "abcde";
+    PipedInputStream in = new PipedInputStream();
+    final PipedOutputStream out = new PipedOutputStream(in);
+    out.write(expected.getBytes());
+    out.flush();
+
+    final Cipher cipher = createCipher(Cipher.ENCRYPT_MODE);
+    final CipherInputStream cin = new CipherInputStream(in, cipher);
+
+    String actual = IOUtils.toString(cin);
+    assertEquals(expected, actual);
+    assertEquals(0L, IOUtils.skip(cin, 1024));
+    assertEquals(-1, cin.read());
+}
+
+private Cipher createCipher(int mode) throws NoSuchAlgorithmException, NoSuchPaddingException {
+    final KeyGenerator keygen = KeyGenerator.getInstance("Blowfish");
+    keygen.init(128);
+    final SecretKey key = keygen.generateKey();
+    final Cipher cipher = Cipher.getInstance("Blowfish");
+    cipher.init(mode, key);

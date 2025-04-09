@@ -1,0 +1,20 @@
+public void testIssue107()
+    throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    om.setSerializerFactory(om.getSerializerFactory().withSerializerModifier(new Serializers.Base() {
+        @Override
+        public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+            if (beanDesc.getBeanClass() == MyBean.class) {
+                return new MyBeanSerializer((JsonSerializer<Object>) serializer);
+            }
+            return serializer;
+        }
+    }));
+    om.setDeserializationConfig(om.getDeserializationConfig().with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES));
+    MyBean bean = new MyBean();
+    bean.setId(1);
+    String json = om.writeValueAsString(bean);
+    System.out.println(json);
+    MyBean read = om.readValue(json, MyBean.class);
+    assertEquals(1,

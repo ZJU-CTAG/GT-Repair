@@ -1,0 +1,35 @@
+public void testTypeHierarchyAdapter() {
+    Gson gson = new Gson();
+    try {
+        gson.fromJson("{name: 'truck'}", Car.class);
+        fail("Expected an exception");
+    } catch (ClassCastException expected) {}
+}
+
+private static class Car {
+    String name;
+}
+
+private static class Truck extends Car {
+    String type;
+}
+
+private static class Vehicle {
+    String name;
+}
+
+private abstract static class VehicleTypeAdapter<T> extends TypeAdapter<T> {
+    @Override
+    public void write(JsonWriter out, T value) throws IOException {
+        out.beginObject();
+        out.name("name").value(value.getClass().getSimpleName());
+        writeSubclassFields(out, value);
+        out.endObject();
+    }
+    
+    @Override
+    public T read(JsonReader in) throws IOException {
+        in.beginObject();
+        in.nextName();
+        String name = in.nextString();
+        T value = createInstanceFor(name);

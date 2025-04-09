@@ -1,0 +1,16 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+//    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    String[] externs = new String[] { "window.js" };
+    String[] js = new String[] { "input.js" };
+    Result result = compiler.compile(
+        SourceFile.fromCode("window.js", ""),
+        SourceFile.fromCode("input.js", "window[\"anchor\"] = function (obj, modifiesProp) {\n"
+            + "return (function (saved) {\n"
+            + "  return modifiesProp(obj) + saved;\n"
+            + "})(obj[\"prop\"]);\n"
+            +

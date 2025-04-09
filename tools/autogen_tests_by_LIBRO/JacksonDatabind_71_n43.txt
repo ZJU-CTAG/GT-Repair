@@ -1,0 +1,17 @@
+public void testIssue() {
+    String json = "{\"id\": \"x\"}";
+    Foo foo = new ObjectMapper().readerFor(Foo.class).readValue(json);
+    assertEquals("x", foo.getId());
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+@JsonSubTypes({@JsonSubTypes.Type(value = Foo.class)})
+public static class Foo implements Serializable {
+    @JsonDeserialize(keyUsing = CharSequenceKeyDeserializer.class)
+    private Map<CharSequence, Object> props = new HashMap<CharSequence, Object>();
+
+    @JsonProperty("id")
+    public CharSequence getId() {
+        return (String) props.get("id");
+    }
+}

@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    ObjectMapper m = new ObjectMapper();
+    JsonNode n = m.valueToTree(new MyContainer());
+    m.writer().writeValue(System.out, n);
+}
+
+private static final class MyContainer {
+    MyBean b1 = new MyBean(1);
+    MyBean b2 = new MyBean(2);
+    MyBean b3 = new MyBean(3);
+    MyBean b4 = new MyBean(4);
+}
+
+private static final class MyBean {
+    private int id;
+    public MyBean(int id) {
+        this.id = id;
+    }
+    @JsonProperty("id")
+    public int getId() {
+        return id;
+    }
+}

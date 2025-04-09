@@ -1,0 +1,20 @@
+public void testFail() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addKeyDeserializer(TestFail.MyEnum.class, new KeyDeserializer() {
+                @Override
+                public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+                    return key;
+                }
+            });
+        }
+    });
+
+    TestFail t = mapper.readValue("{\"myMap\": {\"A\": \"foo\"}}", TestFail.class);
+    assertNotNull(t);
+    assertNotNull(t.myMap);
+    assertEquals(1, t.myMap.size());
+    assertEquals("foo", t.myMap.get(TestFail.MyEnum.A));
+}

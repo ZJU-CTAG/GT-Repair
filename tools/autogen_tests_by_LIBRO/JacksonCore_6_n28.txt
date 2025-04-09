@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    JsonNode node = new ObjectMapper().readTree("{\"foo\":0}");
+    JsonPointer ptr = JsonPointer.compile("/00");
+
+    assertTrue(node.has(ptr));
+    assertEquals(node.get(ptr), node.get("foo"));
+
+    ptr = JsonPointer.compile("/0");
+    assertTrue(node.has(ptr));
+    assertEquals(node.get(ptr), node.get("foo"));
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Schedule schedule = new Schedule();
+    ScheduleRule rule1 = new ScheduleRule();
+    RuleEvent event1 = new RuleEvent();
+    event1.setDate("10/05/2009");
+    event1.setTime("10:00");
+    ScheduleRule rule2 = new ScheduleRule();
+    RuleEvent event2 = new RuleEvent();
+    event2.setDate("10/05/2009");
+    event2.setTime("10:00");
+    rule1.getEvents().add(event1);
+    rule2.getEvents().add(event2);
+    schedule.getRules().add(rule1);
+    schedule.getRules().add(rule2);
+    schedule.init();
+    RuleEventResult result = new RuleEventResult();
+    schedule.update(result);
+    assertEquals(2, result.getEvents().size());
+    assertFalse(result.getEvents().get(0).getProcessed());
+    assertFalse(result.getEvents().get(1).getProcessed());
+    result.getEvents().get(0).setProcessed(true);
+    schedule

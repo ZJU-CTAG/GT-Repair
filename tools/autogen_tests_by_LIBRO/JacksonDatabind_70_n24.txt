@@ -1,0 +1,24 @@
+public void testIssue108() throws Exception {
+    // this test only works with 2.9.x
+    if (Version.unknownVersion().equals(databindVersion())) {
+        return;
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+
+    Address address = new Address();
+    address.street = "Some Street";
+    address.addon = "Some Addon";
+    address.town = "Some Town";
+    address.country = "Some Country";
+
+    Person person = new Person();
+    person.businessAddress = address;
+
+    String json = mapper.writeValueAsString(person);
+    assertEquals("{\"businessAddress.street\":\"Some Street\",\"businessAddress.addon\":\"Some Addon\",\"businessAddress.zip\":\"\",\"businessAddress.town\":\"Some Town\",\"businessAddress.country\":\"Some Country\"}", json);
+
+    Person person2 = mapper.readValue(json, Person.class);
+    assertNotNull(person2);
+   

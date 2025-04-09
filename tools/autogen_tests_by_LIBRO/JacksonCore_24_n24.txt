@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    Integer value;
+    try {
+        value = mapper.readValue("2147483648", Integer.class);
+        fail("Expected an exception");
+    } catch (JsonProcessingException e) {
+        if (!(e instanceof InputCoercionException)) {
+            fail("Expected InputCoercionException, got: " + e);
+        }
+        InputCoercionException ice = (InputCoercionException) e;
+        assertEquals(JsonToken.VALUE_NUMBER_INT, ice.getTokenType());
+        assertEquals(Integer.class, ice.getTargetType());
+    }
+}

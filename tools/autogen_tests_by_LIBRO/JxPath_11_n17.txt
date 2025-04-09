@@ -1,0 +1,16 @@
+public void testIssue() {
+    String xml = "<?xml version=\"1.0\"?>\n" +
+            "<A:ElementA xmlns:A=\"http://A\" xmlns:B=\"http://B\" A:myAttr=\"Mytype\">" +
+            "<B:ElementB>MY VALUE</B:ElementB>" +
+            "</A:ElementA>";
+    try {
+        Document doc = new SAXReader().read(new StringReader(xml));
+        XPath xpath = new Dom4jXPath("//ElementB");
+        xpath.addNamespace("A", "http://A");
+        xpath.addNamespace("B", "http://B");
+        xpath.selectSingleNode(doc);
+        fail("Exception should have been thrown");
+    } catch (XPathSyntaxException ex) {
+        assertEquals("No such function {http://A}myAttr", ex.getMessage());
+    }
+}

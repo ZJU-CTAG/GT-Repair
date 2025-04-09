@@ -1,0 +1,17 @@
+public void testMinimalQuotingWithNegativeValues() throws Exception {
+    StringWriter sw = new StringWriter();
+    CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.MINIMAL.withHeader("a", "b", "c"));
+
+    csvPrinter.printRecord(1, 2, 3);
+    csvPrinter.printRecord(4, 5, 6);
+    csvPrinter.printRecord(-1, 5, 6);
+    csvPrinter.printRecord("-1.0", 5, 6);
+
+    csvPrinter.flush();
+
+    assertEquals("a,b,c\n" +
+                 "1,2,3\n" +
+                 "4,5,6\n" +
+                 "\"-1\",5,6\n" +
+                 "\"-1.0\",5,6\n", sw.toString());
+}

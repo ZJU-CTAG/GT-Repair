@@ -1,0 +1,18 @@
+public void testPaxHeader() {
+    final String testDir = System.getProperty("project.build.directory");
+    final File testFile = new File(testDir, "issue107.tar");
+    testFile.deleteOnExit();
+
+    FileUtils.deleteDirectory(new File(testDir, "PaxHeaders.X"));
+
+    try (OutputStream out = new FileOutputStream(testFile)) {
+        try (ArchiveOutputStream tarOut = new TarArchiveOutputStream(out)) {
+            FileUtils.copyDirectoryToDirectory(new File("src/test/resources/issue107"), new File(testDir, "PaxHeaders.X"));
+            tarOut.putArchiveEntry(new TarArchiveEntry(new File(testDir, "PaxHeaders.X")));
+            IOUtils.closeQuietly(tarOut);
+        }
+    } catch (final IOException ex) {
+        ex.printStackTrace();
+        fail();
+    }
+}

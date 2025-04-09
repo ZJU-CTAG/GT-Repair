@@ -1,0 +1,17 @@
+public void testPartial() {
+    DateTimeFieldType[] types = { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() };
+    int[] values = { 1, 1 };
+    try {
+        new Partial(types, values);
+        fail();
+    } catch (IllegalArgumentException e) {
+    }
+
+    Partial p1 = new Partial(DateTimeFieldType.clockhourOfDay(), 1).with(DateTimeFieldType.hourOfDay(), 1);
+    Partial p2 = new Partial(DateTimeFieldType.hourOfDay() ,1).with(DateTimeFieldType.clockhourOfDay(), 1);
+    try {
+        p1.isEqual(p2);
+        fail();
+    } catch (IllegalArgumentException e) {
+    }
+}

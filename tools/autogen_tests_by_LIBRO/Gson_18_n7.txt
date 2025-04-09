@@ -1,0 +1,17 @@
+public void testIssue1367() {
+    String json = "{\"inBig\":{\"key\":[{\"inSmall\":\"hello\"}]}}";
+
+    Gson gson = new Gson();
+    //SmallClass small = gson.fromJson(json, BigClass.class).inBig.get("inSmall").get(0);
+    BigClass bigClass = gson.fromJson(json, BigClass.class);
+    Object obj = bigClass.inBig.get("key");
+    System.out.println(obj.getClass());
+}
+
+class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+}
+
+class SmallClass {
+    String inSmall;
+}

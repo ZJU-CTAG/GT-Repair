@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    String json = "{\"records\":[{\"fields\":[{\"name\":\"field-1\",\"value\":\"value-1\"},{\"name\":\"field-2\",\"value\":\"value-2\"}]}],\"foo\":\"bar\",\"hello\":\"world\"}";
+    Definition definition = mapper.readValue(json, Definition.class);
+    assertNotNull(definition);
+    assertEquals("bar", definition.foo);
+    assertEquals("world", definition.hello);
+    assertEquals(1, definition.records.size());
+    Record record = definition.records.get(0);
+    assertNotNull(record);
+    assertEquals(2, record.fields.size());
+    Field field1 = record.fields.get(0);
+    assertNotNull(field1);
+    assertEquals("field-1", field1.name);
+    assertEquals

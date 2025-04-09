@@ -1,0 +1,9 @@
+public void testClean() {
+    String html = "<img src=\"cid:50ba6d3f6c9e6\">";
+    Document dirty = Jsoup.parse(html);
+    Whitelist whitelist = Whitelist.basic();
+    whitelist.addTags("img");
+    whitelist.addAttributes("img", "src", "cid");
+    Document clean = Jsoup.clean(dirty.html(), whitelist);
+    assertEquals(html, clean.html());
+}

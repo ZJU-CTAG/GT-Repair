@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception
+{
+    String s = "{\n"+
+            "  \"value\":\"\"\n"+
+            "}";
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    TestObject testObject = om.readValue(s, TestObject.class);
+    Assert.assertNull(testObject.value);
+}
+
+private static class TestObject {
+    public String value;
+}

@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    final RootValue rootValue = objectMapper.readValue("{\"rootValue\": \"not an int\"}", RootValue.class);
+    assertNotNull(rootValue);
+}
+
+@JacksonXmlRootElement(localName = "rootValue")
+@JsonRootName("rootValue")
+public static class RootValue {
+    @JsonProperty
+    private int value;
+}

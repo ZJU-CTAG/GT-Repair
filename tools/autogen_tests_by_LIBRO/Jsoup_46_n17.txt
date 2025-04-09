@@ -1,0 +1,8 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<html><body>before&nbsp;after</body></html>");
+    doc.outputSettings().charset("Shift_JIS");
+    doc.outputSettings().escapeMode(EscapeMode.xhtml);
+    String html = doc.html();
+    assertFalse(html.contains("?"));
+    assertTrue(html.contains("&#xa0;"));
+}

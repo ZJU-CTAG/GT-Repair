@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Context cx = Context.enter();
+    try {
+        Scriptable scope = cx.initStandardObjects();
+        String s = "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');";
+        Object result = cx.evaluateString(scope, s, "<cmd>", 1, null);
+        ScriptableObject so = (ScriptableObject) scope;
+        Object o = so.get("console");
+        assertNotNull(o);
+    } finally {
+        Context.exit();
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssue144() {
+    // should warn "JSC_USED_GLOBAL_THIS: dangerous use of the global this object" in both methods
+    // none of these warns in 0616 release
+    var NS = {
+    read : function()
+    {
+    return this.foo; // does not warn in 0514 release
+    },
+
+    write : function()
+    {
+    this.foo = 123; // warns in 0514 release
+    }
+    };
+
+    // only the non-inline notation warns in 0616 release
+    NS.write2 = function()
+    {
+    this.foo = 123;
+    };
+}

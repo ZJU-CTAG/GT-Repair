@@ -1,0 +1,18 @@
+public void testCMAESOptimizer() throws Exception {
+    CMAESOptimizer optimizer = new CMAESOptimizer(1, 1.0, true, 0, 10, 1, 1, 1, true);
+    double[] lb = { 1.0 };
+    double[] ub = { 2.0 };
+    double[] startPoint = { .5 };
+    PointValuePair value = optimizer.optimize(new MaxEval(1000),
+        new ObjectiveFunction(new MultivariateRealFunction() {
+            public double value(double[] x) {
+                System.out.println(x[0]);
+                return -x[0];
+            }
+        }),
+        GoalType.MAXIMIZE,
+        new InitialGuess(startPoint),
+        new SimpleBounds(lb, ub));
+    System.out.println(value);
+    assertTrue("Optimizer exceeds bounds", value.getPoint()[0] < ub[0]);
+}

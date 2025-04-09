@@ -1,0 +1,21 @@
+public void testLevenbergMarquardt() {
+        final double[] target = new double[] {0.0, 0.0, 0.0};
+
+        final ParametricUnivariateRealFunction f = new ParametricUnivariateRealFunction() {
+            public double value(double x, double[] p) {
+                return p[0] * x * x + p[1] * x + p[2];
+            }
+
+            public double[] gradient(double x, double[] p) {
+                return new double[] {x * x, x, 1};
+            }
+        };
+
+        final double[] initialValues = new double[] {1.0, 1.0, 1.0};
+        LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+        optimizer.setMaxIterations(100);
+        optimizer.setMaxEvaluations(100);
+        PointVectorValuePair result = optimizer.doOptimize();
+        double[] point = result.getPoint();
+        double[] residuals = result.getValueRef();
+        double cost = result.getCost();

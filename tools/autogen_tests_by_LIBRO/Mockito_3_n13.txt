@@ -1,0 +1,20 @@
+public void testMockito() {
+    String[] values = new String[]{ "foo", "bar" };
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    service.doStuff(values);
+    verify(mock).doStuff(captor.capture());
+    assertEquals(values, captor.getValue());
+}
+
+interface Service {
+    void doStuff(String ... values);
+}
+
+class ServiceImpl implements Service {
+    @Override
+    public void doStuff(String ... values) {
+        for (String value : values) {
+            System.out.println(value);
+        }
+    }
+}

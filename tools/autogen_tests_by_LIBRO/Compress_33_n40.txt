@@ -1,0 +1,19 @@
+public void testIssue106() throws IOException {
+    InputStream input = new FileInputStream("src/test/resources/bla.tar.deflatez");
+    try {
+        CompressorStreamFactory factory = new CompressorStreamFactory();
+        CompressorInputStream cin = factory.createCompressorInputStream(input);
+        TarArchiveInputStream tarin = new TarArchiveInputStream(cin);
+        TarArchiveEntry tarEntry = tarin.getNextTarEntry();
+        while (tarEntry != null) {
+            String name = tarEntry.getName();
+            long size = tarEntry.getSize();
+            System.out.println(name + " : " + size);
+            tarEntry = tarin.getNextTarEntry();
+        }
+        tarin.close();
+        cin.close();
+    } finally {
+        input.close();
+    }
+}

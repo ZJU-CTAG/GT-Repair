@@ -1,0 +1,18 @@
+public void testCreateArchiveInputStream() throws Exception {
+    byte[] data = new byte[100];
+    InputStream in;
+    // 1. Create a tar archive
+    File tarFile = new File("target/test-output/test.tar");
+    try (FileOutputStream fos = new FileOutputStream(tarFile);
+         ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos)) {
+        TarArchiveEntry entry = new TarArchiveEntry("test.txt");
+        aos.putArchiveEntry(entry);
+        IOUtils.write("test", aos);
+        aos.closeArchiveEntry();
+    }
+    // 2. Create a text file
+    File textFile = new File("target/test-output/test.txt");
+    Files.write(textFile.toPath(), "test".getBytes("UTF-8"));
+    // 3. Create a zip file
+    File zipFile = new File("target/test-output/test.zip");
+    try (FileOutputStream fos = new FileOutputStream(zip

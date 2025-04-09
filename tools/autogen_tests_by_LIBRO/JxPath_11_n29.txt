@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception {
+    DOMXPath xpath = new DOMXPath("/p:a/@xmlns:p");
+    xpath.addNamespace("p", "foo");
+    xpath.setNamespaceContext(new NamespaceContext() {
+        public String getNamespaceURI(String prefix) {
+            return null;
+        }
+
+        public String getPrefix(String namespaceURI) {
+            return null;
+        }
+
+        public Iterator getPrefixes(String namespaceURI) {
+            return null;
+        }
+    });
+    Document doc = DocumentHelper.createDocument();
+    Element a = doc.addElement("a");
+    Element b = a.addElement("b");
+    b.addAttribute("xmlns", "foo");
+    assertNotNull(xpath.selectSingleNode(doc));
+}

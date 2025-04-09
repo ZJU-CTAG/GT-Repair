@@ -1,0 +1,12 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setGenerateExports(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(CommandLineRunner.getDefaultExterns(),
+        Arrays.asList(SourceFile.fromCode("foo", "alert('foo');")),
+        options);
+    assertTrue(result.success);
+    assertEquals("alert(\"foo\");", compiler.toSource());
+}

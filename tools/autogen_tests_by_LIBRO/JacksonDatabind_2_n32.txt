@@ -1,0 +1,22 @@
+public void testUnwantedPojoEmbedding() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    List<String> list = new ArrayList<String>();
+    list.add("abc");
+    list.add("def");
+    X<String> x = new X<String>();
+    x.setItems(list);
+    StringReferenceTextAttribute stringReferenceTextAttribute = new
+StringReferenceTextAttribute();
+    stringReferenceTextAttribute.setItems(list);
+    SimpleModule module = new SimpleModule("mymodule", new
+Version(1, 0, 0, null))
+            .addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+    mapper.writeValueAsString(x);
+    JsonNode tree = mapper.valueToTree(x);
+    JsonNode embedded = tree.get("items");
+    assertEquals(JsonNodeType.ARRAY, embedded.getNodeType());
+    assertEquals(2, embedded.size());
+    JsonNode first = embedded.get(0);
+    assertEquals(

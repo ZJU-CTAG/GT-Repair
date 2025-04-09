@@ -1,0 +1,18 @@
+public void testGetHeaderMap() throws Exception {
+    Reader in = new StringReader(",a,b,c\n" +
+                                 "1,2,3,4\n" +
+                                 "5,6,7,8\n");
+    CSVParser csvParser = new CSVParser(in, CSVFormat.DEFAULT.withHeader());
+    assertEquals(4, csvParser.getHeaderMap().size());
+    csvParser.close();
+}
+
+public void testGetHeaderMapNull() throws Exception {
+    Reader in = new StringReader(",a,b,c\n" +
+                                 "1,2,3,4\n" +
+                                 "5,6,7,8\n");
+    CSVParser csvParser = new CSVParser(in, CSVFormat.DEFAULT.withSkipHeaderRecord());
+    assertNull(csvParser.getHeaderMap());
+    csvParser.close();
+}
+

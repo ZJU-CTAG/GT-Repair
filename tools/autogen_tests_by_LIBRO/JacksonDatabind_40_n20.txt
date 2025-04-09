@@ -1,0 +1,11 @@
+public void testIntWithEmptyString() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+    try {
+        mapper.readValue("\"\"", int.class);
+        fail("Should have thrown exception");
+    } catch (JsonMappingException e) {
+         // OK
+    }
+}

@@ -1,0 +1,21 @@
+public void testIssueExternExport() {
+    String code = "/** @type {Array.<string>} */\n"
+      + "var testParam;\n"
+      + "testParam.someMethod();\n"
+      + "/**\n"
+      + " * @param {Array.<string>} testParam\n"
+      + " * @return {boolean}\n"
+      + " */\n"
+      + "lib.testParam = function(testParam) {};\n"
+      + "/**\n"
+      + " * @param {Array.<string>=} testParam\n"
+      + " * @return {boolean}\n"
+      + " */\n"
+      + "lib.testParam2 = function(testParam) {};";
+
+    CompilerOptions options = new CompilerOptions();
+    options.setExternExportsPath("externs.js");
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(

@@ -1,0 +1,25 @@
+public void testChecksum() throws IOException {
+    File tar = File.createTempFile("checksum", ".tar");
+    tar.deleteOnExit();
+    try (
+            OutputStream os = new FileOutputStream(tar);
+            TarArchiveOutputStream taos = new TarArchiveOutputStream(os)
+    ) {
+        // create a file
+        TarArchiveEntry entry = new TarArchiveEntry("test.txt");
+        entry.setSize(1);
+        taos.putArchiveEntry(entry);
+        taos.write("X".getBytes());
+        taos.closeArchiveEntry();
+        taos.flush();
+
+        // write the checksum
+        RandomAccessFile raf = new RandomAccessFile(tar, "rw");
+        raf.seek(348);
+        raf.write(("000012" + 0x30).getBytes());
+        raf.close();
+    }
+
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(tar))) {
+        TarArchiveEntry entry = tais.getNextTarEntry();
+       

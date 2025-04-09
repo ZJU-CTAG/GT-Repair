@@ -1,0 +1,10 @@
+public void testReferenceChain() throws IOException {
+    JsonMappingException jsonMappingException = expectThrows(JsonMappingException.class, () -> {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Inner inner = new Inner();
+        inner.x = 1;
+        objectMapper.readValue(objectMapper.writeValueAsBytes(inner), Inner.class);
+    });
+    JsonMappingException.Reference reference = jsonMappingException.getPath().get(0);
+    assertEquals("ReferenceChainTest$Inner[\"x\"]", reference.toString());
+}

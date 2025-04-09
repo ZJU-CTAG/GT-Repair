@@ -1,0 +1,22 @@
+public void testOptimizer() {
+    LevenbergMarquardtOptimizer otim = new LevenbergMarquardtOptimizer();
+    Target t = new Target(new double[] { 0 });
+    otim.optimize(new MaxEval(100), t, new Weight(new double[] { 1 }),
+            new InitialGuess(new double[] { 3 }), new ModelFunction(
+                    new MultivariateVectorFunction() {
+                        @Override
+                        public double[] value(double[] point)
+                                throws IllegalArgumentException {
+                            return new double[] { Math.pow(point[0], 4) };
+                        }
+                    }), new ModelFunctionJacobian(
+                    new MultivariateMatrixFunction() {
+                        @Override
+                        public double[][] value(double[] point)
+                                throws IllegalArgumentException {
+                            return new double[][] { { 0.25 * Math.pow(
+                                    point[0], 3) } };
+                        }
+                    }));
+    assertTrue(otim.getEvaluations() > 1);
+    assertEquals(0, o

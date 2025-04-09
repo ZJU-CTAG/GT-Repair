@@ -1,0 +1,16 @@
+public void testIssue() {
+final int N_TREATMENTS = 20;
+
+final double[] nullDistribution = new double[N_TREATMENTS];
+for(int i=0; i<N_TREATMENTS; i++) nullDistribution[i] = 0.5;
+
+final double[] treatmentValues = new double[N_TREATMENTS];
+for(int i=0; i<N_TREATMENTS; i++) treatmentValues[i] = 0.75;
+
+final PearsonsCorrelation c = new PearsonsCorrelation();
+final double[] correlations = c.getCorrelationMatrix(new Array2DRowRealMatrix(new double[][]{nullDistribution, treatmentValues})).getData();
+final double t = correlations[0][1] / FastMath.sqrt( (1 - correlations[0][1] * correlations[0][1]) / (N_TREATMENTS - 2) );
+
+final TDistribution tDistribution = new TDistribution(N_TREATMENTS - 2);
+
+final double p = 2 * (1 - tDistribution.cumulativeProb

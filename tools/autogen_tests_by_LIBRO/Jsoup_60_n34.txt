@@ -1,0 +1,10 @@
+public void testIssue101() throws IOException {
+  // Test html file was cut and paste from Amazon return policy page
+  Document doc = Jsoup.parse(new File("src/test/resources/amazon.html"), "UTF-8");
+  Elements elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)");
+  assertEquals(0, elements.size());
+  elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Send & Pay)");
+  assertEquals(0, elements.size());
+  elements = doc.select("div.a-row.a-spacing-medium span.a-color-price:contains(Varies)");
+  assertEquals(0, elements.size());
+}

@@ -1,0 +1,16 @@
+public void testWrite7zEmpty() throws Exception {
+    final int count = 8;
+    final File output = new File("target/testWrite7zEmpty.7z");
+    final File[] files = new File[count];
+    for (int i = 0; i < count; i++) {
+        files[i] = new File("src/test/resources/test.txt");
+    }
+    final ArchiveOutputStream out = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.SEVEN_Z, new FileOutputStream(output));
+    for (int i = 0; i < count; i++) {
+        final ZipArchiveEntry entry = new ZipArchiveEntry(files[i]);
+        out.putArchiveEntry(entry);
+        out.write(new byte[]{});
+        out.closeArchiveEntry();
+    }
+    out.close();
+}

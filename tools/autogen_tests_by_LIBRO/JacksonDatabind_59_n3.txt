@@ -1,0 +1,8 @@
+public void testIssueJsonDeserialize() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper(new JsonFactory())
+            .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    final String json = "{\"mapProperty\":[\"java.util.HashMap\",{\"Compound|Key\":\"Value\"}]}";
+    final TestClass testInstance = mapper.readValue(json, TestClass.class);
+    final String testInstanceSerialized = mapper.writeValueAsString(testInstance);
+    assertEquals(json, testInstanceSerialized);
+}

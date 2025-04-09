@@ -1,0 +1,21 @@
+public void testFinish() throws Exception {
+    File testFile = new File("target/testFinish.tar");
+    File testDir = new File("target/testFinishDir");
+    testDir.mkdirs();
+    File testFile2 = new File(testDir, "test2.txt");
+    testFile2.createNewFile();
+    try (TarArchiveOutputStream tout =
+            new TarArchiveOutputStream(new FileOutputStream(testFile))) {
+        TarArchiveEntry tEntry = new TarArchiveEntry("test.txt");
+        tout.putArchiveEntry(tEntry);
+        byte[] content = "Test String".getBytes("UTF-8");
+        tout.write(content);
+        tout.closeArchiveEntry();
+        tEntry = new TarArchiveEntry(testFile2);
+        tout.putArchiveEntry(tEntry);
+        tout.write(content);
+        tout.closeArchiveEntry();
+        tout.finish();
+    }
+    try (TarArchiveInputStream tin = new TarArchiveInputStream(
+            new FileInputStream(

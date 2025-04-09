@@ -1,0 +1,19 @@
+public void testPolymorphicDefaultImpl() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final PolymorphicTypeModel<Animal> model = mapper
+            .readerFor(new TypeReference<PolymorphicTypeModel<Animal>>() { })
+            .readValue(new File("src/test/resources/polymorphic-default-model.json"));
+
+    assertEquals(Animal.class.getName(), model.defaultImpl);
+    assertEquals(Cat.class.getName(), model.subTypeImpls.get(Cat.class.getName()));
+    assertEquals(Dog.class.getName(), model.subTypeImpls.get(Dog.class.getName()));
+
+    final Animal animal = model.createType();
+    assertEquals(Animal.class, animal.getClass());
+    assertEquals(Animal.class.getName(), animal.getType());
+
+    final Cat cat = (Cat) model.subTypeImpls.get(Cat.class.getName()).newInstance();
+    assertEquals(Cat.class, cat.getClass());
+    assert

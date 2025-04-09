@@ -1,0 +1,20 @@
+public void testIssue133() {
+    double[] t = { 90, 135 };
+    double[] z = { 0, 1 };
+    PiecewisePolynomialInterpolator interpolator = new LinearInterpolator();
+    PiecewisePolynomialResult result = interpolator.interpolate(t, z);
+    int n = 18; // number of steps, must be even
+    double max = 150;
+    double[][] switchValues = new double[n][];
+    double step = (max - t[0]) / n;
+    double start = t[0];
+    for (int i = 0; i < n; ++i) {
+        double end = t[0] + (i + 1) * step;
+        double[] c = new double[2];
+        c[0] = result.getPolynomials()[0].value(start);
+        c[1] = result.getPolynomials()[0].value(end);
+        switchValues[i] = c;
+        start = end;
+    }
+    for (int i = 0; i < n - 1; ++i) {
+       

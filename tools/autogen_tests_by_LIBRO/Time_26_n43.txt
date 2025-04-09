@@ -1,0 +1,9 @@
+public void testIssue60() {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSZ");
+    DateTimeZone tz = DateTimeZone.forID("Australia/NSW");
+    DateTime dt1 = new DateTime(2008, 4, 5, 15, 0, 0, 0, tz);
+    DateTime dt2 = new DateTime(2008, 4, 5, 16, 0, 0, 0, tz);
+    assertEquals("2008-04-05 15:00:00.000+1100", dtf.print(dt1));
+    assertEquals("2008-04-06 02:00:00.000+1000", dtf.print(dt2));
+    assertEquals(dt2, dt1.withHourOfDay(2));
+}

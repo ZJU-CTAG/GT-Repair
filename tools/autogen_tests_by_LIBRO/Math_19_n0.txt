@@ -1,0 +1,15 @@
+public void testWideBounds() {
+    final SimpleBounds bounds = new SimpleBounds(new double[]{-Double.MAX_VALUE}, new double[]{Double.MAX_VALUE});
+    final CMAESOptimizer optimizer = new CMAESOptimizer(1, 0, true, 0, 0, new MersenneTwister(), false, bounds);
+    final OptimizationData data = new OptimizationData[]{
+        bounds,
+        new Target(new Target.EvalFunc() {
+            @Override
+            public double value(double[] x) {
+                return Math.abs(x[0]);
+            }
+        }),
+        new InitialGuess(new double[bounds.getLower().length])
+    };
+    optimizer.optimize(data);
+}

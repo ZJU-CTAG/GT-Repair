@@ -1,0 +1,27 @@
+public void testIssue108() throws Exception {
+    final String json = "{\"x\":{\"y\":1}}";
+    
+    FilterProvider customFilter = new SimpleFilterProvider().addFilter("myFilter",
+            new SimpleBeanPropertyFilter() {
+                @Override
+                protected boolean include(BeanPropertyWriter writer) {
+                    return true;
+                }
+
+                @Override
+                protected boolean include(PropertyWriter writer) {
+                    System.out.println(" " + writer.getName());
+                    return true;
+                }
+            });
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(MapperFeature.USE_STATIC_TYPING, true);
+    objectMapper.addMixIn(MyBean.class, MixIn.class);
+    objectMapper.setFilterProvider(customFilter);
+    MyBean bean = objectMapper.readValue(json, MyBean.class);
+    assertEquals(1, bean.getX().getY());
+}
+
+class MixIn {
+    @JsonFilter("myFilter")
+    public interface MyBeanMix

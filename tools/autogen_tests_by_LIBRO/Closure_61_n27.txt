@@ -1,0 +1,8 @@
+public void testClosureIssue() {
+    final String input = "Math.blah = function(test) { test.a = 5; };"
+        +"var test = new Object();"
+        +"Math.blah(test);";
+    final String expected = "Math.blah=function(test){test.a=5};var test={};Math.blah(test);";
+    String output = new ClosureCompiler(CompilationLevel.SIMPLE_OPTIMIZATIONS).compile(input);
+    assertEquals(expected, output);
+}

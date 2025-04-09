@@ -1,0 +1,19 @@
+public void testXPath() throws Exception {
+    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+    docBuilderFactory.setNamespaceAware(true);
+    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+    Document doc = docBuilder.parse(new ByteArrayInputStream(XML.getBytes()));
+
+    JXPathContext jxpathContext = JXPathContext.newContext(doc);
+    jxpathContext.registerNamespace("prefix1", "ns");
+    jxpathContext.registerNamespace("prefix2", "ns");
+
+    Pointer rootPointer = jxpathContext.getPointer("/prefix1:doc");
+    Iterator<Pointer> it = jxpathContext.iteratePointers("*");
+
+    // Should return "prefix1:elem" and "prefix2:elem" but returns "prefix1:elem" twice.
+    while (it.hasNext()) {
+        Pointer pointer = it.next();
+        System.out.println(pointer.toString());
+    }
+}

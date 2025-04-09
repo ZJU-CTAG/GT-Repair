@@ -1,0 +1,11 @@
+public void testIssue159() throws Exception {
+    String originalName = getClass().getResource("/commons-compress-1.2.tar").getFile();
+    try (FileInputStream fis = new FileInputStream(originalName)) {
+        try (TarArchiveInputStream tais = new TarArchiveInputStream(fis)) {
+            TarArchiveEntry tae = tais.getNextTarEntry();
+            while (tae != null) {
+                tae = tais.getNextTarEntry();
+            }
+        }
+    }
+}

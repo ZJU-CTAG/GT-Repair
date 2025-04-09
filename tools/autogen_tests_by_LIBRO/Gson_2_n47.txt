@@ -1,0 +1,33 @@
+public void testIssue108() {
+    Gson gson = new GsonBuilder()
+        .registerTypeHierarchyAdapter(Vehicle.class, new VehicleAdapter())
+        .create();
+
+    try {
+        gson.fromJson("{\"type\":\"car\", \"brand\":\"Honda\", \"horsePower\":200}", Car.class);
+        fail("Should have thrown a JsonParseException");
+    } catch (JsonParseException expected) {
+    }
+}
+
+private static class VehicleAdapter implements JsonSerializer<Vehicle>, JsonDeserializer<Vehicle> {
+    @Override public JsonElement serialize(Vehicle src, Type typeOfSrc,
+        JsonSerializationContext context) {
+      return null;
+    }
+
+    @Override public Vehicle deserialize(JsonElement json, Type typeOfT,
+        JsonDeserializationContext context) throws JsonParseException {
+      return null;
+    }
+}
+
+private static class Vehicle {
+}
+
+private static class Car extends Vehicle {
+}
+
+private static class Truck extends Vehicle {
+}
+``

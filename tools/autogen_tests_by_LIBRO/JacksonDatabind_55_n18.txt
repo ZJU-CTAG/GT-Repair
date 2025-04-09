@@ -1,0 +1,16 @@
+public void testEnumMapJsonProperty() {
+    EnumMap<MyEnum, String> map = new EnumMap<>(MyEnum.class);
+    map.put(MyEnum.A, "a");
+    map.put(MyEnum.B, "b");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    String json = mapper.writeValueAsString(map);
+    System.out.println(json);
+}
+
+public enum MyEnum {
+    @JsonProperty("A-value")
+    A,
+    @JsonProperty("B-value")
+    B
+}

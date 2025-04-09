@@ -1,0 +1,17 @@
+public void testIssue() {
+    String js = "var foreignObject = gfx.parentNode.parentNode;\n" +
+            "                var parentContainer = foreignObject.parentNode.parentNode;\n" +
+            "                var parentContainer = foreignObject.parentNode.parentNode;";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("js", js),
+            new SourceFile[] { SourceFile.fromCode(Compiler.DEFAULT_EXTERNS_NAME, "") },
+            options);
+    assertTrue(result.success);
+    System.out.println(result.compiledCode);
+}

@@ -1,0 +1,24 @@
+public void testOptimizer() {
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    final int dim = 5;
+    final double[] min = new double[dim];
+    final double[] max = new double[dim];
+    for (int i = 0; i < dim; i++) {
+        min[i] = 0.0;
+        max[i] = 10.0;
+    }
+    OptimizationData bounds = new OptimizationData[] {
+        new Target(new ObjectiveFunction(new MultivariateFunction() {
+            @Override
+            public double value(double[] x) {
+                return 0.0;
+            }
+        })),
+        new MaxGeneration(1),
+        new InitialGuess(new double[dim]),
+        new CheckFeasable(new SimpleBounds(min, max))
+    };
+    final PointValuePair pvp = optimizer.optimize(bounds);
+    final double[] x = pvp.getPoint();
+    for (int i = 0; i < dim; i++) {
+        assertTrue(x[i] >= min[

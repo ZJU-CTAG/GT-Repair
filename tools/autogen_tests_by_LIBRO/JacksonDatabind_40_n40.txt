@@ -1,0 +1,13 @@
+public void testPrimitiveInt() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    mapper.enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("should have thrown an exception");
+    } catch (JsonMappingException e) {
+        // ok
+    } catch (IOException e) {
+        fail("should have thrown a JsonMappingException");
+    }
+}

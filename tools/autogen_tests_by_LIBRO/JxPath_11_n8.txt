@@ -1,0 +1,13 @@
+public void testIssue110(@RequestBody String request) throws JsonParseException, IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(jsonFactory);
+    JsonNode rootNode = mapper.readTree(request);
+    String fieldName = rootNode.get("fieldName").asText();
+    String fieldValue = rootNode.get("fieldValue").asText();
+    String ruleType = rootNode.get("ruleType").asText();
+    String ruleName = rootNode.get("ruleName").asText();
+    assertEquals(fieldName, "a");
+    assertEquals(fieldValue, "b");
+    assertEquals(ruleType, "c");
+    assertEquals(ruleName, "d");
+}

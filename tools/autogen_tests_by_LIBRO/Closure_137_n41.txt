@@ -1,0 +1,24 @@
+public void testIssue() {
+    String js = "// ==ClosureCompiler==\n" +
+            "// @output\_file\_name default.js\n" +
+            "// @compilation\_level ADVANCED\_OPTIMIZATIONS\n" +
+            "// ==/ClosureCompiler==\n" +
+            "\n" +
+            "var t = null;\n" +
+            "\n" +
+            "window.test = function()\n" +
+            "{\n" +
+            " if (t != null)\n" +
+            " {\n" +
+            " t = null;\n" +
+            " }\n" +
+            "\n" +
+            " t = 1;\n" +
+            "};\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    compiler.compile(
+            SourceFile.fromCode("test.js", js),
+            options);
+    System.out.println(compiler.toSource());

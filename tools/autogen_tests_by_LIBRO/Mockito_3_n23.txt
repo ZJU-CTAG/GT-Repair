@@ -1,0 +1,8 @@
+public void testIssue108() {
+    List<Object> myVarargs = new ArrayList<Object>();
+    myVarargs.add("test");
+    deserializer.read(any(), eq("test"), eq("test"), any(), any(), any(), any(), eq(myVarargs));
+    ArgumentCaptor<List<Object>> varargsCaptor = ArgumentCaptor.forClass(List.class);
+    verify(deserializer).read(any(), any(), any(), any(), any(), any(), any(), varargsCaptor.capture());
+    assertEquals(1, varargsCaptor.getValue().size());
+}

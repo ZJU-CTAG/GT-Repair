@@ -1,0 +1,13 @@
+public void testIssue114() throws IOException {
+    String html = "<pre>\nabc  def</pre>";
+    Document doc = Jsoup.parse(html);
+    Element pre = doc.select("pre").first();
+    assertEquals(" abc def", pre.text());
+    assertEquals("\nabc  def", pre.childNode(0).getWholeText());
+
+    html = "<pre>\n\nabc  def</pre>";
+    doc = Jsoup.parse(html);
+    pre = doc.select("pre").first();
+    assertEquals("\n abc def", pre.text());
+    assertEquals("\n\nabc  def", pre.childNode(0).getWholeText());
+}

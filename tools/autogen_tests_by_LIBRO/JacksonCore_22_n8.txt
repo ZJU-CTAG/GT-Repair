@@ -1,0 +1,15 @@
+public void testFilteringParserDelegate() throws Exception {
+    String json = "{\"a\":\"A\",\"b\":\"B\",\"c\":\"C\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    FilteringParserDelegate parserDelegate = new FilteringParserDelegate(mapper.getFactory().createParser(json),
+            new SimpleBeanPropertyFilter(), new SimpleFilterProvider());
+    assertEquals("A", parserDelegate.getText());
+    assertEquals(JsonToken.START_OBJECT, parserDelegate.nextToken());
+    assertEquals("a", parserDelegate.getCurrentName());
+    assertEquals("A", parserDelegate.getText());
+    assertEquals(JsonToken.START_OBJECT, parserDelegate.nextToken());
+    assertEquals("b", parserDelegate.getCurrentName());
+    assertEquals("B", parserDelegate.getText());
+    assertEquals(JsonToken.START_OBJECT, parserDelegate.nextToken());
+    assertEquals("c", parserDelegate.getCurrentName());
+   

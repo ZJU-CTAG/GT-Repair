@@ -1,0 +1,11 @@
+public void testIssue113() {
+    String html = "<html>" + "<head>" + "<title>First parse</title>"
+            + "<meta charset=\"UTF-8\">" + "</head>" + "<body>"
+            + "<div id=\"id1\" class=\"not-reflected\" data-reflected=\"class\">"
+            + "<p>Test</p>" + "</div>" + "</body>" + "</html>";
+    Document doc = Jsoup.parse(html);
+    Element div = doc.select("div").first();
+    assertEquals("id1", div.attr("id"));
+    assertEquals("not-reflected", div.attr("class"));
+    assertEquals("class", div.attr("data-reflected"));
+}

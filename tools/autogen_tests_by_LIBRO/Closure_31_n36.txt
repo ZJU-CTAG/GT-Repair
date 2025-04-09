@@ -1,0 +1,24 @@
+public void testManageDependencies() {
+    // This test should be enabled when we enable dependency management
+    // for WHITESPACE_ONLY
+    if (false) {
+        String input =
+                "/** @fileoverview\n" +
+                        " * @suppress {checkTypes}\n" +
+                        " */\n" +
+                        "goog.provide('foo');\n" +
+                        "goog.require('bar');\n" +
+                        "goog.require('baz');\n";
+
+        String expected = "goog.provide('foo');\n" +
+                "/** @suppress {extraRequire} */\n" +
+                "goog.require('bar');\n";
+
+        CompilerOptions options = new CompilerOptions();
+        options.setManageClosureDependencies(true);
+        options.setOnlyClosureDependencies(true);
+        options.closurePass = true;
+        options.setPrettyPrint(true);
+        test(options, input, expected);
+    }
+}

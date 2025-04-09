@@ -1,0 +1,23 @@
+public void testJsonFormat() throws Exception {
+
+     DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    fmt = fmt.withZone(DateTimeZone.UTC);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(fmt);
+    
+    
+    TestClass test = new TestClass();
+    test.created = new DateTime();
+    String json = mapper.writeValueAsString(test);
+
+    assertEquals("{\"created\":\"" + test.created.toString(fmt) + "\"}", json);
+}
+
+public static class TestClass {
+
+    @JsonProperty
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    public DateTime created;
+}
+

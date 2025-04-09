@@ -1,0 +1,9 @@
+public void testIssue136() {
+    JCodeModel cm = new JCodeModel();
+    JDefinedClass c = cm._class(0, "test.I");
+    JMethod m = c.method(0, cm.VOID, "foo");
+    JBlock block = m.body();
+    block.directStatement("System.out.println(foobar);");
+    String out = generateToString(cm);
+    assertTrue(out.contains("System.out.println(foobar);"));
+}

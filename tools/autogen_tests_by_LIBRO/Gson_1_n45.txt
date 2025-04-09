@@ -1,0 +1,30 @@
+public void testFailsToSerializeDeserializeClassWithTypeParameter() {
+    final Gson gson = new Gson();
+    final Bar bar1 = new Bar(1);
+    final String json = gson.toJson(bar1);
+    final Bar bar2 = gson.fromJson("{\"someField\":1}", Bar.class);
+
+    assertEquals(bar1, bar2);
+}
+
+private static class Foo<T> {
+    private final T someField;
+
+    public Foo(T value) {
+        this.someField = value;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Foo)) {
+            return false;
+        } else {
+            return someField.equals(((Foo)o).someField);
+        }
+    }
+}
+
+private static class Bar extends Foo<Integer> {
+    public Bar(Integer i) {
+        super(i);
+    }
+}

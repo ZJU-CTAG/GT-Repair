@@ -1,0 +1,31 @@
+public void testIssue107() throws Exception {
+    final String fEncoding = "Cp437";
+
+    File f = getFile("Test7.zip");
+    ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream(fEncoding, new FileInputStream(f));
+    ZipArchiveEntry entry = null;
+
+    try {
+        while ((entry = (ZipArchiveEntry) in.getNextEntry()) != null) {
+
+            // file name contains backslashes instead of slashes
+            String eName = entry.getName().replace("\\", "/");
+            System.out.println("entry: " + eName);
+
+            // problems with directory entry
+            if (eName.endsWith("/")) {
+                if (!entry.isDirectory()) {
+                    fail("Problem with directory entry: " + eName);
+                }
+            }
+        }
+    } finally {
+        IOUtils.closeQuietly(in);
+    }
+}
+
+protected File getFile(String name) {
+    return new File(getClassesDirectory(), name);
+}
+
+protected File getClassesDirectory() {

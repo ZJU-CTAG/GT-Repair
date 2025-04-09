@@ -1,0 +1,12 @@
+public void testParserParsesNumbersEagerly() throws JsonParseException, IOException {
+    IntParser p = new IntParser();
+    assertEquals(123, p.parse("123true"));
+    assertEquals(Integer.MIN_VALUE, p.parse("-2147483648true"));
+    assertEquals(Integer.MAX_VALUE, p.parse("2147483647true"));
+    try {
+        p.parse("2147483648true");
+        fail("expected exception");
+    } catch (JsonParseException e) {
+        // good
+    }
+}

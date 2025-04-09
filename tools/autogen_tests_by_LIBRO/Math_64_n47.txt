@@ -1,0 +1,21 @@
+public void testProblem() {
+    double[] target = new double[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
+    double[] initialGuess = new double[]{0, 0};
+    ParametricUnivariateFunction f = new ParametricUnivariateFunction() {
+        public double value(double x, double... params) {
+            double a = params[0];
+            double b = params[1];
+            return a + b * x;
+        }
+
+        public double[] gradient(double x, double... params) {
+            double a = params[0];
+            double b = params[1];
+            return new double[]{1, x};
+        }
+    };
+    double[] weights = new double[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    double[] lags = new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // Data fitting problem
+    CurveFitter<ParametricUnivariateFunction> fitter
+            = new LevenbergMarquardtOptimizer

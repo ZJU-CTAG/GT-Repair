@@ -1,0 +1,20 @@
+public void testIssue() {
+    String source = "var test={\"a\u0004b\":\"c\"};";
+    StringWriter sw = new StringWriter();
+    CompressOptions options = new CompressOptions();
+    options.setEncoding("UTF-8");
+    options.setParse(true);
+    options.setCharset("UTF-8");
+    options.setSyntax(Syntax.ECMASCRIPT5);
+    options.setNoMunge(true);
+    options.setPreserveSemi(true);
+    options.setDisableOptimizations(true);
+    JavascriptCompressor jscompressor = new JavascriptCompressor(new StringReader(source), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }

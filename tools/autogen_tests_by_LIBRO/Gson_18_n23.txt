@@ -1,0 +1,19 @@
+public void testIssue1101() {
+    Class<?> entryClass = null;
+    try {
+        entryClass = Class.forName("java.util.Map$Entry");
+    } catch (ClassNotFoundException e) {
+        // ignore
+    }
+
+    Gson gson = new Gson();
+    String json = "{\"inBig\":{\"key\":[{\"inSmall\":\"hello\"}]}}";
+
+    Map<String, ? extends List<SmallClass>> map = gson.fromJson(json, BigClass.class).inBig;
+    List<? extends List<SmallClass>> list = map.values();
+    List<SmallClass> list2 = list.get(0);
+    SmallClass small = list2.get(0);
+
+    assertEquals("hello", small.inSmall);
+    assertTrue(entryClass.isAssignableFrom(map.entrySet().iterator().next().getClass()));
+}

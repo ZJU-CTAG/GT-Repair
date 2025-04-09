@@ -1,0 +1,9 @@
+public void testIssue99() {
+    String src = "alert('\x7f')";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    Result result = compiler.compile(externs, src, options);
+    assertEquals("alert(\"\u007f\");\n", result.toSource());
+}

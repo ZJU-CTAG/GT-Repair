@@ -1,0 +1,14 @@
+public void testIssue122() {
+    String source = "/\*\*\n" +
+                    " \* @param {...string} var\_args\n" +
+                    " \*/\n" +
+                    " function foo(var\_args) {\n" +
+                    "  return arguments.length;\n" +
+                    " }\n" +
+                    " \n" +
+                    " foo('hello'); // no warning - ok\n" +
+                    " foo(123); // warning - ok\n" +
+                    " foo('hello', 123); // no warning! error.";
+    CompilationUnit compile = new Compiler().compile(source,
+                                                     "testIssue122.js");
+}

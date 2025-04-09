@@ -1,0 +1,10 @@
+public void testLabeledLoop() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("test.js",
+            "var i = 0; lab1: do{ lab2: do{ i++; if (1) { break lab2; } else { break lab1; } } while(false); } while(false); console.log(i); ")});
+    assertEquals(1, compiler.getErrorCount());
+    assertEquals(
+            "JSC_LABEL_NOT_FOUND: Label lab1 not found",
+            compiler.getErrors()[0].toString());
+}

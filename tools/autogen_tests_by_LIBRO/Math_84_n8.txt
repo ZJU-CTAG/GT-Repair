@@ -1,0 +1,12 @@
+public void testMultiDirectionalCorrectStart() {
+    SimplexOptimizer optimizer = new SimplexOptimizer(1e-12, 1e-12);
+    SimplexOptimizer.Simplex simplex = new SimplexOptimizer.Simplex(new double[] { -3, -2, -1, 1, 2, 3 });
+    int numIterations = optimizer.iterateSimplex(simplex, new MultiDirectional(), new ObjectiveFunction(new MultivariateRealFunction() {
+
+        public double value(double[] point) {
+            return point[0] * point[0] + point[1] * point[1] + point[2] * point[2];
+        }
+    }), new InitialGuess(new double[] { 0, 0, 0 }), new MaxEval(1000));
+    System.out.println("number of iterations: " + numIterations);
+    assertEquals(0, numIterations);
+}

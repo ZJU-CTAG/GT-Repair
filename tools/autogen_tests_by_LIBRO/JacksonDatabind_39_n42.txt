@@ -1,0 +1,10 @@
+public void testIssue() throws IOException {
+    String json =
+            "{\"version\":0.0,\"application\":\"123\",\"item\":{\"type\":\"xevent\",\"location\":\"location1\"},\"item2\":{\"type\":\"event\",\"location\":\"location1\"}}";
+    ObjectMapper objectMapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
+    CallRecord call = objectMapper.readValue(json, CallRecord.class);
+    assertEquals(0, call.version, 0.0001);
+    assertEquals("123", call.application);
+    assertNotNull(call.item);
+    assertNotNull(call.item2);
+}

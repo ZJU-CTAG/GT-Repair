@@ -1,0 +1,15 @@
+public void testIssue() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    final String json = mapper.writeValueAsString(new NumberWrapper(0.0000000005));
+    assertEquals("{\"value\":\"5.0E-10\"}", json);
+}
+
+private static class NumberWrapper {
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
+    public final BigDecimal value;
+
+    public NumberWrapper(double value) {
+        this.value = BigDecimal.valueOf(value);
+    }
+}

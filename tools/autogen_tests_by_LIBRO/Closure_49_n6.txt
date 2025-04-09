@@ -1,0 +1,20 @@
+public void testIssue() {
+    String source = "var foo = function bar(){var bar;alert(bar)};";
+    
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    
+    options.setLanguage(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setLineLengthThreshold(80);
+    
+    Result result = compiler.compile(Jsoup.parse("<pre>" + source + "</pre>").text(),
+        SourceFile.fromCode("input.js", source));
+    String output = compiler.toSource();
+    System.out.println(output);
+}

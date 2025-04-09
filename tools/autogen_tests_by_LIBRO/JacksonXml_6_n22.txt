@@ -1,0 +1,16 @@
+public void testIssueWithToXmlGenerator() throws Exception {
+    try {
+        File tmpFile = tempFolder.newFile();
+        FileOutputStream os = new FileOutputStream(tmpFile);
+        XmlMapper mapper = new XmlMapper();
+        ToXMLGenerator gen = (ToXMLGenerator) mapper.getFactory().createGenerator(os);
+        gen.writeStartObject();
+        gen.writeStringField("key", "value");
+        gen.writeBinaryField("bin", new ByteArrayInputStream("test".getBytes()), 4);
+        gen.writeEndObject();
+        gen.close();
+        fail("Expected an exception because the method is not implemented");
+    } catch (UnsupportedOperationException e) {
+        // Expected
+    }
+}

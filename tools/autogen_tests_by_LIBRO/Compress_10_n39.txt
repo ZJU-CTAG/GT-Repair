@@ -1,0 +1,22 @@
+public void testUnicodeEntry() throws Exception {
+    final byte[] data = generateData(8);
+    final File zipFile = createZipFileWithUnicodeExtraField(data);
+    try {
+        final ZipFile zf = new ZipFile(zipFile,
+                                       ZipFile.OPEN_READ,
+                                       CharsetNames.UTF_8);
+        final ZipArchiveEntry ze = zf.getEntry("t\u00E9st.txt");
+        assertNotNull(ze);
+        assertEquals(data.length, ze.getSize());
+
+        final InputStream is = zf.getInputStream(ze);
+        assertNotNull(is);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        IOUtils.copy(is, baos);
+        is.close();
+        baos.close();
+
+        final byte[] result = baos.toByteArray();
+        assertEquals(data.length, result.length);
+        for (int i = 0; i < data.length; i++) {
+            assertEquals(data[i], result[i

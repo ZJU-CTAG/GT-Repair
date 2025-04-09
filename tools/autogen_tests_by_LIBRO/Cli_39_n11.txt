@@ -1,0 +1,20 @@
+public void testOptionTypeExistingFile() {
+    Option opt = Option.builder("f").hasArg().type(ExistingFile.class).build();
+    OptionParser parser = new OptionParser();
+    parser.accepts("f");
+    parser.accepts("b").withRequiredArg().ofType(ExistingFile.class);
+    try {
+        parser.parse("-f", "src/test/java/org/apache/commons/cli/options.ExistingFile.java");
+        fail();
+    } catch (OptionException oe) {
+        // ok
+    }
+    try {
+        parser.parse("-b", "src/test/java/org/apache/commons/cli/options.ExistingFile.java");
+        fail();
+    } catch (OptionException oe) {
+        // ok
+    }
+    parser.parse("-f", "src/test/java/org/apache/commons/cli/options.java");
+    parser.parse("-b", "src/test/java/org/apache/commons/cli/options.java");
+}

@@ -1,0 +1,14 @@
+public void testWeightMatrix() {
+    final int n = 100000;
+    final Weight[] weights = new Weight[n];
+    for(int i = 0; i < n; ++i) {
+        weights[i] = new Weight(1.0);
+    }
+    MultivariateVectorOptimizer optimizer = new PowellOptimizer(1e-1, 1e-1);
+    optimizer.optimize(new MaxEval(100), new ObjectiveFunction(new MultivariateVectorFunction() {
+        @Override
+        public double[] value(double[] point) {
+            return point;
+        }
+    }), GoalType.MINIMIZE, weights);
+}

@@ -1,0 +1,12 @@
+public void testIssue109() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.isRequired().hasArg().withDescription("A balloo").create("balloo"));
+    String [] args = new String[] { "--balloo", "\"this is a \\\"test\\\"\""};
+    try {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cl = parser.parse(opts, args);
+        assertEquals("\"this is a \\\"test\\\"\"", cl.getOptionValue("balloo"));
+    } catch (ParseException pe) {
+        fail();
+    }
+}

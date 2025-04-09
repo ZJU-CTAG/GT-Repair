@@ -1,0 +1,15 @@
+public void testChiSquare() {
+    double[] target = { -5.0, -3.0, -1.0, 1.0, 3.0, 5.0 };
+    double[] weights = { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 };
+    double[] initial = { 1.0, 1.0 };
+    double[] residuals = new double[target.length];
+    double[][] jacobian = new double[target.length][initial.length];
+    double[] startPoint = new double[initial.length];
+    System.arraycopy(initial, 0, startPoint, 0, initial.length);
+    AbstractLeastSquares ls =
+        new AbstractLeastSquares(
+            new LeastSquaresProblem(
+                new LeastSquaresAdapter(target, weights, residuals, jacobian),
+                startPoint));
+    assertEquals(6.0, ls.getRMS(), 1.0e-13);
+    assertEquals(ls.getRMS() * ls.getRMS() * ls.rows,

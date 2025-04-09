@@ -1,0 +1,12 @@
+public void testIssue109() throws Exception
+{
+    StringWriter sw = new StringWriter();
+    JsonGenerator gen = new JsonFactory().createGenerator(sw);
+    gen.writeStartObject();
+    gen.writeFieldName("a");
+    gen.writeString("b"); // should throw an exception...
+    gen.writeEndObject();
+    gen.close();
+    String json = sw.toString();
+    assertEquals("{\"a\"\"b\"}", json);
+}

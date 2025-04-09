@@ -1,0 +1,26 @@
+public void testIssue105() {
+    final double[] min = {
+        -10, -10
+    };
+    final double[] max = {
+        +10, +10
+    };
+    final RandomVectorGenerator generator = new UncorrelatedRandomVectorGenerator(min, max, new MersenneTwister());
+    final MultivariateFunction function = new MultivariateFunction() {
+        public double value(double[] point) throws FunctionEvaluationException {
+            double x = point[0];
+            double y = point[1];
+            return (x - 7) * (x - 7) + (y - 3) * (y - 3) + 4;
+        }
+    };
+    final double[] startPoint = {
+        4, 4
+    };
+    final double[] target = {
+        7, 3
+    };
+    final double[] weights = {
+        1, 1
+    };
+    final List<OptimizableMultivariateVectorFunction> optimizaables = new ArrayList<OptimizableMultivariateVectorFunction>();
+    optimizaables.add(new LeastSquaresAdapter(function, startPoint, target, weights

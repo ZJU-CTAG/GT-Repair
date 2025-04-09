@@ -1,0 +1,15 @@
+public void testCanonicalStringForReferenceTypeIsBuiltIncorrectly() {
+    // given
+    final JavaTypeFactory typeFactory = new TypeFactory(new LRUMap<Object, JavaType>(0, 10000));
+    final TypeReference<Object> typeReference = new TypeReference<Object>() {};
+    final TypeReference<?> placeholder = new TypeReference<PlaceholderForType>() {};
+    final ReferenceType referenceType = new ReferenceType(typeFactory.constructType(typeReference.getType()), typeFactory.constructType(placeholder.getType()));
+    // when
+    final String canonical = referenceType.toCanonical();
+    // then
+    assertEquals("java.lang.Object<$1>", canonical);
+}
+
+class PlaceholderForType {
+    public PlaceholderForType(int i) {}
+}

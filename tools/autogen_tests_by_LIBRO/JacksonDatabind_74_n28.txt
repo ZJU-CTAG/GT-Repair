@@ -1,0 +1,18 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    Property property = mapper.readValue("{\"field\":\"\"}", Property.class);
+    assertNull(property.getField());
+}
+
+public static class Property {
+    private Object field;
+
+    public Object getField() {
+        return field;
+    }
+
+    public void setField(Object field) {
+        this.field = field;
+    }
+}

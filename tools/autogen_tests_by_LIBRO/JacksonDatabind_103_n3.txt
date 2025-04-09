@@ -1,0 +1,15 @@
+public void testLocation() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    try {
+        mapper.readValue("{\"value\":\"abc\"}", IntWrapper.class);
+    } catch(JsonMappingException e) {
+        String message = e.getMessage();
+        assertTrue("Wrong message: "+message, message.startsWith("Cannot deserialize value of type `java.lang.Integer` from String \"abc\":"));
+        assertFalse("Extra location info: "+message, message.contains(" at [Source:"));
+    }
+}
+
+public static class IntWrapper {
+    public Integer value;
+}

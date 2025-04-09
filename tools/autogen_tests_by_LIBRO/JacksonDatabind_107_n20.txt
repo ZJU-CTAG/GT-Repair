@@ -1,0 +1,12 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+    mapper.enableDefaultTyping();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return TypeFactory.defaultInstance().constructSpecializedType(baseType, Void.class);
+        }
+    });
+    String value = mapper.writeValueAsString(new MyType("test"));
+    assertThat(mapper.readValue(value, MyType.class).field).isEqualTo("test");
+}

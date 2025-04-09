@@ -1,0 +1,19 @@
+public void testIssue108() throws Exception {
+    testCompressionStream(
+        "target/bla.tar.deflatez",
+        new DeflateCompressorInputStream(
+            new FileInputStream("target/bla.tar.deflatez")));
+}
+
+public void testCompressionStream(String fileName, InputStream expected)
+    throws Exception {
+    File file = new File(fileName);
+    InputStream in = new FileInputStream(file);
+    CompressorInputStream cis = new CompressorStreamFactory()
+        .createCompressorInputStream(in);
+    assertEquals(expected.getClass(), cis.getClass());
+    IOUtils.contentEquals(expected, cis);
+    expected.close();
+    cis.close();
+    in.close();
+}

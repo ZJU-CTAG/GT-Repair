@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String js = "/**\n" +
+            " * @type function\n" +
+            " */\n" +
+            "var callback;";
+
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", js)}, options);
+    assertEquals(1, compiler.getWarnings().length);
+}

@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String code = "function closureCompilerTest(someNode) { var nodeId; return (nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0; }";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] {JSSourceFile.fromCode("test.js", code)},
+        new JSSourceFile[] {},
+        options);
+    String result = compiler.toSource();
+    System.out.println(result);
+}

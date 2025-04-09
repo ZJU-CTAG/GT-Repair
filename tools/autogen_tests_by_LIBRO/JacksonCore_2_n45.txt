@@ -1,0 +1,9 @@
+public void testBrokenParser() throws Exception {
+    ObjectMapper m = new ObjectMapper();
+    try {
+        m.readValue("123true", Boolean.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Unexpected token");
+    }
+}

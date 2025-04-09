@@ -1,0 +1,12 @@
+public void testCVE20171509() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    try {
+        // should fail for 2.8.x, 2.9.0, and 2.9.1
+        mapper.readTree("[\"org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver$QualifierTypeInfo\",{\"value\":{\"value\":\"foo\"}}]");
+        fail("expected exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Illegal type");
+    }
+}

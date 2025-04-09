@@ -1,0 +1,28 @@
+public void testMockInjection() {
+    // Given an injected spy with a mocked field
+    TextView textViewSpy = spy(txtNextStep);
+    doReturn("FOO").when(textViewSpy).getText();
+    injectMocks(new MyActivity());
+
+    // When the injected field is used
+    String text = textViewSpy.getText().toString();
+
+    // Then the string is "FOO"
+    assertEquals("FOO", text);
+}
+
+@RunWith(AndroidJUnit4.class)
+public class MyActivityTest {
+    @Mock TextView txtGateLabel;
+    @Mock TextView txtNextStep;
+    @InjectMocks MyActivity myActivity;
+
+    @Test
+    public void testMockInjection() {
+        // Given an injected spy with a mocked field
+        TextView textViewSpy = spy(txtNextStep);
+        doReturn("FOO").when(textViewSpy).getText();
+        injectMocks(new MyActivity());
+
+        // When the injected field is used
+        String text = textViewSpy.getText

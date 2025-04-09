@@ -1,0 +1,22 @@
+public void testAbstractCategoryItemRender() {
+    AbstractCategoryItemRenderer render = new AbstractCategoryItemRenderer() {
+        @Override
+        public LegendItemCollection getLegendItems() {
+            LegendItemCollection result = new LegendItemCollection();
+            CategoryPlot plot = getPlot();
+            if (plot == null) {
+                return result;
+            }
+            int index = plot.getIndexOf(this);
+            CategoryDataset dataset = plot.getDataset(index);
+            if (dataset == null) {
+                return result;
+            }
+            int seriesCount = dataset.getRowCount();
+            return result;
+        }
+    };
+
+    LegendItemCollection coll = render.getLegendItems();
+    assertNotNull(coll);
+}

@@ -1,0 +1,25 @@
+public void testIssue108() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
+    mod.addSerializer(new MySerializer());
+    om.registerModule(mod);
+
+    String json = om.writeValueAsString(new Foo());
+    assertEquals("{\"foo\":\"bar\"}", json);
+}
+
+static class MySerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo foo, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeStartObject();
+        jgen.writeStringField("foo", "bar");
+        jgen.writeEndObject();
+    }
+}
+
+static class Foo {
+    @JsonValue
+    String getValue() {
+        return "foo";
+    }
+}

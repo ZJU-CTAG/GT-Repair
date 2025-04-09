@@ -1,0 +1,12 @@
+public void testIssue120() throws IOException {
+    TarArchiveInputStream input = null;
+    input = new TarArchiveInputStream(new BZip2CompressorInputStream(
+            GoogleFile.SYSTEM.newInputStream(PathUtil.join(testdataDir, "test.tar.bz2")), true));
+    try {
+        input.getNextTarEntry();
+    } catch (IOException e) {
+        assertTrue(true);
+        return;
+    }
+    assertFalse(true);
+}

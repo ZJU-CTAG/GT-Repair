@@ -1,0 +1,25 @@
+public void testIssue109() {
+    MultivariateDifferentiableFunction function = new MultivariateDifferentiableFunction () {
+        public MultivariateMatrixFunction value (double[] point) {
+            MultivariateMatrixFunction f = new MultivariateMatrixFunction () {
+                public double[][] value (double[] p) {
+                    double[][] a = new double[p.length][p.length];
+                    for (int i = 0; i < p.length; i++) {
+                        a[i][i] = p[i];
+                    }
+                    return a;
+                }
+            };
+            return f;
+        }
+    };
+    double[] guess = new double[2];
+    double[] target = new double[2];
+    double[] weights = new double[2];
+    for (int i = 0; i < 2; i++) {
+        guess[i] = 1;
+        target[i] = 0;
+        weights[i] = 1;
+    }
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair optimum

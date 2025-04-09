@@ -1,0 +1,12 @@
+public void testAttributesWithNamespace() {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<ElementA A:myAttr=\"Mytype\">" +
+            "<B:ElementB>MY VALUE</B:ElementB>" +
+            "</ElementA>";
+    JXPathContext context = JXPathContext.newContext(new InputSource(new StringReader(xml)));
+    context.getNamespaceURI("A");
+    context.getNamespaceURI("B");
+    assertEquals("Mytype", context.getValue("//@A:myAttr"));
+    Object elem = context.getValue("//B:ElementB");
+    assertTrue(elem instanceof Element);
+}

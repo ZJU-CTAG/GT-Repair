@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String currentDir = System.getProperty("user.dir");
+    String path = currentDir + "/src/main/resources/issue108.json";
+    System.out.println("path:" + path);
+    File f = new File(path);
+    assertTrue(f.exists());
+    String json = FileUtils.readFileToString(f);
+    Gson gson = new Gson();
+    ChangeList changeList = gson.fromJson(json, ChangeList.class);
+    assertEquals("Unknown", changeList.getChanges().get(0).getType());
+}

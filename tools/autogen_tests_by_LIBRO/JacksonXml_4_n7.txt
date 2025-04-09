@@ -1,0 +1,16 @@
+public void testIssue117() throws IOException {
+    XmlMapper xmlMapper = new XmlMapper();
+    xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    xmlMapper.setDefaultUseWrapper(false);
+    xmlMapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+    xmlMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    xmlMapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+    xmlMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    xmlMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    ObjectWriter writer = xmlMapper.writer();
+    writer.withRootName("test");
+    writer.writeValue(outputStream, null);
+    outputStream.flush();
+    String xml = output

@@ -1,0 +1,11 @@
+public void testRestrictNonNegative() throws Exception {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] {1d, 1d, 0d}, 0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    LinearConstraint c1 = new LinearConstraint(new double[] {1d, 0d, 0d}, Relationship.EQ, 1);
+    constraints.add(c1);
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE, true);
+    double[] values = solution.getPoint();
+    assertEquals(1d, values[0], 0.001);
+    assertEquals(-1d, values[1], 0.001);
+}

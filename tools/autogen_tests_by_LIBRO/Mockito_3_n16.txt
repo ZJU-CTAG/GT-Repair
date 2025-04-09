@@ -1,0 +1,16 @@
+public void testArgumentCaptorIsInvalid() {
+    Foo foo = mock(Foo.class);
+    foo.setBars("foo", "bar", "baz");
+
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(foo).setBars(captor.capture());
+
+    assertEquals(3, captor.getAllValues().size());
+    assertEquals("foo", captor.getAllValues().get(0));
+    assertEquals("bar", captor.getAllValues().get(1));
+    assertEquals("baz", captor.getAllValues().get(2));
+}
+
+public interface Foo {
+    void setBars(String... bars);
+}

@@ -1,0 +1,23 @@
+public void testIssue108() throws IOException, ClassNotFoundException {
+    ObjectMapper om = new ObjectMapper();
+    om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("a", "test");
+    ObjectWriter writer = om.writer();
+    String s = writer.writeValueAsString(map);
+    System.out.println(s);
+
+    ObjectReader reader = om.reader();
+    Object value = reader.readValue(s);
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(baos);
+    oos.writeObject(reader);
+    oos.close();
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ObjectInputStream ois = new ObjectInputStream(bais);
+    ObjectReader deserializedReader = (ObjectReader)ois.readObject();
+
+    Object deserializedValue = deserializedReader.readValue(s);

@@ -1,0 +1,12 @@
+public void testFilteringParserDelegate() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    ObjectMapper mapper = new ObjectMapper(factory);
+    JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+    FilteringGeneratorDelegate delegate = new FilteringGeneratorDelegate(
+            mapper.getFactory().createGenerator(new StringWriter(), JsonEncoding.UTF8),
+            nodeFactory.objectNode().set("field1", nodeFactory.textNode("/field1")),
+            nodeFactory.objectNode().set("field1", nodeFactory.textNode("/field1")),
+            new MatchCounterFilter(new SimpleBeanPropertyFilter(), "/field1", 1));
+    mapper.writeValue(delegate, new TestClass());
+    assertEquals(1, delegate.matchCount());
+}

@@ -1,0 +1,8 @@
+public void testArgumentCaptor() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    String[] args = new String[] { "foo", "bar" };
+    // "bar" is captured twice, so captor.getAllValues().size() == 2
+    myMethodUnderTest.myMethod(args);
+    verify(myMethodUnderTest).myMethod(captor.capture());
+    assertEquals(2, captor.getAllValues().size());
+}

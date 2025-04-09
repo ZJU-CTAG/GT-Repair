@@ -1,0 +1,9 @@
+public void test() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    String json = mapper.writeValueAsString(new PersonImpl());
+    assertTrue(json, json.contains("\"city\""));
+}

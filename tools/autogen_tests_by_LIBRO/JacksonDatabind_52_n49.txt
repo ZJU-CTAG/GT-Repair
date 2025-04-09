@@ -1,0 +1,13 @@
+public void testExternalIdDeser() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.DEFAULT_VIEW_INCLUSION);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    String json = "{\"externalId\":{\"type\":\"invoice\",\"id\":1}}";
+
+    Bill bill = mapper.readValue(json, Bill.class);
+
+    assertNotNull(bill.getExternalId());
+    assertNotNull(bill.getExternalId().getType());
+}

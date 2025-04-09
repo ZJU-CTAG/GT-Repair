@@ -1,0 +1,20 @@
+public void testInjectMocks() {
+    when(mock.getNumber()).thenReturn(42);
+    InjectMocksClass injectMocksClass = new InjectMocksClass();
+    assertEquals(42, injectMocksClass.getNumber());
+}
+
+public static class InjectMocksClass {
+    @InjectMocks
+    final MockClass mock = null;
+
+    public int getNumber() {
+        return mock.getNumber();
+    }
+
+    public static class MockClass {
+        public int getNumber() {
+            return 0;
+        }
+    }
+}

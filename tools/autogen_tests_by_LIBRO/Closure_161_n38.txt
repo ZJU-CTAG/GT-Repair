@@ -1,0 +1,16 @@
+public void testIssue109() {
+    String code = "var Mdt=[]; Mdt[11] = ['22','19','19','16','21','18','16','20','17','17','21','17'];";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    Result result = compiler.compile(
+        SourceFile.fromCode("Input.js", code),
+        SourceFile.fromCode("Externs.js", ""),
+        options
+    );
+    assertTrue(result.success);
+    assertEquals(code, compiler.toSource());
+}

@@ -1,0 +1,18 @@
+public void testRedlineRpm() throws Exception {
+    FileInputStream fin = new FileInputStream("src/test/resources/redline-rpm.cpio");
+    try {
+        ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("cpio", fin);
+        ArchiveEntry entry;
+        while ((entry = in.getNextEntry()) != null) {
+            if (in.canReadEntryData(entry)) {
+                try {
+                    in.read(new byte[100]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    } finally {
+        fin.close();
+    }
+}

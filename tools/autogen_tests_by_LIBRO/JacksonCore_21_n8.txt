@@ -1,0 +1,22 @@
+public void testIssue105() throws Exception {
+    final String TEST_JSON = "{\"a\":123,"
+            +"\"array\":[1,2],"
+            +"\"ob\": {"
+            +"\"value0\":2,"
+            +"\"value\":3,"
+            +"\"value2\":4"
+            +"},"
+            +"\"b\":true"
+            +"}";
+    JsonParser p0 = new JsonFactory().createParser(TEST_JSON);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+            );
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("ob", p.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("value", p.

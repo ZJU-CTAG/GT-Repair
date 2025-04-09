@@ -1,0 +1,23 @@
+public void testLongArgument()
+    throws IOException
+{
+    LoggingEvent event = new LoggingEvent(null, null, Logger.class.getName(), Level.INFO, "TestSource", null);
+    event.setTimeStamp(1234567890L);
+    event.setThreadName("threadName");
+    event.setMessage(new SimpleMessage("TestMessage"));
+    event.setLoggerName("TestName");
+    event.setLevel(Level.INFO);
+
+    String[] argArray = new String[3];
+    argArray[0] = "test";
+    argArray[1] = null;
+    argArray[2] = "foo";
+    event.setArgumentArray(argArray);
+
+    StringWriter sw = new StringWriter();
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder();
+    encoder.encodeLoggingEvent(sw, event);
+
+    String json = sw.toString();
+    // System.out.println("json = " + json);
+    assertTrue("{\"timeStamp\":1234567890,\"threadName\":\"

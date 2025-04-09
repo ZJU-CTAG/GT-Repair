@@ -1,0 +1,17 @@
+public void testWriteString() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final JsonGenerator generator = objectMapper.getFactory().createGenerator(outputStream);
+    generator.writeStartObject();
+    generator.writeStringField("foo", "bar");
+    
+    // fails, invalid output
+    // generator.writeString("bar1"); // fails, invalid output
+
+    generator.writeEndObject();
+    generator.flush();
+    
+    final String output = outputStream.toString("UTF-8");
+    System.out.println(output);
+    assertEquals("{\"foo\":\"bar\"}", output);
+}

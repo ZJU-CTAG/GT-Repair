@@ -1,0 +1,8 @@
+public void testRecursiveSubType() throws JsonProcessingException {
+    TypeFactory tf = new ObjectMapper().getTypeFactory();
+    final JavaType baseType = tf.constructType(Base.class);
+    final JavaType subType = tf.constructType(Sub.class);
+    final JavaType iface = tf.constructParametrizedType(IFace.class, IFace.class, new JavaType[]{subType});
+    final JavaType wrapped = tf.constructParametrizedType(Base.class, IFace.class, new JavaType[]{subType});
+    assertEquals("{\"base\":1,\"sub\":2}", new ObjectMapper().writeValueAsString(new Sub()));
+}

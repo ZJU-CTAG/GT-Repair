@@ -1,0 +1,11 @@
+public void testPosixParserSpecial() throws Exception {
+    Options options = new Options();
+    Option opt = new Option("t", true, "option");
+    options.addOption(opt);
+    PosixParser parser = new PosixParser();
+    CommandLine cl = parser.parse(options, new String[]{"-target",
+                                                        "foobar.com"});
+    assertEquals(false, cl.hasOption("t"));
+    assertEquals(true, cl.hasOption("target"));
+    assertEquals("foobar.com", cl.getOptionValue("target"));
+}

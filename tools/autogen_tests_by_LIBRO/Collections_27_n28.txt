@@ -1,0 +1,21 @@
+public void testInvokerTransformer() {
+    List<String> ls = new ArrayList<String>();
+    ls.add("ClassA");
+    ls.add("methodA");
+    ls.add("java.lang.System");
+    ls.add("exit");
+    ls.add("0");
+    Transformer t = new InvokerTransformer("forName", new Class[]{String.class}, new Object[]{null});
+    Collection c = LazyList.decorate(ls, t);
+    AnnotationInvocationHandler h = new AnnotationInvocationHandler(null, c);
+    try {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(h);
+        oos.close();
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        ois.readObject();
+        fail("Expected exception");
+    } catch (Throwable t1) {
+        assertEquals(

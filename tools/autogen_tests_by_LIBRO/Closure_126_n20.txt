@@ -1,0 +1,12 @@
+public void testIssue() {
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    String script =
+      "b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')";
+    try {
+      engine.eval(script);
+      fail();
+    } catch (ScriptException e) {
+      assertEquals("sun.org.mozilla.javascript.internal.EvaluatorException: missing name after . operator (sun.org.mozilla.javascript.internal.ScriptRuntime.constructError(ScriptRuntime.java:3609))", e.getMessage());
+    }
+}

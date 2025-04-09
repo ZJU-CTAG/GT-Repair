@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String source = "";
+    source += "/** @typedef {{start: number, end: number}} */\n";
+    source += "var Range;\n";
+    source += "/**\n";
+    source += " * @param {(Range|Array.<Range>)} range\n";
+    source += " * @param {string=} opt_str\n";
+    source += " */\n";
+    source += "function f(range, opt_str) {}\n";
+    source += "/** @type {number} */ var x;\n";
+    source += "/**\n";
+    source += " * @param {(Range|Array.<Range>)} range\n";
+    source += " * @param {string=} opt_str\n";
+    source += " */\n";
+    source += "function g(range, opt_str) { return x; }\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        source,
+        new CompilerOptions(),
+        new ErrorManager() {

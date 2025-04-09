@@ -1,0 +1,17 @@
+public void testWriteBigDecimalAsPlain() throws JsonProcessingException {
+    ObjectWriter writer = new ObjectMapper()
+        .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
+        .writerFor(Test.class);
+    Test test = new Test(BigDecimal.valueOf(0.0000000005));
+    System.out.println(writer.writeValueAsString(test));
+}
+
+@JsonFormat(shape= JsonFormat.Shape.STRING)
+public static class Test {
+    public BigDecimal value;
+
+    public Test() {}
+    public Test(BigDecimal value) {
+        this.value = value;
+    }
+}

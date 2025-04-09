@@ -1,0 +1,9 @@
+public void testDefaultDateTypeAdapter() throws Exception {
+    Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create();
+    assertEquals("null", gson.toJson(null, Date.class));
+    assertEquals("\"2000-01-01T00:00:00\"", gson.toJson(new Date(946684800000L), Date.class));
+    assertEquals("\"2000-01-01T00:00:00\"", gson.fromJson("\"2000-01-01T00:00:00\"", Date.class).toString());
+    assertEquals("null", gson.fromJson("null", Date.class).toString());
+}

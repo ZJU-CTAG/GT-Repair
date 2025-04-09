@@ -1,0 +1,19 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(EXTERNS, SourceFile.fromCode("foo", CODE), options);
+}
+private static final String EXTERNS =
+        LINE_JOINER.join(
+                DEFAULT_EXTERNS,
+                "var goog = {};",
+                "goog.inherits = function(x, y) {};");
+private static final String CODE =
+        LINE_JOINER.join(
+                "var ns = {};",
+                "/** @constructor */ns.PageSelectionModel = function() {};",
+                "/** @constructor */ ns.PageSelectionModel.FooEvent = function() {};",
+                "/** @constructor */ ns.PageSelectionModel.SelectEvent = function() {};",
+                "goog.inherits(ns.

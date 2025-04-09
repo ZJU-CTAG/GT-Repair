@@ -1,0 +1,13 @@
+public void testRegression() {
+    Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Object.class, new JsonSerializer<Object>() {
+      @Override
+      public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
+        if (src instanceof String) {
+          return new JsonPrimitive((String) src);
+        }
+        return null;
+      }
+    }).create();
+    assertEquals("\"abc\"", gson.toJson("abc"));
+    assertEquals("null", gson.toJson(new Object()));
+  }

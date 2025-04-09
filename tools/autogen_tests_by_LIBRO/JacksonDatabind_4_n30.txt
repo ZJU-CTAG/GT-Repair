@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(new ByteArrayInputStream("[1,2,\"x\"]".getBytes()), new TypeReference<List<Integer>>() { });
+    } catch (JsonMappingException e) {
+        assertNotSame(-1, e.getPath().get(0).getIndex());
+    }
+}

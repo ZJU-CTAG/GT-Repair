@@ -1,0 +1,33 @@
+public void testIssue1084 () throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    mapper.addMixIn(Base.class, BaseMixIn.class);
+    String json = "{\"@type\":\"Child\",\"child\":\"child\"}";
+    Base value = mapper.readValue(json, Base.class);
+    assertEquals("child", value.getChild());
+}
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type",
+        defaultImpl = Child.class)
+@JsonSubTypes({
+        @JsonSubTypes.Type(Child.class),
+})
+public interface Base {
+    public String getChild();
+}
+
+public class Child implements Base {
+    private String child;
+
+    public Child() {}
+
+    public Child(String child) {
+        this.child = child;
+    }
+
+    @Override
+    public String get

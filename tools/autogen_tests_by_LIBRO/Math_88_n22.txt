@@ -1,0 +1,18 @@
+public void testIssue108() {
+    RealPointValuePair optimum = new SimplexSolver().optimize(
+        new MaxIter(10000),
+        GoalType.MAXIMIZE,
+        new ObjectiveFunction(new MultivariateFunction() {
+            public double value(double[] point) {
+                return -1 * point[0] + point[1];
+            }
+        }),
+        new LinearConstraint(new double[] {3, 1}, Relationship.EQ, 9),
+        new LinearConstraint(new double[] {1, 2}, Relationship.LEQ, 7),
+        new LinearConstraint(new double[] {1, 1}, Relationship.GEQ, 5),
+        new LinearConstraint(new double[] {1, 0}, Relationship.GEQ, 0),
+        new LinearConstraint(new double[] {0, 1}, Relationship.GEQ, 0),
+        new LinearConstraintSet(new LinearConstraint(new double[] {1, 2}, Relationship.LEQ, 8))
+    );
+    assertTrue(optimum.getValue() > 2);
+}

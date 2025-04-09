@@ -1,0 +1,29 @@
+public void testIssue178() {
+    // TODO(user): fix this test
+    Options options = new Options();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    options.setWarningLevel(DiagnosticGroups.UNDEFINED_VARIABLES, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode(
+        "testcode",
+        LINE_JOINER.join(
+            "/**",
+            " @type {Object}",
+            " */",
+            "var NS = {};",
+            "",
+            "/**",
+            " @enum {number}",
+            " */",
+            "NS.keys = {",
+            " a: 1,",
+            " b: 2,",
+            " c: 3",
+            "};",
+            "",
+            "/**",
+            " @enum",
+            " */",
+            "window['gKEYS'] = NS.keys;

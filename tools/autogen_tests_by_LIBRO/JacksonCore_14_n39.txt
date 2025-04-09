@@ -1,0 +1,17 @@
+public void testIssue() throws Exception
+{
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    final InputStream in = new InputStream() {
+        @Override
+        public int read() throws IOException {
+            return -1;
+        }
+    };
+    byte[] buf = new byte[0];
+    while (true) {
+        int read = IOUtils.copyLarge(in, bos, buf);
+        if (read < 0) {
+            break;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+public void testWriteAsPlain() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper()
+        .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    assertEquals(aposToQuotes("{'value':0.00000000050}"),
+            mapper.writeValueAsString(new Test(new BigDecimal("0.0000000005"))));
+}
+
+public void testWriteAsPlainWithFormat() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper()
+        .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    assertEquals(aposToQuotes("{'value':'5.0E-10'}"),
+            mapper.writerWithView(ViewB.class)
+                .writeValueAsString(new TestWithFormat(new BigDecimal("0.0000000005"))));
+}
+
+static class Test {
+    public BigDecimal value;
+    public Test(BigDecimal v) { value = v; }
+}
+
+static

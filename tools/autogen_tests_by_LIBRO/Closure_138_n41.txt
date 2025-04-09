@@ -1,0 +1,20 @@
+public void testDeterministicTest() {
+    String source = "var t = null;\n"
+        + "window.test = function()\n"
+        + "{\n"
+        + "if (t != null)\n" 
+        + "{\n"
+        + "t = null;\n"
+        + "}\n"
+        + "t = 1;\n"
+        + "};\n";
+    CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    level.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS,
+        new JSSourceFile[] {JSSourceFile.fromCode("input", source)},
+        options);
+    assertTrue(result.success);
+}

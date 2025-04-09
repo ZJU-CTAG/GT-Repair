@@ -1,0 +1,24 @@
+public void testSkip() throws IOException {
+    byte[] bytes = new byte[256];
+    for (int i = 0; i < bytes.length; i++) {
+        bytes[i] = (byte)i;
+    }
+    InputStream input = new ByteArrayInputStream(bytes);
+    input = new CipherInputStream(input, new MyCipher());
+    assertTrue(IOUtils.skip(input, 2) == 2);
+    assertEquals(0, input.read());
+    assertEquals(1, input.read());
+    assertEquals(2, input.read());
+}
+
+class MyCipher extends CipherSpi {
+    public ByteArrayOutputStream out = new ByteArrayOutputStream();
+    @Override
+    protected void engineUpdate(byte[] input, int inputOffset, int inputLen) throws ShortBufferException {
+        try {
+            out.write(input, inputOffset, inputLen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

@@ -1,0 +1,10 @@
+public void testClosureCompiler() {
+    JsFunction<JsBoolean> isFunction = new JsFunction<JsBoolean>() {
+        public native JsBoolean f() /*-{
+            var getType;
+            getType = {};
+            return function () {} && getType.toString.apply(function () {}) === '[object Function]';
+        }-*/;
+    };
+    assertTrue(isFunction.f().booleanValue());
+}

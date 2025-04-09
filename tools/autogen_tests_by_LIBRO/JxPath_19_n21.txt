@@ -1,0 +1,21 @@
+public void testIssue25() throws Exception {
+    Document doc = buildDoc();
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.setLenient(false);
+    Iterator it = ctx.iteratePointers(
+            "/doc/elem");
+    Assert.assertTrue(it.hasNext());
+    Assert.assertEquals("a", ((NodePointer) it.next()).getNode().getPrefix());
+    Assert.assertTrue(it.hasNext());
+    Assert.assertEquals("b", ((NodePointer) it.next()).getNode().getPrefix());
+    Assert.assertFalse(it.hasNext());
+}
+
+private Document buildDoc() throws ParserConfigurationException {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setValidating(false);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element elem;
+    elem = doc.createElementNS("ns", "a:doc");
+    doc.appendChild

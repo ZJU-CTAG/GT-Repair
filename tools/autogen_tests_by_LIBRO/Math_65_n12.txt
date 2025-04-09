@@ -1,0 +1,26 @@
+public void testRMS() {
+    RealMatrix m = MatrixUtils.createRealMatrix(new double[][] {
+            { 2, -1,  0 },
+            {-1,  2, -1 },
+            { 0, -1,  2 }
+        });
+    RealVector b = new ArrayRealVector(new double[] { 1, -1, 1 });
+
+    final DecompositionSolver solver = new QRDecomposition(m).getSolver();
+
+    final LeastSquaresProblem lsp = new LeastSquaresBuilder()
+        .start(new double[3])
+        .model(new LeastSquaresProblem.Evaluation() {
+            public int getDimension() {
+                return 3;
+            }
+            public double[] getResiduals() {
+                return m.operate(solver.solve(b)).subtract(b).toArray();
+            }
+            public RealMatrix getJacobian() {
+                return m;
+            }
+            public double[] getPoint() {
+                return solver.solve(b).toArray();
+            }
+        })

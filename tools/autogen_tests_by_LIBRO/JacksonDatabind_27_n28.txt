@@ -1,0 +1,8 @@
+public void testIssue261() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.NON_FINAL, "@class");
+    final String json = "{\"@class\":\"com.fasterxml.jackson.dataformat.xml.TestXmlAnnotationIntrospector$MyBean\",\"prop\":\"foobar\"}";
+    final MyBean bean = mapper.readValue(json, MyBean.class);
+    assertEquals("foobar", bean.prop);
+}

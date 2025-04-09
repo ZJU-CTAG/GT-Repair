@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    JsonFactory factory = new JsonFactory();
+    JsonParser jp = factory.createJsonParser(new ByteArrayInputStream("{".getBytes()));
+    try {
+        while(jp.nextToken() != null);
+    } catch (JsonParseException e) {
+        int column = e.getLocation().getColumnNr();
+        assertEquals(2, column);
+    }
+}

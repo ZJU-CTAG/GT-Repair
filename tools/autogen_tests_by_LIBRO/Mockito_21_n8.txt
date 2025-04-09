@@ -1,0 +1,11 @@
+public void testFaking() {
+    AccountService service = new MockAccountService() {
+        @Override
+        UserAccount getAccount(String id) {
+            return new FakeUserAccount();
+        }
+    };
+    UserAccount account = service.getAccount("id");
+    account.addEmail("foo@bar.com");
+    assertEquals("foo@bar.com", account.getEmails().get(0));
+}

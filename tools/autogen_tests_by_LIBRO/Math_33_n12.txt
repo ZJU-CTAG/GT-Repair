@@ -1,0 +1,9 @@
+public void testSimplexSolver() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[]{-1, -1}, 0);
+    Set<LinearConstraint> constraints = new HashSet<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[]{1, 0}, Relationship.LEQ, 10));
+    constraints.add(new LinearConstraint(new double[]{0, 1}, Relationship.LEQ, 10));
+    constraints.add(new LinearConstraint(new double[]{1, 1}, Relationship.LEQ, 10));
+    RealPointValuePair solution = new SimplexSolver().optimize(f, constraints, GoalType.MAXIMIZE, true);
+    assertEquals(10.0, solution.getValue());
+}

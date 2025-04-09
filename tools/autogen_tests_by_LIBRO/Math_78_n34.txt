@@ -1,0 +1,30 @@
+public void test() throws MathUserException {
+    final double   t1  = 90.0;
+    final double   t2  = 135.0;
+    final double   g1  = 0.9;
+    final double   g2  = 0.1;
+    final double   y0  = 0.1;
+
+    final EventHandler handler = new EventHandler() {
+        public int eventOccurred(double t, double[] y, boolean increasing) {
+            switch ((int) Math.rint(t)) {
+            case 90:
+                if (y[0] < g1 + 1.0e-10) {
+                    return RESET_STATE;
+                } else {
+                    return CONTINUE;
+                }
+            case 135:
+                if (y[0] > g2 - 1.0e-10) {
+                    return RESET_STATE;
+                } else {
+                    return CONTINUE;
+                }
+            default:
+                return CONTINUE;
+            }
+        }
+
+        public double g(double t, double[] y) {
+            final double g;
+            if (t < t1) {

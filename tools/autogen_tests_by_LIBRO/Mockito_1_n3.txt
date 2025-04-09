@@ -1,0 +1,15 @@
+public void testVarArgs() {
+    List<String> strings = new ArrayList<>();
+    List<Object> objects = new ArrayList<>();
+    objects.add(new Object());
+    objects.add(strings);
+    
+    test(objects.toArray());
+    
+    ArgumentCaptor<Object> argumentCaptor = ArgumentCaptor.forClass(Object.class);
+    verify(this).test(argumentCaptor.capture());
+    assertEquals(objects, argumentCaptor.getAllValues());
+}
+
+private void test(Object... args) {
+}

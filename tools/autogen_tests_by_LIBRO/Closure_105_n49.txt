@@ -1,0 +1,15 @@
+public void testIssue() {
+    assertEquals("$.fn.hasClass=function(a){return this.length>0?\"\"+this[0].className.indexOf(\"\"+a)!=-1:false};",
+                 new JavaScriptCompressor(new StringReader("$.fn.hasClass = function(selector) {
+ return ( this.length > 0 ? \n!( ( ['', this[0].className, ''].join(' ') ).indexOf( ['', selector, ''].join(' ') ) == -1 )\n: false );\n};"), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                            int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.err.println("\n[WARNING] " + message);
+            } else {
+                System.err.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName,
+                          int line, String lineSource, int lineOffset

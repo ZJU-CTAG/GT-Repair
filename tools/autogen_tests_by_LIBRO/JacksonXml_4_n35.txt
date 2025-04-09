@@ -1,0 +1,10 @@
+public void testXmlSerializerProvider() throws IOException {
+    StringWriter writer = new StringWriter();
+    XmlMapper xmlMapper = new XmlMapper();
+    xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+    XmlSerializerProvider xmlSerializerProvider = new XmlSerializerProvider();
+    xmlSerializerProvider.setConfig(xmlSerializerProvider.getConfig().withRootName("test"));
+    xmlMapper.setSerializerProvider(xmlSerializerProvider);
+    xmlMapper.writeValue(writer, null);
+    assertEquals("<?xml version='1.0' encoding='UTF-8'?><test/>", writer.toString());
+}

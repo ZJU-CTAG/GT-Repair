@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    ZipArchiveInputStream zip = new ZipArchiveInputStream(new FileInputStream("src/test/resources/test-archive3.zip"));
+    ZipArchiveEntry entry = null;
+    while ((entry = zip.getNextZipEntry()) != null) {
+        System.out.println("entry: " + entry.getName());
+        int b = zip.read();
+        while (b != -1) {
+            b = zip.read();
+        }
+        zip.closeEntry();
+    }
+    zip.close();
+}

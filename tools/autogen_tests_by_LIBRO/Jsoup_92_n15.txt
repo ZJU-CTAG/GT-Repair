@@ -1,0 +1,22 @@
+public void testIssueChrome() {
+    String body = "<html>\n" +
+    "<head>\n" +
+    "<script language=\"javascript\" type=\"text/javascript\">\n" +
+    "function a() {\n" +
+    "    return 1;\n" +
+    "}\n" +
+    "function b() {\n" +
+    "    return 2;\n" +
+    "}\n" +
+    "</script>\n" +
+    "</head>\n" +
+    "<body>\n" +
+    "<input type=\"hidden\" id=\"a\" value=\"1\" type=\"text\" />\n" +
+    "<input type=\"hidden\" id=\"b\" value=\"2\" type=\"text\" />\n" +
+    "</body>\n" +
+    "</html>";
+
+    Document doc = Jsoup.parse(body, "", Parser.htmlParser());
+    Element elem = doc.select("#a").first();
+    String type = elem.attr("type");
+    assertEquals("text", type);

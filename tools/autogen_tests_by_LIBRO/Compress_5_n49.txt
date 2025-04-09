@@ -1,0 +1,18 @@
+public void testTruncatedZip() throws IOException {
+    File tempFile = File.createTempFile("truncated", ".zip");
+    tempFile.deleteOnExit();
+    FileOutputStream fos = new FileOutputStream(tempFile);
+    fos.write(0x50);
+    fos.write(0x4B);
+    fos.write(0x03);
+    fos.write(0x04);
+    fos.close();
+    try {
+        ZipFile zipFile = new ZipFile(tempFile);
+        zipFile.getInputStream(zipFile.getEntry("/"));
+        fail("Should have thrown an exception");
+    }
+    catch (ZipException expected) {
+        // expected
+    }
+}

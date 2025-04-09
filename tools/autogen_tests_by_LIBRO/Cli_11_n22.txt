@@ -1,0 +1,24 @@
+public void testIssue() {
+    String[] args = new String[] { "-t", "foobar.com" };
+    Options options = options();
+    CommandLineParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    try {
+        parsedLine = parser.parse(options, args);
+    } catch (ParseException pe) {
+        System.out.println("Invalid command: " + pe.getMessage() + "\n");
+        HelpFormatter hf = new HelpFormatter();
+        hf.printHelp(USAGE, options);
+        System.exit(-1);
+    }
+    if (parsedLine.hasOption(OPTION_TARGET)) {
+        System.out.println("processing selected target: " + parsedLine.getOptionValue(OPTION_TARGET));
+    }
+}
+
+private static final String OPTION_TARGET = "t";
+private static final String OPTION_TARGET_LONG = "target";
+private static final String USAGE = "usage";
+
+private Options options() {
+    Option generateTarget = new Option(OPTION_TARGET, OPT

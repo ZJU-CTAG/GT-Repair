@@ -1,0 +1,13 @@
+public void testUnionSort() throws TransformerException {
+    String xPath = "string(/MAIN/B | /MAIN/A)";
+    String xml = "<MAIN><A>avalue</A><B>bvalue</B></MAIN>";
+    assertEquals(xml, "avalue", xpath(xPath, xml));
+}
+
+// helper method
+private String xpath(String xPath, String xml) throws TransformerException {
+    XPathFactory factory = XPathFactory.newInstance();
+    XPath xpath = factory.newXPath();
+    InputSource inputSource = new InputSource(new StringReader(xml));
+    return xpath.evaluate(xPath, inputSource);
+}

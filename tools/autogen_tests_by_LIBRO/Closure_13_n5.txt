@@ -1,0 +1,21 @@
+public void testIssue() {
+    String js = "function some_function() {\n" +
+            " var fn1;\n" +
+            " var fn2;\n" +
+            "\n" +
+            " if (any_expression) {\n" +
+            " fn2 = external_ref;\n" +
+            " fn1 = function (content) { return fn2(); }\n" +
+            " }\n" +
+            "\n" +
+            " return {\n" +
+            " method1: function () { if (fn1) fn1(); return true; },\n" +
+            " method2: function () { return false; }\n" +
+            " }\n" +
+            "}";
+    Compressor compressor = new Compressor();
+    compressor.compressionType = Compressor.CompressionType.SIMPLE_OPTIMIZATIONS;
+    compressor.setVerbose(true);
+    compressor.setEncoding("UTF8");
+    compressor.setCharset(StandardCharsets.UTF_8);
+    compressor.setLanguage(Compressor.Language

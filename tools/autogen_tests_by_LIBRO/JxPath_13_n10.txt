@@ -1,0 +1,17 @@
+public void testUndefinedNamespaces() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new InputSource(new StringReader(XML)));
+
+    JXPathContext context = JXPathContext.newContext(document);
+    context.registerNamespace("A", "http://www.example.com/A");
+    context.registerNamespace("B", "http://www.example.com/B");
+
+    assertEquals("Mytype", context.getValue("/A:ElementA/@A:myAttr"));
+    assertEquals("MY VALUE", context.getValue("/A:ElementA/B:ElementB"));
+    assertEquals("MY VALUE", context.getValue("/A:ElementA/B:ElementB/text()"));
+}
+
+private static final String XML =
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+    "<A:ElementA xmlns:A=\"http://www.example.com/A\">" +

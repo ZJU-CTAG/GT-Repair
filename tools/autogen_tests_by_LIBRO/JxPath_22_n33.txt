@@ -1,0 +1,15 @@
+public void testResettingDefaultNamespace() throws Exception {
+    String xml = "&lt;root xmlns=\"\"&gt;&lt;foo xmlns=\"bla\"/&gt;&lt;foo/&gt;&lt;/root&gt;";
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    InputSource is = new InputSource();
+    is.setCharacterStream(new StringReader(xml));
+    Document doc = db.parse(is);
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.setLenient(true);
+    ctx.getNamespaceResolver().registerNamespace("", "bla");
+    ctx.getNamespaceResolver().reset();
+    ctx.getNamespaceResolver().registerNamespace("", "bla");
+    ctx.getNamespaceResolver().registerNamespace("bla", "bla");
+    ctx.getNamespaceResolver().registerNamespace("bla

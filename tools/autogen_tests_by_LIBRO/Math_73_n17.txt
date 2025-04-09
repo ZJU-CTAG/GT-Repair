@@ -1,0 +1,17 @@
+public void testIssue108() {
+    final double min = -1e-10;
+    final double max = 1e-10;
+    final double initial = 1e-11;
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return Math.sin(x);
+        }
+    };
+    try {
+        UnivariateRealSolverUtils.solve(f, min, max, initial);
+        fail("Expecting IllegalArgumentException - function values " +
+                "at endpoints do not have different signs");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+}

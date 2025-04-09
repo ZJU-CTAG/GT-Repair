@@ -1,0 +1,17 @@
+public void testIssue1154() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_NULL);
+
+    BigDecimal bd = new BigDecimal("123456.789");
+
+    Locale locale = Locale.US;
+    JsonFactory factory = new JsonFactory();
+    factory.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+
+    // Fail, but should work
+    try {
+        mapper.writeValue(factory.createGenerator(new ByteArrayOutputStream()), bd);
+    } catch(IOException e) {
+        fail();
+    }
+}

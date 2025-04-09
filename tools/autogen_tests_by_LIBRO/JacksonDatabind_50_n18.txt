@@ -1,0 +1,28 @@
+public void testIssue1163() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+
+    final String json = "{\"zoo\":{\"name\":\"zoo\",\"animals\":[{\"animalType\":\"dog\",\"name\":\"dog\"},{\"animalType\":\"cat\",\"name\":\"cat\"}]}}";
+
+    Zoo zoo = mapper.readValue(json, Zoo.class);
+    assertNotNull(zoo);
+}
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+static class Animal
+{
+    private String name;
+    private String animalType;
+
+    @JsonCreator
+    public Animal(@JsonProperty("name") String name, @JsonProperty("animalType") String animalType)
+    {
+        this.name = name;
+        this.animalType = animalType;
+    }
+}
+
+static class Zoo
+{
+    private String name;

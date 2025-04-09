@@ -1,0 +1,18 @@
+public void testIssue117() {
+    String pattern = " 'x' ";
+    String input = " x ";
+    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    try {
+        sdf.parse(input);
+        fail("Should not parse: " + pattern + " " + input);
+    } catch (ParseException ex) {
+        assertEquals("Unparseable date: \" x \"", ex.getMessage());
+    }
+    FastDateParser fdp = new FastDateParser(pattern, Locale.ENGLISH);
+    try {
+        fdp.parse(input);
+        fail("Should not parse: " + pattern + " " + input);
+    } catch (ParseException ex) {
+        assertEquals("Unparseable date: \" x \"", ex.getMessage());
+    }
+}

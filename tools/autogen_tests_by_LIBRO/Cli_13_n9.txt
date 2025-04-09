@@ -1,0 +1,15 @@
+public void testUnsetDefault() {
+    Argument arg1 = new ArgumentImpl("arg1", "arg1", false, 1, 1);
+    arg1.setDefault("default");
+    Option opt1 = new OptionImpl("opt1", "opt1", false, 1, null);
+    opt1.addArgument(arg1);
+
+    CommandLine cl = new CommandLineImpl();
+    cl.addOption(opt1);
+
+    String[] args = new String[] {"-opt1", "custom"};
+    cl.parse(args);
+
+    assertEquals(1, cl.getArgs(opt1).size());
+    assertEquals("custom", cl.getArg(opt1));
+}

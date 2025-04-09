@@ -1,0 +1,27 @@
+public void testIssue1079() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    SimpleModule mod = new SimpleModule("testModule");
+    mod.addDeserializer(List.class, new ListDeserializer());
+    mapper.registerModule(mod);
+
+    // this should work
+    List<?> result = mapper.readValue("[ \"foo\" ]", List.class);
+
+    // and this too, since `null` context will be coerced to "empty"
+    result = mapper.readValue("[ \"foo\" ]", mapper.getTypeFactory().constructType(List.class));
+}
+
+public class ListDeserializer extends StdDeserializer<List<?>>
+{
+    public ListDeserializer() { super(List.class); }
+
+    @Override
+    public List<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<?> getNullValue(DeserializationContext ctxt) {
+        return Collections.emptyList();
+    }

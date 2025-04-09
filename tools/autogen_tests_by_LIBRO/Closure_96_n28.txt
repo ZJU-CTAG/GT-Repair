@@ -1,0 +1,22 @@
+public void testVarArgs() {
+    final Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    final Result result = compiler.compile(
+        SourceFile.fromCode("test.js",
+                "\n// ==ClosureCompiler==\n"
+              + "// @compilation_level SIMPLE_OPTIMIZATIONS\n"
+              + "// @warning_level VERBOSE\n"
+              + "// @output_file_name default.js\n"
+              + "// @formatting pretty_print\n"
+              + "// ==/ClosureCompiler==\n"
+              + "\n"
+              + "/**\n"
+              + " * @param {...string} var_args\n"
+              + " */\n"
+              + "function foo(var_args) {\n"
+              + " return arguments.length;\n"
+              + "}\n"
+              + "\n"
+              + "foo('hello'); // no warning - ok\n"
+              + "foo(123);     // warning - ok\n"
+              + "foo

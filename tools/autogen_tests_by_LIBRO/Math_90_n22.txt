@@ -1,0 +1,20 @@
+public void testFrequencyObject() {
+        final Object OBJ = new Object();
+        final Object OBJ2 = new Object();
+        Frequency f = new Frequency();
+        f.addValue(OBJ);
+        f.addValue(OBJ2); // fails
+        f.addValue("foo"); // fails
+        f.addValue("bar");
+        f.addValue("bar");
+        f.addValue("bar");
+        assertTrue(f.toString().contains("bar"));
+        assertFalse(f.toString().contains("foo"));
+        assertFalse(f.toString().contains("Object"));
+        assertEquals(3, f.getCount("bar"));
+        assertEquals(0, f.getCount("foo"));
+        assertEquals(0, f.getCount(OBJ));
+        assertEquals(0, f.getPct("bar"), 0.0001);
+        assertEquals(0, f.getPct("foo"), 0.0001);
+        assertEquals(0, f.getPct(OBJ), 0.0001);
+        assert

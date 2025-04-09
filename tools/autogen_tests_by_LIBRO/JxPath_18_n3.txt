@@ -1,0 +1,9 @@
+public void testIssue172() throws SAXException, IOException, ParserConfigurationException {
+    // https://issues.apache.org/jira/browse/XALANJ-2458
+    String xsl = "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>" + "<xsl:template match='/'>" + "<xsl:value-of select='count(//@*)'/>" + "</xsl:template>" + "</xsl:stylesheet>";
+    String xml = "<root><node1><node1/></node1><node2/></root>";
+    TransformerFactory tf = TransformerFactory.newInstance();
+    tf.setAttribute(FeatureKeys.XSLT_VERSION, "2.0");
+    Transformer t = tf.newTransformer(new StreamSource(new StringReader(xsl)));
+    t.transform(new StreamSource(new StringReader(xml)), new StreamResult(new StringWriter()));
+}

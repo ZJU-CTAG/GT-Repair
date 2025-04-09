@@ -1,0 +1,7 @@
+public void testIssue114() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new KotlinModule());
+    Invite json = mapper.readValue("{'kind': 'CONTACT', 'to': {'name': 'Foo'}}", Invite.class);
+    assertEquals("Foo", json.to.name);
+    assertEquals(Invite.Kind.CONTACT, json.kind);
+}

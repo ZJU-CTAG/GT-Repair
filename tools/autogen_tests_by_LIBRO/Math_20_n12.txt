@@ -1,0 +1,24 @@
+public void testIssue101() {
+    final double[] min = new double[] { 0.0 };
+    final double[] max = new double[] { 1.0 };
+    final double[] guess = new double[] { 2.0 };
+    final double ftol = 1.0e-12;
+    final int maxEvaluations = 10000;
+    final int maxIterations = 10000;
+    final int checkFeasableCount = 10;
+
+    MultivariateFunction function = new MultivariateFunction() {
+        public double value(double[] point) {
+            return 0.0;
+        }
+    };
+
+    CMAESOptimizer optimizer = new CMAESOptimizer(maxIterations, ftol, false, 0, checkFeasableCount,
+            new MersenneTwister(), false, new SimpleValueChecker(ftol, ftol));
+
+    PointValuePair optimum = optimizer.optimize(new MaxEval(maxEvaluations),
+            new ObjectiveFunction(function),
+            GoalType.MINIMIZE,
+            new InitialGuess(guess),
+            new SimpleBounds(min, max));
+

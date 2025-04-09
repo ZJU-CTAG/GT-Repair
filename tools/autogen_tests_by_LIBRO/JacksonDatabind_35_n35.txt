@@ -1,0 +1,22 @@
+public void testIssue1220() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.setAnnotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+
+    String json = mapper.writeValueAsString(new WrappedType());
+    WrappedType result = mapper.readValue(json, WrappedType.class);
+    assertNotNull(result);
+}
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public static class WrappedType {
+    @XmlElement
+    @XmlID
+    public String id = "foo";
+
+    @XmlElement
+    public String other = "bar";
+}

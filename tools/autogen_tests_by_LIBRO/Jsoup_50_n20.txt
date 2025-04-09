@@ -1,0 +1,6 @@
+public void testIssue108() throws IOException {
+    String utf16 = "a\uFEFFb";
+    InputStream in = new ByteArrayInputStream(utf16.getBytes(StandardCharsets.UTF_16LE));
+    Document doc = Jsoup.parse(in, StandardCharsets.UTF_16LE.displayName(), "http://example.com");
+    assertEquals(utf16, doc.text());
+}

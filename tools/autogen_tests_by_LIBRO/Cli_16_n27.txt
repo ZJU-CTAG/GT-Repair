@@ -1,0 +1,14 @@
+public void testGroupAndCommandLine() {
+    OptionGroup groupA = new OptionGroup().addOption(new Option("A", "A", false, ""));
+    groupA.setMinimum(1);
+    groupA.setMaximum(1);
+    OptionGroup groupB = new OptionGroup().addOption(groupA).addOption(new Option("B", "B", false, "")).setMinimum(1);
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cmd = parser.parse(new Options().addOptionGroup(groupB), new String[] {"-A"});
+        assertTrue(cmd.hasOption("A"));
+        assertTrue(cmd.hasOption("B"));
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

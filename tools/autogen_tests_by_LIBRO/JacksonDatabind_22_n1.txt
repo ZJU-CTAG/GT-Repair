@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    CustomSerializerProvider csp = new CustomSerializerProvider();
+    csp.setNullValueSerializer(new NullSerializer());
+    csp.setDefaultKeySerializer(new NullSerializer());
+    csp.setNullKeySerializer(new NullSerializer());
+    csp.setUnknownTypeSerializer(new NullSerializer());
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializerProvider(csp);
+
+    ObjectNode node = mapper.createObjectNode();
+    node.put("foo", "bar");
+    node.put("num", 123);
+
+    assertEquals("{\"foo\":null,\"num\":null}", mapper.writeValueAsString(node));
+}

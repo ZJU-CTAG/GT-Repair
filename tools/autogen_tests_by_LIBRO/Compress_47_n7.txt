@@ -1,0 +1,19 @@
+public void testBzip2CompressionInfo() throws Exception {
+
+    // write entry with unknown size
+    File f = new File(getTestDirectory(), "test.zip");
+    FileOutputStream fos = new FileOutputStream(f);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+    ZipArchiveEntry entry = new ZipArchiveEntry("test.txt");
+    entry.setMethod(ZipMethod.BZIP2.getCode());
+    entry.setCompressedSize(ArchiveEntry.SIZE_UNKNOWN);
+    zos.putArchiveEntry(entry);
+    zos.write(new byte[] { 't', 'e', 's', 't' });
+    zos.closeArchiveEntry();
+    zos.close();
+
+    // read entry
+    ZipArchiveInputStream zin = new ZipArchiveInputStream(new FileInputStream(f));
+    assertNotNull(zin.getNextZipEntry());
+    IOUtils.closeQuietly(zin);
+}

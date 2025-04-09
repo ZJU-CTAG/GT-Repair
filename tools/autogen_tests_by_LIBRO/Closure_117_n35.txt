@@ -1,0 +1,14 @@
+public void testIssue200() throws Exception {
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+      new JSSourceFile[] {
+          JSSourceFile.fromCode("in",
+              "/** @constructor */ function C2(){}" +
+              "/** @constructor */ function C3(c2){ this.c2_ = c2; c2.prop; }")
+      },
+      new CompilerOptions());
+
+  assertFalse(result.success);
+  assertEquals(1, result.warnings.length);
+  assertEquals("Property prop never defined on C2", result.warnings[0].description);
+}

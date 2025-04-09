@@ -1,0 +1,18 @@
+public void testIssue108() {
+TEST_ARCHIVE = new File("src/test/resources/issue108.tar");
+    if (!TEST_ARCHIVE.isFile()) {
+        fail("Test archive missing " + TEST_ARCHIVE.getAbsolutePath());
+    }
+    try {
+        TarArchiveInputStream tin = new TarArchiveInputStream(
+                new GzipCompressorInputStream(new FileInputStream(TEST_ARCHIVE)));
+        TarArchiveEntry entry = tin.getNextTarEntry();
+        assertEquals("README", entry.getName());
+        assertEquals("", entry.getUserName());
+        assertEquals("", entry.getGroupName());
+        entry = tin.getNextTarEntry();
+        assertEquals("redis-dist-2.8.3_1-SNAPSHOT/bin/redis-cli", entry.getName());
+        assertEquals("", entry.getUserName());
+        assertEquals("", entry.getGroupName());
+        entry = tin.getNextTarEntry();
+        assertEquals("redis-dist-2.

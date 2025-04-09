@@ -1,0 +1,23 @@
+public void testCustomSerializerWithJsonValue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("TestModule");
+    module.addSerializer(new CustomSerializer());
+    mapper.registerModule(module);
+
+    JsonNode node = mapper.readTree("{ \"foo\" : \"bar\" }");
+    assertEquals("TestModule::CustomSerializer::123456789", node.get("foo").textValue());
+}
+
+public class CustomSerializer extends JsonSerializer<Object> {
+    @Override
+    public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeNumber(123456789);
+    }
+}
+
+public class Foo {
+    @JsonValue
+    public String getFoo() {
+        return "bar";
+    }
+}

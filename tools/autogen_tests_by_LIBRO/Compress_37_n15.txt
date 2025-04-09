@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception {
+    try (final TarArchiveInputStream tais = new TarArchiveInputStream(
+        new FileInputStream("src/test/resources/commons-compress-1.10.tar.gz"));) {
+        // commons-compress-1.10.tar.gz has a pax header with an extra newline at the end
+        // causing a NegativeArraySizeException when trying to read the pax headers
+        tais.getNextTarEntry();
+        tais.getNextTarEntry();
+    }
+}

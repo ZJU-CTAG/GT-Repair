@@ -1,0 +1,11 @@
+public void testIssue108() {
+    final List<String> list = new ArrayList<String>();
+    final List<String> actualList = mock(List.class);
+    list.add("one");
+    list.add("two");
+    list.add("three");
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    actualList.addAll(list);
+    verify(actualList).addAll(captor.capture());
+    assertArrayEquals(list.toArray(), captor.getAllValues().toArray());
+}

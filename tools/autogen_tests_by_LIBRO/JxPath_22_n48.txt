@@ -1,0 +1,14 @@
+public void testJXpath() throws JXPathException {
+    String xml = "<root xmlns=\"bla\"><foo xmlns:b=\"bla\" xmlns=\"test111\"><b:bar>a</b:bar><test xmlns=\"\"></test></foo></root>";
+    Document doc = createDocument(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    NamespaceResolver nsResolver = context.getNamespaceResolver();
+    nsResolver.setNamespaceURI("bla", "b");
+    nsResolver.setNamespaceURI("test111", null);
+    context.setLenient(true);
+    String xpath = "/test111:foo/test";
+    Object o = context.getValue(xpath);
+    assertNotNull(o);
+    DOMNodePointer node = (DOMNodePointer)context.getPointer("/test111:foo/test");
+    assertEquals("//b:foo/null:test", node.asPath()); // should be "//b:foo/test"
+}

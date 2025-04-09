@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    InputStream in = new FileInputStream("src/test/resources/issue108.js");
+    try {
+        Reader reader = new InputStreamReader(in);
+        try {
+            JsReader jsreader = new JsReader();
+            JsTokenizer tokenizer = new JsTokenizer(reader);
+            JsOutput output = new JsOutput(new StringWriter());
+            jsreader.parse(tokenizer, output);
+            String expected = "/*\n" +
+                              " * This\n" +
+                              " * was\n" +
+                              " * ASCII\n" +
+                              " * Art\n" +
+                              " */\n";
+            assertEquals(expected, output.toString());
+        } finally {
+            reader.close();
+        }
+    } finally {
+        in.close();
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue107() {
+    String fiveRows = "1\n2\n3\n4\n5\n";
+
+    CSVParser parser = new CSVParser(new BufferedReader(new StringReader(fiveRows)), CSVFormat.DEFAULT);
+    int recordCount = 0;
+    for (CSVRecord record : parser) {
+        // System.out.println(record.get(0));
+        recordCount++;
+        if (recordCount >= 2) {
+            break;
+        }
+    }
+    for (CSVRecord record : parser) {
+        // Should print 3, 4, 5, but prints 4, 5
+        System.out.println(record.get(0));
+    }
+}

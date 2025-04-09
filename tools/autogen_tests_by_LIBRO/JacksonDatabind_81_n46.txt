@@ -1,0 +1,18 @@
+public void testJavaTypeRefinement() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(XWithIntProperty.class, "X"));
+    mapper.registerSubtypes(new NamedType(XWithIntegerProperty.class, "X"));
+
+    // Serialize
+    XWithIntProperty x = new XWithIntProperty();
+    x.setId("1");
+    x.setValue(42);
+
+    String json = mapper.writeValueAsString(x);
+    assertEquals("{\"id\":\"1\",\"value\":42}", json);
+
+    // Deserialize
+    XWithIntegerProperty x2 = mapper.readValue(json, XWithIntegerProperty.class);
+    assertEquals("1", x2.getId());
+    assertEquals(Integer.valueOf(42), x2.getValue());
+}

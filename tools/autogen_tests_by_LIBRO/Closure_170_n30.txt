@@ -1,0 +1,11 @@
+public void testIssue() {
+    final Optimizer optimizer = new Optimizer();
+    final CompilerEnvirons compilerEnvirons = new CompilerEnvirons();
+    compilerEnvirons.setOptimizationLevel(1);
+    compilerEnvirons.setRecoverFromErrors(true);
+    compilerEnvirons.setGenerateDebugInfo(false);
+    final ErrorReporter errorReporter = compilerEnvirons.getErrorReporter();
+    final Parser p = new Parser(compilerEnvirons, errorReporter);
+    final AstRoot root = p.parse(new StringReader("function Test(n) { var i = 0; return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i } var dummy = \"6chars\"; console && console.log(Test(dummy));"), null, 1);
+    final String expected = "function Test(a) {\nreturn 0\n}\nvar dummy = \"6chars\";\nconsole && console.log(Test(dummy))\n";
+    final String actual = optimizer.

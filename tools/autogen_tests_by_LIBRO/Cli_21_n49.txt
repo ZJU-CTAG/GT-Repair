@@ -1,0 +1,19 @@
+public void testIssue() throws IOException {
+    Options options = new Options();
+
+    final Argument<Number> arg = ArgumentBuilder.withName("num")
+            .withMinimum(1)
+            .withMaximum(1)
+            .withValidator(NumberValidator.getNumberInstance())
+            .create();
+
+    final Option option = OptionBuilder.withLongName("num")
+            .withArgument(arg).create();
+
+    options.addOption(option);
+
+    CommandLineParser parser = new DefaultParser();
+    String[] args = new String[] { "--num", "-0.1" };
+    CommandLine cl = parser.parse(options, args);
+    System.out.println(cl.getOptionValue("num"));
+}

@@ -1,0 +1,13 @@
+public void testComma() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("function Test(n) {");
+    sb.append(" var i = 0;");
+    sb.append(" return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i");
+    sb.append("}");
+    sb.append("var dummy = \"6chars\";");
+    sb.append("console && console.log( Test(dummy) );");
+    String original = sb.toString();
+    
+    String result = CompilerEnvirons.compile(original, "test").getResult();
+    assertEquals(original, result);
+}

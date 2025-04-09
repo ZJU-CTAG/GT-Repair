@@ -1,0 +1,12 @@
+public void testArchiveStreamFactory() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.JAR, baos);
+    final ArchiveEntry ae = aos.createArchiveEntry(new ByteArrayInputStream(new byte[0]), "entry.txt");
+    aos.putArchiveEntry(ae);
+    aos.closeArchiveEntry();
+    aos.close();
+
+    final ZipFile zipfile = new ZipFile(new ByteArrayInputStream(baos.toByteArray()), "UTF-8");
+    assertEquals(1, zipfile.getEntries().size());
+    assertEquals("entry.txt", zipfile.getEntries().nextElement().getName());
+}

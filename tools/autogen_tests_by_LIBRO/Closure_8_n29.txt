@@ -1,0 +1,14 @@
+public void testIssue464() {
+    String code = "function(argument){\n" +
+            "    ...//use argument\n" +
+            "    var variable = ...;\n" +
+            "    ...//argument not used anymore\n" +
+            "    }";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            CommandLineRunner.getDefaultExterns(),
+            Collections.singletonList(SourceFile.fromCode("source", code)),
+            new CompilerOptions());
+    assertTrue(result.success);
+    System.out.println(compiler.toSource());
+}

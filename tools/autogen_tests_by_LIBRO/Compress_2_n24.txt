@@ -1,0 +1,17 @@
+public void testArArchive() throws Exception {
+    File file = new File("/tmp/dir24825/bla.ar");
+    // create file
+    ArArchiveOutputStream aos = new ArArchiveOutputStream(file);
+    aos.putArchiveEntry(new ArArchiveEntry("test1.xml", "".getBytes()));
+    aos.closeArchiveEntry();
+    aos.putArchiveEntry(new ArArchiveEntry("test2.xml", "".getBytes()));
+    aos.closeArchiveEntry();
+    aos.close();
+    // delete file from archive
+    ArArchiveInputStream ais = new ArArchiveInputStream(new FileInputStream(file));
+    ArArchiveEntry entry = ais.getNextEntry();
+    while (entry != null) {
+        if ("test2.xml".equals(entry.getName())) {
+            ais.close();
+            ArArchiveOutputStream aroutput = new ArArchiveOutputStream(file);
+            ArArchiveEntryOutputStream outputStream = aroutput.createArchiveEntry(entry, entry.

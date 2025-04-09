@@ -1,0 +1,25 @@
+public void testIssue139() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    final MyPojo myPojo = new MyPojo();
+    myPojo.setName("test");
+    final Map<CharSequence, MyPojo> map = new HashMap<CharSequence, MyPojo>();
+    map.put("foo", myPojo);
+    final MyWrapper wrapper = new MyWrapper();
+    wrapper.setMap(map);
+    final String json = objectMapper.writeValueAsString(wrapper);
+    System.out.println(json);
+    final MyWrapper wrapper2 = objectMapper.readValue(json, MyWrapper.class);
+    assertEquals(map, wrapper2.getMap());
+}
+
+class MyPojo {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }

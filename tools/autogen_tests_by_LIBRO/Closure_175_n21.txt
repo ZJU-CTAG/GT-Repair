@@ -1,0 +1,10 @@
+public void test() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+      new JSSourceFile[]{
+        JSSourceFile.fromCode("in.js", "window.foo = function(a, b) { var HOLD = a.prop; return b(a) + HOLD; }")},
+      new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", compiler.toSource());
+}

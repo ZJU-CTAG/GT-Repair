@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTypingAsProperty(DefaultTyping.NON_FINAL, "@class");
+    String json = "{\"@class\":\"java.lang.ProcessBuilder\",\"command\":[\"calc\"]}";
+    try {
+        mapper.readValue(json, Object.class);
+    } catch (JsonMappingException e) {
+        assertTrue(e.getCause() instanceof SecurityException);
+    }
+}

@@ -1,0 +1,30 @@
+public void testToStringStyleThreadLocal() {
+    ToStringStyle.SHORT_PREFIX_STYLE.setUseClassName(true);
+    ToStringStyle.SHORT_PREFIX_STYLE.setUseFieldNames(false);
+    
+    @SuppressWarnings("serial")
+    class TestObject extends SerializableObject {
+        private String test;
+        
+        public TestObject(String test) {
+            this.test = test;
+        }
+        
+        @Override
+        public boolean equals(Object other) {
+            return EqualsBuilder.reflectionEquals(this, other);
+        }
+        
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this);
+        }
+        
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        }
+    }
+    
+    assertEquals("TestObject[test=test]", new TestObject("test").toString());
+    // Current implementation of ToString

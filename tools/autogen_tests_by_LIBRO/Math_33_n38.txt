@@ -1,0 +1,14 @@
+public void testSimplex() {
+    double[] coefs = new double[] { 0.0, 0.0, 0.0 };
+    LinearConstraint[] constraints = new LinearConstraint[] {
+            new LinearConstraint(new double[] { 1.0, 1.0, 0.0 }, Relationship.GEQ, 1.0),
+            new LinearConstraint(new double[] { 0.0, 1.0, 1.0 }, Relationship.GEQ, 1.0),
+            new LinearConstraint(new double[] { 1.0, 0.0, 1.0 }, Relationship.GEQ, 1.0)
+            };
+    SimplexSolver solver = new SimplexSolver();
+    RealPointValuePair solution = solver.optimize(new LinearObjectiveFunction(coefs, 0.0),
+            new LinearConstraintSet(constraints), GoalType.MINIMIZE,
+            false);
+    double[] solutionValues = solution.getPoint();
+    assertEquals(0.0, solutionValues[0], 0.03);
+    assertEquals(0.0,

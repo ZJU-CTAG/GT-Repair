@@ -1,0 +1,15 @@
+public void testIssue8162() {
+    final CMAESOptimizer optimizer = new CMAESOptimizer();
+    final Bounds bounds = new Bounds(2, 3);
+    final UnivariateObjectiveFunction function = new UnivariateObjectiveFunction(x -> (x - 2) * (x - 2));
+    final GoalType goal = GoalType.MINIMIZE;
+    final double[] initialGuess = new double[1];
+    final double result = optimizer.optimize(100,
+                                             function,
+                                             goal,
+                                             bounds,
+                                             SimpleBounds.unbounded(1),
+                                             new InitialGuess(initialGuess),
+                                             new MaxEval(1000)).getPoint()[0];
+    assertEquals(2, result, 1.E-5);
+}

@@ -1,0 +1,17 @@
+public void testProcessClosurePrimitives() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.processClosurePrimitives = false;
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS,
+        ImmutableList.of(SourceFile.fromCode("foo", "goog.provide('foo');")),
+        options);
+
+    String resultString = compiler.toSource();
+    if (result.success) {
+      assertEquals("foo;", resultString);
+    } else {
+      assertEquals("", resultString);
+    }
+}

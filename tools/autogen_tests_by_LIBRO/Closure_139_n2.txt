@@ -1,0 +1,13 @@
+public void testIssue() {
+    String js = "function assert(b) {if (!b) throw 'error'};\n"
+            + "assert(f() === 1);\n"
+            + "var f = function() {return 2;};\n"
+            + "assert(f() === 2);\n"
+            + "function f() {return 1;};\n";
+
+    Options options = new Options();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js", js), options);
+}

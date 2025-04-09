@@ -1,0 +1,19 @@
+public void testJXPath() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<root xmlns:b=\"bla\">" +
+                "<b:foo xmlns:b=\"bla\" xmlns=\"test111\">" +
+                "  <b:bar>a</b:bar>" +
+                "  <test xmlns=\"\"></test>" +
+                "</b:foo>" +
+                "</root>";
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        Document doc = factory.newDocumentBuilder().parse(new ByteArrayInputStream(xml.getBytes()));
+
+        JXPathContext context = JXPathContext.newContext(doc);
+        context.setLenient(false);
+        context.setNamespaceContextPointer(new NamespaceContextPointer(new DOMNamespaceContext(doc)));
+
+        context.setNamespaceURI("bla", "bla");
+        context.setNamespaceURI("test111", null); // clearing out the default namespace is

@@ -1,0 +1,25 @@
+public void testIssue107() {
+    String input = "var test={\"a\u0004b\":\"c\"};";
+    String expected = "var test={\"a\u0004b\":\"c\"};";
+    test(input, expected);
+}
+  
+public void test(String input, String expected) {
+    test(input, expected, null);
+}
+
+public void test(String input, String expected, String[] expectedWarnings) {
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingComments(true);
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    Parser p = new Parser(compilerEnv, new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            fail(message);
+        }
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            fail(message);
+        }
+        @Override
+        public

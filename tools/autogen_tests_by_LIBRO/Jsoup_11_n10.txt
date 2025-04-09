@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String html = "<html><head></head><body>\n" +
+            "  <div id='id1' class='class1'>\n" +
+            "    <div id='id2' class='class2'>\n" +
+            "      <p id='id3' class='class3'>\n" +
+            "      </p>\n" +
+            "    </div>\n" +
+            "  </div>\n" +
+            "</body></html>";
+
+    Document doc = Jsoup.parse(html);
+    Elements els = doc.select("div:not(#id1)");
+    assertEquals(1, els.size());
+    assertEquals("id2", els.get(0).id());
+}

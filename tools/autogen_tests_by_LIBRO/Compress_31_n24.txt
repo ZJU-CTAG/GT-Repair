@@ -1,0 +1,10 @@
+public void testTarGZIPStream() throws Exception {
+    File input = new File(Paths.get(srcDir, "test.tgz").toString());
+    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(new GZIPInputStream(new BufferedInputStream(new FileInputStream(input))))) {
+        TarArchiveEntry entry = tarIn.getNextTarEntry();
+        while (entry != null) {
+            assertNotNull(entry);
+            entry = tarIn.getNextTarEntry();
+        }
+    }
+}

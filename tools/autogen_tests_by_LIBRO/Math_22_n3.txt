@@ -1,0 +1,12 @@
+public void testSupport() {
+    final UniformRealDistribution ud = new UniformRealDistribution(-1, 1);
+    Assert.assertTrue(ud.isSupportLowerBoundInclusive());
+    Assert.assertTrue(ud.isSupportUpperBoundInclusive());
+    Assert.assertEquals(-1, ud.density(-1), 0);
+    Assert.assertEquals(1, ud.density(1), 0);
+
+    final ContinuousDistribution.Sampler sampler = ud.createSampler(new RandomDataGenerator(new Well19937c(123)));
+    final double x = sampler.sample();
+    Assert.assertTrue(x >= -1);
+    Assert.assertTrue(x <= 1);
+}

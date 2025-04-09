@@ -1,0 +1,15 @@
+public void testIssue4() throws Exception {
+    String json = "{\"value\": NaN}";
+
+    ObjectMapper om = new ObjectMapper();
+    om.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    om.readValue(json, Issue4Bean.class);
+
+    // also test that it works as expected without ALLOW_NON_NUMERIC_NUMBERS
+    om = new ObjectMapper();
+    om.readValue(json, Issue4Bean.class);
+}
+
+public static class Issue4Bean {
+    public BigDecimal value;
+}

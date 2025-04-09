@@ -1,0 +1,19 @@
+public void testIssue8() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    // To get the complete set of externs, the logic in
+    // CompilerRunner.getDefaultExterns() should be used here.
+    List<SourceFile> externs = Arrays.asList(SourceFile.fromCode("externs", "var arguments"));
+
+    // The dummy input name "input.js" is used here so that any warnings or
+    // errors will cite line numbers in terms of input.js.
+    List<SourceFile> inputs = ImmutableList.of(
+        SourceFile.fromCode("input.js", "var arguments"));
+
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, inputs, options);
+    Result result = compiler.getResult();
+}

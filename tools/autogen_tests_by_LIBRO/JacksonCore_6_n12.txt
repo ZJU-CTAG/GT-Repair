@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    JsonNode node = JsonLoader.fromString("[{\"foo\" : \"bar\"}, {\"f00\" : \"b00\"}]");
+    assertNotNull(node);
+    assertEquals("bar", JsonPointer.compile("/0/foo").evaluate(node).asText());
+    assertEquals("b00", JsonPointer.compile("/1/f00").evaluate(node).asText());
+    assertEquals("bar", JsonPointer.compile("/00/foo").evaluate(node).asText());
+    assertEquals("b00", JsonPointer.compile("/01/f00").evaluate(node).asText());
+}

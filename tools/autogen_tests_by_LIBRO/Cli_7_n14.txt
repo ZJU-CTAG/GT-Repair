@@ -1,0 +1,14 @@
+public void testRequiredOptions() throws Exception {
+    final Builder b = new Builder();
+    b.withOption("h", "help");
+    b.withOption("c", "create").withArgument(
+            new Argument().withMinimum(1).withMaximum(1).withName("arg"));
+    final Group g = new Group();
+    g.addOption(b.buildOption("h"));
+    g.addOption(b.buildOption("c"));
+    b.withGroup(g);
+    final CommandLine cl = b.build().parse(new String[] { "-h" });
+    assertEquals(cl.getOptions().size(), 1);
+    assertEquals(cl.getArguments().size(), 0);
+    assertEquals(cl.toString(), "[-h]");
+}

@@ -1,0 +1,18 @@
+public void testReadArray() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
+    JsonNode rootNode = mapper.readTree("{\"offset\":1,\"length\":2}");
+
+    ArrayNode arrayNode = mapper.createArrayNode();
+    arrayNode.add("a");
+    arrayNode.add("b");
+    arrayNode.add("c");
+    arrayNode.add("d");
+    arrayNode.add("e");
+
+    ObjectReader reader = mapper.readerFor(String[].class);
+    String[] result = reader.readValues(arrayNode).with(rootNode).readValue();
+    assertEquals(5, result.length);
+}

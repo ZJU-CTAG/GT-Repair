@@ -1,0 +1,11 @@
+public void testNegativeNumber() throws Exception {
+    final Argument numArg = aBuilder.withValidator(NumberValidator.getNumberInstance())
+        .withMinimum(1).withMaximum(1).create();
+    final Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+    Group options = gBuilder.withOption(numOpt).create();
+    CommandLineParser parser = new PosixParser();
+    final String[] args = new String[]{ "--num", "-0.1" };
+    final CommandLine cmd = parser.parse(options, args);
+    final Number num = (Number) cmd.getParsedOptionValue("num");
+    assertEquals(-0.1, num.doubleValue(), 0.01);
+}

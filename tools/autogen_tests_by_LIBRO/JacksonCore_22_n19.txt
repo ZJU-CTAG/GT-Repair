@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    final String input = "{\"test\": \"test\"}";
+    final String expectedOutput = "{}";
+
+    final SerializerFactory serializerFactory = new BeanSerializerFactory(BeanSerializerFactory.instance);
+
+    final JsonFactory jsonFactory = new JsonFactory();
+    jsonFactory.setCodec(new ObjectMapper(new ObjectMapper().getSerializationConfig(), jsonFactory));
+
+    final JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(System.out, JsonEncoding.UTF8);
+
+    final JsonParser jsonParser = jsonFactory.createJsonParser(input);
+
+    final JsonGenerator filteringGenerator = new FilteringGeneratorDelegate(jsonGenerator,
+            new SimpleBeanPropertyFilter() {
+                @Override
+                public void serializeAsField(final Object pojo,
+                                             final JsonGenerator jgen,
+                                             final SerializerProvider provider,
+                                             final PropertyWriter writer) throws Exception {
+                    if (!pojo.getClass().equals(Map.class) || !writer.get

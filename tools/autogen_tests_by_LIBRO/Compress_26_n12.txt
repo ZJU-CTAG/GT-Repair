@@ -1,0 +1,10 @@
+public void testSkip() throws IOException {
+    String s = "this is a string";
+    Cipher cipher = Cipher.getInstance("AES");
+    cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(new byte[16], "AES"));
+    byte[] encrypted = cipher.doFinal(s.getBytes());
+    ByteArrayInputStream bais = new ByteArrayInputStream(encrypted);
+    CipherInputStream cis = new CipherInputStream(bais, cipher);
+    assertEquals(s.length(), IOUtils.skip(cis, s.length()));
+    cis.close();
+}

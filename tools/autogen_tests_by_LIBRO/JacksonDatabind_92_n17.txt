@@ -1,0 +1,22 @@
+public void testForgivingParser() throws Exception
+{
+    // [databind#1599]
+    final String[] INPUTS = {
+        "{\"@class\":\"javax.script.SimpleBindings\",\"a\":\"b\"}",
+        "{\"@class\":\"javax.transaction.xa.Xid\",\"a\":\"b\"}"
+    };
+    for (String JSON : INPUTS) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            // first: verify we get exception:
+            mapper.readValue(JSON, Object.class);
+            fail("Should not pass");
+        } catch (InvalidTypeIdException e) {
+            verifyException(e, "forbidden type id");
+            verifyException(e, "javax.transaction.xa.Xid");
+        }
+        // then try with "forgiving" config:
+        ObjectMapper mapper = jsonMapperBuilder()
+            .enableDefaultTyping()
+            .build();
+        Map<?,?> map = mapper.readValue(com.fasterxml.jackson

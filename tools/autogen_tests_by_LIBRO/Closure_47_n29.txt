@@ -1,0 +1,9 @@
+public void testIssue108() {
+    String js = "function a() { console.log('hi'); }";
+    SourceMapGenerator smg = new SourceMapGenerator();
+    SourceMapGeneratorV3 smg3 = (SourceMapGeneratorV3) smg;
+    smg3.addMapping("a.js", "a", null, 0, 0, "b.js", 0, 0);
+    smg.appendTo("a.js", js);
+    String sourceMap = smg.toJson(true);
+    assertEquals("{\"version\":3,\"file\":\"a.js\",\"mappings\":\"AAAA,SAAS,GAAG,CAAC,GAAG,CAAC;\",\"sources\":[\"a.js\"],\"names\":[\"a\"]}", sourceMap);
+}

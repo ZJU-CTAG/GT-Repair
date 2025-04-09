@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Map<String, String> options = new HashMap<String, String>();
+    options.put("compilationLevel", "ADVANCED_OPTIMIZATIONS");
+    options.put("useTypesForOptimization", "true");
+    options.put("formatting", "PRETTY_PRINT");
+    String result = Compiler.compile(new String[]{"Glow = {};", "/** @public */ Glow.versions = [1,2,3];", "Glow.showVersions = function() { alert(Glow.versions); }", "", "// exports", "window['Glow'] = Glow;", "Glow['versions'] = Glow.versions;", "Glow['showVersions'] = Glow.showVersions;"}, options);
+
+    // Glow = {};
+    // Glow.a = [1, 2, 3];
+    // Glow.b = function() { alert(Glow.a) };
+    // window.Glow = Glow;
+    // Glow.versions = Glow.a;
+    // Glow.showVersions = Glow.b
+    assertThat(

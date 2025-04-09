@@ -1,0 +1,10 @@
+public void testIssue140() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(false);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler(new PrintStream(System.out));
+    Result result = compiler.compile(SourceFile.fromCode("test", "function urlEncodeIfNecessary(s) {var regex = /[\\\"<>\.;]/;var hasBadChars = regex.exec(s) != null;return hasBadChars && typeof encodeURIComponent != UNDEF ? encodeURIComponent(s) : s;}"), options);
+    assertTrue(result.success);
+}

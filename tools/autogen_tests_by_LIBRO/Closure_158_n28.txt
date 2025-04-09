@@ -1,0 +1,21 @@
+public void testIssue114() {
+    String[] args = new String[] {
+        "--jscomp_error=warning1",
+        "--jscomp_warning=warning1",
+        "--jscomp_off=warning1",
+        "--jscomp_warning=warning2",
+        "--jscomp_error=warning2",
+        "--jscomp_off=warning2",
+    };
+
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler.setLoggingLevel(Level.INFO);
+    CommandLineRunner runner =
+        new CommandLineRunner(args, options);
+    runner.doRun();
+
+    assertEquals("warning1", runner.getWarnings()[0].key);
+    assertEquals("warning2", runner.getWarnings()[1].key);
+    assertEquals("warning2", runner.getWarnings()[2].key);
+}

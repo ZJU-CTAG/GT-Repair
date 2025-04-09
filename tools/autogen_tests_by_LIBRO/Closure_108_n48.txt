@@ -1,0 +1,19 @@
+public void testPreconditions() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(JSSourceFile.fromCode("a.js", "var goog = {};\n" +
+        "goog.scope;\n" +
+        "\n" +
+        "var ns = {};\n" +
+        "ns.sub = {};\n" +
+        "/** @constructor */\n" +
+        "ns.sub.C = function() {};\n" +
+        "\n" +
+        "\n" +
+        "goog.scope(function(){\n" +
+        "  var sub = ns.sub;\n" +
+        "  /** @type {sub.C} */\n" +
+        "  var x = null;\n" +
+        "});"),
+        options);
+}

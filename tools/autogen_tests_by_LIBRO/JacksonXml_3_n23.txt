@@ -1,0 +1,18 @@
+public void testIssue130() {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<test testAttribute=\"testValue\">\n" +
+            "    <testElement>testText</testElement>\n" +
+            "</test>";
+    XmlMapper mapper = new XmlMapper();
+    FromXMLParser parser = (FromXMLParser) mapper.getFactory().createParser(xml);
+    JsonToken token = parser.nextToken();
+    assertEquals(JsonToken.START_OBJECT, token);
+    token = parser.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, token);
+    token = parser.nextToken();
+    assertEquals(JsonToken.START_OBJECT, token);
+    token = parser.nextToken();
+    assertEquals(JsonToken.FIELD_NAME, token);
+    token = parser.nextToken();
+    assertEquals(JsonToken.VALUE_STRING, token);
+    assertEquals("testValue",

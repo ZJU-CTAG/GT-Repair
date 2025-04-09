@@ -1,0 +1,21 @@
+public void testIssue() throws Exception {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    XMLTest obj1 = noAnnotationsXmlMapper.readValue(
+            "<XMLTest></XMLTest>",
+            XMLTest.class);
+    assertNotNull(obj1);
+
+    XMLTest obj2 = xmlMapper.readValue(
+            "<XMLTest></XMLTest>",
+            XMLTest.class);
+    assertNotNull(obj2);
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public class XMLTest {
+}
+

@@ -1,0 +1,10 @@
+public void testIssue1079() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // type by itself works fine, even if context is null
+    JavaType type = mapper.getTypeFactory().constructType(String.class);
+    assertNotNull(type);
+    // but combination fails if context is null
+    type = mapper.getTypeFactory().constructType(String.class, (JavaType) null);
+    assertNotNull(type);
+}

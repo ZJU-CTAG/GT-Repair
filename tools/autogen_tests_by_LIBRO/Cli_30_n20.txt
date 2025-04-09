@@ -1,0 +1,19 @@
+public void testDefaultOptionAssignment() {
+    @Command(name="test")
+    class App {
+        @Option(name="-a")
+        boolean optionA;
+
+        @Option(name="-b")
+        boolean optionB;
+    }
+
+    App app = new App();
+    Properties defaults = new Properties();
+    defaults.put("-a", "true");
+    defaults.put("-b", "true");
+
+    CommandLine.populateCommand(app, "-b", defaults);
+    assertTrue(app.optionA);
+    assertTrue(app.optionB);
+}

@@ -1,0 +1,10 @@
+public void testIssue0108() throws Exception {
+    String path = getClass().getResource("/Issue0108.java").getPath();
+    String sourceMap = SourceMapGenerator.generateSourceMap(path, "Issue0108.js", "Issue0108.js");
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object> map = mapper.readValue(sourceMap, Map.class);
+    List<Double> line = (List<Double>) map.get("line");
+    for (Double l : line) {
+        assertEquals(0, l.doubleValue(), 0.000001);
+    }
+}

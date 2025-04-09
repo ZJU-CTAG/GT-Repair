@@ -1,0 +1,12 @@
+public void testIssue120() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    JXPathContext pathContext = JXPathContext
+            .newContext(factory.newDocumentBuilder().parse(
+                    new InputSource(
+                            new StringReader(
+                                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+                                            + "<doc/>"))));
+    Boolean result = (Boolean) pathContext.getValue("1.0 > child1", Boolean.class);
+    assertFalse(result.booleanValue());
+}

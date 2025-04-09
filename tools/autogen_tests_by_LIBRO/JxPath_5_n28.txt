@@ -1,0 +1,21 @@
+public void testVariablePointer() {
+    JXPathContext context = JXPathContext.newContext(new Bean1());
+    context.getVariables().declareVariable("var", "/MAIN");
+    List nodes = context.selectNodes("$var | /MAIN/A");
+    assertEquals(2, nodes.size());
+}
+
+public static class Bean1 {
+    public Bean2 getMAIN() {
+        return new Bean2();
+    }
+}
+
+public static class Bean2 {
+    public Bean3 getA() {
+        return new Bean3();
+    }
+}
+
+public static class Bean3 {
+}

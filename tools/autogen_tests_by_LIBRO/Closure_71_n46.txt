@@ -1,0 +1,12 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Result result = compiler.compile(
+            ImmutableList.of(SourceFile.fromCode("file", "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }")),
+            ImmutableList.of(SourceFile.fromCode("file", "/** @constructor @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }")),
+            options);
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals(JSError.make(Visibility.PRIVATE_PROPERTY_REDEFINED_IN_EXTENDED_CLASS, "x_", "Foo"), result.errors[0]);
+}

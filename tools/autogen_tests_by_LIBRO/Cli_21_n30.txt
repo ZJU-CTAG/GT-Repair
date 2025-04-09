@@ -1,0 +1,11 @@
+public void testIssue114() throws Exception {
+    NumArgument numArg = aBuilder.withValidator(NumberValidator.getNumberInstance()).withMinimum(1).withMaximum(1).create();
+    Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+    Group options = gBuilder.withOption(numOpt).create();
+    Parser parser = new Parser();
+    parser.setHelpOption(null);
+    parser.setHelpTrigger("--help");
+    parser.setGroup(options);
+    CommandLine commandLine = parser.parse("--num", "-0.1");
+    assertEquals(-0.1, commandLine.getValue("num"));
+}

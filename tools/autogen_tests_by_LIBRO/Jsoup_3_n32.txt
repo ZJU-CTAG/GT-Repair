@@ -1,0 +1,8 @@
+public void testIssue() {
+    TagNode table = new TagNode("table");
+    String tableHtml = "<tr><td>Foo</td></tr>";
+    TagNode row = new HtmlCleaner().clean(new ByteArrayInputStream(tableHtml.getBytes()));
+    table.addChild(row);
+    String expected = "<table><tr><td>Foo</td></tr></table>";
+    assertEquals(expected, new SimpleHtmlSerializer(new CleanerProperties()).getAsString(table));
+}

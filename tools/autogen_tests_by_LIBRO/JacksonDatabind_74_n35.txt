@@ -1,0 +1,9 @@
+public void testAsPropertyTypeDeserializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    // works
+    assertNull(mapper.readValue("\"\"", String.class));
+    assertNull(mapper.readValue("\"\"", Object.class));
+    // throws JsonMappingException
+    assertNull(mapper.readValue("\"\"", Boolean.class));
+}

@@ -1,0 +1,10 @@
+public void testNullPointerExceptionInDeserializer() throws Exception
+{
+	String serialized = "{\"id\":\"2\",\"data\":{\"a\":\"A\"}}";
+	String returnType = "java.util.List";
+	ObjectMapper om = new ObjectMapper();
+	TypeFactory typeFactory = om.getTypeFactory();
+	JavaType type = typeFactory.constructFromCanonical(returnType);
+	Class<?> clazz = type.getRawClass();
+	Object deserialized = om.readValue(serialized, clazz);
+}

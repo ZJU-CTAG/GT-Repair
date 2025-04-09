@@ -1,0 +1,19 @@
+public void testJsonPointer() throws Exception {
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createParser("{\"0\": \"value\"}");
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("0", p.getText());
+    assertToken(JsonToken.VALUE_STRING, p.nextToken());
+    assertEquals("value", p.getText());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    p.close();
+}
+
+public void testJsonPointer2() throws Exception {
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createParser("{\"00\": \"value\"}");
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("00", p.getText());
+    assertToken(J

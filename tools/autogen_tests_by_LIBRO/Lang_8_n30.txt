@@ -1,0 +1,14 @@
+public void testContainsAny_char() {
+    final Calendar myCal = Calendar.getInstance();
+    myCal.setTimeZone(TimeZone.getTimeZone("US/Central"));
+    myCal.set(2010, 2, 5, 2, 3);
+
+    final long now = myCal.getTimeInMillis();
+    final TimeZone tz = myCal.getTimeZone();
+    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    df.setTimeZone(tz);
+    assertEquals("2010-03-05T02:03:00.000Z", df.format(new Date(now)));
+
+    final FastDateFormat fdf = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", tz);
+    assertEquals("2010-03-05T02:03:00.000Z", fdf.format(now));
+    assertEquals("2010-03-05T02:03:00.000Z", fdf.format(

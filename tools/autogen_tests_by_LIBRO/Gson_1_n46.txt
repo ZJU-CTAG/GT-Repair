@@ -1,0 +1,14 @@
+public void testSerializationOfTypeVariableWithParameterizedSuperclass() {
+    Gson gson = new Gson();
+    TypeVariableBean<String> bean = new TypeVariableBean<String>("foo");
+    assertEquals("{\"value\":\"foo\"}", gson.toJson(bean));
+    assertEquals(bean, gson.fromJson("{\"value\":\"foo\"}", TypeVariableBean.class));
+    assertEquals(bean, gson.fromJson("{\"value\":\"foo\"}", new TypeToken<TypeVariableBean<String>>() {}.getType()));
+}
+
+public void testSerializationOfClassWithTypeVariableThatIsSerialized() {
+    Gson gson = new Gson();
+    TypeVariableBean2<String> bean = new TypeVariableBean2<String>("foo");
+    assertEquals("{\"value\":\"foo\"}", gson.toJson(bean));
+    assertEquals(bean, gson.fromJson("{\"value\":\"foo\"}", TypeVariableBean2.class));
+   

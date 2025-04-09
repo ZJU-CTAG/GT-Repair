@@ -1,0 +1,17 @@
+public void testCLI109() {
+    CommandLineParser parser = new PosixParser();
+    Option a = new Option("a", "a-option", false, "first option");
+    Option b = new Option("b", "b-option", false, "second option");
+    OptionGroup group = new OptionGroup();
+    group.addOption(a);
+    group.addOption(b);
+    Options options = new Options();
+    options.addOptionGroup(group);
+    String[] args = new String[] { "-a", "-b" };
+    try {
+        parser.parse(options, args);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+}

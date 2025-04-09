@@ -1,0 +1,24 @@
+public void testOptionBuilder() {
+    // create the Options
+    Options options = new Options();
+    final String debugOpt = "debug";
+    Option debug = OptionBuilder
+            .withArgName(debugOpt)
+            .withDescription("turn on debugging")
+            .withLongOpt(debugOpt)
+            .create('d');
+    options.addOption(debug);
+    // parse the command line arguments
+    CommandLineParser parser = new GnuParser();
+    String[] args = new String[] { "--debug" };
+    CommandLine line;
+    try {
+        line = parser.parse(options, args);
+    } catch (ParseException exp) {
+        fail(exp.getMessage());
+        return;
+    }
+    // get the option value
+    assertEquals(null, line.getOptionValue(debugOpt));
+    assertEquals(null, line.getOptionValue('d'));
+}

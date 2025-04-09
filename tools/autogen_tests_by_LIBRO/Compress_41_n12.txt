@@ -1,0 +1,25 @@
+public void testIssue108() {
+    try {
+        // create a dummy file
+        File temp = File.createTempFile("test", ".tmp");
+        temp.deleteOnExit();
+
+        // create a ZIP file
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(temp));
+        out.putNextEntry(new ZipEntry("foo"));
+        out.closeEntry();
+        out.putNextEntry(new ZipEntry("bar"));
+        out.closeEntry();
+        out.putNextEntry(new ZipEntry("invalid entry"));
+        out.write("invalid entry".getBytes("UTF8"));
+        out.closeEntry();
+        out.putNextEntry(new ZipEntry("baz"));
+        out.closeEntry();
+        out.close();
+
+        // try to read it
+        ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(temp));
+        ArchiveEntry entry = in.getNextZipEntry();
+        assertEquals("foo", entry.getName());
+        entry = in.getNextZipEntry();
+        assertEquals("bar", entry

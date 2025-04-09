@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String a = "if (e.onchange) { e.onchange({ _extendedByPrototype: Prototype.emptyFunction, target: e }); }";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    options.setWarningLevel(DiagnosticGroups.ES5_STRICT, CheckLevel.ERROR);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("input", a), options);
+    assertTrue(result.success);
+    String resultCode = compiler.toSource();
+    assertTrue(resultCode.contains("onchange"));
+}

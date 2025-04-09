@@ -1,0 +1,13 @@
+public void testOptimizer() {
+    CompilerOptions opts = new CompilerOptions();
+    opts.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    opts.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    opts.setOptimizationLevel(OptimizationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            getSourceFile("testOptimizer", "function getStack() { var getErrorObject = function() { try { throw Error(\"\"); } catch(err) { return err; } }; return getErrorObject().stack; }"),
+            getSourceFile("testOptimizer", "window['getStackTrace']=getStack; "),
+            opts);
+    assertTrue(result.success);
+}

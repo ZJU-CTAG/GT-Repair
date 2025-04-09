@@ -1,0 +1,7 @@
+public void testIssue106() {
+    String json = "{\"a\u0004b\":\"c\"}";
+    ObjectMapper om = new ObjectMapper();
+    Map<String, Object> map = om.readValue(json, new TypeReference<Map<String, Object>>() {});
+    assertTrue(map.containsKey("a\u0004b"));
+    assertEquals("c", map.get("a\u0004b"));
+}

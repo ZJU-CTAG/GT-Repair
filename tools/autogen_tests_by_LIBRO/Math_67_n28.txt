@@ -1,0 +1,15 @@
+public void testOptimizerResult() {
+    // Original code in comment
+    UnivariateRealFunction f = new QuadraticFunction();
+    UnivariateRealOptimizer optimizer = new MultiStartUnivariateRealOptimizer(new BrentOptimizer(), 10, new RandomGenerator() {
+        private int i = 0;
+        public double nextDouble() {
+            //return (i++ < 5) ? -1 : 1;
+            return (i++ < 5) ? 1 : -1;
+        }
+    });
+    double x = optimizer.optimize(f, GoalType.MINIMIZE, -100, 100);
+    assertEquals(1, x, 1e-10);
+    //assertEquals(-1, optimizer.getResult(), 1e-10);
+    assertEquals(1, optimizer.getResult(), 1e-10);
+}

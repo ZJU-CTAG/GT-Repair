@@ -1,0 +1,16 @@
+public void testIssuePosixParser () {
+    final String[] args = new String[] { "-target", "foobar.com" };
+    final Options opts = new Options();
+    opts.addOption(OptionBuilder
+        .withLongOpt("target")
+        .hasArg()
+        .withDescription("the target to generate documentation for")
+        .create());
+    try {
+        CommandLine line = new PosixParser().parse(opts, args);
+        assertTrue(line.hasOption("target"));
+        assertEquals("foobar.com", line.getOptionValue("target"));
+    } catch (ParseException e) {
+        fail(e.getMessage());
+    }
+}

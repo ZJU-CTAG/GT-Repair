@@ -1,0 +1,23 @@
+public void testExternalTypeIdWithNonPojo()
+   throws Exception
+{
+   ObjectMapper mapper = new ObjectMapper();
+   mapper.addMixInAnnotations(Point.class,
+       PointMixIn.class);
+   mapper.addMixInAnnotations(Rectangle.class,
+       RectangleMixIn.class);
+   mapper.disable(SerializationFeature.
+       WRITE_NULL_MAP_VALUES);
+
+   Rectangle input = new Rectangle(1, 2, 3, 4);
+   String json = mapper.writeValueAsString(input);
+
+   Rectangle output = mapper.readValue(
+       json, Rectangle.class);
+   assertEquals(input, output);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "@type")
+@JsonSubTypes({
+   @JsonSubTypes.Type(value = Rectangle.class, name = "rectangle"),
+   @JsonSubTypes.Type(value = Circle.class, name = "circle")

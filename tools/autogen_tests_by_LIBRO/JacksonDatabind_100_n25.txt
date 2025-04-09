@@ -1,0 +1,9 @@
+public void testTreeTraversingParser() throws Exception {
+    final JsonNode jsonNode = jsonMapper.readTree(
+        "{\"color\":\"red\"}".getBytes(StandardCharsets.UTF_8)
+    );
+    assertFalse(jsonNode.get("color").isBinary());
+    final byte[] binaryValue = jsonNode.get("color").binaryValue();
+    final String strValue = new String(binaryValue);
+    assertEquals("red", strValue);
+}

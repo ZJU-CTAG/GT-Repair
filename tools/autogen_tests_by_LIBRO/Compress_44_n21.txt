@@ -1,0 +1,9 @@
+public void testIssue108() throws IOException {
+    final byte[] content = "test123".getBytes(Charsets.UTF_8);
+    ChecksumCalculatingInputStream stream = new ChecksumCalculatingInputStream(
+            new ByteArrayInputStream(content), new CRC32());
+    stream.skip(5);
+    assertEquals(5, stream.getBytesRead());
+    assertEquals(0x98823d18L, stream.getValue());
+    assertEquals(5, stream.getBytesRead());
+}

@@ -1,0 +1,20 @@
+public void testGetTypeArguments() {
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+
+    class Foo<X> {
+        class Bar<Y> {
+            class Baz<Z> {
+            }
+        }
+    }
+
+    typeVarAssigns = TypeUtils.getTypeArguments(Foo.class);
+    assertEquals(1, typeVarAssigns.size());
+    assertEquals(Object.class, typeVarAssigns.get(Foo.class.getTypeParameters()[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(Foo.Bar.class);
+    assertEquals(2, typeVarAssigns.size());
+    assertEquals(Object.class, typeVarAssigns.get(Foo.class.getTypeParameters()[0]));
+    assertEquals(Object.class, typeVarAssigns.get(Foo.Bar.class.getTypeParameters()[0]));
+
+    typeVarAssigns = TypeUtils.getTypeArguments(new Foo.Bar<Long>.Baz<

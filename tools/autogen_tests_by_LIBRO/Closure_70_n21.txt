@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setSummaryDetailLevel(3);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("foo.js", "function Example(element) { this.appendElement = function appendElement(ns, name) { var e = element.ownerDocument.createElementNS(ns, name); element.appendChild(e); }; }")}, options);
+    assertEquals(0, compiler.getResult().errors.length);
+}

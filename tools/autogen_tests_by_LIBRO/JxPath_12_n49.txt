@@ -1,0 +1,13 @@
+public void testNamespace() {
+    Document doc = DOC_FACTORY.newDocumentBuilder().newDocument();
+    Element root = doc.createElement("root");
+    root.setAttribute("xmlns:A", "http://my.com/A");
+    root.setAttribute("xmlns:B", "http://my.com/B");
+    root.setAttribute("A:myAttr", "MyType");
+    root.appendChild(doc.createElementNS("http://my.com/B", "B:ElementB"));
+    doc.appendChild(root);
+
+    DOMNodePointer rootPointer = new DOMNodePointer(root);
+    rootPointer.setNamespaceResolver(new SimpleNamespaceContext());
+    assertEquals("MyType", rootPointer.getValue("@A:myAttr"));
+}

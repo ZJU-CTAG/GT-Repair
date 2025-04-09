@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    ToXmlGenerator gen = new ToXmlGenerator(null, null, null, null);
+    gen.writeBinary("".getBytes("UTF-8"));
+    gen.writeBinary("".getBytes("UTF-8"), 0, 0);
+    gen.writeBinary(Base64Variants.MIME, "".getBytes("UTF-8"), 0, 0);
+
+    // This doesn't work
+    gen.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("".getBytes("UTF-8")), 0);
+
+    // Need support for this:
+    gen.writeBinary(Base64Variants.MIME, new ByteArrayInputStream("".getBytes("UTF-8")), 0);
+}

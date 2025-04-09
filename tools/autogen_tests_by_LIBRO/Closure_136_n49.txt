@@ -1,0 +1,18 @@
+public void testIssue108() {
+    String source = ""
+      + "var MyClass = Class.create({foo: 'bar'});\n"
+      + "var MySubClass = Class.create(MyClass, {\n"
+      + "  initialize: function() {\n"
+      + "    this.$super('initialize');\n"
+      + "  }\n"
+      + "});\n";
+    String result = ""
+      + "var a = function() {};\n"
+      + "a.prototype = {foo: \"bar\"};\n"
+      + "var b = function() {};\n"
+      + "b.prototype = new a;\n"
+      + "b.prototype.initialize = function() {\n"
+      + "  this.$super$$4('initialize');\n"
+      + "};\n";
+    test(source, "", result);
+}

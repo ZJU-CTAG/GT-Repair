@@ -1,0 +1,21 @@
+public void testTypeIdProperty() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+    mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    mapper.registerModule(new JaxbAnnotationModule());
+
+    final String json = mapper.writeValueAsString(new Wrapper(1));
+    final Wrapper wrapper = mapper.readValue(json, Wrapper.class);
+    assertEquals(1, wrapper.getId());
+}
+
+@XmlRootElement(name = "wrapper")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+public static class Wrapper {
+    @XmlElement
+    @XmlID
+    private int id;
+
+    @JacksonXmlProperty(isAttribute=true, localName="type")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.

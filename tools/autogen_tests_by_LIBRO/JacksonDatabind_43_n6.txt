@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+
+    String json = "{\"id\":null}";
+    try {
+        mapper.readValue(json, User.class);
+        fail("expected JsonMappingException");
+    } catch (JsonMappingException e) {
+    }
+
+    json = "{\"id\":null}";
+    User u = mapper.readValue(json, User.class);
+    assertNull(u.id);
+}

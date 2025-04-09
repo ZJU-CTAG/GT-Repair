@@ -1,0 +1,25 @@
+public void testGetDateInstance() {
+    Locale.setDefault(Locale.UK);
+    
+    FastDateFormat orig = FastDateFormat.getDateInstance();
+    FastDateFormat uk = FastDateFormat.getDateInstance(Locale.UK);
+    FastDateFormat fr = FastDateFormat.getDateInstance(Locale.FRANCE);
+
+    Locale.setDefault(Locale.FRANCE);
+    
+    FastDateFormat ukChanged = FastDateFormat.getDateInstance(Locale.UK);
+    FastDateFormat frChanged = FastDateFormat.getDateInstance(Locale.FRANCE);
+    
+    assertSame(orig, uk);
+    assertSame(orig, fr);
+    assertSame(orig, ukChanged);
+    assertSame(orig, frChanged);
+    
+    FastDateFormat.clearCache();
+    
+    uk = FastDateFormat.getDateInstance(Locale.UK);
+    fr = FastDateFormat.getDateInstance(Locale.FRANCE);
+    
+    assertNotSame(uk, fr);
+    assertSame(uk, ukChanged);
+    assertNot

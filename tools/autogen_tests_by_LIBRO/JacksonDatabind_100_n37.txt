@@ -1,0 +1,11 @@
+public void testBase64Variant() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    byte[] data = "testing".getBytes("UTF-8");
+    byte[] encoded = Base64.encodeBase64(data, true);
+    JsonNode tree = mapper.readTree("\"" + new String(encoded) + "\"");
+    assertArrayEquals(data, tree.binaryValue()); // This passes
+    TreeTraversingParser parser = new TreeTraversingParser(tree, mapper);
+    assertArrayEquals(data, parser.getBinaryValue()); // This fails
+    assertArrayEquals(data, parser.getBinaryValue(Base64Variants.MIME)); // This fails
+    assertArrayEquals(data, parser.getBinaryValue(Base64Variants.MIME_NO_LINEFEEDS)); // This fails
+}

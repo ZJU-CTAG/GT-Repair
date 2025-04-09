@@ -1,0 +1,20 @@
+public void testTreeSerializer() throws Exception {
+    ListAttribute la = new ListAttribute();
+    la.setItemJsonKey("MyItem");
+    la.setItems(Arrays.asList(new MyItem()));
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("ListAttributeSerializer",
+new Version(1, 0, 0, null));
+    module.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+    JsonNode node = mapper.valueToTree(la);
+    assertEquals(1, node.size());
+    JsonNode node2 = node.get("items");
+    assertNotNull(node2);
+    assertEquals(JsonNodeType.ARRAY, node2.getNodeType());
+    assertEquals(1, node2.size());
+    JsonNode n3 = node2.get(0);
+    assertNotNull(n3);
+    assertEquals(JsonNodeType.POJO, n3.getNodeType());
+}

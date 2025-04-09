@@ -1,0 +1,26 @@
+public void testLineEndings() throws IOException {
+    File testfile = new File("testfile.txt");
+    try {
+        Writer writer = new FileWriter(testfile);
+        try {
+            writer.write("line1\rline2\r\nline3\nline4");
+        }
+        finally {
+            writer.close();
+        }
+        ExtendedBufferedReader reader = new ExtendedBufferedReader(new FileReader(testfile));
+        try {
+            assertEquals("line1", reader.readLine());
+            assertEquals("line2", reader.readLine());
+            assertEquals("line3", reader.readLine());
+            assertEquals("line4", reader.readLine());
+            assertEquals(4, reader.getLineCount());
+        }
+        finally {
+            reader.close();
+        }
+    }
+    finally {
+        testfile.delete();
+    }
+}

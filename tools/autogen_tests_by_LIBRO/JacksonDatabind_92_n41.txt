@@ -1,0 +1,15 @@
+public void testPolymorphicDeserialization() throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    // works
+    mapper.readValue("{\"@class\":\"java.lang.ProcessBuilder\",\"command\":[\"test\"]}", Object.class);
+    // works
+    mapper.readValue("{\"@class\":\"java.lang.Class\",\"val\":\"foo\"}", Object.class);
+    // works
+    mapper.readValue("{\"@class\":\"javax.script.SimpleBindings\",\"map\":{\"a\":1}}", Object.class);
+    // works
+    mapper.readValue("{\"@class\":\"org.apache.xerces.jaxp.datatype.XMLGregorianCalendarImpl\",\"year\":2017}", Object.class);
+    // works
+    mapper.readValue("{\"@class\":\"org.apache.tomcat.util.bcel.classfile.Utility\"}", Object.class);
+    // this fails (ClassNotFoundException), which is expected
+    mapper.

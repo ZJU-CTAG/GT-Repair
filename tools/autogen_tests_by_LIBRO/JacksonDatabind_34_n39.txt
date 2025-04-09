@@ -1,0 +1,11 @@
+public void testBigDecimalSchema() throws Exception
+{
+    JsonSchema js = mapper.schemaFor(BigDecimal.class);
+    assertNotNull(js);
+
+    assertTrue(js.isObjectSchema());
+    JsonSchema props = ((ObjectSchema) js).getProperties().get("value");
+    assertNotNull(props);
+    assertTrue(props.isIntegerSchema());
+    assertFalse(props.isNumberSchema());
+}

@@ -1,0 +1,20 @@
+public void testIssue119() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // mapper.enable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    mapper.registerModule(new GuavaModule());
+
+    String json = mapper.writeValueAsString(new MyPojo());
+    System.out.println(json);
+
+    MyPojo pojo = mapper.readValue(json, MyPojo.class);
+    assertNotNull(pojo);
+}
+
+public class MyPojo {
+    private final Multimap<String, String> multimap = LinkedListMultimap.create();
+
+    public Multimap<String, String> getMultimap() {
+        return multimap;
+    }
+}

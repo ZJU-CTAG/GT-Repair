@@ -1,0 +1,18 @@
+public void testClosure() {
+    Compiler compiler = new Compiler();
+    compiler.initCompilerOptionsIfTestingSanity();
+    // -prevent cycles in the inheritance/implements graph
+    // -detect cycles after they are created and exit compilation before any subsequent passes run
+    // -detect and remove cycles after they are created but before any subsequent passes run
+    // -make every subsequent pass robust against cycles in that graph
+    for (String option : new String[] {"--jscomp_error=preventCycles",
+                                       "--jscomp_error=checkTypes"}) {
+        CompilerOptions options = new CompilerOptions();
+        options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+        compiler.compile(
+                ImmutableList.of(SourceFile.fromCode("externs",
+                                                     "/** @interface */\n"
+                                                   + "var OtherType = function() {}\n"
+                                                   + "/**\n"
+                                                   + " * @implements {MyType}\n"
+                                                   + " * @construct

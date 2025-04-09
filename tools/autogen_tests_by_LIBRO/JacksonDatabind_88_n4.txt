@@ -1,0 +1,24 @@
+public void testPolymorphicTypeIds() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(MyMap.class, MyMixin.class);
+    String json = "{\"@class\":\"com.fasterxml.jackson.datatype.joda.ser.JodaDateTimeSerializer\",\"value\":\"2014-01-15T08:00:00.000Z\"}";
+    MyMap map = mapper.readValue(json, MyMap.class);
+    assertEquals(DateTime.parse("2014-01-15T08:00:00.000Z"), map.get("key"));
+}
+
+public interface MyMixin {
+    @JsonProperty("@class")
+    @JsonSerialize(using = MySerializer.class)
+    @JsonDeserialize(using = MyDeserializer.class)
+    public Class getType();
+}
+
+public class MyMap extends HashMap implements MyMixin
+{
+    public MyMap() {
+        super(1);
+    }
+}
+
+@J

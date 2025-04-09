@@ -1,0 +1,8 @@
+public void testIssue108() {
+    final TarArchiveInputStream tar =
+            new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream("redis-dist-2.8.3_1-linux.tar.gz")));
+    for (TarArchiveEntry entry = tar.getNextTarEntry(); entry != null; entry = tar.getNextTarEntry()) {
+        Assert.assertNotNull("User name was null", entry.getUserName());
+        Assert.assertNotNull("Group name was null", entry.getGroupName());
+    }
+}

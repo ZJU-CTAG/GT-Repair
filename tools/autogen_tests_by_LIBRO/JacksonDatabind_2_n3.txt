@@ -1,0 +1,17 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new CustomSerializers());
+    mapper.registerModule(new JodaModule());
+    mapper.getSerializerProvider().setNullKeySerializer(new
+NullKeySerializer());
+    mapper.getSerializerProvider().setNullValueSerializer(new
+NullValueSerializer());
+    X<Object> x = new X<Object>();
+    x.s = "foo";
+    x.items = new ArrayList<Object>();
+    x.items.add(new A());
+    x.items.add(new B());
+    System.out.println(mapper.writeValueAsString(x));
+    JsonNode tree = mapper.valueToTree(x);
+    System.out.println(mapper.writeValueAsString(tree));
+}

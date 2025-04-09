@@ -1,0 +1,19 @@
+public void testDeserializationWithDeserializationProblemHandler() throws IOException
+{
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    om.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+    om.enableDefaultTyping();
+    om.addHandler(new DeserializationProblemHandler()
+    {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt,
+                JavaType baseType, String subTypeId, TypeIdResolver idResolver,
+                String failureMsg) throws IOException
+        {
+            return TypeFactory.defaultInstance().constructSpecializedType(baseType, Void.class);
+        }
+    });
+    om.readValue("{\"o\":2,\"@class\":\"com.fasterxml.jackson.databind.HandleUnknowTypeIdTest$1\"}",
+            new TypeReference<Map<String, Object>>() {});
+}

@@ -1,0 +1,25 @@
+public void testIssue107() {
+    Options options = new Options();
+    final String debugOpt = "debug";
+    Option debug = OptionBuilder
+            .withArgName(debugOpt)
+            .withDescription("turn on debugging")
+            .withLongOpt(debugOpt)
+            .create('d');
+    options.addOption(debug);
+
+    String[] args = new String[] {"-d"};
+    String[] args2 = new String[] {"--debug"};
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine commandLine = parser.parse(options, args);
+        String dbg1 = commandLine.getOptionValue(debugOpt);
+        assertNotNull(dbg1);
+
+        commandLine = parser.parse(options, args2);
+        String dbg2 = commandLine.getOptionValue(debugOpt);
+        assertNotNull(dbg2);
+    } catch (ParseException e) {
+        fail("Parse exception: " + e.getMessage());
+    }
+}

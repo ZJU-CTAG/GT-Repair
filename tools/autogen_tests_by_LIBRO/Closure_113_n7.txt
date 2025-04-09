@@ -1,0 +1,18 @@
+public void testRequireCall() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.DEFAULT_COMPILATION_LEVEL.setOptionsForCompilationLevel(
+        options);
+    compiler.init(ImmutableList.<SourceFile>of(),
+        ImmutableList.of(SourceFile.fromCode("input",
+            "goog.require('foo');")), options);
+    compiler.parse();
+    compiler.check();
+    compiler.process(ImmutableList.<SourceFile>of(),
+        ImmutableList.<SourceFile>of(), false);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(1, compiler.getWarnings().length);
+    assertEquals(
+        "Required namespace \"foo\" never defined.",
+        compiler.getWarnings()[0].description);
+}

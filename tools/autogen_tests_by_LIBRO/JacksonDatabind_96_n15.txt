@@ -1,0 +1,27 @@
+public void testNamingStrategy() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    final java.time.OffsetDateTime dateTime = java.time.OffsetDateTime.now();
+    final Test test = new Test(dateTime);
+
+    final String json = mapper.writeValueAsString(test);
+    final Test result = mapper.readValue(json, Test.class);
+
+    System.out.println("json = " + json);
+    System.out.println("result = " + result);
+}
+
+private static class Test {
+    private final java.time.OffsetDateTime offSetDateTime;
+
+    public Test(final java.time.OffsetDateTime offSetDateTime) {
+        this.offSetDateTime = offSetDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "offSetDateTime=" + offSetDateTime +
+               

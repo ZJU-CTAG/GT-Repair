@@ -1,0 +1,27 @@
+public void testCoercionFailure() throws Exception
+{
+    // First with streaming, which is bit more complex
+    final JsonParser p = _streamingParser();
+
+    final int value = p.nextIntValue(-42);
+    assertEquals(-42, value);
+
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.currentToken());
+
+    try {
+        // should return default value but throw exception
+        p.getIntValue();
+        fail("Should not pass");
+    } catch (JsonParseException e) {
+        verifyException(e, "Cannot coerce");
+    }
+
+    // then via databind:
+    final ObjectMapper mapper = sharedMapper();
+    try {
+        mapper.readValue("1.1", int.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Cannot coerce");
+    }
+}

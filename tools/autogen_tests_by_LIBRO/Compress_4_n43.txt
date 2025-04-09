@@ -1,0 +1,14 @@
+public void testFinish() throws IOException {
+    File testFile = File.createTempFile("commons-compress", ".zip");
+    testFile.deleteOnExit();
+    FileOutputStream fos = new FileOutputStream(testFile);
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(fos);
+    zos.finish();
+
+    try {
+        zos.putArchiveEntry(new ZipArchiveEntry("dummy"));
+        fail("Should fail as zip should be finished");
+    } catch (IllegalStateException e) {
+        // expected
+    }
+}

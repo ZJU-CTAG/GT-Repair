@@ -1,0 +1,22 @@
+public void testEmbedded() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // success
+    assertEquals(aposToQuotes("{'foo':{'bar':'text'}}"),
+            mapper.writeValueAsString(new Embedded()));
+    // fails
+    assertEquals(aposToQuotes("{'foo':{'bar':'binary'}}"),
+            mapper.writeValueAsString(new EmbeddedBinary()));
+}
+
+static final class Embedded {
+    public Object foo = new Object() {
+        public String bar = "text";
+    };
+}
+
+static final class EmbeddedBinary {
+    public Object foo = new Object() {
+        public byte[] bar = "binary".getBytes("UTF-8");
+    };
+}

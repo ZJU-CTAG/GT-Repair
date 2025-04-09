@@ -1,0 +1,13 @@
+public void testArgumentCaptorVarArgs() throws Exception {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+    String[] foo = {"bar"};
+    String[] baz = {"qux"};
+
+    myMock.foo(foo, baz);
+    verify(myMock).foo(captor.capture(), captor.capture());
+
+    assertEquals(2, captor.getAllValues().size());
+    assertTrue(captor.getAllValues().contains(foo));
+    assertTrue(captor.getAllValues().contains(baz));
+}

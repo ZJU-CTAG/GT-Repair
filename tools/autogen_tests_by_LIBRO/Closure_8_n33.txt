@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String src = "" +
+            "function test(a) {\n" +
+            "    //use argument\n" +
+            "    var a = 0;\n" +
+            "    //argument not used anymore\n" +
+            "}\n";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Result result = compiler.compile(null, compiler.createSourceFile("test.js", src, options.getLanguageIn()), options);
+    assertTrue(result.success);
+    assertEquals("function test(a){var b=0}", result.compiledCode);
+}

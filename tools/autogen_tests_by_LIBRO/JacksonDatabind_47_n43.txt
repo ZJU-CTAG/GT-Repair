@@ -1,0 +1,26 @@
+public void testModelObjects() throws Exception {
+    Foo foo = new Foo();
+    foo.setReference(new AccessionIdentifier() {
+      private String value = "foo";
+      public String getValue() { return value; }
+    });
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(AccessionIdentifier.class, MixIn.class);
+    String json = mapper.writeValueAsString(foo);
+
+    Foo foo2 = mapper.readValue(json, Foo.class);
+    assertEquals("foo", foo2.getReference().getValue());
+  }
+
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+  private static interface MixIn {}
+
+
+  private static class Foo {
+    private AccessionIdentifier reference;
+
+    @JsonSerialize(as = BaseAccessionIdentifier.class)
+    @JsonDeserialize(as = BaseAccessionIdentifier.class)
+    public AccessionIdentifier getReference() { return reference; }
+    public void setReference(AccessionIdentifier reference) { this.reference =

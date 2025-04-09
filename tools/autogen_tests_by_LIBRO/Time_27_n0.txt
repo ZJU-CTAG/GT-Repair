@@ -1,0 +1,23 @@
+public void testIssue64() {
+    PeriodFormatter fmt1 = ISOPeriodFormat.standard();
+    PeriodFormatter fmt2 = new PeriodFormatterBuilder()
+        .appendLiteral("P")
+        .appendYears()
+        .appendSuffix("Y")
+        .appendMonths()
+        .appendSuffix("M")
+        .appendWeeks()
+        .appendSuffix("W")
+        .appendDays()
+        .appendSuffix("D")
+        .appendSeparatorIfFieldsAfter("T")
+        .appendHours()
+        .appendSuffix("H")
+        .appendMinutes()
+        .appendSuffix("M")
+        .appendSecondsWithOptionalMillis()
+        .appendSuffix("S")
+        .toFormatter();
+    Period period = new Period(1*5, 2*5, 3*5, 4*5, 5*5, 6*5, 7*5, 8*5);
+    assertEquals(fmt1.print(period), fmt2.print(period));
+}

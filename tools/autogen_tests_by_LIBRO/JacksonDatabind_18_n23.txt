@@ -1,0 +1,17 @@
+public void testIssue() throws IOException
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    final MappingIterator<Map<String, Object>> it = mapper.reader()
+            .forType(new TypeReference<Map<String, Object>>() { })
+            .readValues(new StringReader("{\"foo\": [\"bar\"]},{\"foo\": \"bar\"}"));
+    assertTrue(it.hasNextValue());
+    assertEquals("bar", it.nextValue().get("foo"));
+    try {
+        it.nextValue();
+        fail("Expected JsonMappingException");
+    } catch (final JsonMappingException e) {
+        // good
+    }
+    assertFalse(it.hasNextValue());
+}

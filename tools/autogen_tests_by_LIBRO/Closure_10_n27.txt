@@ -1,0 +1,14 @@
+public void testIssue_131() {
+    String js = "(Math.random()>0.5? '1' : 2 ) + 3 + 4;";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    // CompilationLevel level = CompilationLevel.ADVANCED_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.prettyPrint = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.compile(Compiler.EXTERNS_EMPTY, new JSSourceFile[]{JSSourceFile.fromCode("input", js)}, options);
+    String output = compiler.toSource();
+    assertEquals("(0.5 < Math.random() ? 1 : 2) + 7;", output);
+}

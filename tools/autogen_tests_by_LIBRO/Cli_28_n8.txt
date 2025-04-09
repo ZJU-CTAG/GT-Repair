@@ -1,0 +1,20 @@
+public void testDefaultOptions() throws Exception {
+    Options options = new Options();
+    options.addOption("option1", "1", false, "Toggle option 1");
+    options.addOption("option2", "2", true, "Toggle option 2");
+    options.addOption("option3", "3", false, "Toggle option 3");
+
+    CommandLineParser parser = new GnuParser();
+    String[] commandLineArgs = new String[] { "--option1", "--option2", "value2" };
+
+    Properties properties = new Properties();
+    properties.setProperty("option1", "true");
+    properties.setProperty("option2", "value2-1");
+    properties.setProperty("option3", "true");
+
+    // Properties are partially processed, option1 is evaluated to true but option3 is ignored
+    CommandLine commandLine = parser.parse(options, commandLineArgs, properties);
+
+    assertTrue(commandLine.hasOption("option1"));
+    assertEquals("value2", commandLine.getOptionValue("option2"));
+}

@@ -1,0 +1,16 @@
+public void testIllegalArgument() throws IOException {
+    File file = new File("src/test/resources/commons-compress-1.12-src.tar.gz");
+    try (FileInputStream in = new FileInputStream(file)) {
+        try (GZIPInputStream gzin = new GZIPInputStream(in)) {
+            try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzin)) {
+                TarArchiveEntry entry = tarIn.getNextTarEntry();
+                int count = 0;
+                while (entry != null) {
+                    //System.out.println (count + " " + entry.getName());
+                    count++;
+                    entry = tarIn.getNextTarEntry();
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+public void testIssue() {
+    String js = "/** @constructor */\n"
+        + "function MyClass() {}\n"
+        + "MyClass.prototype[" + "'MyMethod'" + "] = function(a) {\n"
+        + " this.a = a;\n"
+        + "}\n"
+        + "window[" + "'MyClass'" + "] = MyClass;";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        Lists.newArrayList(SourceFile.fromCode("test", js)),
+        options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarn

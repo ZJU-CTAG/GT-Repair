@@ -1,0 +1,17 @@
+public void testIssue144() {
+    String source = "/** @constructor */ function NS() { }"
+            + "NS.read = function() { return this.foo; }"
+            + "NS.write = function() { this.foo = 123; }"
+            + "NS.write2 = function() { this.foo = 123; }";
+    TestErrorReporter testErrorReporter = null;
+    testErrorReporter = new TestErrorReporter();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.USE_GLOBAL_THIS, CheckLevel.WARNING);
+    Compiler compiler = new Compiler();
+    compiler.init(new JSSourceFile[0], new JSSourceFile[] {
+        JSSourceFile.fromCode("test", source) }, options);
+    compiler.parse();
+    compiler.analyze();
+    compiler.check(testErrorReporter);
+    assertEquals(1, testErrorReporter.warnings.size());
+    assertEquals(JSError.Level.WARNING, testErrorReporter.warnings

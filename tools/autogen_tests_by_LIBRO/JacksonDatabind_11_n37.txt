@@ -1,0 +1,35 @@
+public void testIssue108() throws Exception {
+    String json = "{\"entity\":{\"compound\":{\"name\":\"name\"}}}";
+    Something something = new ObjectMapper().readValue(json, Something.class);
+    assertNotNull(something.getEntity());
+}
+
+class Something {
+    @JsonDeserialize(as=Compound.class)
+    private Ruleform entity;
+
+    public <T extends Ruleform> T getEntity() {
+        return (T) entity;
+    }
+
+    public void setEntity(Ruleform entity) {
+        this.entity = entity;
+    }
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+public interface Ruleform {
+    
+}
+
+public class Compound implements Ruleform {
+    private String name;
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+}

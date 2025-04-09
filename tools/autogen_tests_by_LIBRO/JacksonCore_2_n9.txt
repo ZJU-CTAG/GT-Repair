@@ -1,0 +1,12 @@
+public void testIssue() throws Exception
+{
+    String json = "123true";
+    JsonFactory f = new JsonFactory();
+    ByteArrayInputStream in = new ByteArrayInputStream(json.getBytes("UTF-8"));
+    JsonParser p = f.createParser(in);
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals("123", p.getText());
+    assertToken(JsonToken.VALUE_TRUE, p.nextToken());
+    assertEquals("true", p.getText());
+    p.close();
+}

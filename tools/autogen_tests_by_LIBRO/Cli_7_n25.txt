@@ -1,0 +1,14 @@
+public void testRequiredOptions() throws Exception {
+    builder.withOption(new DefaultOptionBuilder().withShortName("h")
+            .isRequired(true)
+            .create());
+    builder.withOption(new DefaultOptionBuilder().withShortName("c")
+            .withDescription("the config file to use")
+            .withArgument(
+                    new DefaultArgumentBuilder().withName("config").create())
+            .create());
+    final Group group = builder.create();
+    final CommandLine line = new PosixParser().parse(group, new String[] { "-c", "config" });
+    assertEquals("Option missing: h", line.getOptionValues("h"), null);
+    assertEquals("Option missing: c", line.getOptionValues("c"), "config");
+}

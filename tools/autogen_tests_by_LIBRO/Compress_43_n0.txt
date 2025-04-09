@@ -1,0 +1,23 @@
+public void testLFHVersionNeededToExtractIsOk() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+
+    ZipArchiveEntry ze = new ZipArchiveEntry("entry");
+    zaos.putArchiveEntry(ze);
+    zaos.write("test".getBytes());
+    zaos.closeArchiveEntry();
+    zaos.close();
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    ZipArchiveInputStream zais = new ZipArchiveInputStream(bais);
+
+    ze = zais.getNextZipEntry();
+    byte[] buf = new byte[4];
+    zais.read(buf);
+    zais.close();
+
+    assertEquals("test", new String(buf));
+
+    DataInputStream dis = new DataInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    int lfhVersionNeededToExtract = dis.readShort();
+    int cdVersionNeededToExtract

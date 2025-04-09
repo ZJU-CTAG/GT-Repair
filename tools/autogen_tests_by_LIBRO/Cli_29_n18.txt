@@ -1,0 +1,14 @@
+public void testIssue() {
+    CommandLineParser parser = new GnuParser();
+    Options options = new Options()
+        .addOption(OptionBuilder.withDescription("foo")
+            .hasArg()
+            .isRequired()
+            .create('f'));
+
+    String[] args = new String[]{"-f", "\"bar\""};
+
+    CommandLine cmd = parser.parse(options, args);
+
+    assertEquals("\"bar\"", cmd.getOptionValue('f'));
+}

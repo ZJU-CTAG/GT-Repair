@@ -1,0 +1,24 @@
+public void testSimpleReadValues() throws Exception
+{
+    final String SIMPLE_JSON = aposToQuotes(
+            "[{'field1': 1, 'field2': 'value'}, {'field1': 2, 'field2': 'value2'}]");
+    final String INVALID_JSON = aposToQuotes(
+            "[{'field1': 1, 'field2': 'value'}, {'invalid': {}}]");
+    
+    ObjectMapper mapper = new ObjectMapper();
+
+    MappingIterator<SimpleObject> it = mapper.readerFor(SimpleObject.class)
+            .readValues(SIMPLE_JSON);
+
+    int count = 0;
+    while (it.hasNext()) {
+        it.next();
+        ++count;
+    }
+    it.close();
+    assertEquals(2, count);
+
+    it = mapper.readerFor(SimpleObject.class).readValues(INVALID_JSON);
+    
+    // At this point, iterator should be positioned right after 'invalid' token
+    assertEquals(2, it.getCurrentLocation().getLine

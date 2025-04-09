@@ -1,0 +1,15 @@
+public void testWeights() {
+    Weight[] weights = new Weight[41200];
+    for (int i = 0; i < weights.length; i++) {
+        weights[i] = new Weight(new double[] { 1 });
+    }
+    MultivariateVectorOptimizer optimizer = new PowellOptimizer(1e-10, 1e-10);
+
+    MultivariateVectorFunction problem = new MultivariateVectorFunction() {
+        public double[] value(double[] variables) {
+            return new double[] { variables[0] };
+        }
+    };
+
+    optimizer.optimize(weights, problem);
+}

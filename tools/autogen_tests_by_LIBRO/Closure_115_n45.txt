@@ -1,0 +1,7 @@
+public void testIssue279() {
+    String js1 = "var a = { prop: 1 }; function modifies(obj) { obj.prop = 2; return 3; }; function foo(obj, modifies) { return modifies(obj) + obj.prop; }; var b = foo(a, modifies);";
+    String js2 = "var a = { prop: 1 }; function modifies(obj) { obj.prop = 2; return 3; }; function foo(obj, modifies) { var saved = obj.prop; return modifies(obj) + saved; }; var b = foo(a, modifies);";
+
+    assertEquals(js2, runCompiler(js1, "ADVANCED_OPTIMIZATIONS"));
+    assertEquals(js2, runCompiler(js2, "ADVANCED_OPTIMIZATIONS"));
+}

@@ -1,0 +1,26 @@
+public void testIssue() {
+    Foo foo = new Foo();
+    List<Foo> foos = Collections.singletonList(foo);
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new TypeAdapterFactory() {
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            if (Foo.class.isAssignableFrom(type.getRawType())) {
+                return (TypeAdapter<T>) new FooTypeAdapter(gson);
+            }
+            return null;
+        }
+    }).create();
+    String json = gson.toJson(foos);
+    assertEquals(JsonParser.DEFAULT_CODEC.writeValueAsString(foos), json);
+}
+
+class FooTypeAdapter extends TypeAdapter<Foo> {
+    private final Gson gson;
+
+    FooTypeAdapter(Gson gson) {
+        this.gson = gson;
+    }
+
+    @Override
+    public void write(JsonWriter out, Foo value) throws IOException {
+       

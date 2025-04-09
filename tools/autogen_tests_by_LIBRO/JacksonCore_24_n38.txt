@@ -1,0 +1,13 @@
+public void testIntOverflow() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
+    try {
+        mapper.readValue("2147483648", IntHolder.class);
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Cannot coerce number");
+        verifyException(e, "IntHolder");
+        verifyException(e, "2147483648");
+        verifyException(e, "overflow");
+    }
+}

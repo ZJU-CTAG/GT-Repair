@@ -1,0 +1,21 @@
+public void testThis() {
+  String js =
+      "function writeMethodWithoutAnnotation() {\n" +
+      " this._bar = 123;\n" +
+      "}\n" +
+      "function readMethodWithoutAnnotation() {\n" +
+      " return this._bar;\n" +
+      "}\n";
+  String[] options = {"--warning_level=VERBOSE"};
+  TestErrorReporter testErrorReporter = new TestErrorReporter(null,
+      new PrintWriter(System.out));
+  Compiler compiler = new Compiler();
+  CompilerOptions compilerOptions = new CompilerOptions();
+  compilerOptions.setWarningLevel(
+      DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+  compilerOptions.setWarningLevel(
+      DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.WARNING);
+  compilerOptions.setWarningLevel(
+      DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+  compilerOptions.setWarningLevel(
+      DiagnosticGroups.JSDOC_MISSING

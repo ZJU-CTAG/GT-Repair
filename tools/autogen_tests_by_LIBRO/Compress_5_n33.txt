@@ -1,0 +1,12 @@
+public void testZipArchiveInputStream() throws Exception {
+    try (InputStream is = new FileInputStream(new File("src/test/resources/issue_107.zip"));
+         ZipArchiveInputStream zis = new ZipArchiveInputStream(is)) {
+        int size = 0;
+        for (ArchiveEntry entry; (entry = zis.getNextEntry()) != null; ) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            IOUtils.copy(zis, baos);
+            size += baos.size();
+        }
+        assertEquals(0, size);
+    }
+}

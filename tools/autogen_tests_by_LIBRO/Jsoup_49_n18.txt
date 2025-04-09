@@ -1,0 +1,8 @@
+public void testInsertChildren() {
+    Document doc = Jsoup.parse("<div>1<p>2</p>3</div>");
+    Element div = doc.select("div").first();
+    List<Element> toMove = div.children().subList(1, 2);
+    div.insertChildren(0, toMove);
+    String result = doc.toString().replaceAll("\\s+", "");
+    assertEquals("<body><p>2</p>1<div>2</div>3</body>", result);
+}

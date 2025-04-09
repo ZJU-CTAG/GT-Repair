@@ -1,0 +1,11 @@
+public void testIssue() {
+    try (ZipFile zipFile = new ZipFile("src/test/resources/compress-107.zip")) {
+        ZipArchiveEntry entry = zipFile.getEntry("META-INF/");
+        assertFalse(entry.isUnixSymlink());
+        entry = zipFile.getEntry("META-INF/maven/");
+        assertFalse(entry.isUnixSymlink());
+    } catch (Exception e) {
+        e.printStackTrace();
+        fail(e.getMessage());
+    }
+}

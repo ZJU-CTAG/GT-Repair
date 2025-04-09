@@ -1,0 +1,15 @@
+public void testIssue111() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("input.js",
+        "/** @constructor */function Foo() {" +
+        " var self = this;" +
+        " window.setTimeout(function() {" +
+        " window.location = self.location;" +
+        " }, 0);" +
+        "}" +
+        "Foo.prototype.setLocation = function(loc) {" +
+        " this.location = loc;" +
+        "};" +
+        "new Foo().setLocation('http://www.google.com/');"));
+    assertTrue(result.success);
+}

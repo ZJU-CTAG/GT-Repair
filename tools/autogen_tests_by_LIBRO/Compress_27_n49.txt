@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    File file = getFile("COMPRESS-262.tar.gz");
+    TarArchiveInputStream t = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(file)));
+    TarArchiveEntry entry;
+    while((entry = t.getNextTarEntry()) != null) {
+        assertEquals("A.txt", entry.getName());
+        assertEquals("johndoe", entry.getUserName());
+        assertEquals("somegroup", entry.getGroupName());
+    }
+}

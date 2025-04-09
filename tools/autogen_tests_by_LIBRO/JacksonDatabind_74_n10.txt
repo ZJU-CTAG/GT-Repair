@@ -1,0 +1,39 @@
+public void test_as_property() throws Exception
+{
+ObjectMapper mapper = new ObjectMapper();
+mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
+// works as intended
+BeanWithProperty b = mapper.readValue("{\"id\":\"\"}", BeanWithProperty.class);
+assertNull(b.getId());
+
+// throws an exception instead of returning a null value
+b = mapper.readValue("{\"property\":\"\"}", BeanWithProperty.class);
+assertNull(b.getProperty());
+}
+
+public static class BeanWithProperty
+{
+@JsonProperty("id")
+private String id;
+
+@JsonProperty("property")
+@JsonDeserialize(contentUsing = AsPropertyTypeDeserializer.class)
+private Object property;
+
+public String getId()
+{
+return id;
+}
+
+public void setId(String id)
+{
+this.id = id;
+}
+
+public Object getProperty()
+{
+return property;
+}
+
+public void setProperty(Object property)

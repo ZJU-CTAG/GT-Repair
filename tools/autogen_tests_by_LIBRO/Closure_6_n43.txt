@@ -1,0 +1,19 @@
+public void testThisType() {
+    String js = "/** @constructor */\n" +
+            "function F() {\n" +
+            "  this.baz();\n" +
+            "}\n\n" +
+            "/** @constructor */\n" +
+            "function G() {\n" +
+            "}\n\n" +
+            "G.prototype.bar = F.prototype.bar;\n";
+
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("foo.js", js), options);
+    assertEquals(result.errors.toString(), 0, result

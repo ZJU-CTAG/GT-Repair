@@ -1,0 +1,13 @@
+public void testEnumMap() throws Exception {
+    final ObjectWriter writer = MAPPER.writerWithDefaultPrettyPrinter();
+    final EnumMap<Foo, String> enumMap = new EnumMap<>(Foo.class);
+    enumMap.put(Foo.BAR, "baz");
+    final String s = writer.writeValueAsString(enumMap);
+    assertEquals("{\n" +
+            "  \"BAR\" : \"baz\"\n" +
+            "}", s);
+}
+public enum Foo {
+    @JsonProperty("bar")
+    BAR
+}

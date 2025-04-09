@@ -1,0 +1,18 @@
+public void testUnterminatedQuote() {
+    String format = "'d'd'";
+    String date = "d3";
+    DateFormat ddf = new SimpleDateFormat(format);
+    try {
+        ddf.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+    DateFormat fast = new FastDateParser(format, Locale.US);
+    try {
+        fast.parse(date);
+        fail("Expected ParseException");
+    } catch (ParseException e) {
+        // expected
+    }
+}

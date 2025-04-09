@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Car car = new Car();
+    car.setMake("Ford");
+    car.setModel("F150");
+    car.setType("Truck");
+    String json = JSON.encode(car);
+    try {
+        Truck truck = JSON.decodeValue(json, Truck.class);
+        fail("Truck decode should have failed because the JSON string is actually a Car");
+    } catch (IOException e) {
+        log.info("Correctly failed to decode JSON string as a Truck - it's a Car instead");
+    }
+}

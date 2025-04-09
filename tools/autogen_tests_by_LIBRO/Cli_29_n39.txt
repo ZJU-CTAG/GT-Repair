@@ -1,0 +1,14 @@
+public void testIssue107() {
+    Options options = new Options();
+    Option option =
+        OptionBuilder.withArgName("balloo").hasArg().withDescription("some balloo").create("balloo");
+    options.addOption(option);
+
+    CommandLineParser parser = new GnuParser();
+    try {
+        CommandLine cmd = parser.parse(options, new String[] { "--balloo", "\"this is a \\\"test\\\"\"" });
+        assertEquals("\"this is a \"test\"\"", cmd.getOptionValue("balloo"));
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+}

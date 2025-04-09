@@ -1,0 +1,27 @@
+public void testFrequency() {
+    Frequency f = new Frequency();
+    final Object OBJ = new Object();
+    try {
+        f.addValue(OBJ);
+        fail("Expecting IllegalArgumentException");
+    } catch(IllegalArgumentException ex) {
+        // expected
+    }
+    f.addValue("value");
+    try {
+        f.addValue(OBJ);
+        fail("Expecting ClassCastException");
+    } catch(ClassCastException ex) {
+        // expected
+    }
+    assertEquals(1, f.getCount("value"));
+    assertEquals(0, f.getCount(OBJ));
+
+    assertEquals(1.0, f.getCumFreq("value"));
+    assertEquals(0.0, f.getCumFreq(OBJ));
+
+    assertEquals(1.0, f.getCumPct("value"));
+    assertEquals(0.0, f.getCumPct(OBJ));
+
+    assertEquals(1.0, f.getPct("value"));
+   

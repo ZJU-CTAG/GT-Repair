@@ -1,0 +1,20 @@
+public void testIssue113() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(CheckLevel.WARNING);
+    options.setCheckCaja(true);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    compiler.setPassConfig(new DefaultPassConfig(options));
+    compiler.compile(
+        JSSourceFile.fromCode("window.js", "window={};"),
+        JSSourceFile.fromCode("input.js",
+            "window[\"anchor\"] = function (obj, modifiesProp) {" +
+                "return (function (saved) {" +
+                    "return modifiesProp(obj) + saved;" +
+                "})(obj[\"prop\"]);" +
+            "};"),
+       

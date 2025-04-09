@@ -1,0 +1,15 @@
+public void testIssue() {
+    final ObjectMapper om = new ObjectMapper();
+    om.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    TestBean bean = TestBean.builder().build();
+    assertEquals("{\"name\":null}", om.writeValueAsString(bean));
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+static class TestBean {
+    String name;
+}

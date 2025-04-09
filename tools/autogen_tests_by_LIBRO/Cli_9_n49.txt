@@ -1,0 +1,16 @@
+public void testMissingOptionException() {
+    Options options = new Options();
+    options.addOption("format", false, "format the source");
+    options.addOption("source", true, "the source file");
+    options.addOption("properties", true, "the properties file");
+    options.addOption("help", false, "print this message");
+    
+    String[] args = new String[]{"-source", "foo", "-properties", "bar"};
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, args);
+        fail("Expected MissingOptionException");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format", e.getMessage());
+    }
+}

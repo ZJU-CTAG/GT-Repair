@@ -1,0 +1,12 @@
+public void testStdDateFormat() throws Exception
+{
+    TimeZone tz = TimeZone.getTimeZone("GMT+2");
+    TimeZone.setDefault(tz);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setTimeZone(tz);
+
+    String json = "\"1970-01-01T00:00:00.000\"";
+    Date date = mapper.readValue(json, java.util.Date.class);
+
+    assertEquals(json, new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss.SSS\"").format(date));
+}

@@ -1,0 +1,13 @@
+public void testGetHeaderMap() throws Exception {
+    String[] header = new String[] { "Col1", "Col2" };
+    String[] data = new String[] { "1", "2" };
+    CSVParser parser = CSVParser.parse(new StringReader(""), CSVFormat.DEFAULT.withHeader(header).withSkipHeaderRecord(false));
+    Map<String, Integer> headerMap = parser.getHeaderMap();
+    assertNotNull(headerMap);
+    assertEquals(0, headerMap.get("Col1").intValue());
+    assertEquals(1, headerMap.get("Col2").intValue());
+    parser = CSVParser.parse(new StringReader(""), CSVFormat.DEFAULT.withSkipHeaderRecord(true));
+    headerMap = parser.getHeaderMap();
+    assertNull(headerMap);
+}
+

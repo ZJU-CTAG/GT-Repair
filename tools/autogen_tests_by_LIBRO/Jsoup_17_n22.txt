@@ -1,0 +1,16 @@
+public void testJSoup() throws IOException {
+    Document doc = Jsoup.parse(
+            "<div>" +
+            "<table>" +
+            "<tbody>" +
+            "<tr id='r1'>" +
+            "<td>0</td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>");
+    Element tr = doc.getElementById("r1");
+    Document doc2 = Jsoup.parse("<div></div>");
+    doc2.select("div").first().appendChild(tr);
+    assertEquals("<div><table><tbody><tr id=\"r1\"><td>0</td></tr></tbody></table></div>", doc2.toString());
+}

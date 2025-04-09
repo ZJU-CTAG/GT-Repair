@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String js = "/** @constructor */\n" +
+            "var myclass = function() { };\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { };\n" +
+            "myclass.prototype.test = function() { this.fn(); this.fn = function() { }; }";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("test.js", js));
+    assertFalse(result.success);
+    assertEquals(2, result.errors.length);
+    assertTrue(result.errors[0].description.contains("fn"));
+    assertTrue(result.errors[1].description.contains("fn"));
+}

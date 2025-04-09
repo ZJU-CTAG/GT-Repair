@@ -1,0 +1,22 @@
+public void testNullPointerException() {
+    Whitebox.invokeMethod(new A(), "testNullPointerException");
+}
+
+public static class A {
+    public void testNullPointerException() {
+        List<Object> list = new ArrayList<Object>();
+        list.add("a");
+        list.add(null);
+        list.add("b");
+        list.add("a");
+        list.add("c");
+        assertEquals(list.indexOf("a"), 0);
+        assertEquals(list.indexOf("b"), 2);
+        assertEquals(list.indexOf("c"), 4);
+        assertEquals(list.indexOf("d"), -1);
+        assertEquals(list.lastIndexOf("a"), 3);
+        assertEquals(list.lastIndexOf("b"), 2);
+        assertEquals(list.lastIndexOf("c"), 4);
+        assertEquals(list.lastIndexOf("d"), -1);
+    }
+}

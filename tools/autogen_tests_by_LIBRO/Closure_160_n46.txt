@@ -1,0 +1,15 @@
+public void testCheckVars() {
+    Compiler.setLoggingLevel(Level.WARNING);
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(
+        options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(JSSourceFile.fromCode("foo.js",
+        "foo = {};\nfoo.bar = function() { alert(this.baz); };"), options);
+    assertEquals(1, compiler.getErrors().length);
+    assertEquals(1, compiler.getWarnings().length);
+    assertTrue(compiler.getErrors()[0].toString().contains("variable foo is undefined"));

@@ -1,0 +1,24 @@
+public void testThis() {
+    String source = 
+        "//------------------\n" +
+        "// should warn \"JSC\\_USED\\_GLOBAL\\_THIS: dangerous use of the global this object\" in both methods\n" +
+        "// none of these warns in 0616 release\n" +
+        "var NS = {\n" +
+        " read: function()\n" +
+        " {\n" +
+        " return this.foo; // does not warn in 0514 release\n" +
+        " },\n" +
+        "\n" +
+        " write: function()\n" +
+        " {\n" +
+        " this.foo = 123; // warns in 0514 release\n" +
+        " }\n" +
+        "};\n" +
+        "\n" +
+        "// only the non-inline notation warns in 0616 release\n" +
+        "NS.write2 = function()\n" +
+        "{\n" +
+        " this.foo = 123;\n" +
+        "};";
+
+    final List

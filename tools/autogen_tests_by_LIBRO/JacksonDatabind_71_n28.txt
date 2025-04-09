@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper objectMapper = new ObjectMapper();
+
+    final String json = "{\"foo\": \"value1\", \"bar\": \"value2\"}";
+    final Map<CharSequence, String> map = objectMapper.readValue(json, new TypeReference<Map<CharSequence, String>>() { });
+    assertNotNull(map);
+    assertEquals(2, map.size());
+    assertEquals("value1", map.get(new StringBuilder("foo")));
+    assertEquals("value2", map.get(new StringBuilder("bar")));
+}

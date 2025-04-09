@@ -1,0 +1,12 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(Option.builder("a").build());
+    options.addOption(Option.builder("b").hasArg().build());
+    PosixParser parser = new PosixParser();
+    parser.setStopAtNonOption(true);
+    CommandLine cl = parser.parse(options, new String[]{"--zop", "-abfoo"});
+    assertEquals(1, cl.getOptions().length);
+    assertEquals(2, cl.getArgs().length);
+    assertEquals("--zop", cl.getArgs()[0]);
+    assertEquals("-abfoo", cl.getArgs()[1]);
+}

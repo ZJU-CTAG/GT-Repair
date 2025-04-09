@@ -1,0 +1,11 @@
+public void testIssue122() throws Exception
+{
+    Person input = new Person();
+    input.businessAddress = new Address();
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    mapper.registerModule(new CsvModule());
+    mapper.writer(new CsvMapper().schemaFor(Address.class).withoutHeader())
+        .writeValueAsString(input);
+}

@@ -1,0 +1,16 @@
+public void testHarmonicFitter() {
+    final Random random = new Well1024a(0);
+    final HarmonicFitter fitter = new HarmonicFitter();
+    final double[] frequencies = new double[50];
+    final double[] amplitudes = new double[50];
+    for (int i = 0; i < frequencies.length; i++) {
+        frequencies[i] = i;
+        amplitudes[i] = random.nextGaussian() * 10.0;
+    }
+    final double[] initialGuess = fitter.guessParameters(
+            new double[50], frequencies, amplitudes);
+    assertEquals(3, initialGuess.length);
+    assertTrue(initialGuess[0] > 0.0);
+    assertEquals(0.0, initialGuess[1], 0.0);
+    assertEquals(0.0, initialGuess[2], 0.0);
+}

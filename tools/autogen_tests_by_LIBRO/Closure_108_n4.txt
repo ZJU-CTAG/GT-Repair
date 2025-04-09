@@ -1,0 +1,23 @@
+public void testIssue() {
+    String js =
+        "var goog = {};\n" +
+        "goog.scope;\n" +
+        "\n" +
+        "var ns = {};\n" +
+        "ns.sub = {};\n" +
+        "/** @constructor */\n" +
+        "ns.sub.C = function() {};\n" +
+        "\n" +
+        "\n" +
+        "goog.scope(function() {\n" +
+        "  var sub = ns.sub;\n" +
+        "  /** @type {sub.C} */\n" +
+        "  var x = null;\n" +
+        "});";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(
+        options);
+    WarningLevel.DEFAULT.setOptionsForWarningLevel(options);
+    compiler.compile(externs, js, options);
+}

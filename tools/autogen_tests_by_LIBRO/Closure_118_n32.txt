@@ -1,0 +1,17 @@
+public void testIssue() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("/** @const */").append("\n")
+      .append("var foo = {};").append("\n")
+      .append("foo.bar = {").append("\n")
+      .append("  bar1: function() { console.log('bar1'); }").append("\n")
+      .append("};").append("\n")
+      .append("/** @constructor */").append("\n")
+      .append("function foobar() {}").append("\n")
+      .append("foobar.prototype = foo.bar;").append("\n")
+      .append("foo.foobar = new foobar;").append("\n")
+      .append("console.log(foo.foobar.bar1);");
+    String source = sb.toString();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setInlineVariables(true);
+    options.setVariableRenaming(VariableRenaming

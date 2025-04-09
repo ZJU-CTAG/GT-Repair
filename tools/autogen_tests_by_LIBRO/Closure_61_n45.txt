@@ -1,0 +1,15 @@
+public void testClosure() {
+    String input = "Math.blah = function(test) { test.a = 5; };\n" +
+            "var test = new Object();\n" +
+            "Math.blah(test);";
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setClosurePass(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            SourceFile.fromCode("test.js", input),
+            new CompilerOptions[] {options});
+    assertEquals("Math.blah=function(a){a.a=5};var test={}", compiler.toSource());
+}

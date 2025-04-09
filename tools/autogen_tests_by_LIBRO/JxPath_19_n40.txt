@@ -1,0 +1,20 @@
+public void testIteratePointers() {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                 "<a:doc xmlns:a=\"ns\">" +
+                 " <a:elem />" +
+                 " <b:elem xmlns:b=\"ns\" />" +
+                 "</a:doc>";
+    Document document;
+    document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setLenient(true);
+    context.registerNamespace("a", "ns");
+    context.registerNamespace("b", "ns");
+    Iterator it = context.iteratePointers("//*[local-name()='elem']");
+    int i = 0;
+    while (it.hasNext()) {
+        if (i++ > 10) {
+            fail("Iterator should not be that long.");
+        }
+        System.out.println(it.next());
+    }

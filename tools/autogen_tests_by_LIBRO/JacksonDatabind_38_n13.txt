@@ -1,0 +1,20 @@
+public void testIssue48() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleType st = SimpleType.construct(MyJsonType.class);
+    JavaType type = mapper.getTypeFactory().constructType(st, TestJsonType.class);
+    // !!!
+    JsonSerializer<Object> ser = mapper.getSerializerProvider().findValueSerializer(type, null);
+    assertNotNull(ser);
+}
+
+public static class MyJsonType extends TestJsonType {
+    public int baz;
+
+    protected MyJsonType() { }
+}
+
+public static abstract class TestJsonType {
+    public int bar;
+    protected TestJsonType() { }
+}

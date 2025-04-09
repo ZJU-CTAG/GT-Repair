@@ -1,0 +1,10 @@
+public void testReadValueWithOffsetAndLength() throws IOException {
+  JsonFactory factory = new JsonFactory();
+  ByteArrayInputStream inputStream = new ByteArrayInputStream("[1,2,3,4,5]".getBytes());
+  JsonParser parser = factory.createParser(inputStream);
+  ObjectReader reader = new ObjectMapper().reader().withType(List.class);
+  List<Integer> list = reader.readValues(parser).readAll();
+  assertEquals(5, list.size());
+  assertEquals(Integer.valueOf(1), list.get(0));
+  assertEquals(Integer.valueOf(5), list.get(4));
+}

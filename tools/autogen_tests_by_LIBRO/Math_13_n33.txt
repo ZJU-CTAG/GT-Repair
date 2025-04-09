@@ -1,0 +1,27 @@
+public void testIssue108() {
+    // create a simple problem
+    MultivariateVectorFunction f = new MultivariateVectorFunction() {
+        public double[] value(double[] x) {
+            return x;
+        }
+    };
+
+    MultivariateMatrixFunction j = new MultivariateMatrixFunction() {
+        public double[][] value(double[] x) {
+            return new double[][] { { 1 } };
+        }
+    };
+
+    // create a vector of 41200 weights
+    // This fails due to a memory exception when creating a full 41200x41200 matrix
+    double[] w = new double[41200];
+    Arrays.fill(w, 1);
+    Weight weight = new Weight(w);
+
+    double[] startPoint = new double[] { 0 };
+    double[] target = new double[] { 1 };
+
+    LeastSquaresOptimizer.Optimum optimum = new LevenbergMarquardtOptimizer().optimize(new InitialGuess(startPoint),
+                                                                                      new MaxEval(100),
+                                                                                      weight,
+                                                                                      new Target(target),

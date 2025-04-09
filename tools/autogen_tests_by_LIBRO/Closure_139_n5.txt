@@ -1,0 +1,10 @@
+public void testFunctionRedefinition() {
+    ScriptEngine engine = ScriptEngineUtils.createEngine(ScriptEngineUtils.CLOSURE_COMPILER);
+    engine.put(ScriptEngine.FILENAME, "test.js");
+    engine.put(ScriptEngine.ARGV, Collections.singletonList("--third_party"));
+    try {
+        engine.eval("function assert(b) {if (!b) throw 'error'}; assert(f() === 1); var f = function() {return 2;}; assert(f() === 2); function f() {return 1;}");
+    } catch (ScriptException e) {
+        fail("Script should not throw an exception: " + e.getMessage());
+    }
+}

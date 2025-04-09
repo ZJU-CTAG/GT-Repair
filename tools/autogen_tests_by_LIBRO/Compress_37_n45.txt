@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    try (InputStream fis = getClass().getResourceAsStream("apache-commons-compress-1.18-src.tar.gz")) {
+        ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        try (ArchiveInputStream in = factory.createArchiveInputStream("tar", fis)) {
+            int count = 0;
+            ArchiveEntry entry;
+            while ((entry = in.getNextEntry()) != null) {
+                count++;
+                if (count > 100) {
+                    break;
+                }
+            }
+        }
+    }
+}

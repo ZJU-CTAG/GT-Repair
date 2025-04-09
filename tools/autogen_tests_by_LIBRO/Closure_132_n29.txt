@@ -1,0 +1,8 @@
+public void testIfStatement() {
+    String code = "if (es[--esi][es[esi + 1]] === 1) { es[esi] = 0; } else { es[esi] = 1; }";
+    CompilationUnit cu = parse(code);
+    List<Statement> stmts = cu.getStatements();
+    assertEquals(1, stmts.size());
+    IfStatement stmt = (IfStatement)stmts.get(0);
+    assertEquals("es[--esi] = 1 === es[esi][es[esi + 1]] ? 0 : 1;", stmt.getThenStatement().toString());
+}

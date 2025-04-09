@@ -1,0 +1,10 @@
+public void testSample()
+{
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("2147483648", Integer.class);
+        fail("Should not pass");
+    } catch (JsonProcessingException e) {
+        assertTrue(e.getMessage(), e.getMessage().startsWith("Numeric value (2147483648) out of range of int (" + Integer.MIN_VALUE + " - " + Integer.MAX_VALUE + ")"));
+    }
+}

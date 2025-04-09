@@ -1,0 +1,19 @@
+public void testIssue146() {
+    try {
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setParseIntegerOnly(false);
+        nf.setParseNegativeNumbers(true);
+        nf.setParseWholeNumbersOnly(false);
+        nf.setParseStrict(false);
+        nf.setGroupingUsed(false);
+        nf.setMaximumFractionDigits(2);
+        nf.setMaximumIntegerDigits(2);
+        nf.setMinimumFractionDigits(2);
+        nf.setMinimumIntegerDigits(1);
+        nf.setParseBigDecimal(false);
+
+        assertEquals(Double.valueOf(-0.0), nf.parse("  -0.0 "));
+    } catch (ParseException e) {
+        fail();
+    }
+}

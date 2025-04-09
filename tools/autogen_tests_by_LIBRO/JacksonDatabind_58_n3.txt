@@ -1,0 +1,8 @@
+public void testGaeIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.enable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    mapper.enable(MapperFeature.USE_GETTERS_AS_SETTERS);
+    mapper.enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.NON_FINAL, "@class");
+    MyException exception = mapper.readValue("{\"@class\":\"com.github.drapostolos.typeparser.MyException\",\"cause\":{\"@class\":\"com.github.drapostolos.typeparser.MyException\",\"cause\":null,\"message\":\"cause\"},\"message\":\"message\"}", MyException.class);
+}

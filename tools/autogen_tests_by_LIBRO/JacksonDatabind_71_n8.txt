@@ -1,0 +1,17 @@
+public void testKeyDeserializerForCharSequence() throws Exception
+{
+    final String NAME = "foo";
+    final String EXPECTED_JSON = "{\"name\":\""+NAME+"\"}";
+    final String EXPECTED_JSON_ARRAY = "[{\"name\":\""+NAME+"\"}]";
+    final String EXPECTED_JSON_KEY = "\""+NAME+"\"";
+    
+    final ObjectMapper mapper = new ObjectMapper();
+    
+    final PojoWithCharSequenceKey pojo = new PojoWithCharSequenceKey();
+    pojo.name = NAME;
+    
+    assertEquals(EXPECTED_JSON, mapper.writeValueAsString(pojo));
+    assertEquals(EXPECTED_JSON_ARRAY, mapper.writeValueAsString(new PojoWithCharSequenceKey[]{pojo}));
+    assertEquals(EXPECTED_JSON_KEY, mapper.writeValueAsString(NAME));
+    
+    assertEquals(pojo, mapper.readValue(EXPECTED_JSON, PojoWith

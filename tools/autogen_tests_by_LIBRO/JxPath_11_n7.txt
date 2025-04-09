@@ -1,0 +1,15 @@
+public void testIssue() {
+    Map map = new HashMap();
+    map.put("B", "http://b/");
+    map.put("A", "http://a/");
+    String xml = "<ElementA A:myAttr=\"Mytype\"><B:ElementB>MY VALUE</B:ElementB></ElementA>";
+    JXPathContext context = JXPathContext.newContext(null, null, map);
+    context.setLenient(true);
+    context.setFactory(new DocumentFactory());
+    context.setLenient(true);
+    try {
+        context.createPathAndSetValue("ElementA/@myAttr", "XYZ");
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("test",
+            "function test() {\n" +
+            "  var arg = arguments;\n" +
+            "  window.setTimeout(function() {\n" +
+            "    alert(arg);\n" +
+            "  }, 0);\n" +
+            "}\n")
+    }, options);
+}

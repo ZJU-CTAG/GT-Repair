@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String source = "function a() {};\n"
+            + "function b() {\n"
+            + "  var arg = arguments;\n"
+            + "  setTimeout(function() { alert(arg); }, 0);\n"
+            + "};";
+    CompilerOptions options = new CompilerOptions();
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setWarningLevel(DiagnosticGroups.COLLAPSING_ARGUMENTS, CheckLevel.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    test(source, "function a(){}\n"
+            + "function b(){setTimeout(function(){alert(arguments)},0)}", options);
+}

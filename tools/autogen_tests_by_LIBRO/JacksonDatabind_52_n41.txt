@@ -1,0 +1,11 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new GuavaModule());
+
+    ValueObject valueObject = new ValueObject(ExternalId.of(ExternalIdType.CORPORATE_ID, "corporateId"));
+
+    String json = mapper.writeValueAsString(valueObject);
+    ValueObject deserialized = mapper.readValue(json, ValueObject.class);
+
+    assertEquals(valueObject, deserialized);
+}

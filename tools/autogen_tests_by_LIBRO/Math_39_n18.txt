@@ -1,0 +1,20 @@
+public void testIssue() throws MathIllegalArgumentException, MathIllegalStateException {
+        final double initialTime = 0;
+        final double initialState[] = new double[]{ 1, 0 };
+        final double finalTime = 2.0e-4;
+
+        FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+            public int getDimension() {
+                return 2;
+            }
+            public void computeDerivatives(double t, double[] y, double[] yDot) {
+                yDot[0] = y[1];
+                yDot[1] = - y[0];
+            }
+        };
+
+        for (final double stepSize : new double[]{ 1.0e-2, 1.0e-3, 1.0e-4 }) {
+            FirstOrderIntegrator integrator = new DormandPrince853Integrator(stepSize, stepSize, stepSize, stepSize);
+            integrator.addStepHandler(new StepHandler() {
+                public void handleStep(StepInterpolator interpolator, boolean isLast) throws MathIllegalStateException {
+                   

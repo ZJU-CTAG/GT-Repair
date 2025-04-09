@@ -1,0 +1,13 @@
+public void testDefaultPrettyPrinterSubClass() throws JsonProcessingException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter() {
+        @Override
+        public DefaultPrettyPrinter createInstance() {
+            return new DefaultPrettyPrinter();
+        }
+    });
+    // Should call createInstance()
+    String json = writer.writeValueAsString("test");
+    assertEquals("\"test\"", json);
+}

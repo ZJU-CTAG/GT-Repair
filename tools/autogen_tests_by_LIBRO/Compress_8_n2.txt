@@ -1,0 +1,11 @@
+public void testTarHeader() throws IOException {
+    byte[] buffer = new byte[512];
+    for(int i=0; i < 400; i++) {
+        buffer[i] = 0;
+    }
+    System.arraycopy("this is a test".getBytes(), 0, buffer, 0, 14);
+    // set size to a non-octal number
+    buffer[124] = 0x31;
+    
+    assertEquals(12345, new TarArchiveEntry(buffer).getSize());
+}

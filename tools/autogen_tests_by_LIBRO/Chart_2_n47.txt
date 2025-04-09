@@ -1,0 +1,11 @@
+public void testIterateRangeBounds() {
+    DefaultIntervalCategoryDataset d = new DefaultIntervalCategoryDataset(
+            new double[] {0, 1, 2, 3, 4}, new double[] {1, 2, 3, 4, 5},
+            new double[] {0, 1, 2, 3, 4}, new double[] {1, 2, 3, 4, 5});
+    assertEquals(new Range(0, 5), DatasetUtilities.iterateRangeBounds(d, false));
+    assertEquals(new Range(0, 5), DatasetUtilities.iterateRangeBounds(d, true));
+
+    d.setIntervalWidth(0.5);
+    assertEquals(new Range(0, 4.5), DatasetUtilities.iterateRangeBounds(d, false));
+    assertEquals(new Range(0.25, 4.75), DatasetUtilities.iterateRangeBounds(d, true));
+}

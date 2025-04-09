@@ -1,0 +1,22 @@
+public void testResetDefaultNamespace() {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        + "<b:foo xmlns:b=\"bla\" xmlns=\"test111\">"
+        + " <b:bar>a</b:bar>"
+        + " <test></test>"
+        + "</b:foo>";
+
+    try {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));
+
+        JXPathContext context = JXPathContext.newContext(doc);
+        context.setLenient(true);
+
+        assertStringPathValue(context, "/b:foo/b:bar", "a");
+        assertStringPathValue(context, "/b:foo/test", "");
+
+        context = JXPathContext.newContext(doc);
+        context.setLenient(true);
+        context.setNamespaceContextPointer(new DOM

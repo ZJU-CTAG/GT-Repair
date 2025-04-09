@@ -1,0 +1,13 @@
+public void testArgumentCaptor() throws Exception {
+    List<Object> objects = mock(List.class);
+    // works
+    objects.addAll(new ArrayList<>());
+    ArgumentCaptor<Collection<?>> captor = ArgumentCaptor.forClass(Collection.class);
+    verify(objects).addAll(captor.capture());
+    assertTrue(captor.getValue().isEmpty());
+    // fails
+    objects.addAll(new Object());
+    captor = ArgumentCaptor.forClass(Collection.class);
+    verify(objects).addAll(captor.capture());
+    assertTrue(captor.getValue().isEmpty());
+}

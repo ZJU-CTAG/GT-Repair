@@ -1,0 +1,23 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enableDefaultTyping();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    CommandAPDU capdu = new CommandAPDU(new byte[] {-128, 0, 2, 1, 1, -1});
+    String json = mapper.writeValueAsString(capdu);
+    System.out.println(json);
+    CommandAPDU capdu2 = mapper.readValue(json, CommandAPDU.class);
+    assertEquals(capdu, capdu2);
+}
+
+class CommandAPDU {
+    private byte[] apdu;
+    @JsonCreator
+    public CommandAPDU(@JsonProperty(value = "bytes") byte[] apdu) {
+        this.apdu = apdu.clone();
+    }
+    @JsonValue
+    public byte[] getBytes() {
+        return apdu.clone();
+    }
+}

@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    // to reproduce the issue,
+    // when deserialization is called with null token,
+    // JsonMappingException is thrown, which is quite unexpected
+    // (we may want to improve the situation)
+    ObjectMapper om = new ObjectMapper();
+    ObjectIdGenerator<?> gen = om.getSerializerProvider().constructType(Object.class).getRawClass().getAnnotation(ObjectIdGenerators.class).value()[0].generator();
+    om.setHandlerInstantiator(new HandlerInstantiator() {
+        @Override
+        public JsonDeserializer<?> deserializerInstance(DeserializationConfig config, Annotated annotated, Class<?> deserClass) {
+            if (deserClass.isAssignableFrom(ObjectIdGenerator.class)) {
+                try {
+                    return (JsonDeserializer<?>) deserClass.getConstructor(Class.class).newInstance(String.class);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e

@@ -1,0 +1,15 @@
+public void testIssue() {
+    String source = "var foo = function bar(){var bar;alert(bar)};";
+    Compiler compiler = new Compiler();
+    JSSourceFile input = JSSourceFile.fromCode("in", source);
+    JSSourceFile[] inputs = new JSSourceFile[]{input};
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(externs, inputs, options);
+    assertTrue(result.success);
+    String compiled = compiler.toSource();
+    assertEquals(3, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+    assertTrue(compiled.contains("alert(void 0);"));
+}

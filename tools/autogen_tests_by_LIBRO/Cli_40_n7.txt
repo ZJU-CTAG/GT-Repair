@@ -1,0 +1,21 @@
+public void testTypeHandler() {
+    TypeHandler handler = new TypeHandler() {
+    };
+    try {
+        handler.createValue("somestring", String.class);
+    } catch (ParseException e) {
+        fail("String should not throw an exception.");
+    }
+    try {
+        handler.createValue("somestring", Class.class);
+    } catch (ParseException e) {
+        fail("Class should not throw an exception.");
+    }
+    assertNull(handler.createValue("somestring", StringBuffer.class));
+    try {
+        handler.createValue("somestring", StringBuffer.class);
+        fail("StringBuffer should throw an exception.");
+    } catch (ParseException e) {
+        // success
+    }
+}

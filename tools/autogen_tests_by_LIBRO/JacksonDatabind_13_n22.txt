@@ -1,0 +1,17 @@
+public void testObjectId158()
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    POJO158 input = new POJO158(null);
+    String json = mapper.writeValueAsString(input);
+    POJO158 output = mapper.readValue(json, POJO158.class);
+    Assert.assertEquals(input.id, output.id);
+}
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+static class POJO158
+{
+    @JsonProperty("id") public Integer id;
+
+    public POJO158() { }
+    public POJO158(Integer id) { this.id = id; }
+}

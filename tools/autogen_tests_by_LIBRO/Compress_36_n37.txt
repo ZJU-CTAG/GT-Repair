@@ -1,0 +1,16 @@
+public void testEmptyEntries() throws Exception {
+    byte[] content = new byte[0];
+    File f = File.createTempFile("test", ".7z");
+    SevenZOutputFile out = new SevenZOutputFile(f);
+    SevenZArchiveEntry entry = out.createArchiveEntry(new ByteArrayInputStream(content), "test.txt");
+    out.putArchiveEntry(entry);
+    out.closeArchiveEntry();
+    out.close();
+
+    SevenZFile szf = new SevenZFile(f);
+    entry = szf.getNextEntry();
+    byte[] buffer = new byte[10240];
+    int read = entry.read(buffer);
+    assertEquals(0, read);
+    szf.close();
+}

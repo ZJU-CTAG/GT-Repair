@@ -1,0 +1,14 @@
+public void testNamespaceAttribute() {
+    XMLDocument doc = new XMLDocument();
+    doc.registerNamespace("A", "http://www.nsa.gov");
+    doc.registerNamespace("B", "http://www.nsa.gov");
+    Element root = doc.createElement("ElementA");
+    root.setAttributeNS("http://www.nsa.gov", "A:myAttr", "Mytype");
+    doc.appendChild(root);
+    Element elem = doc.createElementNS("http://www.nsa.gov", "B:ElementB");
+    elem.appendChild(doc.createTextNode("MY VALUE"));
+    root.appendChild(elem);
+    assertEquals("ElementA", doc.getDocumentElement().getTagName());
+    assertEquals("ElementB", doc.getDocumentElement().getFirstChild().getNodeName());
+    assertEquals("MY VALUE", doc.getDocumentElement().getFirstChild().getFirstChild().getNodeValue());
+    assertEquals("Mytype", doc.getDocumentElement().getAttributeNS("http://www.ns

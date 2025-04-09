@@ -1,0 +1,17 @@
+public void testErrorRecoveryForReadValues() throws Exception
+{
+    final String JSON = aposToQuotes("{'a':1,'b':['x','y','z'],'c':3}");
+    ObjectReader reader = new ObjectMapper().reader().with(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    MappingIterator<Map<String,Object>> it = reader.readValues(JSON);
+    Map<String,Object> root = it.nextValue();
+    assertNotNull(root);
+    assertEquals(3, root.size());
+    assertEquals(Integer.valueOf(1), root.get("a"));
+    assertEquals(Integer.valueOf(3), root.get("c"));
+    List<?> array = (List<?>) root.get("b");
+
+    // and now let's try to modify underlying stream to have garbage:
+    StringBuilder sb = new StringBuilder(JSON);
+    sb.insert(sb.length()-1, ", { 'garbage' : [] }");
+    try {
+        it.nextValue();

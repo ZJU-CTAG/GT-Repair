@@ -1,0 +1,30 @@
+public void testIssue() throws Exception {
+    String json = mapper.writeValueAsString(new Bean());
+    assertEquals("{\"a\":\"b\"}", json);
+}
+
+@SuppressWarnings("serial")
+public static class Bean {
+    @JsonSerialize(using = MySerializer.class)
+    // or
+    //@JsonSerialize(converter = MyConverter.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters() {
+        return new HashMap<String, String>() {
+            {
+                put("a", "b");
+            }
+        };
+    }
+}
+
+static class MySerializer extends JsonSerializer<Object> {
+    @Override
+    public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStringField("a", "b");
+    }
+}
+
+static class MyConverter extends StdConverter<Map<String, String>, Map<String, String>> {
+    @Override
+    public Map

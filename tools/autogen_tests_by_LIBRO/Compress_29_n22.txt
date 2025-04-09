@@ -1,0 +1,18 @@
+public void testEncoding() throws Exception {
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    asf.setEntryEncoding("UTF-8");
+    String expected = "基本的な使い方";
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream os = asf.createArchiveOutputStream(ArchiveStreamFactory.JAR, baos);
+    ArchiveEntry entry = asf.createArchiveEntry(os, expected, "test.txt");
+    os.putArchiveEntry(entry);
+    os.write(expected.getBytes("UTF-8"));
+    os.closeArchiveEntry();
+    os.finish();
+    os.close();
+
+    String actual;
+    ArchiveInputStream is = asf.createArchiveInputStream(ArchiveStreamFactory.JAR, new ByteArrayInputStream(baos.toByteArray()));
+    while ((entry = (ArchiveEntry) is.getNextEntry()) != null) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+       

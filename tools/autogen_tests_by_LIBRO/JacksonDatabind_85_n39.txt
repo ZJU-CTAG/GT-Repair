@@ -1,0 +1,14 @@
+public void testContextualDateSerializer() throws Exception {
+    final SimpleDateFormat customFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    customFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(customFormat);
+    mapper.getSerializationConfig().addMixInAnnotations(Date.class, DateMixIn.class);
+    mapper.getDeserializationConfig().addMixInAnnotations(Date.class, DateMixIn.class);
+    final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    cal.clear();
+    cal.set(2011, Calendar.JANUARY, 1, 12, 0, 0);
+    final Date date = cal.getTime();
+    final String dateAsString = mapper.writeValueAsString(date);
+    assertEquals("\"2011-01-01T12:00:00+0000\"", dateAsString);
+    final Date date2 = mapper.readValue(

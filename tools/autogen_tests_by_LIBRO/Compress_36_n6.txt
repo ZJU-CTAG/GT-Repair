@@ -1,0 +1,20 @@
+public void testIssue108() throws Exception {
+    final File file = getFile("COMPRESS-340.7z");
+    SevenZFile sevenZFile = new SevenZFile(file);
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertEquals("bar", new String(read(entry), "UTF-8"));
+    entry = sevenZFile.getNextEntry();
+    assertNull(entry);
+    entry = sevenZFile.getNextEntry();
+    assertEquals("", new String(read(entry), "UTF-8"));
+    entry = sevenZFile.getNextEntry();
+    assertEquals("", new String(read(entry), "UTF-8"));
+    entry = sevenZFile.getNextEntry();
+    assertEquals("", new String(read(entry), "UTF-8"));
+    entry = sevenZFile.getNextEntry();
+    assertEquals("", new String(read(entry), "UTF-8"));
+    entry = sevenZFile.getNextEntry();
+    assertNull(entry);
+    sevenZFile.close();
+}
+``

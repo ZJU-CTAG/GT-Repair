@@ -1,0 +1,21 @@
+public void testIssue105() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler.setLoggingLevel(Level.FINE);
+    //options.setPrettyPrint(true);
+    List<SourceFile> externs = Arrays.asList(
+            SourceFile.fromCode("window.js",
+                    "var window = {};"
+            ));
+    List<SourceFile> sources = Arrays.asList(
+            SourceFile.fromCode("input.js",
+                    "window['foo'] = function (obj, modifiesProp) {\n" +
+                    "    return (function (saved) {\n" +
+                    "        return modifiesProp(obj) + saved;\n" +
+                    "    })(obj['prop']);\n" +
+                    "}\n"
+            ));
+    Result result = compiler.compile(externs, sources, options);
+    String output = compiler.toSource();
+    System.out.println

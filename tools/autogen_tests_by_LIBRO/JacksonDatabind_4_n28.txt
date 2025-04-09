@@ -1,0 +1,11 @@
+public void testIssue110() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[\"result\"]", String[].class);
+    } catch (JsonMappingException jme) {
+        Collection<Reference> references = jme.getPath();
+        assertEquals(1, references.size());
+        Reference reference = references.iterator().next();
+        assertEquals(0, reference.getIndex());
+    }
+}

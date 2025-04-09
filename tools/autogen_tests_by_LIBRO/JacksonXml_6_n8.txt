@@ -1,0 +1,12 @@
+public void testWriteBinary() throws IOException {
+	ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	ToXmlGenerator xmlGenerator = new ToXmlGenerator(byteArrayOutputStream, JsonEncoding.UTF8, new JsonFactory().getXMLPrettyPrinter());
+	xmlGenerator.writeStartDocument();
+	xmlGenerator.writeStartObject();
+	xmlGenerator.writeBinaryField("binary", new ByteArrayInputStream("TEST".getBytes()), 4);
+	xmlGenerator.writeEndObject();
+	xmlGenerator.writeEndDocument();
+	xmlGenerator.close();
+	String xml = byteArrayOutputStream.toString();
+	assertEquals("<xml><binary>VFNF</binary></xml>", xml);
+}

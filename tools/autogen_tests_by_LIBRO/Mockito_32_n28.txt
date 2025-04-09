@@ -1,0 +1,15 @@
+public void testIssue133() {
+    MockFactory mockFactory = new MockFactory();
+    try {
+        mockFactory.createMock(PublicClass.class);
+    } catch (RuntimeException e) {
+        assertEquals("Cannot mock/spy class org.mockitousage.packageprivate.PublicClass\n" +
+                "Mockito cannot mock/spy because :\n" +
+                " - class is final\n" +
+                " - class is private\n" +
+                " - class is package private\n" +
+                " - class is non-static inner class\n" +
+                " - class is local class",
+                e.getMessage());
+    }
+}

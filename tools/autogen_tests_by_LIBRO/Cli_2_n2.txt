@@ -1,0 +1,22 @@
+public void testIssue() {
+    Options options = buildCommandLineOptions();
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[]{"-t", "-something"});
+        fail("expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        assertTrue(e.getMessage().indexOf("Invalid value for option: -o") >= 0);
+    }
+}
+
+private Options buildCommandLineOptions() {
+    Options options = new Options();
+
+    Option tOption = OptionBuilder.create("t");
+    tOption.setArgName("test");
+    tOption.setArgs(1);
+    tOption.setDescription("test");
+    tOption.setRequired(false);
+    options.addOption(tOption);
+
+    return options;

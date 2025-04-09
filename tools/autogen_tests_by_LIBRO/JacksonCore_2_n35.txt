@@ -1,0 +1,15 @@
+public void testParser() {
+    // This should result in a parse error
+    String in = "123true";
+    InputStream is = new ByteArrayInputStream(in.getBytes());
+    StringReader sr = new StringReader(in);
+    JsonFactory jf = new JsonFactory();
+    JsonParser jp = jf.createJsonParser(is);
+    JsonParser jp2 = jf.createJsonParser(sr);
+
+    assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+    assertEquals(JsonToken.VALUE_TRUE, jp.nextToken());
+
+    assertEquals(JsonToken.VALUE_NUMBER_INT, jp2.nextToken());
+    assertEquals(JsonToken.VALUE_TRUE, jp2.nextToken());
+}

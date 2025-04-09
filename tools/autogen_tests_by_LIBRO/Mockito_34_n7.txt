@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    JarFile jarFile = new JarFile(new File("mockito-core-1.9.5.jar"));
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry jarEntry = entries.nextElement();
+        if (jarEntry.getName().endsWith(".java")) {
+            throw new AssertionError("Source files must not be put in binary JAR");
+        }
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String html = "<body><div1></div1><div2></div2><div3></div3><div4></div4></body>";
+    Document doc = Jsoup.parse(html);
+
+    Element body = doc.body();
+    Element div3 = body.child(2);
+    Element div4 = body.child(3);
+
+    List<Element> toMove = new ArrayList<>();
+    toMove.add(div3);
+    toMove.add(div4);
+
+    body.insertChildren(0, toMove);
+
+    String result = doc.toString().replaceAll("\\s+", "");
+    assertEquals("<body><div3></div3><div4></div4><div1></div1><div2></div2></body>", result);
+}

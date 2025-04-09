@@ -1,0 +1,23 @@
+public void testExternExport() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setExternExports(true);
+    Result result = compiler.compile(
+        "/** @typedef {function(number, string=):number} */\n" +
+        "var typedefTest;\n" +
+        "function test() {\n" +
+        "    /** @type {typedefTest} */\n" +
+        "    var testType = function(x, y) {\n" +
+        "        return x + 1;\n" +
+        "    }\n" +
+        "    return testType(0);\n" +
+        "}",
+        options);
+
+    // Check the compiled output
+    assertFalse(result.success);
+    assertTrue(result.errors.length > 0);
+    assertEquals(1, result.errors.length);
+    assertEquals(

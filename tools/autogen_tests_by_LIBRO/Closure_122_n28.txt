@@ -1,0 +1,17 @@
+public void testInconsistentComments() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    
+    String[] input = new String[] {
+    		"/* @preserve Foo License */",
+    		"alert(\"foo\");"
+    };
+    
+    Result result = compile(options, input);
+    assertEquals(0, result.errors.length);
+    assertEquals(1, result.warnings.length);
+}

@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    final ObjectMapper om = new ObjectMapper();
+    om.configure(MapperFeature.AUTO_DETECT_SETTERS, true);
+    om.configure(MapperFeature.AUTO_DETECT_FIELDS, true);
+    om.configure(MapperFeature.AUTO_DETECT_CREATORS, true);
+    om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    final String json = "{\"emp_id\": 1234, \"emp_age\": 30, \"emp_first_name\": \"John\", \"emp_last_name\": \"Doe\"}";
+
+    Employee emp = om.readValue(json, Employee.class);
+
+    System.out.println(emp.getAge());
+    System.out.println(emp.getId());
+    System.out.println(emp.getName());
+}

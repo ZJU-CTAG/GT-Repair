@@ -1,0 +1,6 @@
+public void testIssue110() {
+    ObjectMapper mapper = new ObjectMapper();
+    JavaType type = mapper.getTypeFactory().constructType(String.class);
+    PolymorphicTypeValidator ptv = TypeNameIdValidator.construct(TypeNameIdValidator.TypeNameIdResolver.construct(mapper, type, type, null), EnumSet.noneOf(PolymorphicTypeValidator.Validity.class), null, null);
+    assertFalse(ptv.useForType(mapper.constructType(String.class)));
+}

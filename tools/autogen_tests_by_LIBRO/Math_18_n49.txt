@@ -1,0 +1,12 @@
+public void testBounds() {
+    double lower = 0.0;
+    double upper = 1.0;
+    double start = (lower + upper) / 2;
+    OptimizationData[] optData = new OptimizationData[3];
+    optData[0] = new MaxEval(1000);
+    optData[1] = new ObjectiveFunction(new Parabola());
+    optData[2] = new InitialGuess(new double[] {start});
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    PointValuePair optimum = optimizer.optimize(optData);
+    assertEquals(lower, optimum.getPoint()[0], 1e-14);
+}

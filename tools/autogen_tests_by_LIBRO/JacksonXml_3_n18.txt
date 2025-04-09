@@ -1,0 +1,15 @@
+public void testIssue129() throws Exception
+{
+    final XmlMapper xmlMapper = new XmlMapper();
+    final FromXmlParser parser = (FromXmlParser)xmlMapper.getFactory().createParser("<xml><child attr=\"value\">content</child></xml>");
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("xml", parser.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("child", parser.getCurrentName());
+    assertEquals(JsonToken.START_OBJECT, parser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, parser.nextToken());
+    assertEquals("attr", parser.getCurrentName());
+    assertEquals(JsonToken.VALUE_STRING, parser.nextToken());
+    assertEquals(null,

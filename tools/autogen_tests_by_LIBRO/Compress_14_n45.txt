@@ -1,0 +1,15 @@
+public void testIssue107 () throws Exception {
+    File f = new File("src/test/resources/test_tar_symlink.tar");
+    TarArchiveInputStream is = new TarArchiveInputStream(new FileInputStream(f));
+    TarArchiveEntry nextEntry = is.getNextTarEntry();
+    assertEquals("test_tar_symlink/", nextEntry.getName());
+    nextEntry = is.getNextTarEntry();
+    assertEquals("test_tar_symlink/bar/", nextEntry.getName());
+    nextEntry = is.getNextTarEntry();
+    assertEquals("test_tar_symlink/bar/foo.txt", nextEntry.getName());
+    nextEntry = is.getNextTarEntry();
+    assertEquals("test_tar_symlink/blah.txt", nextEntry.getName());
+    nextEntry = is.getNextTarEntry();
+    assertEquals("test_tar_symlink/foo.txt", nextEntry.getName());
+    nextEntry = is.getNextTarEntry();
+    assertEquals("test

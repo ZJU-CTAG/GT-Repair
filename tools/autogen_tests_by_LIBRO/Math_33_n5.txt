@@ -1,0 +1,13 @@
+public void testSimplexSolver() {
+    SimplexSolver solver = new SimplexSolver();
+    solver.setMaxIterations(1000000);
+
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 1 }, 0);
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 1, 0 }, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] { 0, 1 }, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] { 1, 1 }, Relationship.EQ, 1));
+
+    RealPointValuePair solution = solver.optimize(f, constraints, GoalType.MINIMIZE, true);
+    assertEquals(solution.getValue(), 0.7071067811865475, epsilon);
+}

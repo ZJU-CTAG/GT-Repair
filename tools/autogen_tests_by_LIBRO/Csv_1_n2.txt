@@ -1,0 +1,20 @@
+public void testExtendedBufferReader() {
+    try {
+        ExtendedBufferedReader reader = new ExtendedBufferedReader(new StringReader("\r\n\r\r\n\n\r"));
+        assertEquals(2, reader.getLineNumber());
+        assertEquals(3, reader.readLine().length());
+        assertEquals(3, reader.getLineNumber());
+        assertEquals(3, reader.readLine().length());
+        assertEquals(4, reader.getLineNumber());
+        assertEquals(2, reader.readLine().length());
+        assertEquals(5, reader.getLineNumber());
+        assertEquals(1, reader.readLine().length());
+        assertEquals(6, reader.getLineNumber());
+        assertNull(reader.readLine());
+        assertEquals(6, reader.getLineNumber());
+    } catch (IOException e) {
+        System.out.println("Unexpected exception " + e.getMessage());
+        e.printStackTrace();
+        fail("Unexpected exception " + e.getMessage());
+    }
+}

@@ -1,0 +1,12 @@
+public void testEventCloseToStepStart() {
+    // this test case is inspired by a problem found during ODE integration
+    // the last event in a pair of very close event may not be detected
+    // this is a regression from release 1.5
+    FieldODEIntegrator integ = new DormandPrince54Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    TestProblem5 pb = new TestProblem5();
+    double stopTime = integ.integrate(pb,
+                                      pb.getInitialState(),
+                                      pb.getFinalTime());
+    Assert.assertTrue(pb.getEventCount() == 2);
+    Assert.assertEquals(pb.getEventTime(), stopTime, 1.0e-10);
+}

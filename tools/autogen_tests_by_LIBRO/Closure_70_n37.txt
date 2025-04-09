@@ -1,0 +1,20 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.disableRunTypeCheckAfterProcessing();
+    compiler.initOptions(new CompilerOptions());
+
+    Result result = compiler.compile(
+            JsDoc.createFileLevelJsDoc(""),
+            SourceFile.fromCode("v.js", "function foo() {\n" +
+                    " return 3;\n" +
+                    "}\n" +
+                    "foo();\n" +
+                    "foo();\n"));
+
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    JSError[] typed = compiler.getTypeCheckingHasRun();
+    assertNotNull(typed);
+    assertEquals(0, typed.length);
+}

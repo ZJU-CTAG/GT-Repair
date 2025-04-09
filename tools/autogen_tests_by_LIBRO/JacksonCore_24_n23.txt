@@ -1,0 +1,13 @@
+public void testOverflow() throws Exception {
+    // Works fine: int fits in String
+    String json = quote("12345678");
+    assertEquals(Integer.valueOf(12345678), MAPPER.readValue(json, Integer.class));
+    // But should throw exception for "too long" value
+    json = quote("123456789");
+    try {
+        MAPPER.readValue(json, Integer.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "out of range of int");
+    }
+}

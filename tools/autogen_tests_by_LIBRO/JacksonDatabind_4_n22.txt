@@ -1,0 +1,14 @@
+public void testJsonMapping35 () {
+  Map<String, Object> m = new LinkedHashMap<String, Object>();
+  m.put("name", "peter");
+  m.put("age", "20");
+  m.put("birthday", "2010-10-10");
+  m.put("children", new String[] {"baby"});
+  try {
+    ObjectMapper om = new ObjectMapper();
+    Person p = om.readValue(new ObjectMapper().writeValueAsString(m), Person.class);
+  } catch (JsonMappingException e) {
+    e.printStackTrace();
+    assertEquals(e.getMessage().indexOf("birthday") > 0, true);
+  }
+}

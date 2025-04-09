@@ -1,0 +1,11 @@
+public void testLocale() throws Exception
+{
+    Locale locale = new Locale("en-US");
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Locale.class, new LocaleDeserializer());
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(module);
+    String json = objectMapper.writeValueAsString(locale);
+    assertEquals(locale, objectMapper.readValue(json, Locale.class));
+}
+

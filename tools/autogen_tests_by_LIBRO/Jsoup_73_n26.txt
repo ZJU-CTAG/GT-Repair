@@ -1,0 +1,15 @@
+public void testInheritNamespace() throws IOException, ParserConfigurationException, SAXException, TransformerException {
+    Document document = Jsoup.parse(new File("test.html"), StandardCharsets.UTF_8.name());
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    org.w3c.dom.Document w3cDocument = builder.newDocument();
+    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    transformer.transform(new DOMSource(document), new DOMResult(w3cDocument));
+    NodeList divs = w3cDocument.getElementsByTagName("div");
+    for (int i = 0; i < divs.getLength(); i++) {
+        Node div = divs.item(i);
+        NodeList children = div.getChildNodes();
+        for (int j = 0; j < children.getLength(); j++) {
+            Node child = children.item(j);
+            String namespaceURI = child.getNamespaceURI();
+            String localName = child.get

@@ -1,0 +1,10 @@
+public void testDelegatingMethodEquals() {
+    Object mockObject = mock(Object.class);
+    Method method = Object.class.getDeclaredMethods()[0];
+    Mockito.verify(mockObject).toString();
+    DelegatingMethod dm = new DelegatingMethod(mockObject, method);
+    assertEquals(dm, dm);
+    assertEquals(dm, new DelegatingMethod(mockObject, method));
+    assertNotSame(dm, new DelegatingMethod(new Object(), method));
+    assertNotSame(dm, new DelegatingMethod(mockObject, Object.class.getDeclaredMethods()[1]));
+}

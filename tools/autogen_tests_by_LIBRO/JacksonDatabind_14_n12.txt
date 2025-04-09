@@ -1,0 +1,21 @@
+public void testCustomDeserializer() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(DataA.class, new DataADeserializer());
+    mapper.registerModule(module);
+
+    DataB db = new DataB();
+    db.da.i = 11;
+    db.da.j = 12;
+    db.k = 13;
+    String jsonBString = mapper.writeValueAsString(db);
+    JsonNode jsonBNode = mapper.valueToTree(db);
+
+    // create parent
+    DataB dbNewViaString = mapper.readValue(jsonBString, DataB.class);
+    Assert.assertEquals(5, dbNewViaString.da.i);
+    Assert.assertEquals(2, dbNewViaString.da.j);
+    Assert.assertEquals(13, dbNewViaString.k);
+
+    DataB dbNewViaNode = mapper.treeToValue(jsonBNode, DataB.class);
+    Assert.assertEquals(5

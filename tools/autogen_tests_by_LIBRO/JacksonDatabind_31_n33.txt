@@ -1,0 +1,14 @@
+public void testWrongContextPath() throws IOException {
+    String json = "{\"item\":{\"name\":\"item1\"}}";
+
+    FilterProvider filterProvider = new SimpleFilterProvider().addFilter("testFilter", SimpleBeanPropertyFilter.filterOutAllExcept("name"));
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addMixIn(Item.class, ItemMixIn.class);
+    objectMapper.setFilterProvider(filterProvider);
+
+    Item item = objectMapper.readValue(json, Item.class);
+    assertEquals("item1", item.name);
+
+    ItemDTO dto = objectMapper.convertValue(item, ItemDTO.class);
+    assertEquals(null, dto.getName());
+}

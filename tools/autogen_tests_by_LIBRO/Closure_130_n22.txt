@@ -1,0 +1,13 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCollapsePropertiesOnExternTypes(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        JSSourceFile.fromCode("externs.js", ""),
+        JSSourceFile.fromCode("test.js", "function () { return function () { var arg = arguments; setTimeout(function() { alert(arg); }, 0); } }"),
+        options);
+    assertEquals(
+        "function(){return function(){var a=arguments;setTimeout(function(){alert(a)},0)}};",
+        compiler.toSource());
+}

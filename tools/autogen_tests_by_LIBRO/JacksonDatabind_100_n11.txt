@@ -1,0 +1,16 @@
+public void testBase64CustomVariant() throws Exception {
+  Base64Variant variant = Base64Variants.getMIMEVariant().withPaddingChar('_');
+
+  ObjectMapper mapper = new ObjectMapper();
+  mapper.configOverride(byte[].class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.BASE64));
+
+  // 2.6.4
+  Assert.assertEquals("\"SXQ=_\"", mapper.writeValueAsString(new byte[] {1, 2}));
+
+  // 2.7.1
+  String str = mapper.writeValueAsString(new byte[] {1, 2});
+  Assert.assertEquals("\"SXQ=_\"", str);
+
+  byte[] data = mapper.readValue(str, byte[].class);
+  Assert.assertArrayEquals(new byte[] {1, 2}, data);
+}

@@ -1,0 +1,24 @@
+public void test_read_truncated() throws IOException {
+    // create a test file
+    File f = new File("truncated.bz2");
+    FileOutputStream fos = new FileOutputStream(f);
+    fos.write(TRUNCATED_DATA);
+    fos.close();
+
+    FileInputStream fis = new FileInputStream(f);
+    BZip2CompressorInputStream bzis = new BZip2CompressorInputStream(fis);
+    byte[] bytes = new byte[949];
+    int read = bzis.read(bytes);
+    assertEquals(read, 769);
+    fis.close();
+    bzis.close();
+
+    // CPython bz2 is able to read 770 bytes from this data
+    fis = new FileInputStream(f);
+    bzis = new BZip2CompressorInputStream(fis);
+    bytes = new byte[949];
+    read = bzis.read(bytes);
+    assertEquals(read, 770);
+    fis.close();
+    bzis.close();
+}

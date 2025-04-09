@@ -1,0 +1,22 @@
+public void testIssue146() throws Exception {
+    byte[] testData = "Hello World!".getBytes("ISO-8859-1");
+    File file = File.createTempFile("commons-compress-146", ".zip");
+    file.deleteOnExit();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+    ZipArchiveEntry ze = new ZipArchiveEntry("foo.txt");
+    ze.setSize(testData.length);
+    zos.putArchiveEntry(ze);
+    zos.write(testData);
+    zos.closeArchiveEntry();
+    zos.close();
+    byte[] buf = new byte[100];
+    FileInputStream in = new FileInputStream(file);
+    in.read(buf);
+    in.close();
+    file.delete();
+    file = File.createTempFile("commons-compress-146", ".zip");
+    file.deleteOnExit();
+    OutputStream out = new FileOutputStream(file);
+    out.write(buf);
+    out.close();
+    InputStream is = new FileInput

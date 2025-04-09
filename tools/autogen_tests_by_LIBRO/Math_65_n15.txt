@@ -1,0 +1,22 @@
+public void testWeight() {
+    final int n = 20;
+    final int p = 4;
+    double[] y = new double[n];
+    double[][] x = new double[n][p];
+    for (int i = 0; i < n; ++i) {
+        y[i] = 2 * i;
+        for (int j = 0; j < p; ++j) {
+            x[i][j] = j + 1;
+        }
+    }
+    double[] rms = new double[p];
+    double[] rmsw = new double[p];
+    double[] chi = new double[p];
+    double[] chiw = new double[p];
+    double[] w = new double[n];
+    for (int j = 0; j < p; ++j) {
+        Arrays.fill(w, 1);
+        final OLSMultipleLinearRegression ols = new OLSMultipleLinearRegression();
+        ols.setNoIntercept(true);
+        ols.newSampleData(y, x, w);
+        chi[j] = ols.

@@ -1,0 +1,12 @@
+public void testShouldHandleMissingClosingTag() {
+  String html = "<td class=\"my-cell\""
+      + "<div class=\"great-formatting\">100</div>"
+      + "</td>";
+
+  Document document = Jsoup.parse(html);
+  Elements elements = document.select("div.great-formatting");
+
+  assertNotNull(elements);
+  assertEquals(1, elements.size());
+  assertEquals("100", elements.get(0).text());
+}

@@ -1,0 +1,14 @@
+public void testIssue() {
+    String js = "window.Foo=function(b,c,a,d){if(b)for(a=c?0:0 in d;a--;);};";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println(message);
+        }
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    });
+    assertNotNull(compressor.compress(0, 0, 0, false, false));
+}

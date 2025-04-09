@@ -1,0 +1,14 @@
+public void testCoreOperationUnion() {
+    final Document doc = new Document();
+    final Element main = new Element("MAIN");
+    final Element a = new Element("A");
+    a.addContent("avalue");
+    final Element b = new Element("B");
+    b.addContent("bvalue");
+    main.addContent(a);
+    main.addContent(b);
+    doc.addContent(main);
+    final XPath xpath = new XPath("string(/MAIN/B | /MAIN/A)");
+    final String value = xpath.valueOf(doc);
+    assertEquals("avalue", value);
+}

@@ -1,0 +1,9 @@
+public void testJsonKeyLength() throws Exception {
+    String json = "{\"" + RandomStringUtils.random(262146, true, false) + "\": 1}";
+    try {
+        new ObjectMapper().readValue(json, Map.class);
+        fail();
+    } catch (JsonParseException e) {
+        assertEquals("Illegal unquoted character ((CTRL-CHAR, code " + (char)1 + ")): has to be escaped using backslash to be included in string value", e.getMessage());
+    }
+}

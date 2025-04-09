@@ -1,0 +1,15 @@
+public void testSerialization() throws JsonProcessingException {
+    ListAttribute attribute = new ListAttribute();
+    attribute.setItemJsonKey("foo");
+    attribute.setItems(Arrays.asList("foo", "bar"));
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("list attribute serializer",
+new Version(1, 0, 0, null));
+    module.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+    JsonNode tree = mapper.valueToTree(attribute);
+    JsonNode items = tree.get("items");
+    assertNotNull(items);
+    assertEquals(JsonNodeType.ARRAY, items.getNodeType());
+}

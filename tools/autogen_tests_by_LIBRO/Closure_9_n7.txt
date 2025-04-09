@@ -1,0 +1,13 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.prettyPrint = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilerInput input = new CompilerInput(new FileSourceFile(new File("src/test/resources/case/js/issue804/Bar.js")));
+    CompilerInput input2 = new CompilerInput(new FileSourceFile(new File("src/test/resources/case/js/issue804/lib/Foo.js")));
+    compiler.compile(externs, ImmutableList.of(input, input2), options);
+    assertEquals(0, compiler.getErrorCount());
+    assertEquals(0, compiler.getWarningCount());
+}

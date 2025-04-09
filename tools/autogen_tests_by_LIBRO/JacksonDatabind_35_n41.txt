@@ -1,0 +1,16 @@
+public void testObjectAndTypeIds() throws Exception
+{
+    ObjectMapper mapper = ObjectMapperFactory.createMapper(false);
+    mapper.registerModule(new JaxbAnnotationModule());
+    mapper.registerModule(new Jdk8Module());
+    
+    // enable type id inclusion
+    mapper.enableDefaultTyping(
+            ObjectMapper.DefaultTyping.NON_FINAL, TypeNameIdResolver.As.WRAPPER_OBJECT);
+    // also enable object ids
+    mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
+    // and need this to allow use of object id with default typing
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    mapper.setSerializationInclusion(Include.NON_NULL);
+
+    assertEquals("{\"com.fasterxml.jackson.databind.ObjectMapper\":{\"id\":1,\"@id\":1,\"@type\":\"com.fasterxml.jackson.dat

@@ -1,0 +1,9 @@
+public void testRead() throws Exception {
+    final byte[] data = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+    final InputStream is = new ByteArrayInputStream(data);
+    final Cipher cipher = Cipher.getInstance("DES/CBC/NoPadding");
+    cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(new byte[8], "DES"));
+    final CipherInputStream cis = new CipherInputStream(is, cipher);
+    final byte[] read = IOUtils.toByteArray(cis);
+    assertTrue(Arrays.equals(data, read));
+}

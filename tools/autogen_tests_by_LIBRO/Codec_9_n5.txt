@@ -1,0 +1,17 @@
+public void testIssueWithEncodeBase64() throws Exception {
+    byte[] binaryData = "This is just a test".getBytes();
+    String encoded = Base64.encodeBase64String(binaryData);
+    assertNotNull(encoded);
+    assertEquals(encoded, Base64.encodeBase64String(binaryData, false));
+    assertEquals(encoded, Base64.encodeBase64String(binaryData, false, false));
+    assertEquals(encoded, Base64.encodeBase64String(binaryData, false, false, Integer.MAX_VALUE));
+    assertEquals(encoded, Base64.encodeBase64String(binaryData, false, false, encoded.length()));
+    try {
+        Base64.encodeBase64String(binaryData, false, false, Integer.MIN_VALUE);
+        fail("Expected IllegalArgumentException");
+    }
+    catch (IllegalArgumentException e) {
+        assertEquals("maxResultSize must be at least 1", e.getMessage());
+    }
+    try {
+        Base64.encodeBase64String(binary

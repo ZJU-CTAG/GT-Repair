@@ -1,0 +1,11 @@
+public void testClosureCompiler() {
+    String code = "function instanceOf(value, type) { try { if (value instanceof type) { return true; } } catch (exception) { if (exception instanceof TypeError) { throw exception; } return (type === Object); } }";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(null, new CodeBuffer(code), options);
+    assertTrue(result.success);
+}

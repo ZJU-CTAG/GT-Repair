@@ -1,0 +1,20 @@
+public void testCMAESOptimizer() {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] values) {
+            return values[0];
+        }
+    };
+    double[] min = new double[] { -1 };
+    double[] max = new double[] { 1 };
+    CMAESOptimizer optimizer = new CMAESOptimizer();
+    optimizer.setDimension(1);
+    optimizer.setInitialGuess(new double[] { Double.NaN });
+    optimizer.setInitialSigma(0.1);
+    optimizer.setGenerations(100);
+    optimizer.setCheckFeasableCount(100);
+    optimizer.optimize(100, f, GoalType.MINIMIZE, min, max);
+    double[] optimum = optimizer.getOptimum();
+    assertEquals(1, optimum.length);
+    assertTrue(optimum[0] <= max[0]);
+    assertTrue(optimum[0] >= min[0]);
+}

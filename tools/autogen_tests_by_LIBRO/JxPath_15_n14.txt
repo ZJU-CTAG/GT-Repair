@@ -1,0 +1,9 @@
+public void testUnion() throws Exception {
+	XPathEvaluator evaluator = new XPathEvaluator();
+	Reader reader = XmlUtils.newReader("<MAIN><A>avalue</A><B>bvalue</B></MAIN>");
+	Document doc = evaluator.loadDocument(reader);
+	XPathNSResolver resolver = evaluator.createNSResolver(doc.getDocumentElement());
+	XPathExpression expr = evaluator.createExpression("string(/MAIN/B | /MAIN/A)", resolver);
+	XPathResult result = (XPathResult)expr.evaluate(doc, 0, null);
+	assertEquals("avalue", result.getStringValue());
+}

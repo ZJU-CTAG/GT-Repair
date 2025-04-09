@@ -1,0 +1,18 @@
+public void testIssue() {
+  ObjectMapper mapper = new ObjectMapper();
+  AnnotationIntrospector ai = new JacksonAnnotationIntrospector();
+  
+  JavaType baseType = mapper.constructType(Long.class);
+  JavaType refined = ai.refineDeserializationType(
+    mapper.getDeserializationConfig(),
+    mapper.constructType(int.class),
+    baseType
+  );
+  assertSame(refined, baseType);
+  refined = ai.refineSerializationType(
+    mapper.getSerializationConfig(),
+    mapper.constructType(int.class),
+    baseType
+  );
+  assertSame(refined, baseType);
+}

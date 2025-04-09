@@ -1,0 +1,20 @@
+public void testIssue() {
+    String xml = "<ElementA A:myAttr=\"Mytype\"> \n" +
+            " <B:ElementB>MY VALUE</B:ElementB> \n" +
+            "</ElementA>";
+
+    Document doc = parseXML(xml);
+
+    //by default, all namespaces are ignored
+    JXPathContext context = JXPathContext.newContext(doc);
+
+    //let's register some namespaces
+    context.getNamespaceURI("A");
+    context.getNamespaceURI("B");
+
+    //now we can query the namespaces
+    assertEquals("ElementB", context.getValue("/A:ElementA/B:ElementB"));
+
+    //also works for attributes
+    assertEquals("Mytype", context.getValue("/A:ElementA/@A:myAttr"));
+}

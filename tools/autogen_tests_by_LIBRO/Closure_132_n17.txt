@@ -1,0 +1,21 @@
+public void testIfStatement() {
+    String source = "if( es[--esi][ es[esi+1] ] === 1)\n" +
+            "{\n" +
+            " es[esi] = 0;\n" +
+            "}\n" +
+            "else\n" +
+            "{\n" +
+            " es[esi] = 1;\n" +
+            "}";
+    String expected = "es[--esi] = (1 === es[esi][es[esi + 1]]) ? 0 : 1;";
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecordingLocalJsDocComments(true);
+    env.setAllowSharpComments(true);
+    env.setRecoverFromErrors(true);
+    env.setIdeMode(true);
+    env.setStrictMode(false);
+    env.setWarningAsError(false);
+    env.setGenerateDebugInfo(true);
+    env.setIdeMode(true);
+    Parser p = new Parser(env, new ErrorReporter() {
+        public void warning

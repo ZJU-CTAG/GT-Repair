@@ -1,0 +1,12 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    assertEquals("\"0.0000000005\"", mapper.writeValueAsString(new BigDecimal("0.0000000005")));
+    assertEquals("{\"value\":\"0.0000000005\"}", mapper.writeValueAsString(new Class108(new BigDecimal("0.0000000005"))));
+}
+public static class Class108 {
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
+    public BigDecimal value;
+    public Class108() { }
+    public Class108(BigDecimal value) {this.value = value;}
+}

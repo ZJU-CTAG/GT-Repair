@@ -1,0 +1,14 @@
+public void testBlacklistTypes() throws Exception
+{
+    // [databind#1599]
+    String JSON = "{\n" +
+            "  \"@type\" : \""+AtomicBoolean.class.getName()+"\",\n" +
+            "  \"value\" : true\n" +
+            "}";
+    try {
+        _mapper.readValue(JSON, Object.class);
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "not valid for polymorphic deserialization");
+        verifyException(e, "known-type");
+    }
+}

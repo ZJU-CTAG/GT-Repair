@@ -1,0 +1,18 @@
+public void testIssue798() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document document = db.newDocument();
+    Element foo = document.createElementNS("bla","b:foo");
+    foo.setAttributeNS("test111", "xmlns", "test111");
+    Element bar = document.createElementNS("bla","b:bar");
+    foo.appendChild(bar);
+    Element test = document.createElementNS("","test");
+    foo.appendChild(test);
+
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setLenient(true);
+    context.setNamespaceContextPointer(new NamespaceContextPointer(context, foo));
+    Pointer testPath = context.getPointer( "b:foo/test");
+    System.out.println("testPath=" + testPath.asPath());
+}

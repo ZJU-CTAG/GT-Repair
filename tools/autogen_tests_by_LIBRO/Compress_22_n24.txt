@@ -1,0 +1,10 @@
+public void testIssue107() throws IOException {
+    CompressorInputStream in = new CompressorStreamFactory()
+            .createCompressorInputStream("bzip2",
+                    new ByteArrayInputStream("BZh91AY&SY\u0007\u0000\u0001\u0015\u00d0\u0080\u0080".getBytes("UTF-8")));
+
+    byte[] output = new byte[770];
+    int read = in.read(output);
+
+    assertEquals(770, read);
+}

@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    String json = "{\"error\":\"test\"}";
+    UTF8StreamJsonParser parser = new UTF8StreamJsonParser(new IOContext(new BufferRecycler(), json, false), 0, new ByteArrayInputStream(json.getBytes()), new UTF8JsonFactory().getCodec(), new BytesToNameCanonicalizer(), new byte[0], 0, 0, false);
+    try {
+        parser.nextToken();
+        parser.nextToken();
+        parser.nextToken();
+        parser.nextToken();
+    } catch (JsonParseException e) {
+        JsonLocation location = e.getLocation();
+        assertEquals(6, location.getColumnNr());
+    }
+}

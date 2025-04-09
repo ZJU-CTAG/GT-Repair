@@ -1,0 +1,9 @@
+public void testConcurrencyModification() {
+    Elements elements = new Elements();
+    Element element = new Element(Tag.valueOf("tag"), "");
+    element.attr("attr1", "value1");
+    element.attr("attr2", "value2");
+    elements.add(element);
+    elements.select("abc").first().removeAttr("attr1").removeAttr("attr2");
+    assertEquals(0, elements.select("abc").first().attributes().size());
+}

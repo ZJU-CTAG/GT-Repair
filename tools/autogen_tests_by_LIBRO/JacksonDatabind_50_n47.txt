@@ -1,0 +1,21 @@
+public void testJackson() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.addMixIn(AnObject.class, JsonSerializerAnObject.class);
+    mapper.addMixIn(AnotherObject.class, JsonSerializerAnotherObject.class);
+
+    AnObject anObject = new AnObject();
+    anObject.setAnObject(anObject);
+    AnotherObject anotherObject = new AnotherObject();
+    anotherObject.setAnObject(anObject);
+    anObject.setAnotherObject(anotherObject);
+    anObject.getList().add(anObject);
+    anObject.getMap().put(anObject, anotherObject);
+    AnotherObject anotherObject2 = new AnotherObject();
+    anotherObject2.setAnObject(anObject);
+    anObject.getMap().put(anotherObject, anotherObject2);
+
+    String json = mapper.writeValueAsString(anObject);
+    System.out.println(json);
+

@@ -1,0 +1,25 @@
+public void testCovariances() {
+        AbstractEstimator estimator = new AbstractEstimator(2) {
+            public void estimate(EstimationProblem problem) {
+                // do nothing
+            }
+
+            public double[] guessParametersErrors(EstimationProblem problem) {
+                double[] errors = super.guessParametersErrors(problem);
+                System.out.println(Arrays.toString(errors));
+                return errors;
+            }
+
+            public RealMatrix getCovariances(EstimationProblem problem) {
+                RealMatrix covar = super.getCovariances(problem);
+                System.out.println(covar.getEntry(0, 0));
+                return covar;
+            }
+        };
+
+        EstimationProblem problem = new EstimationProblem();
+        problem.addMeasurement(new Measurement(new double[] { 1, 0 }, 0, 1));
+        problem.addMeasurement(new Measurement(new double[] { 0, 1 }, 0, 1));
+
+        problem.addParameter(new Parameter("p1", 1));
+        problem.addParameter(new Parameter("p2",

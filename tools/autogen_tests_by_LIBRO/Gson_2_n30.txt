@@ -1,0 +1,11 @@
+public void testTypeHierarchyAdapters() {
+    Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Vehicle.class,
+        new VehicleAdapter()).create();
+    try {
+      Car c = gson.fromJson("{'color':'red', 'type':'Truck'}", Car.class);
+      fail("Decoded Car as Truck");
+    } catch (JsonSyntaxException e) {
+      // We expect this exception
+      e.printStackTrace();
+    }
+}

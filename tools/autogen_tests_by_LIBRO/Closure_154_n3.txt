@@ -1,0 +1,30 @@
+public void testInterfaceMembers() throws Exception {
+      String[] js = {
+         // @formatter:off
+"/**",
+" * @interface",
+" */",
+"function I() {};",
+"",
+"/** @type {string} */",
+"I.prototype.foobar;",
+"",
+"/**",
+" * @constructor",
+" * @implements {I}",
+" */",
+"function C() {",
+" // No warning generated here.",
+" this.foobar = 2;",
+"};",
+"",
+"/** @type {I} */",
+"var test = new C();",
+"alert(test.foobar);"
+         // @formatter:on
+      };
+      Compiler compiler = new Compiler();
+      compiler.compile(SourceFile.fromCode("test.js", Joiner.on("\n").join(js)));
+      Result result = compiler.getResult();
+      assertTrue(result.success);
+   }

@@ -1,0 +1,22 @@
+public void testRMS() {
+    double[] weights = { 1, 4, 9, 16, 25 };
+    double[] residuals = { -3, -2, -1, 1, 2 };
+    AbstractLeastSquares leastSquares = new AbstractLeastSquares(null, null, null) {
+        @Override
+        protected RealVector calculateWeightedResiduals(RealVector residuals) {
+            RealVector r = new ArrayRealVector(residuals.getDimension());
+            for (int i = 0; i < r.getDimension(); ++i) {
+                r.setEntry(i, weights[i] * residuals.getEntry(i));
+            }
+            return r;
+        }
+
+        @Override
+        protected double calculateSigma(RealVector residuals) {
+            return 1;
+        }
+    };
+    leastSquares.setObservationValues(new double[5]);
+    leastSquares.setObservationStandardDeviations(weights);
+    leastSquares.setObservationVariances(new double[5]);
+    leastSquares.setResiduals(new

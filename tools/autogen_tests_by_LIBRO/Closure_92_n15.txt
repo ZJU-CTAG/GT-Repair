@@ -1,0 +1,22 @@
+public void testIssue108() throws Exception {
+    String sourceA = "goog.provide('apps');";
+    String sourceB = "goog.provide('apps.foo.bar.B');";
+    String sourceC = "goog.provide('apps.foo.bar.C');";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    List<SourceFile> inputs = ImmutableList.of(
+        SourceFile.fromCode("inputA.js", sourceA),
+        SourceFile.fromCode("inputB.js", sourceB),
+        SourceFile.fromCode("inputC.js", sourceC));
+    compiler.compile(
+        new ExternsInput(ImmutableList.<JSSourceFile>of()),
+        inputs,
+        options);
+
+    SourceFile inputA = compiler.getInput(new InputId("inputA.js"));
+    assertEquals(
+        Joiner.on("").join(
+            "var apps = {};",
+            "/** @const */ apps.foo = {};",
+            "/** @const */ apps.

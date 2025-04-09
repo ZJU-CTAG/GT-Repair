@@ -1,0 +1,20 @@
+public void testIssue() throws Exception {
+    InputStream is = new ByteArrayInputStream("".getBytes());
+    ObjectCodec codec = null;
+    BytesToNameCanonicalizer sym = null;
+    byte[] inputBuffer = null;
+    int start = 0;
+    int end = 1;
+    boolean bufferRecyclable = false;
+    IOContext ctxt = null;
+    int features = 0;
+
+    UTF8StreamJsonParser p = new UTF8StreamJsonParser(ctxt, features, is, codec, sym, inputBuffer, start, end, bufferRecyclable);
+    try {
+        p.nextToken();
+    } catch (JsonParseException e) {
+        int col = e.getLocation().getColumnNr();
+        assertEquals(start + 1, col);
+    }
+}
+

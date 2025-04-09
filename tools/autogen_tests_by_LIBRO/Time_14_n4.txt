@@ -1,0 +1,9 @@
+public void testIssue151() {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("xxxx-MM-dd");
+    assertEquals("2011-02-28", dtf.print(new DateTime(2011, 2, 28, 0, 0, ISOChronology.getInstanceUTC())));
+    assertEquals("2011-02-29", dtf.print(new DateTime(2011, 2, 29, 0, 0, ISOChronology.getInstanceUTC())));
+    assertEquals("2011-03-01", dtf.print(new DateTime(2011, 3, 1, 0, 0, ISOChronology.getInstanceUTC())));
+    MonthDay isoLeap = new MonthDay(DateTimeConstants.FEBRUARY, 29, ISOChronology.getInstanceUTC());
+    assertEquals("2011-02-28", dtf.print(isoLeap.minusDays(1)));
+    assertEquals("2011-03-01", dtf.print(isoLeap.plusDays(2)));
+}

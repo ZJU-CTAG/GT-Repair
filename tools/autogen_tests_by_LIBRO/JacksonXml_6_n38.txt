@@ -1,0 +1,16 @@
+public void testWriteBinaryWithInputStream() throws IOException {
+    final byte[] bytes = new byte[] { 1, 2, 3, 4, 5 };
+    final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+
+    final ToXmlGenerator generator = new ToXmlGenerator(new JsonFactory().createGenerator(new ByteArrayOutputStream()),
+            ToXmlGenerator.Feature.WRITE_XML_DECLARATION,
+            ToXmlGenerator.Feature.WRITE_XML_1_1,
+            ToXmlGenerator.Feature.WRITE_XML_CDATA,
+            ToXmlGenerator.Feature.WRITE_EMPTY_JSON_ARRAYS
+    );
+
+    generator.writeStartArray();
+    generator.writeBinary(Base64Variants.MIME, inputStream, bytes.length);
+    generator.writeEndArray();
+    generator.close();
+}

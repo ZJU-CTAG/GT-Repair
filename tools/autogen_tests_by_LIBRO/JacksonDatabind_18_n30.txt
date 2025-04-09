@@ -1,0 +1,18 @@
+public void testErrorRecovery() throws Exception
+{
+    final String JSON =
+"{ \"name\": \"John Doe\", \"id\": 1, \"age\": 20, \"sex\": \"M\" }\n"
++"{ \"name\": \"Jane Doe\", \"id\": 2, \"age\": 20, \"sex\": \"M\" }\n"
++"{ \"name\": \"Bob Doe\" \"id\": 3, \"age\": 20, \"sex\": \"M\" }"; // note missing comma
+
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        MappingIterator<Person> it = mapper.reader(Person.class).readValues(JSON);
+        while (it.hasNext()) {
+            Person p = it.next();
+            // error recovery failed, if we get here
+        }
+    } catch (JsonMappingException e) {
+        fail("Should have successfully recovered from error");
+    }
+}

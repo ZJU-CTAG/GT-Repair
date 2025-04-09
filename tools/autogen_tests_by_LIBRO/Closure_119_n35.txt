@@ -1,0 +1,18 @@
+public void testIssue107() throws Exception {
+    String source = "try { var x = 5; } catch(e) { var s = \"FAIL\" + e.name + \": \"+ e.message; }";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+
+    Result result = compiler.compile(EXTERNS, source, options);
+
+    JSError[] errors = result.errors;
+    for (JSError error : errors) {
+        System.out.println(error);
+    }
+
+    assertTrue(errors.length == 1);
+}

@@ -1,0 +1,18 @@
+public void testRegisterNamespace() {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    try {
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new ByteArrayInputStream(
+            "<ElementA A:myAttr=\"Mytype\">\n" + 
+            " <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>".getBytes()));
+        NodePointer pointer = new DOMNodePointer(doc.getDocumentElement());
+        pointer.addNamespaceResolver("A", "http://www.example.com/A");
+        pointer.addNamespaceResolver("B", "http://www.example.com/B");
+        assertEquals("Mytype", pointer.getValue("myAttr", String.class));
+        assertEquals("MY VALUE", pointer.getValue("ElementB", String.class));
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

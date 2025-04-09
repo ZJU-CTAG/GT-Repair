@@ -1,0 +1,16 @@
+public void testIssue172() throws Exception {
+    System.setProperty(XPathContext.CONFIGURATION_PROPERTY, "");
+    String src = "<?xml version=\"1.0\"?>\n" +
+            "<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" version=\"2.0\">\n" +
+            "  <xsl:template name=\"test\">\n" +
+            "    <xsl:variable name=\"x\" select=\"//*[local-name()='b' and @a]\"/>\n" +
+            "    <test>\n" +
+            "      <xsl:value-of select=\"count($x)\"/>\n" +
+            "    </test>\n" +
+            "  </xsl:template>\n" +
+            "</xsl:stylesheet>";
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc

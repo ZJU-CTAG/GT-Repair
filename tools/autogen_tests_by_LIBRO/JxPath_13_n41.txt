@@ -1,0 +1,10 @@
+public void testIssue() {
+    Document doc = DocumentHelper.createDocument();
+    Element root = doc.addElement("root");
+    root.addAttribute("myAttr", "value");
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    context.registerNamespace("foo", "http://foo.org");
+    context.createPathAndSetValue("/root/@foo:myAttr", "newvalue");
+    assertEquals("newvalue", root.attributeValue("foo:myAttr"));
+}

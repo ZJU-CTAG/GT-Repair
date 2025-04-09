@@ -1,0 +1,10 @@
+public void testDateDeserialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    TimeZone tz = TimeZone.getTimeZone("GMT+2");
+    mapper.setTimeZone(tz);
+    Date date = mapper.readValue("\"1970-01-01T00:00:00.000\"", java.util.Date.class);
+    assertEquals("1970-01-01T00:00:00.000+02.00", date.toString());
+
+    date = new ObjectMapper().readValue("\"1970-01-01T00:00:00.000\"", java.util.Date.class);
+    assertEquals("1970-01-01T00:00:00.000+00.00", date.toString());
+}

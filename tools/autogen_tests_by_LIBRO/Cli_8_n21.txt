@@ -1,0 +1,11 @@
+public void testIssue107() {
+    Option option = new Option("f", "first", false, "This is a very long description");
+    HelpFormatter formatter = new HelpFormatter();
+    StringWriter writer = new StringWriter();
+    formatter.printHelp(new PrintWriter(writer), 80, "blah", "blah", options, 2, 2, "blah", true);
+    System.out.println(writer.toString());
+    String[] lines = writer.toString().split("\n");
+    for (String line : lines) {
+        assertTrue(line.length() <= 80);
+    }
+}

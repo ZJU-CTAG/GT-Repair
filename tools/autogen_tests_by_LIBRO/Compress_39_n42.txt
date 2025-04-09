@@ -1,0 +1,15 @@
+public void testIssue108() throws IOException {
+    // create a truncated zip-archive
+    File zipFile = new File("./src/test/resources/commons-io.zip");
+    RandomAccessFile raf = new RandomAccessFile(zipFile, "r");
+    raf.setLength(zipFile.length() / 2);
+    raf.close();
+
+    ZipFile zf = new ZipFile(zipFile);
+    try {
+        zf.getInputStream(zf.getEntry("META-INF/MANIFEST.MF")).close();
+    } catch (IOException ex) {
+        String msg = ex.getMessage();
+        assertTrue(msg.length() < 1000);
+    }
+}

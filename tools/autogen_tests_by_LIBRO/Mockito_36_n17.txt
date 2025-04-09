@@ -1,0 +1,9 @@
+public void testIssue65() throws Exception {
+    final DateTimeUtils.MillisProvider provider = mock(DateTimeUtils.MillisProvider.class);
+    when(provider.getMillis()).thenReturn(0L);
+    DateTimeUtils.setCurrentMillisProvider(provider);
+
+    assertEquals(0, new DateTime().getMillis());
+
+    verify(provider, times(1)).getMillis();
+}

@@ -1,0 +1,20 @@
+public void testFilteringParserDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+    SimpleFilterProvider filters = new SimpleFilterProvider()
+            .addFilter("myFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept("bar"))
+            .addFilter("myFilter2",
+                    SimpleBeanPropertyFilter.filterOutAllExcept("foo"));
+
+    MyBean bean = new MyBean();
+    bean.setFoo("fooValue");
+    bean.setBar("barValue");
+    String json = mapper.writeValueAsString(bean);
+    MyBean bean2 = mapper.readValue(json, MyBean.class);
+
+    String filteredJson = mapper.writer(filters).writeValueAsString(bean);
+    MyBean bean3 = mapper.reader(filters).forType(MyBean.class).readValue(filteredJson);
+    assertEquals(json, filteredJson); // fails
+    assertEquals(bean, bean2);

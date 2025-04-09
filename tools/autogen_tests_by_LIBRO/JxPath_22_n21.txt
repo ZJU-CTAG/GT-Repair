@@ -1,0 +1,17 @@
+public void testIssue102() {
+    String s = "<a:root xmlns:a=\"nsa\" xmlns=\"test111\">"
+        + "<a:foo xmlns:b=\"bla\" xmlns=\"test111\">"
+        + "    <b:bar>a</b:bar>"
+        + "    <test xmlns=\"\"></test>"
+        + " </a:foo>"
+        + " </a:root>";
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new InputSource(new StringReader(s)));
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    context.getVariables().declareVariable("nsa", "nsa");
+    context.getNamespaceResolver().registerNamespace("a", "nsa");
+    context.getNamespaceResolver().registerNamespace("b", "bla");
+    context.getNamespaceResolver().register

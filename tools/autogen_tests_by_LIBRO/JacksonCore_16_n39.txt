@@ -1,0 +1,10 @@
+public void testIssue() throws IOException {
+    JsonParser parser1 = mapper.createParser("{}");
+    parser1.nextToken();
+    JsonParser parser2 = mapper.createParser("{}");
+    JsonParserSequence jsonParserSequence = JsonParserSequence.createFlattened(parser1, parser2);
+    assertNotNull(jsonParserSequence.nextToken());
+    assertEquals(JsonToken.START_OBJECT, jsonParserSequence.getCurrentToken());
+    assertNotNull(jsonParserSequence.nextToken());
+    assertEquals(JsonToken.START_OBJECT, jsonParserSequence.getCurrentToken());
+}

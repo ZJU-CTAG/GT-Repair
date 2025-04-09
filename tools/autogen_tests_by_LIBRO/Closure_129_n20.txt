@@ -1,0 +1,9 @@
+public void testCast() {
+    String s = "var x = (0, (new window.ActiveXObject('ShockwaveFlash.ShockwaveFlash'))['GetVariable'])('$version');";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(SourceFile.fromCode("test", s), options);
+    String output = compiler.toSource();
+    assertFalse(output, output.contains("(0,("));
+}

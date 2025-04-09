@@ -1,0 +1,23 @@
+public void testVarArgs() throws Exception {
+    RootCommand rootCommand = Mockito.mock(RootCommand.class);
+    Command subCommand = Mockito.mock(Command.class);
+
+    ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+    Mockito.when(rootCommand.execute(argumentCaptor.capture())).thenReturn(subCommand);
+
+    rootCommand.execute("some string");
+
+    Mockito.verify(subCommand).execute(argumentCaptor.capture());
+    Assert.assertEquals("some string", argumentCaptor.getValue());
+}
+
+public class RootCommand {
+    public Command execute(String... args) {
+        return null;
+    }
+}
+
+public class Command {
+    public void execute(String... args) {
+    }
+}

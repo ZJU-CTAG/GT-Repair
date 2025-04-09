@@ -1,0 +1,17 @@
+public void testZipMultipleEntries() throws Exception {
+    final String[] texts = {"123", "abc", "456", "xyz"};
+    final File zipFile = new File("target/zip-issue-107.zip");
+    final byte[] buf = new byte[BUF_SIZE];
+    int written = 0;
+    try (ZipArchiveOutputStream output = new ZipArchiveOutputStream(new FileOutputStream(zipFile))) {
+        for (int i = 0; i < texts.length; i++) {
+            final ZipArchiveEntry entry = new ZipArchiveEntry("entry" + i + ".txt");
+            entry.setSize(texts[i].length());
+            entry.setMethod(ZipEntry.STORED);
+            entry.setCrc(calcChecksum(texts[i].getBytes(StandardCharsets.UTF_8)));
+            output.putArchiveEntry(entry);
+            output.write(texts[i].getBytes(StandardCharsets.UTF_8));
+            output.closeArchiveEntry();
+        }
+        written = output.size();
+    }

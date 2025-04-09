@@ -1,0 +1,13 @@
+public void testIssue1113() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final Foo input = new Foo();
+    final String json = mapper.writeValueAsString(input);
+    mapper.readValue(json, Foo.class);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+@JsonSubTypes({ @JsonSubTypes.Type(value=Foo.class, name="foo") })
+public static class Foo {
+    public String type = "foo";
+}

@@ -1,0 +1,17 @@
+public void testClosure() {
+    ClosureCompiler compiler = new ClosureCompiler();
+    compiler.compile(
+            CompilerOptions.builder()
+                    .setLanguageIn(LanguageMode.ECMASCRIPT_2015)
+                    .setLanguageOut(LanguageMode.ECMASCRIPT_2015)
+                    .setOutputCharset("UTF-8")
+                    .setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING)
+                    .setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.WARNING)
+                    .setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING)
+                    .setWarningLevel(DiagnosticGroups.CHECK_REGEXP, CheckLevel.WARNING)
+                    .setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING)
+                    .build(),
+            "var a=(Math.sin||Math.cos)(0);");
+    String result = compiler.toSource();
+    System.out.println(result);
+    assertEquals("",

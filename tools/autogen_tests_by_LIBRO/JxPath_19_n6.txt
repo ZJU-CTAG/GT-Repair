@@ -1,0 +1,14 @@
+public void testNamespacePrefixes() throws Exception {
+    final List<String> collectedIds = new ArrayList<String>();
+    final InputSource xml = new InputSource(new StringReader("<a:doc xmlns:a='ns'><a:elem a:id='1'/><b:elem xmlns:b='ns' b:id='2'/></a:doc>"));
+    final JXPathContext context = JXPathContext.newContext(xml);
+    final Iterator iter = context.iteratePointers("/doc/*");
+    while (iter.hasNext()) {
+        final NodePointer node = (NodePointer) iter.next();
+        final String value = node.getValue().toString();
+        collectedIds.add(value);
+    }
+    assertEquals(2, collectedIds.size());
+    assertTrue(collectedIds.contains("1"));
+    assertTrue(collectedIds.contains("2"));
+}

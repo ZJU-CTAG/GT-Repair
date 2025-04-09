@@ -1,0 +1,12 @@
+public void testPolymorphicDefaultImpl() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
+
+    String json = "[\"/api/v1/employees/123\"]";
+    String[] array = mapper.readValue(json, String[].class);
+    assertNotNull(array);
+    assertEquals(1, array.length);
+    assertEquals("/api/v1/employees/123", array[0]);
+}

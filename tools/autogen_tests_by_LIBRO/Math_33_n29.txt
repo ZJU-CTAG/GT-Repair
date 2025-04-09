@@ -1,0 +1,15 @@
+public void testSimplexTest() {
+    RealVector cost = new ArrayRealVector(new double[]{0.8, 0.4, 0.4, 0.4});
+    RealMatrix constraints = new Array2DRowRealMatrix(new double[][]{
+        {0.2, 0.1, 0.3, 0.0},
+        {0.5, 0.5, 0.5, 0.0},
+        {0.5, 0.5, 0.5, 0.5},
+        {1.0, 0.0, 0.0, 0.0}
+    });
+    RealVector target = new ArrayRealVector(new double[]{1.0, 1.0, 1.0, 1.0});
+    SimplexSolver solver = new SimplexSolver();
+    RealVector solution = solver.optimize(
+        new LinearConstraintSet(constraints, target),
+        GoalType.MAXIMIZE, cost).getPoint();
+    assertEquals(0.6, solution.getEntry(0), 0.0001);
+    assertEquals(0.0, solution.

@@ -1,0 +1,21 @@
+public void testIssue108() throws ParseException
+{
+    Options options = new Options();
+    GroupBuilder.withName("A").withOption(new Option("a", "a", false, "a")).create();
+    GroupBuilder.withName("B").withOption(new Option("b", "b", false, "b")).create();
+    GroupBuilder.withName("C").withOption(new Option("c", "c", false, "c")).create();
+
+    OptionGroup group = new OptionGroup();
+    group.addOption(options.getOption("A"));
+    group.addOption(options.getOption("B"));
+
+    OptionGroup group2 = new OptionGroup();
+    group2.addOption(options.getOption("A"));
+    group2.addOption(options.getOption("C"));
+
+    options.addOptionGroup(group).addOptionGroup(group2);
+    CommandLineParser parser = new PosixParser();
+
+    CommandLine line = parser.parse(options, new String[]{"-b", "-c"});
+    assertTrue(line.hasOption("A"));
+}

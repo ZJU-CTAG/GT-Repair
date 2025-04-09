@@ -1,0 +1,8 @@
+public void testNullHeaders() throws Exception {
+  CSVFormat format = CSVFormat.newBuilder().withFirstRecordAsHeader().build();
+  CSVParser parser = new CSVParser(new StringReader("a,b\n1,2"), format);
+
+  assertEquals(0, parser.getHeaderMap().size());
+  CSVRecord record = parser.getRecords().get(0);
+  assertEquals(null, record.toMap());
+}

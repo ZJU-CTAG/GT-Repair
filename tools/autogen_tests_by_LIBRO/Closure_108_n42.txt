@@ -1,0 +1,17 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    compiler.compile(
+        new SimpleSourceFile("externs.js", "var goog = {}; goog.scope;"),
+        new SimpleSourceFile("input.js",
+            "var ns = {};\n"
+            + "ns.sub = {};\n"
+            + "/** @constructor */\n"
+            + "ns.sub.C = function() {};\n"
+            + "goog.scope(function() {\n"
+            + "  var sub = ns.sub;\n"
+            + "  /** @type {sub.C} */\n"
+            + "  var x = null;\n"
+            + "});"),
+        options);
+}

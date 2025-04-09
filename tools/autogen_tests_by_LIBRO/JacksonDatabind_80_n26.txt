@@ -1,0 +1,15 @@
+public void testIssue116() throws IOException {
+    final ObjectMapper mapper = objectMapper();
+    mapper.registerSubtypes(new NamedType(N.class, "N"));
+    String json = mapper.writeValueAsString(new N());
+    assertEquals("{\"@type\":\"N\"}", json);
+    N value = (N) mapper.readValue(json, B.class);
+    assertNotNull(value);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+public static class B {
+}
+
+public static class N extends B {
+}

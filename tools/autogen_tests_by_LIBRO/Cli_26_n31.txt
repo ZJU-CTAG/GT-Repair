@@ -1,0 +1,24 @@
+public void testOptionBuilderResetOnIAE() {
+    Option option = OptionBuilder.withLongOpt("foo")
+            .hasArg(false)
+            .create('f');
+    option.setOptionalArg(false);
+    try {
+        option.setArgName(null);
+        fail("IAE expected");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+
+    // OptionBuilder should be reset
+    option = OptionBuilder.withLongOpt("bar")
+            .hasArg(false)
+            .create('b');
+    option.setOptionalArg(false);
+    try {
+        option.setArgName(null);
+        fail("IAE expected");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}

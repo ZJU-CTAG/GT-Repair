@@ -1,0 +1,18 @@
+public void testFlagClosurePrimitives() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(
+        options);
+    String[] args = {
+        "--js", "testfiles/hello.js", 
+        "--js_output_file", "out.js",
+        "--process_closure_primitives", "false"
+    };
+    compiler.setLoggingLevel(Level.OFF);
+    Result result = compiler.compile(new JSSourceFile[0],
+        createSourceFileArray(args), options);
+    assertTrue(result.success);
+    assertEquals(
+        "goog.provide('hello');\n/** @export */\nhello.world = function() {};\n",
+        compiler.toSource());
+}

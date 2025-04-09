@@ -1,0 +1,27 @@
+public void testFunctionAssignability() {
+    ClosureSatisfies closureSatisfies = new ClosureSatisfies();
+    closureSatisfies.func(closureSatisfies.paramFunc1);
+    closureSatisfies.func(closureSatisfies.paramFunc2);
+}
+
+public class ClosureSatisfies {
+
+    /**
+     * @param {function(string,number):boolean} param
+     */
+    public void func(Function<String, Integer, Boolean> param) {}
+
+    /** @type {function(string,number,boolean):boolean} */
+    public Function<String, Integer, Boolean, Boolean> paramFunc1 = new Function<String, Integer, Boolean, Boolean>() {
+        public Boolean call(String first, Integer second, Boolean third) {
+            return true;
+        }
+    };
+
+    /** @type {function(string):boolean} */
+    public Function<String, Boolean> paramFunc2 = new Function<String, Boolean>() {
+        public Boolean call(String first) {
+            return true;
+        }
+    };
+}

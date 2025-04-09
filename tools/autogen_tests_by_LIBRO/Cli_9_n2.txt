@@ -1,0 +1,13 @@
+public void testMissingOptionException() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withDescription("Turn on the 'format' option").hasArgs(0).create("format"));
+    options.addOption(OptionBuilder.withDescription("Turn on the 'source' option").hasArgs(0).create("source"));
+    options.addOption(OptionBuilder.withDescription("Turn on the 'properties' option").hasArgs(0).create("properties"));
+    try {
+        CommandLineParser parser = new PosixParser();
+        parser.parse(options, new String[] {});
+        fail("MissingOptionException expected");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format -source -properties", e.getMessage());
+    }
+}

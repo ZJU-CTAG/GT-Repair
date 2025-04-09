@@ -1,0 +1,18 @@
+public void testIssue111() {
+    Options options = new Options();
+
+    Option option = new Option("t", "target", true, "Generate files for the specified target machine");
+    option.setRequired(true);
+    options.addOption(option);
+
+    PosixParser parser = new PosixParser();
+    CommandLine line = null;
+    try {
+        line = parser.parse(options, new String[]{"-target", "foobar.com"});
+    } catch (ParseException e) {
+        fail("Should not throw exception");
+    }
+
+    assertEquals(line.getOptionValue("target"), "arget");
+    assertEquals(line.getOptionValue("t"), "arget");
+}

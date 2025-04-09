@@ -1,0 +1,14 @@
+public void testContextAttributes() throws Exception {
+    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new TestModule());
+    converter.setObjectMapper(mapper);
+
+    MediaType mediaType = new MediaType("application", "json");
+    MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+    converter.write(new TestCase.Data(), mediaType, mockHttpOutputMessage);
+
+    String content = mockHttpOutputMessage.getBodyAsString();
+    Assert.assertEquals("{\"data\":{\"aStr\":\"The value is: NULL\"}}", content);
+}

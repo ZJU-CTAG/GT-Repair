@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final Function<Integer, String> f = i -> "" + i;
+    final Connector<Integer> c = new Connector<Integer>() {
+        @Override
+        public String connect(Integer... integers) {
+            StringBuilder sb = new StringBuilder();
+            for (Integer i : integers) {
+                sb.append(f.apply(i));
+            }
+            return sb.toString();
+        }
+    };
+    c.connect(1, 2, 3);
+    c.connect(4, 5);
+    final ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+    Mockito.verify(c, Mockito.times(5)).connect(captor.capture());
+    assertEquals("12345", captor.getValue());
+}

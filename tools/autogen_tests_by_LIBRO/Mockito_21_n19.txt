@@ -1,0 +1,25 @@
+public void testSpyingOnAbstractClasses() {
+    class FakeUserAccount implements UserAccount {
+        private final List<String> emails = new ArrayList<>();
+
+        @Override public List<String> getEmails() {
+            return ImmutableList.copyOf(emails);
+        }
+
+        @Override public void addEmail(String email) {
+            emails.add(email);
+        }
+    }
+
+    class TestBase {
+        @Fake private FakeUserAccount userAccount;
+    }
+    class Test extends TestBase {
+        @Test
+        public void test() {
+            assertTrue(userAccount.getEmails().isEmpty());
+            userAccount.addEmail("test@test.com");
+            assertEquals(ImmutableList.of("test@test.com"), userAccount.getEmails());
+        }
+    }
+}

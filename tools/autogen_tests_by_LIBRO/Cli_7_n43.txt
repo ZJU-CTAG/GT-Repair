@@ -1,0 +1,15 @@
+public void testRequiredOptions() throws Exception {
+    CommandLineParser parser = new PosixParser();
+    Group group = new OptionGroup();
+    Option aOption = new Option("a", null, false, "a");
+    Option bOption = new Option("b", null, false, "b");
+    Option cOption = new Option("c", null, true, "c");
+    Option hOption = new Option("h", null, false, "h");
+    group.add(aOption);
+    group.add(bOption);
+    group.add(cOption);
+    group.add(hOption);
+    group.setRequired(true);
+    CommandLine cmd = parser.parse(new Options().addRequired(group), new String[]{"-h"});
+    assertEquals("[-h]", cmd.toString());
+}

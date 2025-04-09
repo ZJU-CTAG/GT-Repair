@@ -1,0 +1,20 @@
+public void testMissingOptionException() throws ParseException {
+    Options options = new Options();
+    options.addOption("a", "alpha", true, "the alpha option");
+    options.addOption("b", "beta", false, "the beta option");
+    options.addOption("g", "gamma", false, "the gamma option");
+
+    String[] args = { "-a", "foo" };
+    CommandLineParser parser = new GnuParser();
+    CommandLine line = parser.parse(options, args);
+
+    assertTrue(line.hasOption("a"));
+    assertTrue(line.hasOption("alpha"));
+    assertEquals("foo", line.getOptionValue("a"));
+
+    String[] args2 = { "-b" };
+    CommandLine line2 = parser.parse(options, args2);
+
+    assertTrue(line2.hasOption("b"));
+    assertTrue(line2.hasOption("beta"));
+}

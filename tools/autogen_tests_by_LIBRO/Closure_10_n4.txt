@@ -1,0 +1,13 @@
+public void testIssue107() {
+    String source = "var a =(Math.random()>0.5? '1' : 2 ) + 3 + 4;";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("source", source),
+            SourceFile.fromCode("externs", ""));
+    System.out.println(result.sourceMap.toSource());
+    for (JSError jsError : result.errors) {
+        System.out.println(jsError);
+    }
+    String expected = "var a = (0.5 < Math.random() ? '1' : 2) + 3 + 4;";
+    assertEquals(expected, result.sourceMap.toSource());
+}

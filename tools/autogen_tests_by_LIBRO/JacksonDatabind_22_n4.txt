@@ -1,0 +1,21 @@
+public void testIssue123() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new FooSerializer());
+    mapper.registerModule(module);
+    Foo foo = new Foo();
+    String json = mapper.writeValueAsString(foo);
+    assertEquals("\"foo\"", json);
+}
+
+public static class FooSerializer extends JsonSerializer<Foo> {
+    @Override
+    public void serialize(Foo value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("foo");
+    }
+}
+
+@JsonValue
+public static class Foo {
+}
+

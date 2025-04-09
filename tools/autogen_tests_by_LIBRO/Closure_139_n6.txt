@@ -1,0 +1,26 @@
+public void testRedefinition() {
+    try {
+        test("function assert(b) {if (!b) throw \"error\"}");
+        test("assert(f() === 1)");
+        test("var f = function() {return 2;}");
+        test("assert(f() === 2)");
+        test("function f() {return 1;}");
+    } catch (Exception ex) {
+        System.out.println(ex);
+    }
+}
+
+private static void test(String code) {
+    System.out.println("code: " + code);
+    List<CompilerWarning> warnings = new ArrayList<CompilerWarning>();
+    RhinoCompiler compiler = new RhinoCompiler();
+    compiler.compile(
+        code,
+        warnings,
+        new CompilationResult(),
+        new CompilationSettings()
+            .setLanguageMode(LanguageMode.ECMASCRIPT3)
+            .setCodingConvention(new ClosureCodingConvention())
+            .setOutputCharset("UTF-8")
+            .setReplaceStrings(true)
+            .setSourceMapOutputPath("/

@@ -1,0 +1,20 @@
+public void testClassification() {
+    final int n = 3000;
+    final int k = 100;
+    double[] x = new double[n];
+    double[] y = new double[n];
+    x[0] = 1;
+    y[0] = 1;
+    for (int i = 1; i < n; i++) {
+        double r = Math.random();
+        x[i] = r * r * (i - 1) + i;
+        y[i] = Math.random() * k;
+    }
+    PolynomialFunctionLagrangeForm pflf = new PolynomialFunctionLagrangeForm(x, y);
+    pflf.isValid(x[0], y[0]);
+    for (int i = 1; i < n; i++) {
+        pflf.isValid(x[i], y[i]);
+    }
+    final int maxEval = 1000;
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    VectorialPointValuePair optimal = optimizer.optimize

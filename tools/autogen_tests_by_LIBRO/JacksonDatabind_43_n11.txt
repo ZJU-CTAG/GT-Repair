@@ -1,0 +1,21 @@
+public void testObjectId() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY);
+        mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+        mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        ObjectNode node = mapper.createObjectNode();
+        node.putNull("id");
+        node.put("name", "foo");
+        node.put("val", 1);
+        Foo foo = mapper.treeToValue(node, Foo.class);
+        assertNull(foo.id);
+        assertEquals("foo", foo.name);
+        assertEquals(1, foo.val);
+}
+
+class Foo {
+    public Object id;
+    public String name;
+    public int val;
+}

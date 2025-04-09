@@ -1,0 +1,20 @@
+public void testIssue() {
+    String code = "function assert(b) {if (!b) throw 'error'};" +
+            "assert(f() === 1);" +
+            "var f = function() {return 2;};" +
+            "assert(f() === 2);" +
+            "function f() {return 1;}";
+
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.DEPRECATED, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setThirdParty(true);
+    options.setPrettyPrint(false);
+    options.setPrettyPrintIndent(0);
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(

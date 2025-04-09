@@ -1,0 +1,26 @@
+public void testCompressedDataTruncated() throws IOException {
+    byte[] data = new byte[770];
+    data[0] = 'B';
+    data[1] = 'Z';
+    data[2] = 'h';
+    data[3] = '1';
+    data[4] = '1';
+    data[5] = '1';
+    data[6] = '1';
+
+    for (int i = 7; i < 770; i++) {
+        data[i] = '1';
+    }
+
+    InputStream stream = new ByteArrayInputStream(data);
+    BZip2CompressorInputStream unzip = new BZip2CompressorInputStream(stream);
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    IOUtils.copy(unzip, out);
+
+    out.close();
+    unzip.close();
+    stream.close();
+
+    assertEquals(1024, out.size());
+}

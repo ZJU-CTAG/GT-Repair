@@ -1,0 +1,15 @@
+public void testDeserializeEnumUsingToString() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    TestPojo testPojo = objectMapper.readValue("{\"testEnum\": \"value1\"}", TestPojo.class);
+    assertEquals(TestEnum.VALUE_ONE, testPojo.testEnum);
+}
+
+public static class TestPojo {
+    public TestEnum testEnum;
+}
+
+public enum TestEnum {
+    @SerializedName("value1")
+    VALUE_ONE
+}

@@ -1,0 +1,11 @@
+public void testGlobalThis() {
+    String s = "/** @constructor */ function Foo() { this._bar = null; };" +
+               "/** @this {Foo} */ function writeMethodWithAnnotation() { this._bar = 123; }" +
+               "/** @this {Foo} */ function readMethodWithAnnotation() { return this._bar; }" +
+               "function writeMethodWithoutAnnotation() { this._bar = 123; }" +
+               "function readMethodWithoutAnnotation() { return this._bar; }";
+    String out = new Compiler().compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("source", s)
+    }).replaceAll("[ \\n]", "");
+    assertTrue(out.indexOf("dangeroususeoftheglobalthisobject") > 0);
+}

@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException
+{
+    String json = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    JsonParser p0 = MAPPER.getFactory().createParser(json);
+    JsonParser p1 = new FilteringParserDelegate(p0, new NameMatchFilter("value"), true, false);
+    JsonNode n = MAPPER.readTree(p1);
+    assertEquals("{\"ob\":{\"value\":3}}", n.toString());
+}

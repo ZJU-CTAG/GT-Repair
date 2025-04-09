@@ -1,0 +1,11 @@
+public void testIssue60() {
+    DateTime usCentralStandardInUTC = new DateTime(2008, 11, 2, 7, 0, 0, 0, DateTimeZone.UTC);
+    DateTime usCentralDaylightInUTC = new DateTime(2008, 11, 2, 6, 0, 0, 0, DateTimeZone.UTC);
+    DateTimeZone zone = DateTimeZone.forID("US/Central");
+    DateTime usCentralStandardInUSCentral = usCentralStandardInUTC.toDateTime(zone);
+    DateTime usCentralDaylightInUSCentral = usCentralDaylightInUTC.toDateTime(zone);
+    assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
+    assertEquals(usCentralStandardInUSCentral.getHourOfDay(), usCentralDaylightInUSCentral.getHourOfDay());
+    assertEquals(usCentralDaylightInUSCentral, usCentralStandardInUSCentral.withHourOfDay(1));
+
+    DateTime australiaNSWStandardInUTC = new DateTime(2008, 4, 5, 16, 0, 0, 0, DateTimeZone.UTC);

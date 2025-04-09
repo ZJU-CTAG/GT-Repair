@@ -1,0 +1,28 @@
+public void testTypeHierarchy() {
+    Gson gson = new Gson();
+    String json = "{\"type\":\"Truck\",\"model\":\"Ford\"}";
+    Car car = gson.fromJson(json, Car.class);
+    assertEquals("Ford", car.model);
+}
+
+interface VehicleTypeAdapter<T extends Vehicle> extends TypeAdapter<T> {
+    @Override
+    void write(JsonWriter out, T value) throws IOException {
+        // Generic serialization code here
+        // ...
+        out.beginObject();
+        out.name("type").value(value.getClass().getSimpleName());
+        out.name("model").value(value.model);
+        out.endObject();
+    }
+
+    @Override
+    T read(JsonReader in) throws IOException {
+        // Generic deserialization code here
+        // ...
+        JsonToken token = in.peek();
+        if (token == JsonToken.BEGIN_OBJECT) {
+            in.beginObject();
+            token = in.peek();
+        }
+        while (token

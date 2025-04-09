@@ -1,0 +1,24 @@
+public void testIssue() {
+    String code = ("/** @returns {Object} */ "
+        + "function func(a, b) { "
+        + " var results;"
+        + " if (a) { "
+        + " results = {}; "
+        + " results.prop1 = null"
+        + " } "
+        + " if (b) { "
+        + " results = results || {}; "
+        + " results.prop2 = 'prop2'; "
+        + " } else { "
+        + " results = results || {}; "
+        + " results.prop3 = 'prop3'; "
+        + " } "
+        + " return results; "
+        + "}");
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        EXTERNS,
+        ImmutableList.of(SourceFile.fromCode("testcode", code)),
+        new CompilerOptions());
+    assertTrue(result.success);
+}

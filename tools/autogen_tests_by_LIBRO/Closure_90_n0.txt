@@ -1,0 +1,15 @@
+public void testIssue270() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        SourceFile.fromCode("test.js",
+            "/** @constructor */\n" +
+            "function A() {}\n" +
+            "/** @constructor */\n" +
+            "function B() {}\n" +
+            "/** @type {A|B} */\n" +
+            "var Thing = goog.typedef;\n" +
+            "/** @this {Thing} */\n" +
+            "function f() {}\n"),
+        new CompilerOptions());
+    assertEquals(0, result.warnings.length);
+}

@@ -1,0 +1,17 @@
+public void testCMAESOptimizer() {
+
+        SimpleProblem problem = new SimpleProblem();
+        problem.setInitialGuess(new double[] {1.0});
+        
+        CMAESOptimizer optimizer = new CMAESOptimizer(3000, 1e-10, false, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-10, 1e-10));
+        optimizer.optimize(problem, problem.getModelFunction(), problem.getObjectiveFunction(), GoalType.MINIMIZE, new double[] {0.5}, new double[] {0.5});
+
+        optimizer.optimize(problem, problem.getModelFunction(), problem.getObjectiveFunction(), GoalType.MINIMIZE, new double[] {0.1}, new double[] {0.1});
+
+        optimizer.optimize(problem, problem.getModelFunction(), problem.getObjectiveFunction(), GoalType.MINIMIZE, new double[] {0.01}, new double[] {0.01});
+}
+
+private static class SimpleProblem {
+    
+    private double[] initialGuess;
+    

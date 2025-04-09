@@ -1,0 +1,25 @@
+public void testCMAESOptimizer() {
+    final ParameterFunction function = new ParameterFunction() {
+        public double value(double[] variables) {
+            double x = variables[0];
+            return Math.sqrt(x);
+        }
+    };
+
+    double[] initial = new double[] {0.25};
+    double[] lower = new double[] {0.1};
+    double[] upper = new double[] {1.0};
+    double[] target = new double[] {0.5};
+    double[] weights = new double[] {1.0};
+
+    CMAESOptimizer optimizer = new CMAESOptimizer(true, 0, false, 0, 0, new MersenneTwister(), true, 1);
+
+    try {
+        PointValuePair result = optimizer.optimize(
+            new MaxEval(1000),
+            new ObjectiveFunction(function),
+            GoalType.MINIMIZE,
+            SimpleBounds.unbounded(1),
+            new InitialGuess(initial),
+            new CMAESOptimizer.PopulationSize(1),
+            new Target(target),

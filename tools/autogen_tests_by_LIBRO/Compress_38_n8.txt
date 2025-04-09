@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    final InputStream in = getClass().getResourceAsStream("test-issue.tar");
+    try {
+        final TarArchiveInputStream tin = new TarArchiveInputStream(in);
+        final TarArchiveEntry entry = tin.getNextTarEntry();
+        assertNotNull(entry);
+        assertTrue(entry.isDirectory());
+        assertEquals("test-issue/", entry.getName());
+
+        final byte[] content = new byte[1024];
+        final int read = tin.read(content);
+        assertEquals(-1, read);
+    } finally {
+        IOUtils.closeQuietly(in);
+    }
+}

@@ -1,0 +1,13 @@
+public void testIssue1154() {
+    CurrencyAmount ca = new CurrencyAmount(BigDecimal.ONE, Currency.getInstance("USD"));
+    PerRequestTemplateFormatFactory pf = new PerRequestTemplateFormatFactory();
+    pf.setLocale(Locale.US);
+    pf.setExposeFormatsViaTemplateModel(true);
+    pf.setNumberFormat("0.00");
+    TemplateFormat tf = pf.get(BigDecimal.class, null);
+    assertNotNull(tf);
+    assertEquals("1.00", tf.format(BigDecimal.ONE, ca, null));
+    tf = pf.get(CurrencyAmount.class, null);
+    assertNotNull(tf);
+    assertEquals("1.00", tf.format(ca, ca, null));
+}

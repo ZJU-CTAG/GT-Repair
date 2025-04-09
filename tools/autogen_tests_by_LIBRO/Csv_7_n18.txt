@@ -1,0 +1,14 @@
+public void testIssue108 () {
+    String line = "Col1,Col2,Col2,Col3,Col4\n1,2,3,4,5\n4,5,6,7,8\n";
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+            .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    try (CSVParser parser = new CSVParser(new StringReader(line), myFormat)) {
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertEquals((Integer) 0, headerMap.get("Col1"));
+        assertEquals((Integer) 1, headerMap.get("Col2"));
+        assertEquals((Integer) 3, headerMap.get("Col3"));
+        assertEquals((Integer) 4, headerMap.get("Col4"));
+    } catch (IOException e) {
+        fail();
+    }
+}

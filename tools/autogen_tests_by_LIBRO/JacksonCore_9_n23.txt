@@ -1,0 +1,23 @@
+public void testIssue144() throws Exception
+{
+    final String JSON = "{\"foo\" : \"bar\"}";
+    final JsonParser jp = MAPPER.getFactory().createParser(JSON);
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+
+    // first, verify default handling
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertNull(jp.getValueAsString());
+
+    assertToken(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals("bar", jp.getValueAsString());
+
+    // and then with change:
+    jp.close();
+
+    // but with change, should get field name itself
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("foo", jp.getValueAsString());
+
+    assertToken(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals("bar", jp.getValue

@@ -1,0 +1,28 @@
+public void testRequiredOptions() throws Exception {
+    // create the command line parser
+    CommandLineParser parser = new PosixParser();
+
+    // create the Options
+    Options options = new Options();
+    options.addOption( OptionBuilder.withDescription( "display help information" )
+                                    .withLongOpt( "help" )
+                                    .create( 'h' ) );
+    options.addOption( OptionBuilder.withDescription( "compression level" )
+                                    .hasArg()
+                                    .withArgName( "level" )
+                                    .withLongOpt( "level" )
+                                    .create( 'l' ) );
+    options.addOption( OptionBuilder.withDescription( "compress the file" )
+                                    .withLongOpt( "compress" )
+                                    .create( 'c' ) );
+
+    // create the command line
+    String[] args = new String[] { "-c" };
+
+    // parse the command line arguments
+    CommandLine line = parser.parse( options, args );
+
+    if ( line.hasOption( 'c' ) ) {
+        // ...
+    }
+    else

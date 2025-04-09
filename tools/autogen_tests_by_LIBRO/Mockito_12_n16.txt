@@ -1,0 +1,13 @@
+public void test() {
+    Foo foo = mock(Foo.class);
+    doNothing().when(foo).foo(anyString(), anyString(), anyString());
+    foo.foo("a", "b", "c");
+
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    verify(foo).foo(captor.capture(), captor.capture(), captor.capture());
+    assertThat(captor.getAllValues(), hasItems("a", "b", "c"));
+}
+
+private interface Foo {
+    void foo(String... strings);
+}

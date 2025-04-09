@@ -1,0 +1,14 @@
+public void testHeaderMapWithDuplicates() throws IOException {
+    String text =
+            "Col1,Col2,Col2,Col3,Col4\n" +
+            "1,2,3,4,5\n" +
+            "4,5,6,7,8";
+
+    CSVFormat myFormat = CSVFormat.DEFAULT.withDelimiter(',').withHeader().withIgnoreSurroundingSpaces(true).withFirstRecordAsHeader();
+
+    CSVParser csvParser = new CSVParser(new StringReader(text), myFormat);
+    Map<String, String> headerMap = csvParser.getHeaderMap();
+    assertEquals("2", headerMap.get("Col2"));
+    assertEquals("3", headerMap.get("Col3"));
+    assertEquals("4", headerMap.get("Col4"));
+}

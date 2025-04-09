@@ -1,0 +1,15 @@
+public void testIssue28() {
+    final String js = "/\*\* @preserve \*/"
+            + "var t = null;"
+            + "window.test = function() {"
+            + "if (t != null) {"
+            + "t = null;"
+            + "}"
+            + "t = 1;"
+            + "};";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.compile(
+            SourceFile.fromCode("in.js", js),
+            new CompilerOptions());
+}

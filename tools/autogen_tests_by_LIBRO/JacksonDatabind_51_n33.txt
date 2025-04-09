@@ -1,0 +1,10 @@
+public void testGenericTypeIdResolver() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addAbstractTypeMapping(Request.class, RequestWithCollection.class)
+            .addAbstractTypeMapping(Response.class, ResponseWithCollection.class));
+    mapper.registerModule(new CustomModule());
+
+    String serialized = mapper.writeValueAsString(new Message<>(new RequestWithCollection<>(Collections.emptyList())));
+    Message<ResponseWithCollection<?>> deserialized = mapper.readValue(serialized, new TypeReference<Message<ResponseWithCollection<?>>>() {});
+    Assert.assertNotNull(deserialized);
+}

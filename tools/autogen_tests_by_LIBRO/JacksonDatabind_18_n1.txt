@@ -1,0 +1,22 @@
+public void testReadValuesWithRecovery() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<String> iterator = mapper.readerFor(String.class)
+            .readValues(new StringReader("[\"a\",\"b\"]"));
+    assertEquals("a", iterator.next());
+    assertEquals("b", iterator.next());
+    try {
+        iterator.next();
+        fail("Should have thrown an exception");
+    } catch (JsonMappingException e) {
+        // good
+    }
+    assertFalse(iterator.hasNext());
+    assertFalse(iterator.hasNextValue());
+    assertFalse(iterator.hasNextValue(String.class));
+    assertNull(iterator.nextValue(String.class));
+    assertFalse(iterator.hasNext());
+    assertFalse(iterator.hasNextValue());
+    assertFalse(iterator.hasNextValue(String.class));
+    assertNull(iterator.nextValue(String.class));
+}

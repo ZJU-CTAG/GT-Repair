@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Sub.class);
+    ObjectNode root = mapper.createObjectNode();
+    mapper.acceptJsonFormatVisitor(mapper.constructType(Base.class), new JsonFormatVisitorWrapper.Base(mapper) {
+        public JsonObjectFormatVisitor expectObjectFormat(JavaType type) {
+            return new JsonObjectFormatVisitor.Base(mapper) {
+                @Override
+                public void property(BeanProperty prop) {
+                    root.set(prop.getName(), mapper.createObjectNode().put(prop.getName(), 1));
+                }
+            };
+        }
+    });
+    assertEquals("{\"base\":1}", mapper.writeValueAsString(root));
+}

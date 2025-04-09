@@ -1,0 +1,16 @@
+public void testAdvancedCompilation() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckTypes(true);
+    options.setEmitUseStrict(true);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setPrettyPrint(false);
+    options.setOptimize(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, compile("function A() {this._x = 1;}\n" +
+            "A.prototype['func1'] = // done to save public reference to func1\n" +
+            "A.prototype.func1 = function() {\n" +
+            " this._x = 2;\n" +
+            " this.func2();\n" +
+           

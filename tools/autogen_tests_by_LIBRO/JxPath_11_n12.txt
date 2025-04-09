@@ -1,0 +1,21 @@
+public void testIssueWithNamespaces() throws Exception {
+    JXPathContext context = JXPathContext.newContext(new ElementA());
+    context.registerNamespace("a", "http://a.example.com");
+    context.registerNamespace("b", "http://b.example.com");
+    assertEquals("Mytype", context.getValue("/a:ElementA/@a:myAttr"));
+    assertEquals("MY VALUE", context.getValue("/a:ElementA/b:ElementB/text()"));
+}
+
+public static class ElementA {
+    private ElementB elementB = new ElementB();
+    public ElementB getElementB() {
+        return elementB;
+    }
+}
+
+public static class ElementB {
+    private String value = "MY VALUE";
+    public String getValue() {
+        return value;
+    }
+}

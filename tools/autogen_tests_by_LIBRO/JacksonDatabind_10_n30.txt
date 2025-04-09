@@ -1,0 +1,28 @@
+public void testJsonAnyGetter() throws Exception
+{
+    String json = mapper.writeValueAsString(new BeanWithAnyGetter());
+
+    // with keyUsing and without, works
+    assertEquals("{\"a\":\"A\",\"b\":\"B\"}", json);
+}
+
+
+@JsonSerialize(keyUsing = MyKeySerializer.class)
+@JsonAnyGetter
+public Map<String, String> getParameters(){
+    return parameters;
+}
+
+public void testJsonAnyGetter() throws Exception
+{
+    String json = mapper.writeValueAsString(new BeanWithAnyGetter());
+
+    // with converter and without, fails
+    assertEquals("{\"a\":\"A\",\"b\":\"B\"}", json);
+}
+
+@JsonSerialize(converter = MyConverter.class)
+@JsonAnyGetter
+public Map<String, String> getParameters(){
+    return parameters;
+}

@@ -1,0 +1,8 @@
+public void testIssue108() throws Exception {
+    final Map<CharSequence, Integer> map = new HashMap<>();
+    map.put("One", 1);
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(map);
+    final Map<CharSequence, Integer> map2 = mapper.readValue(json, new TypeReference<Map<CharSequence, Integer>>() {});
+    assertEquals(Integer.valueOf(1), map2.get("One"));
+}

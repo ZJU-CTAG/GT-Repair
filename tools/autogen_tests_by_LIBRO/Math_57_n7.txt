@@ -1,0 +1,14 @@
+public void testKMeansPlusPlusClusterer() {
+    List<Vector> data = new ArrayList<Vector>();
+    Random r = new Random();
+    for (int i = 0; i < 10; i++) {
+        double[] d = new double[2];
+        d[0] = r.nextDouble();
+        d[1] = r.nextDouble();
+        data.add(new ArrayRealVector(d));
+    }
+    KMeansPlusPlusClusterer<Vector> km = new KMeansPlusPlusClusterer<Vector>(1, 10000, new EuclideanDistanceMeasure());
+    List<Cluster<Vector>> clusters = km.cluster(data);
+    assertEquals(1, clusters.size());
+    assertEquals(10, clusters.get(0).getPoints().size());
+}

@@ -1,0 +1,11 @@
+public void testIssue108() throws FileNotFoundException, IOException {
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+                .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    CSVParser parser = CSVParser.parse(new File("src/test/java/org/apache/commons/csv/testfiles/issue107.csv"), Charset.forName("UTF-8"), myFormat);
+    assertEquals(5, parser.getHeaderMap().size());
+    assertEquals(0, parser.getHeaderMap().get("Col1"));
+    assertEquals(1, parser.getHeaderMap().get("Col2"));
+    assertEquals(2, parser.getHeaderMap().get("Col2"));
+    assertEquals(3, parser.getHeaderMap().get("Col3"));
+    assertEquals(4, parser.getHeaderMap().get("Col4"));
+}

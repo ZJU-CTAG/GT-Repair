@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    Parser domParser = new Parser();
+    domParser.setInputHTML("<body>" +
+        "<div class=\"card-content2\">" +
+            "<a href=\"#\" class=\"subtitle\" title=\"MySubTitle:)\">" +
+                "<span></span>" +
+            "</a>" +
+        "</div>" +
+        "<a href=\"#\" class=\"title\" title=\"MyTitle :]\">" +
+            "<span></span>" +
+        "</a>" +
+    "</body>");
+    org.w3c.dom.Document document = domParser.parseDocument();
+    assertNotNull(document);
+
+    Selector selector = new Selector(document);
+    NodeList result1 = selector.select("div.card-content2:has(a.subtitle[title=MySubTitle:)])");
+    assertEquals(1, result1.getLength());
+
+    NodeList result2 = selector.select("a.title[title=MyTitle :]");
+    assertEquals(1, result2.getLength());

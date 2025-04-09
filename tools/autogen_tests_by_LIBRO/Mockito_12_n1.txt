@@ -1,0 +1,24 @@
+public void testVarargs() {
+    A a = mock(A.class);
+    doSomething(a);
+    ArgumentCaptor<B> captor = ArgumentCaptor.forClass(B.class);
+    verify(a).process(captor.capture());
+    assertEquals("b", captor.getValue().getS());
+}
+
+private void doSomething(A a) {
+    a.process(new B("b"));
+}
+
+public class A {
+    public void process(B... b) {}
+}
+public class B {
+    private String s;
+    public B(String s) {
+        this.s = s;
+    }
+    public String getS() {
+        return s;
+    }
+}

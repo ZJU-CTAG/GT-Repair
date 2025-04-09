@@ -1,0 +1,21 @@
+public void testIssue108() {
+    List<String> args = new ArrayList<String>();
+    args.add("--js");
+    args.add("src/test/javascript/issue108/a.js");
+    args.add("--js");
+    args.add("src/test/javascript/issue108/b.js");
+    args.add("--compilation_level");
+    args.add("WHITESPACE_ONLY");
+    args.add("--manage_closure_dependencies");
+    args.add("--output_wrapper");
+    args.add("(function(){%output%})();");
+    args.add("--output_manifest");
+    args.add("manifest");
+    args.add("--warning_level");
+    args.add("QUIET");
+    CommandLineRunner runner = new CommandLineRunner(args);
+    runner.doRun();
+
+    String result = runner.getOutput();
+    assertEquals(1, StringUtils.countMatches(result, "a function"));
+    assertEquals(0, StringUtils.countMatches(

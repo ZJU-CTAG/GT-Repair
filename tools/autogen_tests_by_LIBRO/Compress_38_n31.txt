@@ -1,0 +1,17 @@
+public void testPaxHeaderEntryNameWithSlash() throws Exception {
+    InputStream tar = PaxEntryNameWithSlash.class.getResourceAsStream("/pax-entry-name-with-slash.tar");
+    try {
+        TarInputStream tin = new TarInputStream(tar);
+        try {
+            int entryCount = 0;
+            while (tin.getNextEntry() != null) {
+                entryCount++;
+            }
+            assertEquals(1, entryCount);
+        } finally {
+            tin.close();
+        }
+    } finally {
+        tar.close();
+    }
+}

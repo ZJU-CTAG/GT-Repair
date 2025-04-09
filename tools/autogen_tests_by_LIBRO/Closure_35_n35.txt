@@ -1,0 +1,20 @@
+public void testRecordTypes() {
+    JSDocInfoBuilder builder = new JSDocInfoBuilder(true);
+    builder.recordType();
+    JSTypeExpression type = new JSTypeExpression(
+        new Node(Token.LC, new Node(Token.STRING, "prop1")),
+        new JSTypeExpression(
+            new Node(Token.STRING, "string"),
+            new Node(Token.LC, new Node(Token.STRING, "prop2")),
+            new JSTypeExpression(
+                new Node(Token.STRING, "number"),
+                new Node(Token.LC, new Node(Token.STRING, "prop3")),
+                new JSTypeExpression(
+                    new Node(Token.STRING, "boolean"),
+                    new Node(Token.RC),
+                    new Node(Token.RC),
+                    new Node(Token.RC))),
+            new Node(Token.RC)));
+    builder.addParameter("results", type);
+    JSDocInfo info = builder.build();
+    Node func = IR.function(IR.name("func"), IR

@@ -1,0 +1,20 @@
+public void testThis() {
+    String js = "/** @constructor */ function F() {}"
+            + "F.prototype.bar = function() { this.baz(); };"
+            + "F.prototype.baz = function() { };"
+            + "/** @constructor */ function G() {}"
+            + "G.prototype.bar = F.prototype.bar;";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            EXTERNS,
+            js,
+            new CompilerOptions());
+    DiagnosticGroups groups = new DiagnosticGroups();
+    groups.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    JSError[] errors = result.errors;
+    assertEquals(1, errors.length);
+    assertEquals(TypeCheck.INEXISTENT_PROPERTY, errors[0].getType());
+    assertTrue(errors[0].description.contains("baz"));
+}
+

@@ -1,0 +1,20 @@
+public void testSimple() throws Exception
+{
+    // First, via Jackson
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(Include.NON_EMPTY);
+    String json = mapper.writeValueAsString(new IntHolder());
+    assertEquals("{\"id\":\"1234\"}", json);
+
+    // And then with Afterburner
+    ObjectMapper mapper2 = new ObjectMapper();
+    mapper2.registerModule(new AfterburnerModule());
+    mapper2.setSerializationInclusion(Include.NON_EMPTY);
+    String json2 = mapper2.writeValueAsString(new IntHolder());
+    assertEquals("{\"id\":\"1234\"}", json2);
+
+    // And then with 2.6.0-rc3
+    ObjectMapper mapper3 = new ObjectMapper();
+    mapper3.setSerializationInclusion(Include.NON_EMPTY);
+    String json3 = mapper3.writeValueAsString(new IntHolder());
+    assertEquals("

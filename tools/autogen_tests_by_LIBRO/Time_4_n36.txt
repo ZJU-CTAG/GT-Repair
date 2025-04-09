@@ -1,0 +1,17 @@
+public void testPartialMerge() {
+    Partial a = new Partial(new DateTimeFieldType[] { year(), hourOfDay() }, new int[] { 1, 1});
+    Partial b = new Partial(year(), 1).with(hourOfDay(), 1);
+    assertEquals(a, b);
+    assertEquals(b, a);
+}
+
+public void testPartialMergeInvalid() {
+    assertPartialFails(new DateTimeFieldType[] { clockhourOfDay(), hourOfDay() }, new int[] { 1, 1}, "Types array must not contain duplicate");
+    Partial p = new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1);
+    assertEquals("1", p.getValues()[0].toString());
+    assertEquals("1", p.getValues()[1].toString());
+}
+
+public void testPartialEquality() {
+    Partial p1 = new Partial(clockhourOfDay(), 1).with(hourOfDay(), 1);
+    Partial p2 = new Partial(hourOfDay() ,1).with(clockhourOfDay(), 1);

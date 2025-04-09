@@ -1,0 +1,26 @@
+public void testIssue53() {
+    JsonWriter jsonWriter = new JsonWriter(new StringWriter());
+    try {
+        jsonWriter.beginObject().name("test").value(Double.NaN).endObject();
+        fail();
+    } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+        // Numeric values must be finite, but was NaN
+    }
+    try {
+        jsonWriter.beginObject().name("test").value((Number) Double.NaN).endObject();
+        fail();
+    } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+        // Attempted to write null
+    }
+    try {
+        jsonWriter.beginObject().name("test").value(Double.NaN).endObject();
+        fail();
+    } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+        // Numeric values must be finite, but was NaN
+    }
+    jsonWriter.setLenient(true);
+    try {
+        jsonWriter

@@ -1,0 +1,24 @@
+public void testIssue108() {
+    Options options = new Options();
+
+    options.addOption(OptionBuilder.withLongOpt("target")
+                                   .withDescription("generate files for the specified target machine")
+                                   .hasArg()
+                                   .create('t'));
+
+    CommandLineParser parser = new PosixParser();
+    String[] args = { "-target", "foobar.com" };
+    try {
+        CommandLine commandLine = parser.parse(options, args);
+        assertTrue(commandLine.hasOption("t"));
+        assertEquals("foobar.com", commandLine.getOptionValue("t"));
+    } catch (ParseException e) {
+        fail("Should not throw exception: " + e.getMessage());
+    }
+
+    args = new String[] { "-t", "foobar.com" };
+    try {
+        CommandLine commandLine = parser.parse(options, args);
+        assertTrue(commandLine.hasOption("t"));
+        assertEquals("foobar.com", commandLine.getOptionValue("t"));
+    } catch (ParseException e)

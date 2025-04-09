@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("[testcode]", "\n"
+        + "/** @constructor */\n"
+        + "var myclass = function() {\n"
+        + "}\n"
+        + "/** @param {boolean} success */\n"
+        + "myclass.prototype.fn = function(success) { }\n"
+        + "myclass.prototype.test = function() {\n"
+        + "  this.fn();\n"
+        + "  this.fn = function() { };\n"
+        + "}\n"));
+
+    assertEquals(1, result.errors.length);
+
+    String msg = result.errors[0].getMessage();
+    assertTrue("No error message", msg != null);
+    assertTrue("Wrong error message: " + msg,
+        msg.contains("Function this.fn: called with 0 argument(s). "
+            + "Function requires at least 1 argument(s) and no more than 2 argument(s)."));

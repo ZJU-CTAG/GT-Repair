@@ -1,0 +1,14 @@
+public void testIssue110() {
+    assertEquals("{0:0,1:1}", JavaScriptCompressor.compress("alert({0:0, 1:1});", new ErrorReporter(){
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException();
+        }
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException();
+        }
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            throw new RuntimeException();
+        }
+    }));
+}
+

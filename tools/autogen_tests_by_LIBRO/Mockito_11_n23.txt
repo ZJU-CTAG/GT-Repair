@@ -1,0 +1,28 @@
+public void testDelegatingMethodEqualsIsEasyToOverride() {
+    class MyDelegatingMethod extends DelegatingMethod {
+        public MyDelegatingMethod(Method m) {
+            super(m);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (!(other instanceof MyDelegatingMethod)) {
+                return false;
+            }
+            return super.equals(other);
+        }
+    }
+
+    try {
+        Method m = MyDelegatingMethod.class.getMethod("equals", Object.class);
+        DelegatingMethod dm = new MyDelegatingMethod(m);
+        assertFalse(dm.equals(m));
+        assertTrue(dm.equals(new MyDelegatingMethod(m)));
+    } catch (SecurityException e) {
+        e.printStackTrace();
+        fail();
+    } catch (NoSuchMethodException e) {
+        e.printStackTrace();
+        fail();
+    }
+}

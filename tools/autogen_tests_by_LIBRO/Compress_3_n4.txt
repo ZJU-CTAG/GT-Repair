@@ -1,0 +1,16 @@
+public void testFinishNotCalledOnClose() throws Exception {
+    testArchiveOutputStream(new TarArchiveOutputStream(new TestOutputStream()));
+    testArchiveOutputStream(new ZipArchiveOutputStream(new TestOutputStream()));
+    testArchiveOutputStream(new SevenZOutputFile(new TestOutputStream()));
+}
+
+public void testArchiveOutputStream(ArchiveOutputStream aos) throws Exception {
+    TestOutputStream tos = (TestOutputStream)aos.getStream();
+    assertFalse("finish() should not have been called", tos.finishCalled);
+    assertFalse("close() should not have been called", tos.closeCalled);
+    aos.write(new byte[0]);
+    assertFalse("finish() should not have been called", tos.finishCalled);
+    assertFalse("close() should not have been called", tos.closeCalled);
+    aos.close();
+    assertTrue("finish() should have been called", tos.finishCalled);
+    assertTrue("close() should have been called", tos.closeCalled);

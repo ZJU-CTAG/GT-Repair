@@ -1,0 +1,8 @@
+public void testIssue172() {
+    XPathCompiler compiler = new XPathCompiler();
+    XPathExecutable exec = compiler.compile("//*[@class]");
+    XPathMatcher matcher = exec.load();
+    matcher.setContextItem(new StreamSource(new StringReader("<p class='foo'/>")), null);
+    assertTrue(matcher.next());
+    assertEquals("p", matcher.getNodeName().getLocalPart());
+}

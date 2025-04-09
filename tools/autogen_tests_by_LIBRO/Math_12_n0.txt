@@ -1,0 +1,20 @@
+public void testIssue68() {
+    final GammaDistribution rng1 = new GammaDistribution(10, 0.5);
+    final GammaDistribution rng2 = new GammaDistribution(10, 0.5);
+    final GammaDistribution rng3 = new GammaDistribution(10, 0.5);
+
+    // Serialize
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try(ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+        oos.writeObject(rng1);
+    } catch (IOException e) {
+        throw new AssertionError(e);
+    }
+
+    // Deserialize
+    try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()))) {
+        rng2.reseedRandomGenerator(1);
+        rng3.reseedRandomGenerator(1);
+        rng2.setRandomGenerator((RandomGenerator) ois.readObject());
+        rng3.setRandomGenerator((RandomGenerator) ois.readObject());
+    } catch(Exception

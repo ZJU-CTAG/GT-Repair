@@ -1,0 +1,29 @@
+public void testOptionBuilderWithException() {
+        final String validLongOption = "target";
+        final String validShortOption = "t";
+        final String invalidOption = "target";
+
+        final String validOptionWithValue = "opt";
+        final String invalidOptionWithValue = "target";
+
+        final String[] validOptions = new String[] {"-" + validShortOption, validOptionWithValue};
+        final String[] invalidOptions = new String[] {"-" + invalidOption, invalidOptionWithValue};
+
+        final String expectedOption = validLongOption;
+        final String expectedValue = validOptionWithValue;
+        final String expectedErrorMessage = "Option " + invalidOption + " is not a valid long option";
+
+        final Option targetOption = OptionBuilder.create(expectedOption);
+
+        final Options options = new Options();
+        options.addOption(targetOption);
+
+        CommandLineParser clp = new PosixParser();
+        try
+        {
+            clp.parse(options, invalidOptions);
+            fail("An IllegalArgumentException should have been thrown");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(

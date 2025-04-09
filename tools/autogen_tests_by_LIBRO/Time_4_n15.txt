@@ -1,0 +1,11 @@
+public void testIssue108() {
+    DateTimeFieldType[] types = new DateTimeFieldType[] { DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.hourOfDay() };
+    int[] values = new int[] { 1, 1 };
+    try {
+        new Partial(types, values);
+        fail();
+    } catch (Exception e) {
+        assertEquals("Types array must not contain duplicate types", e.getMessage());
+    }
+    assertEquals(new Partial(types, values), new Partial(DateTimeFieldType.clockhourOfDay(), 1).with(DateTimeFieldType.hourOfDay(), 1));
+}

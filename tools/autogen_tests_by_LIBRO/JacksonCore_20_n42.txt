@@ -1,0 +1,13 @@
+public void testEmbeddedObjectWithByteArray() throws Exception
+{
+	ByteArrayOutputStream out = new ByteArrayOutputStream();
+	JsonGenerator gen = MAPPER.createGenerator(out);
+	gen.writeStartObject();
+	gen.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+	gen.writeEndObject();
+	gen.close();
+
+	ObjectMapper m = new ObjectMapper();
+	Map<?,?> ob = m.readValue(out.toByteArray(), Map.class);
+	assertEquals("{\"default\":[1,2,3]}", m.writeValueAsString(ob));
+}

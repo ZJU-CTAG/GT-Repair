@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    FilterProvider filterProvider = new SimpleFilterProvider();
+    filterProvider = filterProvider.addFilter("dummy", SimpleBeanPropertyFilter.serializeAllExcept("bogus"));
+    mapper.setFilters(filterProvider);
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator gen = mapper.getFactory().createGenerator(sw);
+    gen.writeStartDocument();
+    gen.writeStartObject();
+    gen.writeFieldName("myBytes");
+    gen.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[1024 * 1024]), 1024 * 1024);
+    gen.writeEndObject();
+    gen.writeEndDocument();
+    gen.close();
+    sw.close();
+}

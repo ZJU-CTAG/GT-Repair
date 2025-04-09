@@ -1,0 +1,22 @@
+public void testMarquardt() throws Exception {
+    
+    // create optimisation problem
+    final double[] target = new double[] {3, 3, 3};
+    final double[] startPoint = new double[] {-150, 0, 1};
+    final double[][] weight = new double[][] {{100, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    final double[] tolerance = new double[] {1e-6, 1e-6, 1e-6};
+    
+    // create user function (vector function)
+    final VectorFunction function = new VectorFunction() {
+        public double[] value(double[] variables) {
+            return new double[] {
+                    (variables[0] - target[0]) * weight[0][0],
+                    (variables[1] - target[1]) * weight[1][1],
+                    (variables[2] - target[2]) * weight[2][2]
+            };
+        }
+    };
+    
+    
+    // create optimisation data
+    final OptimizationData[] optimizationData = new OptimizationData[4];

@@ -1,0 +1,13 @@
+public void testOptionStopsAtNonOption() throws Exception {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+
+    String[] args = new String[] { "-z", "-a", "foo" };
+
+    PosixParser parser = new PosixParser();
+    CommandLine commandLine = parser.parse(options, args, true);
+    Option[] parsedOptions = commandLine.getOptions();
+    assertEquals(1, parsedOptions.length);
+    assertEquals("a", parsedOptions[0].getOpt());
+    assertEquals(0, commandLine.getArgs().length);
+}

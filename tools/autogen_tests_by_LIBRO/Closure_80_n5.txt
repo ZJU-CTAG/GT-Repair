@@ -1,0 +1,22 @@
+public void testClosure() {
+    // CompilerOptions options = new CompilerOptions();
+    // options.closurePass = true;
+    // options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    // options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    // compiler.initOptions(options);
+    Result result = compiler.compile("(function() { return delete a; })();", null, new ErrorReporter() {
+
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("Warning: " + message + " on " + line + ":" + lineOffset);
+        }
+
+        @Override
+        public void notice(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("Notice: " + message + " on " + line + ":" + lineOffset);
+        }
+
+        @Override
+        public void error(String message,

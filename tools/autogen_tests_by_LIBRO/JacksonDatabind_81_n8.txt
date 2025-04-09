@@ -1,0 +1,13 @@
+public void testJacksonAnnotations() throws IOException {
+    String json = "{\"foo\":1,\"bar\":2}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+    Foo foo = mapper.readValue(json, Foo.class);
+    assertEquals(1, foo.foo);
+    assertEquals(2, foo.bar);
+}
+
+public static class Foo {
+    public Integer foo;
+    public int bar;
+}

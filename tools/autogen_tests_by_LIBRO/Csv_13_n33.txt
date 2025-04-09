@@ -1,0 +1,8 @@
+public void testBug1() throws IOException {
+    StringWriter sw = new StringWriter();
+    CsvFormat csvFormat = new CsvFormat().withNullString("\\N").withEscape('\\');
+    CsvPrinter csvPrinter = new CsvPrinter(sw, csvFormat);
+    csvPrinter.printRecord("\\N"); //should be printed as "\N" not as "\\N"
+    csvPrinter.close();
+    assertEquals("\"\\\\N\"\n", sw.toString());
+}

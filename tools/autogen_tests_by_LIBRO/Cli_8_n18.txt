@@ -1,0 +1,13 @@
+public void testHelpFormatter() {
+    Options options = new Options();
+    options.addOption(Option.builder("test").longOpt("test")
+        .desc("This is a long description that should wrap correctly.")
+        .build());
+    HelpFormatter formatter = new HelpFormatter();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    formatter.printHelp(pw, 30, "test", "", options, 1, 2, "");
+    pw.flush();
+    String s = baos.toString();
+    assertTrue(s.contains("This is a long description") && s.contains("correctly."));
+}

@@ -1,0 +1,11 @@
+public void testIssue108() {
+    try {
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+        engine.eval("function f() { }");
+        engine.eval("alert(f())");
+        fail();
+    } catch (ScriptException e) {
+        String msg = e.getMessage();
+        assertTrue(msg.contains("TypeError"));
+    }
+}

@@ -1,0 +1,9 @@
+public void testIssue() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<table><tr><td>test</td></tr></table>");
+    HtmlCleaner cleaner = new HtmlCleaner();
+    TagNode rootNode = cleaner.clean(sb.toString());
+    new PrettyXmlSerializer(cleaner.getProperties()).writeToString(rootNode);
+    rootNode.findElementByAttValue("tr", "", true, true).addChild(new TagNode("td"));
+    new PrettyXmlSerializer(cleaner.getProperties()).writeToString(rootNode);
+}

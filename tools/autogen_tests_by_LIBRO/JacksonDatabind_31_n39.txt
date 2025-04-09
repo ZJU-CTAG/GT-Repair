@@ -1,0 +1,18 @@
+public void testJsonStreamContext() throws Exception {
+    JsonFactory jsonFactory = new JsonFactory();
+    StringWriter stringWriter = new StringWriter();
+    JsonGenerator jsonGenerator = jsonFactory.createGenerator(stringWriter);
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("foo");
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("bar");
+    jsonGenerator.writeNumber(42);
+    jsonGenerator.writeEndObject();
+    jsonGenerator.writeEndObject();
+    jsonGenerator.close();
+    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectWriter objectWriter = objectMapper.writer().with(new AntPathFilterProvider(".foo"));
+    Object object = objectMapper.readValue(stringWriter.toString(), Object.class);
+    System.out.println(objectWriter.writeValueAsString(object));
+    System.out.println(objectMapper.convertValue(object, String.class));
+}

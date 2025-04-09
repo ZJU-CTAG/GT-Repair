@@ -1,0 +1,21 @@
+public void testJdkTypes() throws Exception
+{
+    ObjectMapper mapper = newObjectMapper();
+    mapper.disableDefaultTyping();
+
+    // let's try with collection types
+    String json = mapper.writeValueAsString(Arrays.asList("abc"));
+    assertEquals(quote("abc"), json);
+
+    // and then with one of whitelisted types
+    json = mapper.writeValueAsString(new TreeMap<String,Integer>());
+    assertEquals("{}", json);
+
+    // and then with some new type (as of 2.8.10):
+    json = mapper.writeValueAsString(new Stack<String>());
+    assertEquals("[\"java.util.Stack\"]", json);
+
+    // and then with yet another variant
+    json = mapper.writeValueAsString(new ArrayDeque<String>());
+    assertEquals("[\"java.util.ArrayDeque\"]", json);
+}

@@ -1,0 +1,11 @@
+public void testIssue1339() {
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setSkipAllPasses(true);
+    Compiler compiler = new Compiler();
+    compiler.init(new Node[0], options);
+    Node script = compiler.parseTestCode("var i = 0; lab1: do{ lab2: do{ i++; if (1) { break lab2; } else { break lab1; } } while(false);} while(false); console.log(i);");
+    compiler.setLanguageMode(LanguageMode.ECMASCRIPT5);
+    compiler.normalize();
+    compiler.getNodeJS(System.out, script);
+}

@@ -1,0 +1,22 @@
+public void testMultiplePiePlot() {
+    final DefaultPieDataset dataset1 = new DefaultPieDataset();
+    dataset1.setValue("item 1", 1.0);
+    dataset1.setValue("item 2", 2.0);
+    dataset1.setValue("item 3", 3.0);
+
+    final DefaultPieDataset dataset2 = new DefaultPieDataset();
+    dataset2.setValue("item 1", 1.0);
+    dataset2.setValue("item 2", 2.0);
+    dataset2.setValue("item 3", 3.0);
+
+
+    final JFreeChart chart = ChartFactory.createMultiplePieChart3D("Pie Chart", new PieDataset[]{dataset1, dataset2});
+
+    final MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
+
+    final JPanel panel = new ChartPanel(chart);
+
+    // This is how to wire up a listener that responds to changes in the dataset.
+    dataset1.addChangeListener(new DatasetChangeListener() {
+        @Override
+        public void datasetChanged(final DatasetChangeEvent event) {

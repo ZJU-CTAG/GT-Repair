@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    JsonFactory f = new JsonFactory();
+    byte[] b = new byte[262144 + 1];
+    Arrays.fill(b, (byte) 'a');
+    String str = new String(b);
+    String json = "{\"" + str + "\":1}";
+    JsonParser p = f.createParser(new StringReader(json));
+    p.nextToken();
+    String fieldName = p.getCurrentName();
+    assertEquals(str, fieldName);
+}

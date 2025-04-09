@@ -1,0 +1,16 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.USE_ANNOTATIONS);
+    mapper.enable(DeserializationFeature.USE_ANNOTATIONS);
+    mapper.registerModule(new JodaModule());
+    mapper.registerSubtypes(new NamedType(PeriodWithType.class, "per"));
+    mapper.registerSubtypes(new NamedType(DateTimeWithType.class, "dt"));
+
+    Object polyValue = mapper.readValue("{\"type\":\"dt\",\"value\":\"2013-12-05T10:15:30.012+02:00\"}", Object.class);
+    assertTrue(polyValue instanceof DateTime);
+    DateTime date = (DateTime) polyValue;
+    assertEquals(2013, date.getYear());
+    assertEquals(12, date.getMonthOfYear());
+    assertEquals(5, date.getDayOfMonth());
+
+    polyValue = mapper.readValue("{\"type\":\"per\",\"value\":\"P1Y\"}",

@@ -1,0 +1,8 @@
+public void testNumericOverflow() throws Exception {
+    byte[] header = new byte[512];
+    System.arraycopy(new byte[] { '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', ' ' }, 0, header, 124, 12);
+
+    TarArchiveEntry entry = new TarArchiveEntry(header);
+    entry.parseTarHeader();
+    assertEquals(0, entry.getSize());
+}

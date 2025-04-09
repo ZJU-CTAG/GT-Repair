@@ -1,0 +1,12 @@
+public void testIssue110() {
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new BasicErrorManager() {
+      @Override
+      public void println(CheckLevel level, JSError error) {
+        assertTrue(error.sourceName + ": " + error.lineNumber + ": " + error.description,
+            error.description.length() > 0);
+        assertTrue(error.lineSource.length() > 0);
+      }
+    });
+    compiler.compile(SourceFile.fromCode("test.js", "alert(1;"));
+}

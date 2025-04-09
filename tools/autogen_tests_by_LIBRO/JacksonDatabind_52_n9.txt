@@ -1,0 +1,11 @@
+public void testExternalIdDeser() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    //Property is deserialized, but externalId is still null
+    String json = "{\"property\":{\"@type\":\"http://example.com/MyClass\",\"param1\":\"value1\"}}";
+    JsonNode root = mapper.readTree(json);
+    MyClass myClass = mapper.treeToValue(root.get("property"), MyClass.class);
+    assertNotNull(myClass);
+    System.out.println(myClass);
+}

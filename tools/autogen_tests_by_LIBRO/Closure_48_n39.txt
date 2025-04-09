@@ -1,0 +1,17 @@
+public void testIssue108() {
+    Node fn = parse("(function(success){})");
+    Node test = parse("test(){this.fn(); this.fn = function() { };}");
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    compilerEnv.setAllowSharpComments(true);
+    compilerEnv.setRecoverFromErrors(true);
+    compilerEnv.setIdeMode(true);
+    ErrorReporter errorReporter = compilerEnv.getErrorReporter();
+    Parser p = new Parser(compilerEnv, errorReporter);
+    ScriptNode n = p.parse(fn, "", 1);
+    ScriptNode t = p.parse(test, "", 1);
+    assertEquals(0, errorReporter.getErrorCount());
+    t.putProp(Node.LOCAL_THIS_PROP, n);
+    t.visitAll(new ErrorCollector());
+    assertEquals(2, errorReporter.getErrorCount());
+    String[] messages = {

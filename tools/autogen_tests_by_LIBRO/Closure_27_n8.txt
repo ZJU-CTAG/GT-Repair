@@ -1,0 +1,20 @@
+public void testIssue() throws Exception {
+    Node nodeTry = IR.block(
+            IR.var(
+                    IR.name("testing"), 
+                    IR.number(11)
+            )
+    );
+    Node nodeCatch = IR.catchNode(
+            IR.name("blabla"),
+            IR.block(
+                    IR.var(
+                            IR.name("testing"),
+                            IR.number(22)
+                    )
+            )
+    );
+    Node tryCatch = IR.tryCatch(nodeTry, nodeCatch);
+    Node script = IR.script(tryCatch);
+    NodeUtil.printNodeTree(script);
+}

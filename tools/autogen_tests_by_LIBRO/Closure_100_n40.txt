@@ -1,0 +1,22 @@
+public void testClosureClass() {
+    String js = "/** @constructor */\n" +
+            "function Foo() {\n" +
+            "    this._bar = null;\n" +
+            "};\n" +
+            "/** @this {Foo} */\n" +
+            "function writeMethodWithAnnotation() {\n" +
+            "    this._bar = 123; // no warning. ok\n" +
+            "}\n" +
+            "/** @this {Foo} */\n" +
+            "function readMethodWithAnnotation() {\n" +
+            "    return this._bar; // no warning. ok\n" +
+            "}\n" +
+            "\n" +
+            "//----\n" +
+            "\n" +
+            "function writeMethodWithoutAnnotation() {\n" +
+            "    this._bar = 123; // warning. ok.\n" +
+            "}\n" +
+            "function readMethodWithoutAnnotation() {\n" +
+            "    return this._bar; // <- No warning!\n" +
+           

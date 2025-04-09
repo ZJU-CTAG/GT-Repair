@@ -1,0 +1,7 @@
+public void testNullProvider() throws Exception {
+    ObjectMapper mapper = new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    AtomicReference<AtomicReference<Integer>> refRef = mapper.readValue("{\"refRef\":null}", new TypeReference<AtomicReference<AtomicReference<Integer>>>() {});
+    assertNotNull(refRef);
+    assertNotNull(refRef.get());
+    assertNull(refRef.get().get());
+}

@@ -1,0 +1,19 @@
+public void testFinish() throws IOException {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(baos);
+    final byte[] data = "hello".getBytes();
+    final ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+    ze.setSize(data.length);
+    zos.putArchiveEntry(ze);
+    zos.write(data);
+    zos.closeArchiveEntry();
+    zos.close();
+
+    final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    final ZipArchiveInputStream zis = new ZipArchiveInputStream(bais);
+    assertNotNull(zis.getNextZipEntry());
+    final byte[] result = IOUtils.toByteArray(zis);
+    assertEquals(new String(data), new String(result));
+    assertNull(zis.getNextZipEntry());
+    assertEquals(-1, zis.read());
+}

@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    String source = "function foo() { }";
+    String sourceName = "test.js";
+    SourceMap sourceMap = SourceMap.parse(String.format("{\n" +
+            "\"version\": 3,\n" +
+            "\"file\": \"test.js\",\n" +
+            "\"sourceRoot\": \"\",\n" +
+            "\"sources\": [\"%s\"],\n" +
+            "\"names\": [],\n" +
+            "\"mappings\": \"AAAA;\"\n" +
+            "}", sourceName));
+    SourceTransformer transformer = new SourceTransformer(source, sourceName, sourceMap);
+    assertEquals(0, transformer.getOriginalLineNumber(0));
+}

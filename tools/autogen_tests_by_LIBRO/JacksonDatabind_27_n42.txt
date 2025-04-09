@@ -1,0 +1,17 @@
+public void testIssueWithExternalTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    // this is important to make things fail:
+    mapper.configure(MapperFeature.AUTO_DETECT_SETTERS, false);
+    // and this, to fail without Afterburner enabled
+    mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, false);
+    // and, enable afterburner
+    mapper.registerModule(new AfterburnerModule());
+    // first, serialize:
+    String json = mapper.writeValueAsString(new Point(3, 5));
+    // then attempt to deserialize
+    Point p = mapper.readValue(json, Point.class);
+    assertEquals(3, p.x);
+    assertEquals(5, p.y);
+}

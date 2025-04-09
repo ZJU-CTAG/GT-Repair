@@ -1,0 +1,9 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.parseDiagnosticsFlags("jscomp_error=foo,jscomp_warning=foo,jscomp_off=foo");
+    assertEquals(CheckLevel.OFF, options.getWarningLevel(DiagnosticGroups.CHECK_TYPES, null));
+    options.parseDiagnosticsFlags("jscomp_warning=foo,jscomp_error=foo,jscomp_off=foo");
+    assertEquals(CheckLevel.OFF, options.getWarningLevel(DiagnosticGroups.CHECK_TYPES, null));
+    options.parseDiagnosticsFlags("jscomp_warning=foo,jscomp_off=foo,jscomp_error=foo");
+    assertEquals(CheckLevel.ERROR, options.getWarningLevel(DiagnosticGroups.CHECK_TYPES, null));
+}

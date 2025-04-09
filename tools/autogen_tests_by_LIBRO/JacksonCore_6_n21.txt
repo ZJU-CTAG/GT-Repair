@@ -1,0 +1,14 @@
+public void testJsonPointerIssue()
+{
+    JsonPointer ptr = new JsonPointer("/foo/bar/quux");
+    JsonNode json = JsonNodeFactory.instance.objectNode()
+            .putArray("foo")
+            .add(JsonNodeFactory.instance.objectNode()
+                    .putArray("bar")
+                    .add(JsonNodeFactory.instance.objectNode()
+                            .put("quux", true)));
+    assertFalse(ptr.matches());
+    assertFalse(ptr.matches());
+    assertTrue(ptr.matches());
+    assertTrue(json.at(ptr).asBoolean());
+}

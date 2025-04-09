@@ -1,0 +1,10 @@
+public void testJsonProcessingException() throws Exception {
+    MappingIterator<String> it = new ObjectMapper().readerFor(String.class).readValues(new StringReader("{\n\"a\"\n}"));
+    try {
+        it.nextValue();
+        fail("Expected JsonProcessingException");
+    } catch (JsonProcessingException e) {
+        it.nextValue();
+        assertEquals("a", it.nextValue());
+    }
+}

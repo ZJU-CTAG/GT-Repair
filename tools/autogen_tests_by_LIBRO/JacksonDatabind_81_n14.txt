@@ -1,0 +1,21 @@
+public void testRevolver() {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    final Contained c1 = new Contained();
+    c1.setValue(42);
+
+    final Contained c2 = new Contained();
+    c2.setValue(42);
+
+    final Container container = new Container();
+    container.setContained(c1);
+
+    final OutputStream baos = new ByteArrayOutputStream();
+    mapper.writeValue(baos, container);
+
+    System.out.println(baos.toString());
+
+    final Container container2 = mapper.readValue(baos.toString(), Container.class);
+
+    assertEquals(container2.getContained().getValue(), 42);
+}

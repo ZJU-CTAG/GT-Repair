@@ -1,0 +1,11 @@
+public void testNamespace() throws Exception {
+    try {
+        String xml = "<a:foo xmlns:a=\"a\"><a:bar/><bar/></a:foo>";
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+        JXPathContext context = JXPathContext.newContext(doc);
+        NodePointer n = (NodePointer) context.getPointer("/a:foo/bar");
+        assertEquals("/a:foo/null:bar[1]", n.asPath());
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(false);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.ERROR);
+    options.setCollapsePropertiesOnExternTypes(true);
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    options.setVariableRenaming(VariableRenamingPolicy.LOCAL);
+    CommandLineRunner runner = new CommandLineRunner(new String[]{"--js"});
+    runner.setFlags(ImmutableList.of(
+      "--compilation_level=ADVANCED_OPTIMIZATIONS",
+      "--language_in=ECMASCRIPT5",
+      "--warning_level=VERBOSE",
+      "--externs=externs.js"
+    ));
+    runner.setRunOptions(options);

@@ -1,0 +1,11 @@
+public void testMockitoCoreJar() throws IOException {
+    try (JarFile jar = new JarFile(findJar("mockito-core"))) {
+        Enumeration<JarEntry> entries = jar.entries();
+        while (entries.hasMoreElements()) {
+            JarEntry entry = entries.nextElement();
+            if (entry.getName().endsWith(".java")) {
+                fail("No source files in jar: " + entry);
+            }
+        }
+    }
+}

@@ -1,0 +1,24 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    
+    String[] source = {
+        "alert(foo);",
+        "alert(bar);"
+    };
+    
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("test.js", Joiner.on('\n').join(source)));
+    
+    Result result = Compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        inputs,
+        options);
+    assertFalse(result.success);
+    assertEquals(2, result.errors.length);
+    assertEquals(0, result.warnings.length);
+    
+    assertEquals("test.js", result.errors[0].sourceName);
+    assertEquals("test.js:1: ERROR - variable foo is undefined\n" +
+                 "alert(

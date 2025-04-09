@@ -1,0 +1,11 @@
+public void testIssue110() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    String input = "alert(1;\n";
+    String expected = "test.js:1: ERROR - Parse error. missing ) after argument list\n"
+        + "alert(1;\n"
+        + " ^\n"
+        + "1 error(s), 0 warning(s)";
+    assertEquals(expected, getCompiler().compile(null, input, options, true));
+}

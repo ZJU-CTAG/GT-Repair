@@ -1,0 +1,19 @@
+public void testZipFileCreation() throws IOException {
+    int numFiles = 10;
+    File zipFile = new File("target/test.zip");
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new FileOutputStream(zipFile));
+    zos.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NOT_ENCODEABLE);
+    // Create a number of files with the same name and add them to the zip
+    for (int i = 0; i < numFiles; i++) {
+        ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+        zos.putArchiveEntry(ze);
+        zos.write("test".getBytes());
+        zos.closeArchiveEntry();
+    }
+    zos.close();
+    // Test that the zip file can be successfully read
+    ZipFile zip = new ZipFile(zipFile);
+    Enumeration en = zip.getEntries();
+    int count = 0;
+    while (en.hasMoreElements()) {
+        ZipArchiveEntry ze = (ZipArch

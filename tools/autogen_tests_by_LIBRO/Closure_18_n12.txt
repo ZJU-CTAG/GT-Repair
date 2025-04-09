@@ -1,0 +1,14 @@
+public void testClosurePass() {
+  Compiler compiler = new Compiler();
+  CompilerOptions compilerOptions = new CompilerOptions();
+  compilerOptions.setClosurePass(false);
+  compiler.initOptions(compilerOptions);
+  // Turn dependency sorting on.
+  DependencyOptions dependencyOptions = new DependencyOptions();
+  dependencyOptions.setDependencySorting(true);
+  compiler.setDependencyOptions(dependencyOptions);
+  JSSourceFile[] jsSourceFile = new JSSourceFile[]{JSSourceFile.fromCode("js/file1.js", "goog.provide('file1');")};
+  Result result = compiler.compile(jsSourceFile, compilerOptions);
+  assertTrue(result.success);
+  assertEquals("", result.errors.toString());
+}

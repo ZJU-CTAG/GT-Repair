@@ -1,0 +1,27 @@
+public void testIssue119() {
+    double tau = 10.0;
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = -y[0] / tau;
+        }
+
+        public int getDimension() {
+            return 1;
+        }
+    };
+
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addEventHandler(new EventHandler() {
+
+        public void resetState(double t, double[] y) {
+        }
+
+        public double g(double t, double[] y) {
+            return y[0] - 2.0;
+        }
+
+        public Action eventOccurred(double t, double[] y, boolean increasing) {
+            return Action.CONTINUE;
+        }
+    }, Double.POSITIVE_INFINITY, 1.0e-10, 1000

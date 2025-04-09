@@ -1,0 +1,16 @@
+public void testRead() {
+    final URL resource = getClass().getResource("/foodmart.json");
+    final InputStream stream = resource.openStream();
+    try {
+        JsonNode root = mapper.readTree(stream);
+        JsonRoot jsonRoot = mapper.treeToValue(root, JsonRoot.class);
+        assertNotNull(jsonRoot);
+        assertNotNull(jsonRoot.schemas);
+        assertEquals(1, jsonRoot.schemas.size());
+        assertEquals("FoodMart", jsonRoot.schemas.get(0).name);
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        stream.close();
+    }
+}

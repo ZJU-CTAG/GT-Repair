@@ -1,0 +1,22 @@
+public void testZip4J() throws Exception {
+    final File tempDir = temporaryFolder.getRoot();
+    final File testFile = new File(tempDir, "test.txt");
+    FileUtils.writeStringToFile(testFile, "test");
+
+
+    final File archiveFile = new File(tempDir, "archive.zip");
+    final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(archiveFile));
+    zipOutputStream.putNextEntry(new ZipEntry(testFile.getName()));
+    final byte[] data = FileUtils.readFileToByteArray(testFile);
+    zipOutputStream.write(data, 0, data.length);
+    zipOutputStream.closeEntry();
+    zipOutputStream.close();
+
+
+    final ZipFile zipFile = new ZipFile(archiveFile);
+    final InputStream inputStream = zipFile.getInputStream(zipFile.getEntry(testFile.getName()));
+    final byte[] result = IOUtils.toByteArray(inputStream);
+    inputStream.close();
+
+
+    assertEquals(new String(data), new String

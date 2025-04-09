@@ -1,0 +1,14 @@
+public void testOverflow() {
+    byte[] b = new byte[]
+        {87, 45, 66, 15,
+         90, 29, 88, 61, 33, 74};
+    ByteArrayInputStream in = new ByteArrayInputStream(b);
+    BitInputStream bin = new BitInputStream(in, ByteOrder.LITTLE_ENDIAN);
+    try {
+        bin.readBits(5);
+        bin.readBits(63);
+        bin.readBits(12);
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+}

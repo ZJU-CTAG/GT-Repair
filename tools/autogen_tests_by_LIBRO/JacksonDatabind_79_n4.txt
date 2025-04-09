@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new ParameterNamesModule());
+    mapper.registerModule(new Jaxrs2TypesModule());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.addMixIn(Instant.class, InstantMixIn.class);
+    mapper.addMixIn(LocalDate.class, LocalDateMixIn.class);
+    mapper.addMixIn(LocalDateTime.class, LocalDateTimeMixIn.class);
+    mapper.addMixIn(LocalTime.class, LocalTimeMixIn.class);
+    mapper.addMixIn(OffsetDateTime.class, OffsetDateTimeMixIn.class);
+    mapper.addMixIn(OffsetTime.class, OffsetTime

@@ -1,0 +1,10 @@
+public void testTarFile() throws Exception {
+    Path aiff = Paths.get("src/test/resources/test-documents/testAIFF.aif");
+    try (InputStream is = Files.newInputStream(aiff);
+         ArchiveInputStream ais = new ArchiveStreamFactory()
+                 .createArchiveInputStream(is)) {
+        fail("Exception expected");
+    } catch (IOException ex) {
+        assertEquals("Unable to detect archive type", ex.getMessage());
+    }
+}

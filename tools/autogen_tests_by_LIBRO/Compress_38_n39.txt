@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    File file = new File("test/testdata/test-pax-header-name-with-slash.tar");
+    try (TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(file))) {
+        TarArchiveEntry entry;
+        while ((entry = tais.getNextTarEntry()) != null) {
+            assertEquals( "layer.tar", entry.getName() );
+            assertTrue(entry.isFile());
+            assertFalse(entry.isDirectory());
+            assertTrue(entry.isPaxHeader());
+            assertEquals(entry.getSize(), entry.getLongFileSize());
+            assertEquals(entry.getSize(), tais.getBytesRead());
+        }
+    }
+}

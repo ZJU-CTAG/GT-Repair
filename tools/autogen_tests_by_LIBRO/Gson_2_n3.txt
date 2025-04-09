@@ -1,0 +1,10 @@
+public void testTypeHierarchyAdapter() throws Exception {
+    Gson gson = new GsonBuilder()
+        .registerTypeHierarchyAdapter(Vehicle.class, new VehicleTypeAdapter())
+        .create();
+    try {
+        gson.fromJson("{\"type\":\"Truck\",\"doors\":4}", Car.class);
+        fail();
+    } catch (JsonParseException expected) {
+    }
+}

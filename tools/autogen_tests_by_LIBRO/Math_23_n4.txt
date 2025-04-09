@@ -1,0 +1,15 @@
+public void testBrent() {
+    final UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) throws FunctionEvaluationException {
+            return 100 * Math.pow(x, 6) - 225 * Math.pow(x, 4) + 200 * Math.pow(x, 2) - 25;
+        }
+    };
+    UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    double min = optimizer.optimize(
+        new MaxEval(100),
+        new UnivariateObjectiveFunction(f),
+        GoalType.MINIMIZE,
+        new SearchInterval(-10, 10)
+    ).getPoint();
+    assertThat(min, is(closeTo(FastMath.sqrt(FastMath.sqrt(5)), 1e-10)));
+}

@@ -1,0 +1,11 @@
+public void testDuplicateColumnHeader() throws Exception {
+    String data = "A,B,C,,\na,b,c,d,e";
+    Reader in = new StringReader(data);
+    try {
+        CSVParser p = new CSVParser(in, CSVFormat.EXCEL);
+        p.getHeaderMap();
+        fail("Expected IAE");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}

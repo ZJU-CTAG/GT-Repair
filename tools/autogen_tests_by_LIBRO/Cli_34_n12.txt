@@ -1,0 +1,10 @@
+public void testIssue() {
+    OptionBuilder.withLongOpt("long1");
+    OptionBuilder.withLongOpt("long2").hasArg().withType(String.class);
+    Option option1 = OptionBuilder.create("s");
+    Option option2 = OptionBuilder.create("i");
+
+    CommandLine cmd = new BasicParser().parse(new Options().addOption(option1).addOption(option2), new String[]{"-s"});
+    assertNull(cmd.getParsedOptionValue("s"));
+    assertEquals("-s", cmd.getParsedOptionValue("long1"));
+}

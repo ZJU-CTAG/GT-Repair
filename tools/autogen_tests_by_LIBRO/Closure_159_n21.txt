@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String js = "function a() {} a();";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    List<SourceFile> externs = ImmutableList.of(
+        SourceFile.fromCode("externs.js", ""));
+    Result result = new Compiler().compile(externs,
+        ImmutableList.of(SourceFile.fromCode("input.js", js)), options);
+    assertEquals("var a=function(){};a();",result.toSource());
+}

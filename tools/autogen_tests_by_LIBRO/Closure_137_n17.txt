@@ -1,0 +1,20 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js",
+            "var t = null;\n" +
+            "\n" +
+            "window.test = function()\n" +
+            "{\n" +
+            "  if (t != null)\n" +
+            "  {\n" +
+            "    t = null;\n" +
+            "  }\n" +
+            "\n" +
+            "  t = 1;\n" +
+            "};\n"));
+    assertFalse(result.success);
+    assertEquals("JSC_DETERMINISTIC_TEST: condition always evaluates to false (input.js:4)",
+            compiler.getWarnings()[0].toString());
+}

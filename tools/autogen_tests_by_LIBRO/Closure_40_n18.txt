@@ -1,0 +1,22 @@
+public void testSmartNameRemoval() {
+    Compiler compiler = new Compiler();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+
+    String js = LINE_JOINER.join(
+        "var goog = {};",
+        "goog.inherits = function(x, y) {};",
+        "var ns = {};",
+        "/** @constructor */ ns.PageSelectionModel = function(){};",
+        "",
+        "/** @constructor */ ",
+        "ns.PageSelectionModel.FooEvent = function() {};",
+        "/** @constructor */ ",
+        "ns.PageSelectionModel.SelectEvent = function() {};",
+        "goog.inherits(ns.PageSelectionModel.ChangeEvent, ",
+        "    ns.PageSelectionModel.FooEvent);");
+
+    Result result = compiler.compile(
+        ImmutableList.of(SourceFile.fromCode("source.js", js)),
+        ImmutableList.<SourceFile>of(),
+        options);
+    assertTrue("compilation must succeed:\n" +

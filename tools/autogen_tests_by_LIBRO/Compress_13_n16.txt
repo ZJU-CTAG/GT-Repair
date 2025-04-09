@@ -1,0 +1,9 @@
+public void testWinZip() throws Exception {
+    File zipFile = new File("src/test/resources/issue108.zip");
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, new FileInputStream(zipFile));
+    ZipArchiveEntry entry = (ZipArchiveEntry) ais.getNextEntry();
+    while (entry != null) {
+        System.out.println(entry.getName() + " " + entry.isDirectory() + " " + entry.getUnixMode());
+        entry = (ZipArchiveEntry) ais.getNextEntry();
+    }
+}

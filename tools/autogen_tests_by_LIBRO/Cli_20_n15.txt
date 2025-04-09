@@ -1,0 +1,13 @@
+public void testStopAtNonOption() throws Exception {
+    PosixParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("a", false, "a");
+    options.addOption("b", true, "b");
+    String[] arguments = { "--zop", "-abfoo" };
+    try {
+        parser.parse(options, arguments, true);
+        fail("Exception expected");
+    } catch (UnrecognizedOptionException e) {
+        assertEquals("zop", e.getOption());
+    }
+}

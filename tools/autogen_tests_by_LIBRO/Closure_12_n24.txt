@@ -1,0 +1,25 @@
+public void testIssue1() {
+    String js = "function a() {" +
+            "    var x = '1';" +
+            "    try {" +
+            "        x += somefunction();" +
+            "    } catch(e) {" +
+            "    }" +
+            "    x += '2';" +
+            "    try {" +
+            "        x += somefunction();" +
+            "    } catch(e) {" +
+            "    }" +
+            "    document.write(x);" +
+            "}" +
+            "a();" +
+            "a();";
+
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(js, CompilerOptions.builder().setLanguageIn(LanguageMode.ECMASCRIPT3).setPrettyPrint(true).setLineLengthThreshold(10000).build());
+    assertTrue(result.success);
+    assertEquals("function a() {\n" +
+            "  var a;\n" +
+            "  try {\n" +
+            "    a = \"1

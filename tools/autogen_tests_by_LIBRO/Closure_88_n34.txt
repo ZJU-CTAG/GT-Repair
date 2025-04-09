@@ -1,0 +1,15 @@
+public void testIssue() {
+    final String code = "function closureCompilerTest(someNode) { var nodeId; return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); }";
+    final CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    final Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] {JSSourceFile.fromCode("in", code)},
+        new JSSourceFile[] {JSSourceFile.fromCode("out", "")},
+        options);
+    String result = compiler.toSource();
+    System.out.println(result);
+    assertTrue(result.contains("(a

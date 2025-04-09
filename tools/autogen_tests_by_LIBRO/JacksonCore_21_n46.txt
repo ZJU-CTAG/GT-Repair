@@ -1,0 +1,26 @@
+public void testFilteredParser() throws IOException
+{
+        StringWriter sw = new StringWriter();
+        JsonGenerator g = new JsonFactory().createJsonGenerator(sw);
+        g.writeStartObject();
+        g.writeNumberField("a", 123);
+        g.writeArrayFieldStart("array");
+        g.writeNumber(1);
+        g.writeNumber(2);
+        g.writeEndArray();
+        g.writeObjectFieldStart("ob");
+        g.writeNumberField("value0", 2);
+        g.writeNumberField("value", 3);
+        g.writeNumberField("value2", 4);
+        g.writeEndObject();
+        g.writeBooleanField("b", true);
+        g.writeEndObject();
+        g.close();
+
+        String json = sw.toString();
+        System.out.println("input: "+json);
+
+        JsonParser p0 = new JsonFactory().createJsonParser(new StringReader(json));
+
+        JsonParser p = new FilteringParserDelegate(p0,
+               new NameMatchFilter("value"),

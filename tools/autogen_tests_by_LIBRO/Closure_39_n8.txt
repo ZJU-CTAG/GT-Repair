@@ -1,0 +1,8 @@
+public void testExternExport() {
+    CompilerOptions options = new CompilerOptions();
+    options.setExternExportsPath("extern-exports.js");
+    options.setProcessCommonJsModules(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", "goog.require('goog.string');\n" + "goog.require('goog.math');\n" + "\n" + "/**\n" + " * @param {goog.string.TypedString} str\n" + " * @param {function(string, string=):boolean} f\n" + " * @return {boolean}\n" + " */\n" + "function test(str, f) {\n" + "  return f(str, str);\n" + "}\n" + "\n" + "goog.export

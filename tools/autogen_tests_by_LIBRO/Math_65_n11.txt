@@ -1,0 +1,22 @@
+public void testAbstractLeastSquares() {
+    final double[][] jacobian = new double[][] {
+        { 2 * 3, 2 * 5 },
+        { 3 * 3, 3 * 5 },
+        { 4 * 3, 4 * 5 },
+        { 5 * 3, 5 * 5 }
+    };
+    final double[] weights = new double[] { 1.0, 2.0, 3.0, 4.0 };
+    final double[] target = new double[] { 3 * 3 * 3 + 5 * 5 * 5,
+                                           3 * 3 * 5 + 5 * 5 * 7,
+                                           3 * 3 * 7 + 5 * 5 * 9,
+                                           3 * 3 * 9 + 5 * 5 *11 };
+
+    AbstractLeastSquares problem = new AbstractLeastSquares(new LeastSquaresAdapter() {
+        public int getNobs() {
+            return target.length;
+        }
+        public int getNParameters() {
+            return 2;
+        }
+        public double[] getResiduals() {
+            double[] residuals = new double[target.length

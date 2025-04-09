@@ -1,0 +1,21 @@
+public void testIssue113() {
+    Compiler compiler = new Compiler();
+    compiler.setErrorManager(new TestErrorManager());
+    compiler.compile(null,
+                     new FileCodeSource(new File("test.js")),
+                     1);
+}
+
+static class TestErrorManager implements ErrorManager {
+    public void println(CheckLevel level, JSError error) {
+        System.out.println(error.toString());
+    }
+    public void printSummary() {}
+    public void generateReport() {}
+    public int getErrorCount() {
+        return 0;
+    }
+    public int getWarningCount() {
+        return 0;
+    }
+}

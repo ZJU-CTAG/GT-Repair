@@ -1,0 +1,15 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setCodingConvention(new ClosureCodingConvention());
+    Compiler.setLoggingLevel(Level.FINE);
+    options.addCustomPass(CustomPassExecutionTime.BEFORE_OPTIMIZATIONS, new VersionPass(compiler));
+    
+    SourceFile extern = SourceFile.fromCode("extern", "");
+    SourceFile input = SourceFile.fromCode("input", "/** @define {string} */ test.VERSION = \"\";");
+    compiler.compile(extern, input, options);
+    assertEquals(2, compiler.getWarnings().length);
+    assertEquals(0, compiler.getErrors().length);
+    SourceFile output = compiler.getResult().getSourceMap().getOriginalSources()[1];
+    assertEquals("test.VERSION=\"1.0.1\";", output.getCode());

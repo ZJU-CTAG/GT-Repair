@@ -1,0 +1,17 @@
+public void testIssue171() throws Exception {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    String xml = noAnnotationsXmlMapper.writeValueAsString(new Issue171());
+    assertEquals("<Issue171/>", xml);
+    xml = xmlMapper.writeValueAsString(new Issue171());
+    assertEquals("<Issue171/>", xml);
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public class Issue171 {
+
+}
+

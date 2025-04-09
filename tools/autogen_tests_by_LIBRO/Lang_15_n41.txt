@@ -1,0 +1,12 @@
+public void testGetTypeArguments() {
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.class, TestTypes.class);
+    Assert.assertEquals(0, typeVarAssigns.size());
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.class, WildcardTestImpl.class);
+    Assert.assertEquals(0, typeVarAssigns.size());
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.class, GenericArrayTestImpl.class);
+    Assert.assertEquals(0, typeVarAssigns.size());
+    typeVarAssigns = TypeUtils.getTypeArguments(TestTypes.class, ParameterizedTestImpl.class);
+    Assert.assertEquals(2, typeVarAssigns.size());
+    Assert.assertEquals(String.class, typeVarAssigns.get(TestTypes.class.getTypeParameters()[0]));
+    Assert.assertEquals

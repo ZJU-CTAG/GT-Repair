@@ -1,0 +1,8 @@
+public void testReadValuesWithOffset() {
+    ObjectMapper mapper = new ObjectMapper();
+    byte[] json = mapper.writeValueAsBytes(new Object[]{1, 2, 3, 4});
+    ObjectReader reader = mapper.reader();
+    try (MappingIterator<Integer> it = reader.readValues(json, 1, 2)) {
+        assertEquals(Arrays.asList(2, 3), it.readAll());
+    }
+}

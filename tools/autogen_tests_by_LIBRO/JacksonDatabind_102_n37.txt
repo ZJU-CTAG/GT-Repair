@@ -1,0 +1,13 @@
+public void testCustomFormatForSqlDateSerializer() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.findAndRegisterModules();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+    final String json = mapper.writeValueAsString(new TestClass());
+    assertThat(json, is("{\"date\":\"2019-03-04\"}"));
+}
+
+private class TestClass {
+    private final java.sql.Date date = new java.sql.Date(1551694400000L);
+}
+

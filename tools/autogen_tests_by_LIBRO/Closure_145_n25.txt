@@ -1,0 +1,26 @@
+public void testLoopLabels() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        CompilerOptions.builder()
+        .setLanguageIn(LanguageMode.ECMASCRIPT5)
+        .setLanguageOut(LanguageMode.ECMASCRIPT5)
+        .setPrettyPrint(true)
+        .build(),
+        new SimpleSourceFile("test.js",
+            "var i = 0;\n" +
+            "lab1: do{\n" +
+            "   lab2: do{\n" +
+            "       i++;\n" +
+            "       if (1) {\n" +
+            "           break lab2;\n" +
+            "       } else {\n" +
+            "           break lab1;\n" +
+            "       }\n" +
+            "   } while(false);\n" +
+            "} while(false);\n" +
+            "console.log(i);\n"
+        )
+    );
+    assertFalse(result.success);
+}

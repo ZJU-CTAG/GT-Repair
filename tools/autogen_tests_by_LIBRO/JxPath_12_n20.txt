@@ -1,0 +1,16 @@
+public void testJXPath() throws Exception {
+    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    Element root = doc.createElementNS("uri:a", "a:root");
+    doc.appendChild(root);
+    Element a = doc.createElementNS("uri:a", "a:a");
+    a.setAttributeNS("uri:a", "a:a", "A");
+    root.appendChild(a);
+    Element b = doc.createElementNS("uri:b", "b:b");
+    b.setTextContent("B");
+    a.appendChild(b);
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.registerNamespace("a", "uri:a");
+    ctx.registerNamespace("b", "uri:b");
+    assertEquals("A", ctx.getValue("//a:a/@a:a"));
+    assertEquals("B", ctx.getValue("//b:b"));
+}

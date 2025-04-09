@@ -1,0 +1,10 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    String code = "function name() {\n" +
+            "var arguments = Array.prototype.slice.call(arguments, 0);\n" +
+            "}";
+    Compiler compiler = new Compiler();
+    compiler.compile(JSSourceFile.fromCode("test.js", code), options);
+    assertEquals("function name(){ var c=Array.prototype.slice.call(c,0); }", compiler.toSource());
+}

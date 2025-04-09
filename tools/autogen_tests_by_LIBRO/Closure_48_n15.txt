@@ -1,0 +1,20 @@
+public void testIssue111() {
+    String code = "/** @constructor */\n" +
+            "var myclass = function() {\n" +
+            "}\n" +
+            "\n" +
+            "/** @param {boolean} success */\n" +
+            "myclass.prototype.fn = function(success) { }\n" +
+            "\n" +
+            "myclass.prototype.test = function() {\n" +
+            "  this.fn();\n" +
+            "  this.fn = function() { };\n" +
+            "}\n";
+    JSError[] errors = JSError.getErrorsForTesting(code);
+    assertEquals(2, errors.length);
+    assertEquals("actual parameter 1 of myclass.fn does not match formal parameter\n" +
+            "found   : undefined\n" +
+            "required: boolean", errors[0].description);
+    assertEquals("actual parameter 1 of myclass.fn does not match formal parameter\n" +
+            "found   : undefined\n" +
+            "

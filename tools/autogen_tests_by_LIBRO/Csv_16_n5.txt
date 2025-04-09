@@ -1,0 +1,25 @@
+public void testIssue293() {
+    String fiveRows = "1\r\n2\r\n3\r\n4\r\n5\r\n";
+    CSVParser parser = CSVParser.parse(fiveRows, CSVFormat.DEFAULT);
+    int recordNumber = 0;
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        assertEquals(Integer.toString(recordNumber), record.get(0));
+        if (recordNumber >= 2) {
+            break;
+        }
+    }
+    // CSVParser.iterator() returns a new iterator, but the lexer isn't reset so we can pick up
+    // where we left off.
+    for (CSVRecord record : parser) {
+        recordNumber++;
+        assertEquals(Integer.toString(recordNumber), record.get(0));
+    }
+    // Enhanced for loop, no peeking:
+    // 1 -> 1
+    // 2 -> 2
+    // 3 -> 3
+    // 4 -> 4
+    // 5 -> 5
+
+    parser = CSVParser.parse(fiveRows,

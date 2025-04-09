@@ -1,0 +1,21 @@
+public void test_writeUpdate() throws Exception
+{
+    final ObjectMapper mapper = newMapper();
+    final JsonFactory jsonf = mapper.getJsonFactory();
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final JsonGenerator generator = jsonf.createGenerator(out);
+    generator.writeNumber(1234);
+    // This does not throw an exception since the generator is in lenient mode by default.
+    generator.close();
+    assertEquals("1234", out.toString("UTF8"));
+}
+
+public void test_readUpdate() throws Exception
+{
+    final ObjectMapper mapper = newMapper();
+    final JsonFactory jsonf = mapper.getJsonFactory();
+    final ByteArrayInputStream in = new ByteArrayInputStream("1234".getBytes("UTF8"));
+    final JsonParser parser = jsonf.createParser(in);
+    assertTrue(parser.nextToken() == JsonToken.VALUE_NUMBER_INT);
+    assertEquals(1234, parser.getIntValue());
+    // This does not throw

@@ -1,0 +1,21 @@
+public void testPreserve() {
+    String js = "/\*\*\n * @preserve\n\nThis\n was\n ASCII\n Art\n\n\*/";
+    String result = new JavaScriptCompressor(new StringReader(js), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public void error(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName,
+                int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    }).compress(js);
+    assertEquals(js, result);
+}

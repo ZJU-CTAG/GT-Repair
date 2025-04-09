@@ -1,0 +1,17 @@
+public void testRead() throws Exception {
+    String s = Util.readResource(getClass(), "model.json");
+    final JsonRoot root = new ObjectMapper()
+        .registerModule(new Jdk8Module())
+        .readerFor(JsonRoot.class)
+        .readValue(s);
+    assertThat(root.version, is("1.0"));
+    assertThat(root.defaultSchema, is("FoodMart"));
+    assertThat(root.schemas.size(), is(1));
+    JsonMapSchema schema = (JsonMapSchema) root.schemas.get(0);
+    assertThat(schema.name, is("FoodMart"));
+    assertThat(schema.tables.size(), is(2));
+    JsonTable table = schema.tables.get(0);
+    assertThat(table.name, is("time_by_day"));
+    assertThat(table.columns.size(), is(1));
+    assertThat(table.columns.get(0).name, is("time_id"));
+    assertThat

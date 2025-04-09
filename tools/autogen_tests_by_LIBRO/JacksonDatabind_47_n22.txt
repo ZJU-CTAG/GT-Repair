@@ -1,0 +1,21 @@
+public void testModelObjects() throws IOException {
+
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("TestModule");
+    module.addSerializer(AccessionIdentifier.class, new AccessionIdentifierSerializer());
+    module.addDeserializer(AccessionIdentifier.class, new AccessionIdentifierDeserializer());
+    mapper.registerModule(module);
+
+    // Test DTOs
+    TestDto dto = new TestDto();
+    dto.setReference(new AccessionIdentifierImpl());
+    String json = mapper.writeValueAsString(dto);
+    assertEquals("{\"reference\":{\"value\":\"test\"}}", json);
+    TestDto dto2 = mapper.readValue(json, TestDto.class);
+    assertTrue(dto2.getReference() instanceof AccessionIdentifierImpl);
+
+    // Test model objects
+    ExampleModel model = new ExampleModel();
+    model.setReference(new AccessionIdentifierImpl());
+    json = mapper.writeValueAsString(model);
+    assertEqu

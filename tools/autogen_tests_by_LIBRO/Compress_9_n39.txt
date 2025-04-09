@@ -1,0 +1,20 @@
+public void testTarArchiveOutputStream() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    File output = new File("target/commons-compress-107.tar");
+    output.delete();
+    FileOutputStream out = new FileOutputStream(output);
+    try {
+        ArchiveOutputStream os = factory.createArchiveOutputStream(ArchiveStreamFactory.TAR, out);
+        try {
+            TarArchiveEntry entry = new TarArchiveEntry("entry");
+            os.putArchiveEntry(entry);
+            os.write(new byte[10000]);
+            long bytesWritten = ((TarArchiveOutputStream) os).getBytesWritten();
+            assertTrue(bytesWritten > 0);
+        } finally {
+            os.close();
+        }
+    } finally {
+        out.close();
+    }
+}

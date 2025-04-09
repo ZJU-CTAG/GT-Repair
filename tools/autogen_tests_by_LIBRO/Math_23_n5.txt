@@ -1,0 +1,13 @@
+public void testBrent() {
+    UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) throws FunctionEvaluationException {
+            return Math.abs(x - 1.0) + Math.exp(-(x-1)*(x-1));
+        }
+    };
+    BrentOptimizer optimizer = new BrentOptimizer(1e-8, 1e-8);
+    double result = optimizer.optimize(new MaxEval(1000),
+                                       new UnivariateObjectiveFunction(f),
+                                       GoalType.MINIMIZE,
+                                       new SearchInterval(-0.5, 2.5)).getPoint();
+    assertEquals(1.0, result, 1e-8);
+}

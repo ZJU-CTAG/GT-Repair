@@ -1,0 +1,10 @@
+public void testZlib() throws Exception {
+    Path p = Paths.get("src/test/resources/bla.tar.deflatez");
+    try (InputStream is = Files.newInputStream(p)) {
+        try (InputStream cis = CompressorStreamFactory.getSingleton().createCompressorInputStream("deflate", is)) {
+            byte[] ba = new byte[1024];
+            int n = cis.read(ba);
+            assertTrue(n > 0);
+        }
+    }
+}

@@ -1,0 +1,15 @@
+public void testLenientFormat() {
+    JsonFactory jsonFactory = new JsonFactory();
+    ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
+    StdDateFormat sdf = new StdDateFormat();
+    objectMapper.setDateFormat(sdf);
+    String strDate = "2015-01-32";
+    String json = String.format("{\"date\":\"%s\"}", strDate);
+    try {
+        objectMapper.readValue(json, DateBean.class);
+        fail("Parsing date:" + strDate + " should throw exception");
+    } catch (Exception e) {
+        assertTrue(e instanceof JsonMappingException);
+        assertEquals(String.format("Invalid date \"%s\": Illegal instant due to time zone offset transition (daylight savings time 'gap'): 2015-01-32", strDate), e.getMessage());
+    }
+}

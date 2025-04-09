@@ -1,0 +1,14 @@
+public void testResult() {
+    // the following is just an example, should be replaced by a better one
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            return (x[0] - 1) * (x[0] - 1) + (x[1] - 2) * (x[1] - 2);
+        }
+    };
+    MultivariateRealOptimizer optimizer = new PowellOptimizer(1e-10, 1e-10);
+    MultivariateRealOptimizer multiStartOptimizer = new MultiStartMultivariateRealOptimizer(optimizer, 2, 10);
+    double[] startPoint = { 0, 0 };
+    double[] optima = multiStartOptimizer.optimize(f, GoalType.MINIMIZE, startPoint);
+    assertEquals(1, multiStartOptimizer.getResult()[0], 0);
+    assertEquals(2, multiStartOptimizer.getResult()[1], 0);
+}

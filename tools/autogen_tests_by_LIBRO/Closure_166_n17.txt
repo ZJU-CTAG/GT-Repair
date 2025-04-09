@@ -1,0 +1,31 @@
+public void testAnonymousObjectTypeInferenceInUnion() {
+    //@type {{prop: string, prop2: (string|undefined)}}
+    Object record = new Object() {
+        public String prop = "a";
+        public String prop2 = "b";
+    };
+
+    func(record);
+    func2(record);
+    func2("a");
+    func2(new Object() {
+        public String prop = "a";
+        public String prop2 = "b";
+    });
+}
+
+/**
+ * @param {{prop: string, prop2: (string|undefined)}} record
+ */
+public void func(Object record) {
+    System.out.println(((Map<String, Object>) record).get("prop"));
+}
+
+/**
+ * @param {{prop: string, prop2: (string|undefined)}|string} record
+ */
+public void func2(Object record) {
+    if (record instanceof String) {
+        System.out.println(record);
+    } else {
+        System.out.println(((Map<String, Object>) record).get("prop"));

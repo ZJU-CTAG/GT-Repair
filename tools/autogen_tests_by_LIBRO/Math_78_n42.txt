@@ -1,0 +1,9 @@
+public void testIssueDuringODEIntegration() {
+    SwitchingFunction f = new SwitchingFunction(0.0, 1.0, 1.0E-6);
+    FirstOrderIntegrator integrator = new DormandPrince853Integrator(0.001, 100.0, 1.0E-8, 1.0E-8);
+    integrator.addEventHandler(f, 1.0, 1.0E-4, 100);
+    double[] y = new double[] { 0.0 };
+    integrator.integrate(f, 0.0, y, 90.0, y);
+    Assert.assertEquals(0.0, y[0], 1.0E-10);
+    Assert.assertEquals(90.0, integrator.getCurrentTime(), 1.0E-10);
+}

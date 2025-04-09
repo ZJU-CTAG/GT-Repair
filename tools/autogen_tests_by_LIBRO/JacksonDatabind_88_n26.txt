@@ -1,0 +1,13 @@
+public void testPolymorphicType() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    
+    // works as expected, EnumSet<String> is assigned
+    assertTrue(mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[\""+EnumSet.class.getName()+"\",[\""+String.class.getName()+"\"]]"),
+            EnumSet.class) instanceof EnumSet);
+    
+    // should not pass, but does: returns EnumSet<Integer>
+    assertTrue(mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[\""+EnumSet.class.getName()+"\",[\""+Integer.class.getName()+"\"]]"),
+            EnumSet.class) instanceof EnumSet<?>);
+}

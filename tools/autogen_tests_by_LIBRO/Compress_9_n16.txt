@@ -1,0 +1,14 @@
+public void testTarArchiveOutputStream() throws Exception {
+    FileOutputStream fos = new FileOutputStream("target/test.tar");
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, fos);
+
+    TarArchiveEntry tae = new TarArchiveEntry("test");
+    tae.setSize(10);
+
+    aos.putArchiveEntry(tae);
+    aos.write("TestData".getBytes());
+    aos.closeArchiveEntry();
+    aos.close();
+    
+    assertEquals(10, ((TarArchiveOutputStream)aos).getBytesWritten());
+}

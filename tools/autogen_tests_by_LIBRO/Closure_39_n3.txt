@@ -1,0 +1,7 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Node root = compiler.parseTestCode("/** @type {Array.<string,string>=} */ var optmap;");
+    ArrayLiteral array = (ArrayLiteral)root.getFirstChild().getJSDocInfo().getType().getRoot();
+    assertEquals(2, array.getElements().size());
+    assertEquals("string", ((StringNode)array.getElements().get(0)).getString());
+}

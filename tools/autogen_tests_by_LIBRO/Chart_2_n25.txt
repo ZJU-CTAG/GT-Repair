@@ -1,0 +1,14 @@
+public void testIssue959() {
+    DefaultKeyedValues data = new DefaultKeyedValues();
+    data.addValue("A", 1.0);
+    data.addValue("B", 2.0);
+    data.addValue("C", null);
+    data.addValue("D", 3.0);
+    data.addValue("E", Double.NaN);
+    Range range = DatasetUtilities.iterateRangeBounds(data);
+    assertEquals(range, new Range(1.0, 3.0));
+    range = DatasetUtilities.iterateRangeBounds(data, false);
+    assertEquals(range, new Range(1.0, 3.0));
+    range = DatasetUtilities.iterateRangeBounds(data, true);
+    assertEquals(range, new Range(1.0, 3.0));
+}

@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Options opt = new Options();
+    opt.addOption(OptionBuilder.withLongOpt("a").create('a'));
+    opt.addOption(OptionBuilder.withLongOpt("b").hasArg().create('b'));
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cmd = parser.parse(opt, new String[] { "--zop", "-abfoo" });
+        assertEquals(2, cmd.getOptions().length);
+        assertTrue(cmd.hasOption('a'));
+        assertTrue(cmd.hasOption('b'));
+        assertEquals("foo", cmd.getOptionValue('b'));
+    } catch (ParseException e) {
+        fail("Parsing failed: " + e.getMessage());
+    }
+}

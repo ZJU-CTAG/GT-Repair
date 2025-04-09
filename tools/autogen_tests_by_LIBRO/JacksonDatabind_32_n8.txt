@@ -1,0 +1,15 @@
+public void testIssue1039() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"key\":null}";
+    mapper.readValue(json, SomeObjectThatCanBeAggregated.class);
+    json = "{}";
+    mapper.readValue(json, SomeObjectThatCanBeAggregated.class);
+}
+
+static class SomeObjectThatCanBeAggregated {
+
+    @JsonCreator
+    public SomeObjectThatCanBeAggregated(Object obj) {
+        System.out.println(obj + " //" + obj.getClass());
+    }
+}

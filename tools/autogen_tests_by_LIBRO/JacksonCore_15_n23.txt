@@ -1,0 +1,8 @@
+public void testCustomSerializer() throws IOException {
+    UserWithCustomSerializer user = new UserWithCustomSerializer(1, "test");
+    String jsonString = objectMapper.writeValueAsString(user);
+    assertEquals("{\"id\":1,\"name\":\"test\"}", jsonString);
+    user = objectMapper.readValue(jsonString, UserWithCustomSerializer.class);
+    assertEquals(1, user.getId());
+    assertEquals("test", user.getName());
+}

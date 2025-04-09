@@ -1,0 +1,22 @@
+public void testMiscOptimizationIssues() {
+
+    // 1. "BrentOptimizer": a specific convergence checker must be used.
+    //    "LevenbergMarquardtOptimizer" also has specific convergence checks.
+    try {
+        new BrentOptimizer(1e-10, 1e-10).optimize(new UnivariateRealFunction() {
+                public double value(double x) {
+                    return x;
+                }
+            }, GoalType.MAXIMIZE,
+            new SearchInterval(-1, 1));
+        fail("an exception should have been thrown");
+    } catch (MathUnsupportedOperationException mue) {
+        // expected behavior
+    }
+    try {
+        new LevenbergMarquardtOptimizer().optimize(new MultivariateJacobianFunction() {
+                public Pair<RealVector,RealMatrix> value(RealVector x) {
+                    return new Pair<RealVector,RealMatrix>(x, new Array2DRowRealMatrix(new double[][] { { 1 } }));
+                }
+            }, GoalType.MAXIMIZE,
+            new double[] {

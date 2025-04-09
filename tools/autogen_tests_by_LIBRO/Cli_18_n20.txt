@@ -1,0 +1,18 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption(new Option("a", false, "my option"));
+    CommandLineParser clp = new PosixParser();
+    try {
+        String[] args = new String[]{"-z", "-a", "foo"};
+        CommandLine cl = clp.parse(options, args, true);
+        assertEquals("foo", cl.getOptionValue("a"));
+        args = new String[]{"-z", "-a", "--", "foo"};
+        cl = clp.parse(options, args, true);
+        assertEquals("foo", cl.getOptionValue("a"));
+        args = new String[]{"-z", "-a", "--", "-foo"};
+        cl = clp.parse(options, args, true);
+        assertEquals("-foo", cl.getOptionValue("a"));
+        assertNotNull(cl.getArgs());
+        assertEquals(2, cl.getArgs().length);
+        assertEquals("-foo", cl.getArgs()[0]);
+        assert

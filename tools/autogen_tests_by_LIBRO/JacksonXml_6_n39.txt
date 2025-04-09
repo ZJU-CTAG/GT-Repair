@@ -1,0 +1,14 @@
+public void testBinaryInputStream() throws Exception {
+    byte[] data = new byte[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'};
+    InputStream is = new ByteArrayInputStream(data);
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator gen = new ToXmlGenerator(
+            new MappingJsonFactory().createJsonParser(new StringReader("{}"))
+            , sw);
+    gen.writeStartObject();
+    gen.writeFieldName("test");
+    gen.writeBinary(Base64Variants.MIME, is, -1);
+    gen.writeEndObject();
+    gen.close();
+    assertEquals("<root><test>YWJjZGVmZ2hpamts</test></root>", sw.toString());
+}

@@ -1,0 +1,15 @@
+public void testIssue107() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(); // or As.WRAPPER_ARRAY
+    mapper.enable(MapperFeature.AUTO_DETECT_GETTERS);
+    mapper.enable(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS);
+    mapper.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
+    mapper.disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    final Foo foo = new Foo("bar");
+    final String serialized = mapper.writeValueAsString(foo); // {"bar" : "bar"}
+    final JsonNode jsonNode = mapper.readTree(serialized); // exception here
+    final JsonNode node = mapper.valueToTree(foo); // and here
+}

@@ -1,0 +1,19 @@
+public void testIssue107() {
+    Options options = new Options();
+
+    options.addOption(OptionBuilder.hasArg().withDescription(
+        "Format of input file").withLongOpt("format").create('f'));
+
+    options.addOption(OptionBuilder.hasArg().withDescription(
+        "Source of inpuf file").withLongOpt("source").create('s'));
+
+    options.addOption(OptionBuilder.withDescription(
+        "Use properties file").withLongOpt("properties").create('p'));
+
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[] { "--format", "--source" });
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -format -source -properties" ,e.getMessage());
+    }
+}

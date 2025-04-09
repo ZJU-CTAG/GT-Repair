@@ -1,0 +1,19 @@
+public void testBigUserID() throws Exception {
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(new byte[0]));
+    byte[] header = new byte[512];
+    Arrays.fill(header, (byte) ' ');
+    String entryName = "my-entry";
+    byte[] name = entryName.getBytes("ASCII");
+    System.arraycopy(name, 0, header, 0, Math.min(name.length, 100));
+    header[108] = '6';
+    header[109] = '2';
+    header[110] = '4';
+    header[111] = '1';
+    header[112] = '0';
+    header[113] = '5';
+    header[114] = '5';
+    header[115] = '4';
+    tis.setRawEntry(new TarArchiveInputStream.TarEntry(header));
+    String actual = tis.getNextTarEntry().getName();
+    assertEquals("Names differ", entryName, actual);
+}

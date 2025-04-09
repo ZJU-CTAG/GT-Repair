@@ -1,0 +1,13 @@
+public void testIssue101() throws Exception {
+    String json = "{\"name\":\"abc\"}";
+    StringReader reader = new StringReader(json);
+    try {
+        JsonFactory f = new JsonFactory();
+        JsonParser parser = f.createJsonParser(reader);
+        parser.nextToken();
+        parser.nextToken();
+    } catch (JsonParseException e) {
+        assertEquals("Unexpected end-of-input: expected close marker for Object (start marker at (row.col):(1.2))\n" +
+                " at [Source: java.io.StringReader@460f8b50; line: 1, column: 4]", e.getMessage());
+    }
+}

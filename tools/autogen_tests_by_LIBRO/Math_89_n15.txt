@@ -1,0 +1,26 @@
+public void testFrequency() {
+    final Object OBJ = new Object();
+    final Comparable COMP = new Comparable() {
+        @Override
+        public int compareTo(Object o) {
+            return 0;
+        }
+    };
+    final Frequency f = new Frequency();
+    f.addValue(COMP);
+    try {
+        f.addValue(OBJ);
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+    assertEquals(1, f.getCount(COMP));
+    assertEquals(1.0d, f.getPct(COMP), 0.0d);
+    // Check that the first call to addValue(Object) which ought to fail, doesn't
+    final Frequency f2 = new Frequency();
+    try {
+        f2.addValue(OBJ);
+    } catch (IllegalArgumentException ex) {
+        // This ought not to happen, but if it does, it will cause unexpected problems below
+    }
+    assertEquals(0, f2.getCount(OBJ

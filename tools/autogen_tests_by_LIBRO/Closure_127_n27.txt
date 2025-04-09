@@ -1,0 +1,15 @@
+public void testIssue108() {
+    final JSHelper jsHelper = new JSHelper();
+    final String script =
+            "b: try {\n" +
+            "        throw(\"throw me\");\n" +
+            "    } finally {\n" +
+            "        /* fake catcher */ ;\n" +
+            "        break b;\n" +
+            "    };\n" +
+            "    console.log(\"ok then...\");";
+
+    jsHelper.setScript(script);
+    jsHelper.setVariable("console", new ScriptObjectMirrorAdapter(new Console()));
+    jsHelper.run();
+}

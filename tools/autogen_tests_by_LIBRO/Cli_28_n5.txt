@@ -1,0 +1,19 @@
+public void testDefaultPropertiesPartialProcessing() {
+    Options opts = new Options();
+    opts.addOption("a", "a", false, "toggle -a");
+    opts.addOption("c", "c", false, "toggle -c");
+    opts.addOption(OptionBuilder.hasOptionalArg().create('e'));
+    opts.addOption(OptionBuilder.hasArg().create('f'));
+
+    Properties properties = new Properties();
+    properties.setProperty("a", "false");
+    properties.setProperty("c", "no");
+    properties.setProperty("e", "0");
+
+    CommandLine cmd = parser.parse(opts, null, properties);
+
+    assertTrue(!cmd.hasOption("a"));
+    assertTrue(!cmd.hasOption("c"));
+    assertTrue(cmd.hasOption("e"));
+    assertEquals("0", cmd.getOptionValue("e"));
+}

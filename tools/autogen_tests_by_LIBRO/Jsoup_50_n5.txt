@@ -1,0 +1,9 @@
+public void testUtf16StreamWithBom() throws IOException {
+    String expectedString = "This is a UTF-16LE string with BOM";
+    byte[] input = expectedString.getBytes("UTF-16LE"); // add BOM
+    input[0] = (byte) 0xFF;
+    input[1] = (byte) 0xFE;
+    InputStream inputStream = new ByteArrayInputStream(input);
+    String result = IOUtils.toString(inputStream, "UTF-16LE");
+    assertEquals(expectedString, result);
+}

@@ -1,0 +1,17 @@
+public void test() throws IOException
+{
+    JsonFactory f = new JsonFactory();
+    // buffer size is not important
+    BufferRecyclerStrategy strat = new BufferRecyclerStrategy(1, 2, 1, 2);
+    f.setBufferRecycler(strat);
+    final int bufSize = f.getBufferRecycler().getReadIOBuffer().length;
+    final int bufSize2 = bufSize * 2;
+
+    // first read uses size as requested
+    byte[] buf1 = new byte[bufSize2];
+    byte[] buf2 = new byte[bufSize2];
+    assertEquals(bufSize2, f.createParser(buf1).readInputData(buf2, 0, bufSize));
+
+    // second time, it should be able to reuse, but not grow
+    assertEquals(bufSize, f.createParser(buf1).readInputData(buf2, 0, bufSize));
+}

@@ -1,0 +1,22 @@
+public void testIssue() throws IOException {
+
+    final File srcFile = new File(getTestDirectory(), "bla.ar");
+    final File destFile = new File(getTestDirectory(), "bla2.ar");
+    FileUtils.copyFile(srcFile, destFile);
+
+    // let's check if the file is really there
+    {
+        final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        final ArchiveInputStream ain = factory.createArchiveInputStream(ArchiveStreamFactory.AR, new FileInputStream(destFile));
+
+        final ArchiveEntry entry = ain.getNextEntry();
+        assertNotNull(entry);
+        assertEquals("test1.xml", entry.getName());
+        ain.close();
+    }
+
+    // let's delete the file
+    {
+        final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+        final ArchiveInputStream ain = factory.createArchiveInputStream(ArchiveStreamFactory.AR, new FileInputStream(destFile));
+        ArchiveOutputStream aout = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.AR, new FileOutputStream(destFile

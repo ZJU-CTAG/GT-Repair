@@ -1,0 +1,16 @@
+public void testWhitespace() {
+
+    String s = "<pre><code>\n"
+        + "  message <span style=\"color:red\"> other   \n    message  with \n"
+        + "   whitespaces      </span>\n"
+        + "</code></pre>";
+    Document doc = Jsoup.parse(s);
+    System.out.println(doc.select("pre").first().outerHtml());
+
+    String expected = "<pre><code>\n"
+        + "  message <span style=\"color:red\"> other   \n    message  with \n"
+        + "   whitespaces      </span>\n"
+        + "</code></pre>";
+
+    assertEquals(expected, doc.select("pre").first().outerHtml());
+}

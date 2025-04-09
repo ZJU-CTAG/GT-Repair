@@ -1,0 +1,12 @@
+public void testStringCollectionDeserializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule()
+            .addDeserializer(ImmutableStringSet.class, new StringCollectionDeserializer<>(ImmutableStringSet::copyOf)));
+    String json = "{ \"foo\": [\"bar\", \"baz\"] }";
+    final ObjectWithStringSet obj = mapper.readValue(json, ObjectWithStringSet.class);
+    assertEquals(ImmutableStringSet.of("bar", "baz"), obj.foo);
+}
+
+class ObjectWithStringSet {
+    public ImmutableStringSet foo;
+}

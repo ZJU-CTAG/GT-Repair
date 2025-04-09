@@ -1,0 +1,19 @@
+public void testThisInTimeout() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setCheckTypes(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS
+        .setOptionsForCompilationLevel(options);
+    Result result = runFlowSensitiveInference(
+        "/** @constructor */\n" +
+        "var Person = function(name){};\n" +
+        "/** @this {Person} */\n" +
+        "Person.prototype.getName = function(name) { return this.name; };\n" +
+        "/**\n" +
+        " * @param {string} message\n" +
+        " * @this {Person} \n" +
+        " */\n" +
+        "Person.prototype.say = function(message) {\n" +
+        "  var self = this;\n" +
+        "  setTimeout(

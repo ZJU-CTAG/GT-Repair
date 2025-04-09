@@ -1,0 +1,10 @@
+public void testIssue109() {
+    StringWriter sw = new StringWriter();
+    ToXmlGenerator generator = new ToXmlGenerator(new XmlFactory(), sw);
+    generator.writeStartObject();
+    generator.writeFieldName("Binary");
+    generator.writeBinary(Base64Variants.getDefaultVariant(), new ByteArrayInputStream(new byte[] { 1, 2, 3 }), 3);
+    generator.writeEndObject();
+    generator.close();
+    assertEquals("<Object><Binary>AQID</Binary></Object>", sw.toString());
+}

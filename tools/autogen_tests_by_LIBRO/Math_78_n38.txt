@@ -1,0 +1,29 @@
+public void testIssue107() {
+    // this test has been created with the following ode:
+    //
+    // g(t) = (t - 90.0) (t - 135.0)
+    //
+    // the problem is that the second event (around t = 135.0) is not detected
+    // when an integration step spans from 67.5 to 112.5
+
+    final FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            // nothing to do
+        }
+
+        public int getDimension() {
+            return 1;
+        }
+
+    };
+
+    final double t0 = 67.5;
+    final double dt = 112.5 - t0;
+
+    final RungeKuttaIntegrator integrator = new RungeKuttaIntegrator(5.0e-6);
+
+    final double g0   = -0.5 * dt * dt;
+    final double[] y = { g0 };
+
+    final double[] yDotExpected = { -45.

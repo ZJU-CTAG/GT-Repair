@@ -1,0 +1,26 @@
+public void testCommandLine() {
+    Options options = new Options();
+
+    final String debugOpt = "debug";
+    Option debug = OptionBuilder
+        .withArgName(debugOpt)
+        .withDescription("turn on debugging")
+        .withLongOpt(debugOpt)
+        .create('d');
+
+    options.addOption(debug);
+
+    String[] args = new String[] {"-d", "debug"};
+    CommandLine commandLine;
+    try {
+        commandLine = new GnuParser().parse(options, args);
+    } catch (ParseException ex) {
+        throw new IllegalArgumentException("Could not parse command-line", ex);
+    }
+
+    String dbg = commandLine.getOptionValue("debug");
+    assertEquals("debug", dbg);
+
+    dbg = commandLine.getOptionValue("d");
+    assertEquals("debug", dbg);
+}

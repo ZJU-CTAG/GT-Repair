@@ -1,0 +1,25 @@
+public void testDefaultOptionsWithOptionGroups() {
+    @Command(name = "cmd", optionListHeading = "Options", separator = "=", description = "command")
+    class Cmd {
+        @Option(name = "-a", description = "a")
+        private String a;
+
+        @Option(name = "-b", description = "b")
+        private String b;
+    }
+
+    Cmd cmd = new Cmd();
+
+    CommandLine cmdLine = new CommandLine(cmd);
+    cmdLine.parse("-a a1".split(" "));
+    assertEquals("a1", cmd.a);
+    assertNull(cmd.b);
+
+    cmdLine.parse(new Properties(ImmutableMap.of("b", "b1")), "-a a2".split(" "));
+    assertEquals("a2", cmd.a);
+    assertEquals("b1", cmd.b);
+
+    cmdLine = new CommandLine(cmd);
+    cmdLine.setSeparator("=");
+    cmdLine.parse("-a=a1".split(" "));
+    assertEquals("a1

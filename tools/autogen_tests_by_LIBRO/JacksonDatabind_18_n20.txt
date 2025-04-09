@@ -1,0 +1,29 @@
+public void testIssue734() throws Exception
+{
+    // First, a test to verify that we get exception as is
+    String json = "{ \"a\" : 1, \"b\": \"b\", \"c\": true }";
+
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<ObjectNode> it = mapper.reader()
+            .withType(ObjectNode.class)
+            .readValues(json);
+    JsonNode n = it.next();
+    assertEquals(1, n.get("a").intValue());
+    try {
+        it.next();
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        // should get exception
+    }
+    // also, should not be able to read anything more
+    assertFalse(it.hasNext());
+    assertNull(it.nextValue());
+    try {
+        it.next();
+        fail("Should not pass");
+    } catch (NoSuchElementException e) {
+        verifyException(e, "No more content");
+    }
+    try {
+        it.nextValue();
+        fail

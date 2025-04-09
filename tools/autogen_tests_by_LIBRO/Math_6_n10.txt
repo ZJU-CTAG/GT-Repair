@@ -1,0 +1,17 @@
+public void testLevenbergMarquardtOptimizerIterations() {
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    // create a simple problem: minimize x^2
+    MultivariateRealFunction m = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            return x[0] * x[0];
+        }
+    };
+    // starting point is (1,1)
+    double[] start = { 1.0 };
+    // run the optimizer
+    PointValuePair result = optimizer.optimize(new MaxEval(50), new ObjectiveFunction(m), GoalType.MINIMIZE, start);
+
+    // check that the number of iterations is reported correctly
+    assertEquals(optimizer.getIterations(), optimizer.getEvaluations());
+    assertEquals(optimizer.getIterations(), 50);
+}

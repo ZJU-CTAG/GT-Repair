@@ -1,0 +1,20 @@
+public void test() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.enableDefaultTyping();
+    objectMapper.registerModule(new JodaModule());
+    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+false);
+    objectMapper.registerModule(new JavaTimeModule());
+    objectMapper.registerModule(new Jdk8Module());
+    ObjectNode root = objectMapper.createObjectNode();
+    root.put("literal", "foo");
+    root.put("sequence", "bar");
+    List<Attribute> attrs = new ArrayList<>();
+    ListAttribute attr = new ListAttribute("", new StringAttribute("",
+"foo"), "foo");
+    attr.setItemJsonKey("foo");
+    attr.setItems(new ArrayList<>());
+    attr.getItems().add("foo");
+    attrs.add(attr);
+    root.

@@ -1,0 +1,18 @@
+public void testIssue106() {
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+
+    final com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    Result result = compiler.compile(EXTERNS, SOURCE, options);
+    String compilerOutput = compiler.toSource();
+    assertEquals(EXPECTED, compilerOutput);
+}
+
+private static final String SOURCE = "function test() {\n" +
+            "    var svgElement = document.getElementById(\"test\");\n" +
+            "    var gfx = svgElement.getScreenCTM();\n" +
+            "    var foreignObject = gfx.parentNode.parentNode;\n" +
+            "    var parentContainer = foreignObject.parentNode.parentNode;\n" +
+            "    if(parentContainer) {\n" +
+            "        parentContainer.appendChild(svgElement);\n

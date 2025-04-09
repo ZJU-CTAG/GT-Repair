@@ -1,0 +1,23 @@
+public void testBinarySearch() throws Exception {
+    // prepare test
+    final int n = 41200;
+    final double[] xval = new double[n];
+    final double[] yval = new double[n];
+    for (int i = 0; i < n; i++) {
+        xval[i] = i;
+        yval[i] = i;
+    }
+
+    // test
+    final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(1);
+    final WeightedObservedPoints obs = new WeightedObservedPoints();
+    for (int i = 0; i < n; i++) {
+        obs.add(xval[i], yval[i]);
+    }
+    final double[] coeff = fitter.fit(obs.toList());
+
+    // check
+    assertEquals(2, coeff.length);
+    assertTrue(Math.abs(coeff[0]) < 1.0e-10);
+    assertTrue(Math.abs(coeff[1] - 1.0) < 0.01);
+}

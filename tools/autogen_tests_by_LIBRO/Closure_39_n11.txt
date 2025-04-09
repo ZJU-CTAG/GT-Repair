@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setExternExports(true);
+    String source = getFileContents("src/test/resources/issue108.js");
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("issue108.js", source)}, options);
+    assertTrue(result.success);
+    assertNotNull(result.externExport);
+    System.out.println(result.externExport);
+}

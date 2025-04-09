@@ -1,0 +1,16 @@
+public void testDecimalFormat() {
+    // these work
+    assertEquals("1.0", doTest("#,##0.0#;(#)", 1.0));
+    assertEquals("-1.0", doTest("#,##0.0#;(#)", -1.0));
+    assertEquals("1.234", doTest("#,##0.0#;(#)", 1.234));
+    assertEquals("-1.234", doTest("#,##0.0#;(#)", -1.234));
+
+    // these don't
+    assertEquals("(1.0)", doTest("#,##0.0#;(#)", -1.0));
+    assertEquals("(1.234)", doTest("#,##0.0#;(#)", -1.234));
+}
+
+private String doTest(String pattern, Number number) {
+    DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.ROOT);
+    symbols.setDecimalSeparator('.');
+    symbols.setGroupingSep

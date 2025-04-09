@@ -1,0 +1,9 @@
+public void testClosure() {
+    String before = "Math.blah = function(test) { test.a = 5; };var test = new Object();Math.blah(test);";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(before, null, options);
+    assertFalse(result.success);
+}

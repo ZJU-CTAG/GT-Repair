@@ -1,0 +1,25 @@
+public void testDeserializingExternalTypeId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.registerModule(new AfterburnerModule());
+    mapper.addMixInAnnotations(Data.class, DataMixin.class);
+
+    String json =
+            "{" +
+                    "\"__type\":\"Something\"," +
+                    "\"data\":{\"field\":\"value\"}" +
+                    "}";
+
+    Data data = mapper.readValue(json, Data.class);
+
+    assertEquals("Something", data.getClass().getSimpleName());
+    assertEquals("value", ((Data) data).field);
+}
+
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "__type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(name = "Something", value = Data.class),
+})
+abstract

@@ -1,0 +1,10 @@
+public void testTraversingParser() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree("{\"x\": 2147483648}");
+    try {
+        mapper.readValue(node, IntClass.class);
+        fail("Did not throw exception");
+    } catch (JsonMappingException e) {
+        assertTrue(e.getCause() instanceof NumberFormatException);
+    }
+}

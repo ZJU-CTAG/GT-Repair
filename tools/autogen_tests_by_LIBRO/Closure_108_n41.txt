@@ -1,0 +1,17 @@
+public void testCrash() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.<SourceFile>of(
+            SourceFile.fromCode("test.js",
+            "var ns = {};\n" +
+            "ns.sub = {};\n" +
+            "/** @constructor */\n" +
+            "ns.sub.C = function() {};\n" +
+            "\n" +
+            "goog.scope(function() {\n" +
+            " var sub = ns.sub;\n" +
+            " /** @type {sub.C} */\n" +
+            " var x = null;\n" +
+            "});"));
+    Result result = compiler.compile(EXTERNS, inputs, options);
+    assertTrue(result.success);
+}

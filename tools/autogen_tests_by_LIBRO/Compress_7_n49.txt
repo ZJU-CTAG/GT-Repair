@@ -1,0 +1,14 @@
+public void testIssue211() throws IOException {
+    // NOTE: encoding cannot be pre-calculated.
+    final String encoding = Charset.defaultCharset().name();
+    // Test all bytes in the range 0-127, which is US-ASCII.
+    final byte[] bytes = new byte[128];
+    for (int i = 0; i < 128; ++i) {
+        bytes[i] = (byte) i;
+    }
+    final ByteArrayInputStream input = new ByteArrayInputStream(bytes);
+    final TarArchiveInputStream tar = new TarArchiveInputStream(input);
+    final TarArchiveEntry entry = tar.getNextTarEntry();
+    assertEquals(new String(bytes, encoding), entry.getName());
+    tar.close();
+}

@@ -1,0 +1,15 @@
+public void testPearsonsCorrelation() {
+    Random random = new Random(System.currentTimeMillis());
+    int treatmentCount = 100;
+    int sampleSize = 10000;
+    double[][] treatments = new double[treatmentCount][sampleSize];
+    for (int treatment = 0; treatment < treatmentCount; treatment++) {
+        for (int i = 0; i < sampleSize; i++) {
+            treatments[treatment][i] = random.nextDouble();
+        }
+    }
+    double[] pValues = new PearsonsCorrelation().getCorrelationPValues(treatments);
+    for (int treatment = 0; treatment < treatmentCount; treatment++) {
+        assertEquals(0.0, pValues[treatment], 1e-4);
+    }
+}

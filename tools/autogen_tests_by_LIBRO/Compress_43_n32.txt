@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(bos);
+    zos.setCreateUnicodeExtraFields(ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NEVER);
+    zos.setUseLanguageEncodingFlag(false);
+    zos.setFallbackToUTF8(false);
+    zos.setMethod(ZipArchiveOutputStream.DEFLATED);
+    final ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+    ze.setUnixMode(0644);
+    zos.putArchiveEntry(ze);
+    zos.write("test content".getBytes(StandardCharsets.UTF_8));
+    zos.closeArchiveEntry();
+    zos.close();
+
+    final byte[] data = bos.toByteArray();
+    final ZipFile zf = new ZipFile(new ByteArrayResource(data));
+    final Enumeration<ZipArchiveEntry> e = zf.getEntries();
+    ZipArchive

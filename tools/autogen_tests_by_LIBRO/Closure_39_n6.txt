@@ -1,0 +1,8 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setExternExports(true);
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[]{}, new JSSourceFile[]{JSSourceFile.fromCode("test.js", "var test = 1 + 1;")}, options);
+    assertEquals("/** * @typedef {MyType} */\n/** @type {MyType} */ var test;\n", result.externExport);
+}

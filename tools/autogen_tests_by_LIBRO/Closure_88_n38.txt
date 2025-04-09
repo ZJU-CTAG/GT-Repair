@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String script = "function closureCompilerTest(someNode) { " +
+                    "  var nodeId; " +
+                    "  return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); " +
+                    "}";
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    try {
+        engine.eval(script);
+    } catch (javax.script.ScriptException e) {
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    // Checkstyle:OFF
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = Collections.<SourceFile>emptyList();
+    List<SourceFile> inputs = Collections.singletonList(SourceFile.fromCode("in",
+        "var foo = 0; // jscomp_error=unusedVars\n"));
+    compiler.compile(externs, inputs, options);
+    assertEquals(compiler.getWarnings().length, 0);
+    assertEquals(compiler.getErrors().length, 1);
+    assertEquals(compiler.getErrors()[0].description, "unused local variable foo");
+
+    compiler = new Compiler();
+    inputs = Collections.singletonList(SourceFile.fromCode("in",
+        "var foo = 0; // jscomp_error=unusedVars jscomp_warning=unusedVars\n"));
+    compiler.compile(

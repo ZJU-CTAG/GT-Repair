@@ -1,0 +1,19 @@
+public void testIntParse() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    TreeNode node = objectMapper.readTree("{\"x\": 2147483648}");
+    try {
+        objectMapper.readerFor(IntClass.class).readValue(node);
+        fail("should throw exception");
+    } catch (MismatchedInputException mie) {
+        // nothing to do
+    }
+}
+
+public static class IntClass {
+    public int x;
+
+    @Override
+    public String toString() {
+        return String.valueOf(x);
+    }
+}

@@ -1,0 +1,20 @@
+public void testTarChecksum() throws Exception {
+    TarArchiveEntry entry = new TarArchiveEntry("test/test.txt");
+    entry.setSize(0);
+    entry.setName("test/test.txt");
+    entry.setModTime(1234);
+    entry.setIds(1000, 1000);
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    BufferedOutputStream bufferedOutput = new BufferedOutputStream(out);
+    TarArchiveOutputStream tout = new TarArchiveOutputStream(bufferedOutput);
+    tout.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_STAR);
+    tout.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+    tout.setAddPaxHeadersForNonAsciiNames(true);
+    tout.setUserName("user");
+    tout.setGroupName("group");
+    tout.putArchiveEntry(entry);
+    tout.closeArchiveEntry();
+    tout.close();
+
+    TarArchiveInputStream tis = new Tar

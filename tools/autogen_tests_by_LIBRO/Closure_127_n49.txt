@@ -1,0 +1,27 @@
+public void testIssue() throws Exception {
+    Context cx = Context.enter();
+    try {
+        Scriptable scope = cx.initStandardObjects();
+        ScriptableObject.defineClass(scope, TestScript.class);
+        cx.evaluateString(scope, "new TestScript().test();", "test.js", 0, null);
+        assertEquals("ok then...", getStdout());
+    } finally {
+        Context.exit();
+    }
+}
+public static class TestScript extends ScriptableObject {
+    @Override
+    public String getClassName() {
+        return "TestScript";
+    }
+    public void test() {
+        b: try {
+            throw("throw me");
+        } catch (RuntimeException e) {
+            fail("should not be here");
+        } finally {
+            /* fake catcher */ ; break b;
+        }
+        console.log("ok then...");
+    }
+}

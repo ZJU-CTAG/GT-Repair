@@ -1,0 +1,20 @@
+public void testVarArgs() {
+    Closure compiler = new Closure(Level.SIMPLE_OPTIMIZATIONS);
+    compiler.setWarningLevel(WarningLevel.VERBOSE);
+    List<SourceFile> input = Lists.newArrayList(
+            SourceFile.fromCode("input1.js",
+            "/**\n" +
+            "* @param {...string} var_args\n" +
+            "*/\n" +
+            "function foo(var_args) {\n" +
+            " return arguments.length;\n" +
+            "}\n" +
+            "\n" +
+            "foo('hello'); // no warning - ok\n" +
+            "foo(123); // warning - ok\n" +
+            "foo('hello', 123); // no warning! error.\n" +
+            "\n" +
+            ""));
+    Result result = compiler.compile(input, null, null);
+    assertEquals(0, result.warnings.length);
+}

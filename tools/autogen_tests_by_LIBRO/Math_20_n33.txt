@@ -1,0 +1,15 @@
+public void testCMAESOptimizer() {
+    IntegerParameter[] parameters = new IntegerParameter[]{new IntegerParameter("test", 10, 1, 20)};
+    FitnessFunction fitnessFunction = new TestFitnessFunction(parameters);
+    CMAESOptimizer optimizer = new CMAESOptimizer(10, 0.1, true, 0, 0, new MersenneTwister(42), false);
+    optimizer.setDiagonalOnly(1);
+
+    // This is the important part.
+    optimizer.setCheckFeasableCount(1);
+    optimizer.setGenerationCount(1000);
+
+    Population population = optimizer.optimize(fitnessFunction, parameters, null);
+    assertEquals(1, population.getPopulationSize());
+    Individual bestIndividual = population.getIndividual(0);
+    assertTrue(bestIndividual.isFeasible());
+}

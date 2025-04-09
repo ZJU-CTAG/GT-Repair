@@ -1,0 +1,16 @@
+public void testSimplexSolver() {
+    double[][] table = new double [][] {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    SimplexTableau simplexTable = new SimplexTableau(table, new int[] {0, 1, 2}, 2, 3);
+    simplexTable.numArtificialVariables = 2;
+    simplexTable.divideRow(0, 1);
+    simplexTable.divideRow(1, 2);
+    simplexTable.divideRow(2, 3);
+    simplexTable.subtractRow(2, 0, 3);
+    simplexTable.subtractRow(1, 0, 2);
+    simplexTable.subtractRow(0, 0, 1);
+    
+    double[] results = simplexTable.getSolution();
+    assertEquals(1.0, results[0], EPSILON);
+    assertEquals(0.0, results[1], EPSILON);
+    assertEquals(0.0, results[2], EPSILON);
+}

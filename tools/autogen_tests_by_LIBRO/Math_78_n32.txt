@@ -1,0 +1,22 @@
+public void testIssueDuringODEIntegration() {
+    KeplerianPropagator propagator = new KeplerianPropagator(new EquinoctialOrbit(7000000.0, 0.5, 0.1, 0.0, 0.0, 0.0, PositionAngle.TRUE,
+                                                                                 FramesFactory.getEME2000(),
+                                                                                 new AbsoluteDate(new DateComponents(2003, 3, 5),
+                                                                                                  TimeComponents.H00,
+                                                                                                  TimeScalesFactory.getUTC()),
+                                                                                 Constants.EIGEN5C_EARTH_MU));
+    propagator.addEventDetector(new EventDetector<>() {
+
+        private boolean increasing;
+
+        public Action eventOccurred(SpacecraftState s, boolean increasing) {
+            this.increasing = increasing;
+            return Action.CONTINUE;
+        }
+
+        public SpacecraftState resetState(SpacecraftState oldState) {
+            return oldState;
+        }
+
+        public double g(SpacecraftState s) {
+            return increasing ? -1

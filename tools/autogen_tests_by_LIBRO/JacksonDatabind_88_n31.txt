@@ -1,0 +1,17 @@
+public void testIssue108() {
+    ObjectMapper m = new ObjectMapper();
+    m.enableDefaultTyping();
+    try {
+        m.readValue("[\"org.apache.commons.lang3.SystemUtils\"]", String.class);
+        fail("Should not have passed");
+    } catch (JsonMappingException e) {
+        verifyException(e, "argument type");
+    }
+
+    try {
+        m.readValue(quote("org.apache.commons.lang3.SystemUtils"), String.class);
+        fail("Should not have passed");
+    } catch (JsonMappingException e) {
+        verifyException(e, "argument type");
+    }
+}

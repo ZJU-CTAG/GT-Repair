@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String code = "function () { return function () { var arg = arguments; setTimeout(function() { alert(args); }, 0); } }";
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    options.closurePass = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, jsSource, options);
+    assertTrue(result.success);
+    String output = compiler.toSource();
+    assertFalse(output.contains("args"));
+}

@@ -1,0 +1,10 @@
+public void testConstructors() {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    String code = "/** @type {function(new:?)} */ var foo = function() {};\n" +
+                  "/** @type {function(new:*)} */ var bar = function() {};";
+    Result result = compiler.compile(EXTERNS, code, compilerOptions);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

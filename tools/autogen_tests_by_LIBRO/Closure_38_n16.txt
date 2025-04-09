@@ -1,0 +1,10 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", "var a = - -5;"),
+            SourceFile.fromCode("test1.js", "var a = - -5;"));
+    assertTrue(result.success);
+    assertEquals("var a=5;var a=5;", result.compiledCode);
+}

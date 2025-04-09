@@ -1,0 +1,14 @@
+public void testIssue() {
+    String s = "var x = { get 'x'() { return 1 } };";
+    JsOutputOption outputOption = new JsOutputOption();
+    outputOption.setOutputLanguage(JsOutputOption.LanguageMode.ECMASCRIPT5);
+    outputOption.setPrettyPrint(true);
+    outputOption.setOutputWrapper("(function() {%output%})();");
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new StringSourceFile("test.js", s), outputOption);
+    if (result.success) {
+        System.out.println("Sucessfully compiled: " + result.source);
+    } else {
+        System.out.println("Compile failed: " + result);
+    }
+}

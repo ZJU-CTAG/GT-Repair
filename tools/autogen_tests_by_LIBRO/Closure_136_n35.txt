@@ -1,0 +1,13 @@
+public void testSuperReplacement() throws IOException {
+    String js = "var Foo = new Class({ initialize: function(bar) {this.foo = bar;}, getFoo: function() {return this.foo;}});var Bar = new Class({Extends: Foo, initialize: function(bar) {this.$super('initialize', bar);}});";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.getOptions().setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.getOptions().setClosurePass(true);
+    compiler.getOptions().setPrettyPrint(true);
+    CompilerOptions options = compiler.getOptions();
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.MISS

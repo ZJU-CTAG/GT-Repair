@@ -1,0 +1,15 @@
+public void testNextTextValue() throws Exception {
+        XmlMapper xmlMapper = new XmlMapper();
+        XmlFactory xmlFactory = new XmlFactory();
+
+        FromXmlParser xmlParser = (FromXmlParser) xmlMapper.getFactory().createParser(new StringReader("<test attr=\"attrvalue\"></test>"));
+        assertEquals(JsonToken.START_OBJECT, xmlParser.nextToken());
+        assertEquals(JsonToken.FIELD_NAME, xmlParser.nextToken());
+        assertEquals("attr", xmlParser.currentName());
+        assertEquals(JsonToken.VALUE_STRING, xmlParser.nextToken());
+        assertEquals("attrvalue", xmlParser.getText());
+        assertEquals("attrvalue", xmlParser.nextTextValue());
+        assertEquals(JsonToken.VALUE_STRING, xmlParser.currentToken());
+        assertEquals("attrvalue", xmlParser.getText());
+        assertEquals(JsonToken.END_OBJECT, xmlParser.nextToken());
+        assertEquals(null, xmlParser.next

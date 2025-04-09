@@ -1,0 +1,22 @@
+public void testSmartNameRemoval() {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        CompilerOptions.builder()
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT5)
+            .setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING)
+            .build(),
+        new TestErrorReporter(),
+        ImmutableList.of(SourceFile.fromCode("test.js",
+            lines(
+                "/** @constructor */",
+                "var goog = {};",
+                "goog.inherits = function(x, y) {};",
+                "/** @constructor */",
+                "var ns = {};",
+                "/** @constructor */",
+                "ns.PageSelectionModel = function(){};",
+                "/** @constructor */",
+                "ns.PageSelectionModel.FooEvent = function() {};",
+                "/** @constructor */",
+                "ns.PageSelectionModel.SelectEvent = function()

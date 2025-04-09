@@ -1,0 +1,26 @@
+public void testTypeIdWithObjectId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JaxbAnnotationModule());
+
+    // test with type id as object
+    mapper.enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE,
+            "typeId", JsonTypeInfo.As.PROPERTY);
+    mapper.addMixIn(Object.class, ObjectIdMixIn.class);
+
+    WithObjectId input = new WithObjectId("value");
+    String json = mapper.writeValueAsString(input);
+    System.out.println(json);
+    WithObjectId result = mapper.readValue(json, WithObjectId.class);
+    assertEquals("value", result.value);
+}
+
+public static class WithObjectId {
+    @JacksonXmlProperty(isAttribute = true)
+    @JacksonXmlId
+    public String value;
+
+    public WithObjectId() {}
+    public WithObjectId(String value) {
+        this.value = value;
+   

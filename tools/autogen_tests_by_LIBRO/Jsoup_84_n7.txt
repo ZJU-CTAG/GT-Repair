@@ -1,0 +1,10 @@
+public void testNamespace() throws ParserConfigurationException, SAXException, IOException, TransformerException {
+    String html = "<html><head><script>alert('hello');</script></head><body><fb:like/>";
+    Document doc = Jsoup.parse(html);
+    Document w3cDoc = W3CDom.fromJsoup(doc);
+    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty(OutputKeys.METHOD, "html");
+    transformer.transform(new DOMSource(w3cDoc), new StreamResult(new OutputStreamWriter(System.out, "UTF-8")));
+}

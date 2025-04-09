@@ -1,0 +1,27 @@
+public void testIssue104() {
+    final String code = "void foo(int i, int j) {} foo((1,2,3),(4,5,42));";
+    final String expected = "void foo(int i, int j) {} foo((1,4,42));";
+
+    final List<Issue> issues = new ArrayList<>();
+    final List<Issue> unexpected = new ArrayList<>();
+
+    final Match match = new Match()
+        .add(Comma.class, new ReplaceComma(3))
+        .add(Comma.class, new ReplaceComma(4));
+
+    final Transformer transformer = new Transformer()
+        .withMinimumLength(1)
+        .withMatch(match)
+        .withVisitor(new Visitor() {
+            @Override
+            public void visitIssue(final Issue issue) {
+                if (issue.getMessage().contains("problematic")) {
+                    issues.add(issue);
+                } else {
+                    unexpected.add(issue);
+                }
+            }
+        });
+
+    final String transformed = new Source(code)
+        .withTransformer

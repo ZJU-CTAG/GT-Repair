@@ -1,0 +1,20 @@
+public void testIssue55() throws IOException
+{
+    final ObjectMapper MAPPER = new ObjectMapper();
+    MAPPER.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+    MAPPER.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    MAPPER.addMixIn(TestBean.class, BeanMixIn.class);
+
+    final String json = MAPPER.writeValueAsString(new TestBean());
+    assertEquals("{\"first\":\"first\"}", json);
+}
+
+public static class TestBean {
+    public String first = "first";
+    public int second = 42;
+}
+
+public static abstract class BeanMixIn {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public abstract int getSecond();
+}

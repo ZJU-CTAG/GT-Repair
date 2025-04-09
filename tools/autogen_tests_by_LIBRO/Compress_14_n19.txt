@@ -1,0 +1,20 @@
+public void testIssue107() {
+    File tempDir = new File(System.getProperty("java.io.tmpdir"));
+    File tstDir = new File(tempDir, "tst");
+    tstDir.mkdirs();
+    // create a simple file
+    File f = new File(tstDir, "f");
+    FileUtils.writeStringToFile(f, "hello");
+    // create a simple symlink
+    File lf = new File(tstDir, "l");
+    try {
+        Runtime.getRuntime().exec(new String[] {"ln", "-s", "f", "l"}, null, tstDir);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    // create a tar file
+    try {
+        Process p = Runtime.getRuntime().exec(new String[] {"tar", "-cf", "tst.tar", "l", "f"}, null, tstDir);
+        int exitValue = p.waitFor();
+        if (exitValue != 0) {
+            throw new RuntimeException("tar error exit value:

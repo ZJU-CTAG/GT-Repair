@@ -1,0 +1,15 @@
+public void testBase64Variants() throws Exception {
+    final Base64Variant variant = Base64Variants.MIME_NO_LINEFEEDS;
+
+    byte[] bytes = new byte[] { 0, 1, 2, 3 };
+    String encoded = variant.encode(bytes);
+
+    JsonNode node = MAPPER.readValue(encoded, JsonNode.class);
+    assertEquals(bytes, node.binaryValue());
+
+    ObjectCodec codec = MAPPER.getCodec();
+    TreeTraversingParser parser = new TreeTraversingParser(node, codec);
+
+    // This will fail if the bug is present
+    assertEquals(bytes, parser.getBinaryValue(variant));
+}

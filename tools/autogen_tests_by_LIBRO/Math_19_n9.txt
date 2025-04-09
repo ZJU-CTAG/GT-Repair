@@ -1,0 +1,17 @@
+public void testCMAESOptimizer() throws DimensionMismatchException, TooManyEvaluationsException {
+		final CMAESOptimizer s = new CMAESOptimizer(200);
+		double[] lower = {-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE};
+		double[] upper = {Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE};
+		
+		OptimizationData[] optData = new OptimizationData[] {
+				new InitialGuess(new double[] {0.0, 0.0, 0.0}),
+				new InitialBestGuess(new double[] {0.0, 0.0, 0.0}),
+				new MaxEval(10000),
+				new SimpleBounds(lower, upper)
+		};
+		
+		double[] answer = s.optimize(new TestFunc(), GoalType.MINIMIZE, optData);
+		assertNotNull(answer);
+}
+
+public class TestFunc implements MultivariateFunction

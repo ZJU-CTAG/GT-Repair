@@ -1,0 +1,36 @@
+public void testIssue93() {
+    TestIssue93 test = new TestIssue93();
+    test.func(test.paramFunc1());
+    test.func(test.paramFunc2()); // should not compile
+}
+
+/** @param {function(string,number):boolean} param */
+public void func(ParamFunc param) {
+}
+
+/** @type {function(string,number,boolean):boolean} */
+public ParamFunc paramFunc1() {
+    return new ParamFunc() {
+        @Override
+        public boolean call(String s, int i, boolean b) {
+            return false;
+        }
+    };
+}
+
+/** @type {function(string):boolean} */
+public ParamFunc paramFunc2() {
+    return new ParamFunc() {
+        @Override
+        public boolean call(String s, int i, boolean b) {
+            return false;
+        }
+    };
+}
+
+/**
+ * @param {string} s
+ * @param {number} i
+ * @param {boolean} b
+ * @return {boolean}
+ */

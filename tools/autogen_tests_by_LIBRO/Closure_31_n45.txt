@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String js = "var a = goog.require('foo.bar');";
+    CompilerOptions options = new CompilerOptions();
+    options.setManageClosureDependencies(true);
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("input.js", js) },
+                     new JSSourceFile[] {},
+                     options);
+    assertEquals(js, compiler.toSource());
+}

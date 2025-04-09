@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String jsCode = "function MyClass() {} " +
+            "MyClass.prototype[\"MyMethod\"] = function(a) { " +
+            " this.a = a; " +
+            "} " +
+            "window[\"MyClass\"] = MyClass; ";
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Compiler.compile(SourceFile.fromCode("test", jsCode), options);
+}

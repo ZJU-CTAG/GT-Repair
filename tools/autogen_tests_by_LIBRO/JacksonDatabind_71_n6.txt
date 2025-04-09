@@ -1,0 +1,27 @@
+public void testCharSequenceMapKey() throws Exception {
+    CharSequenceMapKey key = new CharSequenceMapKey();
+    key.field = "String";
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    String json = mapper.writeValueAsString(key);
+    System.out.println(json);
+
+    // TODO: fix deserializer to work
+    CharSequenceMapKey actual = mapper.readValue(json, CharSequenceMapKey.class);
+
+    assertEquals(key.field, actual.field);
+}
+
+@JsonDeserialize(using = CharSequenceKD.class)
+static class CharSequenceMapKey {
+    public CharSequence field;
+}
+
+static class CharSequenceKD extends KeyDeserializer {
+    @Override
+    public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+        return key;
+    }
+}

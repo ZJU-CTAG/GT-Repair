@@ -1,0 +1,25 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+
+    // test with a non-Optional property
+    JsonResult result = new JsonResult();
+    result.setA(Optional.empty());
+    result.setB(Optional.empty());
+    System.out.println(mapper.writeValueAsString(result));
+
+    // test with a non-Optional property
+    result = new JsonResult();
+    result.setA(Optional.of("test"));
+    result.setB(Optional.of("test"));
+    System.out.println(mapper.writeValueAsString(result));
+
+    // test with an Optional property
+    result = new JsonResult();
+    result.setA(Optional.empty());
+    result.setB(Optional.of("test"));
+    System.out.println(mapper.writeValueAsString(result));
+
+    // test with an Optional property
+    result

@@ -1,0 +1,16 @@
+public void testBrentOptimizer() {
+
+    UnivariateFunction f = new UnivariateFunction() {
+        public double value(double x) {
+            return x - 1;
+        }
+    };
+
+    UnivariateOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+
+    // the function is f(x) = x - 1, so the minimum is at x = 1
+    optimizer.optimize(new MaxEval(10),
+                       new UnivariateObjectiveFunction(f),
+                       GoalType.MINIMIZE,
+                       new SearchInterval(-10, 10));
+}

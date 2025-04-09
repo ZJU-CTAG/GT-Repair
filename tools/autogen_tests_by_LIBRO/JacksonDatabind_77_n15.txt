@@ -1,0 +1,8 @@
+public void testJacksonDeserializer() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JodaModule());
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    String json = "{\"@class\": \"org.joda.time.DateTime\", \"@value\":1}";
+    DateTime dateTime = mapper.readValue(json, DateTime.class);
+    assertEquals(new DateTime(1), dateTime);
+}

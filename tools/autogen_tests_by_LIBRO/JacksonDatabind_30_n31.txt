@@ -1,0 +1,17 @@
+public void testBigDecimalValue() throws Exception
+{
+    JsonFactory f = new JsonFactory();
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = f.createGenerator(sw);
+    g.writeStartObject();
+    g.writeNumberField("d", 0.25);
+    g.writeEndObject();
+    g.close();
+    String json = sw.toString();
+
+    ObjectMapper m = new ObjectMapper();
+    m.configure(DeserializationFeature.USE\_BIG\_DECIMAL\_FOR\_FLOATS, true);
+    DataBean d = m.readValue(json, DataBean.class);
+    assertEquals(BigDecimal.class, d.d.getClass());
+    assertEquals(new BigDecimal("0.25"), d.d);
+}

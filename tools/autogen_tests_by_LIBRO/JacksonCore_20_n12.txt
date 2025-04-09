@@ -1,0 +1,12 @@
+public void testWriteEmbeddedObject() throws Exception
+{
+    ByteArrayOutputStream json = new ByteArrayOutputStream();
+    JsonGenerator gen = MAPPER.getFactory().createGenerator(json);
+    gen.writeStartObject();
+    gen.writeFieldName("field");
+    gen.writeEmbeddedObject(new byte[] { 1, 2, 3 });
+    gen.writeEndObject();
+    gen.close();
+    assertEquals(aposToQuotes("{'field':[1,2,3]}"), json.toString());
+}
+

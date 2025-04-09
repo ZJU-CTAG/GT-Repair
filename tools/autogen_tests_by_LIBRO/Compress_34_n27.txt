@@ -1,0 +1,11 @@
+public void testZip() throws Exception {
+        ZipFile zf = new ZipFile(getTestFile("/test-documents/test-documents.zip"));
+        Enumeration<ZipArchiveEntry> entries = zf.getEntries();
+        while (entries.hasMoreElements()) {
+            ZipArchiveEntry entry = entries.nextElement();
+            InputStream stream = zf.getInputStream(entry);
+            byte[] data = IOUtils.toByteArray(stream);
+            stream.close();
+            assertTrue(data.length > 0);
+        }
+    }

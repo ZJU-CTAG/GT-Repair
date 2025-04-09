@@ -1,0 +1,14 @@
+public void testIssue175() throws JsonProcessingException {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    System.out.println(noAnnotationsXmlMapper.writeValueAsString(new XMLTest175()));
+    System.out.println(xmlMapper.writeValueAsString(new XMLTest175()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public static class XMLTest175 {
+
+}

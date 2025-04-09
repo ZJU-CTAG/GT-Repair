@@ -1,0 +1,15 @@
+public void testZipVersionNeededToExtract() throws IOException {
+    final byte[] data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    try (final ZipOutputStream zip = new ZipOutputStream(out)) {
+        zip.putNextEntry(new ZipEntry("data"));
+        zip.write(data);
+        zip.closeEntry();
+    }
+
+    final byte[] bytes = out.toByteArray();
+
+    assertEquals(0x14, bytes[6]);
+    assertEquals(0x14, bytes[bytes.length - 42]);
+}

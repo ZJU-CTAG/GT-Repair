@@ -1,0 +1,23 @@
+public void testIssue107() {
+    CompilerOptions options = new CompilerOptions();
+    options.setSmartNameRemoval(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("in.js",
+                "var goog = {};" +
+                "goog.inherits = function(x, y) {};" +
+                "var ns = {};" +
+                "/** @constructor */ ns.PageSelectionModel = function(){};" +
+                "" +
+                "/** @constructor */ " +
+                "ns.PageSelectionModel.FooEvent = function() {};" +
+                "/** @constructor */ " +
+                "ns.PageSelectionModel.SelectEvent = function() {};" +
+                "goog.inherits(ns.PageSelectionModel.ChangeEvent, ns.PageSelectionModel.FooEvent);"
+            )
+        },
+        options
+    );
+    compiler.getResult();
+}

@@ -1,0 +1,17 @@
+public void testCSVRecordToMap() throws Exception {
+    CSVFormat format = CSVFormat.newFormat('\t').withHeader("a", "b", "c", "d", "e", "f");
+    String csv = "a\tb\tc\td\te\tf\n" +
+            "1\t2\t3\t4";
+    final CSVParser parser = CSVParser.parse(csv, format);
+    final List<CSVRecord> records = parser.getRecords();
+    assertEquals(1, records.size());
+    final CSVRecord record = records.get(0);
+    assertFalse(record.isConsistent());
+    Map<String, String> map = record.toMap();
+    assertNull(map.get("a"));
+    assertEquals("2", map.get("b"));
+    assertEquals("3", map.get("c"));
+    assertEquals("4", map.get("d"));
+    assertNull(map.get("e"));
+    assertNull(map.get("f"));
+}

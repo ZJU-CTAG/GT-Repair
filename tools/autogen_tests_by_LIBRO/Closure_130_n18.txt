@@ -1,0 +1,14 @@
+public void testArgumentsCollapsing() {
+    String js =
+            "function () {\n" +
+            " return function () {\n" +
+            " var arg = arguments;\n" +
+            " setTimeout(function() { alert(arg); }, 0);\n" +
+            " }\n" +
+            "}";
+    CompilerOptions options = new CompilerOptions();
+    options.setCollapsePropertiesOnExternTypes(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("input.js", js), options);
+    System.out.println(compiler.toSource());
+}

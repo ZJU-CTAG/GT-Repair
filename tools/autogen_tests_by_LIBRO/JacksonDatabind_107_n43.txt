@@ -1,0 +1,13 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    mapper.addHandler(new DeserializationProblemHandler() {
+
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return context.constructType(Void.class);
+        }
+
+    });
+    assertNotNull(mapper.readValue("[\"[java.lang.Void,[[\"_type\",\"Void\"]]]\"]", Void[].class));
+}

@@ -1,0 +1,25 @@
+public void testIssue106() throws Exception {
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().addMixInAnnotations(Event.class, EventMixin.class);
+    mapper.setSerializerFactory(new MySerializerFactory(mapper.getSerializerFactory()));
+
+    final Event e = new Event(new Date(), "event details");
+    final StringWriter sw = new StringWriter();
+    mapper.writeValue(sw, e);
+    assertEquals("{\"date\":\"custom-date\",\"detail\":\"event details\"}", sw.toString());
+}
+
+public static class MySerializerFactory extends BeanSerializerFactory {
+
+    protected MySerializerFactory(SerializerFactoryConfig config) {
+        super(config);
+    }
+
+    @Override
+    protected JsonSerializer<Object> constructBeanSerializer(SerializationConfig config,
+                                                             BasicBeanDescription beanDesc,
+                                                             BeanProperty property)
+            throws JsonMappingException {
+        if (beanDesc.getBeanClass() == Date.class) {
+           

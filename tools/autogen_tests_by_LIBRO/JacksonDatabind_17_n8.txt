@@ -1,0 +1,29 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping();
+
+    Foo foo = new Foo("bar");
+    String serialized = mapper.writeValueAsString(foo);
+
+    JsonNode jsonNode = mapper.readTree(serialized);
+    JsonNode node = mapper.valueToTree(foo);
+}
+
+public static class Foo {
+    private String bar;
+
+    public Foo() {
+    }
+
+    public Foo(String bar) {
+        this.bar = bar;
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public void setBar(String bar) {
+        this.bar = bar;
+    }
+}

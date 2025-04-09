@@ -1,0 +1,33 @@
+public void testIssue344() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+
+    MyRoot root = om.readValue("{\"something\": [{\"id\": \"a uuid\", \"property\": \"value\"}]}", MyRoot.class);
+    assertNotNull(root.something);
+    assertEquals("value", root.something.values().iterator().next().property);
+}
+
+public interface MyCustomIdInterface {
+    UUID getId();
+}
+
+public class MyHashMap<V extends MyCustomIdInterface> extends HashMap<UUID, V> {
+    private static final long serialVersionUID = 1L;
+}
+
+public class MyRoot {
+    public MyHashMap<Foo> something;
+
+    public void setSomething(MyHashMap<Foo> incomingValue) {
+        something = incomingValue;
+    }
+}
+
+public class Foo implements MyCustomIdInterface {
+    public String property;
+    public UUID id;
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    double[] init = { 1.0, 1.0, 1.0 };
+    double[] target = { 10.0, 10.0, 10.0 };
+    final double[] weights = { 1.0, 1.0, 1.0 };
+    VectorialPointValuePair result = optimizer.optimize(new VectorialPointValuePair(init, Double.NaN),
+            new VectorialCostFunction() {
+                public int getNumOfDimensions() {
+                    return 3;
+                }
+                public double[] value(double[] params) {
+                    double[] v = new double[3];
+                    for (int i = 0; i < v.length; i++) {
+                        v[i] = params[i] - target[i];
+                    }
+                    return v;
+                }
+            },
+            new double[] { 0.001, 0.001, 0.001 },
+            new double[] { 1.0, 1.0, 1

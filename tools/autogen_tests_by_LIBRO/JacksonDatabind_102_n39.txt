@@ -1,0 +1,17 @@
+public void testCustomFormat() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configOverride(java.sql.Date.class).setFormat(JsonFormat.Value.forPattern("yyyy-MM-dd"));
+
+    // Verify that the format has been set
+    final SerializerProvider serializerProvider = mapper.getSerializerProviderInstance();
+    final JsonSerializer<Object> serializer = serializerProvider.findTypedValueSerializer(
+            mapper.constructType(java.sql.Date.class),
+            false,
+            new BeanProperty.Std("test", java.sql.Date.class, null, mapper.constructType(java.sql.Date.class))
+    );
+    final SqlDateSerializer sqlDateSerializer = (SqlDateSerializer) serializer;
+    assertEquals(JsonFormat.Value.forPattern("yyyy-MM-dd"), sqlDateSerializer._format);
+
+    // Serialize and verify that the result is in the expected format
+    final Date date = new Date(1548451200000L);
+    final String serial

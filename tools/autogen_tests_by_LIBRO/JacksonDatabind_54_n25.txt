@@ -1,0 +1,9 @@
+public void testOptional() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+    ObjectNode root = mapper.createObjectNode();
+    root.putNull("a");
+    root.set("b", mapper.convertValue(Optional.empty(), JsonNode.class));
+    System.out.println(mapper.writeValueAsString(root));
+}

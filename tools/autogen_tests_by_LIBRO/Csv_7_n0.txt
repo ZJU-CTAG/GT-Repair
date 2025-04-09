@@ -1,0 +1,12 @@
+public void testDuplicateHeader() throws IOException, ParseException {
+    String input = "Col1,Col2,Col2,Col3,Col4\n1,2,3,4,5\n4,5,6,7,8";
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+				.withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    CSVParser parser = CSVParser.parse(input, myFormat);
+    Map<String, Integer> header = parser.getHeaderMap(); // header is missing an entry for "Col2"
+    assertEquals(5, header.size());
+    assertEquals(0, header.get("Col1").intValue());
+    assertFalse(header.containsKey("Col2")); // should pass
+    assertEquals(2, header.get("Col3").intValue());
+    assertEquals(3, header.get("Col4").intValue());
+}

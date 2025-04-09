@@ -1,0 +1,16 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    compiler.disableThreads();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler.setLoggingLevel(Level.INFO);
+    List<SourceFile> externs = ImmutableList.of(SourceFile.fromCode("window.js", ""));
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("input.js", "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+            "    return (function (saved) {\n" +
+            "        return modifiesProp(obj) + saved;\n" +
+            "    })(obj[\"prop\"]);\n" +
+            "};"));
+    Result

@@ -1,0 +1,13 @@
+public void testInvalidEntry() throws IOException {
+    File input = new File("src/test/resources/commons-compress-invalid.jar");
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new FileInputStream(input));
+    ZipArchiveEntry entry = zis.getNextZipEntry();
+    assertNotNull(entry);
+    assertEquals("file1", entry.getName());
+    try {
+        entry = zis.getNextZipEntry();
+        fail("Expected exception not thrown");
+    } catch (IOException e) {
+        // expected
+    }
+}

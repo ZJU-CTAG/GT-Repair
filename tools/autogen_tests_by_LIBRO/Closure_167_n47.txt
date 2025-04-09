@@ -1,0 +1,15 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        CompilerOptions.builder()
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT3)
+            .setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING)
+            .setExterns(Arrays.asList(SourceFile.fromCode("externs.js", "var ns = {};")))
+            .build(),
+        Arrays.asList(SourceFile.fromCode("test.js", "ns.Thing = function() {};" +
+            "ns.MyClass = function(thing) { this.thing_ = thing;};" +
+            "ns.MyClass.prototype.doIt = function() {" +
+            "var subthing = this.thing_.subthing;" +
+            "for (var i = 0; i < subthing.noprop; i++) { window.console.log(i); }};" +
+            "var thing = {subthing: {prop

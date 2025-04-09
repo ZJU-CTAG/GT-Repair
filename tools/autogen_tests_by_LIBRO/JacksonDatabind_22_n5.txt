@@ -1,0 +1,22 @@
+public void testCustomSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addKeySerializer(String.class, new StringSerializer());
+    mapper.registerModule(module);
+    String json = mapper.writeValueAsString(new Pojo());
+    assertEquals("{\"key\":\"KEY\"}", json);
+}
+
+@JsonValue
+static class Pojo {
+    public String getKey() {
+        return "key";
+    }
+}
+
+static class StringSerializer extends JsonSerializer<String> {
+    @Override
+    public void serialize(String src, JsonGenerator gen, SerializerProvider provider) throws IOException {
+        gen.writeFieldName("KEY");
+    }
+}

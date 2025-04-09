@@ -1,0 +1,8 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+            SourceFile.fromCode("test1", "var goog = {}; goog.scope; var ns = {}; ns.sub = {}; /** @constructor */ ns.sub.C = function() {};"),
+            SourceFile.fromCode("test2", "goog.scope(function() { var sub = ns.sub; /** @type {sub.C} */ var x = null; });"));
+    assertTrue(compiler.getErrors().length == 0);
+}

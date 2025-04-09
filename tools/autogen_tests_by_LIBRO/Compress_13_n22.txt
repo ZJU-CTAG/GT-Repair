@@ -1,0 +1,13 @@
+public void testIssue107() throws Exception {
+    InputStream is = this.getClass().getResourceAsStream("/commons-compress-1.2.zip");
+    ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", is);
+    ArchiveEntry entry = null;
+    int entries = 0;
+    while((entry = in.getNextEntry()) != null) {
+        entries++;
+        if (entry.getName().equals("commons-compress-1.2/examples/src/main/java/org/apache/commons/compress/examples/LZMA2Compression.java")) {
+            assertTrue(entry.isDirectory());
+        }
+    }
+    assertEquals(53, entries);
+}

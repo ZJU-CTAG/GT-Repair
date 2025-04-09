@@ -1,0 +1,21 @@
+public void testFlagOrdering() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT6);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    Compiler.setLoggingLevel(Level.SEVERE);
+    List<SourceFile> input = ImmutableList.of(
+            SourceFile.fromCode("input1", "var a = 3;\n" +
+                    "/** @type {number}\n" +
+                    " * @suppress {duplicate} */\n" +
+                    "var b = 'foo';\n"));
+    Result result = compiler.compile(
+            ImmutableList.<SourceFile>of(),
+            input,
+            options);
+    assertTrue(result.success);
+    SourceMap.LocationMapping mapping = result.sourceMap.getMappings().get(1);
+    assertEquals(2, mapping.getOriginalPosition().getLineNumber());
+    assertEquals(2,

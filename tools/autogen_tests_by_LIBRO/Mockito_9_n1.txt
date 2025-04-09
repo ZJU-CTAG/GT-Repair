@@ -1,0 +1,24 @@
+public void test_spy_abstract_when_real_implementation_calls_out_to_abstract_method() {
+    //given
+    Foo foo = spy(Foo.class);
+    Foo fooChild = spy(FooChild.class);
+
+    //when
+    fooChild.callOutToAbstract();
+
+    //then
+    verify(foo).callOutToAbstract();
+
+    //why? there is no verify(fooChild) so why is it calling foo?
+}
+
+static abstract class Foo {
+    public abstract void callOutToAbstract();
+}
+
+static class FooChild extends Foo {
+    @Override
+    public void callOutToAbstract() {
+        callOutToAbstract();
+    }
+}

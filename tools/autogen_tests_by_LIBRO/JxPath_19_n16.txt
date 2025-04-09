@@ -1,0 +1,16 @@
+public void testGetRelativePositionByName() {
+    JXPathContext context = JXPathContext.newContext(doc);
+    // Register namespace
+    context.getNamespaceURI("a");
+    // Register namespace again, with different prefix
+    context.getNamespaceURI("b");
+    Pointer p = context.iteratePointers(
+        "/a:doc/a:elem | /a:doc/b:elem").next();
+    assertNotNull(p);
+    p = context.iteratePointers(
+        "/a:doc/a:elem | /a:doc/b:elem").next();
+    assertNotNull(p);
+    p = context.iteratePointers(
+        "/a:doc/a:elem | /a:doc/b:elem").next();
+    assertNull(p);
+}

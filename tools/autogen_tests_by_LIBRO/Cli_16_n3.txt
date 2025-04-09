@@ -1,0 +1,27 @@
+public void testIssue108() {
+    // create option group
+    OptionGroup group = new OptionGroup();
+    group.setRequired(true);
+    group.setMinimum(1);
+    group.addOption(OptionBuilder.withLongOpt("long")
+                                 .withDescription("long option")
+                                 .create('l'));
+    group.addOption(OptionBuilder.withLongOpt("short")
+                                 .withDescription("short option")
+                                 .create('s'));
+    // create Options object and add group
+    Options options = new Options();
+    options.addOptionGroup(group);
+    // parse the command line arguments
+    String[] args = new String[] { "-l" };
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = null;
+    try {
+        line = parser.parse(options, args);
+    }
+    catch (ParseException e) {
+        fail("Unexpected exception:" + e.getMessage());
+    }
+    assertNotNull("line is null", line);
+    assertTrue("Required is not set", line.hasOption("long"));
+}

@@ -1,0 +1,29 @@
+public void testIssue108() throws Exception {
+	
+	File jsFile = File.createTempFile("test", ".js");
+	BufferedWriter bw = new BufferedWriter(new FileWriter(jsFile));
+	bw.write("alert(1;");
+	bw.newLine();
+	bw.close();
+	
+	String[] args = new String[] {
+			"-d",
+			"--js", jsFile.getAbsolutePath()
+	};
+	
+	
+	TestErrorManager em = new TestErrorManager(args);
+	
+	// This should fail, but we just want to get the output...
+	CommandLineRunner.main(args);
+	
+	
+	List<String> msgs = em.getErrorMessages();
+	assertEquals(1, msgs.size());
+	
+	String msg = msgs.get(0);
+	
+	assertTrue(msg.indexOf("\nalert(1;") > -1);
+	assertTrue(msg.indexOf("\n ^") > -1);
+	
+}

@@ -1,0 +1,15 @@
+public void testOptionalEmpty() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+    final String json = "{\"a\":null, \"b\":null}";
+    final OptionalObject optionalObject = mapper.readValue(json, OptionalObject.class);
+    assertFalse(optionalObject.getA().isPresent());
+    assertFalse(optionalObject.getB().isPresent());
+}
+
+@Data
+public class OptionalObject {
+    private Optional<Object> a;
+    private Optional<Object> b;
+}

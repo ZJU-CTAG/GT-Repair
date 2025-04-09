@@ -1,0 +1,13 @@
+public void testDoctype() {
+    DocumentType doctype = new DocumentType("html", "", "", "");
+    doctype.attr("systemId", "http://www.example.com/myfile.dtd");
+    assertEquals("<!DOCTYPE html>", doctype.outerHtml());
+
+    doctype.attr("systemId", null);
+    doctype.attr("publicId", "http://www.example.com/myfile.dtd");
+    assertEquals("<!DOCTYPE html PUBLIC \"http://www.example.com/myfile.dtd\">", doctype.outerHtml());
+
+    doctype.attr("publicId", null);
+    doctype.attr("systemId", "http://www.example.com/myfile.dtd");
+    assertEquals("<!DOCTYPE html SYSTEM \"http://www.example.com/myfile.dtd\">", doctype.outerHtml());
+}

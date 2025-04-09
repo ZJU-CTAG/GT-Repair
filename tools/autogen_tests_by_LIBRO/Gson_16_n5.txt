@@ -1,0 +1,11 @@
+public void testTypeVariableRecursion() throws Exception {
+    Type type = TestType.class.getDeclaredField("superType").getGenericType();
+    assertEquals(TestType.class, new TypeToken<TestType<? super X>>() {}.getType());
+    new Gson().getAdapter(TestType.class);
+}
+
+private static class TestType<T> {
+    TestType<? super T> superType;
+}
+
+private static class X {}

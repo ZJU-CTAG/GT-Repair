@@ -1,0 +1,23 @@
+public void testIssue108() {
+    LocalDate startDate = new LocalDate(2010, 1, 1);
+    LocalDate endDate = new LocalDate(2010, 4, 1);
+    int nbDays = Days.daysBetween(startDate, endDate).getDays();
+
+    LocalDate[] dates = new LocalDate[nbDays];
+    for (int i = 0; i < dates.length; i++) {
+        dates[i] = startDate.plusDays(i);
+    }
+
+    // define the events
+    Event<LocalDate> event1 = new Event<LocalDate>("event1", dates[2], dates[9]);
+    Event<LocalDate> event2 = new Event<LocalDate>("event2", dates[3], dates[11]);
+
+    // define the event handler
+    ISystemEventHandler<LocalDate> eventHandler = new ISystemEventHandler<LocalDate>() {
+        public void eventOccurred(LocalDate date) {
+            System.out.println(date.toString());
+        }
+    };
+
+    // create the system
+    System1<LocalDate> system = new System1<Local

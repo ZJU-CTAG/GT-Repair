@@ -1,0 +1,19 @@
+public void testAutoIdentifyVoidFunctions() {
+    final JavaScriptCompiler compiler = new JavaScriptCompiler();
+    final CompilerEnvirons compilerEnvirons = new CompilerEnvirons();
+    compilerEnvirons.setLanguageVersion(Context.VERSION_1_8);
+    compilerEnvirons.setErrorReporter(new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.out.println("\n[WARNING] " + message);
+            } else {
+                System.out.println("\n[WARNING] " + line + ':' + lineOffset + ':' + message);
+            }
+        }
+
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            if (line < 0) {
+                System.out.println("\n[ERROR] " + message);
+            } else {
+                System.out.println("\n[ERROR] " + line + ':' + lineOffset + ':' + message);
+           

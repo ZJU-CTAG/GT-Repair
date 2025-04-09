@@ -1,0 +1,14 @@
+public void testIssue108() {
+    Options options = new Options();
+    options.addOption("a", "foo", true, "a foo option");
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[] {"-a", "abc"});
+
+    assertTrue("-a is not present, but should be", cmd.hasOption("a"));
+    assertTrue("-a is not present, but should be", cmd.hasOption(null));
+    assertTrue("-a is not present, but should be", cmd.hasOption(""));
+    assertTrue("-a is not present, but should be", cmd.hasOption(" "));
+
+    assertEquals("abc", cmd.getOptionValue("a"));
+}

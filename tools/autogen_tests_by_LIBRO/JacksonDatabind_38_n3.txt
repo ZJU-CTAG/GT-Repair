@@ -1,0 +1,14 @@
+public void testIssue2() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    List<String> list = new ArrayList<String>();
+    list.add("abc");
+    list.add("def");
+
+    String json = mapper.writeValueAsString(list);
+    TypeReference<List<String>> typeReference = new TypeReference<List<String>>() {};
+    List<String> readList = mapper.readValue(json, typeReference);
+    assertEquals(list, readList);
+}

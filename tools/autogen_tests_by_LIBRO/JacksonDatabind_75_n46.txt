@@ -1,0 +1,11 @@
+public void testIssue_Nbr168() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO\_STRING);
+    mapper.disable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
+    mapper.enable(DeserializationFeature.READ\_ENUMS\_USING\_TO\_STRING);
+    mapper.disable(DeserializationFeature.READ\_ENUMS\_USING\_INDEX);
+    assertEquals(aposToQuotes("{'color':'GREEN'}"), mapper.writeValueAsString(new Foo(Color.GREEN)));
+    // NOTE: below fails since 2.8. Need to use WRITE\_ENUMS\_USING\_INDEX to work, not ideal
+    //assertEquals("{\"color\":2}", mapper.writeValueAsString(new Foo(Color.GREEN)));
+}

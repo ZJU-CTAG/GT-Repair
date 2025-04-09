@@ -1,0 +1,24 @@
+public void testErrorRecovery() throws Exception
+{
+    String json = aposToQuotes("[{'a':1, 'b':2},'{'a':3, 'b':4}]");
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Point> it = mapper.readerFor(Point.class)
+            .readValues(json);
+    assertTrue(it.hasNext());
+    Point pt = it.next();
+    assertNotNull(pt);
+    assertEquals(1, pt.x);
+    assertEquals(2, pt.y);
+
+    // and then we should get an error...
+    try {
+        it.next();
+        fail("Should have failed");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Unexpected token");
+    }
+    // ... but after that we should be able to keep going
+    assertFalse(it.hasNext());
+    assertFalse(it.hasNextValue());
+    assertFalse(it.hasNextValue(Point.class));
+}

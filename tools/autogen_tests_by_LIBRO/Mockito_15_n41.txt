@@ -1,0 +1,15 @@
+public void testIssue108() {
+    final List<Integer> values = new ArrayList<Integer>();
+    values.add(1);
+    values.add(2);
+    values.add(3);
+    values.add(4);
+    values.add(5);
+
+    List<?> mockedList = mock(List.class);
+
+    ArgumentCaptor argCaptor = ArgumentCaptor.forClass(List.class);
+    mockedList.addAll(values);
+    verify(mockedList).addAll(argCaptor.capture());
+    assertTrue(argCaptor.getValue().size() == 5);
+}

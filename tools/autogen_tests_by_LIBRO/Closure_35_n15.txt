@@ -1,0 +1,18 @@
+public void testIssue123() {
+    Type type = getType("function foo(a, b) {\n"
+            + "  var results;\n"
+            + "  if (a) {\n"
+            + "    results = {};\n"
+            + "    results.prop1 = {a: 3};\n"
+            + "  }\n"
+            + "  if (b) {\n"
+            + "    results = results || {};\n"
+            + "    results.prop2 = 'prop2';\n"
+            + "  } else {\n"
+            + "    results = results || {};\n"
+            + "    results.prop3 = 'prop3';\n"
+            + "  }\n"
+            + "  return results;\n"
+            + "}\n");
+    assertEquals("function foo(a:?, b:?):{prop1:(Object|undefined), prop2:(string|undefined), prop3:(string|undefined)}", type.toStringInContext());
+}

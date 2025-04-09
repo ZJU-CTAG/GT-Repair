@@ -1,0 +1,14 @@
+public void testDeprecatedSimpleTypeConstruct() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(SimpleBean.class);
+    SimpleBean input = new SimpleBean(2);
+    input.setName("Foobar");
+    String json = mapper.writeValueAsString(input);
+    SimpleBean result = mapper.readValue(json,
+            TypeFactory.defaultInstance().constructType(SimpleBean.class));
+    assertNotNull(result);
+    // TypeFactory did not work, but SimpleType did:
+    assertEquals(2, result.getB());
+    assertEquals("Foobar", result.getName());
+}

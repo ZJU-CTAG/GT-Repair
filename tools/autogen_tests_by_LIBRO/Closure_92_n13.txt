@@ -1,0 +1,20 @@
+public void testNamespaceWithModules() throws Exception {
+    String moduleA = "var apps={};apps.foo.bar={};apps.foo={};";
+    String moduleB = "apps.foo.bar.B={};";
+    String moduleC = "apps.foo.bar.C={};";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    compiler.initOptions(options);
+
+    Result result = compiler.compileModules(
+        ImmutableList.of(moduleA, moduleB, moduleC),
+        ImmutableList.<SourceFile>of(),
+        options);
+
+    assertTrue(result.success);
+    assertEquals("", Joiner.on("\n").join(result.errors));
+    assertEquals("", Joiner.on("\n").join(result.warnings));
+    assertEquals("var apps={};apps.foo={};apps.foo.bar={};apps.foo.bar.B={};apps.foo.bar

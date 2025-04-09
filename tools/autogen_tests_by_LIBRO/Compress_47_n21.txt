@@ -1,0 +1,17 @@
+public void testCompressionMethods() throws IOException {
+    testCompressionMethod(ZipMethod.UNSHRINKING, true);
+    testCompressionMethod(ZipMethod.IMPLODING, true);
+    testCompressionMethod(ZipMethod.BZIP2, true);
+    testCompressionMethod(ZipMethod.UNSHRINKING, false);
+    testCompressionMethod(ZipMethod.IMPLODING, false);
+    testCompressionMethod(ZipMethod.BZIP2, false);
+}
+
+private void testCompressionMethod(ZipMethod method, boolean withSize) throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(baos);
+    zaos.setEncoding(Charsets.UTF_8.name());
+    zaos.setMethod(method.getCode());
+    zaos.setUseLanguageEncodingFlag(true);
+    zaos.putArchiveEntry(new ZipArchiveEntry("f"));
+    zaos.write("Hello, World!".getBytes(Charsets.UTF_

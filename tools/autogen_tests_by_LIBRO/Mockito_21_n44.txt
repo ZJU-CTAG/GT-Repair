@@ -1,0 +1,17 @@
+public void testIssue() {
+    @Fake
+    class FakeUserAccount implements UserAccount {
+      private final List<String> emails = new ArrayList<>();
+
+      @Override public void addEmail(String email) {
+        emails.add(email);
+      }
+      @Override List<String> getEmails() {
+        return ImmutableList.copyOf(emails);
+      }
+    }
+
+    FakeUserAccount userAccount = new FakeUserAccount();
+    userAccount.addEmail("abc");
+    assertEquals(1, userAccount.getEmails().size());
+}

@@ -1,0 +1,18 @@
+public void testIssueBlock() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.enableDefaultTyping();
+    String json = om.writer().writeValueAsString(new Foo());
+
+    // verify that we can deserialize it (expect enum):
+    JavaType t = om.constructType(Foo.class);
+    Foo foo = om.readerFor(t).withType(t).readValue(json);
+    assertEquals(Foo.FooEnum.ABC, foo.foo);
+}
+public class Foo {
+    public enum FooEnum { ABC, DEF; }
+    public Object foo;
+    
+    public Foo() {
+        foo = FooEnum.ABC;
+    }
+}

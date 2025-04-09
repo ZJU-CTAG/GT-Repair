@@ -1,0 +1,15 @@
+public void testSequence() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonParser firstParser = jsonFactory.createParser("{\"a\" : \"b\"}");
+    assertEquals(JsonToken.START_OBJECT, firstParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, firstParser.nextToken());
+
+    JsonParser secondParser = jsonFactory.createParser("{\"b\" : \"c\"}");
+    assertEquals(JsonToken.START_OBJECT, secondParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, secondParser.nextToken());
+
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(firstParser, secondParser);
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, sequence.nextToken

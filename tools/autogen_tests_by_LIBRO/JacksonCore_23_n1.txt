@@ -1,0 +1,22 @@
+public void testDefaultPrettyPrinter() throws Exception
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writer(new MyPrinter()).writeValueAsString(MAPPER_VERSION);
+        System.out.println(json);
+        assertFalse(json.contains("MyPrinter"));
+    }
+
+    /**
+     * This is a simple "blueprint" object -- default constructor is used
+     * as a factory for creating instances, not instanciated directly.
+     */
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "class")
+    public static class MyPrinter extends DefaultPrettyPrinter
+    {
+        public MyPrinter() { }
+        
+        @Override
+        public DefaultPrettyPrinter createInstance() {
+            return new MyPrinter();
+        }
+    }

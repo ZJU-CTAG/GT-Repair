@@ -1,0 +1,26 @@
+public void testIssue108() {
+    LocalDate startDate = LocalDate.of(2011, 1, 1);
+    LocalDate endDate = LocalDate.of(2011, 1, 3);
+
+    Schedule schedule =
+            Schedule.builder()
+                    .name("Name")
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .step(Period.ofDays(1))
+                    .build();
+    schedule.init();
+
+    Event<Object> event1 = new Event<>("Event1", startDate);
+    Event<Object> event2 = new Event<>("Event2", startDate);
+
+    schedule.addEvent(event1);
+    schedule.addEvent(event2);
+
+    schedule.getNextEvent(schedule.getCurrentStepDate());
+
+    event1.accept(schedule);
+    event2.accept(schedule);
+
+    assertEquals(2, schedule.getEventList().size());
+}

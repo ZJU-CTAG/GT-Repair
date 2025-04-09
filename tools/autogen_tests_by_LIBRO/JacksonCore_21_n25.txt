@@ -1,0 +1,20 @@
+public void testIssue112() throws Exception
+{
+    String json = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+
+    JsonParser p0 = getJsonFactory().createJsonParser(new StringReader(json));
+
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+            );
+
+    StringWriter sw = new StringWriter();
+    JsonGenerator g = getJsonFactory().createJsonGenerator(sw);
+    while (p.nextToken() != null) {
+        g.copyCurrentEvent(p);
+    }
+    g.close();
+    assertEquals("{\"ob\":{\"value\":3}}", sw.toString());
+}

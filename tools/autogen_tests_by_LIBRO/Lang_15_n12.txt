@@ -1,0 +1,13 @@
+public void testGetTypeArguments() {
+    Assert.assertEquals(new HashMap<TypeVariable<?>, Type>(),
+            TypeUtils.getTypeArguments(String.class, String.class));
+    Assert.assertEquals(Collections.singletonMap(StringList.class.getTypeParameters()[0], String.class),
+            TypeUtils.getTypeArguments(StringList.class, List.class));
+    Assert.assertEquals(Collections.singletonMap(Collection.class.getTypeParameters()[0], String.class),
+            TypeUtils.getTypeArguments(StringList.class, Collection.class));
+
+    // test a class with type variables that is also a generic
+    Assert.assertEquals(Collections.singletonMap(Bar.class.getTypeParameters()[0], String.class),
+            TypeUtils.getTypeArguments(new TypeReference<Foo<String>>() {}.getType(), Bar.class));
+
+    Assert.assertEquals(Collections.singletonMap(Bar.class.getTypeParameters()[0], String.class),

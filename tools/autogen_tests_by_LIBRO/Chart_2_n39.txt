@@ -1,0 +1,20 @@
+public void testIssue959() {
+    XYSeries s1 = new XYSeries("Series 1");
+    s1.add(1.0, 1.1);
+    s1.add(2.0, 2.2);
+    s1.add(3.0, null);
+    s1.add(4.0, 4.4);
+    s1.add(5.0, 5.5);
+    XYSeriesCollection dataset = new XYSeriesCollection();
+    dataset.addSeries(s1);
+
+    // standard method
+    Range r = DatasetUtilities.iterateRangeBounds(dataset);
+    assertEquals(1.1, r.getLowerBound(), EPSILON);
+    assertEquals(4.4, r.getUpperBound(), EPSILON);
+
+    // method checking for infinite bounds
+    r = DatasetUtilities.iterateRangeBounds(dataset, true);
+    assertEquals(1.1, r.getLowerBound(), EPSILON);
+    assertEquals(5.5, r.getUpperBound(), EPSILON);
+}

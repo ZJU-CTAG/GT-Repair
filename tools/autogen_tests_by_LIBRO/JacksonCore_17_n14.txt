@@ -1,0 +1,8 @@
+public void testJsonGenerationException() throws IOException {
+    // example derived from https://github.com/FasterXML/jackson-core/issues/531
+    try (JsonGenerator jsonGenerator = new JsonFactory().createGenerator(System.out)) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField("test", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\uD800\uDC00");
+        jsonGenerator.writeEndObject();
+    }
+}

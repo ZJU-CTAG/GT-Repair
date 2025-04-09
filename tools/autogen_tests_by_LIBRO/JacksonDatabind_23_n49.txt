@@ -1,0 +1,15 @@
+public void testIssue() throws Exception
+{
+    final String JSON = aposToQuotes("{'empty':[null,null],'nonempty':[1,2]}");
+    DefaultSerializerProvider sp = new DefaultSerializerProvider.Impl();
+    sp.setNullValueSerializer(new JsonSerializer<Object>() {
+        @Override
+        public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+            jgen.writeNull();
+        }
+    });
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, String[]> map = mapper.readValue(JSON, new TypeReference<Map<String, String[]>>(){});
+    String serializedMap = mapper.writeValueAsString(map);
+    assertEquals("{\"empty\":[],\"nonempty\":[\"1\",\"2\"]}", serializedMap);
+}

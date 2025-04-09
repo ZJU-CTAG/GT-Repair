@@ -1,0 +1,20 @@
+public void testUnexpectedCoverage() {
+    CompilerOptions options = new CompilerOptions();
+    options.setSummaryDetailLevel(3);
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    //options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.OFF);
+    //options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode(
+        "closure/goog/base.js",
+        IOUtils.toString(Resources.getResource("closure/goog/base.js"))),
+        SourceFile.fromCode(
+            "v.js",
+            IOUtils.toString(Resources.getResource("v.js"))),
+        options);
+
+    // print the report
+    String report = compiler.toSource();
+   

@@ -1,0 +1,13 @@
+public void testIssue() {
+    String source = "/** @define {string} */\n" +
+            "test.VERSION = \"\";";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setDefineToStringLiteral("test.VERSION", "1.0.0");
+    compiler.initOptions(options);
+    Result result = compiler.compile(JSSourceFile.fromCode("test.js", source),
+            JSSourceFile.fromCode("test.min.js", ""));
+    assertTrue(result.success);
+    assertEquals(source, compiler.toSource());
+}

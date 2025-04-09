@@ -1,0 +1,19 @@
+public void testHarmonicFitter() {
+    final Random random = new Random(0x74c6d0ce6bL);
+    final HarmonicFitter fitter = new HarmonicFitter();
+
+    for (int i = 0; i < 100; ++i) {
+        final double a = 10 * (random.nextDouble() - 0.5);
+        final double w = 2 * Math.PI * (1 + (random.nextDouble() - 0.5));
+        final double p = 2 * Math.PI * random.nextDouble();
+        final HarmonicFunction model = new HarmonicFunction(a, w, p);
+
+        final double[] data = new double[100];
+        for (int j = 0; j < data.length; ++j) {
+            data[j] = model.value(j);
+        }
+
+        final HarmonicFitter.ParameterGuesser guesser = new HarmonicFitter.ParameterGuesser(data);
+        final double[] guess = guesser.guess();
+        final double[] actual = { a, w, p, 0 };
+        final HarmonicFunction guessModel =

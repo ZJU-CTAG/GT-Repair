@@ -1,0 +1,16 @@
+public void testErrorRecovery() throws Exception
+{
+    ObjectMapper mapper = mapper();
+    String INPUT = String.format("[ { \"a\" : 1 }, %s, { \"b\" : 2 } ]",
+            quote("x"));
+    MappingIterator<String> it = mapper.reader().withType(String.class)
+            .readValues(INPUT);
+    assertTrue(it.hasNextValue());
+    assertEquals("", it.nextValue());
+    assertTrue(it.hasNextValue());
+    // will throw exception...
+    assertEquals("", it.nextValue());
+    assertFalse(it.hasNextValue()); // will throw exception
+    // but we should be able to continue parsing, with next call:
+    assertEquals("2", it.nextValue());
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    ArrayList<String> strings = new ArrayList<String>();
+    strings.add("foo");
+    strings.add("bar");
+    strings.add("baz");
+    ArrayList<String> strings2 = new ArrayList<String>(strings);
+    try {
+        ArrayList.class.getMethod("sort", Comparator.class).invoke(strings,
+                new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        strings2.set(0, o1);
+                        return o1.compareTo(o2);
+                    }
+                });
+    } catch (Exception e) {
+        fail(e.getMessage());
+    }
+    assertEquals(strings2, strings);
+}

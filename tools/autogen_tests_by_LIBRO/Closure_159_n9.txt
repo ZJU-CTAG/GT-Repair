@@ -1,0 +1,13 @@
+public void testClosureCompiler() {
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setOptimizationLevel(CompilerOptions.CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(COMPILER_OPTIONS,
+            SourceFile.fromCode("multicheck.js", getFileContent("multicheck.js")));
+    assertTrue(result.success);
+    assertEquals(getFileContent("multicheck.js.min"), compiler.toSource());
+}

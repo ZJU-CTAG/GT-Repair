@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+
+    final CommandAPDU commandAPDU = new CommandAPDU(new byte[] { 0x01, 0x02, 0x03 });
+    final RemoteCall<CommandAPDU> remoteCall = new RemoteCall<>(
+            commandAPDU, new ResponseReceiver());
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    final String json = mapper.writeValueAsString(remoteCall);
+    final RemoteCall<?> deserialized = mapper.readValue(json, RemoteCall.class);
+    assertEquals("com.ubitricity.devices.common.pal.CommandAPDU",
+            deserialized.args[0].getClass().getName());
+}
+

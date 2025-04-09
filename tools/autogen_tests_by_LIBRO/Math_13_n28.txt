@@ -1,0 +1,19 @@
+public void testIssue108() {
+    int degree = 10;
+    int n = 100000;
+    double[] x = new double[n];
+    double[] y = new double[n];
+    for (int i = 0; i < n; i++) {
+        x[i] = i;
+        y[i] = i;
+    }
+    LeastSquaresProblem lsp = new LeastSquaresBuilder().
+        start(new double[degree]).
+        model(new PolynomialFunction.Parametric(), x).
+        target(y).
+        lazyEvaluation(true).
+        maxEvaluations(1000).
+        maxIterations(1000).
+        build();
+    lsp.getEvaluation();
+}

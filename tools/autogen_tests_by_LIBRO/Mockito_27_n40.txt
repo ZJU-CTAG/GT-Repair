@@ -1,0 +1,15 @@
+public void testThrowException() {
+    Object o = Mockito.mock(Object.class);
+    // test behavior with Runtimeexception
+    Mockito.when(o.toString()).thenThrow(RuntimeException.class);
+    // ...
+    // test behavior with another exception
+    // this throws a RuntimeException
+    try {
+        Mockito.when(o.toString()).thenThrow(IllegalArgumentException.class);
+        fail();
+    } catch (Exception e) {
+        assertTrue(e instanceof RuntimeException); // this fails
+    }
+    // ...
+}

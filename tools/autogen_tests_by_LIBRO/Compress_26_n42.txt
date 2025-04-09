@@ -1,0 +1,12 @@
+public void testIOUtilsSkip() throws Exception {
+    byte[] b = new byte[8192];
+    for (int i = 0; i < b.length; i++) {
+        b[i] = (byte)i;
+    }
+
+    ByteArrayInputStream bs = new ByteArrayInputStream(b);
+    CipherInputStream cs = new CipherInputStream(bs, new NullCipher());
+    long n = 8192 + 1;
+    long count = IOUtils.skip(cs, n);
+    assertEquals(n, count);
+}

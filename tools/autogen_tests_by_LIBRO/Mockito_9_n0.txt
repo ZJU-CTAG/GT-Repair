@@ -1,0 +1,15 @@
+public void test() {
+    final AbstractSpy spy = spy(AbstractSpy.class);
+    assertEquals(AbstractSpy.class, spy.getClass());
+    assertEquals("abstract", spy.doSomething());
+    // If we comment out the next line, the test passes
+    doReturn("spy").when(spy).abstractMethod();
+    assertEquals("spy", spy.doSomething());
+}
+
+abstract class AbstractSpy {
+    public String doSomething() {
+        return abstractMethod();
+    }
+    public abstract String abstractMethod();
+}

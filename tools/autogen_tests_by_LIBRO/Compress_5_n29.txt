@@ -1,0 +1,16 @@
+public void testTruncatedZip() throws IOException {
+    // Create a truncated ZIP file
+    File testFile = new File("target/testTruncatedZip.zip");
+    FileOutputStream fos = new FileOutputStream(testFile);
+    fos.write(new byte[] {(byte)0x50, (byte)0x4b, (byte)0x05, (byte)0x06});
+    fos.close();
+    // Try to read it
+    ZipArchiveInputStream zis;
+    try {
+        zis = new ZipArchiveInputStream(testFile);
+        zis.close();
+        fail("Truncated Zip file was not detected");
+    } catch (IOException e) {
+        assertTrue(e.getMessage().contains("Truncated"));
+    }
+}

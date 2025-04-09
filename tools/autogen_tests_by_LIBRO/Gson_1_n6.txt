@@ -1,0 +1,28 @@
+public void testIssue107() {
+    String json = new Gson().toJson(new Bar(new Integer(12)));
+    assertEquals("{\"someField\":12}", json);
+    Bar bar = new Gson().fromJson(json, Bar.class);
+    assertEquals(new Integer(12), bar.someField);
+}
+
+public class Foo<T> {
+  public T someField;
+
+  public Foo(T value) {
+    this.someField = value;
+  }
+
+  public boolean equals(Object o) {
+    if (!(o instanceof Foo)) {
+      return false;
+    } else {
+        return someField.equals(((Foo)o).someField);
+    }
+  }
+}
+
+public class Bar extends Foo<Integer> {
+  public Bar(Integer i) {
+    super(i);
+  }
+}

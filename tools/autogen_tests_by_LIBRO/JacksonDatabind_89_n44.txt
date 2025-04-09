@@ -1,0 +1,15 @@
+public void testBlockMoreTypes() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    // first, some "safe" types; should not block
+    assertEquals(Integer.valueOf(1), m.readValue(quote("foo"), Integer.class));
+    assertEquals(Long.valueOf(1L), m.readValue(quote("foo"), Long.class));
+    assertEquals(Double.valueOf(0.0), m.readValue(quote("foo"), Double.class));
+    assertEquals(Float.valueOf(0.0f), m.readValue(quote("foo"), Float.class));
+    assertEquals(Short.valueOf((short) 1), m.readValue(quote("foo"), Short.class));
+    assertEquals(Byte.valueOf((byte) 1), m.readValue(quote("foo"), Byte.class));
+
+    // and then some that could be dangerous
+    _verifyDeserializationFails(m, BigInteger.class);
+    _verifyDeserializationFails(m, BigDecimal.class);
+    _verifyDeserialization

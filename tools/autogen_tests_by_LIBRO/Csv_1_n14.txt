@@ -1,0 +1,20 @@
+public void testExtendedBufferReader() throws Exception {
+    String str = "a\nb\nc\n";
+    Reader rdr = new StringReader(str);
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(rdr);
+    assertEquals(1, ebr.getLineNumber());
+    assertEquals("a", ebr.readLine());
+    assertEquals(2, ebr.getLineNumber());
+    assertEquals("b", ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+    assertEquals("c", ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+    assertNull(ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+
+    str = "a\n\nb\n\n\nc\n";
+    rdr = new StringReader(str);
+    ebr = new ExtendedBufferedReader(rdr);
+    assertEquals(1, ebr.getLineNumber());
+    assertEquals("a", ebr.readLine());
+   

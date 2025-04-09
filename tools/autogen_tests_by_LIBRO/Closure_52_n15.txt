@@ -1,0 +1,17 @@
+public void testIssue109() {
+    String script = "var lit={\"0102\":\"Zero One Zero Two\"};" +
+        "alert(lit[\"0102\"]);";
+    CompilerEnvirons ce = new CompilerEnvirons();
+    ce.setLanguageVersion(Context.VERSION_1_5);
+    ce.setRecordingLocalJsDocComments(true);
+    ce.setRecoverFromErrors(true);
+    ce.setStrictMode(false);
+    ce.setWarnings(false);
+    ErrorReporter er = new DefaultErrorReporter();
+    Parser p = new Parser(ce, er);
+    p.parse(script, null, 1);
+    ScriptNode sn = p.getScriptNode();
+    Refiner r = new Refiner(ce, er, p);
+    RefinedScript rs = r.refine(sn, script, null);
+    assertEquals(script, rs.toSource());
+}

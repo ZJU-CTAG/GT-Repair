@@ -1,0 +1,15 @@
+public void testIssue108() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("argName");
+
+    Options options = new Options();
+    options.addOption(OptionBuilder.withArgName("argName").create('a'));
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printHelp(pw, 100, "MyCmd", null, options, 3, 5, null, false);
+    pw.flush();
+    String result = sw.toString();
+    assertTrue(result.indexOf("-a") > -1);
+    assertTrue(result.indexOf("arg") > -1);
+    assertTrue(result.indexOf("argName") < 0);
+}

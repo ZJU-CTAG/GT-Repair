@@ -1,0 +1,15 @@
+public void testPosixParserInterupts() {
+    Options opts = new Options();
+    opts.addOption("t", "target", true, "Generate files for the specified target machine");
+    PosixParser parser = new PosixParser();
+    String[] args = new String[]{"-target", "foobar.com"};
+    try {
+        CommandLine cli = parser.parse(opts, args);
+        assertTrue("Target option not present", cli.hasOption("t"));
+        assertTrue("Target option not present", cli.hasOption("target"));
+        assertEquals("Wrong target", "foobar.com", cli.getOptionValue("t"));
+        assertEquals("Wrong target", "foobar.com", cli.getOptionValue("target"));
+    } catch (ParseException e) {
+        fail("Exception parsing command line: " + e.getMessage());
+    }
+}

@@ -1,0 +1,19 @@
+public void testGetNextZipEntry_UnknownCompressedSize_Bzip2() throws Exception {
+    // ARRANGE
+    final ByteArrayOutputStream output = new ByteArrayOutputStream();
+    final ZipArchiveOutputStream zaos = new ZipArchiveOutputStream(output);
+    zaos.setUseZip64(Zip64Mode.Never);
+    zaos.setLevel(Deflater.BEST_SPEED);
+    ZipArchiveEntry zae = new ZipArchiveEntry("foo.txt");
+    zae.setMethod(ZipMethod.BZIP2.getCode());
+    zae.setSize(Long.MAX_VALUE); // <--- i.e. compressed size unknown
+    zaos.putArchiveEntry(zae);
+    for (int i = 0; i < 3; i++) {
+        zaos.write(0x41);
+    }
+    zaos.closeArchiveEntry();
+    zaos.close();
+
+    // ACT
+    final ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
+    final ZipArchiveInputStream zais = new ZipArchiveInputStream

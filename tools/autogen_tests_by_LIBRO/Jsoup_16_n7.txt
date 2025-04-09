@@ -1,0 +1,7 @@
+public void testIssue107() {
+    final String html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML Basic 1.1//EN\" \"http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd\">";
+    final String html2 = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML Basic 1.1//EN\"\n\"http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd\">";
+    final DocumentType doctype = Jsoup.parse(html).outputSettings(new Document.OutputSettings().syntax(Document.OutputSettings.Syntax.xml)).child(0);
+    final DocumentType doctype2 = Jsoup.parse(html2).outputSettings(new Document.OutputSettings().syntax(Document.OutputSettings.Syntax.xml)).child(0);
+    assertEquals(doctype.outerHtml(), doctype2.outerHtml());
+}

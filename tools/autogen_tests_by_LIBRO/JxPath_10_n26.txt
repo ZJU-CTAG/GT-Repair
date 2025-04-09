@@ -1,0 +1,11 @@
+public void testNodeSetComparison() {
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+    Document doc = documentBuilder.parse(new InputSource(new StringReader(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+        + "<doc/>")));
+
+    JXPathContext pathContext = JXPathContext.newContext(doc);
+    assertFalse((Boolean) pathContext.getValue("2.0 > child1", Boolean.class));
+    assertFalse((Boolean) pathContext.getValue("child1 < 2.0", Boolean.class));
+}

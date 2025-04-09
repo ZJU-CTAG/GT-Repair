@@ -1,0 +1,18 @@
+public void testCompressorStreamFactory() throws Exception {
+
+    final File file = new File("bla.tar.deflatez");
+    assertTrue(file.exists());
+
+    final InputStream input = new BufferedInputStream(new FileInputStream(file));
+    CompressorInputStream in = null;
+    try {
+        in = new CompressorStreamFactory().createCompressorInputStream(input);
+        fail();
+    } catch (CompressorException e) {
+        assertEquals(
+                "CompressorStreamFactory: No Compressor found for the stream signature.",
+                e.getMessage());
+    } finally {
+        IOUtils.closeQuietly(in);
+    }
+}

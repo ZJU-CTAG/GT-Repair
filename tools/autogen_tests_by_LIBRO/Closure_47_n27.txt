@@ -1,0 +1,8 @@
+public void testSourceMap() throws IOException {
+    String source = "function foo() { return 1; }\nfunction bar() { return 2; }\n";
+    String js = UglifyJs.minify(source, new UglifyJsOptions().setSourceMap(new UglifyJsSourceMapOptions().setUrl("file.js")));
+    assertEquals("function foo(){return 1}\nfunction bar(){return 2}\n//# sourceMappingURL=file.js.map\n", js);
+    js = js.substring(0, js.length() - 20);
+    String sourceMapString = UglifyJs.getSourceMap(js, source);
+    assertEquals("{\"version\":3,\"file\":\"file.js\",\"sources\":[\"file.js\"],\"names\":[],\"mappings\":\"AAAA;AAEA;;;AAIA;;;AAGA\",\"sourcesContent\":[\"function foo() { return 1; }\\nfunction bar() { return 2; }\\n\"]}", sourceMapString);
+}

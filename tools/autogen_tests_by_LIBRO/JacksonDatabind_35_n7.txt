@@ -1,0 +1,18 @@
+public void testTypeIdWithId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    // make sure we can serialize and deserialize
+    ObjectWithTypeIdAndId object = new ObjectWithTypeIdAndId();
+    object.setValue("value");
+    object.setId(1);
+
+    String string = mapper.writeValueAsString(object);
+    System.out.

@@ -1,0 +1,14 @@
+public void testIssue999() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.addMixIn(Invite.class, InviteMixin.class);
+    objectMapper.registerModule(new Jdk8Module());
+    objectMapper.registerModule(new KotlinModule());
+
+    Invite invite = new Invite();
+    invite.setKind(InviteKind.CONTACT);
+    invite.setTo(new InviteTo());
+    invite.getTo().setName("Foo");
+
+    Invite invite2 = objectMapper.readValue(objectMapper.writeValueAsString(invite), Invite.class);
+    assertEquals(InviteKind.CONTACT, invite2.getKind());
+}

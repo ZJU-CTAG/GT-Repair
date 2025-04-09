@@ -1,0 +1,18 @@
+public void testUnicodeInPropertyNames() throws IOException, ClassNotFoundException {
+    StringBuilder sb = new StringBuilder();
+    sb.append("var test={'a\u0004b':'c'};");
+    String input = sb.toString();
+    String expected = input;
+    String inputFile = "test.js";
+    String outputDir = "temp/";
+    String outputFile = "test.out.js";
+    CompilerOptions options = CompilerOptions.Factory.getDefaultOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setLineLengthThreshold(80);
+    options.setPreserveTypeAnnotations(true);
+    options.setExtraAnnotationNames(Collections.singleton("junit.framework.TestCase"));
+    options.setOutputCharset(StandardCharsets.UTF_8);
+    options.setNameReferenceReportPath("test-name-reference-report.txt");
+    Comp

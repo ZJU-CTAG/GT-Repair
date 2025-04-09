@@ -1,0 +1,15 @@
+public void testIssue() {
+    String js = "";
+    js += "/** @constructor */";
+    js += "function MyClass() {}";
+    js += "MyClass.prototype[\"MyMethod\"] = function(a) {";
+    js += " this.a = a;";
+    js += "}";
+    js += "window[\"MyClass\"] = MyClass;";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    Result result = compiler.compile(SourceFile.fromCode("test.js", js), options);
+    assertEquals(result.errors.length, 0);
+    assertEquals(result.warnings.length, 0);
+}

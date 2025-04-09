@@ -1,0 +1,13 @@
+public void testElementSiblingIndex() {
+    String html = "<table><tr><td>One</td></tr><tr><td>Two</td></tr><tr><td>Three</td></tr><tr><td>Four</td></tr></table>";
+    Document doc = Jsoup.parse(html);
+    Element firstRow = doc.select("tr").first();
+    Element secondRow = doc.select("tr").get(1);
+    Element thirdRow = doc.select("tr").get(2);
+    Element fourthRow = doc.select("tr").get(3);
+    assertEquals(0, firstRow.elementSiblingIndex());
+    assertEquals(1, secondRow.elementSiblingIndex());
+    assertEquals(2, thirdRow.elementSiblingIndex());
+    assertEquals(3, fourthRow.elementSiblingIndex());
+    assertEquals(secondRow.elementSiblingIndex(), firstRow.nextElementSibling().elementSiblingIndex());
+    assertEquals(thirdRow.elementSiblingIndex(), firstRow.nextElementSibling().nextElementSibling().elementSiblingIndex());

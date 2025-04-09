@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final int n = 1000;
+    final double max = 0.2;
+    final double min = -0.2;
+    double[] weights = new double[n];
+    for (int i = 0; i < n; ++i) {
+        weights[i] = min + (max - min) * i / n;
+    }
+    Weigth w = new Weigth(weights);
+    AbstractScalarDifferentiableOptimizer optimizer = new NonLinearConjugateGradientOptimizer(ConjugateGradientFormula.POLAK_RIBIERE,
+                                                                                               new SimpleValueChecker(1e-6, 1e-6));
+    optimizer.optimize(new MaxEval(100),
+                       new ObjectiveFunction(new MultivariateFunction() {
+                           public double value(double[] variables) {
+                               double sum = 0.;
+                               for (int i = 0; i < n; ++i) {
+                                   double diff = variables[i] - weights[i];
+                                   sum += diff * diff;
+                               }

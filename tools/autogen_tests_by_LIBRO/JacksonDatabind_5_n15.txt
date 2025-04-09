@@ -1,0 +1,18 @@
+public void testMixinAnnotationsLost() throws Exception {
+    String expected = "{\"city\":\"Boston\"}";
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+
+    // There are other getters/properties in the Impl class that do not need to be serialized and so
+    // I am using the Mixin to match the interface and explicitly annotate all the inherited methods
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+        .disable(MapperFeature.AUTO_DETECT_FIELDS)
+        .disable(MapperFeature.AUTO_DETECT_GETTERS)
+        .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+        .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    objectMapper.registerModule(module);
+
+   

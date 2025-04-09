@@ -1,0 +1,14 @@
+public void testBuilderResetAfterIAE() throws Exception {
+    String[] args = new String[] { "-target", "opt" };
+    Options options = new Options();
+    OptionBuilder.withLongOpt("target").hasArg().create();
+    OptionBuilder.withLongOpt("target").hasArg().create();
+    OptionBuilder.withLongOpt("target").hasArg().create();
+    // TODO: OptionBuilder is not reset after the IAE, this will fail too
+    // OptionBuilder.withLongOpt("target").hasArg().create();
+    try {
+        new PosixParser().parse(options, args);
+    } catch (UnrecognizedOptionException e) {
+        // expected
+    }
+}

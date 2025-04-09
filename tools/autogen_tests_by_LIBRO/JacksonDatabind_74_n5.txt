@@ -1,0 +1,15 @@
+public void testIssue106() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    JavaType type = mapper.getTypeFactory().constructType(String.class);
+    JsonDeserializer<Object> deserializer = new AsPropertyTypeDeserializer(type, "_class");
+    final String json = "{\"_class\":\"string\",\"value\":\"\"}";
+    try {
+        Object value = deserializer.deserialize(mapper.getJsonFactory().createJsonParser(json), mapper.getDeserializationContext());
+        assertNull(value);
+    } catch (Exception ex) {
+        fail("Empty String should be deserialized to a null String");
+    }
+}

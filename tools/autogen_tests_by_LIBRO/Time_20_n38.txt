@@ -1,0 +1,21 @@
+public void testIssue126() {
+    DateTimeZone[] zones = DateTimeZone.getAvailableIDs().toArray(new DateTimeZone[0]);
+    int pass = 0;
+    int fail = 0;
+    for (DateTimeZone zone : zones) {
+        try {
+            DateTimeZone zone2 = DateTimeZone.forID(zone.getID());
+            if (zone.equals(zone2)) {
+                pass++;
+            } else {
+                fail++;
+                System.out.println(zone + " does not equal parsed version: " + zone2);
+            }
+        } catch (IllegalArgumentException e) {
+            fail++;
+            System.out.println("Failed to parse " + zone);
+        }
+    }
+    System.out.println("Passed: " + pass);
+    System.out.println("Failed: " + fail);
+}

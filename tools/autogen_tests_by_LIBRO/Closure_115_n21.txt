@@ -1,0 +1,21 @@
+public void testIssue144() {
+    // create a new compiler
+    Compiler compiler = new Compiler();
+
+    // configure the compiler
+    compiler.initOptions(new CompilerOptions());
+    compiler.getOptions().setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    compiler.getOptions().setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.WARNING);
+    compiler.getOptions().setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    compiler.getOptions().setCheckGlobalNamesLevel(CheckLevel.WARNING);
+    compiler.getOptions().setCheckTypes(true);
+
+    // add dependencies to the compiler
+    compiler.getOptions().setEmitUseStrict(true);
+    compiler.getOptions().setDependencyOptions(new DependencyOptions());
+    compiler.getOptions().setManageClosureDependencies(true);
+    compiler.getOptions().setClosurePass(true);
+    compiler.getOptions().setUseModules(true);
+
+    // compile
+    SourceFile input = SourceFile.fromCode("input.

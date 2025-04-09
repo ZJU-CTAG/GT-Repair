@@ -1,0 +1,26 @@
+public void testIssue() {
+    String[] args = new String[]{"-target", "foobar.com"};
+    Options cmdLineOpts = buildCmdLineOptions();
+    PosixParser parser = new PosixParser();
+    CommandLine parsedLine = null;
+    try {
+        parsedLine = parser.parse(cmdLineOpts, args);
+    } catch (ParseException pe) {
+        System.out.println("Invalid command: " + pe.getMessage() +
+                "\n");
+        HelpFormatter hf = new HelpFormatter();
+        hf.printHelp(USAGE, cmdLineOpts);
+        System.exit(-1);
+    }
+
+    if (parsedLine.hasOption(OPTION_TARGET)) {
+        System.out.println("processing selected target: " +
+                parsedLine.getOptionValue(OPTION_TARGET));
+    }
+}
+
+private static final String OPTION_TARGET = "t";
+private static final String OPTION_TARGET_LONG = "target";
+
+private Options buildCmdLineOptions() {
+    Options cmdLineOpts =

@@ -1,0 +1,23 @@
+public void testIssue() throws IOException {
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(new GuavaModule());
+    mapper.findAndRegisterModules();
+
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addAbstractTypeMapping(InnerObject.class, ConcreteInnerObject.class);
+    mapper.registerModule(simpleModule);
+
+    OuterObject o = new OuterObject();
+    o.list = new ArrayList<>();
+    o.list.add(new ConcreteInnerObject(1));
+    o.list.add(new ConcreteInnerObject(2));
+    o.list.add(new ConcreteInnerObject(3));
+    o.map.put(o.list.get(0), 4);
+    o.map.put(o.list.get(1), 5);
+    o.map.put(o.list.get(2), 6);
+
+    o.inner = o.list.get(0);
+
+    System.out.println("Serializing

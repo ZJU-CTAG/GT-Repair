@@ -1,0 +1,16 @@
+public void testIssue108() {
+    CsvPreference pref = new CsvPreference.Builder('"', ',', "\n").build();
+    ICsvListReader listReader = null;
+    try {
+        listReader = new CsvListReader(new StringReader(""), pref);
+        final CellProcessor[] processors = new CellProcessor[] {
+            new Optional()
+        };
+        listReader.getHeader(true);
+        final List<Object> customerList = listReader.read(processors);
+    } finally {
+        if( listReader != null ) {
+            listReader.close();
+        }
+    }
+}

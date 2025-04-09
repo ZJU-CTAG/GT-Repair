@@ -1,0 +1,10 @@
+public void testEmptyColumnNames() throws Exception {
+    Reader reader = new StringReader("A,B,C,,\na,b,c,d,e");
+    CSVParser parser = new CSVParser(reader, CSVFormat.EXCEL);
+    try {
+        parser.getHeaderMap();
+        fail("Should fail");
+    } catch (IllegalArgumentException e) {
+        assertEquals("The header contains a duplicate name: \"\" in [A, B, C, , ]", e.getMessage());
+    }
+}

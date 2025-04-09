@@ -1,0 +1,25 @@
+public void testIssue108() {
+    TestObject testObject = new TestObject();
+    assertEquals(null, testObject.testRemoveKey("key")); 
+    assertFalse("key".equals(testObject.getKey()));
+}
+
+class TestObject {
+
+    private String key = "value";
+
+    public String getKey() {
+        return key;
+    }
+
+    public String testRemoveKey( String key ) {
+        String dataSlot = getKey(),
+                retval = dataSlot != null && dataSlot.equals(key),
+                hadKey = dataSlot != null && ( key == dataSlot );
+
+        if ( dataSlot != null )
+            this.key = null;
+
+        return hadKey ? retval : null;
+    }
+}

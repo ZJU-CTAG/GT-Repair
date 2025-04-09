@@ -1,0 +1,21 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<form><input type='text' name='alpha'/></form>");
+
+    //prints HTML including "input[name=alpha]"
+    System.out.println(doc.toString());
+
+    doc.select("input[name=alpha]").first().remove();
+
+    //prints HTML excluding "input[name=alpha]"
+    System.out.println(doc.toString());
+
+    FormElement form = (FormElement)doc.select("form").first();
+
+    //prints HTML excluding "input[name=alpha]"
+    System.out.println(form.toString());
+
+    List<Connection.KeyVal> data = form.formData();
+
+    //prints a list including "alpha"
+    System.out.println(data.toString());
+}

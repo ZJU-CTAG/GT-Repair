@@ -1,0 +1,14 @@
+public void testIssue108() {
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("js");
+    try {
+        engine.eval(
+            "function f() {\n" +
+            "}\n" +
+            "alert(f());"
+        );
+        fail();
+    } catch (ScriptException e) {
+        assertTrue(e.getMessage().startsWith("TypeError: Cannot find function f"));
+    }
+}

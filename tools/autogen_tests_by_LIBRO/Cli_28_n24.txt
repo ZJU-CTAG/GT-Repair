@@ -1,0 +1,21 @@
+public void testDefaultOptionsIgnored() {
+    final Options options = new Options();
+    final Option optionA = new Option("a", false, "toggle -a");
+    final Option optionB = new Option("b", false, "toggle -b");
+    final Option optionC = new Option("c", false, "toggle -c");
+    options.addOption(optionA);
+    options.addOption(optionB);
+    options.addOption(optionC);
+
+    final Properties properties = new Properties();
+    properties.setProperty("a", "false");
+    properties.setProperty("b", "0");
+    properties.setProperty("c", "no");
+
+    final CommandLineParser parser = new DefaultParser();
+    final CommandLine commandLine = parser.parse(options, null, properties);
+
+    assertThat(commandLine.hasOption("a"), is(false));
+    assertThat(commandLine.hasOption("b"), is(false));
+    assertThat(commandLine.hasOption("c"), is(false));
+}

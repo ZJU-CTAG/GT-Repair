@@ -1,0 +1,18 @@
+public void testLongDirectoryName() throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    TarArchiveOutputStream tar = new TarArchiveOutputStream(out);
+    tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    tar.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_STAR);
+    tar.setAddPaxHeadersForNonAsciiNames(true);
+    tar.setFallbackToUTF8(true);
+
+    File entry = new File("src/test/resources/longdirectoryname");
+    tar.putArchiveEntry(new TarArchiveEntry(entry, entry.getName()));
+    tar.closeArchiveEntry();
+    tar.close();
+
+    TarArchiveInputStream tin = new TarArchiveInputStream(new ByteArrayInputStream(out.toByteArray()));
+    assertTrue(tin.getNextTarEntry() != null);
+    assertNull(tin.getNextTarEntry());
+    tin.close();
+}

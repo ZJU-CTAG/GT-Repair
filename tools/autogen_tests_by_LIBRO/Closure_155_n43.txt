@@ -1,0 +1,17 @@
+public void testOverzealousOptimisation() throws Exception {
+    String js = "function d3_call(callback) {\n" +
+        " var f = callback;\n" +
+        " arguments[0] = this;\n" +
+        " f.apply(this, arguments);\n" +
+        " return this;\n" +
+        "}\n";
+    String expected = "function d3_call(a){arguments[0]=this;a.apply(this,arguments);return this};";
+    Context cx = Context.enter();
+    try {
+        Script script = cx.compileString(js, "script", 1, null);
+        String actual = script.toString();
+        assertEquals(expected, actual);
+    } finally {
+        Context.exit();
+    }
+}

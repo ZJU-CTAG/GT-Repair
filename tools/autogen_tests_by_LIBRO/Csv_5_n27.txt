@@ -1,0 +1,11 @@
+public void testIssue107() {
+    CSVFormat format = CSVFormat.newFormat(';').withSkipHeaderRecord(true).withHeader("H1","H2");
+    StringWriter sw = new StringWriter();
+    try {
+        CSVPrinter printer = new CSVPrinter(sw, format);
+        printer.printRecord("A","B");
+        printer.close();
+    } catch (IOException e) {
+    }
+    assertEquals("A;B\r\n", sw.toString());
+}

@@ -1,0 +1,16 @@
+public void testIssue() {
+    String input = "function Test(n) { var i = 0; return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i } var dummy = \"6chars\"; console && console.log( Test(dummy) );";
+    final CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    final CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    org.ternlang.compile.Compiler compiler = new org.ternlang.compile.Compiler(options);
+    try {
+        Result result = compiler.compile(input);
+        String output = result.getSource();
+        assertEquals(input, output);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

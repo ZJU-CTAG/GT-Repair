@@ -1,0 +1,16 @@
+public void testIssue103() {
+    DateTimeZoneBuilder b = new DateTimeZoneBuilder();
+    b.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+    b.setStandardOffset(3600000);
+    b.addRecurringSavings("", 3600000, 1601, Integer.MAX\_VALUE, 'w', 3, -1, 1, false, 7200000);
+    b.addRecurringSavings("", 0, 1601, Integer.MAX\_VALUE, 'w', 10, -1, 1, false, 10800000);
+    DateTimeZone tz = b.toDateTimeZone("TestDTZ1", true);
+    Thread t = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            getTestDataTimeZoneBuilder().toDateTimeZone("TestDTZ2", true);
+        }
+    });
+    t.start();
+    t.join();
+}

@@ -1,0 +1,23 @@
+public void testLastErrorTruncated() {
+    String[] files = {
+        "foo.js",
+        "bar.js"
+    };
+    String[] args = {
+        "--warning_level", "VERBOSE",
+    };
+    
+    com.google.javascript.jscomp.Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        JSSourceFile.fromCode("externs.js", ""),
+        getSourceFileArray(files),
+        args
+    );
+    assertEquals(
+        "bar.js:1: WARNING - variable bar is undeclared\n" +
+        "<No source info>\n" +
+        "  bar.js:2: ERROR - variable foo is undeclared\n" +
+        "<No source info>\n",
+        compiler.toSource()
+    );
+}

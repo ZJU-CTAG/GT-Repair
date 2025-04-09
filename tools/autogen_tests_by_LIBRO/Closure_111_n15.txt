@@ -1,0 +1,20 @@
+public void testIsArray() {
+    String js = "/**\n"
+            + " * @param {*} object\n"
+            + " * @return {*}\n"
+            + " */\n"
+            + "var test = function(object) {\n"
+            + "  if (goog.isArray(object)) {\n"
+            + "    /** @type {Array} */ var x = object;\n"
+            + "    return x;\n"
+            + "  }\n"
+            + "};";
+
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    Result result = new Compiler().compile(
+            new JSSourceFile[]{JSSourceFile.fromCode("default.js", js)},
+            options);
+    assertFalse(result.success);
+}

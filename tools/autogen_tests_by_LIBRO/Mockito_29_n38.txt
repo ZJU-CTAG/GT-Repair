@@ -1,0 +1,24 @@
+public void testIssue228() {
+    MyInterface myInterface = mock(MyInterface.class);
+    MyClass myClass = new MyClass(myInterface);
+
+    ArgumentCaptor<String> argCaptor = ArgumentCaptor.forClass(String.class);
+    myClass.doStuff("hello world");
+    verify(myInterface).doSomething(argCaptor.capture());
+    assertEquals("hello world", argCaptor.getValue());
+}
+
+interface MyInterface {
+    void doSomething(String value);
+}
+
+class MyClass {
+    private final MyInterface myInterface;
+
+    public MyClass(MyInterface myInterface) {
+        this.myInterface = myInterface;
+    }
+    public void doStuff(String value) {
+        myInterface.doSomething(value);
+    }
+}

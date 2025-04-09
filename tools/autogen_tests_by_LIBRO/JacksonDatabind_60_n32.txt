@@ -1,0 +1,10 @@
+public void testIssue108() {
+    RemoteCall message = new RemoteCall(new ResponseReceiver() {
+        @Override
+        public void receive(Object response) {
+
+        }
+    }, new CommandAPDU(new byte[]{2, 3, 4}));
+    System.out.println("1) " + mapper.writeValueAsString(message));
+    assertEquals(message, mapper.readValue(mapper.writeValueAsString(message), RemoteCall.class));
+}

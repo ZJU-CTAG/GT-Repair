@@ -1,0 +1,20 @@
+public void testIssue114() {
+    CompilerOptions options = new CompilerOptions();
+    options.setManageClosureDependencies(true);
+    options.setClosurePass(true);
+    options.setCheckRequires(CheckLevel.ERROR);
+    String source = "goog.require('foo');\n" +
+            "goog.require('bar');\n" +
+            "var x = 3;\n" +
+            "foo.x = x;\n" +
+            "bar.x = x;\n" +
+            "bar.y = 2;";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("foo.js", source),
+            SourceFile.fromCode("bar.js", "goog.provide('bar');\n"),
+            options);
+    assertTrue(result.success);
+    assertEquals(1, compiler.getWarnings().length);
+    assertEquals(0, compiler.getErrors().length);
+}

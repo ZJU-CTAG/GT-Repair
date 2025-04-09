@@ -1,0 +1,12 @@
+public void testZero() throws IOException {
+    String html = "<p>0";
+    Document doc = Jsoup.parse(html);
+    Element p = doc.select("p").first();
+
+    Whitelist wl = Whitelist.relaxed();
+    Cleaner cleaner = new Cleaner(wl);
+    Document clean = cleaner.clean(doc);
+
+    // this should be "0"
+    assertEquals("", clean.body().text());
+}

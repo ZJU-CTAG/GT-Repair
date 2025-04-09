@@ -1,0 +1,23 @@
+public void testIssue537() throws Exception {
+    File temp = File.createTempFile("test", ".js");
+    temp.deleteOnExit();
+    FileOutputStream out = new FileOutputStream(temp);
+    PrintWriter writer = new PrintWriter(out);
+    writer.println("alert(foo);");
+    writer.println("alert(bar);");
+    writer.close();
+
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler(pw, options);
+    Result result = compiler.compile(
+        SourceFile.fromFile(temp.getAbsolutePath()),
+        CompilerOptions.LanguageMode.ECMASCRIPT3,
+        CompilerOptions.OutputFormat.TEXT,
+        CompilerOptions.Definition.NONE,
+        CompilerOptions.DependencyMode.NONE,
+        CompilerOptions.ExternExportsMode.NONE);
+    assertTrue(result.success);
+    assertFalse(result.errors.is

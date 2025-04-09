@@ -1,0 +1,25 @@
+public void testIssue108() {
+    String json =
+        "[\n" +
+        "  {\n" +
+        "    \"records\": [\n" +
+        "      {\n" +
+        "        \"fields\": [\n" +
+        "          {\n" +
+        "            \"name\": \"field1\",\n" +
+        "            \"value\": \"value1\"\n" +
+        "          }\n" +
+        "        ]\n" +
+        "      },\n" +
+        "      {\n" +
+        "        \"fields\": []\n" +
+        "      }\n" +
+        "    ]\n" +
+        "  }\n" +
+        "]";
+    List<Definition> definitions = mapper.readValue(json, new TypeReference<List<Definition>>() {});
+    assertEquals(1, definitions.size());
+    Definition definition = definitions.get(0);
+    assertEquals(2, definition.records.size());
+    Record record = definition.records.get(0);
+   

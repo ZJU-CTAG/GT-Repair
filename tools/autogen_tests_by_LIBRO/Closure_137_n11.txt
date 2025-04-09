@@ -1,0 +1,8 @@
+public void testIssue() {
+    String code = "var t = null; window.test = function() { if (t != null) { t = null; } t = 1; };";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(null, new CodeBuffer(code));
+    assertEquals(1, result.warnings.length);
+    assertEquals(JSError.Level.WARNING, result.warnings[0].level);
+    assertEquals(DiagnosticType.JSC_DETERMINISTIC_TEST, result.warnings[0].type);
+}

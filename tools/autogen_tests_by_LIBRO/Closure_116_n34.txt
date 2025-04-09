@@ -1,0 +1,19 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+
+    SourceFile input = SourceFile.fromCode("input.js", 
+        "window[\"foo\"] = function (obj, modifiesProp) {" +
+        " return (function (saved) {" +
+        " return modifiesProp(obj) + saved;" +
+        " })(obj[\"prop\"]);" +
+        " }");
+    SourceFile window = SourceFile.fromCode("window.js", "window");
+    Result result = compiler.compile(Arrays.asList(input, window), options);
+    assertFalse(result.

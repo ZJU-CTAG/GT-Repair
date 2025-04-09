@@ -1,0 +1,16 @@
+public void testWithLaterOffsetAtOverlap() {
+    DateTimeZone london = DateTimeZone.forID( "Europe/London" );
+    DateTimeZone paris = DateTimeZone.forID( "Europe/Paris" );
+
+    DateTime dt = new DateTime( 2008, 10, 26, 1, 30, 0, 0, london );
+    System.out.println( dt ); // prints: 2008-10-26T01:30:00.000+01:00
+
+    dt = dt.withZone( paris );
+    System.out.println( dt ); // prints: 2008-10-26T02:30:00.000+02:00
+
+    dt = dt.withLaterOffsetAtOverlap();
+    System.out.println( dt ); // prints: 2008-10-26T01:30:00.000+01:00
+
+    dt = dt.withEarlierOffsetAtOverlap();
+    System.out.println( dt ); // prints: 2008-10-26T02:30:00.000+02:00
+}

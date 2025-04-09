@@ -1,0 +1,13 @@
+public void testGenericTypeRecursion() {
+   Gson gson = new Gson();
+   ClassWithTypeParameterField object = gson.fromJson("{'type': { 'type': { 'type': { 'type': null } } } }", ClassWithTypeParameterField.class);
+   assertTrue(object.type instanceof ClassWithTypeParameterField);
+}
+
+private static class ClassWithTypeParameterField {
+   @SerializedName("type")
+   TestType<? super ClassWithTypeParameterField> type;
+}
+
+private static class TestType<T> {
+}

@@ -1,0 +1,11 @@
+public void testExceptionWhenParsingErroneousJsDoc() throws Exception {
+    StringBuilder source = new StringBuilder();
+    source.append("/**\n");
+    source.append(" * @return {@code foo} bar\n");
+    source.append(" *    baz.\n");
+    source.append(" */\n");
+    source.append("var x;\n");
+
+    JsDocInfo info = new JsDocInfoParser(new JsDocTokenStream(source.toString()), "testExceptionWhenParsingErroneousJsDoc").parse();
+    assertEquals(0, info.getType().getItems().size());
+}

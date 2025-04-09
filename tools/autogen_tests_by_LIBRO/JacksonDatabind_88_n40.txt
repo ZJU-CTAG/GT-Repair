@@ -1,0 +1,16 @@
+public void testPolymorphic() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new Foo());
+    Foo foo = mapper.readValue(json, Foo.class);
+}
+
+static class Foo
+{
+    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+    private BaseImpl base = new BaseImpl();
+
+    static class BaseImpl implements Base { }
+
+    static interface Base { }
+}

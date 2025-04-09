@@ -1,0 +1,13 @@
+public void testIssue120() {
+    String fileContent = "Col1,Col2,Col2,Col3,Col4\n" +
+        "1,2,3,4,5\n" +
+        "4,5,6,7,8\n";
+
+    CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+				.withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+    CSVParser parser = CSVParser.parse(fileContent, myFormat);
+    Map<String, Integer> headers = parser.getHeaderMap();
+
+    assertEquals(headers.size(), 4);
+    assertTrue(headers.containsKey("Col2"));
+}

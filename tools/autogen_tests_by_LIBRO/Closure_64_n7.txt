@@ -1,0 +1,12 @@
+public void testIssue111() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.USE_STRICT, CheckLevel.WARNING);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    compiler.compile(JSSourceFile.fromCode("get_num.js", "var getNum = function() { return 5; };"),
+        JSSourceFile.fromCode("alert.js", "alert(getNum());"), options);
+    assertEquals(new String[] { "use strict", "alert(5)" }, compiler.toSource().split(";"));
+}

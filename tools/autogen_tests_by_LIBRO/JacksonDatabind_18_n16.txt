@@ -1,0 +1,7 @@
+public void testIssue106() throws IOException {
+    String json = "[ 0, 1, 2 /* missing comma */ 3, 4 ]";
+    ObjectMapper mapper = new ObjectMapper();
+    MappingIterator<Integer> it = mapper.reader(Integer.class).readValues(json);
+    List<Integer> result = it.readAll();
+    assertEquals(3, result.size());
+}

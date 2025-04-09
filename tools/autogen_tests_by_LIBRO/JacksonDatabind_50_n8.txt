@@ -1,0 +1,31 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    ObjectWithIdentity obj = mapper.readValue(new File("jackson-test/src/test/resources/test.json"), ObjectWithIdentity.class);
+
+    assertEquals(obj.getId(), obj.getObject().getId());
+}
+
+class ObjectWithIdentity {
+    private String id;
+    private ObjectWithIdentity object;
+
+    public ObjectWithIdentity() {
+    }
+
+    @JsonCreator
+    public ObjectWithIdentity(@JsonProperty("id") String id,
+                              @JsonProperty("object") ObjectWithIdentity object) {
+        this.id = id;
+        this.object = object;
+    }
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonProperty("object")
+    public ObjectWithIdentity getObject() {
+        return object;
+    }
+
+    @JsonProperty("id")
+    public String getId

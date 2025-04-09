@@ -1,0 +1,9 @@
+public void testIssue82() {
+    Locale locale = new Locale("sv", "SE");
+    FastDateFormat fdf = FastDateFormat.getInstance("EEEE', week 'ww", locale);
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE', week 'ww", locale);
+    Calendar cal = Calendar.getInstance(); // setting locale here doesn't change outcome
+    cal.set(2010, 0, 1, 12, 0, 0);
+    assertEquals("FastDateFormat: fredag, week 53", fdf.format(cal));
+    assertEquals("SimpleDateFormat: fredag, week 53", sdf.format(cal));
+}

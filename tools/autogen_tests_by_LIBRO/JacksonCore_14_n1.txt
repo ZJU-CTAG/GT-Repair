@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    File file = File.createTempFile("testIssue108", ".txt");
+    file.deleteOnExit();
+    FileUtils.writeStringToFile(file, "This is a test");
+    InputStream is = new FileInputStream(file);
+    // Let's assume that the buffer is reused, but it is smaller
+    byte[] buffer = new byte[10];
+    is.read(buffer);
+    is.close();
+}

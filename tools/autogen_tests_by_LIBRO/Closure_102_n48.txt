@@ -1,0 +1,26 @@
+public void testIssue108() {
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setGenerateDebugInfo(true);
+
+    ErrorReporter reporter = new ErrorReporter() {
+        public void warning(String message, String sourceName, int line,
+                String lineSource, int lineOffset) {
+            System.out.println("warning: " + message);
+        }
+
+        public void error(String message, String sourceName, int line,
+                String lineSource, int lineOffset) {
+            System.out.println("error: " + message);
+        }
+
+        public EvaluatorException runtimeError(String message,
+                String sourceName, int line, String lineSource,
+                int lineOffset) {
+            System.out.println("runtimeError: " + message);
+            return new EvaluatorException(message);
+        }
+    };
+    Parser p = new Parser(env, reporter);
+    String code = "function name() { var arguments = Array.prototype.slice.call(arguments, 0); }";
+   

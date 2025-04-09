@@ -1,0 +1,24 @@
+public void test() throws IOException
+{
+    String json = "{\"a\":{\"b\":1}}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.REQUIRE_SETTERS_FOR_GETTERS, true);
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_EMPTY);
+    mapper.registerModule(new AfterburnerModule());
+    mapper.readValue(json, B.class);
+}
+public static class A {
+    private int b;
+    public A() {
+    }
+    public int getB() {
+        return b;
+    }
+}
+public static class B {
+    private A a;
+    public A getA() {
+        return a;
+    }
+}

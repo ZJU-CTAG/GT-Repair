@@ -1,0 +1,16 @@
+public void testNextTextValue() throws XMLStreamException {
+    FromXMLParser parser = (FromXMLParser) xmlMapper.getFactory().createParser("<test attr=\"test\"/>");
+    JsonToken tok;
+    while ((tok = parser.nextToken()) != JsonToken.END_DOCUMENT) {
+        if (tok == JsonToken.FIELD_NAME) {
+            assertEquals("attr", parser.getCurrentName());
+        }
+        if (tok == JsonToken.VALUE_STRING) {
+            assertEquals("test", parser.getCurrentValue());
+            // This is wrong and it is the reason for the 
+            // test failure of DeserializationTest.testNextTextValue()
+            assertNull(parser.nextTextValue());
+            assertEquals("test", parser.nextTextValue());
+        }
+    }
+}

@@ -1,0 +1,17 @@
+public void testNoOptionGroupValidationWithDefaults() throws Exception {
+    class App {
+        @Option(name = "-a", required = true)
+        boolean a;
+        @Option(name = "-b", required = true)
+        boolean b;
+    }
+    App app = new App();
+    Options options = CmdLineParser.getOptions(app);
+    CmdLineParser parser = new CmdLineParser(app);
+    Properties defaults = new Properties() {{ put("b", "true"); }};
+    parser.parse(new String[]{"-a"}, defaults);
+    assertFalse(parser.getOptions().get("a").isSet());
+    assertTrue(parser.getOptions().get("b").isSet());
+    assertTrue(app.a);
+    assertTrue(app.b);
+}

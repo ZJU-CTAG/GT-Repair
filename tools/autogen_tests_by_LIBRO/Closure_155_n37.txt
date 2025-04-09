@@ -1,0 +1,22 @@
+public void testIssue68() throws Exception {
+ String source = "function d3_call(callback) {" +
+     " var f = callback;" +
+     " arguments[0] = this;" +
+     " f.apply(this, arguments);" +
+     " return this;" +
+     "}";
+ CompilerEnvirons env = new CompilerEnvirons();
+ env.setRecordingLocalJsDocComments(true);
+ env.setRecordingComments(true);
+ env.setLanguageVersion(Context.VERSION_1_7);
+ env.setOptimizationLevel(9);
+ env.setStrictMode(false);
+ env.setWarnTrailingComma(false);
+ env.setErrorReporter(new ErrorReporter() {
+     public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+         fail(message);
+     }
+     public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+         fail(message);
+     }
+     public EvaluatorException runtimeError(String message, String sourceName, int line,

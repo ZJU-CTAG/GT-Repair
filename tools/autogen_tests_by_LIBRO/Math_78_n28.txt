@@ -1,0 +1,13 @@
+public void testIssue108() {
+    SwitchingFunction sf = new SwitchingFunction() {
+
+        public boolean g(double t, double[] y) {
+            return (t <= 90.0) || (t >= 135.0);
+        }
+    };
+
+    AbstractIntegrator integrator = new DormandPrince54Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+    integrator.addSwitchingFunction(sf, Double.POSITIVE_INFINITY);
+    integrator.integrate(new Equations(), 0.0, new double[1], 90.0, new double[1]);
+
+}

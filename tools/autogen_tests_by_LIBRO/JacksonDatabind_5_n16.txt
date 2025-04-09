@@ -1,0 +1,17 @@
+public void testMixinAnnotationsLost() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+        .disable(MapperFeature.AUTO_DETECT_FIELDS)
+        .disable(MapperFeature.AUTO_DETECT_GETTERS)
+        .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+        .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    SimpleModule module = new SimpleModule("test",
+                                           new Version(2, 4, 0, null, "com.fasterxml.jackson.core", "jackson-databind"));
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    mapper.registerModule(module);
+
+    PersonImpl person = new PersonImpl();
+    person.setCity("New York");
+
+    String expected = "{\"city\":\"New York\"}";
+    String actual = mapper.write

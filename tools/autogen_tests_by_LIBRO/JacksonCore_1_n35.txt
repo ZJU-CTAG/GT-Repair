@@ -1,0 +1,11 @@
+public void testIssue4() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    try {
+        mapper.readValue("NaN", BigDecimal.class);
+        fail("Should have thrown an exception");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Numeric value (NaN) out of range");
+    }
+}

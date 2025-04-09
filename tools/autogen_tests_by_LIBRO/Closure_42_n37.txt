@@ -1,0 +1,28 @@
+public void testIssue() {
+    String js = "contactcenter.screenpop.updatePopStatus = function(stamp, status) {" +
+            "for each ( var curTiming in this.timeLog.timings ) {" +
+            "if ( curTiming.callId == stamp ) {" +
+            "curTiming.flag = status;" +
+            "break;" +
+            "}" +
+            "}" +
+            "};";
+    Reader in = new StringReader(js);
+    try {
+        JavaScriptCompressor compressor = new JavaScriptCompressor(in, null);
+        in.close();
+        in = null;
+        String compressed = compressor.compress(0, 9, -1, false, false, false);
+        System.out.println(compressed);
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+    }
+}

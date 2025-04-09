@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    final String EXPECTED = "{\"test\":[1,2,3,4]}";
+    final String INPUT = "{\"test\":[1,2,3,4,5]}";
+    FilterProvider filterProvider = new SimpleFilterProvider()
+        .addFilter("FilterForTest", SimpleBeanPropertyFilter.filterOutAllExcept("test"));
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setFilterProvider(filterProvider);
+    ObjectWriter writer = mapper.writer(filterProvider);
+    assertEquals(EXPECTED, writer.writeValueAsString(new TestBean(INPUT)));
+}
+
+class TestBean {
+    private List<Integer> test = new ArrayList<>();
+    public TestBean(String input) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(input);
+        for (JsonNode node : json.get("test")) {
+            test.add(node.asInt());
+        }
+    }
+}

@@ -1,0 +1,15 @@
+public void testIssue() throws Exception {
+        Options options = new Options();
+        String debugOpt = "debug";
+        Option debug = OptionBuilder
+            .withArgName(debugOpt)
+            .withDescription("turn on debugging")
+            .withLongOpt(debugOpt)
+            .create('d');
+
+        CommandLineParser parser = new PosixParser();
+        CommandLine commandLine = parser.parse(options, new String[]{"-d", "turn on debugging", "--debug", "turn on debugging"});
+        String opt = commandLine.getOptionValue(debugOpt);
+        assertTrue(commandLine.hasOption('d'));
+        assertEquals(debugOpt, opt);
+    }

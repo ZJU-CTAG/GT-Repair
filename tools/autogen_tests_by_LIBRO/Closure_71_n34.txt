@@ -1,0 +1,12 @@
+public void testIssueNoWarningsWhenPrivatePropIsRedeclaredOnSubclass() {
+    Compiler compiler = new Compiler();
+    compiler.init(
+        Lists.<JSSourceFile>newArrayList(),
+        Lists.newArrayList(
+            SourceFile.fromCode("testcode",
+                "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }\n" +
+                "/** @constructor \n" +
+                " * @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }\n")),
+        new CompilerOptions());
+    compiler.parseInputs();
+}

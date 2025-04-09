@@ -1,0 +1,22 @@
+public void testIssue108_1() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setCheckRequires(CheckLevel.ERROR);
+    test("goog.require('goog.ui.Button');goog.provides('goog.ui.Button');", options);
+}
+
+public void testIssue108_2() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setCheckRequires(CheckLevel.ERROR);
+    test("goog.require('goog.ui.Button');", options,
+         null,
+         ProcessClosurePrimitives.MISSING_PROVIDE_ERROR);
+}
+
+public void testIssue108_3() {
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(true);
+    options.setCheckRequires(CheckLevel.ERROR);
+    test("goog.provides('goog.ui.Button');goog.require('goog.ui.Button');", options);
+}

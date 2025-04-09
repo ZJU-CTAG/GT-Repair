@@ -1,0 +1,12 @@
+public void testIssue108() {
+        Compiler.setLoggingLevel(Level.INFO);
+        Compiler.setLoggingLevel(Level.WARNING);
+        Compiler compiler = new Compiler();
+        Result result = compiler.compile(
+            ResourceLoader.forFileSystem(new File("src/test/javascript/")),
+            Collections.singletonList(SourceFile.fromCode("echo.js", "define(function() { return {\n echo: function(val) {\n window.console.log(val);\n }\n}});"))
+            , Collections.singletonList(SourceFile.fromCode("echo-main.js", "var echo = require('echo');\necho.echo('hello world');"))
+            , CompilerOptions.builder().setCommonJSModulePathPrefix("").setDependencyMode(DependencyMode.STRICT)
+            .setTransformAMDToCJSModules(true).setProcessCommonJSModules(true).build());
+        assertEquals(0, result.errors.length);
+    }

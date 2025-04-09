@@ -1,0 +1,16 @@
+public void testIssue107(boolean compile) throws Exception {
+    String originalSource = "function reduction(){var a, b; if (echo(b = true) || echo(b = false)) a = b; else a = null; return a;}";
+    String compiledSource = "function reduction() { var a; return echo(true) || echo(a = false) ? a: null}";
+    assertEquals(compiledSource, compile(originalSource, false));
+    assertEquals(compiledSource, compile(originalSource, true));
+}
+
+public String compile(String source, boolean advanced) throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.setLanguageIn(Compiler.LanguageMode.ECMASCRIPT5);
+    compiler.setGenerateExports(false);
+    compiler.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    compiler.setUseTypesForLocalOptimization(false);
+    compiler.setVariableRenaming(VariableRenamingPolicy.ALL);
+    compiler.setComputeFunctionSideEffects(false);
+    compiler.setFlow

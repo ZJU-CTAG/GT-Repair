@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String code = "/** @constructor */ var ns = {};\n" +
+            "/** @constructor */ ns.PageSelectionModel = function(){};\n" +
+            "/** @constructor */ ns.PageSelectionModel.FooEvent = function() {};\n" +
+            "/** @constructor */ ns.PageSelectionModel.SelectEvent = function() {};\n" +
+            "goog.inherits(ns.PageSelectionModel.ChangeEvent, ns.PageSelectionModel.FooEvent);\n";
+    Compiler compiler = compile(code, CompilerOptions.builder()
+            .setLanguageIn(LanguageMode.ECMASCRIPT3)
+            .setLanguageOut(LanguageMode.ECMASCRIPT3)
+            .setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+            .build());
+    assertFalse(compiler.hasErrors());
+}

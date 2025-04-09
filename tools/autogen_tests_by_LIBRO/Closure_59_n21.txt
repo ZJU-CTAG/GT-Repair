@@ -1,0 +1,13 @@
+public void testIssue173() {
+    CompilerOptions options = new CompilerOptions();
+    Compiler c = new Compiler();
+    c.initOptions(options);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT3);
+    options.setPrettyPrint(false);
+    c.compile(
+        SourceFile.fromCode("test", "/** @constructor */ function Foo() {} Foo.prototype.bar = function() {}; /** @type {string} */ Foo.prototype.bar.baz = 'hello';"),
+        SourceFile.fromCode("test", ""),
+        options);
+}

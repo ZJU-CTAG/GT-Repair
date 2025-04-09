@@ -1,0 +1,18 @@
+public void testCustomCollection() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(final SetupContext context) {
+            addDeserializer(new StdDeserializer<ImmutableStringSet>(ImmutableStringSet.class) {
+                @Override
+                public ImmutableStringSet deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+                    return ImmutableStringSet.from(ctxt.readValue(p, new TypeReference<Set<String>>() {}));
+                }
+            });
+            addDeserializer(new StdDeserializer<ImmutableStringList>(ImmutableStringList.class) {
+                @Override
+                public ImmutableStringList deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
+                    return ImmutableStringList.from(ctxt.readValue(p, new TypeReference<List<String>>() {}));
+                }
+            });
+       

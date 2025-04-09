@@ -1,0 +1,27 @@
+public void testC3P0() throws Exception {
+    // first: without fix, should fail
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(
+                "[\"com.mchange.v2.c3p0.JndiRefForwardingDataSource\", {}]",
+                Object.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "not allowed to resolve");
+    }
+
+    // then with
+    mapper = jsonMapperBuilder()
+            .addMixIn(Object.class, UntrustedProxyMixin.class)
+            .build();
+    try {
+        mapper.readValue(
+                "[\"com.mchange.v2.c3p0.JndiRefForwardingDataSource\", {}]",
+                Object.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "not allowed to resolve");
+    }
+}
+
+@JsonTypeInfo(use = Id.NAME,

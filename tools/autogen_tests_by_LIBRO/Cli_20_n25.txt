@@ -1,0 +1,13 @@
+public void testPosixParserWithStopAtNonOption() throws ParseException {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    options.addOption("b", true, "set -b");
+
+    String[] args = new String[] { "--zop", "-abfoo" };
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args, true);
+
+    assertEquals(1, cmd.getArgList().size());
+    assertEquals("--zop", cmd.getArgList().get(0));
+}

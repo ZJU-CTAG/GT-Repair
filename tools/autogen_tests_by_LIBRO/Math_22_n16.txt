@@ -1,0 +1,22 @@
+public void testSupportInclusive() {
+    final double epsilon = 1.0e-6;
+    final double xLo = -10.0;
+    final double xHi = 10.0;
+    final ChiSquaredDistribution chiSq = new ChiSquaredDistributionImpl(5.0) {
+        /**
+         * {@inheritDoc}
+         */
+        public double cumulativeProbability(double x) {
+            return super.cumulativeProbability(x);
+        }
+    };
+    assertTrue(chiSq.isSupportLowerBoundInclusive());
+    assertTrue(chiSq.isSupportUpperBoundInclusive());
+    assertTrue(chiSq.cumulativeProbability(chiSq.getSupportLowerBound()) >= 0);
+    assertTrue(chiSq.cumulativeProbability(chiSq.getSupportUpperBound()) <= 1);
+    final NormalDistribution normal = new NormalDistributionImpl(0,1) {
+        /**
+         * {@inheritDoc}
+         */
+        public double cumulativeProbability(double x) {
+            return

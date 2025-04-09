@@ -1,0 +1,21 @@
+public void testIssue() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+
+    OptionGroup group = new OptionGroup();
+    Option foo = new Option("f", "foo");
+    Option bar = new Option("b", "bar");
+    Option foobar = new Option("f", "foo-bar");
+
+    group.addOption(foo);
+    group.addOption(bar);
+    group.addOption(foobar);
+
+    options.addOptionGroup(group);
+
+    String[] args = {"-f"};
+    CommandLine line = parser.parse(options, args);
+
+    assertTrue(line.hasOption("f"));
+    assertTrue(group.isSelected(foo));
+}

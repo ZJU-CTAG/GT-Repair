@@ -1,0 +1,18 @@
+public void testIssueJscomp1() {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.DETERMINISTIC_TEST, CheckLevel.WARNING);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT3);
+    options.setCheckSuspiciousCode(false);
+    options.setPreserveDetailedSourceInfo(false);
+    options.setDefineToBooleanLiteral("DEBUG", false);
+    options.setDefineToBooleanLiteral("WARNINGS_ON", false);
+    options.setDefineToBooleanLiteral("WARNINGS_OFF", true);
+    
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS,
+            readCode(this.getClass().getResourceAsStream("/jscomp/issue1.js")), options);
+    
+    Assert.assertTrue(result.success);
+    Ass

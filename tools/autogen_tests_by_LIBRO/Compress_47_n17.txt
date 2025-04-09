@@ -1,0 +1,10 @@
+public void testIssue108() throws IOException {
+    byte[] data = IOUtils.toByteArray(
+        new FileInputStream("src/test/resources/test-bzip2-archive.zip"));
+    try {
+        new ZipArchiveInputStream(new ByteArrayInputStream(data));
+        fail("Exception expected");
+    } catch (IOException e) {
+        assertTrue(e.getMessage().contains("compressed size"));
+    }
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    /*
+     * This test case is inspired from the example
+     * DormandPrince853IntegratorTest.testDoublePendulum()
+     *
+     * When the step is too large, the test case fails with an
+     * IllegalArgumentException: the satellite hits the ground
+     *
+     */
+    final double   g  = 9.81;
+    final double   L1 = 1.0;
+    final double   L2 = 1.0;
+    final double   m1 = 1.0;
+    final double   m2 = 1.0;
+    final double   minStep = 0.;
+    final double   maxStep = g * L2 / (2. * Math.PI);
+    final double[] y = new double[] { Math.PI / 2, Math.PI / 2, 0, 0 };
+    FirstOrderIntegrator integ = new DormandPrince853Integrator(minStep, maxStep, 1.0e-8, 1.0e-8);
+    FirstOrderDifferentialEquations ode = new FirstOrderDifferentialEquations() {
+        public int

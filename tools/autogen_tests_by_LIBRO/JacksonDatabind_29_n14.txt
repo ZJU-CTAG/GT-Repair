@@ -1,0 +1,30 @@
+public void testPolymorphicTypeHandling() throws Exception
+{
+    final String JSON = aposToQuotes("{'value':{'foo':'bar'}}");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, true);
+    try {
+        mapper.readValue(JSON, PolymorphicType.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "missing type id when one is required");
+    }
+}
+
+public static class PolymorphicType {
+    public Value value;
+}
+
+@JsonTypeInfo(use = Id.NAME, property = "type")
+@JsonSubTypes({ @JsonSubTypes.Type(A.class), @JsonSubTypes.Type(B.class) })
+public static class Value
+{
+    public String foo;
+}
+
+public static class A extends Value {
+    public int a;
+}
+
+public static class B extends Value {
+    public int b;

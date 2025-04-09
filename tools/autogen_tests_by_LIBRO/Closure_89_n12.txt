@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final JavaScriptCompiler compiler = new JavaScriptCompiler();
+    final List<String> paths = new ArrayList<String>();
+    paths.add("js/jquery-1.4.2.js");
+    paths.add("js/underscore-1.1.4.js");
+    final CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    final List<JSSourceFile> inputs = new ArrayList<JSSourceFile>();
+    for (final String path : paths) {
+      final JSSourceFile input = JSSourceFile.fromFile(path);
+      inputs.add(input);
+    }
+    final Result result = compiler.compile(null, inputs.toArray(new JSSourceFile[inputs.size()]), options);
+    if (result.success) {
+      System.out.println(compiler.toSource());
+    } else {
+      System.out.

@@ -1,0 +1,27 @@
+public void testMapKeyDeserializerModifiersIgnored() throws Exception {
+    ObjectMapper om = new ObjectMapper();
+    om.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.addDeserializerModifier(new BeanDeserializerModifier() {
+                @Override
+                public KeyDeserializer modifyKeyDeserializer(
+                        DeserializationConfig config,
+                        JavaType type,
+                        KeyDeserializer deserializer) {
+                    if(!type.isEnumType()) {
+                        return super.modifyKeyDeserializer(config, type, deserializer);
+                    }
+                    return new KeyDeserializer() {
+                        @Override
+                        public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+                            // This modification never appears to be called
+                            return key.toUpperCase();
+                        }
+                    };
+                }
+            });
+        }
+    });
+    Map<TestEnum, String> testMap = ImmutableMap.of

@@ -1,0 +1,13 @@
+public void testJira212() throws Exception {
+    String xml = "<ElementA A:myAttr=\"Mytype\">\n" +
+            " <B:ElementB>MY VALUE</B:ElementB>\n" +
+            "</ElementA>";
+    Document document = DocumentHelper.parseText(xml);
+
+    JXPathContext context = JXPathContext.newContext(document);
+    context.registerNamespace("A", "http://A");
+    context.registerNamespace("B", "http://B");
+    context.createPathAndSetValue("/ElementA/ElementB", "NEW VALUE");
+
+    System.out.println(document.asXML());
+}

@@ -1,0 +1,13 @@
+public void testAtomicReference() throws IOException
+{
+    AtomicReference<AtomicReference<Integer>> intRef = MAPPER.readValue(" {\"refRef\": 2 } ",
+            new TypeReference<AtomicReference<AtomicReference<Integer>>>() { });
+    assertNotNull(intRef);
+    assertNotNull(intRef.get());
+    assertEquals(Integer.valueOf(2), intRef.get().get());
+
+    AtomicReference<AtomicReference<Integer>> nullRef = MAPPER.readValue(" {\"refRef\": null } ",
+            new TypeReference<AtomicReference<AtomicReference<Integer>>>() { });
+    assertNotNull(nullRef);
+    assertNull(nullRef.get());
+}

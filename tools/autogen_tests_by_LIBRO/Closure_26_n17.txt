@@ -1,0 +1,21 @@
+public void testProcessCommonJSModules() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.setPassConfig(new PassConfig(options));
+    compiler.disableThreads();
+
+    String js = "define(function() { return {\n" +
+            " echo: function(val) {\n" +
+            " window.console.log(val);\n" +
+            " }\n" +
+            "}});";
+    CompilerInput input = new CompilerInput(SourceFile.fromCode("echo.js", js));
+    compiler.compile(Collections.singletonList(input), options);
+
+    js = "var echo = require('echo');\n" +
+            "echo.echo('hello world');";
+    input = new CompilerInput(SourceFile

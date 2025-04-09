@@ -1,0 +1,14 @@
+public void testIssue804() throws Exception {
+    String js = "";
+    Compiler compiler = new Compiler();
+    compiler.initOptions(Options.parseCompilerFlags(
+        Lists.newArrayList("--transform_amd_modules",
+            "--process_common_js_modules",
+            "--common_js_entry_module=Bar.js",
+            "--js_output_file=out.js")));
+    Result result = compiler.compileModules(
+        "module$Bar",
+        Lists.newArrayList(SourceFile.fromCode("/tmp/Bar.js", js),
+            SourceFile.fromCode("/tmp/lib/Foo.js", js)));
+    assertTrue(result.success);
+}

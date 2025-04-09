@@ -1,0 +1,11 @@
+public void testIssue624() {
+    TreeMap<String, Integer> map = new TreeMap<>();
+    map.put("test", 1);
+    ConcurrentNavigableMap<String, Integer> cnm = new ConcurrentSkipListMap<>(map);
+    JsonObject o = new JsonObject();
+    o.add("map", TreeMap.class, cnm);
+    String s = o.toString();
+    JsonObject o2 = JsonParser.parseString(s).getAsJsonObject();
+    ConcurrentNavigableMap<String, Integer> cnm2 = o2.get("map", TreeMap.class);
+    assertEquals(1, (int)cnm2.get("test"));
+}

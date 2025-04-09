@@ -1,0 +1,6 @@
+public void testIssue() {
+    String s = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += \"2\"; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(s);
+    assertEquals("function b() { var a; try { a = \"1\" + somefunction() }catch(c) { } try { a = a + \"2\" + somefunction() }catch(d) { } document.write(a) } b(); b();", result.compiled);
+}

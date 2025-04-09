@@ -1,0 +1,17 @@
+public void testEscaping() throws IOException {
+    CsvFormat format = CsvFormat.DEFAULT
+            .withNullString("\\N")
+            .withEscape('\\');
+    List<String> data = new ArrayList<>();
+    data.add("\\N");
+    data.add("\\N");
+    try (StringWriter sw = new StringWriter()) {
+        try (CsvPrinter printer = new CsvPrinter(sw, format)) {
+            for (String value : data) {
+                printer.print(value);
+            }
+            printer.flush();
+        }
+        assertEquals("\\\\N\\N", sw.toString());
+    }
+}

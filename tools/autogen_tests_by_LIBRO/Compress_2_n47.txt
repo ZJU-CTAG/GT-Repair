@@ -1,0 +1,13 @@
+public void testARDelete() throws Exception {
+    File file = new File("target/test.ar");
+    file.delete();
+    final ArchiveOutputStream archiveOutputStream = new ArchiveStreamFactory().createArchiveOutputStream("ar", new FileOutputStream(file));
+    archiveOutputStream.putArchiveEntry(archiveOutputStream.createArchiveEntry(new File("src/test/resources/test1.xml"), "test1.xml"));
+    IOUtils.copy(new FileInputStream("src/test/resources/test1.xml"), archiveOutputStream);
+    archiveOutputStream.closeArchiveEntry();
+    archiveOutputStream.putArchiveEntry(archiveOutputStream.createArchiveEntry(new File("src/test/resources/test2.xml"), "test2.xml"));
+    IOUtils.copy(new FileInputStream("src/test/resources/test2.xml"), archiveOutputStream);
+    archiveOutputStream.closeArchiveEntry();
+    archiveOutputStream.close();
+
+    final ArchiveInputStream archiveInputStream = new ArchiveStreamFactory().createArchiveInputStream("ar", new FileInputStream(file

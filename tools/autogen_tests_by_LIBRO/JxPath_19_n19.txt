@@ -1,0 +1,17 @@
+public void testNamespaceIssue() throws Exception {
+  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  dbf.setNamespaceAware(true);
+  DocumentBuilder db = dbf.newDocumentBuilder();
+  Document document = db.parse(getClass().getClassLoader().getResourceAsStream("jxpath-namespace-bug.xml"));
+  JXPathContext context = JXPathContext.newContext(document);
+  context.registerNamespace("a", "ns");
+  context.registerNamespace("b", "ns");
+  Iterator itr = context.iteratePointers("//*[namespace-uri() = 'ns']");
+  assertTrue(itr.hasNext());
+  Pointer p = (Pointer)itr.next();
+  assertEquals("a:elem", p.asPath());
+  assertTrue(itr.hasNext());
+  p = (Pointer)itr.next();
+  assertEquals("b:elem", p.asPath());
+  assertFalse(itr.hasNext());
+}

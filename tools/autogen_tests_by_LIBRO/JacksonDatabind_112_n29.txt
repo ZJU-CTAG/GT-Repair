@@ -1,0 +1,15 @@
+public void testRepro() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    mapper.registerModule(new SimpleModule().addDeserializer(StringCollection.class, new JsonDeserializer<StringCollection>() {
+        @Override
+        public StringCollection deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            // this "immutable" is a static factory method
+            return StringCollection.immutable(p.readValueAs(StringCollection.class));
+        }
+    }));
+
+    String json = "{\"col\": [\"1\", \"2\"]}";
+    Foo f = mapper.readValue(json, Foo.class);
+    assertArrayEquals(new String[] {"1", "2"}, f.col.toArray());
+}

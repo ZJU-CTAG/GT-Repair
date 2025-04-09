@@ -1,0 +1,13 @@
+public void testIssue118() throws IOException {
+    File f = new File("testIssue118.tar");
+    FileOutputStream fos = new FileOutputStream(f);
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(fos);
+
+    TarArchiveEntry e = new TarArchiveEntry("testIssue118.txt");
+    tos.putArchiveEntry(e);
+    tos.write("testIssue118".getBytes());
+    tos.closeArchiveEntry();
+    tos.close();
+    fos.close();
+    assertEquals(f.length(), tos.getBytesWritten());
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    String code = "alert({0:0, 1:1});";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    CompilerOptions options = compiler.getOptions();
+    compiler.compile(SourceFile.fromCode("testIssue108", code), options);
+    Node root = compiler.getRoot();
+    boolean found = false;
+    for (Node node : root.children()) {
+        if (node.isExprResult()) {
+            Node call = node.getFirstChild();
+            if (call.getFirstChild().isString()) {
+                assertEquals("{0:0, 1:1}", call.getFirstChild().getString());
+                found = true;
+            }
+        }
+    }
+    assertTrue(found);
+}

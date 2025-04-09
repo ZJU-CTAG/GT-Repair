@@ -1,0 +1,11 @@
+public void testShortFile() throws IOException {
+    String text = "this is a test";
+    ByteArrayInputStream in = new ByteArrayInputStream(text.getBytes("UTF-8"));
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    try {
+        factory.createArchiveInputStream(in);
+        fail("shouldn't be able to create a TAR stream");
+    } catch(ArchiveException e) {
+        assertTrue(e.getMessage().contains("No Archiver found"));
+    }
+}

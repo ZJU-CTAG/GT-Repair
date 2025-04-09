@@ -1,0 +1,15 @@
+public void testUnicodeWinZip() throws Exception {
+    final File archive = getFile("unicode-zip.zip");
+    final ZipFile zf = new ZipFile(archive);
+    final Enumeration<ZipArchiveEntry> e = zf.getEntries();
+    while (e.hasMoreElements()) {
+        final ZipArchiveEntry entry = e.nextElement();
+        final InputStream is = zf.getInputStream(entry);
+        // It's OK if the entry is a directory.
+        if (is != null) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            assertEquals("\u00E6", br.readLine());
+            br.close();
+        }
+    }
+}

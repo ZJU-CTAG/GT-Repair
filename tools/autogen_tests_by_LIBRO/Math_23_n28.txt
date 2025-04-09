@@ -1,0 +1,23 @@
+public void testBrent() {
+  //
+  // Test that BrentOptimizer correctly finds the minimum of the quadratic function.
+  // (This is a simple 1D optimization problem for which the exact solution is known.)
+  //
+  UnivariateFunction f = new UnivariateFunction() {
+    public double value(double x) {
+      return 1 - (x - 1) * (x - 1);
+    }
+  };
+  double min = -1.0;
+  double max = +3.0;
+  double start = 0.0;
+  // (Even though this is not a complicated function, we use MaxEval below to
+  //  force BrentOptimizer to use the "sinuous" update path.)
+  int maxEval = 100;
+  UnivariatePointValuePair result =
+      new BrentOptimizer(1e-10, 1e-14).optimize(
+          new MaxEval(maxEval),
+          new UnivariateObjectiveFunction(f),
+          GoalType.MINIMIZE,
+          new SearchInterval(min, max, start));
+  assertEquals(1.

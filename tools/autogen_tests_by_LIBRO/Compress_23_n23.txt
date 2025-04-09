@@ -1,0 +1,10 @@
+public void testIssue7z() throws Exception {
+    SevenZFile input = new SevenZFile(new File("src/test/resources/test7z/compress-1.7-src.7z"));
+    byte[] buf = new byte[2000];
+    SevenZArchiveEntry entry = input.getNextEntry();
+    int size = input.read(buf);
+    assertEquals("LICENSE", entry.getName());
+    assertEquals(2052, size);
+    assertEquals('L', buf[0]);
+    assertEquals('i', buf[1]);
+}

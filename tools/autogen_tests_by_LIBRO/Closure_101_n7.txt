@@ -1,0 +1,15 @@
+public void testClosurePrimitives() {
+    CommandLineRunner runner = new CommandLineRunner(
+        new PrintStream(new ByteArrayOutputStream()), new PrintStream(new ByteArrayOutputStream()),
+        System.in, new CompilerOptions());
+    runner.setRunAsync(false);
+    try {
+        runner.doRun(
+            new String[] {"--process_closure_primitives", "false", "test/resources/primitives.js"});
+        String output = runner.getOutputStream().toString();
+        assertTrue(output.indexOf("goog.provide") != -1);
+        assertTrue(output.indexOf("goog.require") != -1);
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+}

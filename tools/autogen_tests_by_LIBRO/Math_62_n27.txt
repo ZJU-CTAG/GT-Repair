@@ -1,0 +1,19 @@
+public void testConvergenceChecker() {
+    final double[] min = new double[2];
+    final double[] max = new double[2];
+    for (int i = 0; i < min.length; ++i) {
+        min[i] = 0.0;
+        max[i] = 1.0;
+    }
+    final double[] start = new double[] { 0.4, 0.4 };
+    final ConvergenceChecker<VectorialPointValuePair> checker = new SimpleVectorValueChecker(1.0e-6, 1.0e-6);
+    final BaseAbstractMultivariateVectorialOptimizer<DifferentiableMultivariateVectorialFunction> optimizer =
+      new PowellOptimizer(maxEval, checker);
+    optimizer.optimize(new MaxEval(maxEval),
+                       new DifferentiableMultivariateVectorialFunction() {
+                           private final MultivariateRealFunction f1 = new MultivariateRealFunction() {
+                                   public double value(final double[] x) {
+                                       return x[0];
+                                   }
+                               };
+                

@@ -1,0 +1,24 @@
+public void testParseInto() {
+    DateTimeZone zone = DateTimeZone.forID("America/New_York");
+    int defaultYear = 2000;
+    DateTimeFormatter f = new DateTimeFormatterBuilder()
+            .appendDayOfWeekShortText()
+            .appendLiteral(", ")
+            .appendMonthOfYearShortText()
+            .appendLiteral(' ')
+            .appendDayOfMonth(1)
+            .appendLiteral(' ')
+            .appendHourOfDay(1)
+            .appendLiteral(':')
+            .appendMinuteOfHour(2)
+            .appendLiteral(':')
+            .appendSecondOfMinute(2)
+            .appendLiteral(' ')
+            .appendTimeZoneShortName(null)
+            .toFormatter()
+            .withZone(zone)
+            .withDefaultYear(defaultYear);
+
+    // This method will work with the current implementation...
+    DateTime dt = f.parseDateTime("Wed, Aug 29 16:14:11 EDT").withZone(zone);
+    assertEquals(

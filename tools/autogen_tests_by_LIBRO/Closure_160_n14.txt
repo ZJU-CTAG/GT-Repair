@@ -1,0 +1,22 @@
+public void testCheckVar() {
+  Compiler compiler = new Compiler();
+  String code = "foo={bar:function(){alert(this.baz)}};";
+  compiler.compile(SourceFile.fromCode("test.js", code),
+      new CompilerOptions());
+  List<JSError> errors = compiler.getErrors();
+  assertEquals(0, errors.size());
+}
+
+public void testCheckVarVerbose() {
+  Compiler compiler = new Compiler();
+  compiler.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+  String code = "foo={bar:function(){alert(this.baz)}};";
+  compiler.compile(SourceFile.fromCode("test.js", code),
+      new CompilerOptions());
+  List<JSError> errors = compiler.getErrors();
+  assertEquals(1, errors.size());
+}
+
+public void testCheckVarVerbose2() {
+  Compiler compiler = new Compiler();
+  compiler.setWarningLevel(DiagnosticGroups.VERBOSE

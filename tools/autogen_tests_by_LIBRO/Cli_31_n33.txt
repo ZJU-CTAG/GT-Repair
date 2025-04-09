@@ -1,0 +1,16 @@
+public void testHelpFormatter() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    Options options = new Options();
+    options.addOption(OptionBuilder.hasArg().create('a'));
+    options.addOption(OptionBuilder.hasArg().create('b'));
+    // this does not work
+    formatter.setArgName("foo");
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printHelp(pw, HelpFormatter.DEFAULT_WIDTH, "foo", "bar", options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, "footer", false);
+    pw.flush();
+    String actual = sw.toString();
+    assertTrue(actual.contains("-a <foo>"));
+    assertTrue(actual.contains("-b <foo>"));
+}

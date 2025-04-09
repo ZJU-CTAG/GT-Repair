@@ -1,0 +1,15 @@
+public void testLargeNumberOfWeights() {
+    final int n = 41200;
+    final Weight w = new Weight(n);
+    double[] data = new double[n];
+    new AbstractCurveFitter() {
+        @Override
+        protected LeastSquaresProblem getProblem(double[] point) {
+            return null;
+        }
+    }.withStartPoint(data).withParameterValidator(new ParameterValidator() {
+        public double[] validate(double[] p) {
+            return p;
+        }
+    }).withMaxIterations(1).withWeights(w).fit(data);
+}

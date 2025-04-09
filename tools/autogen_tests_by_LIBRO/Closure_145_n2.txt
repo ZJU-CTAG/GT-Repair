@@ -1,0 +1,21 @@
+public void testBugWithLabeledLoopsAndBreaks() {
+    final String source = "var i = 0;\n" +
+            "lab1: do{\n" +
+            " lab2: do{\n" +
+            " i++;\n" +
+            " if (1) {\n" +
+            " break lab2;\n" +
+            " } else {\n" +
+            " break lab1;\n" +
+            " }\n" +
+            " } while(false);\n" +
+            "} while(false);\n" +
+            "console.log(i);";
+
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("source", source), options);
+    assertEquals(1, result.warnings.length);
+    assertEquals(0, result.errors.length);

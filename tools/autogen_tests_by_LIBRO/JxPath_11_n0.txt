@@ -1,0 +1,13 @@
+public void testIssue() {
+    String xml =
+          "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" +
+          "<test:test xmlns:test=\"http://test\" xmlns:xsi=\"http://test/xsi\" xsi:myAttr=\"Mytype\">" +
+          " <test:ElementB>MY VALUE</test:ElementB> " +
+          "</test:test>";
+    String xpath = "/test:test/test:ElementB";
+    Document doc = new XmlDocument(xml);
+    JexlContext jc = new MapContext();
+    jc.set("doc", doc);
+    Expression e = JexlEngine.create().createExpression(xpath);
+    Object o = e.evaluate(jc);
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckTypes(true);
+    options.setCheckSuspiciousCode(true);
+    options.setAllowHotswapReplaceScript(true);
+    options.setPreserveDetailedSourceInfo(true);
+    compiler.disableThreads();
+    compiler.initOptions(options);
+    Result result = compiler.compile("function Foo() {" +
+        " var self = this;" +
+        " window.setTimeout(function() {" +
+        " window.location = self.location;" +
+        " }, 0);" +
+        "}" +
+        "Foo.prototype.setLocation = function(loc) {" +
+        " this.location = loc;" +
+        "};" +
+        "(new Foo()).setLocation('http://www.google.com/');", null, options);
+    assertTrue(result.success);
+}

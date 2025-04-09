@@ -1,0 +1,28 @@
+public void testPolymorphicSerialization() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.setDefaultTyping(new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE) {
+        @Override
+        public boolean useForType(JavaType t) {
+            return t.getRawClass() == Animal.class;
+        }
+    });
+
+    final Animal animal = new Animal();
+    final String result = mapper.writeValueAsString(animal);
+    
+    final Animal deserialized = mapper.readValue(result, Animal.class);
+    assertEquals(animal, deserialized);
+}
+
+public abstract class Animal {
+    private final String id;
+
+    public Animal() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass())

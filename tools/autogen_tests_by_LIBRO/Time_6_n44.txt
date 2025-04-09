@@ -1,0 +1,16 @@
+public void testGJChronologyBehaviour() {
+    Chronology chronology = GJChronology.getInstance();
+    
+    LocalDate start = new LocalDate(2013, 5, 31, chronology);
+    LocalDate expectedEnd = new LocalDate(-1, 5, 31, chronology); // 1 BC
+    assertThat(start.minusYears(2013), is(equalTo(expectedEnd)));
+    assertThat(start.plus(Period.years(-2013)), is(equalTo(expectedEnd)));
+    
+    start = new LocalDate(1010, 5, 31, chronology);
+    expectedEnd = new LocalDate(-990, 5, 31, chronology); // 1010 BC
+    assertThat(start.minusYears(1000), is(equalTo(expectedEnd)));
+    assertThat(start.plus(Period.years(-1000)), is(equalTo(expectedEnd)));
+    
+    start = new LocalDate(1, 5, 31, chronology);
+    expectedEnd = new LocalDate(-1, 5, 31, chronology); // 1 BC
+    assertThat(start.minusYears(2),

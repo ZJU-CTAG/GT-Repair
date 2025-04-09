@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final double[] lowerBound = new double[3];
+    final double[] upperBound = new double[3];
+    for (int i = 0; i < lowerBound.length; i++) {
+        lowerBound[i] = -100;
+        upperBound[i] = 100;
+    }
+
+    final CMAESOptimizer optimizer = new CMAESOptimizer(100, 0, true, 0, 0, new MersenneTwister(), false, 0);
+    final double[] startPoint = new double[] { 0, 0, 0 };
+    final double[] minimum = optimizer.optimize(new MaxEval(5000),
+                                                new ObjectiveFunction(new MultivariateFunction() {
+                                                    public double value(double[] point) {
+                                                        return point[0] * point[0] + point[1] * point[1] + point[2] * point[2];
+                                                    }
+                                                }),
+                                                GoalType.MINIMIZE,
+                                                new InitialGuess(startPoint),
+                                                new SimpleBounds

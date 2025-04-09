@@ -1,0 +1,30 @@
+public void testCustomConstructorNamingWithAnnotations() throws Exception {
+  ObjectMapper objectMapper = new ObjectMapper()
+    .registerModule(new Jdk8Module())
+    .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
+  String json = '{
+    "id": 1,
+    "first_name": "Joe",
+    "last_name": "Doe"
+  }';
+
+  Person person = objectMapper.readValue(json, Person.class);
+
+  assertEquals(1, person.getId());
+  assertEquals("Joe", person.getFirstName());
+  assertEquals("Doe", person.getLastName());
+}
+
+static class Person {
+  private final long id;
+  private final String firstName;
+  private final String lastName;
+
+  @JsonCreator
+  Person(
+    @JsonProperty("id") long id,
+    @JsonProperty("first_name") String firstName,
+    @JsonProperty("last_name") String lastName) {
+    this.id = id;
+   

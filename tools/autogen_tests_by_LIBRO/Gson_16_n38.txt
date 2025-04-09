@@ -1,0 +1,14 @@
+public void testIssue() {
+    class TypeA<T> {
+        TypeB<T> b;
+    }
+
+    class TypeB<T> {
+        TypeA<? super T> a;
+    }
+
+    TypeA<?> test = new Gson().fromJson("{\"b\":{\"a\":{}}}", new TypeToken<TypeA<?>>() {
+    }.getType());
+
+    assertEquals("{\"b\":{\"a\":{}}}", new Gson().toJson(test));
+}

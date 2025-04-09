@@ -1,0 +1,14 @@
+public void testIssue112() throws JsonGenerationException, IOException {
+    StringWriter sw = new StringWriter();
+    JsonFactory jsonFactory = new JsonFactory();
+    UTF8JsonGenerator generator = (UTF8JsonGenerator) jsonFactory.createGenerator(sw);
+    generator.setPrettyPrinter(new DefaultPrettyPrinter());
+    generator.writeStartObject();
+    generator.writeFieldName("test");
+    generator.writeNumber(1);
+    generator.writeEndObject();
+    generator.close();
+    String result = sw.toString();
+
+    assertEquals("{\"test\":1}\n", result);
+}

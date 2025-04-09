@@ -1,0 +1,11 @@
+public void testBug() {
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setArgName("myarg");
+
+    Option option = OptionBuilder.create('a');
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    formatter.printHelp(pw, 79, "help", null, new Options().addOption(option), 0, 0, null, true);
+    String result = sw.toString();
+    assertTrue(result.contains("myarg"));
+}

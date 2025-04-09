@@ -1,0 +1,13 @@
+public void testIssue108() {
+    double[][] points = new double[][] {{1.0, 1.0}, {2.0, 2.0}, {3.0, 4.0}, {4.0, 4.0}};
+    double[] weights = new double[] {1.0, 1.0, 1.0, 1.0};
+    double[] initialPoint = new double[] {1.0, 1.0};
+    NonLinearLeastSquares solver = new NonLinearLeastSquares(new LevenbergMarquardtOptimizer());
+    solver.setMaxEvaluations(Integer.MAX_VALUE);
+    solver.setMaxIterations(Integer.MAX_VALUE);
+    solver.setModelFunction(new ModelFunction(points, weights));
+    solver.setTarget(new double[points.length]);
+    solver.setWeight(new DiagonalMatrix(weights));
+    solver.init(initialPoint);
+    final VectorialPointValuePair optimum = solver.optimize();
+    assertEquals(2.0, optimum.getPoint()

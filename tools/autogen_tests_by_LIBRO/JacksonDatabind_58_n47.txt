@@ -1,0 +1,14 @@
+public void testIssue108() {
+   ObjectMapper mapper = new ObjectMapper();
+   mapper.configure(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS, true);
+   try {
+      mapper.readValue("{}", MyException.class);
+      fail("exception should have been thrown");
+   } catch (IllegalArgumentException e) {
+      // expected
+   }
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+}

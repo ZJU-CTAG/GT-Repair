@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String source = "function foo() {"
+            + " var arr = [1, 2, 3, 4, 5];"
+            + " for (var i = 0, l = arr.length; i < l; i++) {"
+            + " var j = arr[i];"
+            + " (function() {"
+            + " var k = j;"
+            + " setTimeout(function() { console.log(k); }, 0);"
+            + " })();"
+            + " }"
+            + "}";
+    String result = compiler.compile(source, "", "", "", "", "", "", false, false, false, false, false);
+    assertTrue(result.contains("var k = arr[i]"));
+}

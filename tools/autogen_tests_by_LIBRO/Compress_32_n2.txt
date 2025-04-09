@@ -1,0 +1,12 @@
+public void testTarInputStream() throws Exception {
+    TarArchiveEntry entry = new TarArchiveEntry(0x80000000l, "test");
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(out);
+    tos.putArchiveEntry(entry);
+    tos.closeArchiveEntry();
+    tos.close();
+    TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(out.toByteArray()));
+    entry = tis.getNextTarEntry();
+    assertTrue(entry.getUserId() >= 0);
+    assertTrue(entry.getUserId() < 0x80000000l);
+}

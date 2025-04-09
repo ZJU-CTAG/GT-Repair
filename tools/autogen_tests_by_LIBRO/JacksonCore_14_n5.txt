@@ -1,0 +1,18 @@
+public void testIssue108() {
+    // JsonFactory has a similar check, but not all codecs do, so using default one
+    IOContext ioContext = new IOContext(new BufferRecycler(), null, false);
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    byte[] input = new byte[] { 1, 2, 3 };
+    byte[] buffer = ioContext.allocReadIOBuffer(input.length);
+    System.arraycopy(input, 0, buffer, 0, input.length);
+
+    // Happens in Jackson's Base64 codec, which will initialize buffer
+    // to 3/4 of requested size, and write result that fits exactly.
+    // With the current check, it will fail to return the buffer,
+    // and call buffer recycler, which may significantly slow down
+    // performance.
+    int size = (input.length * 3) / 4;
+    byte[] output = new byte[size];
+    Base64.encode(input, 0, input.length, output, 0);
+    ioContext.releaseReadIOBuffer(buffer);
+}

@@ -1,0 +1,11 @@
+public void testIssue151() throws Exception
+{
+    JsonParser parser = JSON_FACTORY.createJsonParser("{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}");
+    JsonParser filteringParser = new FilteringParserDelegate(parser, new NameMatchFilter("value"), true, false);
+    StringWriter out = new StringWriter();
+    JsonGenerator generator = JSON_FACTORY.createJsonGenerator(out);
+    generator.copyCurrentStructure(filteringParser);
+    generator.close();
+
+    assertEquals("{\"ob\":{\"value\":3}}", out.toString());
+}

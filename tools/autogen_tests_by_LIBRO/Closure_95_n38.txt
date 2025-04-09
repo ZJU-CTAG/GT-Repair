@@ -1,0 +1,11 @@
+public void testIssue24() {
+    compilerOptions.setRenamingPolicy(
+        VariableRenamingPolicy.OFF, PropertyRenamingPolicy.OFF);
+    test(
+        "/** @public */ My.Class = {};\n" +
+        "/** @public */ My.Class.prototype.foo = function() {};\n" +
+        "/** @public */ My.Class.prototype.bar = function() {};",
+        "/** @constructor */ My.Class = function() {};" +
+        "My.Class.prototype.foo = function(){};" +
+        "My.Class.prototype.bar = function(){};");
+  }

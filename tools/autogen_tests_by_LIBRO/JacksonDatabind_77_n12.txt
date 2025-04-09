@@ -1,0 +1,20 @@
+public void testJackson() throws Exception {
+
+    // raw JSON content
+    String json = "{\"@type\":\"java.lang.Class\",\"val\":\"com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+
+    // deserialize with the original class
+    Templates templates = mapper.readValue(json, Templates.class);
+    // call the vulnerable method
+    Transformer transformer = templates.newTransformer();
+
+    // verify that the Transformer is a TemplatesImpl
+    if(transformer.getClass().getName().equals(TemplatesImpl.class.getName())){
+        System.out.println("Vulnerable");
+    }else{
+        System.out.println("Not vulnerable");
+    }
+
+}

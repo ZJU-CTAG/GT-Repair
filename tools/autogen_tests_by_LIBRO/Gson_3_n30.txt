@@ -1,0 +1,15 @@
+public void testJsonUtils() throws Exception {
+    ConcurrentNavigableMap<String, String> concurrentMap = new ConcurrentSkipListMap<String, String>();
+    concurrentMap.put("key1", "value1");
+    concurrentMap.put("key2", "value2");
+    concurrentMap.put("key3", "value3");
+    concurrentMap.put("key4", "value4");
+
+    TestObject testObject = new TestObject();
+    testObject.setConcurrentMap(concurrentMap);
+
+    String jsonString = JsonUtils.toJson(testObject);
+    log.debug("json: {}", jsonString);
+    TestObject testObject1 = JsonUtils.fromJson(jsonString, TestObject.class);
+    Assert.assertEquals(concurrentMap, testObject1.getConcurrentMap());
+}

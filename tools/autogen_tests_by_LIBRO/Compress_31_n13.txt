@@ -1,0 +1,15 @@
+public void testIllegalArgumentException() throws Exception {
+File file = File.createTempFile("commons-compress-test", ".tar.gz");
+try {
+    TarArchiveOutputStream out = new TarArchiveOutputStream(new GZIPOutputStream(new FileOutputStream(file)));
+    TarArchiveEntry entry = new TarArchiveEntry(new String("\u0014\u0005y\u0000"));
+    out.putArchiveEntry(entry);
+    out.closeArchiveEntry();
+    out.close();
+    TarArchiveInputStream in = new TarArchiveInputStream(new GZIPInputStream(new FileInputStream(file)));
+    assertNotNull(in.getNextTarEntry());
+    in.close();
+} finally {
+    file.delete();
+}
+}

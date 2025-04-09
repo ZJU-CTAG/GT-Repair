@@ -1,0 +1,21 @@
+public void testLevenbergMarquardtOptimizer() {
+    final double[][] data = new double[][] {
+            {1, 2}, {2, 3}, {3, 4}, {4, 5}
+    };
+    final double[] initial = new double[] {1, 1};
+
+    final CurveFitter curveFitter = new CurveFitter(new LevenbergMarquardtOptimizer(new VectorialConvergenceChecker(1e-10, 1e-10)));
+    for (final double[] datum : data) {
+        curveFitter.addObservedPoint(datum[0], datum[1]);
+    }
+    final double[] result = curveFitter.fit(new Parametric() {
+
+        public double[] gradient(final double[] params, final double x) {
+            return new double[] {1, x};
+        }
+
+        public double value(final double[] params, final double x) {
+            return params[0] + params[1] * x;
+        }
+    }, initial);
+    System.out.println(result[0] + " +

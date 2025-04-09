@@ -1,0 +1,26 @@
+public void testSerializeWithCustomSerializer() {
+    ObjectMapper om = new ObjectMapper();
+    om.setSerializerFactory(new CustomSerializerFactory());
+    om.addMixInAnnotations(MyClass.class, MyClassMixIn.class);
+    MyClass myClass = new MyClass();
+    assertEquals("{\"myClass\":\"myClass\"}", om.writeValueAsString(myClass));
+}
+
+static class MyClass {
+    @JsonValue
+    public String getMyClass() {
+        return "myClass";
+    }
+}
+
+static abstract class MyClassMixIn {
+    @JsonSerialize(using = MyClassSerializer.class)
+    public abstract String getMyClass();
+}
+
+static class MyClassSerializer extends JsonSerializer<String> {
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeStringField("myClass", value);
+    }
+}

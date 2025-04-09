@@ -1,0 +1,15 @@
+public void testNullArgument()
+		throws IOException, InterruptedException
+{
+	NullPointerException ex = new NullPointerException("This is a test exception.");
+	String[] argArray = new String[]{"Foo", null, "Bar"};
+	LoggingEvent event = new LoggingEvent();
+	event.setArgumentArray(argArray);
+
+	LoggingEvent encoded = encodeAndDecode(event);
+	assertNotNull(encoded.getArgumentArray());
+	assertEquals(argArray.length, encoded.getArgumentArray().length);
+	assertEquals(argArray[0], encoded.getArgumentArray()[0]);
+	assertEquals(argArray[1], encoded.getArgumentArray()[1]);
+	assertEquals(argArray[2], encoded.getArgumentArray()[2]);
+}

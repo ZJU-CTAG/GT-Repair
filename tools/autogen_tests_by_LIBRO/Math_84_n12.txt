@@ -1,0 +1,9 @@
+public void testMultiDirectionalCorrectStart() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] {1, 1}, 0);
+    List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] {1, 1}, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] {0, 1}, Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] {1, 0}, Relationship.LEQ, 1));
+    SimplexSolver solver = new SimplexSolver();
+    assertEquals(new PointValuePair(new double[] {0.5, 0.5}, 0.0), solver.optimize(f, constraints, GoalType.MINIMIZE, true));
+}

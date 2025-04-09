@@ -1,0 +1,13 @@
+public void testIssue100() {
+    Map<String, Integer> m = new HashMap<String, Integer>();
+    m.put("a", 1);
+    m.put("b", null);
+    m.put("c", 1);
+    JXPathContext c = JXPathContext.newContext(m);
+    assertTrue("Should be true", (Boolean) c.getValue("a != b"));
+    assertFalse("Should be false", (Boolean) c.getValue("a != c"));
+    assertFalse("Should be false", (Boolean) c.getValue("a = b"));
+    assertTrue("Should be true", (Boolean) c.getValue("a = c"));
+    assertTrue("Should be true", (Boolean) c.getValue("not(a = b)"));
+    assertFalse("Should be false", (Boolean) c.getValue("not(a = c)"));
+}

@@ -1,0 +1,16 @@
+public void testIssue() {
+    String code = "/** @constructor\n" +
+" * @param {...Object} params\n" +
+" */\n" +
+"dojox.gfx.shape.Shape = function(params) {};\n" +
+"dojox.gfx.shape.Shape = dojo.declare(\"dojox.gfx.shape.Shape\", null, /** @lends dojox.gfx.shape.Shape.prototype */ {\n" +
+".......\n" +
+"\n" +
+"});";
+    Compiler compiler = new Compiler();
+    JSError[] errors = compiler.compile(
+            new JSSourceFile[]{
+                    JSSourceFile.fromCode("test.js", code)
+            }, new CompilerOptions()).errors;
+    assertEquals(0, errors.length);
+}

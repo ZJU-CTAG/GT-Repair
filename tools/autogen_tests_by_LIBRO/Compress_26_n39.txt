@@ -1,0 +1,14 @@
+public void testSkip() throws Exception {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    CipherOutputStream cos = new CipherOutputStream(baos, Cipher.getInstance("AES"));
+    cos.write(new byte[16]);
+    cos.write(new byte[16]);
+    cos.write(new byte[15]);
+    cos.flush();
+    ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    CipherInputStream cis = new CipherInputStream(bais, Cipher.getInstance("AES"));
+    assertEquals(1, IOUtils.skip(cis, 1));
+    assertEquals(15, IOUtils.skip(cis, 15));
+    assertEquals(15, IOUtils.skip(cis, 15));
+    assertEquals(0, IOUtils.skip(cis, 1));
+}

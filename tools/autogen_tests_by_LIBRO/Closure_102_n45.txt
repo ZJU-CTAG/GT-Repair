@@ -1,0 +1,12 @@
+public void testIssue108() {
+    StringBuffer sb = new StringBuffer();
+    CompilerEnvirons ce = new CompilerEnvirons();
+    Parser p = new Parser(ce, this);
+    p.parse(new String(
+          "function name() {" +
+          " var arguments = Array.prototype.slice.call(arguments, 0);" +
+          "}"), null, 0);
+    
+    p.getNode().toString(sb);
+    assertEquals("function name() { var c=Array.prototype.slice.call(c,0); }", sb.toString());
+}

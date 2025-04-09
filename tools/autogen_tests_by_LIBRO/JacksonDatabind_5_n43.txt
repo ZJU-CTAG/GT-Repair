@@ -1,0 +1,19 @@
+public void testMixinAnnotationIssue() throws Exception {
+    Module module = new SimpleModule();
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+        .disable(MapperFeature.AUTO_DETECT_FIELDS)
+        .disable(MapperFeature.AUTO_DETECT_GETTERS)
+        .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+        .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    module.setMixInAnnotation(Person.class, PersonMixin.class);
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.registerModule(module);
+    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    Person person = new PersonImpl();
+    String json = objectMapper.writeValueAsString(person);
+    assertEquals("{\"city\":null}", json);
+}
+
+public interface Contact {
+    String getCity();
+}

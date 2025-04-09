@@ -1,0 +1,17 @@
+public void testLongDirectoryName() throws Exception {
+    File file = new File("test.tar");
+    file.deleteOnExit();
+
+    StringBuilder dirNameBuilder = new StringBuilder();
+    for (int i=0; i<100; i++) {
+        dirNameBuilder.append("a");
+    }
+    dirNameBuilder.append("/");
+    String dirName = dirNameBuilder.toString();
+
+    TarArchiveOutputStream tos = new TarArchiveOutputStream(new FileOutputStream(file));
+    tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+    tos.putArchiveEntry(new TarArchiveEntry(dirName));
+    tos.closeArchiveEntry();
+    tos.close();
+}

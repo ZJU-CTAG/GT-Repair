@@ -1,0 +1,16 @@
+public void testIssue() {
+    String xml = "<a xmlns=\"http://www.a.com\">" +
+            "<b xmlns=\"http://www.b.com\">" +
+            "<c xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"someType\">" +
+            "</c></b></a>";
+
+    Document d = null;
+    try {
+        d = DocumentHelper.parseText(xml);
+    } catch (DocumentException e) {
+        fail(e.getMessage());
+    }
+
+    DOMNodePointer pointer = new DOMNodePointer(null, d.getRootElement());
+    assertEquals("someType", pointer.getValue("/a/b/c/@xsi:type"));
+}

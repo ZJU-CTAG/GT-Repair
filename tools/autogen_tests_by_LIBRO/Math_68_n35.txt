@@ -1,0 +1,26 @@
+public void testLevenbergMarquardtOptimizerConvergence() {
+    MultivariateRealFunction f = new MultivariateRealFunction() {
+        public double value(double[] x) {
+            return x[0] * x[0] + x[1] * x[1];
+        }
+    };
+
+    MultivariateVectorialFunction g = new MultivariateVectorialFunction() {
+        public double[] value(double[] x) {
+            return new double[] { 2 * x[0], 2 * x[1] };
+        }
+    };
+
+    LevenbergMarquardtOptimizer lmo = new LevenbergMarquardtOptimizer();
+
+    try {
+        lmo.optimize(f, g, new double[] { 100, 100 },
+                new VectorialConvergenceChecker(10E-10,
+                        10E-10));
+        fail("An exception should have been thrown");
+    } catch (ConvergenceException e) {
+        // this is the expected behavior
+    }
+
+    try {
+        lmo.optimize(f, g, new double[] {

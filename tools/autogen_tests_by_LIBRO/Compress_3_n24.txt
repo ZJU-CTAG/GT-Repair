@@ -1,0 +1,20 @@
+public void testFinish() throws Exception {
+    File file = new File("target/out.zip");
+    file.delete();
+    file.deleteOnExit();
+
+    try (final ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file))) {
+        zos.putNextEntry(new ZipEntry("foo"));
+        zos.write(new byte[]{'f', 'o', 'o'});
+        zos.putNextEntry(new ZipEntry("bar"));
+        zos.write(new byte[]{'b', 'a', 'r'});
+        zos.finish();
+    }
+
+    try (final ZipInputStream zis = new ZipInputStream(new FileInputStream(file))) {
+        assertEquals("foo", zis.getNextEntry().getName());
+        assertEquals(3, zis.read(new byte[3]));
+        assertEquals("bar", zis.getNextEntry().getName());
+        assertEquals(3, zis.read(new byte[3]));
+        assertNull(zis.getNextEntry());
+    }

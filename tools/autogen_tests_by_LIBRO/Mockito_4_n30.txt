@@ -1,0 +1,25 @@
+public void testVerifyZeroInteractions() throws Exception {
+        final String methodName = "getTest";
+        final DefaultAnswer<?> defaultAnswer = new DefaultAnswer<Object>() {
+            @Override
+            public Object answer(final InvocationOnMock invocation) throws Throwable {
+                return null;
+            }
+        };
+
+        final Test test = new Test();
+        final Test mock = Mockito.mock(Test.class, defaultAnswer);
+
+        mock.getTest();
+
+        Mockito.verifyZeroInteractions(test);
+        Mockito.verifyZeroInteractions(mock);
+        Mockito.verify(mock, Mockito.times(1)).getTest();
+    }
+
+    public static class Test {
+
+        public Test getTest() {
+            return this;
+        }
+    }

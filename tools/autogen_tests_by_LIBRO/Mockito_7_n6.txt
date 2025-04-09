@@ -1,0 +1,31 @@
+public void testDeepStubbingWithGenericResponses() {
+    MyClass1<MyClass2Impl> myMock1 = mock(MyClass1.class, RETURNS_DEEP_STUBS);
+
+    when(myMock1.getNested().getNested().returnSomething()).thenReturn("Hello World.");
+
+    assertEquals("Hello World.", myMock1.getNested().getNested().returnSomething());
+}
+
+public static class MyClass1Impl<MC2 extends MyClass2> implements MyClass1<MC2> {
+    private MC2 nested;
+
+    public MyClass1Impl(MC2 nested) {
+        this.nested = nested;
+    }
+
+    @Override
+    public MC2 getNested() {
+        return nested;
+    }
+}
+
+public static interface MyClass1<MC2 extends MyClass2> {
+    public MC2 getNested();
+}
+
+public static interface MyClass2<MC3 extends MyClass3> {
+    public MC3 getNested();
+}
+
+public static interface MyClass3 {
+    public String returnSomething();

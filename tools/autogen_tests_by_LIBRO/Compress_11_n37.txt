@@ -1,0 +1,18 @@
+public void testCreateArchiveInputStreamDetectsTextFilesLessThan100BytesAsTarArchives() throws Exception {
+    final String TEXT_FILE_PATH = "src/test/resources/input/test.txt";
+    final String TEXT_FILE_CONTENT = "This is a test text file.";
+    try (
+            final FileOutputStream fos = new FileOutputStream(TEXT_FILE_PATH);
+            final OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            final OutputStreamWriter bufferedOsw = new BufferedWriter(osw)
+    ) {
+        bufferedOsw.write(TEXT_FILE_CONTENT);
+    }
+    try (
+            final FileInputStream fis = new FileInputStream(TEXT_FILE_PATH);
+            final InputStream bufferedIs = new BufferedInputStream(fis);
+            final ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(bufferedIs)
+    ) {
+        assertNull(ais);
+    }
+}

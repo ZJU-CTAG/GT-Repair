@@ -1,0 +1,11 @@
+public void testIssue7f() {
+    String code = "var foo = '\u007f';";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setOutputCharset("UTF-8");
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(JSSourceFile.fromCode("<input>", code),
+        JSSourceFile.fromCode("<input>", code), options);
+    assertTrue(result.success);
+    assertEquals("var foo=\"\";", compiler.toSource());
+}

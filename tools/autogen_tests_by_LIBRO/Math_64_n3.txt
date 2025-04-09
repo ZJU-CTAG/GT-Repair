@@ -1,0 +1,18 @@
+public void testIssue() {
+    double[] x = new double[]{0.0};
+    double[][] p = new double[][]{{1.0}};
+    RealMatrix xMatrix = MatrixUtils.createColumnRealMatrix(p);
+    double[] y = new double[]{1.0};
+    double[] s = new double[]{1.0};
+    LeastSquaresProblem lsp = new LeastSquaresBuilder()
+            .start(x)
+            .target(y)
+            .weight(new DiagonalMatrix(s))
+            .model(new MultivariateJacobianFunction() {
+                @Override
+                public Pair<RealVector, RealMatrix> value(RealVector rv) {
+                    RealMatrix jacobian = MatrixUtils.createRealMatrix(1, 1);
+                    jacobian.setEntry(0, 0, 1.0);
+                    return new Pair<RealVector, RealMatrix>(MatrixUtils.createRealVector(new double[]{1.0}), jacobian);
+                }
+            }).lazyEvaluation(false).maxIterations(100).

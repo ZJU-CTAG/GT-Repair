@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String code = "" +
+            "function () {" +
+            "  return function () {" +
+            "    var arg = arguments;" +
+            "    setTimeout(function() { alert(args); }, 0);" +
+            "  }" +
+            "}";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.collapsePropertiesOnExternTypes = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("input", code)}, options);
+    String output = compiler.toSource();
+    assertFalse("arguments should not be collapsed", output.contains("call(this,args)"));
+}

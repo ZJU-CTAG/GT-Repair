@@ -1,0 +1,12 @@
+public void testNullString() throws Exception {
+    final CSVFormat csvFormat = CSVFormat.newFormat('\0').withNullString("a").withEscape('\0');
+    final StringWriter sw = new StringWriter();
+    final CSVPrinter printer = new CSVPrinter(sw, csvFormat);
+    try {
+        printer.print(new Object[] {null});
+        printer.flush();
+        assertEquals("a", sw.toString());
+    } finally {
+        printer.close();
+    }
+}

@@ -1,0 +1,25 @@
+public void testMultiplePrefixesForSameNamespaceURI() throws Exception {
+    DocumentBuilder docBuilder =
+        DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+    Document doc = docBuilder.newDocument();
+    Element root = doc.createElement("a:doc");
+    doc.appendChild(root);
+    root.setAttribute("xmlns:a", "ns");
+    Element ea = doc.createElement("a:elem");
+    root.appendChild(ea);
+    Element eb = doc.createElement("b:elem");
+    root.appendChild(eb);
+    eb.setAttribute("xmlns:b", "ns");
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+
+    Pointer ptr = null;
+    int count = 0;
+    for (Iterator<Pointer> iter = ctx.iteratePointers("//*[local-name(.) = 'elem']");
+        iter.hasNext();
+        ptr = iter.next()) {
+        assertNotNull(ptr);
+        count++;
+    }
+    assertEquals(2, count);

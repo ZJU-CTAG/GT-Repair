@@ -1,0 +1,13 @@
+public void testJSModule() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setPrettyPrint(true);
+    options.setMuteWarnings(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    compiler.compile(JSSourceFile.fromCode("echo.js", "define(function() { return {\n echo: function(val) {\n window.console.log(val);\n }\n}});\n"), JSSourceFile.fromCode("echo-main.js", "var echo = require('echo');\necho.echo('hello world');"), options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarnings().length);
+}

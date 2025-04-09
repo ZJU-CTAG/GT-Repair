@@ -1,0 +1,17 @@
+public void testIssue1270() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new GuavaModule())
+            .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+            .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    ImmutableMap<TestEnum, String> map = ImmutableMap.of(TestEnum.V1, "v1");
+    String json = mapper.writeValueAsString(map);
+    assertEquals("{\"v1\":\"v1\"}", json);
+    ImmutableMap<TestEnum, String> read = mapper.readValue(json,
+            new TypeReference<ImmutableMap<TestEnum, String>>() {
+            });
+    assertEquals(map, read);
+}
+public enum TestEnum {
+    V1, V2
+}

@@ -1,0 +1,28 @@
+public void testIssue() {
+    MyClass1<MyClass1Impl> myMock1 = mock(MyClass1.class, RETURNS\_DEEP\_STUBS);
+
+    when(myMock1.getNested().getNested().returnSomething()).thenReturn("Hello World.");
+    assertEquals("Hello World.", myMock1.getNested().getNested().returnSomething());
+}
+
+public static interface MyClass1 <MC2 extends MyClass2> {
+    public MC2 getNested();
+}
+
+public static interface MyClass2<MC3 extends MyClass3> {
+    public MC3 getNested();
+}
+
+public static interface MyClass3 {
+    public String returnSomething();
+}
+
+public static class MyClass1Impl implements MyClass1<MyClass2Impl> {
+    public MyClass2Impl getNested() {
+        return new MyClass2Impl();
+    }
+}
+
+public static class MyClass2Impl implements MyClass2<MyClass3Impl> {
+    public MyClass3Impl getNested() {
+        return new MyClass3Impl

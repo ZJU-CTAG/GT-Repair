@@ -1,0 +1,18 @@
+public void testAssignmentRemoval() {
+String testInput = "function closureCompilerTest(someNode) {\n" +
+  " var nodeId;\n" +
+  " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);\n" +
+  "}\n";
+
+String testOutput = "function closureCompilerTest(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0}";
+
+CompilerOptions options = new CompilerOptions();
+CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+Compiler compiler = new Compiler(new PrintStream(new NullOutputStream()));
+Results results = compiler.compile(
+  "", // externs
+  testInput,
+  options
+);
+assertEquals(testOutput, results.compiledSource);
+}

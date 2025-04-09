@@ -1,0 +1,16 @@
+public void testTarArchiveOutputStreamBytesWritten() throws Exception {
+    TarArchiveOutputStream sTarOut = new TarArchiveOutputStream(new ByteArrayOutputStream());
+    File sSource = new File("src/test/resources/sample-tar-file.tar");
+    TarArchiveEntry sEntry = new TarArchiveEntry(sSource);
+    sTarOut.putArchiveEntry(sEntry);
+    FileInputStream sInput = new FileInputStream(sSource);
+    byte[] cpRead = new byte[8192];
+    int iRead = 0;
+    while ((iRead = sInput.read(cpRead)) > 0) {
+        sTarOut.write(cpRead, 0, iRead);
+    }
+    assertEquals(sSource.length(), sTarOut.getBytesWritten());
+    sInput.close();
+    sTarOut.closeArchiveEntry();
+    sTarOut.close();
+}

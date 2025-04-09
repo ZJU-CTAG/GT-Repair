@@ -1,0 +1,13 @@
+public void testProperties() throws Exception {
+    Properties p = new Properties();
+    p.put("x", Integer.valueOf(4));
+    String json = mapper.writeValueAsString(p);
+    assertEquals("{\"x\":4}", json);
+    
+    Map<String,Object> map = mapper.readValue(json, Map.class);
+    assertEquals(1, map.size());
+    Object value = map.get("x");
+    assertNotNull(value);
+    assertEquals(Integer.class, value.getClass());
+    assertEquals(Integer.valueOf(4), value);
+}

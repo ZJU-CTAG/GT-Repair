@@ -1,0 +1,28 @@
+public void testVoid() {
+    String requestUrl = "https://jsonplaceholder.typicode.com/posts";
+
+    HttpHeaders authHeaders = new HttpHeaders();
+    authHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+    Dto dto = new Dto();
+    dto.title = "foo";
+    dto.body = "bar";
+    dto.userId = 1;
+
+    ResponseEntity<Void> response = getRestTemplate().exchange(
+            requestUrl,
+            HttpMethod.PATCH,
+            new HttpEntity<>(dto, authHeaders),
+            Void.class
+    );
+}
+
+public RestTemplate getRestTemplate() {
+    return new RestTemplate();
+}
+
+class Dto {
+    public String title;
+    public String body;
+    public int userId;
+}

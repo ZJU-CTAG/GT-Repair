@@ -1,0 +1,15 @@
+public void testTreeTraversingParser() throws Exception {
+    final JsonNode rootNode = new ObjectMapper().readTree(
+            "{ \"binary\" : {\"$binary\" : \"AQIDBA==\", \"$type\" : \"03\"}}");
+    final JsonParser jp = new TreeTraversingParser(rootNode, new ObjectCodec());
+    final JsonToken t = jp.nextToken();
+    assertEquals(JsonToken.START_OBJECT, t);
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.START_OBJECT, jp.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals(JsonToken.VALUE_EMBEDDED_OBJECT, jp.nextToken());
+    final byte[] bytes = jp.getBinaryValue();
+    assertEquals(4, bytes.length);
+    assertEquals(1, bytes[0]);
+    assertEquals(2, bytes[1]);
+    assert

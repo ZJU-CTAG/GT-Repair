@@ -1,0 +1,10 @@
+public void testIssue6() {
+    String foo = "./target/test-classes/commons-compress-1.3-src.tar.bz2";
+    try (TarArchiveInputStream tis = new TarArchiveInputStream(new BZip2CompressorInputStream(new FileInputStream(foo)))) {
+        TarArchiveEntry entry = tis.getNextTarEntry();
+        // changeExtendedTimestamp(tis);
+        while (entry != null) {
+            entry = tis.getNextTarEntry();
+        }
+    }
+}

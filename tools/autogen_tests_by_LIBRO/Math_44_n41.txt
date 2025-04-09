@@ -1,0 +1,18 @@
+public void testIssue108() {
+    LocalDateTime startDateTime = new LocalDateTime(2014, 1, 1, 10, 0, 0);
+    LocalDateTime endDateTime = new LocalDateTime(2014, 1, 1, 12, 0, 0);
+    Period period = new Period(1, PeriodType.hours());
+    LocalDateTime currentDateTime = startDateTime;
+    LocalDateTime previousDateTime = currentDateTime;
+    DateTime start = new DateTime(currentDateTime.toDate());
+    while (currentDateTime.isBefore(endDateTime)) {
+        DateTime end = start.plusMinutes(30);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(fmt.print(start) + " - " + fmt.print(end));
+        start = start.plus(period);
+        currentDateTime = currentDateTime.plus(period);
+        assertTrue(currentDateTime.isAfter(previousDateTime));
+        previousDateTime = currentDateTime;
+    }
+}
+``

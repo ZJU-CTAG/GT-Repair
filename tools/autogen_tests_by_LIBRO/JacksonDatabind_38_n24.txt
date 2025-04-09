@@ -1,0 +1,13 @@
+public void testDeprecatedConstruction() throws Exception
+{
+    // Let's try with collection types first:
+    JavaType t = SimpleType.construct(ArrayList.class);
+    // and then with a custom bean
+    t = SimpleType.construct(MyValue.class);
+    
+    // then let's try constructing type to deserialize into...
+    ObjectMapper mapper = new ObjectMapper();
+    MyValue value = mapper.readValue("{\"a\":1,\"b\":2}", t);
+    assertEquals(1, value.a);
+    assertEquals(2, value.b);
+}

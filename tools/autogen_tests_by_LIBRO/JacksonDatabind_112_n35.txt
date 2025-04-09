@@ -1,0 +1,17 @@
+public void testIssue107() {
+    String json = "{\"strings\":[\"a\",\"b\",\"c\"]}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addDeserializer(ImmutableCollection.class, new ImmutableCollectionDeserializer()));
+    Root root = mapper.readValue(json, Root.class);
+    assertTrue(root.strings instanceof ImmutableCollection);
+    assertEquals(3, root.strings.size());
+    assertEquals("a", root.strings.get(0));
+}
+public class ImmutableCollectionDeserializer extends CollectionDeserializer {
+    public ImmutableCollectionDeserializer() {
+        super(ImmutableCollection.class, new JavaType(String.class));
+    }
+}
+public class Root {
+    public ImmutableCollection<String> strings;
+}

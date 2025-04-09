@@ -1,0 +1,22 @@
+public void testIssue116() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningsGuard(new WarningsGuard() {
+        @Override
+        public CheckLevel level(JSError warning) {
+            if ("JSC_DETERMINISTIC_TEST".equals(warning.getType().key)) {
+                throw new AssertionError("Should not have gotten any warnings");
+            }
+            return warning.getDefaultLevel();
+        }
+    });
+
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("test", "// ==ClosureCompiler==\n"
+        + "// @output_file_name default.js\n"
+        + "// @compilation_level ADVANCED_OPTIMIZATIONS\n"
+        + "// ==/ClosureCompiler==\n"
+        + "\n"
+        + "var t = null;"
+        + "\n

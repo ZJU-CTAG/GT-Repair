@@ -1,0 +1,14 @@
+public void testPrototypeMethod() {
+    String js = "/** @const */\n"
+        + "var foo = {};\n"
+        + "foo.bar = {\n"
+        + " 'bar1': function() { console.log('bar1'); }\n"
+        + "}\n\n"
+        + "/** @constructor */\n"
+        + "function foobar() {}\n"
+        + "foobar.prototype = foo.bar;\n\n"
+        + "foo.foobar = new foobar;\n\n"
+        + "console.log(foo.foobar['bar1']);\n";
+    String compiled = runCompiler(js);
+    assertTrue("Did not contain bar1", compiled.contains("'bar1':function"));
+}

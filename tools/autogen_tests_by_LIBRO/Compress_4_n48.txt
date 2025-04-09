@@ -1,0 +1,26 @@
+public void testFinish() throws Exception {
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ArchiveOutputStream out = new TarArchiveOutputStream(baos);
+    out.putArchiveEntry(new TarArchiveEntry("hello.txt"));
+    out.write("Hello".getBytes("UTF-8"));
+    out.closeArchiveEntry();
+    out.finish();
+    out.close();
+    assertEquals("" +
+            "ustar\u0000" +
+            "00\u0000" +
+            "0000\u0000" +
+            "0000\u0000" +
+            "00000000000\u0000" +
+            "root\u0000" +
+            "root\u0000" +
+            "00000000\u0000" +
+            "00000000\u0000" +
+            "000000" +
+            "hello.txt\u0000" +
+            "\u0000" +
+            "000000\u0000" +
+            "000000\u0000" +
+            "000000\u0000" +
+            "000000\u0000" +
+            "0006\u

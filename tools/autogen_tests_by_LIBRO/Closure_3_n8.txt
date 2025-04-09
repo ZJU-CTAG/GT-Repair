@@ -1,0 +1,8 @@
+public void testIssue107() {
+    String js = "function getStack() { var getErrorObject = function() { try { throw Error(''); } catch(err) { return err; } }; return getErrorObject().stack; } window['getStackTrace']=getStack;";
+    JavaScriptCompressor compressor = new JavaScriptCompressor(new StringReader(js), null);
+    StringWriter writer = new StringWriter();
+    compressor.compress(writer, -1, true, false, false, false);
+    String result = writer.toString();
+    assertEquals("function getStack() { try { throw Error(''); } catch(a) {} return a.stack } window.getStackTrace = getStack", result);
+}

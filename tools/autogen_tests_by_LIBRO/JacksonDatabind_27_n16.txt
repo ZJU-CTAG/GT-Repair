@@ -1,0 +1,9 @@
+public void testExternalTypeIdWithValueBefore() throws Exception
+{
+    String json = "{\"@class\":\"java.lang.Integer\",\"value\":1}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    Object ob = mapper.readValue(json, Object.class);
+    assertEquals(Integer.class, ob.getClass());
+    assertEquals(Integer.valueOf(1), ob);
+}

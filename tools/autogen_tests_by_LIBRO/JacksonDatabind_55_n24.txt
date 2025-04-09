@@ -1,0 +1,15 @@
+public void testIssue110() {
+    ObjectMapper om = new ObjectMapper();
+    EnumMap<MyEnum, String> map = new EnumMap<>(MyEnum.class);
+    map.put(MyEnum.VALUE_ONE, "one");
+    map.put(MyEnum.VALUE_TWO, "two");
+    String json = om.writeValueAsString(map);
+    assertEquals("{\"VALUE_ONE\":\"one\",\"VALUE_TWO\":\"two\"}", json);
+}
+
+public enum MyEnum {
+    @JsonProperty("first")
+    VALUE_ONE,
+    @JsonProperty("second")
+    VALUE_TWO;
+}

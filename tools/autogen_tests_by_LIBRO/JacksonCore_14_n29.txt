@@ -1,0 +1,12 @@
+public void testRelaxedBuffers() throws Exception {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    for (int i = 0; i < 100; i++) {
+        out.write(new byte[1024]);
+    }
+    byte[] src = out.toByteArray();
+    byte[] copy = new byte[src.length];
+    IOContext ctxt = new IOContext(new BufferRecycler(), src, false);
+    new FileCopyStreamImpl().copy(src, 0, src.length, copy, 0, ctxt);
+    assertEquals(0, ctxt.bufferRecycler().readBufferSize());
+    assertEquals(0, ctxt.bufferRecycler().writeBufferSize());
+}

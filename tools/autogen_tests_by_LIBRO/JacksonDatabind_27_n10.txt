@@ -1,0 +1,9 @@
+public void testExternalIdIntrospection() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JacksonAfterburnerModule());
+    mapper.enableDefaultTyping();
+    BeanWithExternalTypeId result = mapper.readValue(aposToQuotes("{'@type':'beanWithExternalTypeId','value':'val'}"), BeanWithExternalTypeId.class);
+    assertEquals(result.getClass(), BeanWithExternalTypeId.class);
+    assertEquals(result.value, "val");
+}

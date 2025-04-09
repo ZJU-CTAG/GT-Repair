@@ -1,0 +1,22 @@
+public void testIssue108() {
+    JSDocInfo info = JSDocInfo.from("@constructor");
+    Node node = new Node(Token.NAME, "C2");
+    node.setJSDocInfo(info);
+    JSType type = new NamedType(node);
+    node = new Node(Token.NAME, "C3");
+    info = new JSDocInfoBuilder(true)
+        .recordConstructor()
+        .recordParameters(
+            new JSTypeExpression(new Node(Token.NAME, "C2"), "<test>"),
+            null).build();
+    node.setJSDocInfo(info);
+    type = new NamedType(node);
+    assertEquals("C2", type.toString());
+}
+
+public void testIssue108_2() {
+    JSDocInfo info = JSDocInfo.from("@constructor");
+    Node node = new Node(Token.NAME, "C2");
+    node.setJSDocInfo(info);
+    JSType type = new NamedType(node);
+    node = new Node(Token.NAME,

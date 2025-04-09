@@ -1,0 +1,18 @@
+public void testIssue() {
+    String filePath = "file.js";
+    String input = "var lit = {\"0102\":\"Zero One Zero Two\"};\n" +
+                   "alert(lit[\"0102\"]);";
+    try {
+        FileUtils.writeStringToFile(new File(filePath), input, "UTF-8");
+        ShellCommand shellCommand = new ShellCommand();
+        shellCommand.setExecutable("java");
+        shellCommand.setArguments("-jar", "yuicompressor-2.4.7.jar", filePath);
+        shellCommand.setWorkingDirectory(new File("."));
+        shellCommand.execute();
+        shellCommand.waitForComplete(0);
+        String output = FileUtils.readFileToString(new File(filePath));
+        assertEquals(input, output);
+    } catch (IOException e) {
+        fail(e.getMessage());
+    }
+}

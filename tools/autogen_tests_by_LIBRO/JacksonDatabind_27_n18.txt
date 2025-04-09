@@ -1,0 +1,10 @@
+public void testWithTypeIdBefore() throws Exception
+{
+    final String json = aposToQuotes("{'@class':'stuff.ExternalIdsTest$MyExternalId','id':'abc'}");
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    MyExternalId result = mapper.readValue(json, MyExternalId.class);
+    assertNotNull(result);
+    assertEquals("stuff.ExternalIdsTest$MyExternalId", result.getClass().getName());
+    assertEquals("abc", result.id);
+}

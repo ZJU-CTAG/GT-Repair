@@ -1,0 +1,19 @@
+public void testIssue123() {
+    String js = "/** @param {Object} a */\n"
+            + "function f(a) {\n"
+            + "	a.prototype = '__proto';\n"
+            + "}\n"
+            + "/** @param {Object} a */\n"
+            + "function g(a) {\n"
+            + " a.prototype = function(){};\n"
+            + "}\n";
+
+    ErrorReporter reporter = new ErrorReporter();
+    JSTypeRegistry registry = new JSTypeRegistry(reporter);
+    JSType globalType = registry.getNativeObjectType(JSTypeNative.GLOBAL_THIS);
+    JSType unknownType = registry.getNativeObjectType(JSTypeNative.UNKNOWN_TYPE);
+    Node root = RhinoParser.parse(new CompilerEnvirons(), reporter, js,
+            "<test>", 0);
+    new ControlFlowAnalysis(reporter, globalType, unknownType, false, true)
+            .process(null, root);
+    new TypeInference(reporter,

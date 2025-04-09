@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String s = "function f(){" +
+            "var a = [], b;" +
+            "a.push(b = []);" +
+            "b[0] = 1;" +
+            "return a;" +
+            "}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode(
+                    "source",
+                    s
+            ),
+            new CompilerOptions()
+    );
+    assertTrue(result.success);
+    assertEquals("function f(){var a=[];a.push([]);return a}", result.compiledSource);
+}

@@ -1,0 +1,19 @@
+public void testNonNumericNumbers() throws Exception {
+    String JSON = "[1, 2.0, \"3.0\", \"4.0e-1\", NaN, Infinity, -Infinity]";
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createParser(JSON);
+    assertEquals(JsonToken.START_ARRAY, p.nextToken());
+
+    assertEquals(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(1, p.getIntValue());
+
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
+    assertEquals(2.0, p.getDoubleValue());
+
+    assertEquals(JsonToken.VALUE_STRING, p.nextToken());
+    assertEquals("3.0", p.getText());
+
+    assertEquals(JsonToken.VALUE_STRING, p.nextToken());
+    assertEquals("4.0e-1", p.getText());
+
+    assertEquals(JsonToken.VALUE_NUMBER_FL

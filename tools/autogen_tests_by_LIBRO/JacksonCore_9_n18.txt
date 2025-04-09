@@ -1,0 +1,12 @@
+public void testGetValueAsString() throws Exception
+{
+    final String DOC = "{\"field\":\"value\"}";
+    JsonFactory jfactory = new JsonFactory();
+    JsonParser jp = jfactory.createParser(DOC);
+    assertToken(JsonToken.START_OBJECT, jp.nextToken());
+    assertToken(JsonToken.FIELD_NAME, jp.nextToken());
+    assertEquals("field", jp.getValueAsString());
+    assertToken(JsonToken.VALUE_STRING, jp.nextToken());
+    assertEquals("value", jp.getValueAsString());
+    assertToken(JsonToken.END_OBJECT, jp.nextToken());
+}

@@ -1,0 +1,18 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    int i = mapper.readValue("\"\"", int.class);
+    assertEquals(0, i);
+    mapper.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    mapper.disable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS);
+    i = mapper.readValue("\"\"", int.class);
+    assertEquals(0, i);
+    try {
+        mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+        i = mapper.readValue("\"\"", int.class);
+        fail();
+    } catch (JsonMappingException e) {
+        verifyException(e, "explicitly marked as null");
+    }
+    try {
+        mapper.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+        i = mapper.readValue("\"\"", int.class);

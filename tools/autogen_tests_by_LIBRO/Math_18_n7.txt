@@ -1,0 +1,33 @@
+public void testIssue() {
+    // The following code creates a model with a single parameter called "A".
+    // The model is the function f(A) = A^2.
+    // The optimizer is given an initial guess of A=5 and a lower bound of A=0.
+    // The optimizer will attempt to minimize f(A) by changing the value of A.
+    Parameter A = new Parameter("A", 5.0);
+    OptimizableFunction f = new OptimizableFunction() {
+        @Override
+        public int getNumArguments() {
+            return 1;
+        }
+
+        @Override
+        public double getLowerBound(int n) {
+            return 0.0;
+        }
+
+        @Override
+        public double getUpperBound(int n) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        @Override
+        public double getValue() {
+            return A.getValue() * A.getValue();
+        }
+
+        @Override
+        public double getValue(double[] x) {
+            return x[0] * x[0];
+        }
+
+        @

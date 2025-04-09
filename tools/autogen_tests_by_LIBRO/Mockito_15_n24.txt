@@ -1,0 +1,15 @@
+public void testCaptureVarArgs() {
+    final List<String> list = new ArrayList<>();
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+    list.add("a");
+    list.add("b");
+    list.add("c");
+
+    verify(list).add(captor.capture());
+
+    assertEquals(3, captor.getAllValues().size());
+    assertEquals("a", captor.getAllValues().get(0));
+    assertEquals("b", captor.getAllValues().get(1));
+    assertEquals("c", captor.getAllValues().get(2));
+}

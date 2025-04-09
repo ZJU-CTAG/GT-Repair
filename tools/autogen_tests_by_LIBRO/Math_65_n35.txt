@@ -1,0 +1,16 @@
+public void testIssue108() {
+    int n = 10;
+    double[] x = new double[n];
+    double[] y = new double[n];
+    double[] sigma = new double[n];
+    for (int i = 0; i < n; i++) {
+        x[i] = i;
+        y[i] = i;
+        sigma[i] = 1;
+    }
+    LeastSquaresProblem problem = Fit.leastSquares(x, y, new PolynomialFunction(1), new DiagonalMatrix(sigma));
+    LeastSquaresProblem problem2 = Fit.leastSquares(x, y, new PolynomialFunction(1), new DiagonalMatrix(sigma));
+    double chiSquare = problem.getChiSquare();
+    double chiSquare2 = problem.getChiSquare();
+    assertEquals(chiSquare, chiSquare2, 1.0e-15);
+}

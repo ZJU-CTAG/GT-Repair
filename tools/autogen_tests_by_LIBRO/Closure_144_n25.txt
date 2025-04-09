@@ -1,0 +1,10 @@
+public void testIssue108() {
+    String code = "function f() { }\nalert(f());";
+    ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    try {
+        engine.eval(code);
+    } catch (ScriptException ex) {
+        assertEquals("sun.org.mozilla.javascript.internal.EvaluatorException: missing ) after argument list (<Unknown source>#1)", ex.getMessage());
+    }
+}

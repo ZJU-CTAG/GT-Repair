@@ -1,0 +1,12 @@
+public void testBigDecimal() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+
+    @SuppressWarnings("deprecation")
+    JsonSchema schema = schemaGen.generateSchema(BigDecimal.class);
+
+    String schemaString = schema.toString();
+    assertEquals("{\"type\":\"object\",\"properties\":{\"$ref\":\"#/definitions/BigDecimal\"}}", schemaString);
+}

@@ -1,0 +1,9 @@
+public void testByteArrayReadValue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectReader reader = mapper.readerFor(int[].class);
+    byte[] bytes = mapper.writeValueAsBytes(new int[]{1, 2, 3});
+    JsonParser parser = mapper.getFactory().createParser(bytes, 0, 2);
+    int[] result = reader.readValue(parser);
+    assertEquals(1, result.length);
+    assertEquals(1, result[0]);
+}

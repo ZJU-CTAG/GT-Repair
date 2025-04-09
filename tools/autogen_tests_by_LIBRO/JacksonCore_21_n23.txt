@@ -1,0 +1,25 @@
+public void testFilteringParserDelegate() throws Exception {
+    JsonNode n = JsonNodeFactory.instance.objectNode()
+            .put("a", 123)
+            .put("b", true)
+            .set("array", JsonNodeFactory.instance.arrayNode().add(1).add(2))
+            .set("ob", JsonNodeFactory.instance.objectNode()
+                .put("value0", 2)
+                .put("value", 3)
+                .put("value2", 4));
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    JsonGenerator g = f.createGenerator(baos);
+    g.writeTree(n);
+    g.close();
+
+    JsonParser p0 = f.createParser(baos.toByteArray());
+
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    g = f.createGenerator(System.out);
+    while (p.nextToken() != null) {
+        g

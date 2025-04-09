@@ -1,0 +1,22 @@
+public void testIssue1075() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(new POJO(new Sub1()));
+        assertEquals("{\"type\":\"Sub1\",\"value\":{\"value\":\"value\"}}", json);
+}
+
+static class POJO {
+    public POJO(Base value) {
+        this.value = value;
+    }
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+    @JsonTypeName(value = "Base")
+    public Base value;
+}
+
+static abstract class Base {
+}
+
+static class Sub1 extends Base {
+    public String value = "value";
+}

@@ -1,0 +1,19 @@
+public void testConstructor() throws Exception {
+    String encoding = "UTF-8";
+    // Test the stream creation
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+
+    InputStream is = new ByteArrayInputStream(new byte[]{});
+    ArchiveInputStream in = asf.createArchiveInputStream("arj", is, encoding);
+    assertTrue(in instanceof ArjArchiveInputStream);
+    assertEquals(encoding, ((ArjArchiveInputStream) in).getEncoding());
+
+    is = new ByteArrayInputStream(new byte[]{});
+    in = asf.createArchiveInputStream("arj", is);
+    assertTrue(in instanceof ArjArchiveInputStream);
+    assertEquals(ArchiveStreamFactory.DEFAULT_ENCODING, ((ArjArchiveInputStream) in).getEncoding());
+
+    is = new ByteArrayInputStream(new byte[]{});
+    in = asf.createArchiveInputStream(ArchiveStreamFactory.ARJ, is, encoding);
+    assertTrue(in instanceof ArjArchiveInputStream);
+    assertEquals(

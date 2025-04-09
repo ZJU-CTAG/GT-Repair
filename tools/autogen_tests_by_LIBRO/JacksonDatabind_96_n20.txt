@@ -1,0 +1,22 @@
+public void testImplicitConstructorProperties() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModule(new ParameterNamesModule());
+    final String json = mapper.writeValueAsString(new Foo(1, "hello"));
+    Assert.assertEquals("{\"bar\":1,\"foo_bar\":\"hello\"}", json);
+    final Foo foo = mapper.readValue(json, Foo.class);
+    Assert.assertEquals(1, foo.bar);
+    Assert.assertEquals("hello", foo.fooBar);
+}
+
+class Foo {
+    private final int bar;
+    private final String fooBar;
+
+    Foo(
+        @JsonProperty("bar") int bar,
+        @JsonProperty("fooBar") String fooBar) {
+        this.bar = bar;
+        this.fooBar = fooBar;
+    }
+}

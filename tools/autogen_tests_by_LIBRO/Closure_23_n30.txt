@@ -1,0 +1,15 @@
+public void testIssue11() {
+    String source = "console.log([console.log('hello, '), 'world!'][1]);";
+    String compiledSource = compileToString(source);
+    assertEquals(source, compiledSource);
+}
+
+private String compileToString(String source) {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.foldConstants = true;
+    options.removeDeadCode = true;
+    WarningLevel.QUIET.setOptionsForWarningLevel(options);
+    compiler.compile(SourceFile.fromCode("[test]", source), SourceFile.fromCode("[extern]", ""), options);
+    return compiler.toSource();
+}

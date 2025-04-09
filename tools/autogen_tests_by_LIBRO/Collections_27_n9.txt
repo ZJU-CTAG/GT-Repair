@@ -1,0 +1,21 @@
+public void testInvokerTransformer() throws Exception {
+    Map<String, String> map = new HashMap<>();
+    map.put("key", "value");
+    // any method that returns a collection will do
+    Transformer transformer = new InvokerTransformer("entrySet", new Class[0], new Object[0]);
+    Map transformedMap = (Map) transformer.transform(map);
+    assertEquals("value", transformedMap.get("key"));
+
+    File file = new File(".");
+    // getPath returns a String
+    transformer = new InvokerTransformer("getPath", new Class[0], new Object[0]);
+    String path = (String) transformer.transform(file);
+    assertEquals(".", path);
+
+    // getAbsolutePath returns a String
+    transformer = new InvokerTransformer("getAbsolutePath", new Class[0], new Object[0]);
+    path = (String) transformer.transform(file);
+    assertEquals(file.getAbsolutePath(), path);
+
+    // getCodeSource returns a CodeSource
+    transformer = new InvokerTransformer("getCodeSource", new Class

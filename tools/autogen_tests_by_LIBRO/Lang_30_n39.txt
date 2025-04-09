@@ -1,0 +1,15 @@
+public void testContainsAny() {
+    final String CharU20000 = "\uD840\uDC00";
+    final String CharU20001 = "\uD840\uDC01";
+    // Unicode supplementary characters are two Java chars
+    assertEquals(2, CharU20000.length());
+    assertEquals(2, CharU20001.length());
+    // Unicode supplementary characters are not equal
+    assertEquals(-1, CharU20000.indexOf(CharU20001));
+    assertEquals(-1, CharU20001.indexOf(CharU20000));
+    // Unicode supplementary characters are equal
+    assertEquals(0, CharU20000.indexOf(CharU20000));
+    assertEquals(0, CharU20001.indexOf(CharU20001));
+    // StringUtils.containsAny calls JRE which works correctly
+    assertEquals(true, StringUtils.contains(CharU20000 + CharU20001, CharU20000));
+    assertEquals(true, StringUtils.contains(CharU20000 + CharU20001, CharU

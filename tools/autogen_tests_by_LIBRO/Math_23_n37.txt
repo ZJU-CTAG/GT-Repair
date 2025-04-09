@@ -1,0 +1,14 @@
+public void testDoubleBrentOptimizer() {
+    DoubleBrentOptimizer optimizer = new DoubleBrentOptimizer();
+    final TestFunction f = new TestFunction();
+    final UnivariatePointValuePair result = optimizer.optimize(new UnivariateObjectiveFunction(f), GoalType.MINIMIZE,
+                    new MaxEval(100), new SearchInterval(-1, 1));
+    assertEquals(0.0, result.getPoint(), 1e-8);
+    assertEquals(0.0, result.getValue(), 1e-8);
+}
+
+private static class TestFunction implements UnivariateFunction {
+    public double value(double x) {
+        return x * x - 0.5;
+    }
+}

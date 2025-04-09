@@ -1,0 +1,14 @@
+public void testIssue106() {
+        ArgumentBuilder aBuilder = new ArgumentBuilder();
+        Argument numArg = aBuilder.withValidator(NumberValidator.getNumberInstance()).withMinimum(1).withMaximum(1).create();
+
+        OptionBuilder oBuilder = new OptionBuilder();
+        Option numOpt = oBuilder.withLongName("num").withArgument(numArg).create();
+
+        GroupBuilder gBuilder = new GroupBuilder();
+        Group options = gBuilder.withOption(numOpt).create();
+
+        Parser parser = new Parser();
+        parser.setGroup(options);
+        CommandLine cmdLine = parser.parseAndHelp(new String[]{"--num", "-0.1"});
+    }

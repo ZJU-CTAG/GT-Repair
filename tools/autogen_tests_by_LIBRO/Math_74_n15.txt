@@ -1,0 +1,22 @@
+public void testWrongParameter() {
+    TestProblem3 pb = new TestProblem3(0.9);
+    double minStep;
+    double maxStep;
+    double[] vecAbsoluteTolerance = { 1.0e-15, 1.0e-16 };
+    double[] vecRelativeTolerance = { 1.0e-15, 1.0e-16 };
+
+    FirstOrderIntegrator integ = new DormandPrince853Integrator(minStep, maxStep,
+                                                                vecAbsoluteTolerance,
+                                                                vecRelativeTolerance);
+    integ.addStepHandler(new StepHandler() {
+        public boolean requiresDenseOutput() {
+            return true;
+        }
+        public void reset() {
+        }
+        public void handleStep(StepInterpolator interpolator, boolean isLast)
+            throws DerivativeException {
+            double   t = interpolator.getCurrentTime();
+            double[] y = interpolator.getInterpolatedState();
+            System.out.println(t + " " + y[0] + " " + y[1]);
+            if (t

@@ -1,0 +1,28 @@
+public void testIssue108() {
+    final Example example = new Example();
+    final Example2 example2 = new Example2();
+    final Example3 example3 = new Example3();
+    final Example4 example4 = new Example4();
+
+    new MockitoRule(this).set(new org.mockito.stubbing.Answer<Object>() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return invocation.getMethod().invoke(invocation.getMock(), invocation.getArguments());
+        }
+    }).mock(example, example2, example3, example4);
+
+    example.call();
+    assertEquals("call", example.getResult());
+    example2.call();
+    assertEquals("call", example2.getResult());
+    example3.call();
+    assertEquals("call", example3.getResult());
+    example4.call();
+    assertEquals("call", example4.getResult());
+}
+
+@RunWith(MockitoJUnitRunner.class)
+public static class Example {
+    private String result;
+
+   

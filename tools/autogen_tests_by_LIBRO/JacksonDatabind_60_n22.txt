@@ -1,0 +1,21 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.enableDefaultTyping();
+    CommandAPDU commandAPDU = new CommandAPDU(new byte[]{0x01, 0x02, 0x03});
+    String json = mapper.writeValueAsString(commandAPDU);
+    assertTrue(json.contains("\"bytes\":[1,2,3]"));
+    assertEquals(commandAPDU, mapper.readValue(json, CommandAPDU.class));
+}
+
+public static class CommandAPDU {
+    @JsonProperty("bytes")
+    private byte[] apdu;
+    @JsonCreator
+    public CommandAPDU(@JsonProperty("bytes") byte[] apdu) {
+        this.apdu = apdu;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.get

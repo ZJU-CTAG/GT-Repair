@@ -1,0 +1,20 @@
+public void testIssue105() throws Exception {
+    VelocityContext vc = new VelocityContext();
+    vc.put("d", new String[]{"a", "b"});
+    vc.put("e", new String[]{"a"});
+    vc.put("f", new String[0]);
+
+    vc.put("x", "a");
+    vc.put("y", "b");
+    vc.put("z", "c");
+
+    assertEvalEquals("true", "$d = 'a'", vc);
+    assertEvalEquals("true", "$d = 'b'", vc);
+    assertEvalEquals("false", "$d = 'c'", vc);
+
+    assertEvalEquals("false", "$e = 'b'", vc);
+    assertEvalEquals("true", "$f = ''", vc);
+
+    assertEvalEquals("true", "'a' in $d", vc);
+    assertEvalEquals("true", "'a' in $e", vc);
+    assertEvalEquals("false", "'a' in $

@@ -1,0 +1,19 @@
+public void testAsPropertyTypeDeserializer() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    TestProperty test = mapper.readValue("{\"test\":\"\"}", TestProperty.class);
+    assertEquals(null, test.getTest());
+}
+
+class TestProperty {
+    private Object test;
+
+    public Object getTest() {
+        return test;
+    }
+
+    public void setTest(Object test) {
+        this.test = test;
+    }
+}

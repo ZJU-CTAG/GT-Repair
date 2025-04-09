@@ -1,0 +1,27 @@
+public void testIssue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new JavaTimeModule());
+    ObjectReader reader = mapper.readerFor(Issue108.class);
+
+    Issue108 input = new Issue108(LocalDate.of(2018, Month.MARCH, 5));
+    String json = mapper.writeValueAsString(input);
+    System.out.println("JSON " + json);
+
+    Issue108 output = reader.readValue(json);
+    assertEquals("Deserialized value not the same as original", input, output);
+}
+
+class Issue108 {
+    public final LocalDate date;
+
+    public Issue108(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.get

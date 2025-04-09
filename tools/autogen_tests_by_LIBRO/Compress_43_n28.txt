@@ -1,0 +1,22 @@
+public void testIssue() throws IOException {
+  FileOutputStream fos = new FileOutputStream(new File("test.zip"));
+  ZipArchiveOutputStream zos = new ZipArchiveOutputStream(new BufferedOutputStream(fos));
+
+  ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("test.txt");
+  zipArchiveEntry.setMethod(ZipEntry.STORED);
+  zipArchiveEntry.setSize(0);
+  zipArchiveEntry.setCrc(0);
+
+  zos.putArchiveEntry(zipArchiveEntry);
+  zos.closeArchiveEntry();
+  zos.close();
+  fos.close();
+
+  FileInputStream fis = new FileInputStream(new File("test.zip"));
+  ZipArchiveInputStream zis = new ZipArchiveInputStream(fis);
+
+  ZipArchiveEntry entry = zis.getNextZipEntry();
+  assertNotNull(entry);
+  assertEquals("test.txt", entry.getName());
+  assertEquals(ZipEntry.STORED, entry.getMethod());
+  assertEqu

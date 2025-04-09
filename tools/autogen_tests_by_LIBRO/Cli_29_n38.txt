@@ -1,0 +1,19 @@
+public void testLeadingTrailingQuotes() {
+    Options options;
+    CommandLineParser parser;
+    CommandLine line;
+    String[] args;
+
+    options = new Options();
+    options.addOption("b", "balloo", true, "balloo");
+
+    parser = new PosixParser();
+
+    args = new String[]{"--balloo", "\"this is a \\\"test\\\"\""};
+    line = parser.parse(options, args);
+    assertEquals("this is a \"test\"", line.getOptionValue("balloo"));
+
+    args = new String[]{"--balloo", "this is a \"test\""};
+    line = parser.parse(options, args);
+    assertEquals("this is a \"test\"", line.getOptionValue("balloo"));
+}

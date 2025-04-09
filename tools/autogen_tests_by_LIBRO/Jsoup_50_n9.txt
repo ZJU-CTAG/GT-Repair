@@ -1,0 +1,7 @@
+public void testIssue108() throws Exception {
+    String input = "﻿<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n</body>\n</html>\n";
+    String expected = "<!doctype html>\n<html>\n <head></head> \n <body></body>\n</html>";
+    ByteArrayInputStream stream = new ByteArrayInputStream(input.getBytes("UTF-16LE"));
+    Document doc = DataUtil.parseByteData(stream, null, "http://www.example.com/", Parser.htmlParser());
+    assertEquals(expected, doc.outerHtml());
+}

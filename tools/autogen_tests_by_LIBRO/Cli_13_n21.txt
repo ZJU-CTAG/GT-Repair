@@ -1,0 +1,13 @@
+public void testOptionWithSingleArgumentAndDefault() {
+        String[] args = new String[] { "-a", "1", "-a", "2" };
+        Option opt = new Option("a", "test");
+        opt.setArgs(1);
+        opt.setDefault("3");
+
+        Parser parser = new PosixParser();
+        CommandLine cl = parser.parse(new Options().addOption(opt), args);
+
+        assertEquals(2, cl.getOptionValues("a").length);
+        assertEquals("1", cl.getOptionValues("a")[0]);
+        assertEquals("2", cl.getOptionValues("a")[1]);
+    }

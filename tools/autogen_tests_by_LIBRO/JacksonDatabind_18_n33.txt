@@ -1,0 +1,23 @@
+public void testExceptionHandling() throws Exception
+{
+    String input = "[ 1, 2, { \"a\" : 3, \"b\" : 4 } ]";
+    ObjectMapper mapper = new ObjectMapper();
+
+    MappingIterator<Object> it = mapper.reader(Object.class).readValues(new StringReader(input));
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(1), it.nextValue());
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(2), it.nextValue());
+    assertTrue(it.hasNextValue());
+    assertEquals(Integer.valueOf(3), it.nextValue());
+
+    // and now let's break it
+    try {
+        it.nextValue();
+        fail("Should have gotten an exception");
+    } catch (JsonMappingException e) {
+        // and then, if we want to, continue reading
+        assertTrue(it.hasNextValue());
+        assertEquals(Integer.valueOf(4), it.nextValue());
+    }
+}

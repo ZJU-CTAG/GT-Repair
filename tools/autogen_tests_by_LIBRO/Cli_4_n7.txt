@@ -1,0 +1,13 @@
+public void testIssue108() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.withArgName("target").hasArg().withDescription("Generate files for the specified target machine").create("t"));
+    opts.addOption(OptionBuilder.withArgName("target").hasArg().withDescription("Generate files for the specified target machine").create("target"));
+    String[] args = new String[]{"-t", "foobar.com"};
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cmd = parser.parse(opts, args);
+        assertTrue(cmd.getOptionValue("t").equals("foobar.com"));
+    } catch (ParseException e) {
+        fail("Unknown option: " + e.getMessage());
+    }
+}

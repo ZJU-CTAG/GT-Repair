@@ -1,0 +1,12 @@
+public void testNodeSet() {
+
+    JXPathContext context = JXPathContext.newContext(new MyBean());
+    context.setLenient(true);
+    context.registerNamespace("test", "com.sun.jxpath.functions");
+    NodeSet result = (NodeSet) context.getValue("test:nodeSet()");
+    assertEquals(1, result.size());
+    assertEquals(1, result.getPointers().size());
+    assertEquals(
+            context.getPointer("/ns:root/ns:a"),
+            result.getPointers().iterator().next());
+}

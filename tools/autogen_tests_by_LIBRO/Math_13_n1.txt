@@ -1,0 +1,35 @@
+public void testIssue108() {
+    // Create a straight line model:
+    //   y = a + bx
+    ParametricUnivariateFunction f = new ParametricUnivariateFunction() {
+
+        @Override
+        public double value(double x, double... parameters) {
+            return parameters[0] + parameters[1] * x;
+        }
+
+        @Override
+        public double[] gradient(double x, double... parameters) {
+            return new double[] { 1, x };
+        }
+    };
+
+    double[] params = new double[2];
+    // Initial guess.
+    params[0] = 0;
+    params[1] = 0;
+
+    // y values
+    double[] y = new double[41200];
+
+    // x values
+    double[] x = new double[41200];
+
+    for (int i = 0; i < 41200; i++) {
+        x[i] = i;
+        y[i] = params[0] + params[1] * x[i];
+    }
+
+    // Weight matrix.
+    //   To fit a straight line,
+    //   the weight for each

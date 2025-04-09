@@ -1,0 +1,15 @@
+public void testIssue109() {
+    String json = "{\"a\":1,\"b\":2,\"c\":3,\"d\":4}";
+    JsonParser p1 = new JsonFactory().createParser(json);
+    JsonParser p2 = new JsonFactory().createParser(json);
+    JsonParserSequence p = JsonParserSequence.createFlattened(p1, p2);
+    assertEquals(JsonToken.START_OBJECT, p.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("a", p.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(1, p.getIntValue());
+    assertEquals(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("b", p.getCurrentName());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(2, p.getIntValue());
+    assert

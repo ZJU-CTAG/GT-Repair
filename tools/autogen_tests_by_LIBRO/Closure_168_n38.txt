@@ -1,0 +1,25 @@
+public void testIssue148() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            EXTERNS,
+            "/*\n" +
+            " * @constructor\n" +
+            " */\n" +
+            "function Person(name){}\n" +
+            "Person = makeClass({\n" +
+            " /** @this {Person} */\n" +
+            " initialize: function(name) {\n" +
+            " this.name = name;\n" +
+            " },\n" +
+            "\n" +
+            " /** @this {Person} */\n" +
+            " getName: function() { return this.name; },\n" +
+            "\n" +
+            " /**\n" +
+            " * @param {string} message\n" +
+            " * @this {Person}\n" +
+            " */\n" +
+            " say: function(message) {\n" +
+            " var self = this;\n" +
+            " setTimeout(

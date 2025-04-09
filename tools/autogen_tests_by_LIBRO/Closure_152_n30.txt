@@ -1,0 +1,11 @@
+public void testResolveTypes() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setPrettyPrint(true);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+
+    compiler.compile(JSSourceFile.fromCode("externs.js", ""),
+            JSSourceFile.fromCode("input.js", "var x = {}; /**@type {String}*/x.string; /**@constructor*/x.ctor = function() {}; /**@type {x.ctor}*/var y = new x.ctor();"), options);
+}

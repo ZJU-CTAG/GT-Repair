@@ -1,0 +1,16 @@
+public void test() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+
+    String json = "{\"name\": \"\", \"nullValue\": \"\"}";
+    Dto dto = mapper.readValue(json, Dto.class);
+    assertNull(dto.name);
+    assertNull(dto.nullValue);
+}
+
+public static class Dto {
+    public String name;
+    public Object nullValue;
+}

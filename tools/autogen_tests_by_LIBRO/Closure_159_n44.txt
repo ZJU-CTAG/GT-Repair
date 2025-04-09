@@ -1,0 +1,20 @@
+public void testIssue133() {
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setCodingConvention(CodingConventions.getDefault());
+
+    options.setGenerateExports(true);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertTrue("Should not have errors", result.success);
+    String compiled = compiler.toSource();
+    assertTrue("Should not have errors", result.success);
+    assertTrue(compiled.contains("function b(){"));
+    assertTrue(compiled.contains("function a(a,b){"));
+    assertTrue(compiled.contains("function c(a,b){"));
+    assertTrue(compiled.contains("function d(a){"));
+    assertTrue(compiled.contains("function e(a){"

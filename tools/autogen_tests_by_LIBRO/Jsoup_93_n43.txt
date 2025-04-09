@@ -1,0 +1,10 @@
+public void testFormData() {
+    Document doc = Jsoup.parse("<form id=f><input type=image name=x></form>");
+    FormElement form = doc.getElementById("f");
+    Elements inputs = form.getElementsByTag("input");
+    for (Element element : inputs) {
+        assertEquals("x", element.attr("name"));
+    }
+    assertEquals(1, inputs.size());
+    assertEquals("[x.x=0, x.y=0]", form.formData().toString());
+}

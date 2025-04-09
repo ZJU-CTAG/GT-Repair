@@ -1,0 +1,13 @@
+public void testIssue108() {
+        CompilerRunner runner = new CompilerRunner();
+        runner.setSourceLevel(CompilerRunner.SourceLevel.ES6);
+        runner.setLanguageIn(CompilerRunner.LanguageMode.ECMASCRIPT6_STRICT);
+        runner.setLanguageOut(CompilerRunner.LanguageMode.ECMASCRIPT5_STRICT);
+        runner.setDebug(true);
+        String js = "/** @const */ var foo = 1;\n" +
+                "goog.provide(\"main\");\n" +
+                "goog.scope (function (){\n" +
+                "\tvar a = foo, b, c = 1;\n" +
+                "});";
+        runner.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", js)});
+    }

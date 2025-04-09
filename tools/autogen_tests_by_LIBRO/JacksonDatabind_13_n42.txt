@@ -1,0 +1,9 @@
+public void testMongoId() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ALLOW_NULL_OBJECT_ID, true);
+    mapper.registerModule(new JacksonModule());
+    MongoEntity me = mapper.readValue("{\"_id\":null,\"name\":\"Bob\",\"age\":13}", MongoEntity.class);
+    assertNull(me.getId());
+    assertEquals("Bob", me.getName());
+    assertEquals(13, me.getAge());
+}

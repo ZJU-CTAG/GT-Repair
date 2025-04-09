@@ -1,0 +1,21 @@
+public void testIssue() {
+    final Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setCheckGlobalThisLevel(CheckLevel.WARNING);
+    options.setCheckSymbols(true);
+    options.summaryDetailLevel = 3;
+    options.setPreserveTypeAnnotations(true);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    compiler.compile(JSSourceFile.fromCode("v.js",
+            "/*global window*/\n"
+              + "/*jslint sub: true*/\n"
+              + "/**\n"
+              + " * @constructor\n"
+              + " * @param {!Element} element\n"
+              + " */\n"
+              + "function Example(element) {\n"
+              + "  /**\n"
+              + "   * @param {!string} ns\n"
+              + "   * @param {!string} name\n"
+              + "

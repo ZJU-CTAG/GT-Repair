@@ -1,0 +1,11 @@
+public void testIssue108() {
+    final String javascript = "b: try { throw(\"throw me\") } finally { /* fake catcher */ ; break b }; console.log(\"ok then...\")";
+    final Context context = Context.enter();
+    final Scriptable sharedScope = context.initStandardObjects();
+    try {
+        final Object result = context.evaluateString(sharedScope, javascript, "test", 0, null);
+        assertTrue(result instanceof Undefined);
+    } finally {
+        Context.exit();
+    }
+}

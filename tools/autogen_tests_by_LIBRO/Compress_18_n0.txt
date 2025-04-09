@@ -1,0 +1,12 @@
+public void testLongDirectoryNames() throws IOException {
+    File tempFile = File.createTempFile("test", ".tar");
+    tempFile.deleteOnExit();
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(new FileOutputStream(tempFile));
+    taos.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
+    taos.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_STAR);
+    TarArchiveEntry entry = new TarArchiveEntry("./PaxHeaders.X/layers/openstreetmap__osm.disy.net/.tiles/1.0.0/openstreetmap__osm.disy.net/default/");
+    taos.putArchiveEntry(entry);
+    taos.closeArchiveEntry();
+    taos.finish();
+    taos.close();
+}

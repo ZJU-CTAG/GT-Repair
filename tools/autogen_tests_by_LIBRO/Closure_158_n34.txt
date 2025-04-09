@@ -1,0 +1,18 @@
+public void testFlagPrecedence() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    String[] args = new String[] {
+        "--jscomp_warning=accessControls",
+        "--jscomp_error=accessControls",
+        "--jscomp_off=accessControls",
+    };
+    Compiler.setLoggingLevel(Level.OFF);
+    Compiler.setTestingMode(true);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        new JSSourceFile[] { JSSourceFile.fromCode("test.js", "") },
+        ImmutableList.of(new JSSourceFile[] { JSSourceFile.fromCode("test.js", "") }),
+        options);
+    WarningLevel w = compiler.getWarnings()[0];
+    assertFalse(w.getName(), w.isOn());
+}

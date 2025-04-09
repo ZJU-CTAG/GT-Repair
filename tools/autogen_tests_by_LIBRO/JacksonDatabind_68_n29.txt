@@ -1,0 +1,8 @@
+public void test() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    om.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    A a = om.readValue("[{\"bs\":[{\"cs\":{\"message\":\"site is missing from bid request (breq) object\"}}]}]", A.class);
+    assertThat(a.bs, hasSize(1));
+    assertThat(a.bs.get(0).cs, hasSize(1));
+    assertThat(a.bs.get(0).cs.get(0).message, is("site is missing from bid request (breq) object"));
+}

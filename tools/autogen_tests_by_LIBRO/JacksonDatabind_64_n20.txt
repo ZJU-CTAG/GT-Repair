@@ -1,0 +1,16 @@
+public void testJsonInclude() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    String json = mapper.writeValueAsString(new TestBean());
+    assertEquals("{}", json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE,
+        setterVisibility = JsonAutoDetect.Visibility.NONE,
+        fieldVisibility = JsonAutoDetect.Visibility.NONE,
+        isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+static class TestBean {
+    private String test = null;
+}

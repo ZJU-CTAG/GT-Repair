@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    int i = mapper.readValue("\"\"", int.class);
+    assertEquals(0, i);
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        mapper.readValue("\"\"", int.class);
+        fail("Should have failed");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Can not map empty String to int");
+    }
+}

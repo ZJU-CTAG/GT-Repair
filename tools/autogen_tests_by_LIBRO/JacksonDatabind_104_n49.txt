@@ -1,0 +1,11 @@
+public void testLargeISO8601Dates() {
+    Date d = new Date(Long.MAX_VALUE);
+    ObjectMapper m = new ObjectMapper();
+    String s = m.writeValueAsString(d);
+    try {
+        Date dp = m.reader(Date.class).readValue(s);
+        assertEquals(d, dp);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}

@@ -1,0 +1,23 @@
+public void testIssue108() {
+    AtomicInteger counter = new AtomicInteger();
+    StateMachine<State, Event> sm = StateMachineBuilderFactory.<State, Event>create(State.S1, context)
+            .newStateEntry(State.S1, State.S2, new L(counter, "S1-S2"))
+            .newStateEntry(State.S2, State.S1, new L(counter, "S2-S1"))
+            .build();
+    sm.start();
+    sm.sendEvent(Event.E1);
+    assertEquals("S1-S2", counter.get());
+    sm.sendEvent(Event.E2);
+    assertEquals("S2-S1", counter.get());
+}
+
+static class L implements Action<State, Event> {
+    private final AtomicReference<String> counter;
+    private final String step;
+
+    public L(AtomicReference<String> counter, String step) {
+        this.counter = counter;
+        this.step = step;
+    }
+    @Override
+    public void execute(State s, Event e, Object context

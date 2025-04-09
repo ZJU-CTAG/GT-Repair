@@ -1,0 +1,16 @@
+public void testIssue() throws IOException {
+		String json = "{\"name\":\"test\"}";
+		byte[] bytes = json.getBytes("UTF-8");
+		InputStream is = new ByteArrayInputStream(bytes);
+		UTF8StreamJsonParser jsonParser = new UTF8StreamJsonParser(
+				new IOContext(null, null, false), 0, is, null,
+				new BytesToNameCanonicalizer(), bytes, 0, bytes.length);
+		try {
+			jsonParser.nextToken();
+		} catch (JsonParseException e) {
+			System.out.println(e.getMessage());
+			assertEquals(1, e.getLocation().getLineNr());
+			assertEquals(2, e.getLocation().getColumnNr());
+		}
+
+	}

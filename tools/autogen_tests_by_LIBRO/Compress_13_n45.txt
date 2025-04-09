@@ -1,0 +1,12 @@
+public void testUmlauts() throws Exception {
+    File zip = getFile("issue-107.zip");
+    InputStream is = new FileInputStream(zip);
+    ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream(is);
+    ArchiveEntry entry = in.getNextEntry();
+    while (entry != null) {
+        System.out.println(entry.getName() + "  " + entry.isDirectory());
+        entry = in.getNextEntry();
+    }
+    in.close();
+    is.close();
+}

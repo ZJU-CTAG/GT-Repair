@@ -1,0 +1,7 @@
+public void testJackson27() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixIn(Collections.unmodifiableSet(Collections.emptySet()).getClass(), UnmodifiableSetMixin.class);
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    Set<String> foo = mapper.readValue("[\"java.util.Collections$UnmodifiableSet\",[]]", Set.class);
+    assertThat(foo).isEmpty();
+}

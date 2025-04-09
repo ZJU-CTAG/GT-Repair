@@ -1,0 +1,15 @@
+public void testIssue121() {
+    final AbstractService service = PowerMockito.spy(new AbstractService());
+    PowerMockito.doReturn(true).when(service).doSomething();
+    assertTrue(service.callDoSomething());
+}
+
+@PrepareForTest({ AbstractService.class })
+public class AbstractServiceTest {
+    public static abstract class AbstractService {
+        public boolean callDoSomething() {
+            return doSomething();
+        }
+        protected abstract boolean doSomething();
+    }
+}

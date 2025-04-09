@@ -1,0 +1,15 @@
+public void testVoid() throws Exception {
+	UserDto dto = new UserDto();
+	dto.setName("foo");
+	dto.setAge(42);
+	String json = new ObjectMapper().writeValueAsString(dto);
+	HttpHeaders authHeaders = new HttpHeaders();
+	authHeaders.add("Content-Type", "application/json");
+	authHeaders.add("Accept", "application/json");
+	ResponseEntity<Void> response = getRestTemplate().exchange(
+			requestUrl,
+			HttpMethod.PATCH,
+			new HttpEntity<>(dto, authHeaders),
+			Void.class
+	);
+}

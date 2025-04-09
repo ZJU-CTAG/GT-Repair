@@ -1,0 +1,12 @@
+public void testGroupCount() {
+    Options options = new Options();
+    Group groupB = new GroupBuilder().withOption(Option.builder("b").build()).create();
+    Group groupA = new GroupBuilder().withOption(Option.builder("a").build()).create();
+    groupB.addOption(groupA);
+    groupB.setMinimum(1);
+    groupB.setMaximum(1);
+    options.addOptionGroup(groupB);
+    CommandLine cl = new DefaultParser().parse(options, new String[]{"-b", "-a"});
+    assertTrue(cl.hasOption("a"));
+    assertTrue(cl.hasOption("b"));
+}

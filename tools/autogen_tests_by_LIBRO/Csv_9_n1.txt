@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final File file = new File(PATH_TEST_CSV_UTF8);
+    try (final Reader in = new FileReader(file)) {
+        final CSVFormat format = CSVFormat.EXCEL.withHeader();
+        final CSVParser parser = new CSVParser(in, format);
+        final Iterable<CSVRecord> records = parser.getRecords();
+        for (final CSVRecord record : records) {
+            final Map<String, String> map = record.toMap();
+            assertNotNull(map);
+            assertEquals(2, map.size());
+            assertEquals("1", map.get("col1"));
+            assertEquals("2", map.get("col2"));
+        }
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}

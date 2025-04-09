@@ -1,0 +1,17 @@
+public void testMapOfEnumsWithJsonProperty() throws IOException {
+    TestEnumMap testEnumMap = new TestEnumMap();
+    TestEnumMap.TestEnumMapBean testEnumMapBean = new TestEnumMap.TestEnumMapBean();
+    testEnumMapBean.testEnumMap1.put(TestEnum.ONE, "one");
+    testEnumMapBean.testEnumMap2.put(TestEnum.ONE, "one");
+    testEnumMap.testEnumMapBean = testEnumMapBean;
+
+    ObjectMapper objectMapper = new ObjectMapper();
+    String json = objectMapper.writeValueAsString(testEnumMap);
+    assertEquals("{\"testEnumMapBean\":{\"testEnumMap1\":{\"ONE\":\"one\"},\"testEnumMap2\":{\"ONE\":\"one\"}}}", json);
+}
+
+public class TestEnumMap {
+
+    public TestEnumMapBean testEnumMapBean;
+
+    public static class TestEnumMapBe

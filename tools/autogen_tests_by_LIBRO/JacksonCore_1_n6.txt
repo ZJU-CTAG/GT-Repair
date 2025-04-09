@@ -1,0 +1,14 @@
+public void testParserNan() throws Exception
+{
+  final String json = "NaN";
+
+  final ObjectMapper mapper = new ObjectMapper();
+  mapper.enable(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS);
+
+  try {
+    mapper.readValue(json, Object.class);
+    fail("Should have thrown an exception");
+  } catch (JsonMappingException e) {
+    verifyException(e, "Expected a valid value");
+  }
+}

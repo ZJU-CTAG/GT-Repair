@@ -1,0 +1,17 @@
+public void testIssue107() {
+    Options options = new Options()
+    .addOption(new Option("debug", "turn on debugging"))
+    .addOption(new Option("help", "print this message"));
+    String[] args = new String[] { "-d", "--debug" };
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine;
+    try {
+        commandLine = parser.parse(options, args);
+    } catch (ParseException e) {
+        fail("Error parsing command line: " + e.getMessage());
+        return;
+    }
+    assertTrue(commandLine.hasOption("debug"));
+    assertEquals("true", commandLine.getOptionValue("debug"));
+    assertEquals("true", commandLine.getOptionValue("d"));
+}

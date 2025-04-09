@@ -1,0 +1,9 @@
+public void testIssueCSV_NULL() throws IOException {
+    final StringWriter sw = new StringWriter();
+    final CsvFormat fmt = CsvFormat.EXCEL.withNullString("\\N").withEscape('\\');
+    final CsvPrinter printer = new CsvPrinter(sw, fmt);
+    printer.printRecord("\\N", "\n", "\\", "\\N");
+    printer.flush();
+    printer.close();
+    assertEquals("\\N,\"\\n\",\"\\\\\",\\N\n", sw.toString());
+}

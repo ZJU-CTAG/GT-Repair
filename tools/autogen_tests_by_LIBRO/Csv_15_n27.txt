@@ -1,0 +1,16 @@
+public void testIssue109() throws IOException {
+    StringWriter sw = new StringWriter();
+    String[] data = { "あ", "い", "う" };
+    CSVPrinter csvp = new CSVPrinter(sw, CSVFormat.EXCEL);
+    csvp.printRecord(data);
+    csvp.close();
+    assertEquals("\"あ\",い,う\n", sw.toString());
+}
+public void testIssue109WithQuote() throws IOException {
+    StringWriter sw = new StringWriter();
+    String[] data = { "あ", "い", "う" };
+    CSVPrinter csvp = new CSVPrinter(sw, CSVFormat.EXCEL);
+    csvp.printRecord(Arrays.asList(data));
+    csvp.close();
+    assertEquals("\"あ\",\"い\",\"う\"\n", sw.toString());
+}

@@ -1,0 +1,10 @@
+public void testBeanPropertyWriter() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+
+    final TestOuter test = new TestOuter();
+    final String result = mapper.writeValueAsString(test);
+
+    assertEquals("{\"array\":[[1,\"one\"],[0,null]]}", result);
+}

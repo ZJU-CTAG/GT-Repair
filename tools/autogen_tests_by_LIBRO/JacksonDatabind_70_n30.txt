@@ -1,0 +1,12 @@
+public void testIssue201() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    final String json = "{\"businessAddress.street\":\"Street 1\",\"businessAddress.addon\":\"Street 2\",\"businessAddress.zip\":\"12345\",\"businessAddress.town\":\"Town\",\"businessAddress.country\":\"Country\"}";
+    final Person person = mapper.readValue(json, Person.class);
+    assertEquals("Street 1", person.businessAddress.street);
+    assertEquals("Street 2", person.businessAddress.addon);
+    assertEquals("12345", person.businessAddress.zip);
+    assertEquals("Town", person.businessAddress.town);
+    assertEquals("Country", person.businessAddress.country);
+}

@@ -1,0 +1,13 @@
+public void testLang3() throws Exception {
+    String input = "var a = \"ä\";";
+    String expected = "var a=\"ä\";";
+
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    options.setEscapeStrings(false);
+    level.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("input.js", input) },
+            new JSSourceFile[] { JSSourceFile.fromCode("externs.js", "") }, options);
+    assertEquals(expected, compiler.toSource());
+}

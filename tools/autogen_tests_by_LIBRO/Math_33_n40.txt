@@ -1,0 +1,21 @@
+public void test() {
+    double[] c = new double[]{2, 3};
+    double[][] a = new double[][]{
+        {1, 2},
+        {1, 1},
+        {1, 0}
+    };
+    double[] b = new double[]{12, 10, 3};
+
+    LinearObjectiveFunction f = new LinearObjectiveFunction(c, 0);
+    List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(a[0], Relationship.GEQ, b[0]));
+    constraints.add(new LinearConstraint(a[1], Relationship.GEQ, b[1]));
+    constraints.add(new LinearConstraint(a[2], Relationship.GEQ, b[2]));
+
+    SimplexSolver optimizer = new SimplexSolver();
+    PointValuePair optimalSolution = optimizer.optimize(f, new LinearConstraintSet(constraints), GoalType.MINIMIZE);
+
+    System.out.println(optimalSolution);
+}
+``

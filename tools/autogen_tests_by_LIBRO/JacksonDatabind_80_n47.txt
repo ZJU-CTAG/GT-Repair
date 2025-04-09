@@ -1,0 +1,9 @@
+public void testIssue108() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(Dog.class, "dog"));
+    // should really only result in "dog" at this point
+    Collection<NamedType> types = mapper.getSerializationConfig().getSubtypeResolver().collectAndResolveSubtypes(null, mapper.getSerializationConfig(), mapper.getSerializationConfig().getAnnotationIntrospector());
+    assertEquals(1, types.size());
+    assertEquals("dog", types.iterator().next().getName());
+}

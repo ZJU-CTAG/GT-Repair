@@ -1,0 +1,29 @@
+public void testIssue101() {
+    String[] header = { "A", "B", "C", "", "" };
+    String[] record = { "a", "b", "c", "d", "e" };
+    CSVFormat format = CSVFormat.EXCEL;
+    StringWriter writer = new StringWriter();
+    CSVParser parser = null;
+    CSVPrinter printer = null;
+    try {
+        printer = new CSVPrinter(writer, format.withHeader(header));
+        printer.printRecord(record);
+        printer.close();
+        parser = new CSVParser(new StringReader(writer.toString()), format);
+        assertEquals(1, parser.getRecords().size());
+    } catch (IOException e) {
+        if (printer != null) {
+            try {
+                printer.close();
+            } catch (IOException e1) {
+                // ignore
+            }
+        }
+        if (parser != null) {
+            try {
+                parser.close();
+            } catch (IOException e1) {
+                // ignore
+            }
+        }
+   

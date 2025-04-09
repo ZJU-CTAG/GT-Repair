@@ -1,0 +1,12 @@
+public void testIssue107() {
+    Compiler compiler = new Compiler();
+    compiler.init(
+            Lists.<JSSourceFile>newArrayList(
+                    JSSourceFile.fromCode("foo.js", "foo={bar:function(){alert(this.baz)}};")),
+            Lists.<JSSourceFile>newArrayList(),
+            compilerOptions);
+    Result result = compiler.compile(
+            ExternExportsPass.class,
+            VariableReferenceCheck.class);
+    assertFalse(result.success);
+}

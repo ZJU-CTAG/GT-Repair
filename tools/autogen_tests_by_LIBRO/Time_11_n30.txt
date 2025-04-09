@@ -1,0 +1,16 @@
+public void testIssueNPE() throws Exception {
+    DateTimeZoneBuilder b = new DateTimeZoneBuilder();
+    b.addCutover(1601, 'w', 1, 1, 1, false, 7200000);
+    b.setStandardOffset(3600000);
+    b.addRecurringSavings("", 3600000, 1601, Integer.MAX_VALUE, 'w', 3, -1, 1, false, 7200000);
+    b.addRecurringSavings("", 0, 1601, Integer.MAX_VALUE, 'w', 10, -1, 1, false, 10800000);
+    final DateTimeZone tz = b.toDateTimeZone("TestDTZ", true);
+    Thread t = new Thread() {
+        @Override
+        public void run() {
+            tz.getOffset(0);
+        }
+    };
+    t.start();
+    t.join();
+}

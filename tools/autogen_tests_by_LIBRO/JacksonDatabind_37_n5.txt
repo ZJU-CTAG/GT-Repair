@@ -1,0 +1,7 @@
+public void testRead() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(JsonMapSchema.class);
+    final JsonRoot root = mapper.readValue(getClass().getResourceAsStream("model.json"), JsonRoot.class);
+    assertEquals(ImmutableList.of("time_by_day", "sales_fact_1997"),
+            root.schemas.get(0).getTableNames());
+}

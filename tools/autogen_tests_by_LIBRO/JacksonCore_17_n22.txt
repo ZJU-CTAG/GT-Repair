@@ -1,0 +1,15 @@
+public void testIssue151() throws Exception
+{
+    // first, let's build a simple JSON message
+    StringBuilder sample = new StringBuilder();
+    sample.append("{\"id\":\"12345\",\"name\":\"John Doe\",\"phone\":\"");
+    sample.append("xxxxxxxxxxxxxxx"); // add enough x's to cause the problem
+    sample.append("\uDBFF\uDFFF\"}"); // append surrogate pair (valid UTF-8)
+    String jsonInput = sample.toString();
+
+    // next, let's create an ObjectMapper for JSON processing
+    ObjectMapper mapper = new ObjectMapper();
+
+    // now write the message to standard out using the ObjectMapper
+    mapper.writeValue(System.out, jsonInput);
+}

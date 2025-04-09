@@ -1,0 +1,14 @@
+public void testBZip2() throws IOException {
+    String original = "This file is used to verify the behaviour of the bz2 module.\n";
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    BZip2CompressorOutputStream bzcos = new BZip2CompressorOutputStream(baos);
+    bzcos.write(original.getBytes());
+    bzcos.close();
+    byte[] compressed = baos.toByteArray();
+    compressed[compressed.length - 2] = 0;
+    compressed[compressed.length - 1] = 0;
+    BZip2CompressorInputStream bzcis = new BZip2CompressorInputStream(new ByteArrayInputStream(compressed));
+    byte[] result = IOUtils.toByteArray(bzcis);
+    bzcis.close();
+    assertEquals(original.length(), result.length);  // fails
+}

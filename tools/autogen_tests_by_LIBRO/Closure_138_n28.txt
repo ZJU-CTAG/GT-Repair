@@ -1,0 +1,20 @@
+public void testIssue() {
+    String s = "// ==ClosureCompiler==\n" +
+               "// @output_file_name default.js\n" +
+               "// @compilation_level ADVANCED_OPTIMIZATIONS\n" +
+               "// ==/ClosureCompiler==\n" +
+               "var t = null;\n" +
+               "window.test = function() {\n" +
+               " if (t != null) {\n" +
+               " t = null;\n" +
+               " }\n" +
+               " t = 1;\n" +
+               "};";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test", s)}, null, getCommandLineConfig());
+    assertEquals(0, result.warnings.length);
+}
+
+private CommandLineRunner.FlagType[] getCommandLineConfig() {
+    CommandLineRunner.FlagType[] config = new CommandLineRunner.FlagType[]{
+            CommandLineRunner.FlagType.create

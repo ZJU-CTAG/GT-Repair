@@ -1,0 +1,8 @@
+public void testIssue107() {
+    final Base64Variant variant = Base64Variants.MIME_NO_LINEFEEDS;
+    final String encoded = variant.encode("test".getBytes(Charsets.UTF_8));
+    final JsonParser parser = Json.createParser(new StringReader("\"" + encoded + "\""));
+    assertTrue(parser.nextToken() == JsonToken.VALUE_STRING);
+    final byte[] decoded = parser.getBinaryValue(variant);
+    assertArrayEquals("test".getBytes(Charsets.UTF_8), decoded);
+}

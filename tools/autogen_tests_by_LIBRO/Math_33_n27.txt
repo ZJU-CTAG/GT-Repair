@@ -1,0 +1,24 @@
+public void testSimplex() {
+    double[][] constraints = {
+        { 1, 1, 1 },
+        { 1, 2, 0 },
+        { 1, 0, 2 },
+        { 2, 0, 1 }
+    };
+    double[] constraints_max = {
+        10,
+        12,
+        12,
+        12
+    };
+    double[] goalFunction = {
+        0.5,
+        0.5,
+        0.5
+    };
+    SimplexSolver solver = new SimplexSolver();
+    RealPointValuePair result = solver.optimize(new MaxIter(100), new LinearConstraintSet(constraints, constraints_max), GoalType.MAXIMIZE, new LinearObjectiveFunction(goalFunction, 0));
+    assertEquals(12, result.getPoint()[0], 0.000001);
+    assertEquals(0, result.getPoint()[1], 0.000001);
+    assertEquals(0, result.getPoint()[2], 0.000001);
+    assertEquals(6, result.getValue(), 0.0000

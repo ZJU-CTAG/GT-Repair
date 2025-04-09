@@ -1,0 +1,27 @@
+public void testCommandLine() {
+    Options options = new Options();
+    String debugOpt = "debug";
+    Option debug = OptionBuilder
+        .withArgName(debugOpt)
+        .withDescription("turn on debugging")
+        .withLongOpt(debugOpt)
+        .create('d');
+    options.addOption(debug);
+
+    String[] args = {"-d"};
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = null;
+    try {
+        cmd = parser.parse(options, args);
+    } catch (ParseException e) {
+        e.printStackTrace();
+        fail("Exception thrown");
+    }
+
+    assertTrue(cmd.hasOption('d'));
+    assertTrue(cmd.hasOption(debugOpt));
+    assertEquals(cmd.getOptionValue(debugOpt), null);
+    assertEquals(cmd.getOptionValue('d'), "");
+}
+

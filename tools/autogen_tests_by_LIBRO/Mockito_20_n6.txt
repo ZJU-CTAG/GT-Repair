@@ -1,0 +1,18 @@
+public void testIssue108() {
+    interface UserAccount {
+        List<String> getEmails();
+        void addEmail(String email);
+    }
+    abstract class FakeUserAccount implements UserAccount {
+        private final List<String> emails = new ArrayList<String>();
+        public void addEmail(String email) {
+            emails.add(email);
+        }
+        public List<String> getEmails() {
+            return ImmutableList.copyOf(emails);
+        }
+    }
+    @Fake private FakeUserAccount userAccount;
+    userAccount.addEmail("test@test.test");
+    assertEquals("test@test.test", userAccount.getEmails().get(0));
+}

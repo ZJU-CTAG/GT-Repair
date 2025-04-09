@@ -1,0 +1,22 @@
+public void testIssue106() {
+  CompilerOptions options = new CompilerOptions();
+  options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+  options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+  options.setCodingConvention(new DefaultCodingConvention());
+  options.setPrettyPrint(true);
+  options.setGenerateExports(true);
+  Compiler compiler = new Compiler();
+  compiler.disableThreads();
+  Result result = compiler.compile(SourceFile.fromCode("input",
+  "/** @constructor */\n" +
+  "function Test() {\n" +
+  "  var fn1;\n" +
+  "  var fn2;\n" +
+  "  if (any_expression) {\n" +
+  "    fn2 = external_ref;\n" +
+  "    fn1 = function (content) {\n" +
+  "      return fn2();\n" +
+  "    }\n" +
+  "  }\n" +
+  "  return {\n" +
+ 

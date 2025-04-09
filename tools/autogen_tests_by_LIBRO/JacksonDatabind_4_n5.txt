@@ -1,0 +1,32 @@
+public void testIssue() throws IOException {
+    String json = "{\"list\":[{\"field\":\"abc\"},{\"field\":123}]}";
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(json, Test.class);
+        fail();
+    } catch (JsonMappingException e) {
+        assertEquals(1, e.getRootCause().getReferringProperty().getIndex());
+    }
+}
+
+static class Test {
+    private List<Test1> list = new LinkedList<Test1>();
+    public List<Test1> getList() {
+        return list;
+    }
+
+    public void setList(List<Test1> list) {
+        this.list = list;
+    }
+}
+
+static class Test1 {
+    private String field;
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+}

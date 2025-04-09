@@ -1,0 +1,16 @@
+public void testPublicTag() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    List<SourceFile> input = new ArrayList<SourceFile>();
+    input.add(SourceFile.fromCode("input", "window['Glow'] = {};" +
+            "/** @public */ Glow.versions = [1,2,3];" +
+            "Glow.showVersions = function() { alert(Glow.versions); }" +
+            "window['Glow'] = Glow;" +
+            "Glow['versions'] = Glow.versions;" +
+            "Glow['showVersions'] = Glow.showVersions;"));
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs", ""));
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, input, options);
+    String code = compiler.toSource();
+    assertTrue("Expected code to contain Glow.versions",

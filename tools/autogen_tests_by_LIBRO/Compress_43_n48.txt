@@ -1,0 +1,21 @@
+public void testIssue107() throws Exception {
+    File file = createTempFile();
+    try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file)) {
+        zos.setMethod(ZipEntry.DEFLATED);
+        zos.setUseLanguageEncodingFlag(true);
+
+        ZipArchiveEntry ze = new ZipArchiveEntry("test.txt");
+        ze.setMethod(ZipEntry.DEFLATED);
+        zos.putArchiveEntry(ze);
+        zos.write(new byte[]{'t', 'e', 's', 't'});
+        zos.closeArchiveEntry();
+        zos.finish();
+
+        try (ZipFile zipFile = new ZipFile(file)) {
+            Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+            ZipArchiveEntry zipArchiveEntry = entries.nextElement();
+            assertEquals(ZipEntry.DEFLATED, zipArchiveEntry.getMethod());
+            assertEquals(20, zipArchiveEntry.getCompressedSize());
+        }
+    }
+}

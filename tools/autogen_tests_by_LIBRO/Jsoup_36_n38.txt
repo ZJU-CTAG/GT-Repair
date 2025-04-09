@@ -1,0 +1,8 @@
+public void testCharsetDetection() {
+    String html = "<html><head><meta charset=UTF-8><meta http-equiv=Content-Type content=text/html;  /></head><body>Some content</body></html>";
+    Document doc = Jsoup.parse(html);
+    Element metaCharsetElem = doc.select("meta[charset]").first();
+    assertEquals("UTF-8", metaCharsetElem.attr("charset"));
+    Element metaEquivElem = doc.select("meta[http-equiv=Content-Type]").first();
+    assertEquals("text/html; ", metaEquivElem.attr("content"));
+}

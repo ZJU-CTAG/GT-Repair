@@ -1,0 +1,22 @@
+public void testIssue294() throws MathException {
+    DormandPrince853Integrator integ = new DormandPrince853Integrator(0, 1, 1e-10, 1e-10);
+    integ.addEventHandler(new EventHandler<Event>() {
+        public void init(double t0, double[] y0, double t) {
+        }
+        public double g(double t, double[] y) {
+            return 1 - FastMath.cos(t);
+        }
+        public EventHandler.Action eventOccurred(double t, double[] y, boolean increasing) {
+            return EventHandler.Action.RESET_STATE;
+        }
+        public void resetState(double t, double[] y) {
+        }
+    }, 1.0, 1e-6, 1000);
+    integ.integrate(new FirstOrderDifferentialEquations() {
+        public int getDimension() {
+            return 1;
+        }
+        public void computeDerivatives(double t, double[] y, double[] yDot) {
+            yDot[0] = 0;
+        }
+    }, 0,

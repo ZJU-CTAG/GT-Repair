@@ -1,0 +1,9 @@
+public void testIssue108() throws IOException {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy/MM/dd");
+    DateTime dt = dtf.parseDateTime("2014/03/05");
+    DateTimeSerializerBase serializer = DateTimeSerializerBase.forType(DateTime.class);
+    ObjectMapper mapper = new ObjectMapper();
+    StringWriter writer = new StringWriter();
+    serializer.serialize(dt, null, writer);
+    assertEquals("\"2014/03/05\"", writer.toString());
+}

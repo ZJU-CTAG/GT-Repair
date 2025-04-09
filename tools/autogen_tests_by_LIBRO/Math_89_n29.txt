@@ -1,0 +1,16 @@
+public void testFrequency() {
+    Frequency f = new Frequency();
+    for (int i = 0; i < 10; i++) {
+        f.addValue(Integer.valueOf(i));
+    }
+    final Object OBJ = new Object();
+    try {
+        f.addValue(OBJ);
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+    assertEquals(0, f.getCount(OBJ));
+    assertEquals(0.0, f.getPct(OBJ), Double.MIN_VALUE);
+    assertEquals(10, f.getSumFreq());
+}

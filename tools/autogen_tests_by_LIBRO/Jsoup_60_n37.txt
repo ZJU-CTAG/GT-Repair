@@ -1,0 +1,14 @@
+public void testIssue110() throws IOException {
+    String html = "<html><head><title>First parse</title></head>"
+        + "<body><p>Parsed HTML into a doc.</p>"
+        + "<div class='a-row a-spacing-medium'>" +
+        "<span class='a-size-base'>I'll Ship & Pay</span>" +
+        "<span class='a-color-price'>Varies</span>" +
+        "</div>" +
+        "</body></html>";
+    Document doc = Jsoup.parse(html);
+    Elements elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Ship & Pay)");
+    assertEquals(1, elements.size());
+    elements = doc.select("div.a-row.a-spacing-medium span.a-size-base:contains(I'll Send & Pay)");
+    assertEquals(0, elements.size());
+    elements = doc.select("div.a-row.a-spacing-medium span.a

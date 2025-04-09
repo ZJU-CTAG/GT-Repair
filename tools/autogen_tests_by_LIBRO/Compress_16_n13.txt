@@ -1,0 +1,12 @@
+public void testDetection() throws Exception {
+    // TAR file from https://issues.apache.org/jira/browse/COMPRESS-117
+    assertEquals(ArchiveStreamFactory.TAR,
+            new ArchiveStreamFactory().detect(
+                    new BZip2CompressorInputStream(
+                        new FileInputStream("src/test/resources/test-documents/testTAR.tar.bz2"))));
+
+    // AIFF file from https://svn.apache.org/repos/asf/tika/trunk/tika-parsers/src/test/resources/test-documents/testAIFF.aif
+    assertNull(new ArchiveStreamFactory().detect(
+            new BufferedInputStream(
+                    new FileInputStream("src/test/resources/test-documents/testAIFF.aif"))));
+}

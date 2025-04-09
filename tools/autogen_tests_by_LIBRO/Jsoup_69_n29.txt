@@ -1,0 +1,21 @@
+public void testIssue108() {
+    Document doc = Jsoup.parse(
+        "<form action='/post' method='post'>" +
+            "<input type='hidden' name='alpha' value='alpha-value'/>" +
+            "<input type='hidden' name='beta' value='beta-value'/>" +
+        "</form>", "http://example.com");
+    Element form = doc.select("form").first();
+
+    System.out.println(doc);
+
+    doc.select("input[name=alpha]").first().remove();
+
+    System.out.println(doc);
+
+    FormElement formEl = (FormElement) form;
+
+    System.out.println(formEl);
+
+    List<Connection.KeyVal> data = formEl.formData();
+    System.out.println(data);
+}

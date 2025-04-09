@@ -1,0 +1,13 @@
+public void testIssue_107() {
+     String[] inputs = new String[] {"input.js"};
+     String[] externs = new String[] {"window.js"};
+     String output = "output.js";
+     CompilerOptions options = new CompilerOptions();
+     options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+     options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+     options.setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS);
+     Compiler compiler = new Compiler();
+     compiler.compile(externs, inputs, options);
+     String result = compiler.toSource();
+     assertEquals("window.foo=function(a,b){var HOLD=a.prop;return b(a)+HOLD};", result);
+}

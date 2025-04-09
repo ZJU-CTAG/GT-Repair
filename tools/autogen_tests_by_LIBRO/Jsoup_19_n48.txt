@@ -1,0 +1,10 @@
+public void testIssue143() {
+    Whitelist w = Whitelist.relaxed();
+    w.addTags("p");
+    w.addTags("img");
+    w.preserveRelativeLinks(true);
+
+    String html = "<html><img src=\"cid:1234\"></html>";
+    String clean = Jsoup.clean(html, w);
+    assertEquals("<html><img src=\"cid:1234\"></html>", clean);
+}

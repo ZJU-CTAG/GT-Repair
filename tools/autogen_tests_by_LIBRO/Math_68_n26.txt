@@ -1,0 +1,10 @@
+public void testConvergenceChecker() {
+    LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer(
+            new SimpleVectorValueChecker(new double[] { 1e-10, 1e-10 }, new double[] { 1e-10, 1e-10 }));
+    VectorialPointValuePair result = optimizer.optimize(new ObjectiveFunction(new MultivariateJacobianFunction() {
+        public Pair<RealVector, RealMatrix> value(RealVector point) {
+            return new Pair<RealVector, RealMatrix>(point, new BlockRealMatrix(new double[][] { { 1, 0 }, { 0, 1 } }));
+        }
+    }), GoalType.MINIMIZE, new double[] { 1, 1 });
+    assertArrayEquals(new double[] { 0, 0 }, result.getPointRef(), 1e-10);
+}

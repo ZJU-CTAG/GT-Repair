@@ -1,0 +1,23 @@
+public void testBitInputStream() {
+    byte[] bytes = new byte[10];
+    bytes[0] = 87;
+    bytes[1] = 45;
+    bytes[2] = 66;
+    bytes[3] = 15;
+    bytes[4] = 90;
+    bytes[5] = 29;
+    bytes[6] = 88;
+    bytes[7] = 61;
+    bytes[8] = 33;
+    bytes[9] = 74;
+    ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+    BitInputStream bin = new BitInputStream(in, ByteOrder.LITTLE_ENDIAN);
+    try {
+        long ret = bin.readBits(5);
+        ret = bin.readBits(63);
+        ret = bin.readBits(12);
+        assertEquals(0xab3, ret);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}

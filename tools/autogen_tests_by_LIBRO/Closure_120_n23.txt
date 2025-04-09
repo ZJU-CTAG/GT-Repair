@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String source = "var bar = 5;\n"
+        + "function foo() {\n"
+        + "bar = 42;\n"
+        + "var baz = bar;\n"
+        + "bar = 5;\n"
+        + "if (bar !== baz) {\n"
+        + "alert('baz !== bar');\n"
+        + "}\n"
+        + "}\n"
+        + "foo();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(EXTERNS, source);
+    assertTrue(result.success);
+    assertEquals("(function(){var a=5;function b(){a=42;var c=a;a=5;if(a!==c)alert(\"baz !== bar\")}b()})();",
+        compiler.toSource());
+}

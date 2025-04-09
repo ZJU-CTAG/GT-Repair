@@ -1,0 +1,14 @@
+public void testIntegerOverflow() {
+    int n = Integer.MAX_VALUE / 100; // avoid overflow
+    int m = Integer.MAX_VALUE / 100;
+
+    OpenMapRealMatrix m1 = new OpenMapRealMatrix(n, m);
+    int key = m1.computeKey(n - 1, m - 1);
+    assertEquals(Integer.MAX_VALUE - 2, key);
+    try {
+        m1.addToEntry(n - 1, m - 1, 1.0);
+        fail("Expected MathIllegalArgumentException");
+    } catch (MathIllegalArgumentException e) {
+        // expected;
+    }
+}

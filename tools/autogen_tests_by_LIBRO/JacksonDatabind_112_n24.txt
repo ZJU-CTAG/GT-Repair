@@ -1,0 +1,19 @@
+public void testIssue() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+    String json = "{\"data\": [\"one\", \"two\", \"three\"]}";
+
+    // this works fine
+    MyData data = om.readValue(json, MyData.class);
+
+    // This fails with
+    // Cannot construct instance of `com.XXX.MyStringCollection`
+    // (although at least one Creator exists): no default no-arguments constructor found
+    MyStringCollection set = om.readValue(json, MyStringCollection.class);
+    assertEquals(3, set.size());
+}
+
+@SuppressWarnings("serial")
+public static class MyStringCollection extends HashSet<String> {}
+
+@SuppressWarnings("serial")
+public static class MyData extends HashMap<String, MyStringCollection> {}

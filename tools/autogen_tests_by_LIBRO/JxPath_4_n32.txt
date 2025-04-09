@@ -1,0 +1,13 @@
+public void testStringValueBug() {
+    String xml = "<root><value> 12324 56</value></root>";
+    InputSource is = new InputSource(new StringReader(xml));
+    Document document = null;
+    try {
+        document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    JXPathContext context = JXPathContext.newContext(document);
+    String value = (String) context.getValue("//value");
+    assertEquals("12324 56", value);
+}

@@ -1,0 +1,11 @@
+public void testIssue107() {
+    File file = new File("src/test/resources/issue-107.tar");
+    try (FileInputStream fis = new FileInputStream(file)) {
+        try (ArchiveInputStream ais = new TarArchiveInputStream(fis)) {
+            TarArchiveEntry entry = (TarArchiveEntry) ais.getNextEntry();
+            assertEquals(4294967294L, entry.getUserId());
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

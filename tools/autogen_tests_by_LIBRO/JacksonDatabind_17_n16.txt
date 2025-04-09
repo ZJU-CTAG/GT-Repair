@@ -1,0 +1,19 @@
+public void testIssue107() {
+    ObjectMapper mapper = new ObjectMapper()
+            .enableDefaultTyping() // works fine with disableDefaultTyping()
+            .enable(MapperFeature.AUTO\_DETECT\_GETTERS)
+            .enable(MapperFeature.REQUIRE\_SETTERS\_FOR\_GETTERS)
+            .disable(MapperFeature.USE\_GETTERS\_AS\_SETTERS)
+            .disable(MapperFeature.CAN\_OVERRIDE\_ACCESS\_MODIFIERS)
+            .enable(SerializationFeature.INDENT\_OUTPUT)
+            .disable(SerializationFeature.FAIL\_ON\_EMPTY\_BEANS);
+
+    Foo foo = new Foo("bar");
+    String serialized = mapper.writeValueAsString(foo); // {"bar" : "bar"}
+
+    JsonNode jsonNode = mapper.readTree(serialized); // exception here
+    JsonNode node = mapper.valueToTree(foo); // and here
+}
+
+public static class Foo {
+   

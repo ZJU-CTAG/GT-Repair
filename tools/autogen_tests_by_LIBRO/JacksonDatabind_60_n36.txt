@@ -1,0 +1,16 @@
+public void testIssue108() throws Exception {
+    ResponseReceiver receiver = new ResponseReceiver();
+    CommandAPDU command = new CommandAPDU(new byte[] {0x00, (byte) 0xA4, 0x04, 0x00, 0x08, 0x56, 0x49, 0x50, 0x45, 0x52, 0x4D, 0x49, 0x4E, 0x49});
+    RemoteCall call = new RemoteCall("com.ubitricity.devices.common.tasks.ResponseReceiver", "receiveResponse", new Object[] {command}, receiver);
+    String json = mapper.writeValueAsString(call);
+    RemoteCall result = mapper.readValue(json, RemoteCall.class);
+    assertEquals(call, result);
+}
+public static class CommandAPDU {
+    @JsonIgnore
+    private byte[] apdu;
+    @JsonCreator
+    public CommandAPDU(@JsonProperty(value = "bytes") byte[] apdu) {
+        this.apdu = apdu.clone();
+    }
+    @J

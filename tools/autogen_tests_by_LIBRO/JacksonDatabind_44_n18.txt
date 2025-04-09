@@ -1,0 +1,25 @@
+public void testSubTypeResolution() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.setMixInAnnotations(Base.class, MixIn.class);
+        }
+    });
+    // Note: no 'defaultImpl' set; but this works as expected:
+    Sub s = mapper.readValue("{\"a\":1}", Sub.class);
+    assertEquals(1, s.a);
+
+    // but this does not:
+    s = mapper.readValue("{\"a\":3}", Sub.class);
+    assertEquals(3, s.a);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+@JsonSubTypes({ @JsonSubTypes.Type(value = Sub.class, name = "sub") })
+static class Base {
+    public int a = -1;
+}
+
+static

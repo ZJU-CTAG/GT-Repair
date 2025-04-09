@@ -1,0 +1,19 @@
+public void testClosureCompiler() {
+    final String original = "function closureCompilerTest(someNode) {" +
+            " var nodeId;" +
+            " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);" +
+            "}";
+    final String expected = "function closureCompilerTest(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0};";
+    final String actual = new JavaScriptCompressor(new StringReader(original), new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Warning: " + message);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.out.println("Error: " + message);
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String

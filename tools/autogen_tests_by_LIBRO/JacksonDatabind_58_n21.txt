@@ -1,0 +1,12 @@
+public void testIssue() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS);
+    mapper.enableDefaultTyping();
+    // mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    // mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.PUBLIC_ONLY);
+    // mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.PUBLIC_ONLY);
+    // mapper.setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.PUBLIC_ONLY);
+    MyException myException = new MyException();
+    byte[] json = mapper.writeValueAsBytes(myException);
+    MyException myException2 = mapper.readValue(json, MyException.class);
+}

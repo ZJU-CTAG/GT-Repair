@@ -1,0 +1,16 @@
+public void testEncoding() throws Exception {
+    byte[] bytes = new byte[] {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
+
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    factory.setEntryEncoding("UTF-8");
+
+    ZipArchiveEntry entry = new ZipArchiveEntry("test");
+    entry.setSize(16);
+    ZipArchiveOutputStream zip = (ZipArchiveOutputStream) factory.createArchiveOutputStream(ArchiveStreamFactory.ZIP, new ByteArrayOutputStream());
+    zip.putArchiveEntry(entry);
+    zip.write(bytes);
+    zip.closeArchiveEntry();
+    zip.close();
+
+    ArchiveInputStream in = factory.createArchiveInputStream(ArchiveStreamFactory.ZIP, new ByteArrayInputStream(bytes));
+    ZipArchiveEntry zipEntry = (ZipArchiveEntry) in.getNextEntry();

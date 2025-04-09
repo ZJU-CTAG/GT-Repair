@@ -1,0 +1,15 @@
+public void testIncompleteReinitialization() {
+    LocalSearchSolverScope scope = new LocalScoreDirectorFactory(
+            TestdataChainedSolution.buildSolutionDescriptor(),
+            TestdataChainedEntity.buildEntityDescriptor()).createLocalSearchSolverScope();
+    LocalSearchPhaseScope phaseScope = new LocalSearchPhaseScope(scope);
+    LocalSearchStepScope lastCompletedStepScope = new LocalSearchStepScope(phaseScope, -1);
+    phaseScope.setLastCompletedStepScope(lastCompletedStepScope);
+    LocalSearchMoveScope moveScope = new LocalSearchMoveScope(lastCompletedStepScope);
+    moveScope.setMove(new TestdataChainedChangeMove(Arrays.asList(
+            new TestdataChainedEntity("e1", null, null), new TestdataChainedEntity("e2", null, null)),
+            new TestdataChainedEntity("e3", null, null)));
+    lastCompletedStepScope.setStep(moveScope.getMove());
+    lastCompletedStepScope.setScore(SimpleScore.of(-1000));
+    phaseScope.setBestScore(SimpleScore.of(-1000));
+    Local

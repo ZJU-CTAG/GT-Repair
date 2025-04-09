@@ -1,0 +1,19 @@
+public void testIssue() {
+    String input = "<HTML>\n" +
+            "<body>\n" +
+            " <div>\n" +
+            "  <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>\n" +
+            " </div>\n" +
+            "</body>\n" +
+            "</HTML>";
+
+    HtmlCleaner cleaner = new HtmlCleaner();
+    TagNode node = cleaner.clean(input);
+
+    SimpleXmlSerializer serializer = new SimpleXmlSerializer(new CleanerProperties());
+    String output = serializer.getXmlAsString(node);
+
+    assertEquals(input, output);
+}

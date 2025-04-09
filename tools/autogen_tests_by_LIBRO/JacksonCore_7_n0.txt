@@ -1,0 +1,20 @@
+public void testCheckWriteString() throws Exception
+{
+    StringWriter sw = new StringWriter();
+    JsonFactory f = new JsonFactory();
+    JsonGenerator jg = f.createGenerator(sw);
+    jg.writeStartObject();
+    jg.writeFieldName("abc");
+    jg.writeString("def");
+    jg.writeEndObject();
+    jg.close();
+    assertEquals("{\"abc\":def}", sw.toString());
+
+    sw = new StringWriter();
+    jg = f.createGenerator(sw);
+    jg.writeStartObject();
+    jg.writeString("abc");
+    jg.writeEndObject();
+    jg.close();
+    assertEquals("{\"\":\"abc\"}", sw.toString());
+}

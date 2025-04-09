@@ -1,0 +1,14 @@
+public void testBase64InputStream() throws IOException {
+    final String str = "Test.\n";
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final Base64OutputStream b64os = new Base64OutputStream(baos, true);
+    b64os.write(str.getBytes("UTF-8"));
+    b64os.flush();
+    b64os.close();
+
+    final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+    final Base64InputStream b64is = new Base64InputStream(bais, true);
+    final byte[] buf = new byte[str.getBytes("UTF-8").length];
+    final int len = b64is.read(buf);
+    assertEquals(str.getBytes("UTF-8").length, len);
+}

@@ -1,0 +1,22 @@
+public void testIssue106() throws Exception {
+    File file = File.createTempFile("commons-compress", ".zip");
+    file.deleteOnExit();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(file);
+    zos.putArchiveEntry(new ZipArchiveEntry("foo.txt"));
+    zos.write("foo\n".getBytes());
+    zos.closeArchiveEntry();
+    zos.close();
+
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(file);
+    ZipArchiveEntry entry = zis.getNextZipEntry();
+    assertNotNull(entry);
+    assertEquals("foo.txt", entry.getName());
+    assertEquals(null, entry.getComment());
+    assertEquals(4, entry.getSize());
+    zis.close();
+
+    ZipFile zf = new ZipFile(file);
+    entry = zf.getEntry("foo.txt");
+    assertNotNull(entry);
+    assertEquals("foo.txt", entry.getName());
+    assertEquals("", entry.

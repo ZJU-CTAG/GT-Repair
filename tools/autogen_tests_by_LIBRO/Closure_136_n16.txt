@@ -1,0 +1,24 @@
+public void test$super() {
+    String js = "var MyClass = Class.create({initialize: function() {" +
+            "    this.message = \"Hello world!\"" +
+            "  },showMessage: function() {" +
+            "    alert(this.message);" +
+            "  }});" +
+            "var SubClass = Class.create(MyClass, {" +
+            "  initialize: function($super, name) {" +
+            "    $super();" +
+            "    this.name = name;" +
+            "  }," +
+            "  showMessage: function($super) {" +
+            "    $super();" +
+            "    alert(\"My name is \" + this.name);" +
+            "  }" +
+            "});" +
+            "var sub = new SubClass(\"Jack\");" +
+            "sub.showMessage();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+      SourceFile.fromCode("test.js", js),
+      new CompilerOptions()
+    );
+    assertTrue

@@ -1,0 +1,18 @@
+public void testPosixParserQuotedValue() throws Exception {
+    Options options = new Options();
+    Option opt1 = OptionBuilder.withLongOpt("opt1")
+            .withArgName("arg")
+            .hasArg(true)
+            .create('1');
+    Option opt2 = OptionBuilder.withLongOpt("opt2")
+            .withArgName("arg")
+            .hasArg(true)
+            .create('2');
+    options.addOption(opt1);
+    options.addOption(opt2);
+    String[] args = new String[]{ "-1", "\"value 1\"", "-2", "\"value 2\"" };
+    PosixParser parser = new PosixParser();
+    CommandLine line = parser.parse(options, args);
+    assertEquals("value 1", line.getOptionValue("opt1"));
+    assertEquals("value 2", line.getOptionValue("opt2"));
+}

@@ -1,0 +1,13 @@
+public void testFlagOverride() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+
+    compiler.compile(SourceFile.fromCode("foo.js", "var foo = {}; foo.bar = this;"), SourceFile.fromCode("externs.js", ""), options);
+
+    JSError[] errors = compiler.getErrors();
+    JSError[] warnings = compiler.getWarnings();
+    assertEquals(0, errors.length);
+    assertEquals(0, warnings.length);
+}

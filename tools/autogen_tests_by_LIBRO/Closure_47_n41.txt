@@ -1,0 +1,18 @@
+public void testSourceMap() {
+    // code
+    StringBuffer sb = new StringBuffer(2);
+    sb.append("a");
+    sb.append("b");
+    // end code
+    String js = new JavaScriptCompressor(new StringReader(sb.toString()), new ErrorReporter() {
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("[WARNING] " + line + ':' + lineOffset + ':' + message);
+        }
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            System.err.println("[ERROR] " + line + ':' + lineOffset + ':' + message);
+        }
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            error(message, sourceName, line, lineSource, lineOffset);
+            return new EvaluatorException(message);
+        }
+    }).compress(sb, 1, true, true, true,

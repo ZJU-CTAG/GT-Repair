@@ -1,0 +1,32 @@
+public void testTokenBufferDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+
+    assertEquals(1, value.a);
+    assertEquals(null, value.b);
+}
+
+static class Value {
+    int a;
+    Integer b;
+
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        JsonParser parser = buffer.asParser();
+        try {
+            parser.nextToken();
+            String name = parser.currentName();
+            if (name.equals("a")) {
+                value.a = parser.nextIntValue(-1);
+            } else if (name.equals("b")) {
+                value.b = parser.nextIntValue(0);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return value;
+    }
+}

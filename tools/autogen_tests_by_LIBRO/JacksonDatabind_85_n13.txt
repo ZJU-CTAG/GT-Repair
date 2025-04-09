@@ -1,0 +1,11 @@
+public void testDateSerialization() throws Exception {
+    DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+    DateTime dt = new DateTime(2012, 1, 1, 0, 0, 0, 0);
+    String str = fmt.print(dt);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(fmt);
+    String json = mapper.writeValueAsString(dt);
+
+    assertEquals(str, json);
+}

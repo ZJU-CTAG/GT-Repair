@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    final BoundFunction f = new BoundFunction();
+    final double[] minParams = { -10 };
+    final double[] maxParams = { 10 };
+    final double[] startParams = { -8 };
+    final double[] lowerBounds = { -9 };
+    final double[] upperBounds = { 8 };
+    final CMAESOptimizer optimizer = new CMAESOptimizer(100, 1E-12, true, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1E-12, 1E-12));
+    final PointValuePair optimum = optimizer.optimize(new MaxEval(1000), f, GoalType.MINIMIZE, startParams, lowerBounds, upperBounds);
+    Assert.assertEquals(0, optimizer.getEvaluations()); // should be zero because it should terminate before the max. number of evaluations
+    Assert.assertEquals(9, optimum.getPoint()[0], 0.1); // should be 9.0 but it looks like it only gets to 9.1

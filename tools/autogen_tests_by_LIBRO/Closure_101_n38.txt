@@ -1,0 +1,14 @@
+public void testProcessClosurePrimitivesDefault() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS
+            .setOptionsForCompilationLevel(options);
+    options.setGenerateExports(true);
+    options.setProcessCommonJSModules(true);
+    options.setClosurePass(true);
+    options.setGeneratePseudoNames(true);
+    options.setPrettyPrint(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new JSSourceFile[]{
+            JSSourceFile.fromCode("test.js", "var a = 1;")}, options);
+    assertEquals("var a=1;\n", result.source);
+}

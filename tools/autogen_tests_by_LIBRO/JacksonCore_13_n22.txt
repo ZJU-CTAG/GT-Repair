@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException
+{
+    StringWriter sw = new StringWriter();
+    final JsonFactory jsonFactory = new JsonFactory();
+    final JsonGenerator generator = jsonFactory.createGenerator(sw)
+            .useDefaultPrettyPrinter();
+    generator.disable(JsonGenerator.Feature.QUOTE_FIELD_NAMES);
+    generator.writeStartObject();
+    generator.writeStringField("foo", "value");
+    generator.writeEndObject();
+    generator.flush();
+    Assert.assertEquals("{foo:\"value\"}", sw.toString());
+}

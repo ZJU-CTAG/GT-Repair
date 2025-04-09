@@ -1,0 +1,23 @@
+public void testIssue804() throws Exception {
+    File jsOut = new File(TEST_DATA_DIR, "out.js");
+    File bar = new File(TEST_DATA_DIR, "Bar.js");
+    File foo = new File(TEST_DATA_DIR, "lib/Foo.js");
+
+    jsOut.delete();
+
+    String[] args = {
+            "--transform_amd_modules",
+            "--process_common_js_modules",
+            "--common_js_entry_module=Bar.js",
+            "--compilation_level=ADVANCED_OPTIMIZATIONS",
+            "--js_output_file=" + jsOut.getPath(),
+            "--js=" + bar.getPath(),
+            "--js=" + foo.getPath()
+    };
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(CommandLineRunner.getCommandLineConfig(args), "testIssue804");
+
+    assertTrue(result.success);
+    assertTrue(jsOut.exists());
+}

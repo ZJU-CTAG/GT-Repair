@@ -1,0 +1,20 @@
+public void testBrackingSolver() {
+    final int maxEval = 200;
+
+    final double accuracy = 1e-14;
+    final double relativeAccuracy = 1e-14;
+
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x;
+        }
+    };
+
+    UnivariateRealSolver solver = new BracketingNthOrderBrentSolver();
+
+    double res = solver.solve(maxEval, f, 0.0, 1.0, accuracy, relativeAccuracy);
+
+    assertEquals(0.0, res, accuracy);
+
+    assertEquals(1, solver.getEvaluations());
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String js = StringUtils.join(Collections.nCopies(25, "if (!f()) alert('hi');"), "\n");
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new Code()
+        .setCompilerOptions(new CompilerOptions()
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT5)
+            .setCompilationLevel(CompilationLevel.ADVANCED_OPTIMIZATIONS)
+        )
+        .setJavascript(js)
+        .setExterns(Collections.singletonList(SourceFile.fromCode("externs.js", "function f() { return false; }")))
+    );
+    assertTrue(result.success);
+    assertEquals(0, result.warnings.size());
+    assertEquals(0, result.errors.size());
+    assertFalse(result.compiledSource.contains("alert"));
+}

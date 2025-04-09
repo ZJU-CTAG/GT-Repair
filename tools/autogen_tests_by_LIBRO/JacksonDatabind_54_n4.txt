@@ -1,0 +1,9 @@
+public void testIssue() throws Exception {
+    String json = "{\"a\":null,\"b\":null}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
+    mapper.registerModule(new Jdk8Module());
+    JsonResult result = mapper.readValue(json, JsonResult.class);
+    Assert.assertFalse(result.getA().isPresent());
+    Assert.assertFalse(result.getB().isPresent());
+}

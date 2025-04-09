@@ -1,0 +1,25 @@
+public void testArchiveInputStream() throws IOException {
+    File zip = new File(getClass().getResource("/ArchiveInputStreamIssue.zip").toURI());
+    assertTrue(zip.exists());
+
+    ArchiveInputStream inputStream = new ArchiveStreamFactory().createArchiveInputStream(new FileInputStream(zip));
+
+    ArchiveEntry entry = inputStream.getNextEntry();
+    assertNotNull(entry);
+    assertTrue(entry.isDirectory());
+    assertEquals("testdir/", entry.getName());
+
+    entry = inputStream.getNextEntry();
+    assertNotNull(entry);
+    assertTrue(entry.isDirectory());
+    assertEquals("testdir/empty/", entry.getName());
+
+    entry = inputStream.getNextEntry();
+    assertNotNull(entry);
+    assertFalse(entry.isDirectory());
+    assertEquals("testdir/empty/empty", entry.getName());
+
+    entry = inputStream.getNextEntry();
+    assertNotNull(entry);
+    assertTrue(entry.isDirectory());
+    assertEquals("testdir/ä/", entry.getName

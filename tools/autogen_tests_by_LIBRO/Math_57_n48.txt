@@ -1,0 +1,21 @@
+public void testKMeansPlusPlusClusterer() {
+    // create a list of points
+    List<Point> points = new ArrayList<Point>();
+    points.add(new Point(1d, 1d));
+    points.add(new Point(1d, 2d));
+    points.add(new Point(2d, 1d));
+    points.add(new Point(2d, 2d));
+    points.add(new Point(3d, 3d));
+    points.add(new Point(4d, 4d));
+    points.add(new Point(5d, 5d));
+
+    // create a new instance of the clusterer with a random data generator
+    KMeansPlusPlusClusterer<Point> kmpp = new KMeansPlusPlusClusterer<Point>(
+        new RandomPointPicker<Point>());
+
+    // cluster the data, using 3 iterations, 2 clusters and R^2 distance
+    List<CentroidCluster<Point>> clusters = kmpp.cluster(points, 2,
+        new EuclideanDistance());
+
+    // check that both clusters contain some points
+    assert

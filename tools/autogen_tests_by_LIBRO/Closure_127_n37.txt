@@ -1,0 +1,13 @@
+public void testIssue111() {
+    Context cx = Context.enter();
+    try {
+        Scriptable scope = cx.initStandardObjects();
+        Script script = cx.compileString("try { throw \"throw me\" } finally { /* fake catcher */; break b }", "test", 1, null);
+        cx.evaluateString(scope, "b:", "test", 1, null);
+        Object result = script.exec(cx, scope);
+        assertTrue(result == Context.getUndefinedValue());
+        assertEquals("undefined", cx.evaluateString(scope, "typeof result", "test", 1, null));
+    } finally {
+        Context.exit();
+    }
+}

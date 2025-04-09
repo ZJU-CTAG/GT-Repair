@@ -1,0 +1,13 @@
+public void testExplicitNullToken() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDeserializerProvider(mapper.getDeserializerProvider().withAdditionalDeserializers(new StdDeserializer<Object>(Object.class) {
+        @Override
+        public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException,
+                JsonProcessingException {
+            jp.nextToken();
+            return null;
+        }
+    }));
+    ObjectId objectId = mapper.readValue("null", ObjectId.class);
+    assertNull(objectId);
+}

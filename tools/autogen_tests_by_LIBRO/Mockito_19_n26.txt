@@ -1,0 +1,20 @@
+public void test_inject_wrong_field() {
+    TextView txtNextStep = mock(TextView.class);
+
+    class ToInject {
+        @InjectMocks
+        TextView txtGateView = null;
+        TextView txtGateLabel = null;
+        TextView txtNextStep = null;
+    }
+
+    ToInject toInject = new ToInject();
+    toInject.txtNextStep = txtNextStep;
+
+    new MockitoSession()
+            .initMocks(toInject)
+            .finishMocking();
+
+    assertNotNull(toInject.txtNextStep);
+    assertNull(toInject.txtGateView);
+}

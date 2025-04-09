@@ -1,0 +1,20 @@
+public void testOptionGroup() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option option1 = OptionBuilder.withLongOpt("long")
+            .withArgName("long")
+            .hasArg()
+            .create();
+    Option option2 = OptionBuilder.withLongOpt("long-and-descriptive")
+            .withArgName("long")
+            .hasArg()
+            .create();
+    group.addOption(option1);
+    group.addOption(option2);
+    options.addOptionGroup(group);
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[] { "--long-and-descriptive", "long" });
+    assertTrue(cmd.hasOption("long-and-descriptive"));
+    assertEquals("long", cmd.getOptionValue("long-and-descriptive"));
+}

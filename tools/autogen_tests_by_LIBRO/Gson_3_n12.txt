@@ -1,0 +1,20 @@
+public void testError() throws Exception {
+    String json = "{\"map\":{\"20150129\":[{\"id\":\"1\",\"date\":\"20150129120000\"}]}}";
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+    Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+        @Override
+        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                return sdf.parse(json.getAsString());
+            } catch (ParseException e) {
+                throw new JsonParseException(e);
+            }
+        }
+    }).create();
+    JsonUtils.fromJson(json, JsonUtilsTest.Test.class, gson);
+}
+
+public final class JsonUtilsTest {
+    private JsonUtilsTest() {
+    }

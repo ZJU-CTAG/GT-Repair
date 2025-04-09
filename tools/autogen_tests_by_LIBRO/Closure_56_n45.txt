@@ -1,0 +1,10 @@
+public void testIssue149() throws IOException {
+        File f = File.createTempFile("test", null);
+        f.deleteOnExit();
+        FileUtils.writeStringToFile(f, "alert(foo);\nalert(bar);");
+        Compiler compiler = new Compiler();
+        compiler.setJsOutputFile(File.createTempFile("out", null));
+        compiler.setWarningLevel(DiagnosticGroups.VERBOSE);
+        compiler.compile(Collections.singletonList(f));
+        assertTrue(compiler.getResult().success);
+    }

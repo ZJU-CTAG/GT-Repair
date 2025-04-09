@@ -1,0 +1,27 @@
+public void testIssue107() throws JsonProcessingException, IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    String json = mapper.writeValueAsString(new Issue107());
+    JsonNode jsonNode = mapper.readTree(json);
+    assertEquals(jsonNode.get("bar").asText(), "bar");
+}
+
+public static class Issue107 {
+    private String bar;
+
+    public Issue107() {
+    }
+
+    public Issue107(String bar) {
+        this.bar = bar;
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public void setBar(String bar) {
+        this.bar = bar;
+    }
+}

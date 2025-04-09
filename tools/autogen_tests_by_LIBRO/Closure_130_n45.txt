@@ -1,0 +1,15 @@
+public void testIssue108() {
+    String str = "function () {\n" +
+            " return function () {\n" +
+            " var arg = arguments;\n" +
+            " setTimeout(function() { alert(args); }, 0);\n" +
+            " }\n" +
+            "}";
+    CompilerOptions opt = new CompilerOptions();
+    opt.setCollapsePropertiesOnExternTypes(true);
+    opt.setCheckTypes(false);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("test.js", str)}, opt);
+    String output = compiler.toSource();
+    assertContains("function() { alert(args); }", output);
+}

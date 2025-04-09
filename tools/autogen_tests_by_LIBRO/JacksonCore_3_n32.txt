@@ -1,0 +1,12 @@
+public void testIssueJsonUTF8Stream() {
+    String data = "{\"name\":\"name1\",\"age\":\"age1\"}";
+    InputStream in = new ByteArrayInputStream(data.getBytes());
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue(in, Map.class);
+        fail("Expected JsonParseException");
+    } catch (Exception e) {
+        assertEquals(JsonParseException.class, e.getClass());
+        assertEquals(JsonLocation.NA, e.getLocation());
+    }
+}

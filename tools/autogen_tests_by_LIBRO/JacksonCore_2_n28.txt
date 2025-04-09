@@ -1,0 +1,14 @@
+public void testIssueWithParser() throws Exception
+{
+    JsonFactory jf = new JsonFactory();
+    try {
+        JsonParser p = jf.createJsonParser("123true");
+        assertEquals(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+        assertEquals(123, p.getIntValue());
+        assertEquals(JsonToken.VALUE_TRUE, p.nextToken());
+        assertTrue(p.getBooleanValue());
+        assertEquals(JsonToken.END_OBJECT, p.nextToken());
+    } catch (Exception e) {
+        fail("Should not throw an exception: "+e.getMessage());
+    }
+}

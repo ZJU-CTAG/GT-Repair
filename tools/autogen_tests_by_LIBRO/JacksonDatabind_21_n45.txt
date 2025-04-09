@@ -1,0 +1,30 @@
+public void testIssue135() {
+    String json = "{\"testEnum\":\"value1\"}";
+    TestEnumWrapper wrapper = new ObjectMapper().readValue(json, TestEnumWrapper.class);
+    assertEquals(TestEnum.VALUE\_ONE, wrapper.testEnum);
+}
+
+public static class TestEnumWrapper {
+    @JsonProperty("testEnum")
+    private TestEnum testEnum;
+}
+
+public enum TestEnum {
+    VALUE\_ONE("value1");
+
+    private String valueInJson;
+
+    private TestEnum(String valueInJson) {
+        this.valueInJson = valueInJson;
+    }
+
+    @JsonCreator
+    public static TestEnum getEnumFromValue(String value) {
+        for (TestEnum testEnum : values()) {
+            if (testEnum.valueInJson.equals(value)) {
+                return testEnum;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+}

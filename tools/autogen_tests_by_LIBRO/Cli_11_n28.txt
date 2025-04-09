@@ -1,0 +1,25 @@
+public void testIssue143() {
+    String[] args = new String[]{"-t"};
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.withArgName("target").hasArg().withDescription("The target.").withLongOpt("target").create('t'));
+    PosixParser parser = new PosixParser();
+    try {
+        parser.parse(opts, args);
+        fail("expecting ParseException");
+    } catch (ParseException e) {
+        assertEquals("Missing argument for option: t", e.getMessage());
+    }
+
+    args = new String[]{"-target"};
+    try {
+        parser.parse(opts, args);
+        fail("expecting ParseException");
+    } catch (ParseException e) {
+        assertEquals("Missing argument for option: t", e.getMessage());
+    }
+
+    args = new String[]{"-t", "foobar"};
+    CommandLine cl = parser.parse(opts, args);
+    assertEquals("foobar", cl.getOptionValue("t"));
+
+    args

@@ -1,0 +1,9 @@
+public void testZipFileAndInputStream() throws IOException {
+    final File testZip = new File("src/test/resources/test-zip.zip");
+    final ZipFile zipFile = new ZipFile(testZip);
+    final ZipArchiveInputStream stream = new ZipArchiveInputStream(new FileInputStream(testZip));
+    for (ZipArchiveEntry zipEntry = stream.getNextZipEntry(); zipEntry != null; zipEntry = stream.getNextZipEntry()) {
+        assertTrue(zipFile.getEntries().contains(zipEntry));
+    }
+    assertEquals("test-zip.zip", zipFile.getEntries().iterator().next().getName());
+}

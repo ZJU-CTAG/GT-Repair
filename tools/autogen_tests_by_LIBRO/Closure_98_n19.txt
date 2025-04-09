@@ -1,0 +1,6 @@
+public void testClosureMinification 1() {
+    String source = "function foo() { var arr = [1, 2, 3, 4, 5]; for (var i = 0, l = arr.length; i < l; i++) { var j = arr[i]; (function() { var k = j; setTimeout(function() { console.log(k); }, 0); })(); } } foo();";
+    String expected = "function foo(){var a=[1,2,3,4,5];for(var b=0,c=a.length;b<c;b++){var d=a[b];(function(){var a=d;setTimeout(function(){console.log(a)},0)})();}}foo();";
+    String actual = compile(source);
+    assertEquals(expected, actual);
+}

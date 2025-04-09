@@ -1,0 +1,12 @@
+public void testTypeUtilsGetTypeArguments() {
+    Type type = TestCollectionUtils.class.getGenericInterfaces()[0];
+    Map<TypeVariable<?>, Type> typeVarAssigns = TypeUtils.getTypeArguments(type, TestCollectionUtils.class);
+    assertEquals(1, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(TestCollectionUtils.class.getTypeParameters()[0]));
+    type = new TypeLiteral<List<String>>() {}.getType();
+    typeVarAssigns = TypeUtils.getTypeArguments(type, List.class);
+    assertEquals(1, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(List.class.getTypeParameters()[0]));
+    type = new TypeLiteral<List<List<String>>>() {}.getType();
+    typeVarAssigns = TypeUtils.getTypeArguments(type, List.class);
+    assertEquals(1, type

@@ -1,0 +1,19 @@
+public void testRelaxedBufferOwnership() throws IOException {
+    final int blockSize = 17;
+    final int maxBlocks = 2;
+    final int bufferSize = blockSize * maxBlocks;
+    byte[] bytes = new byte[bufferSize];
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bufferSize);
+    outputStream.write(bytes);
+    outputStream.write(bytes);
+    outputStream.write(bytes[0]);
+    outputStream.write(bytes);
+    outputStream.write(bytes);
+    outputStream.write(bytes[0]);
+    byte[] data = outputStream.toByteArray();
+    try {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+        InputStreanFactory factory = new InputStreanFactory(new byte[maxBlocks * blockSize]);
+        ReaderInputStream.Builder builder = ReaderInputStream.builder(new InputStreamReader(inputStream, "UTF-8"));
+        builder.withIOContext(new IOContext(new BufferRecycler(), bytes, false));
+        try (ReaderInputStream readerInputStream = builder.build(factory

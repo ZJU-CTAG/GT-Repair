@@ -1,0 +1,14 @@
+public void test() {
+    ObjectMapper mapper = new ObjectMapper();
+    Base base = new Base();
+
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    SimpleType baseType = typeFactory.constructSimpleType(Base.class, null);
+    mapper.addMixIn(Base.class, BaseMixIn.class);
+    mapper.addMixIn(IFace.class, IFaceMixIn.class);
+    mapper.enableDefaultTyping();
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+    String json = mapper.writeValueAsString(base);
+    assertEquals("{\"@class\":\"com.showbie.jackson.recursive.type.bug.Base\",\"base\":1,\"sub\":2}", json);
+}

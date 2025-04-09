@@ -1,0 +1,7 @@
+public void testIssue129() {
+    // the fix to this was to simply ensure that the CID urls were not cleaned.
+    // this is something that should probably be done by default in the html cleaner.
+    String html = "<html><body><img src=\"cid:mycid\" /></body></html>";
+    String clean = Jsoup.clean(html, Whitelist.basic());
+    assertEquals("<img src=\"cid:mycid\">", clean);
+}

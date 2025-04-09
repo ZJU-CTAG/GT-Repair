@@ -1,0 +1,10 @@
+public void testIssue() throws Exception {
+    final String TEST_ARCHIVE_NAME = "src/test/resources/compress-262.tar.gz";
+    try (TarArchiveInputStream tarInputStream =
+             new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(new File(TEST_ARCHIVE_NAME))))) {
+        TarArchiveEntry entry;
+        while ((entry = tarInputStream.getNextTarEntry()) != null) {
+            System.out.println(entry.getName());
+        }
+    }
+}

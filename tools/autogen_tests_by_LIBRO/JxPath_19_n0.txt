@@ -1,0 +1,21 @@
+public void testIssue107() {
+    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document doc = builder.parse(new StringBufferInputStream(docString));
+
+    DOMImplementation impl = doc.getImplementation();
+
+    DOMDocument doc1 = (DOMDocument) impl.createDocument("ns", "a:doc", null);
+    Element elem1 = doc1.createElementNS("ns", "a:elem");
+    doc1.getDocumentElement().appendChild(elem1);
+
+    Element elem2 = doc1.createElementNS("ns", "b:elem");
+    doc1.getDocumentElement().appendChild(elem2);
+
+    JXPathContext ctx = JXPathContext.newContext(doc1);
+    ctx.setLenient(true);
+    ctx.setNamespaceContextPointer(new SimpleNamespaceContext(doc1));
+
+    Iterator it = ctx.iteratePointers("//*[local-name()='elem']");
+    int count = 0;
+    while (it.hasNext()) {
+      it.next();

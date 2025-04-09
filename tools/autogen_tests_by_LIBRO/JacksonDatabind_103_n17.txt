@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException, ParseException {
+    String json = "{\"date\":\"not a date\"}";
+    try {
+        mapper.readValue(json, DateWrapper.class);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        // note: this is for illustration, problem is not limited to InvalidFormatException
+        assertTrue(e instanceof InvalidFormatException);
+        InvalidFormatException e2 = (InvalidFormatException) e;
+        // e.getMessage() is used for 'message' property in serialized exception:
+        assertEquals("Can not deserialize value of type java.util.Date from String \\\"not a date\\\": not a valid representation (error: Failed to parse Date value 'not a date': Can not parse date \\\"not a date\\\": while it seems to fit format \\\"yyyy-MM-dd HH:mm:ss\\\", parsing fails (leniency? null))\n at [Source: (String)\\\"{\\\\\\\"date\\\\\\\":\\\\\\\"not a date\\\\\\\"}\\\"; line:

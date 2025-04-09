@@ -1,0 +1,14 @@
+public void testMockWithDefaultAnswer() {
+    final List mockedList = mock(List.class, new Answer() {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            return 42;
+        }
+    });
+    mockedList.add("one");
+    mockedList.clear();
+
+    verify(mockedList).add("one");
+    verify(mockedList).clear();
+    verifyZeroInteractions(mockedList);
+}

@@ -1,0 +1,17 @@
+public void testIssue() throws MathUserException, MathIllegalStateException {
+        // define the ODE
+        FirstOrderDifferentialEquations ode = new ODE(false);
+        // create the ODE solvers for both equations
+        FirstOrderIntegrator integrator = new DormandPrince54Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+        StepHandler stepHandler = new StepHandler();
+        integrator.addStepHandler(stepHandler);
+
+        // initialize solvers
+        double[] y = new double[] { 0.0, 1.0, 1.0 };
+        double[] ydot = new double[3];
+        ydot[0] = -y[1];
+        ydot[1] = y[0]+y[1]+y[2];
+        ydot[2] = 1.0;
+        integrator.integrate(ode, 0.0, y, 7.0, y);
+        assertEquals(0, stepHandler.getCounter());
+}

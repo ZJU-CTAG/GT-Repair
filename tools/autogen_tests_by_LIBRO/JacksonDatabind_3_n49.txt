@@ -1,0 +1,18 @@
+public void testNullArgument()
+    throws IOException
+{
+    LoggingEvent event = new LoggingEvent();
+    event.setLogger("logger");
+    //noinspection ThrowableResultOfMethodCallIgnored
+    event.setThrowable(new NullPointerException("test"));
+    event.setCallerData(new StackTraceElement[] { new StackTraceElement("c", "m", "f", 123) });
+    event.setArgumentArray(new String[] { "Test", "Foo", null, "Bar" });
+
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder();
+    String encoded = encoder.encode(event);
+    assertThat(encoded, containsString("\"argumentArray\":[\"Test\",\"Foo\",null,\"Bar\"]"));
+    LoggingJsonDecoder decoder = new LoggingJsonDecoder();
+    LoggingEvent decoded = decoder.decode(encoded);
+    assertNotNull(decoded);
+    assertEquals(event.getLogger(), decoded.getLogger());
+    assertThat

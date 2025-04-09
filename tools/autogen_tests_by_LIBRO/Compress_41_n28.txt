@@ -1,0 +1,18 @@
+public void testIssue107() {
+  ZipArchiveInputStream zipArchiveInputStream = null;
+  try {
+    zipArchiveInputStream = new ZipArchiveInputStream(new FileInputStream("src/test/resources/issue107.zip"));
+    ZipArchiveEntry zipArchiveEntry = zipArchiveInputStream.getNextZipEntry();
+    while (zipArchiveEntry != null) {
+      if (zipArchiveEntry.getName().equals("foo.txt")) {
+        System.out.println("Found foo.txt");
+      }
+
+      zipArchiveEntry = zipArchiveInputStream.getNextZipEntry();
+    }
+  } catch (IOException ioe) {
+    ioe.printStackTrace();
+  } finally {
+    IOUtils.closeQuietly(zipArchiveInputStream);
+  }
+}

@@ -1,0 +1,7 @@
+public void testClassKeyDeserialization() throws Exception {
+    final String json = "{\"a.b.C\":\"value\"}";
+    final Map<Class<?>, String> result = new ObjectMapper().readerFor(new TypeReference<Map<Class<?>, String>>() {
+    }).readValue(json);
+    assertEquals(1, result.size());
+    assertEquals("value", result.get(Class.forName("a.b.C")));
+}

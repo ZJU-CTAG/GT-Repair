@@ -1,0 +1,10 @@
+public void testStopAtNonOption() {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+
+    String[] args = new String[]{"-z", "-a", "foo"};
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args, true);
+    assertTrue(cmd.hasOption("a"));
+    assertEquals(3, cmd.getArgs().length);
+}

@@ -1,0 +1,15 @@
+public void testGetOffsetFromLocal() {
+    DateTimeZone losAngeles = DateTimeZone.forID("America/Los_Angeles");
+    {
+        // DST end
+        DateTime dt = new DateTime(2006, 11, 5, 1, 30, losAngeles);
+        assertEquals(DateTimeZone.forOffsetHours(-8).getOffset(dt),
+                     losAngeles.getOffset(dt));
+    }
+    {
+        // DST start
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, losAngeles);
+        assertEquals(DateTimeZone.forOffsetHours(-7).getOffset(dt),
+                     losAngeles.getOffset(dt));
+    }
+}

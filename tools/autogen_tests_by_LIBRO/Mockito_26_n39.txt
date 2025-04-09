@@ -1,0 +1,25 @@
+public void testInjectMocks() {
+    public static class Foo {
+        private final Bar bar;
+        public Foo(Bar bar) {
+            this.bar = bar;
+        }
+    }
+    @InjectMocks
+    public static class Bar {
+        private final Baz baz;
+        @Inject
+        public Bar(final Baz baz) {
+            this.baz = baz;
+        }
+    }
+    @InjectMocks
+    public static class Baz {
+    }
+    Baz baz = new Baz();
+    Bar bar = new Bar(baz);
+    Foo foo = new Foo(bar);
+    MockitoAnnotations.initMocks(this);
+    assertSame(bar, foo.bar);
+    assertSame(baz, bar.baz);
+}

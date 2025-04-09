@@ -1,0 +1,17 @@
+public void testExtIdWithExternalProperties() throws Exception
+{
+    // first: a simple case where everything works fine
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+    mapper.addMixIn(ExtObject.class, ExtObjectMixIn.class);
+    String json = mapper.writeValueAsString(new ExtObject(123, "abc"));
+    assertEquals("{\"extObject\":{\"x\":123},\"x\":\"abc\"}", json);
+    ExtObject result = mapper.readValue(json, ExtObject.class);
+    assertEquals(123, result.getX());
+    assertEquals("abc", result.getY());
+
+    // and now the problem case:
+    mapper = new ObjectMapper();
+    mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, false);
+    mapper.addMixIn(ExtObject.class, ExtObjectMixIn.class);
+    json = m

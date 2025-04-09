@@ -1,0 +1,16 @@
+public void testIssue() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
+
+    AtomicReference<AtomicReference<BigInteger>> ref = mapper.readValue(
+            "[\"0x1111111111111111111111111111111111111111111111111111111111111111\", \"0x1\"]",
+            new TypeReference<AtomicReference<AtomicReference<BigInteger>>>() { }
+    );
+    assertNotNull(ref);
+    assertNotNull(ref.get());
+    assertNotNull(ref.get().get());
+    assertEquals(new BigInteger("1111111111111111111111111111111111111111111111111111111111111111", 16),
+            ref.get().get());
+}

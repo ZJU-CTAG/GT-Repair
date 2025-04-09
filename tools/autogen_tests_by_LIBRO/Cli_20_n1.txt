@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception {
+    Options options = createOptions();
+    String[] args = new String[] { "--zop", "-abfoo" };
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, args, true);
+    assertEquals("foo", cmd.getOptionValue("b"));
+}
+
+private static Options createOptions() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("a").create());
+    options.addOption(OptionBuilder.withLongOpt("b").hasArg().create());
+    return options;
+}

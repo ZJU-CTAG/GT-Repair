@@ -1,0 +1,10 @@
+public void testIssue114() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(getClass().getResource("Issue114.js"));
+    assertTrue(result.success);
+    assertEquals(513, result.warnings.size());
+    assertEquals(0, result.errors.size());
+    assertEquals(
+            "function some_function() { var a, b; any_expression && (b = external_ref, a = function () { return b() }); return { method1: function () { a && a(); return true }, method2: function () { return false } } }\n",
+            result.source);
+}

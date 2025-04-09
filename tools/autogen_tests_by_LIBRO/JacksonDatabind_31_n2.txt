@@ -1,0 +1,20 @@
+public void testIssueJsonStreamContextsAreNotBuildTheSameWayForWriteAndConvertMethods() throws JsonParseException, JsonMappingException, IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+    final AntPathMatcherFilterProvider filterProvider = new AntPathMatcherFilterProvider();
+
+    filterProvider.addFilter("/a", new SimpleFilterProvider().addFilter("filterName", new SimpleBeanPropertyFilter() {
+        @Override
+        public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
+            System.out.println(jgen.getOutputContext());
+            writer.serializeAsField(pojo, jgen, provider);
+        }
+    }));
+
+    final ObjectReader objectReader = mapper.reader(mapper.getTypeFactory().constructType(SimpleBean.class)).with(filterProvider);
+
+    SimpleBean bean = new SimpleBean();
+    bean.setA("value");
+    bean.setB("value");
+    bean.setC("value");
+
+    System.out.println("

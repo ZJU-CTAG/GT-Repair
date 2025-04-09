@@ -1,0 +1,22 @@
+public void testIssue() {
+    String jsSrc = ""
+        + "goog.provide('mynamespace');\n"
+        + "/** @typedef {Array.<number>} */\n"
+        + "mynamespace.MyType;\n"
+        + "/** @param {mynamespace.MyType=} opt_mytype */\n"
+        + "mynamespace.foo = function(opt_mytype) {};\n"
+        + "/** @param {mynamespace.MyType} mytype */\n"
+        + "mynamespace.bar = function(mytype) {};\n";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setPrettyPrint(true);
+
+    /**
+     * Outputs the following, when you look at the last line notice it has
+     * embedded the type definition, this is incorrect and breaks when
+     * compiling against the extern.
+     */
+    System.out.println(compiler.toSource(compiler.externExport(jsSrc)));
+
+   

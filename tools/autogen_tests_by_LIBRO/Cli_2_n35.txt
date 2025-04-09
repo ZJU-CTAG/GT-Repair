@@ -1,0 +1,11 @@
+public void testIssue() throws Exception {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("test").withDescription("test").hasArg().isRequired().create('t'));
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(options, new String[]{"-t", "-something"});
+        fail("exception expected");
+    } catch (ParseException e) {
+        assertEquals("Missing argument for option: t", e.getMessage());
+    }
+}

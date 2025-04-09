@@ -1,0 +1,20 @@
+public void testDefaultOption() {
+    Options options = new Options();
+    options.addOption("a", "toggle -a", false, "Default a");
+    options.addOption("b", "toggle -b", true, "Default b");
+    options.addOption("c", "toggle -c", false, "Default c");
+
+    Properties properties = new Properties();
+    properties.setProperty("a", "false");
+    properties.setProperty("b", "B");
+    properties.setProperty("c", "no");
+    properties.setProperty("d", "no");
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmdLine = parser.parse(options, null, properties);
+
+    assertFalse(cmdLine.hasOption("a"));
+    assertEquals("B", cmdLine.getOptionValue("b"));
+    assertFalse(cmdLine.hasOption("c"));
+    assertFalse(cmdLine.hasOption("d"));
+}

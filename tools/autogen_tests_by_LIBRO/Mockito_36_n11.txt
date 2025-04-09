@@ -1,0 +1,21 @@
+public void testMockitoRuleJunit47() {
+    assertTrue(MockitoJUnit.rule() instanceof ExternalResource);
+    assertTrue(new Test01().useExternalResource());
+}
+
+public void testMockitoRuleJunit49() {
+    assertTrue(MockitoJUnit.rule() instanceof TestRule);
+    assertFalse(new Test01().useExternalResource());
+}
+
+public static class Test01 {
+    @Rule
+    public TestRule rule = MockitoJUnit.rule();
+
+    @Mock
+    private List<String> mockedList;
+
+    public boolean useExternalResource() {
+        return mockedList == null;
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue110() {
+    TypeManager tm = new TypeManager();
+    TypeDef td = new TypeDef("NamedType");
+    RecordType rt = new RecordType("RecordType");
+    td.setType(rt);
+    td.setProxy(true);
+    tm.addTypeDef(td);
+    try {
+        tm.compile();
+        fail();
+    } catch (RuntimeException e) {
+        assertTrue(e.getMessage().startsWith("Unresolved type: NamedType"));
+    }
+}

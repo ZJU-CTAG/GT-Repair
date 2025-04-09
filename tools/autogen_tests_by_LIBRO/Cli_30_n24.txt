@@ -1,0 +1,23 @@
+public void testMutuallyExclusiveOptionGroupNotUpdated() throws Exception {
+    @Command(name = "cmd",
+            optionGroupHeaders = {"Mutually exclusive options:"}
+    )
+    class MutuallyExclusiveOptions {
+        @Option(name = "a", required = true)
+        boolean a;
+        @Option(name = "b", required = true)
+        boolean b;
+    }
+    MutuallyExclusiveOptions cmd = new MutuallyExclusiveOptions();
+
+    Properties defaultOptions = new Properties();
+    defaultOptions.setProperty("b", "true");
+
+    CommandLine cmdLine = new CommandLine(cmd);
+    try {
+        cmdLine.parseArgs("-a", "-Db", "false", "-D", defaultOptions);
+        fail("Expected exception");
+    } catch (CommandLine.ParameterException expected) {
+        assertEquals("'a' and 'b' are mutually exclusive", expected.getMessage());
+    }
+}

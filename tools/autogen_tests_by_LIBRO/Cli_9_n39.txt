@@ -1,0 +1,14 @@
+public void testMissingOptionException () {
+    Options opt = new Options();
+    opt.addOption(new Option("f", "format", false, "this is the format"));
+    opt.addOption(new Option("s", "source", false, "this is the source"));
+    opt.addOption(new Option("p", "properties", false, "this is the properties"));
+    CommandLineParser parser = new GnuParser();
+    try {
+        parser.parse(opt, new String[0]);
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required options: -f -s -p", e.getMessage());
+    } catch (ParseException e) {
+        fail();
+    }
+}

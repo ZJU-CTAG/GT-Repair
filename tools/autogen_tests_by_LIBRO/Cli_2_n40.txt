@@ -1,0 +1,20 @@
+public void testIssueN105() {
+    Options options = new Options();
+    options.addOption(new Option("t", true, "test option"));
+    options.addOption(new Option("v", "verbose", false,
+            "verbosity for the test option"));
+
+    CommandLineParser parser = new PosixParser();
+    String[] argv = new String[] {"-t", "-something", "-v"};
+    CommandLine cl = null;
+    try {
+        cl = parser.parse(options, argv);
+    }
+    catch (ParseException pe) {
+        pe.printStackTrace();
+        fail();
+    }
+
+    assertEquals("-something", cl.getOptionValue("t"));
+    assertEquals(true, cl.hasOption("v"));
+}

@@ -1,0 +1,22 @@
+public void testWrongTokenBufferDelegate() throws Exception {
+  String json = "{ \"a\":1, \"b\":null }";
+  ObjectMapper mapper = new ObjectMapper();
+  Value value = mapper.readValue(json, Value.class);
+  assertEquals(1, value.a);
+  assertEquals(null, value.b);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
+@JsonSubTypes({ @JsonSubTypes.Type(name = "V", value = Value.class) })
+static class Value {
+  private int a;
+  private String b;
+
+  @JsonCreator
+  public static Value from(TokenBuffer buffer) throws IOException {
+    JsonParser parser = buffer.asParser();
+    parser.nextToken(); // START_OBJECT
+    parser.nextToken(); // FIELD_NAME
+    parser.nextToken(); // VALUE_NUMBER_INT
+    parser.nextToken(); // FIELD_NAME
+    parser.nextToken

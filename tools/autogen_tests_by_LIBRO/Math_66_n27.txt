@@ -1,0 +1,15 @@
+public void testBugs() {
+    try {
+        UnivariateRealFunction f = new SinFunction();
+        double result;
+
+        // first bug: wrong default values
+        result = new BrentOptimizer(-1.0, 1.0).optimize(f, GoalType.MINIMIZE, -1.0, 1.0);
+        Assert.assertEquals(Math.PI, result, 1.0e-10);
+        result = new BrentOptimizer(-1.0, 1.0).optimize(f, GoalType.MAXIMIZE, -1.0, 1.0);
+        Assert.assertEquals(0.0, result, 1.0e-10);
+
+        // second bug: endpoints are not updated
+        result = new BrentOptimizer(-1.0, 1.0).optimize(f, GoalType.MINIMIZE, 2.0, 3.0);
+        Assert.assertEquals(Math.PI, result, 1.0e-10);
+        result = new BrentOptimizer(-1.0, 1.0).optimize(f, GoalType.MAXIM

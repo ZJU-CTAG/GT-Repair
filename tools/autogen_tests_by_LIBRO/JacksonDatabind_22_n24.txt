@@ -1,0 +1,29 @@
+public void testIssue152() throws Exception
+{
+    Foo foo = new Foo();
+
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectWriter w = mapper.writer().with(SerializationFeature.INDENT_OUTPUT);
+
+    SimpleModule module = new SimpleModule("FooSerializer", new Version(1, 0, 0, null, null, null));
+    module.addKeySerializer(Foo.class, new FooSerializer());
+    mapper.registerModule(module);
+
+    String json = w.writeValueAsString(foo);
+    assertEquals("{\n  \"key\" : \"foo\"\n}", json);
+
+    json = w.writeValueAsString(new Bar());
+    assertEquals("{ }", json);
+
+    json = w.writeValueAsString(new Baz());
+    assertEquals("{\n  \"key\" : \"baz\"\n}", json);
+}
+
+@JsonSerialize(using = FooSerializer.class)
+static class Foo {
+    public String getKey() {
+        return "foo";
+    }
+}
+
+static class

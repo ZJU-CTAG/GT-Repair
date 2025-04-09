@@ -1,0 +1,16 @@
+public void testToMap() {
+    StringReader r = new StringReader("a,b,c\n1,2,3");
+    Iterable<CSVRecord> rc = CSVFormat.TDF.parse(r);
+    for (CSVRecord rec : rc) {
+        Map<String, String> map = rec.toMap();
+        assertEquals(3, map.size());
+        assertEquals("2", map.get("b"));
+    }
+    r = new StringReader("1,2,3");
+    rc = CSVFormat.TDF.withFirstRecordAsHeader().parse(r);
+    for (CSVRecord rec : rc) {
+        Map<String, String> map = rec.toMap();
+        assertEquals(3, map.size());
+        assertEquals("2", map.get("b"));
+    }
+}

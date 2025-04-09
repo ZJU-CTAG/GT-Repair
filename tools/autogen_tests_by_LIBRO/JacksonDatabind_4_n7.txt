@@ -1,0 +1,22 @@
+public void testIssue21() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "{\"col\": [\"a\", 1, \"b\"]}";
+
+    try {
+        mapper.readValue(json, POJO.class);
+    } catch (JsonMappingException ex) {
+        boolean found = false;
+        for (InvalidFormatException e : ex.getPath()) {
+            if (e.getIndex() == 1) {
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new AssertionError("Exception with index 1 was not found");
+        }
+    }
+}
+
+static class POJO {
+    public String[] col;
+}

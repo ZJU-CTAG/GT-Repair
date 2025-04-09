@@ -1,0 +1,11 @@
+public void testXmlMixedContent() throws Exception {
+    XmlMapper xmlMapper = new XmlMapper();
+    xmlMapper.configure(Feature.ALLOW_SINGLE_QUOTES, true);
+    xmlMapper.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    xmlMapper.configure(Feature.ALLOW_MISSING_VALUES, true);
+    xmlMapper.configure(Feature.ALLOW_COMMENTS, true);
+    xmlMapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+    xmlMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    String xmlString = "<windSpeed units=\"kt\">27<radius units=\"sm\">20</radius></windSpeed>";
+    WindSpeed windSpeed = xmlMapper.readValue(xmlString, WindSpeed.class);

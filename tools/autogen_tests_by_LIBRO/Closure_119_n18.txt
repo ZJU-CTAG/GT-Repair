@@ -1,0 +1,8 @@
+public void testCatch() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("code.js", "try{var x=5;} catch(e) {var s=\"FAIL\"+e.name+\": \"+e.message;}")}, options);
+    assertEquals(0, compiler.getWarnings().size());
+}

@@ -1,0 +1,11 @@
+public void testRead() throws IOException {
+    File file = getFile("/unicodeExtraFields.zip");
+    ZipFile zipFile = new ZipFile(file, "windows-1252");
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    assertTrue(entries.hasMoreElements());
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        InputStream is = zipFile.getInputStream(entry);
+        is.close();
+    }
+}

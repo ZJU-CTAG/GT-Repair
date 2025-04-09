@@ -1,0 +1,13 @@
+public void testIssue108() {
+    try {
+        ScriptEngineManager sem = new ScriptEngineManager();
+        ScriptEngine se = sem.getEngineByName("JavaScript");
+        se.eval("var x=0,y=1;x||y=8");
+        fail();
+    } catch (ScriptException e) {
+        assertEquals(e+"", "com.sun.script.javascript.RhinoException: sun.org.mozilla.javascript.internal.EvaluatorException: missing ; before statement (<Unknown source>#3)\n" +
+                " at sun.org.mozilla.javascript.internal.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:109)\n" +
+                " at sun.org.mozilla.javascript.internal.DefaultErrorReporter.error(DefaultErrorReporter.java:96)\n" +
+                " at sun.org.mozilla.javascript.internal.Parser.addError(Parser.java:218)\n" +
+                " at sun.org.mozilla.javascript.internal.Parser.addError(Parser.java:209)\n" +
+                "

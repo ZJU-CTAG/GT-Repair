@@ -1,0 +1,18 @@
+public void testRequire() {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs;
+    externs = ImmutableList.of(SourceFile.fromCode("externs",
+        "function require(){};"));
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("input",
+        "require('test');"));
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    options.setContinueAfterErrors(true);
+    Result result = compiler.compile(externs, inputs, options);
+    if (result.success) {
+        System.out.println(compiler.toSource());
+    }
+}

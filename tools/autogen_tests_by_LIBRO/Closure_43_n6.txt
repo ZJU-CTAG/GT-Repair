@@ -1,0 +1,22 @@
+public void testIssueLend() {
+    String js = "/** @constructor */\n"
+            + "function Animal() {\n"
+            + "}\n"
+            + "/** @constructor */\n"
+            + "function Person() {\n"
+            + "}\n"
+            + "/** @param {*} o */\n"
+            + "function makeClass(o) {\n"
+            + "    var constructor = o.constructor;\n"
+            + "    constructor.prototype = o;\n"
+            + "    return /** @lends {constructor.prototype} */ {\n"
+            + "        foo: 'bar'\n"
+            + "    };\n"
+            + "}\n"
+            + "makeClass(new Person());";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("[externs]", ""),
+            SourceFile.fromCode("[testcode]", js),
+            CompilerOptions.makeOptions("

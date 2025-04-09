@@ -1,0 +1,11 @@
+public void testIssue() {
+    double[] x = new double[1];
+    x[0] = Double.POSITIVE_INFINITY;
+    CMAESOptimizer optimizer = new CMAESOptimizer(100, 1e-6, true, 0, 0, new MersenneTwister(), false, new SimpleValueChecker(1e-4, 1e-4));
+    optimizer.optimize(new MaxEval(1), new ObjectiveFunction(new MultivariateFunction() {
+                @Override
+                public double value(final double[] x) {
+                    return 0;
+                }
+            }), GoalType.MINIMIZE, new double[][]{x}, new double[]{-Double.MAX_VALUE}, new double[]{Double.MAX_VALUE});
+}

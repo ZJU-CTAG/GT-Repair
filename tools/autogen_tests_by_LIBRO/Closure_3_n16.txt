@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+   String source = "function getStack() {\n" +
+            " var getErrorObject = function() {\n" +
+            " try {\n" +
+            " throw Error(\"\");\n" +
+            " } catch(err) {\n" +
+            " return err;\n" +
+            " }\n" +
+            " };\n" +
+            " return getErrorObject().stack;\n" +
+            "}\n" +
+            "window['getStackTrace']=getStack;\n";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[]{JSSourceFile.fromCode("source", source)},
+        new JSSourceFile[]{}, options);
+}

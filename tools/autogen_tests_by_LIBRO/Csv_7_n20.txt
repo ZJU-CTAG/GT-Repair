@@ -1,0 +1,14 @@
+public void testHeaderMap() throws IOException {
+    File file = new File("test.csv");
+    FileWriter fw = new FileWriter(file);
+    fw.write("Col1,Col2,Col2,Col3,Col4\n1,2,3,4,5\n4,5,6,7,8\n");
+    fw.flush();
+    fw.close();
+    CSVParser parser = CSVParser.parse(file, Charset.defaultCharset(), CSVFormat.RFC4180);
+
+    HeaderMap headerMap = parser.getHeaderMap();
+    System.out.println("headerMap = " + headerMap);
+    assertEquals("2", headerMap.get("Col2"));
+    assertEquals("3", headerMap.get("Col3"));
+    assertEquals("4", headerMap.get("Col4"));
+}

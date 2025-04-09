@@ -1,0 +1,19 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setCheckTypes(true);
+    options.setProcessCommonJSModules(true);
+    options.setTransformAMDToCJSModules(true);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Compiler compiler = new Compiler();
+
+    Result result = compiler.compile(
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("cjs/echo.js",
+                "define(function() { return { echo: function(val) { window.console.log(val); }}});")},
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("cjs/echo-main.js",
+               

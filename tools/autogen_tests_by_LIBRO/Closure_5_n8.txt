@@ -1,0 +1,11 @@
+public void testDelete() throws Exception {
+    String source = "(function(arg) { var foo = {}; foo.bar = arg; console.log(foo.bar); delete foo.bar; console.log(foo.bar);})();";
+    CompilerOptions options = new CompilerOptions();
+    options.prettyPrint = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCompilationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("source.js", source) }, options);
+    assertEquals("(function(a){console.log(a);delete a;console.log(a)})();", compiler.toSource());
+}

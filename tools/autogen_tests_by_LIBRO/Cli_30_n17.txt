@@ -1,0 +1,24 @@
+public void testIssue108() {
+    String[] args = new String[]{"-a", "-b"};
+    class App {
+        @Option(names={"-a"}, required=true) boolean a;
+        @Option(names={"-b"}, required=true) boolean b;
+        @Option(names={"-c"}) boolean c;
+    }
+    App app = new App();
+    CommandLine commandLine = new CommandLine(app);
+    commandLine.setDefaultValueProvider(new DefaultValueProvider() {
+        @Override
+        public List<String> defaultValues(ArgSpec argSpec) throws Exception {
+            if (argSpec.paramLabel().equals("-a")) {
+                return Arrays.asList("true");
+            } else if (argSpec.paramLabel().equals("-b")) {
+                return Arrays.asList("true");
+            }
+            return null;
+        }
+    });
+    commandLine.parse(args);
+
+    assertTrue(commandLine.getCommandSpec().usageMessage().toString().contains("[-a, -b]"));
+    assertTrue(

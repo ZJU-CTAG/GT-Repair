@@ -1,0 +1,29 @@
+public void testHandleNullTypeID() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first, regular case
+    String json = mapper.writeValueAsString(new Animal());
+    Animal value = mapper.readValue(json, Animal.class);
+    assertEquals(Cat.class, value.getClass());
+
+    // and then with null type id
+    json = mapper.writeValueAsString(new Animal2());
+    Animal2 value2 = mapper.readValue(json, Animal2.class);
+    assertEquals(Cat.class, value2.getClass());
+}
+
+/*
+/**********************************************************
+/* Test classes
+/**********************************************************
+ */
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY)
+public class Animal {
+    public int age = 3;
+    public String name = "Bob";
+
+    public Animal() { super(); }
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PR

@@ -1,0 +1,11 @@
+public void testIssue624() {
+    List<String> list = new ArrayList<>();
+    list.add("a");
+    list.add("b");
+    list.add("c");
+    Gson gson = new Gson();
+    String ser = gson.toJson(list);
+    Type type = new TypeToken<ConcurrentNavigableMap<String, String>>() {}.getType();
+    ConcurrentNavigableMap<String, String> map = gson.fromJson(ser, type);
+    assertEquals(list, new ArrayList<>(map.values()));
+}

@@ -1,0 +1,9 @@
+public void testInvokerTransformer() throws Exception {
+    InvokerTransformer t = new InvokerTransformer("getMethod", new Class[] {String.class}, new Object[] {"toString"});
+    Transformer[] trans = new Transformer[] {t};
+    Map innerMap = new HashMap();
+    innerMap.put("value", "value");
+    Map outerMap = TransformedMap.decorate(innerMap, null, trans);
+    Map serializedMap = writeExternalFormToDisk(outerMap);
+    assertEquals(outerMap,serializedMap);
+}

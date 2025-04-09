@@ -1,0 +1,31 @@
+public void testIssue107() {
+    SimpleModule module = new SimpleModule();
+    module.setNamingStrategy(new TitleCaseStrategy());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+    ObjectReader reader = mapper.readerFor(ObjectX.class);
+    ObjectX value = reader.readValue(
+            "{\"b\":\"y\"}");
+    assertEquals("y", value.b);
+}
+
+class TitleCaseStrategy extends PropertyNamingStrategy {
+    @Override
+    public String nameForConstructorParameter(MapperConfig<?> config,
+                                              AnnotatedParameter param, String defaultName) {
+        return defaultName.toUpperCase();
+    }
+}
+
+@JsonCreator
+public static ObjectX create(@JsonProperty("B") String b) {
+    return new ObjectX(b);
+}
+
+public static class ObjectX {
+    public final String b;
+
+    public ObjectX(String b) {
+        this.b = b;
+    }
+}

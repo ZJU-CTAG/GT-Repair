@@ -1,0 +1,15 @@
+public void testIntBounds() throws IOException {
+    final ObjectReader intReader = new ObjectMapper().readerFor(IntClass.class);
+    final JsonNodeFactory factory = new JsonNodeFactory(false);
+
+    final JsonNode good = factory.objectNode().set("x", factory.numberNode(0));
+    assertEquals("0", intReader.readValue(good).toString());
+
+    final JsonNode bad = factory.objectNode().set("x", factory.numberNode(2147483649L));
+    final JsonNode bad2 = factory.objectNode().set("x", factory.numberNode(-2147483649L));
+    final JsonNode bad3 = factory.objectNode().set("x", factory.numberNode(-4294967295L));
+
+    assertEquals("JsonMappingException", intReader.readValue(bad).toString());
+    assertEquals("JsonMappingException", intReader.readValue(bad2).toString());
+    assertEquals("JsonMappingException", intReader.readValue(bad3).toString());
+}

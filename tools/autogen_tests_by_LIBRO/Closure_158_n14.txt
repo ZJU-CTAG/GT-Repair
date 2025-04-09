@@ -1,0 +1,18 @@
+public void testFlagOrder() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    options.addWarningsGuard(new DiagnosticGroupWarningsGuard(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF));
+    options.addWarningsGuard(new DiagnosticGroupWarningsGuard(
+            DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING));
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js", "var x;"),
+            options);
+    assertFalse(result.success);
+    JSError error = result.errors[0];
+    assertEquals(CheckLevel.ERROR, error.getDefaultLevel());
+}

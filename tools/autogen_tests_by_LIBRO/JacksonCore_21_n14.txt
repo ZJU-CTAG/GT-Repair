@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    String json = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    JsonParser p0 = JSON_F.createParser(json);
+    JsonParser p = new FilteringParserDelegate(p0,
+               new NameMatchFilter("value"),
+                   true, // includePath
+                   false // multipleMatches
+                );
+    JsonToken t;
+    while ((t = p.nextToken()) != null) {
+        System.out.println("t: "+t);
+    }
+}

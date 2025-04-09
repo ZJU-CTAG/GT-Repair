@@ -1,0 +1,15 @@
+public void testIssueTokenBufferDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = mapper.readTree("{ \"a\":1, \"b\":null }");
+    JsonParser parser = jsonNode.traverse();
+    // We do not expect to have FIELD_NAME token here
+    assertNotEquals(parser.nextToken(), JsonToken.FIELD_NAME);
+    TokenBuffer buffer = new TokenBuffer(null, false);
+    buffer.copyCurrentStructure(parser);
+    assertEquals(JsonToken.START_OBJECT, buffer.readToken());
+    assertEquals(JsonToken.FIELD_NAME, buffer.readToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, buffer.readToken());
+    assertEquals(JsonToken.FIELD_NAME, buffer.readToken());
+    assertEquals(JsonToken.VALUE_NULL, buffer.readToken());
+    assertEquals(JsonToken.END_OBJECT, buffer.readToken());
+}

@@ -1,0 +1,8 @@
+public void testIssue109() {
+    String source = "function testRemoveKey(b){var a=customData,c=a&&a[b];a&&delete a[b];return a&&b in a?c:null}";
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("stdin", source) });
+    String compiled = compiler.toSource();
+    assertTrue(compiled.contains("b in a"));
+}

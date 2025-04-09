@@ -1,0 +1,24 @@
+public void testExtTypeIdDeserFirst() throws Exception
+{
+    // First, with POJO
+    ObjectMapper mapper = mapperForTypeId();
+    BeanWithTypeId input = new BeanWithTypeId(13, "foobar");
+    String json = mapper.writeValueAsString(input);
+
+    // note: not using 'readValue', but explicit readTree/map
+    JsonNode root = mapper.readTree(json);
+    JavaType type = mapper.constructType(BeanWithTypeId.class);
+    Object result = mapper.readerFor(type).readValue(root);
+    assertEquals(input, result);
+}
+
+public void testExtTypeIdDeserLast() throws Exception
+{
+    // then with Object
+    ObjectMapper mapper = mapperForTypeId();
+    BeanWithTypeId input = new BeanWithTypeId(13, "foobar");
+    String json = mapper.writeValueAsString(input);
+
+    // note: not using 'readValue', but explicit readTree/map
+    JsonNode root = mapper.readTree(json);
+   

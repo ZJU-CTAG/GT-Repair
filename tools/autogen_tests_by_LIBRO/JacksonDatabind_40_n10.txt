@@ -1,0 +1,11 @@
+public void testIssue106() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+    } catch (JsonMappingException e) {
+        assertTrue(e.getMessage().contains("FAIL_ON_NULL_FOR"));
+        return;
+    }
+    fail();
+}

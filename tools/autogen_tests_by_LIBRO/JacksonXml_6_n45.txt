@@ -1,0 +1,13 @@
+public void testIssue155() throws Exception {
+    StringWriter writer = new StringWriter();
+    ToXMLGenerator xmlGenerator = new ToXMLGenerator(writer);
+    xmlGenerator.writeStartDocument();
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(new byte[]{1, 2, 3}), 3);
+    xmlGenerator.writeEndObject();
+    xmlGenerator.writeEndDocument();
+    xmlGenerator.close();
+    String xml = writer.toString();
+    String expectedXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><binary>AQID</binary></root>";
+    Assert.assertEquals(expectedXml, xml);
+}

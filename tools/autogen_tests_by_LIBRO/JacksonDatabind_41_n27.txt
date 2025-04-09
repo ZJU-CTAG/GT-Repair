@@ -1,0 +1,10 @@
+public void testIssue1079() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    TypeReference<?> ref = new TypeReference<Map<String,String>>() { };
+    try {
+        mapper.readValue("{}", ref);
+    } catch (JsonMappingException e) {
+        assertTrue(e.getMessage().contains("no (Class) TypeResolverBuilder"));
+    }
+}

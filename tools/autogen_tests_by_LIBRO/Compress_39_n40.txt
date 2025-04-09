@@ -1,0 +1,21 @@
+public void testDefectiveZipFile() {
+    try {
+        FileInputStream is = new FileInputStream(new File("src/test/resources/defective.zip"));
+        ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+        ZipEntry ze;
+        while ((ze = zis.getNextEntry()) != null) {
+            System.out.println("Unzipping " + ze.getName());
+            int size;
+            byte[] buffer = new byte[2048];
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BufferedOutputStream bos = new BufferedOutputStream(baos, buffer.length);
+            while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+                bos.write(buffer, 0, size);
+            }
+            bos.flush();
+            bos.close();
+            System.out.println(baos.toString(Charset.defaultCharset().name()));
+        }
+        zis.close();
+    } catch (Exception e) {
+        e.printStackTr

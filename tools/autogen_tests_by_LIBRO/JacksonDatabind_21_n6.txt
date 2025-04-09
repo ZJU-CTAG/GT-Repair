@@ -1,0 +1,10 @@
+public void testIssue108() {
+    TestEnum enumValue = TestEnum.VALUE\_ONE;
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.WRITE\_ENUMS_USING_TO\_STRING);
+    mapper.enable(DeserializationFeature.READ\_ENUMS_USING_TO\_STRING);
+    String json = mapper.writeValueAsString(enumValue);
+    assertEquals("\"value1\"", json);
+    TestEnum r = mapper.readValue(json, TestEnum.class);
+    assertEquals(enumValue, r);
+}

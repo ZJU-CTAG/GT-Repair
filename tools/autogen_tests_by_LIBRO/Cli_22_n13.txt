@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    String[] args = new String[] { "-t", "target" };
+    CommandLine cmdLine = parseCommandLine(args);
+    assertEquals("target", cmdLine.getOptionValue('t'));
+}
+
+private static final String OPTION_TARGET = "t";
+private static final String OPTION_TARGET_LONG = "target";
+
+private static CommandLine parseCommandLine(String[] args) throws Exception {
+    Options cmdLineOpts = new Options();
+    Option generateTarget = new Option(OPTION_TARGET, OPTION_TARGET_LONG, true, "Generate files for the specified target machine");
+    cmdLineOpts.addOption(generateTarget);
+    CommandLineParser parser = new PosixParser();
+    return parser.parse(cmdLineOpts, args);
+}

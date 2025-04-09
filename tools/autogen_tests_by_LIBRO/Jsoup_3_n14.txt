@@ -1,0 +1,11 @@
+public void testIssue() {
+    String html = "<table id='mytable'><tr><td>One</td></tr></table>";
+    Document doc = Jsoup.parse(html);
+    Element tr = doc.select("#mytable").first().appendElement("tr");
+    tr.appendElement("td").text("Two");
+
+    assertEquals(1, doc.select("table").size());
+    assertEquals(2, doc.select("tr").size());
+    assertEquals(2, doc.select("table tr").size());
+    assertEquals(2, doc.select("#mytable tr").size());
+}

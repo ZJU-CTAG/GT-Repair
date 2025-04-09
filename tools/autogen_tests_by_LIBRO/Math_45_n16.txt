@@ -1,0 +1,16 @@
+public void testOpenMapRealMatrix() {
+    OpenMapRealMatrix m = new OpenMapRealMatrix(2 << 16, 2 << 16);
+    m.setEntry(0, 0, 1);
+    m.setEntry(0, (2 << 16) - 1, 1);
+    m.setEntry(0, 2 << 16, 1);
+    m.setEntry(0, (2 << 16) + 1, 1);
+    m.setEntry((2 << 16) - 1, 0, 1);
+    m.setEntry(2 << 16, 0, 1);
+    m.setEntry((2 << 16) + 1, 0, 1);
+    try {
+        m.getRow(0);
+        fail("Should have thrown MathIllegalStateException");
+    } catch (MathIllegalStateException e) {
+        // expected -- ignore
+    }
+}

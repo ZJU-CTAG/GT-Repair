@@ -1,0 +1,25 @@
+public void testCreateWithManyEntries() throws Exception {
+    final int numEntries = 10000;
+    File outputFile = new File("target/manyentries.zip");
+    ZipArchiveOutputStream out = new ZipArchiveOutputStream(new FileOutputStream(outputFile));
+    out.setLevel(Deflater.NO_COMPRESSION);
+    try {
+        // Create entries
+        for (int i = 0; i < numEntries; i++) {
+            ZipArchiveEntry entry = new ZipArchiveEntry(String.valueOf(i));
+            entry.setSize(0);
+            out.putArchiveEntry(entry);
+            out.closeArchiveEntry();
+        }
+    } finally {
+        out.close();
+    }
+
+    // Check
+    ZipFile zipFile = new ZipFile(outputFile);
+    try {
+        Enumeration<ZipArchiveEntry> e = zipFile.getEntries();
+        while (e.hasMoreElements()) {
+            ZipArchiveEntry entry = e.nextElement();
+            assertNotNull(entry);
+            assertEquals(0, entry.

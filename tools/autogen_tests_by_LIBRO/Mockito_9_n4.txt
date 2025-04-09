@@ -1,0 +1,17 @@
+public void testIssue121() {
+    final AbstractClass spy = Mockito.spy(new AbstractClass() {
+        @Override
+        protected final void abstractMethod() {}
+    });
+
+    Mockito.doCallRealMethod().when(spy).callAbstractMethod();
+    spy.callAbstractMethod();
+}
+
+private abstract class AbstractClass {
+    protected abstract void abstractMethod();
+
+    public final void callAbstractMethod() {
+        abstractMethod();
+    }
+}

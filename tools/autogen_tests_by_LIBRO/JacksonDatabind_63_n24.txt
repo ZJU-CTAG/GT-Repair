@@ -1,0 +1,9 @@
+public void testReferenceChain () {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"inner\":{\"x\":1}}", ReferenceChainTest.Outer.class);
+        fail("Should have thrown an exception");
+    } catch (JsonMappingException e) {
+        assertEquals("ReferenceChainTest$Outer[\"inner\"]", e.getPathReference().toString());
+    }
+}

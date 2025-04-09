@@ -1,0 +1,14 @@
+public void testPosixParsingIssue() {
+    PosixParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption(new Option("a", "a-option"));
+    options.addOption(new Option("b", "b-option"));
+    String args[] = { "-azb" };
+    try {
+        CommandLine line = parser.parse(options, args, true);
+        assertTrue(line.hasOption("a"));
+        assertFalse(line.hasOption("b"));
+    } catch (ParseException e) {
+        fail("Unexpected exception: " + e.getMessage());
+    }
+}

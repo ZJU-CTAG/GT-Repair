@@ -1,0 +1,11 @@
+public void testLocale() throws Exception {
+    Locale oldLocale = Locale.getDefault();
+    TimeZone tz = TimeZone.getTimeZone("UTC");
+    Locale.setDefault(Locale.ENGLISH);
+    DateFormat df1 = FastDateFormat.getDateInstance(FastDateFormat.SHORT, tz, Locale.GERMAN);
+    Locale.setDefault(Locale.GERMAN);
+    DateFormat df2 = FastDateFormat.getDateInstance(FastDateFormat.SHORT, tz);
+    Locale.setDefault(oldLocale);
+    assertNotSame(df1, df2);
+    assertEquals(df1.format(new Date()), df2.format(new Date()));
+}

@@ -1,0 +1,23 @@
+public void testIssue102() {
+    String source = "var Base = new Class({\n" +
+            "  initialize: function() {\n" +
+            "    this.name = 'Base';\n" +
+            "  },\n" +
+            "\n" +
+            "  getName: function() {\n" +
+            "    return this.name;\n" +
+            "  }\n" +
+            "});\n" +
+            "var Sub = new Class(Base, {\n" +
+            "  initialize: function() {\n" +
+            "    this.$super();\n" +
+            "    this.name = 'Sub';\n" +
+            "  }\n" +
+            "});\n" +
+            "\n" +
+            "var sub = new Sub();\n" +
+            "alert(sub.getName());";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCodingConvention(new GoogleCodingConvention());
+    options.setLanguageIn(Compiler

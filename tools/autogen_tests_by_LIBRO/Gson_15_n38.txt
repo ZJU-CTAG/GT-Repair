@@ -1,0 +1,22 @@
+public void testWriteNumericValues() {
+    Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+    assertEquals("1.2345678E+8", gson.toJson(123456789));
+    assertEquals("NaN", gson.toJson(Double.NaN));
+}
+
+public void testWriteNumericValuesViaStreaming() {
+    JsonWriter out = new JsonWriter(new StringWriter());
+    out.setSerializeSpecialFloatingPointValues();
+    try {
+        out.beginObject();
+        out.name("foo");
+        out.value(123456789);
+        out.name("bar");
+        out.value(Double.NaN);
+        out.endObject();
+        out.flush();
+        assertEquals("{\"foo\":1.2345678E+8,\"bar\":NaN}", out.getWriter().toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}

@@ -1,0 +1,29 @@
+public void testRelaxedChecks() throws IOException {
+    final OutputStream _os = new OutputStream() {
+        @Override
+        public void write(int b) throws IOException {
+        }
+
+        @Override
+        public void write(byte[] b) throws IOException {
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+        }
+    };
+    OutputStream out = new OutputStream() {
+        private final IOContext _ctx = new IOContext(new BufferRecycler(), this, false);
+        private final byte[] _b = new byte[2];
+        private final byte[] _b2 = new byte[2];
+        private final byte[] _b3 = new byte[3];
+
+        @Override
+        public void write(int b) throws IOException {
+            // ok to return same buffer
+            _ctx.releaseWriteEncodingBuffer(_b);
+            _ctx.releaseWriteEncodingBuffer(_b);
+            // ok to return smaller buffer
+            _ctx.releaseWriteEncodingBuffer(_b2);
+            // ok to return larger buffer
+           

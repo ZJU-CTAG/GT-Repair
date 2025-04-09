@@ -1,0 +1,16 @@
+public void testNamespacePrefixes() throws Exception {
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new ByteArrayInputStream(
+            XML.getBytes()));
+
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    Iterator<?> it = ctx.iteratePointers("//*:elem");
+
+    assertTrue(it.hasNext());
+    assertEquals("elem", ((Pointer) it.next()).getName());
+    assertTrue(it.hasNext());
+    assertEquals("elem", ((Pointer) it.next()).getName());
+    assertFalse(it.hasNext());        
+}

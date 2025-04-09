@@ -1,0 +1,15 @@
+public void testInjectMocksIntoTextViews() {
+    TextView txtGateView = mock(TextView.class);
+    TextView txtNextStep = mock(TextView.class);
+
+    when(txtGateView.getContext()).thenReturn(getApplicationContext());
+    when(txtNextStep.getContext()).thenReturn(getApplicationContext());
+
+    MyFragment myFragment = new MyFragment();
+    MockitoAnnotations.initMocks(this);
+
+    myFragment.onViewCreated(null, null);
+
+    verify(txtGateView).setText(anyString());
+    verify(txtNextStep).setText(anyString());
+}

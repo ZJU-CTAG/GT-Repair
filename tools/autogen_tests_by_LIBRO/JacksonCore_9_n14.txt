@@ -1,0 +1,16 @@
+public void testFieldNameValue() throws IOException
+{
+    String json = "{\"number\":1}";
+    JsonParser parser = Json.createParser(new StringReader(json));
+    assertEquals(JsonParser.Event.START_OBJECT, parser.next());
+    assertEquals(JsonParser.Event.KEY_NAME, parser.next());
+    assertEquals("number", parser.getString());
+    assertEquals("number", parser.getValueAsString());
+
+    assertEquals(JsonParser.Event.VALUE_NUMBER, parser.next());
+    assertEquals(1, parser.getInt());
+    assertEquals("number", parser.getString());
+    assertEquals("number", parser.getValueAsString());
+
+    assertEquals(JsonParser.Event.END_OBJECT, parser.next());
+}

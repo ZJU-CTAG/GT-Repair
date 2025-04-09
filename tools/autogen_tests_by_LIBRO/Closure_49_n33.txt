@@ -1,0 +1,11 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setOptimizationLevel(CompilationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("input.js", "var foo = function bar(){var bar;alert(bar)};"),
+    }, options);
+    assertEquals("var foo=function(){alert(void 0);};", compiler.toSource());
+}

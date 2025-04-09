@@ -1,0 +1,12 @@
+public void test() {
+    ObjectMapper mapper = new ObjectMapper();
+    TypeFactory typeFactory = mapper.getTypeFactory();
+
+    // This works fine in 2.6.1, but throws NPE in 2.8.7
+    typeFactory.constructFromCanonical("java.util.List");
+
+    // The following two lines work fine in both 2.6.1 and 2.8.7
+    typeFactory.constructFromCanonical("java.util.List<java.lang.Object>");
+    typeFactory.constructFromCanonical("java.util.List<java.lang.String>");
+}
+

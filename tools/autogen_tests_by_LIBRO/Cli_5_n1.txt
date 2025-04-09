@@ -1,0 +1,15 @@
+public void testIssue() {
+    Options options = new Options();
+    options.addOption("a", false, "toggle -a");
+    options.addOption("b", true, "set -b <arg>");
+    CommandLineParser parser = new PosixParser();
+    String[] argv = { "-a", "-b", "foo" };
+    CommandLine cmd = parser.parse(options, argv);
+    assertTrue(cmd.hasOption("a"));
+    assertTrue(cmd.hasOption("b"));
+
+    assertFalse(cmd.hasOption("c"));
+    assertFalse(cmd.hasOption(""));
+    assertFalse(cmd.hasOption(" "));
+    assertFalse(cmd.hasOption(null));
+}

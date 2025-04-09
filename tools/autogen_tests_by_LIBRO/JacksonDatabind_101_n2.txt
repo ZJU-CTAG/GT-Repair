@@ -1,0 +1,17 @@
+public void testIssue() throws Exception {
+    String json = "{\"x\": 1, \"a\": 2, \"y\": 3, \"b\": 4}";
+    ObjectMapper objectMapper = objectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    Bean bean = objectMapper.reader(Bean.class).readValue(json);
+    assertEquals(1, bean.x);
+    assertEquals(2, bean.w.a);
+    assertEquals(3, bean.y);
+    assertEquals(4, bean.w.b);
+}
+
+private static ObjectMapper objectMapper() {
+    return new ObjectMapper()
+        .configure(MapperFeature.AUTO_DETECT_CREATORS, true)
+        .configure(MapperFeature.USE_STD_BEAN_NAMING, true)
+        .configure(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS, true)
+        .setSerializationInclusion(Json

@@ -1,0 +1,10 @@
+public void testOptionParserTypeFileInputStream() throws FileNotFoundException, ParseException {
+    File f = new File("/dev/null");
+    FileInputStream fis = new FileInputStream(f);
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    String[] args = new String[] { "-f", f.getAbsolutePath() };
+    CommandLine cline = new DefaultParser().parse(options, args);
+    FileInputStream file = (FileInputStream) cline.getParsedOptionValue("f");
+    assertEquals(fis, file);
+}

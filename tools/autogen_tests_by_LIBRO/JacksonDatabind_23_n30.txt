@@ -1,0 +1,20 @@
+public void testDefaultDeser() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+
+    // first, with explicit mapping
+    PojoWithDefault pwd = m.readValue("{}", PojoWithDefault.class);
+    assertNotNull(pwd.f1);
+    assertEquals(0, pwd.f1.length);
+    assertEquals("", pwd.f2);
+
+    // then without explicit mapping, but with defaulting enabled
+    m = new ObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
+        .configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, false)
+        .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, false)
+        ;
+    pwd = m.readValue("{}", PojoWithDefault.class);
+    assertNotNull(pwd.f1);
+    assertEquals(0, pwd.f1.length);
+    assertEquals("

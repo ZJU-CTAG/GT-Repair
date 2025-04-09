@@ -1,0 +1,17 @@
+public void testIssue() {
+    final UnivariateRealFunction f = new UnivariateRealFunction() {
+        @Override
+        public double value(double x) {
+            return x * x;
+        }
+    };
+    final double min = 0d;
+    final double max = 1d;
+    final double initial = 0.5;
+
+    final BrentOptimizer brentOptimizer = new BrentOptimizer(1e-15, 1e-14);
+    brentOptimizer.setMaximalIterationCount(20);
+    final double result = brentOptimizer.solve(f, min, max, initial);
+
+    assertEquals(0d, result, 1e-14);
+}

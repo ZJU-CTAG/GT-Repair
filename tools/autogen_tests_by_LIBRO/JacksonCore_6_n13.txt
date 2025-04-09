@@ -1,0 +1,11 @@
+public void testIssue108() throws Exception {
+    JsonNode root = new ObjectMapper().readTree("{\"00\":\"foo\", \"0\": \"bar\"}");
+    JsonNode node = root.at("/00");
+    assertEquals("foo", node.asText());
+
+    node = root.at("/0");
+    assertEquals("bar", node.asText());
+
+    node = root.at("/01");
+    assertTrue(node.isMissingNode());
+}

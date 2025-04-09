@@ -1,0 +1,16 @@
+public void testQuadraticBehaviour() throws IOException {
+    // make a big page with a deep tree of parents
+    // make sure to control depth, and make sure doesn't blow stack
+    StringBuilder html = new StringBuilder();
+    for (int i = 0; i < 100000; i++) {
+        html.append("<p><a>");
+    }
+    for (int i = 0; i < 100000; i++) {
+        html.append("</a></p>");
+    }
+
+    long start = System.currentTimeMillis();
+    Document doc = Jsoup.parse(html.toString());
+    long end = System.currentTimeMillis();
+    System.out.println("Parsed in: " + (end - start) + "ms");
+}

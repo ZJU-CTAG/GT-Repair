@@ -1,0 +1,8 @@
+public void testExcludeGlobalThis() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.ERROR);
+    compiler.compile(SourceFile.fromCode("foo", "var x = this.y;"), SourceFile.fromCode("bar", "var y = this.x;"), options);
+    assertEquals(2, compiler.getErrors().length);
+}

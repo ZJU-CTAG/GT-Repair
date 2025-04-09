@@ -1,0 +1,22 @@
+public void testIssue108() {
+    Options options = new Options();
+    Option option = new Option("t", "target", true, "process specified target");
+    options.addOption(option);
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[] {"-t"};
+    CommandLine line = parser.parse(options, args);
+    assertTrue(line.hasOption('t'));
+    
+    args = new String[] {"-target"};
+    line = parser.parse(options, args);
+    assertTrue(line.hasOption('t'));
+
+    args = new String[] {"-t", "foobar.com"};
+    line = parser.parse(options, args);
+    assertTrue(line.hasOption('t'));
+    assertEquals("foobar.com", line.getOptionValue('t'));
+
+    args = new String[] {"-target", "foobar.com"};
+    line = parser.parse(options, args);
+    assertTrue(line.hasOption('t'));
+    assertEquals("foobar.com", line.getOptionValue

@@ -1,0 +1,25 @@
+public void testXPathBinaryOperators() {
+    DocumentBuilder builder = null;
+    try {
+        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+        fail("Could not create document builder");
+    }
+    String docStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + "<doc/>";
+    Document doc = null;
+    try {
+        doc = builder.parse(new InputSource(
+                new StringReader(docStr)));
+    } catch (SAXException e) {
+        e.printStackTrace();
+        fail("Could not parse document: " + docStr);
+    } catch (IOException e) {
+        e.printStackTrace();
+        fail("Could not read document: " + docStr);
+    }
+    JXPathContext pathContext = JXPathContext
+            .newContext(doc);
+    Boolean result = (Boolean) pathContext.getValue("2.0 > child1",
+            Boolean.class);
+   

@@ -1,0 +1,18 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    compiler.compile(
+        JSSourceFile.fromCode("foo.js",
+        "/\*\* @constructor \*/\nfunction Foo() {};\n" +
+        "var goog = {};\n" +
+        "goog.scope;\n" +
+        "goog.scope(function() {\n" +
+        "  var x = null;\n" +
+        "  /\*\* @type {Foo} \*/\n" +
+        "  x = new Foo();\n" +
+        "});"
+        ),
+        options
+    );
+}

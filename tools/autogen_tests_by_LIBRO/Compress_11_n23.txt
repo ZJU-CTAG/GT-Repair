@@ -1,0 +1,14 @@
+public void testTARDetection() throws Exception {
+    File f = new File("src/test/resources/test2.txt");
+    assertTrue(f.exists());
+    assertTrue(f.isFile());
+    assertTrue(f.canRead());
+    assertTrue(f.length() < 100);
+    assertFalse(f.length() > 200);
+    try {
+        ArchiveStreamFactory.detect(new FileInputStream(f));
+        fail("should throw an exception");
+    } catch (Exception e) {
+        assertTrue(e instanceof IOException);
+    }
+}

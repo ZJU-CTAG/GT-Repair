@@ -1,0 +1,11 @@
+public void testIssue27() {
+    String s0 = "function Test(n) { ";
+    String s1 = " var i = 0; ";
+    String s2 = " return typeof n !== \"undefined\" ? (i = n.length) : (n = \"foo\"), i";
+    String s3 = "} ";
+    String s4 = "var dummy = \"6chars\"; ";
+    String s5 = "console && console.log( Test(dummy) );";
+    String s = s0 + s1 + s2 + s3 + s4 + s5;
+    String out = ClosureCompiler.compile(s, new CompilerOptions());
+    assertEquals("function Test(a){return 0}var dummy=\"6chars\";console&&console.log(Test(dummy));", out);
+}

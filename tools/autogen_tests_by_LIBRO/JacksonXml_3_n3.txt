@@ -1,0 +1,17 @@
+public void testNextTextValue() throws Exception {
+    final String xml = "<Test><Field>Value</Field></Test>";
+    XmlMapper mapper = new XmlMapper();
+    JsonParser parser = mapper.getFactory().createParser(xml);
+    JsonToken token = parser.nextToken();
+    token.toString(); // JsonToken.START_OBJECT
+    token = parser.nextToken();
+    token.toString(); // JsonToken.FIELD_NAME
+    token = parser.nextToken();
+    token.toString(); // JsonToken.START_OBJECT
+    token = parser.nextToken();
+    token.toString(); // JsonToken.FIELD_NAME
+    // now we are at Field Value
+    assertEquals(JsonToken.VALUE_STRING, token);
+    // value of nextTextValue should be "Value" but is null
+    assertEquals("Value", parser.nextTextValue());
+}

@@ -1,0 +1,23 @@
+public void testClone() {
+    // Reproducing the issue:
+    GammaDistribution dist = new GammaDistribution(1.0, 1.0);
+    GammaDistribution dist2 = (GammaDistribution) dist.clone();
+    List<Double> samples = new ArrayList<Double>(10000);
+    List<Double> samples2 = new ArrayList<Double>(10000);
+    for (int i = 0; i < 10000; i++) {
+        samples.add(dist.sample());
+    }
+    for (int i = 0; i < 10000; i++) {
+        samples2.add(dist2.sample());
+    }
+    assertEquals(samples, samples2); // fails
+
+    // Creating a (probably) working clone:
+    GammaDistribution dist3 = new GammaDistribution(dist.getShape(), dist.getScale());
+    for (int i = 0; i < 10000; i++) {
+        samples.add(dist.sample());
+    }
+    for (int i = 0; i < 10000; i++) {
+        samples2.add(dist3.sample());
+    }
+    assertEqu

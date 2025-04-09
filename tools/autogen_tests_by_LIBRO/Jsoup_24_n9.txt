@@ -1,0 +1,15 @@
+public void testIssue() throws IOException {
+    String input = "<HTML>\n" +
+            "<body>\n" +
+            " <div>\n" +
+            "  <script language=\"JavaScript1.1\"> \n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>\n" +
+            " </div>\n" +
+            "</body>\n" +
+            "</HTML>\n";
+    String expected = input;
+    String output = new Cleaner(Whitelist.relaxed()).clean(Jsoup.parse(input)).body().html();
+    assertEquals(expected, output);
+}
+

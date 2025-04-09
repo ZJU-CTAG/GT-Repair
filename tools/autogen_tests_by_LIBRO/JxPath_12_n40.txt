@@ -1,0 +1,19 @@
+public void testUnknownNS() {
+    JXPathContext context = JXPathContext.newContext(new ElementA());
+    context.registerNamespace("a", "http://a.com");
+    context.registerNamespace("b", "http://b.com");
+    context.createPathAndSetValue("a:ElementB", "MY VALUE");
+    assertEquals("MY VALUE", ((ElementA)context.getContextBean()).getElementB().getValue());
+    assertEquals("MY VALUE", context.getValue("a:ElementB"));
+    context.createPathAndSetValue("a:myAttr", "MY TYPE");
+    assertEquals("MY TYPE", ((ElementA)context.getContextBean()).getMyAttr());
+    assertEquals("MY TYPE", context.getValue("a:myAttr"));
+}
+
+public static class ElementA {
+    private String myAttr;
+    private ElementB elementB;
+    public String getMyAttr() {
+        return myAttr;
+    }
+    public void setMyAttr(String myAttr)

@@ -1,0 +1,10 @@
+public void testIssue() {
+    String js = "var test={\"a\u0004b\":\"c\"};";
+    String cmp = "var test={\"a\u0004b\":\"c\"};";
+    String min = "var test={\"ab\":\"c\"};";
+    String min2 = "var test={ab:\"c\"};";
+
+    ClosureCompiler compiler = new ClosureCompiler();
+    compiler.compile(js);
+    assertTrue(compiler.getCompiledCode().contains(cmp) || compiler.getCompiledCode().contains(min) || compiler.getCompiledCode().contains(min2));
+}

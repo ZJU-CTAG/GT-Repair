@@ -1,0 +1,13 @@
+public void testOptionGroupLong() {
+    OptionGroup group = new OptionGroup();
+    group.setRequired(true);
+    group.addOption(OptionBuilder.hasArg().create('a'));
+    group.addOption(OptionBuilder.hasArg().create("bong"));
+    CommandLineParser parser = new PosixParser();
+    try {
+        CommandLine cl = parser.parse(group, new String[] {"--bong", "foo"});
+        assertEquals("foo", cl.getOptionValue("bong"));
+    } catch (ParseException ex) {
+        fail("Should not throw an exception");
+    }
+}

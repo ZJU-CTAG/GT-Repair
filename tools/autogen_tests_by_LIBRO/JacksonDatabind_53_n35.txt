@@ -1,0 +1,22 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    mapper.registerModule(new SimpleModule("customIdInterface") {
+        @Override
+        public void setupModule(SetupContext context) {
+            context.addAbstractTypeResolver(new AbstractTypeResolver() {
+                @Override
+                public JavaType resolveAbstractType(DeserializationConfig config,
+                        BasicBeanDescription beanDesc) {
+                    if (MyCustomIdInterface.class.isAssignableFrom(beanDesc.getBeanClass())) {
+                        return config.constructType(Foo.class);
+                    }
+                    return null;
+                }
+            });
+        }
+    });
+    mapper.addMixIn(Foo.class, FooMixin.class);
+    Foo foo = mapper.readValue("{\"id\":\"1\"}", Foo.class);
+    assert

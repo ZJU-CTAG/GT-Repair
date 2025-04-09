@@ -1,0 +1,14 @@
+public void testVarArgs() {
+    MyClass mc = new MyClass();
+    mc.foo("bar", "baz");
+    ArgumentCaptor<String[]> ac = ArgumentCaptor.forClass(String[].class);
+    verify(mc).foo(ac.capture());
+    assertEquals("bar", ac.getValue()[0]);
+    assertEquals("baz", ac.getValue()[1]);
+}
+
+private class MyClass {
+    public void foo(String... args) {
+        // does nothing
+    }
+}

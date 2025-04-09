@@ -1,0 +1,10 @@
+public void testIssue44() throws Exception {
+    ObjectReader r = new ObjectMapper().reader(Map.class);
+    ObjectWriter w = new ObjectMapper().writerWithDefaultPrettyPrinter();
+    try {
+        w.writeValueAsString(r);
+        fail("Should not pass");
+    } catch (com.fasterxml.jackson.databind.JsonMappingException e) {
+        verifyException(e, "not marked as serializable");
+    }
+}

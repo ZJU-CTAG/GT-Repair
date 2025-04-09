@@ -1,0 +1,13 @@
+public void testGetTypeArguments() {
+    Map<TypeVariable<?>, Type> typeVarAssigns;
+    typeVarAssigns = TypeUtils.getTypeArguments(MyClass1.class, MyClass2.class);
+    assertEquals(2, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(MyClass2.class.getTypeParameters()[0]));
+    assertEquals(String.class, typeVarAssigns.get(MyClass2.class.getTypeParameters()[1]));
+    
+    typeVarAssigns = TypeUtils.getTypeArguments(MyClass2.class, MyClass1.class);
+    assertEquals(0, typeVarAssigns.size());
+    
+    typeVarAssigns = TypeUtils.getTypeArguments(MyClass2.class, MyInterface.class);
+    assertEquals(2, typeVarAssigns.size());
+    assertEquals(String.class, typeVarAssigns.get(MyInterface.class.getTypeParameters()[0]));

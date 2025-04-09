@@ -1,0 +1,11 @@
+public void testThreadLocalsLeaks() throws Exception {
+    final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
+    final Class<?> clazz = tccl.loadClass(ToStringStyle.class.getName());
+    assertSame(clazz, tccl.loadClass(ToStringStyle.class.getName()));
+    final Thread thread = new Thread() {
+        public void run() {
+            assertNotSame(clazz, Thread.currentThread().getContextClassLoader().loadClass(ToStringStyle.class.getName()));
+        }
+    };
+    thread.run();
+}

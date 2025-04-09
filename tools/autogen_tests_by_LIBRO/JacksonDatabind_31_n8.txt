@@ -1,0 +1,28 @@
+public void testIssue() throws IOException {
+    final ObjectMapper mapper = new ObjectMapper();
+
+    JsonFilter filter = new JsonFilter();
+    // add filter to object mapper
+    mapper.setFilterProvider(new SimpleFilterProvider().addFilter("filter", filter));
+
+    // register the antpathfilter module
+    mapper.registerModule(new AntPathFilterModule());
+
+    AntPathFilterProvider antPathFilterProvider = new AntPathFilterProvider("/test[?(@.test =~ /\\d+/)]");
+    filter.setAntPathFilterProvider(antPathFilterProvider);
+
+    MyClass test = mapper.readValue("{}", MyClass.class);
+    assertEquals("test", test.getTest());
+
+    // write it again
+    JsonNode node = mapper.valueToTree(test);
+    assertEquals("test", node.get("test").asText());
+}
+
+static class MyClass {
+    private final String test = "test";
+
+    public String getTest() {
+        return test;
+    }
+}

@@ -1,0 +1,26 @@
+public void testIssue114() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode(
+            "test.js",
+            "/**\n" +
+            " * @interface\n" +
+            " */\n" +
+            "function I() {}\n" +
+            "\n" +
+            "/** @type {string} */\n" +
+            "I.prototype.foobar;\n" +
+            "\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " * @implements {I}\n" +
+            " */\n" +
+            "function C() {\n" +
+            "  // No warning generated here.\n" +
+            "  this.foobar = 2;\n" +
+            "}\n" +
+            "\n" +
+            "/** @type {I} */\n" +
+            "var test = new C(); \n" +
+            "alert(test.foobar);\n"));
+
+    assertEquals(0,

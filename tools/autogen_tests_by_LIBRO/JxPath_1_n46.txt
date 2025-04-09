@@ -1,0 +1,25 @@
+public void testSelectSingleNode() {
+    Document doc = createDocument();
+    evaluateXPath(doc, "//root/@id/text()", "1234");
+}
+
+private Document createDocument() {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db;
+    try {
+        db = dbf.newDocumentBuilder();
+        Document doc = db.newDocument();
+        Element root = doc.createElement("root");
+        root.setAttribute("id", "1234");
+        doc.appendChild(root);
+        return doc;
+    } catch (ParserConfigurationException e) {
+        fail(e.getMessage());
+        return null;
+    }
+}
+
+private void evaluateXPath(Document doc, String xpath, String value) {
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals(value, context.selectSingleNode(xpath));
+}

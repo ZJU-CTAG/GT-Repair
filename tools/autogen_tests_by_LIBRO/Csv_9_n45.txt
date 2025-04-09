@@ -1,0 +1,21 @@
+public void testMapRecords() {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader();
+    String csv = "" +
+            "a,b,c\n" +
+            "1,2,3\n" +
+            "one,two,three";
+    CSVParser parser = CSVParser.parse(csv, format);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+    Map<String, String> row = records.get(0).toMap();
+    assertEquals(3, row.size());
+    assertEquals("1", row.get("a"));
+    assertEquals("2", row.get("b"));
+    assertEquals("3", row.get("c"));
+    row = records.get(1).toMap();
+    assertEquals(3, row.size());
+    assertEquals("one", row.get("a"));
+    assertEquals("two", row.get("b"));
+    assertEquals("three", row.get("c"));
+
+    format

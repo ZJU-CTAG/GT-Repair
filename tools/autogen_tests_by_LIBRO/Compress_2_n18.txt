@@ -1,0 +1,22 @@
+public void testArArchive() throws Exception {
+    try {
+        File arFile = new File("test.ar");
+        ArArchiveEntry entry = new ArArchiveEntry("test1.xml", 34);
+        ArArchiveOutputStream arOut = new ArArchiveOutputStream(new FileOutputStream(arFile));
+        arOut.putArchiveEntry(entry);
+        arOut.write("<test1>Hello World</test1>".getBytes());
+        arOut.closeArchiveEntry();
+        arOut.close();
+        arOut = null;
+
+        entry = new ArArchiveEntry("test2.xml", 34);
+        arOut = new ArArchiveOutputStream(new FileOutputStream(arFile, true));
+        arOut.putArchiveEntry(entry);
+        arOut.write("<test2>Hello World</test2>".getBytes());
+        arOut.closeArchiveEntry();
+        arOut.close();
+        arOut = null;
+
+        ArFile ar = new ArFile(arFile);
+        ar.deleteArFile("test2.xml");
+        ar = null;

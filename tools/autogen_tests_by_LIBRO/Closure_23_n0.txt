@@ -1,0 +1,8 @@
+public void testArrayAccessFolding() {
+     CompilerOptions options = new CompilerOptions();
+     options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+     Compiler compiler = new Compiler();
+     compiler.disableThreads();
+     compiler.compile(ImmutableList.of(), ImmutableList.of(SourceFile.fromCode("test", "console.log([console.log('hello, '), 'world!'][1]);")), options);
+     assertEquals("console.log(\"hello, \");\nconsole.log(\"world!\");\n", compiler.toSource());
+}

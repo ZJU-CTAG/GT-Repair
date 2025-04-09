@@ -1,0 +1,23 @@
+public void testExcelQuoteChar() throws IOException {
+    final File input = File.createTempFile("testExcelQuoteChar", ".txt");
+    input.deleteOnExit();
+    final File output = File.createTempFile("testExcelQuoteChar", ".txt");
+    output.deleteOnExit();
+
+    final CSVFormat csvFormat = CSVFormat.EXCEL;
+    final String[] data = new String[] { "あ", "い", "う" };
+    final Writer out = new FileWriter(input);
+    CSVPrinter printer = new CSVPrinter(out, csvFormat);
+    printer.printRecord(data);
+    printer.close();
+
+    final Reader in = new FileReader(input);
+    final CSVFormat parsedFormat = CSVFormat.EXCEL.parse(in);
+
+    printer = new CSVPrinter(new FileWriter(output), parsedFormat);
+    printer.printRecord(data);
+    printer.close();
+
+    String expected = "\"あ\",\"い\",\"う\"\n";
+    String actual = FileUtils.readFileToString(output);
+    assertEquals(expected,

@@ -1,0 +1,9 @@
+public void testChecksum() {
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(getStreamForFile("tar/checksum.tar"));
+    TarArchiveEntry entry = tarIn.getNextTarEntry();
+    while (entry != null) {
+        assertTrue("Checksum should be valid", entry.isCheckSumOK());
+        entry = tarIn.getNextTarEntry();
+    }
+    tarIn.close();
+}

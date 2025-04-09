@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"values\":[\"12\",\"aaa\"]}", Reference.class);
+        fail("Expected InvalidFormatException, got no exception");
+    } catch (InvalidFormatException e) {
+        assertEquals(1, e.getPath().size());
+        assertEquals(1, e.getPath().get(0).getIndex());
+        assertEquals("values[1]", e.getPathReference());
+    }
+}
+
+class Reference {
+    public List<Integer> values;
+}

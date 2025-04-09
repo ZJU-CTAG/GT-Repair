@@ -1,0 +1,13 @@
+public void testConcurrentNavigableMap() {
+    Gson gson = new Gson();
+    A a = new A();
+    a.map.put("a", "1");
+    String json = gson.toJson(a);
+    System.out.println(json); // {"map":{"a":"1"}}
+    A a1 = gson.fromJson(json, A.class);
+    System.out.println(a1.map.toString()); // java.lang.IllegalArgumentException: class java.util.concurrent.ConcurrentSkipListMap declares multiple JSON fields named comparator
+}
+
+static class A {
+    ConcurrentNavigableMap<String, String> map = new ConcurrentSkipListMap<>();
+}

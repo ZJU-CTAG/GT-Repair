@@ -1,0 +1,15 @@
+public void testTarArchiveOutputStreamBytesWritten() throws Exception {
+        TarArchiveEntry ze = new TarArchiveEntry("foo");
+        FileOutputStream dest = new FileOutputStream("target/foo.tar");
+        TarArchiveOutputStream tos = new TarArchiveOutputStream(dest);
+        tos.putArchiveEntry(ze);
+        byte[] bytes = new byte[1024];
+        for (int i = 0; i < 100; i++) {
+            tos.write(bytes);
+        }
+        tos.closeArchiveEntry();
+        tos.close();
+        long expected = 100 * bytes.length;
+        long actual = tos.getBytesWritten();
+        assertEquals(expected, actual);
+    }

@@ -1,0 +1,18 @@
+public void testAdvancedOptimizations() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler.setLoggingLevel(Level.INFO);
+    List<SourceFile> inputs = Collections.singletonList(
+        SourceFile.fromCode("input.js", "window[\"anchor\"] = function (obj, modifiesProp) {\n" +
+            "  return (function (saved) {\n" +
+            "    return modifiesProp(obj) + saved;\n" +
+            "  })(obj[\"prop\"]);\n" +
+            "};"));
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        inputs,
+        options);
+    assertTrue(result.success);
+    assertEquals("window.anchor=function(a,b){var c=a.prop;return b(a)+c};", compiler.toSource());
+}

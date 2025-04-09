@@ -1,0 +1,11 @@
+public void testMockitoCaptor() {
+    // This test fails with Mockito 1.10.7
+    // It works with Mockito 1.9.5
+    // It works with jMock 2.6.0
+
+    final Capture<List<String>> listCapture = new Capture<>();
+    final List<String> list = mock(List.class);
+    list.addAll(capture(listCapture));
+    list.addAll("this", "is", "a", "list");
+    assertEquals(Arrays.asList("this", "is", "a", "list"), listCapture.getValue());
+}

@@ -1,0 +1,9 @@
+public void testSourceFilesIssue() {
+    // just make sure that no .java files are included in mockito-core.jar
+    JarFile jarFile = new JarFile("../mockito-core/target/mockito-core-1.9.5.jar");
+    Enumeration<JarEntry> entries = jarFile.entries();
+    while (entries.hasMoreElements()) {
+        JarEntry entry = entries.nextElement();
+        assertFalse("source file found in binary jar: " + entry.getName(), entry.getName().endsWith(".java"));
+    }
+}

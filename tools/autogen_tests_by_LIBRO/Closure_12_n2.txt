@@ -1,0 +1,9 @@
+public void testIssue108() {
+    String js = "function a() { var x = '1'; try { x += somefunction(); } catch(e) {} x += '2'; try { x += somefunction(); } catch(e) {} document.write(x);}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("test", js)), options);
+    assertTrue(result.success);
+    String js2 = compiler.toSource();
+    System.out.println(js2);
+}

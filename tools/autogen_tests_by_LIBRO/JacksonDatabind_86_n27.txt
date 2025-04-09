@@ -1,0 +1,13 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(Base.class, Sub.class);
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    mapper.setMixInAnnotations(Sub.class, SubMixIn.class);
+    mapper.setMixInAnnotations(Base.class, BaseMixIn.class);
+    Base base = new Base();
+    base.setBase(1);
+    base.setSub(new Sub());
+    base.getSub().setSub(2);
+    String json = mapper.writeValueAsString(base);
+    System.out.println(json);
+}

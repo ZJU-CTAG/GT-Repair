@@ -1,0 +1,12 @@
+public void testGetNextEntry() throws Exception {
+    SevenZFile file = new SevenZFile(new File("src/test/resources/bla.7z"));
+    SevenZArchiveEntry entry = file.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(0, entry.getSize());
+    assertEquals(0, file.read(new byte[4096], 0, 4096));
+    entry = file.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(1, entry.getSize());
+    assertEquals(1, file.read(new byte[4096], 0, 4096));
+    file.close();
+}

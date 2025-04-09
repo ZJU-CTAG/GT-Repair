@@ -1,0 +1,20 @@
+public void testIssue118() {
+    SimpleUnivariateValueChecker checker = new SimpleUnivariateValueChecker(1e-10, 1e-10);
+    BracketFinder bracket = new BracketFinder();
+    bracket.search(new UnivariateFunction() {
+        @Override
+        public double value(double x) {
+            return -x*(x-1)*(x-2);
+        }
+    }, -1, 1.1);
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    int maxEval = 100;
+    UnivariatePointValuePair result = optimizer.optimize(new MaxEval(maxEval),
+                                                         new UnivariateObjectiveFunction(new UnivariateFunction() {
+                                                             @Override
+                                                             public double value(double x) {
+                                                                 return x*(x-1)*(x-2);
+                                                             }
+                                                         }),
+                                                         GoalType.MAXIMIZE,
+                                                         bracket.getLo(), bracket.getHi(), bracket.

@@ -1,0 +1,23 @@
+public void testIssue()
+{
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    InputSource is = new InputSource(new StringReader("<ElementA A:myAttr=\"Mytype\"> <B:ElementB>MY VALUE</B:ElementB></ElementA>"));
+    Document doc = builder.parse(is);
+
+    XPathFactory xfactory = XPathFactory.newInstance();
+    XPath xpath = xfactory.newXPath();
+    JXPathContext ctx = JXPathContext.newContext(doc);
+
+    try
+    {
+        ctx.getValue("/ElementA/@A:myAttr");
+        fail("Should raise a JXPathException");
+    }
+    catch (JXPathException e)
+    {
+        // as expected:
+        // org.apache.commons.jxpath.ri.model.dom.DOMNodePointer.createAttribute(DOMNodePointer.java:209)
+        // org.apache.commons.

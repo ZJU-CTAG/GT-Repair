@@ -1,0 +1,7 @@
+public void testNullStringNotEscaped() {
+    CsvFormat format = CsvFormat.MYSQL.withNullString("\\N");
+    Writer writer = new StringWriter();
+    CsvPrinter printer = new CsvPrinter(writer, format);
+    printer.printRecord(Arrays.asList("1", null));
+    assertTrue(writer.toString().contains("\\N"));
+}

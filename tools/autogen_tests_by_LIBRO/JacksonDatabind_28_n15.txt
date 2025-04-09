@@ -1,0 +1,13 @@
+public void testDeserializeEmptyObject() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+
+    ObjectNode object = new ObjectNode(JsonNodeFactory.instance);
+    assertEquals("{}", om.writeValueAsString(object));
+
+    ObjectNode de1 = om.readValue("{}", ObjectNode.class);
+    assertEquals("{}", om.writeValueAsString(de1));
+
+    MyValue de2 = om.readValue("{}", MyValue.class);
+    assertEquals("{}", om.writeValueAsString(de2.getObject()));
+}

@@ -1,0 +1,16 @@
+public void testIncompleteNamespaceHandling() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<Test a:attr=\"attr-value\" xmlns:a=\"urn:a-namespace\" xmlns:b=\"urn:b-namespace\">\n" +
+                "    <b:element b:attr=\"b-attr-value\" b:attr2=\"b-attr-value-2\"/>\n" +
+                "</Test>";
+
+        InputSource inputSource = new InputSource(new StringReader(xml));
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(inputSource);
+
+        DOMNodePointerFactory dnpf = new DOMNodePointerFactory();
+        DOMNodePointer pointer = dnpf.createNodePointer(
+                new QName(document.getDocumentElement()),
+                new QName("urn:a-namespace", "attr", "a

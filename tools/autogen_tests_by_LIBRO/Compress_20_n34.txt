@@ -1,0 +1,14 @@
+public void testIssue108() throws IOException {
+    File tmpDir = new File("target/test-data");
+    File cpio = new File("src/test/resources/test.cpio");
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    ArchiveInputStream ais = factory.createArchiveInputStream(new BufferedInputStream(new FileInputStream(cpio)));
+    ArchiveEntry entry = null;
+    while ((entry = ais.getNextEntry()) != null) {
+        if (ais.canReadEntryData(entry)) {
+            File file = new File(tmpDir, entry.getName());
+            IOUtils.copy(ais, new FileOutputStream(file));
+        }
+    }
+    ais.close();
+}

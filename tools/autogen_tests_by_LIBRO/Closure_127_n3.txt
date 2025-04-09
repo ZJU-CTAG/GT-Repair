@@ -1,0 +1,7 @@
+public void testBreakInFinally() {
+    ScriptExecutor se = new ScriptExecutor();
+    se.setScript("b: try { throw('throw me') } finally { if (false) { /* fake catcher */ } ; break b }; console.log('ok then...');");
+    se.execute();
+    assertEquals(1, se.getOutput().size());
+    assertEquals("ok then...", se.getOutput().get(0));
+}

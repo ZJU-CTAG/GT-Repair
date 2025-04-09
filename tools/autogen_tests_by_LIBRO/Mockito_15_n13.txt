@@ -1,0 +1,19 @@
+public void testIssue108() {
+    List<String> list = new ArrayList<>();
+    List<String> varargList = Arrays.asList("hello", "world");
+    List<String> arrayList = new String[] { "hello", "world"};
+    String[] stringArray = new String[] { "hello", "world"};
+    String[] varargArray = new String[] { "hello", "world"};
+
+    ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+    ArgumentCaptor<String[]> varargCaptor = ArgumentCaptor.forClass(String[].class);
+
+    verify(mock).oneArg(captor.capture());
+    verify(mock).varArgs(varargCaptor.capture());
+
+    // no longer working for varargs
+    verify(mock).oneArg(list);
+    verify(mock).varArgs(varargList);
+    verify(mock).varArgs(arrayList);
+    verify(mock).varArgs(stringArray);
+    verify(mock).varArgs(varargArray);

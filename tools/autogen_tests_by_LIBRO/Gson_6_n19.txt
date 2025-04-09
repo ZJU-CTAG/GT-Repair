@@ -1,0 +1,11 @@
+public void testData() throws Exception {
+    TypeAdapterFactory mockTypeAdapterFactory = mock(TypeAdapterFactory.class);
+    when(mockTypeAdapterFactory.create(any(Gson.class), any(TypeToken.class))).thenReturn(null);
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(mockTypeAdapterFactory)
+            .create();
+    try {
+        gson.fromJson("{}", Object.class);
+        fail();
+    } catch (JsonSyntaxException expected) {}
+}

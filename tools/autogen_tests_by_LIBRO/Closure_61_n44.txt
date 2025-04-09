@@ -1,0 +1,13 @@
+public void testClosure() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", "Math.blah = function(test) { test.a = 5; };"
+            + "var test = new Object();"
+            + "Math.blah(test);"),
+            new CompilerOptions());
+    assertFalse(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals(CheckLevel.WARNING, result.errors[0].level);
+    assertEquals(Type.JSC_USELESS_CODE, result.errors[0].type);
+    assertEquals(4, result.errors[0].lineNumber);
+}

@@ -1,0 +1,14 @@
+public void testJar() throws Exception {
+    File jarFile = new File("target/testjar.jar");
+    FileOutputStream fos = new FileOutputStream(jarFile);
+    ArchiveOutputStream aos = new JarArchiveOutputStream(fos);
+    ArchiveEntry ae = new JarArchiveEntry("test.txt");
+    ae.setSize(5);
+    aos.putArchiveEntry(ae);
+    aos.write("hello".getBytes());
+    aos.closeArchiveEntry();
+    aos.finish();
+    aos.close();
+    assertTrue(jarFile.exists());
+    assertEquals(5, jarFile.length());
+}

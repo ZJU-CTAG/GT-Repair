@@ -1,0 +1,21 @@
+public void testLends () {
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    options.setGenerateExports(true);
+    options.setCodingConvention(new GoogleCodingConvention());
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    JSSourceFile[] js = new JSSourceFile[] {
+        JSSourceFile.fromCode("makeClass.js",
+                "function makeClass(parent) {}"),
+        JSSourceFile.fromCode("jsclass.js",
+                "(function() {" +
+                "function Person(name) {" +
+                "    this.name = name;" +
+                "}" +
+                "Person.prototype.sayName = function() {" +
+                "    alert(this.name);" +
+                "};" +
+                "@lends Person.prototype" +
+                "function walk() {" +
+                "    alert('I am walking

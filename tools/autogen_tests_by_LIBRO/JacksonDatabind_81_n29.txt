@@ -1,0 +1,14 @@
+public void testIssue108() {
+    JsonMappingExceptionMapper.assertException(JsonMappingException.class, () -> {
+        ObjectMapper mapper = JsonMappingExceptionMapper.getMapper();
+        mapper.readValue("{\"a\":1}", SimpleClass.class);
+    });
+}
+
+public static class SimpleClass {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "a")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = Integer.class, name = "1")
+    })
+    private int a;
+}

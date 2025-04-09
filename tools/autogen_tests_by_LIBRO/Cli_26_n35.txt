@@ -1,0 +1,24 @@
+public void testOptionBuilder() throws Exception {
+  Option option = OptionBuilder
+    .withLongOpt("foo")
+    .withDescription("Foo")
+    .create("foo");
+  assertEquals("foo", option.getLongOpt());
+
+  try {
+    OptionBuilder
+      .withLongOpt("foo")
+      .withDescription("Foo")
+      .create("foo", "long");
+    fail("Expected an IllegalArgumentException");
+  } catch (IllegalArgumentException e) {
+    // expected
+  }
+
+  // Should be resetted
+  option = OptionBuilder
+    .withLongOpt("foo2")
+    .withDescription("Foo2")
+    .create("foo2");
+  assertEquals("foo2", option.getLongOpt());
+}

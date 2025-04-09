@@ -1,0 +1,23 @@
+public void testIssue5() throws Exception {
+    SimpleModule module = new SimpleModule()
+        .addSerializer(new StringSerializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+
+    String expected = "'" + "test" + "'";
+    assertEquals(expected, mapper.writeValueAsString(new Pojo()));
+}
+
+private static class Pojo {
+    @Override
+    @JsonValue
+    public String toString() {
+        return "test";
+    }
+}
+
+private static class StringSerializer extends JsonSerializer<String> {
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("'" + value + "'");
+    }
+}

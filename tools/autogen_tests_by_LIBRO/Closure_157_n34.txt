@@ -1,0 +1,10 @@
+public void testIssue108() {
+    //use --language_in=ECMASCRIPT5
+    String js = "var x = { get 'x'() { return 1 } };" +
+            "var x = { get 1() { return 1 } };";
+    try {
+        Context.enter().compileString(js, "", 1, null);
+    } catch (EvaluatorException e) {
+        assertEquals("SyntaxError: missing ) after argument list", e.getMessage());
+    }
+}

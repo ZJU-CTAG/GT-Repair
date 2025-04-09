@@ -1,0 +1,16 @@
+public void testBug69() {
+    final Class<?> c = ZipArchiveEntry.class;
+    final Method setCompressedSize = getMethod(c, "setCompressedSize", new Class<?>[]{long.class});
+    setCompressedSize.setAccessible(true);
+    final Method setSize = getMethod(c, "setSize", new Class<?>[]{long.class});
+    setSize.setAccessible(true);
+    final Method setTime = getMethod(c, "setTime", new Class<?>[]{long.class});
+    setTime.setAccessible(true);
+    final Constructor<?> constructor = getConstructor(c, new Class<?>[]{String.class});
+    constructor.setAccessible(true);
+
+    final String entryName = "test/Zip64.testCopy";
+    final ZipArchiveEntry ze = (ZipArchiveEntry) constructor.newInstance(entryName);
+    ze.setMethod(ZipEntry.STORED);
+    setCompressedSize.invoke(ze, Long.valueOf(((long) 1) << 32));
+    setSize.invoke(ze

@@ -1,0 +1,19 @@
+public void testIssue108() {
+    String js = "/** @constructor */"
+        + "var myclass = function() { }"
+        + "/** @param {boolean} success */"
+        + "myclass.prototype.fn = function(success) { }"
+        + "myclass.prototype.test = function() {"
+        + "  this.fn();"
+        + "  this.fn = function() { };"
+        + "}"
+        + "var c = new myclass();"
+        + "c.test();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(js);
+    ErrorReporter reporter = result.getErrorReporter();
+    assertEquals(
+        "Bad type annotation. "
+        + "Unknown type boolean in new type annotation",
+        reporter.getErrors()[0].description);
+}

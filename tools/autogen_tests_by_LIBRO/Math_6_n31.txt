@@ -1,0 +1,26 @@
+public void testOptimize() {
+        try {
+            MultivariateVectorFunction f = new MultivariateVectorFunction() {
+                @Override
+                public double[] value(double[] point) {
+                    return new double[] { Math.exp(point[0]) };
+                }
+            };
+
+            MultivariateMatrixFunction jF = new MultivariateMatrixFunction() {
+                @Override
+                public double[][] value(double[] point) {
+                    return new double[][] { { Math.exp(point[0]) } };
+                }
+            };
+
+            LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+            optimizer.optimize(new MaxEval(100), new Target(new double[] { 1.0 }),
+                               new Weight(new double[] { 1.0 }), new InitialGuess(new double[] { 1.0 }),
+                               f, jF);
+
+            assertTrue(optimizer.getIterations() > 0);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }

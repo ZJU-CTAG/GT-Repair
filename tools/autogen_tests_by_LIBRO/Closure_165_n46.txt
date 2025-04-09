@@ -1,0 +1,27 @@
+public void testRecordType1() {
+    test("RecordType1");
+}
+
+public void testRecordType2() {
+    test("RecordType2");
+}
+
+private void test(String type) {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckTypes(true);
+    compiler.initOptions(options);
+    String code = String.format(
+            "/** @typedef {{name: string, id: number}} */\n" +
+            "var %s;\n\n" +
+            "/**\n" +
+            "* @param {%s} rec\n" +
+            "*/\n" +
+            "var func = function(rec) {\n" +
+            " alert(rec.name2);\n" +
+            "};\n" +
+            "func({name: 'jim', id: 0});\n", type, type);
+    String result = compiler.compile(
+            externs,
+            ImmutableList.of(SourceFile.fromCode("test", code)),
+            options

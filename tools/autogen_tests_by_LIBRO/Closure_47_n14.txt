@@ -1,0 +1,11 @@
+public void testIssue108() {
+    SourceMapGenerator sourceMapGenerator = new SourceMapGenerator(SourceMapFormat.V1);
+    sourceMapGenerator.addMapping(
+        new SourceMapGenerator.Location(new SourceCode("foo.js"), new TextOffset(0, 1), new TextOffset(1, 1), new TextOffset(0, 0))
+    );
+    JSONObject sourceMapObject = new JSONObject(sourceMapGenerator.toJson());
+    JSONArray sources = sourceMapObject.getJSONArray("sources");
+    assertEquals(Collections.singletonList("foo.js"), Util.toList(sources));
+    JSONArray mappings = sourceMapObject.getJSONArray("mappings");
+    assertEquals(Collections.singletonList("AAAAA,SAAS,SAAS"), Util.toList(mappings));
+}

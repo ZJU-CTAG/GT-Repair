@@ -1,0 +1,8 @@
+public void testIssue108() throws IOException {
+    InputStream in = new FileInputStream(getFile("/issues/issue108.tar.gz"));
+    try (TarArchiveInputStream tin = new TarArchiveInputStream(new GzipCompressorInputStream(in))) {
+        TarArchiveEntry entry = tin.getNextTarEntry();
+        assertNotNull(entry);
+        assertEquals("05412", entry.getName());
+    }
+}

@@ -1,0 +1,23 @@
+public void testIssue107() {
+    byte[] zip = ...
+    ByteArrayInputStream bin = new ByteArrayInputStream(zip);  
+    try {  
+        ZipArchiveInputStream in = new ZipArchiveInputStream(bin);  
+        try {  
+            while (true) {  
+                ZipArchiveEntry entry = in.getNextZipEntry();  
+                if (entry == null) {
+                    break;
+                }
+                byte[] buf = new byte[(int) entry.getSize()];  
+                in.read(buf);  
+                System.out.println("Content of " + entry.getName() + ":");  
+                System.out.write(buf);  
+            }  
+        } finally {
+            in.close();
+        }
+    } catch (IOException e) {
+        System.err.println("IOException: " + e);
+    }
+}

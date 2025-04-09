@@ -1,0 +1,12 @@
+public void testIssue117() throws IOException {
+    String csv = "A,B,C,,\na,b,c,d,e";
+    Reader in = new StringReader(csv);
+    CSVParser parser = new CSVParser(in, CSVFormat.EXCEL);
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+    for (CSVRecord record : records) {
+        assertEquals(4, record.size());
+    }
+    parser.close();
+    in.close();
+}

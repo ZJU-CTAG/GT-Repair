@@ -1,0 +1,14 @@
+public void testAtan2SpecialCases() {
+    double[] zeros = { +0.0, -0.0 };
+    for (double x : zeros) {
+        for (double y : zeros) {
+            DerivativeStructure ds = new DerivativeStructure(1, 1, 0, x);
+            DerivativeStructure atan2 = ds.atan2(y);
+            double fm = FastMath.atan2(x, y);
+            double m = Math.atan2(x, y);
+            assertEquals(m, atan2.getValue(), 1.0e-15);
+            assertEquals(m, atan2.getPartialDerivative(1, 0), 1.0e-15);
+            assertEquals(fm, atan2.taylor(new double[2]), 1.0e-15);
+        }
+    }
+}

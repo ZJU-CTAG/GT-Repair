@@ -1,0 +1,24 @@
+public void testUnion() throws JaxenException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+
+    Element root = doc.createElement("MAIN");
+    doc.appendChild(root);
+
+    Element a = doc.createElement("A");
+    a.appendChild(doc.createTextNode("avalue"));
+    root.appendChild(a);
+
+    Element b = doc.createElement("B");
+    b.appendChild(doc.createTextNode("bvalue"));
+    root.appendChild(b);
+
+    XPath xpath = new DOMXPath("string(/MAIN/B | /MAIN/A)");
+
+    List result = xpath.selectNodes(doc);
+
+    assertEquals(1, result.size());
+    assertEquals("avalue", result.get(0));
+}

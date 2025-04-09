@@ -1,0 +1,15 @@
+public void testJsonDeserializeAs() {
+  ObjectMapper mapper = new ObjectMapper();
+  mapper.registerModule(new Jdk8Module());
+
+  Foo foo1 = new Foo("value1");
+  Foo foo2 = new Foo("value2");
+
+  MyHashMap<UUID, Foo> map = new MyHashMap<>();
+  map.put(UUID.randomUUID(), foo1);
+  map.put(UUID.randomUUID(), foo2);
+
+  String json = mapper.writeValueAsString(map);
+  MyHashMap<UUID, Foo> readBack = mapper.readValue(json, MyHashMap.class);
+  assertEquals(map, readBack);
+}

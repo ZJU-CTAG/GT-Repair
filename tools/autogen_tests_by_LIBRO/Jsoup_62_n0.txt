@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    // https://github.com/jhy/jsoup/issues/4
+    String xml="<r><X>A</X><y>B</y></r>";
+    Parser parser = Parser.htmlParser();
+    parser.settings(ParseSettings.preserveCase);
+    org.jsoup.nodes.Document _doc = parser.parseInput(xml, "/");
+    System.out.println(_doc);
+
+    assertEquals("<r>\n" +
+            " <X>A</X>\n" +
+            " <y>B</y>\n" +
+            "</r>", _doc.body().html());
+}

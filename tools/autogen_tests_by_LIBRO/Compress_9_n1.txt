@@ -1,0 +1,9 @@
+public void testTarArchiveOutputStream() throws Exception {
+        final File input = getFile("test1.xml");
+        final ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.TAR, new FileOutputStream(getFile("TAR.tar")));
+        aos.putArchiveEntry(new TarArchiveEntry(input));
+        IOUtils.copy(new FileInputStream(input), aos);
+        aos.closeArchiveEntry();
+        aos.close();
+        assertEquals(input.length(), aos.getBytesWritten());
+    }

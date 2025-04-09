@@ -1,0 +1,21 @@
+public void test() throws Exception {
+    File file = new File("/home/maksim/Desktop/test.html");
+    Parser parser = Parser.xmlParser();
+    Document document = parser.parseInput(file.getAbsolutePath(), new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8));
+
+    // element with namespace (ns1)
+    Element element1 = document.getElementById("div1");
+    assertNotNull(element1);
+    assertEquals("div", element1.tagName());
+    assertEquals("ns1", element1.namespace());
+
+    // element without namespace (inherits ns1)
+    Element element2 = document.getElementById("div2");
+    assertNotNull(element2);
+    assertEquals("div", element2.tagName());
+    assertEquals("ns1", element2.namespace());
+
+    // element without namespace (inherits ns1)
+    Element element3 = document.getElementById("div3");
+    assertNotNull(element3);
+    assertEquals("div", element3.

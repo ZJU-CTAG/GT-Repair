@@ -1,0 +1,23 @@
+public void testIterations() throws Exception {
+        MultivariateDifferentiableVectorFunction f = new MultivariateDifferentiableVectorFunction() {
+                public double[] value(double[] x) throws IllegalArgumentException {
+                      return new double[] { x[0] };
+                }
+
+                public MultivariateMatrixFunction jacobian() {
+                        return new MultivariateMatrixFunction() {
+                                public double[][] value(double[] x) throws IllegalArgumentException {
+                                      return new double[][] { { 1 } };
+                                }
+                        };
+                }
+        };
+
+        RealMatrix weightMatrix = MatrixUtils.createRealIdentityMatrix(1);
+        LevenbergMarquardtOptimizer optimizer = new LevenbergMarquardtOptimizer();
+        optimizer.optimize(new MaxEval(1000),
+                                          new Target(new double[] { 0 }),
+                                          new Weight(weightMatrix.getData()),
+                                          new InitialGuess(new double[] { 10 }),
+                                          new ModelFunction(f),
+                                          new ModelFunctionJacobian(f.jac

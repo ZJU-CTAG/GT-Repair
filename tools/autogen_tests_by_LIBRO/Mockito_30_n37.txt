@@ -1,0 +1,11 @@
+public void testIssue() {
+    ClassLoader cl = ClassLoaders.excludingClassLoader()
+            .usingSourceUrl(new File("src/main/java").toURI().toURL())
+            .usingSourceUrl(new File("src/test/java").toURI().toURL())
+            .usingSourceUrl(new File("target/classes").toURI().toURL())
+            .usingSourceUrl(new File("target/test-classes").toURI().toURL())
+            .build();
+
+    Class<?> clazz = cl.loadClass("org.junit.runner.JUnitCore");
+    assertNotNull(clazz);
+}

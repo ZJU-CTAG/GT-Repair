@@ -1,0 +1,20 @@
+public void testIssueWithMinimalQuoting() {
+    try {
+        File temp = File.createTempFile("testIssueWithMinimalQuoting", ".csv");
+        temp.deleteOnExit();
+
+        try(FileWriter out = new FileWriter(temp)) {
+            CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL));
+            csvPrinter.printRecord(5,5);
+            csvPrinter.printRecord(5,-5);
+            csvPrinter.printRecord(5,5);
+            csvPrinter.flush();
+            out.flush();
+        }
+
+        try(FileReader fr = new FileReader(temp)) {
+            CSVParser parser = new CSVParser(fr, CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL));
+            final Iterator<CSVRecord> iterator = parser.iterator();
+            assertEquals(iterator.next().get(1), "5");
+            assertEquals(iterator.next().get(1), "-5");
+            assertEquals(iterator.

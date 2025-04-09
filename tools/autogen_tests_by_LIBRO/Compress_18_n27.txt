@@ -1,0 +1,20 @@
+public void testLongDirectoryNames() throws Exception {
+		// create a tar file
+		File tarFile = File.createTempFile("test", "tar");
+		// directory to tar
+		File srcDir = new File("src");
+		// create a tar file
+		FileOutputStream fos = new FileOutputStream(tarFile);
+		TarUtilities.tar(srcDir, fos);
+		InputStream is = new FileInputStream(tarFile);
+		TarArchiveInputStream tis = new TarArchiveInputStream(is);
+		// create a buffer to improve performance
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		// extract the files
+		TarArchiveEntry entry = null;
+		while ((entry = tis.getNextTarEntry()) != null) {
+			// create a file to stream the data into
+			FileOutputStream dest = new FileOutputStream(File.createTempFile("test", ".txt"));
+			while ((bytesRead = tis.read(buffer)) != -1) {
+	

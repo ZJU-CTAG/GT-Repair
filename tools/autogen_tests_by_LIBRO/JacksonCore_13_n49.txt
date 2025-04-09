@@ -1,0 +1,12 @@
+public void testIssue9() throws IOException {
+    StringWriter sw = new StringWriter();
+    JsonFactory jf = new JsonFactory();
+    UTF8JsonGenerator gen = jf.createGenerator(sw);
+    gen.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
+    gen.writeStartObject();
+    gen.writeFieldName("a");
+    gen.writeString("A");
+    gen.writeEndObject();
+    gen.flush();
+    assertEquals("{\"a\":\"A\"}", sw.toString());
+}

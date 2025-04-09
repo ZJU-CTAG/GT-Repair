@@ -1,0 +1,26 @@
+public void testMissingOption() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.withLongOpt("format")
+                                   .hasArg()
+                                   .withArgName("format")
+                                   .create());
+    options.addOption(OptionBuilder.withLongOpt("source")
+                                   .hasArg()
+                                   .withArgName("source")
+                                   .create());
+    options.addOption(OptionBuilder.withLongOpt("properties")
+                                   .hasArg()
+                                   .withArgName("properties")
+                                   .create());
+    String[] arguments = {"-format", "xml", "-source", "/tmp", "-properties", "/tmp/prop.xml"};
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = null;
+    try {
+        commandLine = parser.parse(options, arguments);
+    } catch (ParseException e) {
+        // expected
+        assertTrue(e instanceof MissingOptionException);
+        assertEquals("Missing required options: -format -source -properties", e.getMessage());
+    }
+}
+

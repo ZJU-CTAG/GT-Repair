@@ -1,0 +1,22 @@
+public void testClosure() {
+    String code = "ie = !+\"\\v1\"";
+    assertEquals("ie=!1", runClosure(code));
+}
+
+private String runClosure(final String code) {
+    Compiler compiler = new Compiler();
+    ErrorHandler errorHandler = new ErrorHandler() {
+    @Override
+    public void report(CheckLevel level, JSError error) {
+    System.out.println("level = " + level + ", error = " + error);
+    }
+    };
+    Result result = compiler.compile(
+    Lists.newArrayList(SourceFile.fromCode("test.js", code)),
+    new CompilerOptions(), errorHandler);
+    if (result.success) {
+    return result.compiledCode;
+    }
+    System.out.println("result = " + result);
+    return null;
+    }

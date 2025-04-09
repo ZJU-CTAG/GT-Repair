@@ -1,0 +1,15 @@
+public void testIssue109() throws IOException {
+    String csvStr = "Col1,Col2,Col2,Col3,Col4\n" +
+            "1,2,3,4,5\n" +
+            "4,5,6,7,8\n";
+    Reader reader = new StringReader(csvStr);
+    CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader());
+    List<CSVRecord> records = parser.getRecords();
+    assertEquals(2, records.size());
+    for (CSVRecord record:records) {
+        assertEquals("1", record.get("Col1"));
+        assertEquals("2", record.get("Col2"));
+        assertEquals("4", record.get("Col3"));
+        assertEquals("5", record.get("Col4"));
+    }
+}

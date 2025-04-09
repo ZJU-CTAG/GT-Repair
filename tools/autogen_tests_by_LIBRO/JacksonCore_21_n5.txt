@@ -1,0 +1,16 @@
+public void testIssueJsonParserDelegate() throws Exception {
+    String input = "{\"a\":123,\"array\":[1,2],\"ob\":{\"value0\":2,\"value\":3,\"value2\":4},\"b\":true}";
+    ByteArrayInputStream bais = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+    JsonParser p0 = JSON_F.createJsonParser(bais);
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    JsonToken t = p.nextToken(); // START_OBJECT
+    t = p.nextToken(); // FIELD_NAME [ob]
+    t = p.nextToken(); // START_OBJECT
+    t = p.nextToken(); // FIELD_NAME [value]
+    t = p.nextToken(); // VALUE_NUMBER_INT [3]
+    t = p.nextToken(); // END_OBJECT
+    assertEquals("Expected

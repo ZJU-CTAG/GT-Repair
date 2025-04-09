@@ -1,0 +1,19 @@
+public void testIssue101() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    AvroSchema schema = new AvroSchema(
+            "{ \"type\": \"record\",\n" +
+            "  \"name\": \"Issue101Bean\",\n" +
+            "  \"namespace\": \"org.apache.commons.lang3\",\n" +
+            "  \"fields\": [\n" +
+            "    { \"name\": \"name\", \"type\": \"string\" },\n" +
+            "    { \"name\": \"labels\", \"type\": { \"type\": \"map\", \"values\": \"string\" }}\n" +
+            "  ]\n" +
+            "}"
+    );
+    Issue101Bean bean = new Issue101Bean();
+    bean.name = "Joe";
+    GenericRecord record = AvroUtils.bean2record(bean, schema);
+    String json = mapper.writeValueAsString(record);
+    assert

@@ -1,0 +1,13 @@
+public void testGroupConstraints() throws Exception {
+    OptionGroup group = new OptionGroup();
+    group.setRequired(true);
+    group.addOption(new Option("a", "a", false, "a"));
+    group.addOption(new Option("b", "b", false, "b"));
+    CommandLineParser parser = new PosixParser();
+    try {
+        parser.parse(new Options().addOptionGroup(group), new String[] {});
+        fail("Group is required");
+    } catch (MissingOptionException e) {
+        assertEquals("Missing required option: a, b", e.getMessage());
+    }
+}

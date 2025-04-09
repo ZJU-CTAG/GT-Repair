@@ -1,0 +1,14 @@
+public void testNodePointer() {
+    DOMParser parser = new DOMParser();
+    try {
+        parser.parse(DOMNodePointerTest.class.getResourceAsStream("/test/xml/test.xml"));
+        Document doc = parser.getDocument();
+        XPath xpath = new DOMXPath("/test/node()");
+        List list = xpath.selectNodes(doc);
+        assertEquals(2, list.size());
+        assertEquals("node1", ((Element)list.get(0)).getNodeName());
+        assertEquals("node2", ((Element)list.get(1)).getNodeName());
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}

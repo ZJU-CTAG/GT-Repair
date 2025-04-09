@@ -1,0 +1,20 @@
+public void testIssue108() {
+    System system = new DefaultSystem(100, 1);
+    system.addEvent(new Event(0, new Consumer() {
+        public void consume(System system) {
+            system.setState(10);
+            system.addEvent(new Event(15, new Consumer() {
+                public void consume(System system) {
+                    system.setState(20);
+                }
+            }));
+        }
+    }));
+    system.addEvent(new Event(15, new Consumer() {
+        public void consume(System system) {
+            system.setState(30);
+        }
+    }));
+    system.step();
+    assertEquals(20, system.getState());
+}

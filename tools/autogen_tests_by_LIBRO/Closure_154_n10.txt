@@ -1,0 +1,24 @@
+public void testIssue() throws Exception {
+    String code = "function I() {};\n" +
+            "/** @type {string} */\n" +
+            "I.prototype.foobar;\n" +
+            "/**\n" +
+            " * @constructor\n" +
+            " * @implements {I}\n" +
+            " */\n" +
+            "function C() {\n" +
+            " // No warning generated here.\n" +
+            " this.foobar = 2;\n" +
+            "};\n" +
+            "/** @type {I} */\n" +
+            "var test = new C();\n" +
+            "alert(test.foobar);";
+
+    Compiler compiler = new Compiler(new PrintStream(System.out));
+    Result result = compiler.compile(
+            FileDescriptor.fromCode("[test code]", code),
+            DefaultSourceFile.fromCode("[test code]", code));
+
+    assertTrue(result.success);
+
+    for (JSError warning : result.warnings

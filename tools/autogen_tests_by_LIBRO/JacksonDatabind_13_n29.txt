@@ -1,0 +1,15 @@
+public void testNullObjectId() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    m.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+    ObjectIdGenerator<?> generator = new ObjectIdGenerators.PropertyGenerator();
+    // first, build POJO with Object Id
+    PojoWithId pojo = new PojoWithId(generator, "foo");
+    // then serialize
+    String json = m.writeValueAsString(pojo);
+    // and then try to deserialize:
+    PojoWithId pojo2 = m.readValue(json, PojoWithId.class);
+    assertNull(pojo2.id);
+    assertEquals(pojo.value, pojo2.value);
+}

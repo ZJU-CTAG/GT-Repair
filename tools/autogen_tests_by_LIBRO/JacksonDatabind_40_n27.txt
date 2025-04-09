@@ -1,0 +1,11 @@
+public void testIssue_1() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should have thrown an exception");
+    } catch (Exception e) {
+        verifyException(e, "Cannot coerce empty String");
+    }
+}

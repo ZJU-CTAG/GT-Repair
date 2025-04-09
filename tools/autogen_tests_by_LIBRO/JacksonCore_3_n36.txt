@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    JsonParser parser = new UTF8StreamJsonParser(new ByteArrayInputStream("{}".getBytes()),
+                                                 JsonEncoding.UTF8,
+                                                 new ByteArrayInputStream("{}".getBytes()).available());
+    parser.nextToken();
+    try {
+        parser.nextToken();
+        fail();
+    } catch (JsonParseException e) {
+        assertEquals(2, e.getLocation().getLineNr());
+    }
+}

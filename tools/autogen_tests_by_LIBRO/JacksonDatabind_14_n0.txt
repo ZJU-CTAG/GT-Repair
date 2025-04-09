@@ -1,0 +1,24 @@
+public void testIssue() throws JsonProcessingException, IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(Parent.class, new ParentDeserializer());
+    mapper.registerModule(module);
+
+    Parent parent = new Parent();
+    parent.child.name = "foo";
+    String jsonParent = mapper.writeValueAsString(parent);
+    JsonNode jsonNode = mapper.valueToTree(parent);
+
+    // create parent
+    Parent parentNewViaString = mapper.readValue(jsonParent, Parent.class);
+    assertEquals("bar", parentNewViaString.child.name);
+
+    // update parent
+    Parent parentUpdViaString = new Parent();
+    Parent parentUpdViaNode = new Parent();
+
+    assertEquals("foo", parentUpdViaString.child.name);
+    mapper.readerForUpdating(parentUpdViaString).readValue(jsonParent);
+    assertEquals("bar", parentUpdViaString.child.name);
+
+    assertEquals("foo", parent

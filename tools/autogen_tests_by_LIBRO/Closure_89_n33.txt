@@ -1,0 +1,20 @@
+public void testIssue() {
+    Function<String> f = new Function<String>() {
+        @Override
+        public String apply(String input) {
+            return input.toUpperCase();
+        }
+
+        public boolean alwaysCall;
+    };
+    f.alwaysCall = true;
+    Result<String> result = new Result<String>();
+    if (f.alwaysCall) {
+        result.result = f.apply("Hello");
+    }
+    assertEquals("HELLO", result.result);
+}
+
+static class Result<T> {
+    T result;
+}

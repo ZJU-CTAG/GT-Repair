@@ -1,0 +1,18 @@
+public void testIssue114() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "[1, 2, \"3\", 4]";
+    MappingIterator<Object> it = mapper.readerFor(Object.class).readValues(json);
+    assertEquals(Integer.valueOf(1), it.next());
+    assertEquals(Integer.valueOf(2), it.next());
+    assertEquals("3", it.next());
+    assertEquals(Integer.valueOf(4), it.next());
+    try {
+        it.next();
+        fail("exception expected");
+    } catch (NoSuchElementException e) {}
+
+    try {
+        it.next();
+        fail("exception expected");
+    } catch (NoSuchElementException e) {}
+}

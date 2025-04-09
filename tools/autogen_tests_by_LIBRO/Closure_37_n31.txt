@@ -1,0 +1,12 @@
+public void testIncompleteFunctionDefinition() {
+  Compiler compiler = new Compiler();
+  compiler.setErrorManager(new BasicErrorManager() {
+    @Override
+    public void println(CheckLevel level, JSError error) {
+      throw new RuntimeException(error.description);
+    }
+  });
+  compiler.compile(
+      JSSourceFile.fromCode("testcode", "f f f ;\nfunction t"),
+      JSSourceFile.fromCode("externs", "var document;"));
+}

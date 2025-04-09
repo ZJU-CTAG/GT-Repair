@@ -1,0 +1,23 @@
+public void testJsonProperty() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.findAndRegisterModules();
+    assertEquals(
+        "{\"enum\":\"ENUM_2\",\"enumMap\":{\"ENUM_1\":\"value\",\"ENUM_2\":\"value2\"}}",
+        mapper.writeValueAsString(new TestClass()));
+}
+
+public class TestClass {
+    public TestEnum enum1 = TestEnum.ENUM_2;
+    public EnumMap enumMap = new EnumMap(TestEnum.class);
+    public TestClass() {
+        enumMap.put(TestEnum.ENUM_1, "value");
+        enumMap.put(TestEnum.ENUM_2, "value2");
+    }
+}
+
+public enum TestEnum {
+    @JsonProperty("ENUM_1")
+    ENUM_1,
+    @JsonProperty("ENUM_2")
+    ENUM_2
+}

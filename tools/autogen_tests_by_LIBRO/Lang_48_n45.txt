@@ -1,0 +1,32 @@
+public void testEquals() {
+    Bd b1 = new Bd();
+    b1.bd = new BigDecimal("1.0");
+    Bd b2 = new Bd();
+    b2.bd = new BigDecimal("1.00");
+    assertTrue(b1.equals(b2));
+    assertTrue(b2.equals(b1));
+
+    assertEquals(b1.hashCode(), b2.hashCode());
+}
+
+private static class Bd {
+    BigDecimal bd;
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(bd).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Bd other = (Bd) obj;
+        return new EqualsBuilder().append(bd, other.bd).isEquals();

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    CsvFormat format = CsvFormat.DEFAULT;
+    format.setNullString("");
+    format.setQuote((Character) null);
+    format.setQuoteEscape((Character) null);
+    format.setIgnoreEmptyLines(true);
+    format.setIgnoreSurroundingSpaces(true);
+    format.setIgnoreHeaderCase(true);
+    format.setSkipHeaderRecord(true);
+    format.setComment((Character) null);
+    format.setEscape((Character) null);
+    format.setTrim(true);
+    format.setCommentStart((Character) null);
+    
+    StringReader reader = new StringReader("");
+    StringWriter out = new StringWriter();
+    try {
+      CsvParser.parse(reader, format, new BeanListHandler<Bean>(Bean.class), out);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }

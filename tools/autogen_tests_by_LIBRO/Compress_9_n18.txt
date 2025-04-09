@@ -1,0 +1,9 @@
+public void testTarArchiveOutputStream() throws Exception {
+    File file = new File("test-data/test1.tar");
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(file));
+    TarArchiveEntry tae;
+    while ((tae = (TarArchiveEntry) tais.getNextEntry()) != null) {
+        assertFalse(tae.isDirectory());
+        assertEquals(tae.getSize(), tais.read(new byte[(int) tae.getSize()]));
+    }
+}

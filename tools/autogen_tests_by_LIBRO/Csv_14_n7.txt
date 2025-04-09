@@ -1,0 +1,10 @@
+public void testNegativeNumeric() throws IOException {
+    StringWriter out = new StringWriter();
+    CSVPrinter printer = CSVFormat.MINIMAL.withHeader("long","lat","data").print(out);
+    printer.printRecord(-92.222,43.333,3);
+    String[] lines = out.toString().split("\n");
+    String[] header = lines[0].split(",");
+    String[] record = lines[1].split(",");
+    assertEquals("\"long\"", header[0]);
+    assertEquals("-92.222", record[0]);
+}

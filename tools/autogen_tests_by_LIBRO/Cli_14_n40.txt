@@ -1,0 +1,23 @@
+public void testIssue137() {
+    final DefaultOptionBuilder obuilder = new DefaultOptionBuilder();
+    final ArgumentBuilder abuilder = new ArgumentBuilder();
+    final GroupBuilder gbuilder = new GroupBuilder();
+    final DefaultOption fileNameOption = obuilder
+        .withShortName("f")
+        .withLongName("file-name")
+        .withRequired(true)
+        .withDescription("name of an existing file")
+        .withArgument(abuilder
+            .withName("file-name")
+            .withValidator(FileValidator.getExistingFileInstance())
+            .create())
+        .create();
+    final Group options = gbuilder
+        .withName("options")
+        .withOption(fileNameOption)
+        .create();
+    final Parser parser = new Parser();
+    parser.setHelpTrigger("--help");
+    parser.setGroup(options);
+    parser.parseAndHelp(new String[] { "-f", "." });
+}

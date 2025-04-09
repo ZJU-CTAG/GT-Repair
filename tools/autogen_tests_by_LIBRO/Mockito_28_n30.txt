@@ -1,0 +1,25 @@
+public void testIssue_nicer_textual_printing_of_typed_parameters() {
+    //given
+    final Integer two = 2;
+    final String twoString = "2";
+    final SomeType mock = mock(SomeType.class);
+    doThrow(new RuntimeException()).when(mock).someMethod(anyInt(), eq(two));
+    doThrow(new RuntimeException()).when(mock).someOther(anyInt(), eq(twoString));
+
+    //when
+    try {
+        mock.someMethod(1, two);
+    } catch (final RuntimeException e) {
+        assertThat(e.getMessage(), is("someMethod(1, (Integer) 2)"));
+    }
+    try {
+        mock.someOther(1, twoString);
+    } catch (final RuntimeException e) {
+        assertThat(e.getMessage(), is("someOther(1, (String) \"2\")"));
+    }
+}
+
+public static class SomeType {
+    public void someMethod(final int first, final Integer second) {
+    }
+    public void someOther

@@ -1,0 +1,15 @@
+public void testBrentOptimizer() {
+    double[] testParams = new double[] { -2, -1, 0, 1 };
+    double[] testValues = new double[] { 1, 1, 0, 0 };
+    UnivariatePointValuePair result = new BrentOptimizer(1e-10, 1e-14).optimize(
+            GoalType.MINIMIZE, new MaxEval(100), new MaxIter(100), new InitialGuess(testParams),
+            new UnivariateObjectiveFunction(
+                    new MultivariateFunction() {
+                        public double value(double[] point) {
+                            return point[0] * point[0];
+                        }
+                    }),
+            new SearchInterval(-1, 1));
+    assertEquals(0, result.getPoint(), 1e-10);
+    assertEquals(0, result.getValue(), 1e-10);
+}

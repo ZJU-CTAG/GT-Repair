@@ -1,0 +1,15 @@
+public void testIssue111() {
+    String code = "function keys(obj) {" +
+            "var a = [], i = 0;" +
+            "for (a[i++] in obj) ;" +
+            "return a;" +
+            "}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("test", code),
+            new CompilerOptions());
+    assertNotNull(result);
+    assertEquals(result.success, true);
+    assertEquals(result.errors.length, 0);
+}

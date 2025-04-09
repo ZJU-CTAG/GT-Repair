@@ -1,0 +1,13 @@
+public void test110() throws IOException {
+    final InputStream tarIn = new GZIPInputStream(new BufferedInputStream(new FileInputStream(getFile("test110.tar.gz"))));
+    final TarArchiveInputStream tis = new TarArchiveInputStream(tarIn);
+    final TarArchiveEntry entry = tis.getNextTarEntry();
+    assertEquals("test110/", entry.getName());
+    final TarArchiveEntry entry2 = tis.getNextTarEntry();
+    assertEquals("test110/test110.txt", entry2.getName());
+    final byte[] data = new byte[(int)entry2.getSize()];
+    tis.read(data);
+    final String s = new String(data, "US-ASCII");
+    assertEquals("This is the content of test110.txt.", s);
+    assertNull(tis.getNextTarEntry());
+}

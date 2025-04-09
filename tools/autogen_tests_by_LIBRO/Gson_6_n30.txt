@@ -1,0 +1,24 @@
+public void testIssue19668() {
+    GsonBuilder gsonBuilder = new GsonBuilder();
+    gsonBuilder.registerTypeAdapter(URL.class, new URLTypeAdapter());
+    Gson gson = gsonBuilder.create();
+    assertEquals("null", gson.toJson(null));
+}
+
+private static class URLTypeAdapter implements TypeAdapterFactory, TypeAdapter<URL> {
+
+    @Override
+    public TypeAdapter<URL> create(Gson gson, TypeToken<URL> type) {
+        return type.getType() == URL.class ? this : null;
+    }
+
+    @Override
+    public void write(JsonWriter out, URL value) throws IOException {
+        out.value(value.toString());
+    }
+
+    @Override
+    public URL read(JsonReader in) throws IOException {
+        return null;
+    }
+}

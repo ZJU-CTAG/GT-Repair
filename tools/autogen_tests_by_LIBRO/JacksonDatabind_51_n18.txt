@@ -1,0 +1,16 @@
+public void testCustomTypeIdResolver() {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Message.class, JsonNodeMessage.class);
+    module.addAbstractTypeMapping(Message.class, TextMessage.class);
+    module.addAbstractTypeMapping(Message.class, ObjectMessage.class);
+    module.addAbstractTypeMapping(Message.class, BytesMessage.class);
+    module.addAbstractTypeMapping(Message.class, MapMessage.class);
+    module.addAbstractTypeMapping(Message.class, StreamMessage.class);
+    module.setTypeIdResolver(new JavaTypeTypeIdResolver());
+    mapper.registerModule(module);
+
+    mapper.enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.NON_FINAL, JMS_TYPE_PROPERTY);
+
+    Queue queue = new Queue("myQueue");
+    assertEquals("{\"@class\":\"org.apache.activemq.command.ActiveMQQueue\",\"physicalName\":\"my

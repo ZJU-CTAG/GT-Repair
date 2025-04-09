@@ -1,0 +1,11 @@
+public void testWithNull() throws Exception {
+        XmlMapper mapper = new XmlMapper();
+        mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        mapper.configure(ToXmlGenerator.Feature.WRITE_XML_1_1, true);
+        mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+        mapper.configure(SerializationFeature.WRITE_NULL_MAP_KEYS, false);
+        mapper.setSerializerFactory(mapper.getSerializerFactory().withRootName(new PropertyName("root")));
+        String xml = mapper.writeValueAsString(new MapWithNull());
+        assertEquals("<?xml version='1.1' encoding='UTF-8'?><root><a><b><c>"+
+"<d>value1</d><e>value2</e><f>value3</f><g>value4</g><h>value5</h><i>value6</i>"+
+"<j>value

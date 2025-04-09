@@ -1,0 +1,16 @@
+public void testCsvFormatNullString() {
+    // given
+    CsvFormat format = new CsvFormat();
+    format.setEscape(CsvFormat.NO_ESCAPE_CHARACTER);
+    format.setQuote('"');
+    format.setQuoteMode(QuoteMode.ALL);
+    format.setDelimiter('\t');
+    format.setNullString("\\N");
+    StringWriter sw = new StringWriter();
+    CsvPrinter printer = new CsvPrinter(sw, format);
+    // when
+    printer.printRecord("a", "b", null);
+    printer.flush();
+    // then
+    assertEquals("\"a\"\t\"b\"\t\"\\\\N\"\n", sw.toString());
+}

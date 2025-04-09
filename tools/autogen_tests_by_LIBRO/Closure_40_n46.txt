@@ -1,0 +1,17 @@
+public void testSmartNameRemoval() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("in1.js", "var goog = {};\n" +
+                            "goog.inherits = function(x, y) {};\n" +
+                            "var ns = {};\n" +
+                            "/** @constructor */ ns.PageSelectionModel = function(){};\n" +
+                            "\n" +
+                            "/** @constructor */ \n" +
+                            "ns.PageSelectionModel.FooEvent = function() {};\n" +
+                            "/** @constructor */ \n" +
+                            "ns.PageSelectionModel.SelectEvent = function() {};\n" +
+                            "goog.inherits(ns.PageSelectionModel.ChangeEvent, ns.PageSelectionModel.FooEvent);\n"),
+            },
+            new CompilerOptions());
+    assertEquals(0, result.errors.

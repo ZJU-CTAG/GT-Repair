@@ -1,0 +1,13 @@
+public void testStopAtNonOption() throws Exception {
+    PosixParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("a", "a", false, "a desc");
+    
+    String[] args = new String[]{"-z", "-a", "foo"};
+    CommandLine cmd = parser.parse(options, args, true);
+    
+    assertTrue(cmd.hasOption("a"));
+    assertEquals(2, cmd.getOptions().length);
+    assertEquals(1, cmd.getArgs().length);
+    assertEquals("foo", cmd.getArgs()[0]);
+}

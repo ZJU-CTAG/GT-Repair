@@ -1,0 +1,7 @@
+public void testIssue149() throws Exception {
+    StringReader reader = new StringReader("A,B,C,,\na,b,c,d,e"); // CSV with empty column name
+    CSVParser parser = CSVFormat.EXCEL.parse(reader);
+    assertEquals(0, parser.getHeaderMap().get("")); // This is the current behavior
+    parser = CSVFormat.EXCEL.withIgnoreEmptyLines().withSkipHeaderRecord().parse(reader);
+    assertNull(parser.getHeaderMap().get("")); // This should be the new behavior
+}

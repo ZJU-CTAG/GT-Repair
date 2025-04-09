@@ -1,0 +1,11 @@
+public void testACCEPT_CASE_INSENSITIVE_PROPERTIES() throws IOException {
+    JsonNode json = JsonLoader.fromString("{\"BUSINESSAddress_STREET\":\"street\", \"BUSINESSAddress_ADDon\":\"addon\"," +
+            "\"BUSINESSAddress_ZIP\":\"zip\", \"BUSINESSAddress_TOWN\":\"town\"}");
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Person person = mapper.readerFor(Person.class).readValue(json);
+    assertEquals("street", person.businessAddress.street);
+    assertEquals("addon", person.businessAddress.addon);
+    assertEquals("zip", person.businessAddress.zip);
+    assertEquals("town", person.businessAddress.town);
+}

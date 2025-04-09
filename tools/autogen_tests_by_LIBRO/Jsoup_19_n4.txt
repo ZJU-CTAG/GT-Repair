@@ -1,0 +1,10 @@
+public void testIssue103() {
+    String html = "<p><img alt=\"\" src=\"cid:aaa.bbb.ccc.ddd\"></p>";
+    Document doc = Jsoup.parse(html);
+    Whitelist whitelist = Whitelist.relaxed().addTags("img");
+    whitelist.addAttributes("img", "alt", "src");
+    whitelist.addEnforcedAttribute("img", "alt", "cid:ccc.ddd.eee.fff");
+    whitelist.addEnforcedAttribute("img", "src", "cid:ccc.ddd.eee.fff");
+    String clean = Jsoup.clean(html, whitelist);
+    assertEquals("<p><img alt=\"cid:ccc.ddd.eee.fff\" src=\"cid:ccc.ddd.eee.fff\"></p>", clean);
+}

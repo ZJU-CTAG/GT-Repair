@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    final String[] data = new String[] {
+            "test1.xml",
+            "test2.xml",
+            "test3.xml",
+            "test4.xml",
+    };
+    final ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    final ArchiveOutputStream stream = factory.createArchiveOutputStream(ArchiveStreamFactory.TAR, new ByteArrayOutputStream());
+    for (final String entry : data) {
+        stream.putArchiveEntry(new TarArchiveEntry(entry));
+        stream.write(entry.getBytes());
+        stream.closeArchiveEntry();
+    }
+    stream.finish();
+    stream.close();
+}
+

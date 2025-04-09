@@ -1,0 +1,13 @@
+public void testIssue108() {
+    String js = "goog.scope(function() {" +
+            "   /* @private */" +
+            "   function test() {}" +
+            "});";
+    CompilerOptions options = ClosureCommandLineRunner.getDefaultOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(SourceFile.fromCode("externs", ""),
+            SourceFile.fromCode("input", js), options);
+    assertTrue(result.success);
+}

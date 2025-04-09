@@ -1,0 +1,10 @@
+public void testIssue114() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("[\"a\", 3, true]", Object[].class);
+        fail("Expected exception");
+    } catch (JsonMappingException e) {
+        assertEquals(1, e.getLocation().getIndex());
+        assertEquals("[0, 1, 2]", e.getLocation().getIndexes().toString());
+    }
+}

@@ -1,0 +1,13 @@
+public void testWrite7zWithEmptyEntries() throws Exception {
+    final File archive = new File(getTargetDir(), "archive.7z");
+    archive.delete();
+    final SevenZOutputFile sevenZOutput = new SevenZOutputFile(archive);
+    final File dir = getTestDirectory();
+    final File[] files = dir.listFiles();
+    for (File file : files) {
+        final SevenZArchiveEntry entry = sevenZOutput.createArchiveEntry(file, file.getName());
+        sevenZOutput.putArchiveEntry(entry);
+        sevenZOutput.closeArchiveEntry();
+    }
+    sevenZOutput.close();
+}

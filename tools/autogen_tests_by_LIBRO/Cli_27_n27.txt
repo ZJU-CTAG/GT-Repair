@@ -1,0 +1,21 @@
+public void test() {
+    Options options = new Options();
+    OptionGroup group = new OptionGroup();
+    Option a = OptionBuilder.hasArg(false).create("a");
+    Option b = OptionBuilder.hasArg(false).create("b");
+    Option c = OptionBuilder.hasArg(false).withLongOpt("c").create();
+    Option d = OptionBuilder.hasArg(false).withLongOpt("d").create();
+    group.setRequired(true);
+    group.addOption(a);
+    group.addOption(b);
+    group.addOption(c);
+    group.addOption(d);
+    options.addOptionGroup(group);
+    try {
+        CommandLineParser parser = new GnuParser();
+        parser.parse(options, new String[0]);
+    } catch (ParseException e) {
+        assertTrue("Expected message does not match", e.getMessage().matches("(?s).*Missing required option: one of \\{--a, --b, --c, --d\\}.*"));
+    }
+    group.setSelected(a);
+   

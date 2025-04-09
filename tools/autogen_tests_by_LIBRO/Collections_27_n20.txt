@@ -1,0 +1,17 @@
+public void testIssue() throws Exception {
+    InvocationHandler handler = new InvocationHandler() {
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            return "invoked " + method;
+        }
+    };
+    Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{Map.class}, handler);
+
+    Map<Object, Object> map = new HashMap<Object, Object>();
+    map.put(proxy, proxy);
+
+    Map<Object, Object> transformed = (Map<Object, Object>) new InvokerTransformer("entrySet", new Class[]{}, new Object[]{}).transform(map);
+    assertEquals(map, transformed);
+    transformed = (Map<Object, Object>) new InvokerTransformer("get", new Class[]{Object.class}, new Object[]{proxy}).transform(map);
+    assertEquals(proxy, transformed);
+}

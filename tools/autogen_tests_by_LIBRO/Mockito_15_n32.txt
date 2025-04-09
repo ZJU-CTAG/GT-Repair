@@ -1,0 +1,8 @@
+public void testVarArgsCaptor() {
+    ArgumentCaptor<Integer> intCaptor = ArgumentCaptor.forClass(Integer.class);
+    ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
+    mock.foo(1, 2L);
+    verify(mock).foo(intCaptor.capture(), longCaptor.capture());
+    assertThat(intCaptor.getAllValues(), hasItems(1));
+    assertThat(longCaptor.getAllValues(), hasItems(2L));
+}

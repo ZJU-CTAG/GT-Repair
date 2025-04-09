@@ -1,0 +1,10 @@
+public void testExternalTypeIdWithNext() throws Exception
+{
+    ObjectMapper mapper = mapperWithModule();
+    // and then a type id (here, "id")
+    String json = "{\"id\":2,\"name\":\"Bob\",\"@class\":\"com.fasterxml.jackson.datatype.joda.ser.TestJodaSerialization$Person\"}";
+    Person p = mapper.readValue(json, Person.class);
+    assertNotNull(p);
+    assertEquals(2, p.id);
+    assertEquals("Bob", p.name);
+}

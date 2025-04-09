@@ -1,0 +1,15 @@
+public void testRedlineCpio() throws IOException {
+    FileInputStream in = new FileInputStream("src/test/data/redline.cpio");
+    try {
+        ArchiveInputStream is = new ArchiveStreamFactory().createArchiveInputStream("cpio", in);
+        int count = 0;
+        ArchiveEntry entry;
+        while ((entry = is.getNextEntry()) != null) {
+            assertNotNull(entry.getName());
+            count++;
+        }
+        assertEquals(5, count);
+    } finally {
+        IOUtils.closeQuietly(in);
+    }
+}

@@ -1,0 +1,20 @@
+public void testIssue108() {
+    AbstractEstimator estimator = new AbstractEstimator() {
+        private double p;
+        public double[] guessParametersErrors() throws EstimationException {
+            return null;
+        }
+        public double getRMS() {
+            return 0;
+        }
+        public void estimate(final WeightedMeasurement[] measurements) throws EstimationException {
+            getCovariances()[0][0] = p;
+        }
+    };
+    ParameterGuesser guesser = new ParameterGuesser(estimator);
+    try {
+        guesser.guess(new WeightedMeasurement[] {});
+    } catch (EstimationException e) {
+        fail(e.getMessage());
+    }
+}

@@ -1,0 +1,14 @@
+public void testIssue107() {
+        String[] argArray = new String[]{"arg1", null, "arg3"};
+        LoggingEvent event = new LoggingEvent();
+        event.setArgumentArray(argArray);
+        String json = LoggingJsonEncoder.toJsonString(event);
+        LoggingEvent decoded = LoggingJsonDecoder.decodeLoggingEvent(json, null);
+        assertNotNull(decoded);
+        String[] decodedArray = decoded.getArgumentArray();
+        assertNotNull(decodedArray);
+        assertEquals(argArray.length, decodedArray.length);
+        assertEquals("arg1", decodedArray[0]);
+        assertNull(decodedArray[1]);
+        assertEquals("arg3", decodedArray[2]);
+}

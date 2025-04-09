@@ -1,0 +1,17 @@
+public void testMannWhitneyUTest() {
+        final double[] xArray = new double[1500];
+        final double[] y1Array = new double[1500];
+        // Create two identical arrays
+        for (int i = 0; i < xArray.length; i++) {
+            xArray[i] = (double) i;
+            y1Array[i] = (double) i;
+        }
+        // Create a third array with one outlier
+        final double[] y2Array = new double[y1Array.length];
+        System.arraycopy(y1Array, 0, y2Array, 0, y1Array.length - 1);
+        y2Array[y1Array.length - 1] = y1Array[0];
+        // Mann Whitney U Test
+        MannWhitneyUTest mannWhitneyUTest = new MannWhitneyUTest();
+        // Compare y1 and y2, they should be different
+        double pValue = mannWhitneyUTest.mannWhitneyUTest(y1Array, y2Array);
+        assertTrue("p-value (" + pValue + ") >= 0.

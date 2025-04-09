@@ -1,0 +1,13 @@
+public void testCaret() {
+    String js = "alert(1;\r\n" +
+    		"var a = 2;";
+    ErrorManager em = new ErrorManager(true);
+    CompilerEnvirons env = new CompilerEnvirons();
+    env.setRecoverFromErrors(true);
+    env.setErrorReporter(em);
+    new Parser(env).parse(js, null, 0);
+    assertEquals(1, em.getErrorCount());
+    assertNotNull(em.getErrors()[0].getSourceName());
+    assertNotSame(-1, em.getErrors()[0].getLineNumber());
+    assertNotSame(-1, em.getErrors()[0].getCharno());
+}

@@ -1,0 +1,14 @@
+public void testIssue9() throws IOException {
+    final InputStream inputStream =
+            getClass().getClassLoader().getResourceAsStream("aws-sdk.tgz");
+    try {
+        final TarArchiveInputStream tarArchiveInputStream =
+                new TarArchiveInputStream(new GzipCompressorInputStream(inputStream));
+        TarArchiveEntry tarEntry = tarArchiveInputStream.getNextTarEntry();
+        while (tarEntry != null) {
+            tarEntry = tarArchiveInputStream.getNextTarEntry();
+        }
+    } finally {
+        IOUtils.closeQuietly(inputStream);
+    }
+}

@@ -1,0 +1,19 @@
+public void testFormatIsReset() throws Exception {
+    final DateTime time = new DateTime(2012, 10, 10, 0, 0);
+
+    final String json = new ObjectMapper().writeValueAsString(new DateContainer(time, time));
+    Assert.assertEquals("{\"time\":\"2012-10-10T00:00:00.000Z\",\"date\":\"12-10-10\"}", json);
+}
+
+public static class DateContainer {
+
+    @JsonFormat(pattern = "yy-MM-dd")
+    public final DateTime date;
+
+    public final DateTime time;
+
+    public DateContainer(DateTime date, DateTime time) {
+        this.date = date;
+        this.time = time;
+    }
+}

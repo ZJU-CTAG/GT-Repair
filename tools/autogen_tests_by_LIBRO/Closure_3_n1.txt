@@ -1,0 +1,20 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    externs.add(SourceFile.fromCode("externs", "function alert(s) {}"));
+    
+    String source = "function getStack() {\n"
+        + " var getErrorObject = function() {\n"
+        + " try {\n"
+        + "   throw Error('');\n"
+        + " } catch(err) {\n"
+        + "   return err;\n"
+        + " }\n"
+        + " };\n"
+        + " return getErrorObject().stack;\n"
+        + "}\n"
+        + "window['getStackTr

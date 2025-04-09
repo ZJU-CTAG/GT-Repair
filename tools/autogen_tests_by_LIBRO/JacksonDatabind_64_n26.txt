@@ -1,0 +1,19 @@
+public void testString() {
+  String nullString = null;
+  String emptyString = "";
+  String string = "test";
+
+  assertEquals("{}", Json.stringify(new StringWrapper(nullString)));
+  assertEquals("{\"value\":\"\"}", Json.stringify(new StringWrapper(emptyString)));
+  assertEquals("{\"value\":\"test\"}", Json.stringify(new StringWrapper(string)));
+}
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+static class StringWrapper {
+    @JsonProperty("value")
+    private final String value;
+
+    public StringWrapper(String value) {
+      this.value = value;
+    }
+}

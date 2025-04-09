@@ -1,0 +1,10 @@
+public void testTarArchiveOutputStream() throws IOException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("tar", baos);
+    TarArchiveEntry tae = new TarArchiveEntry("foo.txt");
+    tae.setSize(1);
+    aos.putArchiveEntry(tae);
+    aos.write(0);  // write a single byte
+    aos.write(0);  // write another byte - should throw exception
+    fail("This should have failed");
+}

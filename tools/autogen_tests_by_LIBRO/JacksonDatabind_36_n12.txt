@@ -1,0 +1,16 @@
+public void testDateParsing() throws Exception {
+    StdDateFormat dateFormat = new StdDateFormat();
+    dateFormat.setLenient(false);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setDateFormat(dateFormat);
+
+    String invalidDatesJson = "[\"2015-01-32\", \"2015-01-32\"]";
+
+    try {
+        mapper.readValue(invalidDatesJson, Date[].class);
+        fail("Expected JsonMappingException");
+    } catch (JsonMappingException e) {
+        assertTrue(e.getOriginalMessage().contains("Can not parse date \"2015-01-32\": not a valid representation"));
+    }
+}

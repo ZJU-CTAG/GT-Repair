@@ -1,0 +1,17 @@
+public void testExtendedBufferReader() throws Exception {
+    String text = "abc\r\n\r\ndef\n\nghi";
+    ExtendedBufferedReader reader = new ExtendedBufferedReader(new StringReader(text));
+    assertEquals(1, reader.getLineNumber());
+    assertEquals("abc", reader.readLine());
+    assertEquals(2, reader.getLineNumber());
+    assertEquals("", reader.readLine());
+    assertEquals(3, reader.getLineNumber());
+    assertEquals("def", reader.readLine());
+    assertEquals(4, reader.getLineNumber());
+    assertEquals("", reader.readLine());
+    assertEquals(5, reader.getLineNumber());
+    assertEquals("ghi", reader.readLine());
+    assertEquals(6, reader.getLineNumber());
+    assertNull(reader.readLine());
+    assertEquals(6, reader.getLineNumber());
+}

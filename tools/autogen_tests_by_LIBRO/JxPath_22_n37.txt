@@ -1,0 +1,13 @@
+public void testIssue109() {
+    String xml = "<...>\n" +
+            " <b:foo xmlns:b=\"bla\" xmlns=\"test111\">    <!--  No nodes are placed in the tree within ns \"test111\" but the attribute is still there.-->\n" +
+            "  <b:bar>a</b:bar>                         <!-- is in ns 'bla' -->\n" +
+            "  <test xmlns=\"\"></test>                   <!-- does not have a namespace -->\n" +
+            " </b:foo>\n" +
+            "</...>";
+    Document doc = DocumentHelper.parseText(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    Pointer pointer = context.getPointer("/foo/test");
+    String path = pointer.asPath();
+    assertEquals("/foo/test", path);
+}

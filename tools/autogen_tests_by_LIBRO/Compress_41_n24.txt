@@ -1,0 +1,21 @@
+public void testGetNextZipEntry() throws IOException {
+    final String entryName = "entry";
+    final File archive = File.createTempFile("ZipArchiveInputStreamTest", ".zip");
+    try {
+        final OutputStream os = new FileOutputStream(archive);
+        final ZipArchiveOutputStream zos = new ZipArchiveOutputStream(os);
+        zos.putArchiveEntry(new ZipArchiveEntry(entryName));
+        zos.write("test".getBytes(Charsets.UTF_8));
+        zos.closeArchiveEntry();
+        zos.write(new byte[ZipArchiveOutputStream.MIN_EOCD_SIZE]);
+        zos.close();
+        os.close();
+
+        final InputStream is = new FileInputStream(archive);
+        final ZipArchiveInputStream zis = new ZipArchiveInputStream(is);
+        final ZipArchiveEntry entry = zis.getNextZipEntry();
+        assertEquals(entryName, entry.getName());
+        try {
+            zis.getNextZipEntry();
+            fail("Expected ZipException");
+       

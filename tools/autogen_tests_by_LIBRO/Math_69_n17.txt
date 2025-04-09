@@ -1,0 +1,20 @@
+public void testPearsonCorrelationPValues() {
+    double[][] inputData = new double[2000][999];
+
+    Random rand = new Random(0);
+    for (int i = 0; i < inputData.length; i++) {
+        for (int j = 0; j < inputData[i].length; j++) {
+            inputData[i][j] = (rand.nextDouble() - 0.5) * 4;
+        }
+    }
+
+    PearsonsCorrelation correlation = new PearsonsCorrelation(inputData);
+    double[] correlations = correlation.getCorrelationMatrix().getData();
+    double[] pValues = correlation.getCorrelationPValues();
+
+    for (int i = 0; i < correlations.length; i++) {
+        if (pValues[i] == 0.0) {
+            System.out.println(i + ": " + correlations[i]);
+        }
+    }
+}

@@ -1,0 +1,23 @@
+public void testBOBYQA() {
+final int dim = 5;
+MultivariateRealFunction func = new MultivariateRealFunction() {
+public double value(double[] x) {
+double y = 0;
+for (int i = 1; i <= dim; i++) {
+y += Math.pow(i, 2) * Math.pow(x[i - 1], 2);
+}
+return y;
+}
+};
+GoalType goal = GoalType.MINIMIZE;
+double[] startPoint = new double[dim];
+for (int i = 0; i < dim; i++) {
+startPoint[i] = 1;
+}
+double[][] boundaries = new double[2][dim];
+for (int i = 0; i < dim; i++) {
+boundaries[0][i] = -1;
+boundaries[1][i] = 1;
+}
+BOBYQAOptimizer optim = new BOBYQAOptimizer(2 * dim + 1);
+RealPointValuePair result = optim.optimize(100000, func, goal, startPoint, boundaries[0], boundaries[1]);

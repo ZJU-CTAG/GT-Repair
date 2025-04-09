@@ -1,0 +1,16 @@
+public void testIssue108() {
+    OptionGroup groupA = new OptionGroup();
+    groupA.addOption(OptionBuilder.create('a'));
+    groupA.addOption(OptionBuilder.create('b'));
+
+    OptionGroup groupB = new OptionGroup();
+    groupB.addOption(OptionBuilder.create('c'));
+    groupB.addOption(OptionBuilder.create('d'));
+    groupB.addOption(groupA);
+
+    CommandLineLine line = new PosixParser().parse(new Options().addOptionGroup(groupB), new String[]{"-a"});
+    assertTrue(line.hasOption('a'));
+    assertTrue(line.hasOption('b'));
+    assertTrue(line.hasOption('c'));
+    assertTrue(line.hasOption('d'));
+}

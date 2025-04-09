@@ -1,0 +1,14 @@
+public void testParser() {
+    CommandLineParser parser = new PosixParser();
+    Options options = new Options();
+    options.addOption("t", "target", true, "Generate files for the specified target machine");
+    String[] args = new String[] { "-target", "foobar.com" };
+    CommandLine parsedLine;
+    try {
+        parsedLine = parser.parse(options, args);
+    } catch (ParseException pe) {
+        fail("Should not throw exception");
+    }
+    assertTrue("Must have target option", parsedLine.hasOption("t"));
+    assertEquals("Target option value", "foobar.com", parsedLine.getOptionValue("t"));
+}

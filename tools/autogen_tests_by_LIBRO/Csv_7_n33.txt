@@ -1,0 +1,8 @@
+public void testParseCSVFileWithDuplicateHeaders() throws IOException {
+        String csvFile = "src/test/resources/testCSVFileWithDuplicateHeaders.csv";
+        CSVParser parser = CSVParser.parse(new File(csvFile), Charset.defaultCharset(), CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+                    .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true));
+
+        assertTrue(parser.getHeaderMap().containsKey("Col2"));
+        assertEquals(1, parser.getHeaderMap().get("Col2").size());
+    }

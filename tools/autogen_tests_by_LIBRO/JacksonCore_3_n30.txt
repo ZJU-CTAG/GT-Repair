@@ -1,0 +1,13 @@
+public void testIssue() throws Exception {
+    String json = "{\n" +
+            "  \"location\" : {\n" +
+            "    \"lat\" : 52.1,\n" +
+            "    \"lng\" : -0.4\n" +
+            "  },\n" +
+            "  \"accuracy\" : 10\n" +
+            "}";
+    byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+    UTF8StreamJsonParser jsonParser = new UTF8StreamJsonParser(null, 0, new ByteArrayInputStream(bytes), null, null, null, 0, bytes.length, false);
+    JsonNode node = jsonParser.readValueAsTree();
+    assertEquals(52.1D, node.get("location").get("lat").asDouble(), 0);
+}

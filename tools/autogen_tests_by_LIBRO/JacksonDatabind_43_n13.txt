@@ -1,0 +1,38 @@
+public void testObjectIdHandling() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+
+    String json = "{\n" +
+            "  \"id\" : null,\n" +
+            "  \"name\" : \"Unknown\"\n" +
+            "}";
+
+    final ObjectId id = new ObjectId();
+    id.initFromString("000000000000000000000000");
+
+    Author author = mapper.readValue(json, Author.class);
+    assertEquals(id, author.id);
+}
+
+static class Author {
+    @JsonProperty
+    private ObjectId id = new ObjectId();
+
+    @JsonProperty
+    private String name;
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

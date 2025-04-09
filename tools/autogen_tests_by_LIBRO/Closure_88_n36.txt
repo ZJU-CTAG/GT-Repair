@@ -1,0 +1,9 @@
+public void testSimple() {
+    String js = "function closureCompilerTest(a) { var nodeId; return (nodeId=a.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0; }";
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler.setLoggingLevel(Level.INFO);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, jsSource, options);
+    assertTrue(result.success);
+    assertEquals("function closureCompilerTest(a){var b;return b=a.id&&(b=parseInt(b.substr(1)))&&b>0}", result.compiledSource);
+}

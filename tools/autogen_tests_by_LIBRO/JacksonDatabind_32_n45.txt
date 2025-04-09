@@ -1,0 +1,14 @@
+public void testObjectWithEmptyMap() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    SomeObjectThatCanBeAggregated[] values = om.readValue(
+            "[{}, {}, {\"key\":null}]",
+            SomeObjectThatCanBeAggregated[].class
+    );
+
+    assertNotNull(values);
+    assertEquals(3, values.length);
+    assertEquals(Collections.emptyMap(), values[0].obj);
+    assertEquals(Collections.emptyMap(), values[1].obj);
+    assertEquals(Collections.singletonMap("key", null), values[2].obj);
+}

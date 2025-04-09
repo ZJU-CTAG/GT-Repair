@@ -1,0 +1,11 @@
+public void testIssue118() throws IOException {
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonParser jsonParser = jsonFactory.createParser(new StringReader("{\"field\":\"value\"}"));
+    assertEquals(JsonToken.START_OBJECT, jsonParser.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, jsonParser.nextToken());
+    assertEquals("field", jsonParser.getValueAsString());
+    // this works now, but returned null before
+    assertEquals("field", jsonParser.getCurrentName());
+    assertEquals(JsonToken.VALUE_STRING, jsonParser.nextToken());
+    assertEquals("value", jsonParser.getValueAsString());
+}

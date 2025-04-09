@@ -1,0 +1,19 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+        mapper.readValue("{\"type\":\"unknown\",\"@class\":\"com.fasterxml.jackson.databind.deser.UnknownClass\"}", Object.class);
+        fail("Should have thrown UnknownClassException");
+    } catch (UnknownClassException e) {
+        // pass
+    }
+
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) {
+            return context.constructType(Void.class);
+        }
+    });
+
+    assertEquals(null, mapper.readValue("{\"type\":\"unknown\",\"@class\":\"com.fasterxml.jackson.databind.deser.UnknownClass\"}", Object.class));
+}

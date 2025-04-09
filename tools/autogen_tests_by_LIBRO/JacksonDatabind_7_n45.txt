@@ -1,0 +1,15 @@
+public void testIssue() {
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{\"a\":1, \"b\":null}", Value.class);
+}
+
+static class Value {
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        System.out.println(buffer.asParser().nextToken());
+        while (buffer.asParser().nextToken() != null) {
+            System.out.println(buffer.asParser().nextToken());
+        }
+        return null;
+    }
+}

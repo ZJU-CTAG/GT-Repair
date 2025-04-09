@@ -1,0 +1,20 @@
+public void testAttribute() {
+    testValidateNotEmpty("", false);
+    testValidateNotEmpty(null, false);
+    testValidateNotEmpty(StringUtils.EMPTY, false);
+    testValidateNotEmpty(" ", false);
+
+    testValidateNotEmpty("a", true);
+    testValidateNotEmpty("  a", true);
+    testValidateNotEmpty("a  ", true);
+}
+
+private void testValidateNotEmpty(String key, boolean valid) {
+    Attribute attr = new Attribute(key, "value");
+    try {
+        attr.html();
+        if (!valid) fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        if (valid) fail("Expected no IllegalArgumentException");
+    }
+}

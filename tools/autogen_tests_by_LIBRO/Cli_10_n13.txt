@@ -1,0 +1,13 @@
+public void testIssue1() throws ParseException {
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().hasArg().withDescription("the value").create("v"));
+
+    CommandLineParser parser = new GnuParser();
+    parser.parse(options, new String[]{"-v", "value"});
+
+    // This throws no exception, the isRequired option is removed after the successful parse.
+    parser.parse(options, new String[]{"-v", "otherValue"});
+
+    // This throws an exception, the isRequired option is still in the list.
+    parser.parse(new Options(options), new String[]{"-v", "otherValue"});
+}

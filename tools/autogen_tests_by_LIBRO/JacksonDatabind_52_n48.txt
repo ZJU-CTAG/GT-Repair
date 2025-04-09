@@ -1,0 +1,9 @@
+public void testDeserialization() throws Exception {
+    // serialization is OK
+    String json = mapper.writeValueAsString(new User());
+    assertEquals("{\"userId\":123,\"itemId\":null}", json);
+
+    // deserialization is not OK
+    User user = mapper.readValue(json, User.class);
+    assertEquals(new Id<User>(123L), user.getId());
+}

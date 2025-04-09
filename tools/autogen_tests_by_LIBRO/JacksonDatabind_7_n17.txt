@@ -1,0 +1,19 @@
+public void testCreatorWithTokenBuffer() {
+    ObjectMapper mapper = new ObjectMapper();
+    Value v = mapper.readValue("{\"a\":1,\"b\":null}", Value.class);
+}
+
+public static class Value {
+    public static Value from(TokenBuffer buffer) throws IOException {
+        Value v = new Value();
+        JsonParser bufferParser = buffer.asParser();
+        assertEquals(JsonToken.START_OBJECT, bufferParser.nextToken());
+        assertEquals(JsonToken.FIELD_NAME, bufferParser.nextToken());
+        assertEquals(JsonToken.VALUE_NUMBER_INT, bufferParser.nextToken());
+        assertEquals(1, bufferParser.getIntValue());
+        assertEquals(JsonToken.FIELD_NAME, bufferParser.nextToken());
+        assertEquals(JsonToken.VALUE_NULL, bufferParser.nextToken());
+        assertEquals(JsonToken.END_OBJECT, bufferParser.nextToken());
+        return v;
+    }
+}

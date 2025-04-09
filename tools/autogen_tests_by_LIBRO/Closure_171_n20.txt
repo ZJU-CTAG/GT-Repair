@@ -1,0 +1,9 @@
+public void testAssignmentOfPrototype() {
+    // This is valid JavaScript, but JSHint doesn't like it.
+    String code = "function foo() {} (function() { foo.prototype = { alert: function() { alert('hello world'); } };})();";
+    StringBuffer buffer = new StringBuffer();
+    JSHint.load(buffer, code);
+    String output = buffer.toString();
+    if (output.contains("undefined property"))
+        fail(output);
+}

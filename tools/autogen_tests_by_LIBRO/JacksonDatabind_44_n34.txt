@@ -1,0 +1,30 @@
+public void testIssue() throws Exception {
+  ObjectMapper mapper = new ObjectMapper();
+  mapper.addMixIn(Base.class, BaseMixIn.class);
+
+  Sub sub = new Sub();
+  sub.setBaseProp("foobar");
+
+  // {"subProp":"subvalue","baseProp":"foobar"}
+  String subJson = mapper.writeValueAsString(sub);
+  System.out.println(subJson);
+
+  Base fromSub = mapper.readValue(subJson, Base.class);
+  assertEquals("foobar", fromSub.getBaseProp());
+}
+
+abstract class BaseMixIn {
+  @JsonProperty("baseProp")
+  abstract String getBaseProp();
+  @JsonProperty("baseProp")
+  abstract void setBaseProp(String value);
+}
+
+static class Base {
+  private String baseProp;
+  public String getBaseProp() { return baseProp; }
+  public void setBaseProp(String baseProp) { this.baseProp = baseProp; }
+}
+
+static class Sub extends Base {
+  private String subProp =

@@ -1,0 +1,17 @@
+public void testPropertiesDefinedOnAnyRecordTypeApplyingToUnrelatedRecordTypes() {
+    String code =
+        "/**\n" +
+        " * @typedef {{name: string}}\n" +
+        " */\n" +
+        "var Rec1;\n" +
+        "var x = /** @type {Rec1} */({name2: ''});\n" +
+        "/**\n" +
+        " * @param {Rec1} rec\n" +
+        " */\n" +
+        "var func = function(rec) {\n" +
+        " alert(rec.name2);\n" +
+        "};\n" +
+        "func({name: 'jim'});";
+    Result result = compile(code, true);
+    assertTrue(result.success);
+}

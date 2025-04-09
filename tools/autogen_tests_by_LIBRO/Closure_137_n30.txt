@@ -1,0 +1,24 @@
+public void testJSC_DETERMINISTIC_TEST() {
+  String code = ""
++"// ==ClosureCompiler==\n"
++"// @output_file_name default.js\n"
++"// @compilation_level ADVANCED_OPTIMIZATIONS\n"
++"// ==/ClosureCompiler==\n"
++"\n"
++"var t = null;\n"
++"\n"
++"window.test = function() {\n"
++" if (t != null) {\n"
++" t = null;\n"
++" }\n"
++"\n"
++" t = 1;\n"
++"};\n";
+  Compiler compiler = new Compiler();
+  compiler.compile(ImmutableList.of(), ImmutableList.of(SourceFile.fromCode("testInput", code)), new ErrorManager() {
+    @Override
+    public void println(CheckLevel level, JSError error) {
+      throw new AssertionError(error);
+    }
+    @Override
+    public

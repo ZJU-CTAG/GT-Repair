@@ -1,0 +1,17 @@
+public void testIssue107() {
+    final String code = "/** @type {function(!string):!string} */ ((new window.ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ))['GetVariable'])( '$version' );";
+    // final String code = "/** @type {!string} */ ((new window.ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ))['GetVariable']( '$version' ))";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compiler.initOptions(options);
+
+    SourceFile file = SourceFile.fromCode("[test]", code);
+
+    Result result = compiler.compile(externs, ImmutableList.of(file), options);
+    assertTrue(result.success);
+
+    Compiler.CodeBuilder cb = new Compiler.CodeBuilder();
+    result.code.appendTo(cb, false);
+    // System.out.println(cb.toString());
+    assertFalse(cb.toString().contains("(

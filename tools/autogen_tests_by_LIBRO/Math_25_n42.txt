@@ -1,0 +1,13 @@
+public void testHarmonicFitterParameterGuesser() throws Exception {
+    double[] data = new double[1000];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = Math.sin(i * 0.01);
+    }
+    HarmonicFitter.ParameterGuesser guesser = new HarmonicFitter.ParameterGuesser(0.01, data, 0);
+    double[] guess = guesser.guess();
+    assertTrue("amplitude", guess[0] > 0.1);
+    assertTrue("phase", guess[1] > -1.0);
+    assertTrue("phase", guess[1] < 1.0);
+    assertTrue("frequency", guess[2] > 0.0);
+    assertTrue("frequency", guess[2] < 0.5);
+}

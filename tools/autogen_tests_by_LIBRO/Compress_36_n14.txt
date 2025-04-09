@@ -1,0 +1,17 @@
+public void testEmptyEntry() throws Exception {
+    final byte[] bytes = new byte[0];
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(baos);
+    final SevenZArchiveEntry entry = sevenZOutputFile.createArchiveEntry(new ByteArrayInputStream(bytes), "test");
+    sevenZOutputFile.putArchiveEntry(entry);
+    sevenZOutputFile.closeArchiveEntry();
+    sevenZOutputFile.close();
+    final byte[] archive = baos.toByteArray();
+    final SevenZFile sevenZFile = new SevenZFile(new ByteArrayInputStream(archive));
+    final SevenZArchiveEntry entry2 = sevenZFile.getNextEntry();
+    assertNotNull(entry2);
+    assertEquals(0, entry2.getSize());
+    final byte[] content = new byte[(int) entry2.getSize()];
+    final int read = entry2.read(content);
+    assertEquals(0, read);
+    assertEquals(0, content.length);

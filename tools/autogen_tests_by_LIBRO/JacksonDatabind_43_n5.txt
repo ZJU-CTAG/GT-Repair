@@ -1,0 +1,25 @@
+public void testIssue123() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectIdSerializer serializer = new ObjectIdSerializer();
+    mapper.getSerializerProvider().setNullKeySerializer(serializer);
+    mapper.getSerializerProvider().setNullValueSerializer(serializer);
+    ObjectIdGenerator generator = new ObjectIdGenerators.UUIDGenerator();
+    String serialized = mapper.writeValueAsString(new ObjectWithObjectId(generator));
+    // fail: should not get UUID as null value
+    ObjectWithObjectId value = mapper.readValue(serialized, ObjectWithObjectId.class);
+}
+
+public static class ObjectWithObjectId {
+    private final ObjectIdGenerator generator;
+    public ObjectWithObjectId(ObjectIdGenerator generator) {
+        this.generator = generator;
+    }
+    public ObjectIdGenerator getGenerator() {
+        return generator;
+    }
+}
+
+public static class ObjectIdSerializer extends StdSerializer<Object> {
+    public ObjectIdSerializer() {
+        super(Object

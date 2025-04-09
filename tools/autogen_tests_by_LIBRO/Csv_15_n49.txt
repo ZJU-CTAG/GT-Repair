@@ -1,0 +1,10 @@
+public void testIssue106() throws Exception {
+    String[] expected = new String[] { "\"あ\"", "い", "う" };
+    String[] input = new String[] { "あ", "い", "う" };
+    StringWriter sw = new StringWriter();
+    CSVPrinter printer = new CSVPrinter(sw, CSVFormat.EXCEL);
+    printer.printRecord(Arrays.asList(input));
+    printer.close();
+    String[] actual = sw.toString().split("\r\n");
+    assertArrayEquals(expected, actual);
+}

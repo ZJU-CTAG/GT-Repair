@@ -1,0 +1,15 @@
+public void testCanFindMatchingMethodsWhenRawTypeIsUsed() {
+    // given
+    ClassWithMethod<Integer> mock = mock(ClassWithMethod.class);
+
+    // when
+    ClassWithMethod<Object> rawMock = mock;
+    rawMock.method("one");
+
+    // then
+    verify(mock).method("one");
+}
+
+interface ClassWithMethod<T> {
+    void method(T t);
+}

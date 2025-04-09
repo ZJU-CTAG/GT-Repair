@@ -1,0 +1,13 @@
+public void testSerializationDeserialization() throws Exception {
+    final ObjectId objectId = new ObjectId("561266ecb31e25b0a5d0071f");
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(objectId);
+    assertEquals("{\"$oid\":\"561266ecb31e25b0a5d0071f\"}", json);
+
+    final ObjectId objectId2 = mapper.readValue(json, ObjectId.class);
+    assertEquals(objectId, objectId2);
+
+    // https://github.com/FasterXML/jackson-annotations/issues/56
+    final ObjectId objectId3 = mapper.readValue("{}", ObjectId.class);
+    assertEquals("561266ecb31e25b0a5d0071f", objectId3.toHexString());
+}

@@ -1,0 +1,9 @@
+public void testSkipValue_JsonTreeReader() throws IOException {
+    JsonObject json = new JsonObject();
+    json.add("a", new JsonObject());
+    try (JsonTreeReader in = new JsonTreeReader(json)) {
+        assertEquals(JsonToken.BEGIN_OBJECT, in.peek());
+        in.skipValue();
+        assertEquals(JsonToken.END_DOCUMENT, in.peek());
+    }
+}

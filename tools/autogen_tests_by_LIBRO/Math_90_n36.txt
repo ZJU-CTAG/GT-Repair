@@ -1,0 +1,19 @@
+public void testFrequency() {
+    final Object OBJ = new Object();
+    final int COUNT = 10;
+    final int VAL = 0;
+
+    Frequency f = new Frequency();
+    for (int i = 0; i < COUNT; i++) {
+        f.addValue(VAL);
+    }
+    assertEquals(f.getCount(VAL), COUNT);
+    assertEquals(f.getPct(VAL), 100f, 0.001f);
+    assertEquals(f.getCumFreq(VAL), COUNT);
+    assertEquals(f.getCumPct(VAL), 100f, 0.001f);
+
+    f.addValue(OBJ); // This ought to fail, but doesn't, causing the unexpected behaviour below
+    assertEquals(f.getCount(OBJ), 1);
+    assertEquals(f.getPct(OBJ), 10f, 0.001f);
+    assertEquals(f.getCumFreq(OBJ), COUNT + 1);
+    assertEquals(f.getCumPct(OBJ), 110f,

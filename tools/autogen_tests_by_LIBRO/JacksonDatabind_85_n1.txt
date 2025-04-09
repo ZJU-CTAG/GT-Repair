@@ -1,0 +1,26 @@
+public void test() throws Exception {
+  ObjectMapper mapper = new ObjectMapper();
+  SimpleModule module = new SimpleModule();
+  module.addSerializer(new CustomDateSerializer());
+  mapper.registerModule(module);
+  mapper.writeValueAsString(new Bean());
+}
+
+public static class Bean {
+  @JsonFormat(pattern = "yyyyMMdd")
+  public Date date = new Date();
+}
+
+public static class CustomDateSerializer extends DateTimeSerializerBase<Date> {
+
+  public CustomDateSerializer() {
+    super(Date.class, new StdDateFormat().withColonInTimeZone(true).withTimeZone(TimeZone.getTimeZone("GMT")));
+  }
+
+  public void serialize(Date value, JsonGenerator gen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    gen.writeString(new SimpleDateFormat("yyyyMMdd").format(value));
+  }
+
+  @Override
+  protected JsonSerializer<Date> withFormat(Boolean useTimestamp, DateFormat format, String pattern) {
+   

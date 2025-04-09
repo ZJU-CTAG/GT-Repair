@@ -1,0 +1,18 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId,
+                TypeIdResolver idResolver, String failureMsg) {
+            return ctxt.constructType(Void.class);
+        }
+    });
+    // Jackson 2.7.9
+    // {\"set\":[1,\"abc\"]}
+    // Jackson 2.9
+    // {\"set\":[1,\"abc\",null]}
+    // Jackon 2.9.6
+    // {\"set\":[1,\"abc\",null]}
+    // {\"set\":[]}
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    String json = mapper.writeValueAsString(new SetHolder(new HashSet<>(Arrays.asList(1, "abc

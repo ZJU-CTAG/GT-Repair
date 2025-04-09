@@ -1,0 +1,13 @@
+public void test_JsonParserSequence_skipToken() throws Exception {
+    String json = "{\"key\":\"value\"}";
+    JsonParser parser1 = new JsonFactory().createJsonParser(json);
+    JsonParser parser2 = new JsonFactory().createJsonParser(json);
+
+    JsonParserSequence sequence = JsonParserSequence.createFlattened(parser1, parser2);
+
+    assertEquals(JsonToken.START_OBJECT, sequence.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, sequence.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, sequence.nextToken());
+    // should return JsonToken.END_OBJECT but returns JsonToken.START_OBJECT
+    assertEquals(JsonToken.END_OBJECT, sequence.nextToken());
+}

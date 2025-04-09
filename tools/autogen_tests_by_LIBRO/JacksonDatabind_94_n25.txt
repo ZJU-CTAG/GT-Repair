@@ -1,0 +1,21 @@
+public void testIssue1627() throws IOException {
+    // c3p0.combo.DataSources
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping();
+        mapper.readValue("[\"com.mchange.v2.c3p0.combo.DataSources$1\"]", Object.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "but no such class found");
+    }
+
+    // c3p0.combo.DataSources$1
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping();
+        mapper.readValue("[\"com.mchange.v2.c3p0.combo.DataSources$1\"]", Object.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "but no such class found");
+    }
+}

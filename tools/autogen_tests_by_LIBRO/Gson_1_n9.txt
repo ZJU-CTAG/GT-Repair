@@ -1,0 +1,17 @@
+public void testTypeVariableSerialization() {
+    TypeAdapter<Foo<Integer>> fooAdapter = gson.getAdapter(Foo.class);
+    Foo<Integer> foo1 = new Foo<Integer>(1);
+    Foo<Integer> foo2 = new Foo<Integer>(2);
+    Foo<Integer> foo3 = new Foo<Integer>(3);
+    String json = fooAdapter.toJson(foo1);
+    assertEquals(foo1, fooAdapter.fromJson(json));
+    assertEquals(foo2, fooAdapter.fromJson(fooAdapter.toJson(foo2)));
+    assertEquals(foo3, fooAdapter.fromJson(fooAdapter.toJson(foo3)));
+
+    TypeAdapter<Bar> barAdapter = gson.getAdapter(Bar.class);
+    Bar bar1 = new Bar(1);
+    Bar bar2 = new Bar(2);
+    Bar bar3 = new Bar(3);
+    json = barAdapter.toJson(bar1);
+    assertEquals(bar1, barAdapter.fromJson(json));
+    assertEquals

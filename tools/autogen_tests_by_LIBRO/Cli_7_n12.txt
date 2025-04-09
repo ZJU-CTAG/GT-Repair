@@ -1,0 +1,16 @@
+public void testRequiredOptions() {
+    final String[] required = new String[] { "-c" };
+    final String[] optional = new String[] { "-h" };
+
+    final Group group = new GroupBuilder()
+            .withName("testGroup")
+            .withOption(required)
+            .withOption(optional)
+            .create();
+
+    final CommandLine cl = new CommandLine(group);
+    final String[] args = new String[] { "-c", "file.xml" };
+    cl.parse(args);
+
+    assertEquals("Required options not parsed correctly", Arrays.asList(required), cl.getOptions());
+}

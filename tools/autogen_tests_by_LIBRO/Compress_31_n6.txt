@@ -1,0 +1,26 @@
+public void test() throws Exception {
+    File tarGz = new File("src/test/data/test.tar.gz");
+    TarArchiveInputStream tarIn = new TarArchiveInputStream(
+            new GZIPInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(tarGz))));
+    TarArchiveEntry entry = tarIn.getNextTarEntry();
+    while (entry != null) {
+        File path = new File("target", entry.getName());
+        if (entry.isDirectory()) {
+            path.mkdirs();
+        } else {
+            path.createNewFile();
+            byte[] read = new byte[2048];
+            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path));
+            int len;
+            while ((len = tarIn.read(read)) != -1) {
+                bout.write(read, 0, len);
+            }
+            bout.close();
+            read = null;
+        }
+        entry = tarIn.getNextTarEntry();
+    }
+    tarIn.close();
+}

@@ -1,0 +1,31 @@
+public void testIssuePAXHeader() throws IOException {
+    File file = File.createTempFile("testIssuePAXHeader", "tar");
+    try {
+        OutputStream out = new FileOutputStream(file);
+        try {
+            TarOutputStream tos = new TarOutputStream(out);
+            try {
+                TarArchiveEntry entry = new TarArchiveEntry("testdata/foo/");
+                tos.putArchiveEntry(entry);
+                tos.closeArchiveEntry();
+            } finally {
+                tos.close();
+            }
+        } finally {
+            out.close();
+        }
+        InputStream in = new FileInputStream(file);
+        try {
+            TarArchiveInputStream tis = new TarArchiveInputStream(in);
+            try {
+                assertNotNull(tis.getNextTarEntry());
+            } finally {
+                tis.close();
+            }
+        } finally {
+            in.close();
+        }
+    } finally {
+        file.delete();
+    }
+}

@@ -1,0 +1,15 @@
+public void testMultiDirectionalCorrectStart()
+        throws Exception {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(
+            new double[] { 2.0, 1.0 }, 0);
+    List<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { 1.0, 1.0 },
+            Relationship.LEQ, 1));
+    constraints.add(new LinearConstraint(new double[] { 1.0, 0 },
+            Relationship.GEQ, 0));
+    SimplexTableau tableau =
+        new SimplexTableau(f, constraints, false, 1.0e-12, 1.0e-12);
+    PointValuePair solution =
+        new SimplexSolver().doOptimize(tableau, tableau.getSolution().getPoint(), false);
+    assertTrue(ArrayUtils.isEquals(solution.getPoint(), new double[]{0, 1.0}));
+}

@@ -1,0 +1,10 @@
+public void testIssue804() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    compiler.initOptions(new CompilerOptions());
+    compiler.process(ImmutableList.of(SourceFile.fromCode("foo", "define(function() {return 'foo';});"),
+            SourceFile.fromCode("bar", "define(function(require) {return require('foo');});")),
+            ImmutableList.<SourceFile>of());
+    assertEquals("define(\"bar\",function(){return define(\"foo\",function(){return\"foo\"}),\"foo\"});",
+            compiler.toSource());
+}

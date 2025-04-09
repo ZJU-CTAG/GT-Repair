@@ -1,0 +1,20 @@
+public void testIssue153() throws Exception {
+    final Options options = new Options();
+    final OptionGroup group = new OptionGroup();
+    group.addOption(Option.builder("a").build());
+    group.addOption(Option.builder("b").build());
+    options.addOptionGroup(group);
+    final HelpFormatter formatter = new HelpFormatter();
+    formatter.setOptionComparator(null);
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    formatter.printHelp(new PrintWriter(out, true), 80, "app", "description", options, 10, 2, "footer", false);
+    assertEquals("usage: app\n" +
+            "description\n" +
+            "\n" +
+            "Group:\n" +
+            "  -a       \n" +
+            "  -b       \n" +
+            "\n" +
+            "\n" +
+            "footer\n", out.toString());
+}

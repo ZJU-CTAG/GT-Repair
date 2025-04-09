@@ -1,0 +1,24 @@
+public void testIssue107() throws Exception {
+    File f = File.createTempFile("test", ".tar");
+    try {
+        f.deleteOnExit();
+        try (FileOutputStream fout = new FileOutputStream(f)) {
+            try (TarArchiveOutputStream tout = new TarArchiveOutputStream(fout)) {
+                TarArchiveEntry e = new TarArchiveEntry("test.txt");
+                e.setSize(5);
+                tout.putArchiveEntry(e);
+                tout.write("hello".getBytes());
+                tout.closeArchiveEntry();
+            }
+        }
+        try (FileInputStream fin = new FileInputStream(f)) {
+            try (TarArchiveInputStream tin = new TarArchiveInputStream(fin)) {
+                try (FileOutputStream fout = new FileOutputStream("out.txt")) {
+                    IOUtils.copy(tin, fout);
+                }
+            }
+        }
+    } finally {
+        f.delete();
+    }
+}

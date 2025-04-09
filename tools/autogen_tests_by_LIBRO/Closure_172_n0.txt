@@ -1,0 +1,12 @@
+public void testIssue155() {
+    ErrorReporter reporter = new ErrorReporter();
+    ClosureCompiler.compile(
+        SOURCE,
+        reporter,
+        new CompilerOptions()
+            .setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING)
+            .setWarningLevel(DiagnosticGroups.DEBUGGER_STATEMENT_PRESENT, CheckLevel.WARNING)
+            .setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT6_STRICT)
+    );
+    assertEquals(0, reporter.getErrorCount());
+}

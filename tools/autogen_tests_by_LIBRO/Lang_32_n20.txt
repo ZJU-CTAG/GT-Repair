@@ -1,0 +1,16 @@
+public void testToStringStyleMemoryLeak() throws Exception {
+    StringBuilder sb = new StringBuilder();
+    int stringLength = 1000;
+    for (int i = 0; i < stringLength; i++) {
+        sb.append("a");
+    }
+    String leakyString = sb.toString();
+    Class<?> hashCodeBuilderClass = Class.forName("org.apache.commons.lang3.builder.HashCodeBuilder");
+    Field regField = hashCodeBuilderClass.getDeclaredField("registry");
+    regField.setAccessible(true);
+    Object reg = regField.get(null);
+    Assert.assertTrue("Instance of WeakIdentityHashMap", reg instanceof WeakIdentityHashMap);
+    WeakIdentityHashMap weakIdentityHashMap = (WeakIdentityHashMap) reg;
+    Class<?> toStringStyleClass = Class.forName("org.apache.commons.lang3.builder.ToStringStyle");
+    Field styleField = toStringStyleClass.getDeclaredField("DEFAULT_STYLE");
+    styleField.setAccessible(true

@@ -1,0 +1,18 @@
+public void testIssue() {
+    String js = "/** @define {boolean} */\n" +
+                "var COMPILED = false;\n" +
+                "var t = null;\n" +
+                "window.test = function() {\n" +
+                "  if (t != null) {\n" +
+                "    t = null;\n" +
+                "  }\n" +
+                "  t = 1;\n" +
+                "};";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.defines = ImmutableMap.of("COMPILED", "true");
+    Result result = compiler.compile(EMPTY_EXTERNS,
+                                     SourceFile.fromCode("test.js", js),
+                                     options);
+    assertFalse(result.success);
+}

@@ -1,0 +1,15 @@
+public void testVoidFunctions() {
+    Parser p = new Parser();
+    Block b = p.parse(
+            "function f() {\n" +
+            "}\n" +
+            "alert(f());"
+            );
+    assertEquals(3, b.getChildCount());
+    assertTrue(b.getChild(2) instanceof UnaryExpression);
+    assertEquals(Token.CALL, ((UnaryExpression)b.getChild(2)).getType());
+    assertTrue(b.getChild(1) instanceof FunctionNode);
+    assertEquals("f", ((FunctionNode)b.getChild(1)).getName());
+    assertEquals(0, ((FunctionNode)b.getChild(1)).getParamCount());
+    assertEquals(0, ((FunctionNode)b.getChild(1)).getBody().getChildCount());
+}

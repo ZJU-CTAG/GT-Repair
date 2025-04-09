@@ -1,0 +1,15 @@
+public void testIssue106() throws IOException {
+    StringBuilder sb = new StringBuilder();
+    String url = "https://raw.githubusercontent.com/iorixxx/lucene-clueweb-retrieval/master/src/test/resources/org/apache/lucene/benchmark/byTask/feeds/ClueWeb12_00_10000/00.warc.gz";
+    URL u = new URL(url);
+    InputStream is = u.openStream();
+    InputStreamReader isr = new InputStreamReader(is);
+    BufferedReader br = new BufferedReader(isr);
+    String line;
+    while ((line = br.readLine()) != null) {
+        sb.append(line);
+    }
+    String html = sb.toString();
+    Document d = Jsoup.parse(html, "UTF-8", "");
+    assertNotNull(d);
+}

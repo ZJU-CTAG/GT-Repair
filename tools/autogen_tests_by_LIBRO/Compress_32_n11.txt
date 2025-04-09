@@ -1,0 +1,14 @@
+public void testTarArchiveInputStream() throws Exception {
+    FileInputStream fis = null;
+    TarArchiveInputStream tais = null;
+    try {
+        fis = new FileInputStream("src/test/resources/archive.tar");
+        tais = new TarArchiveInputStream(fis);
+        for (ArchiveEntry ae = tais.getNextEntry(); ae != null; ae = tais.getNextEntry()) {
+            System.out.println(ae);
+        }
+    } finally {
+        IOUtils.closeQuietly(tais);
+        IOUtils.closeQuietly(fis);
+    }
+}

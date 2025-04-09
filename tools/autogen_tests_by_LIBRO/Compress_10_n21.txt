@@ -1,0 +1,12 @@
+public void testUTF8ZipFiles() throws Exception {
+    File archive = getFile("test-utf8.zip");
+    ZipFile zipFile = new ZipFile(archive);
+    Enumeration<ZipArchiveEntry> entries = zipFile.getEntries();
+    while (entries.hasMoreElements()) {
+        ZipArchiveEntry entry = entries.nextElement();
+        String name = entry.getName();
+        System.out.println(name);
+        assertNotNull(name);
+        assertNotNull(zipFile.getInputStream(entry));
+    }
+}

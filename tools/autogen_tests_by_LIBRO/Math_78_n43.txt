@@ -1,0 +1,21 @@
+public void testEvent() throws Exception {
+    final TestProblem3 pb = new TestProblem3(0.9);
+    double minStep = 0;
+    double maxStep = pb.getFinalTime() - pb.getInitialTime();
+    double scalAbsoluteTolerance = 1.0e-8;
+    double scalRelativeTolerance = 0.01 * scalAbsoluteTolerance;
+
+    FirstOrderIntegrator integ = new DormandPrince54Integrator(minStep, maxStep,
+                                                               scalAbsoluteTolerance,
+                                                               scalRelativeTolerance);
+    integ.addEventHandler(pb, 1.0, 1.0e-8 * maxStep, 1000);
+    Assert.assertEquals(0.0, integ.integrate(pb,
+                                             pb.getInitialTime(), pb.getInitialState(),
+                                             pb.getFinalTime(), new double[pb.getDimension()]),
+                        1.0e-10);
+
+    Assert.assertEquals(12.0, pb.getEventCount());
+
+}
+
+private static class Test

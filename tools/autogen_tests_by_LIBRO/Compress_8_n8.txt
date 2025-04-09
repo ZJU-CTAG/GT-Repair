@@ -1,0 +1,8 @@
+public void testTarArchiveEntry() throws Exception {
+    final byte[] header = new byte[512];
+    final byte[] size = new byte[12];
+    size[11] = 32;
+    System.arraycopy(size, 0, header, 124, size.length);
+    final TarArchiveEntry entry = TarArchiveEntry.parseTarHeader(header);
+    assertEquals("Size", 0, entry.getSize());
+}

@@ -1,0 +1,17 @@
+public void testIsSupportXxxInclusive() {
+    final double[] data = new double[5000];
+    for (int i = 0; i < data.length; i++) {
+        data[i] = i / 1000d;
+    }
+    LogNormalDistribution distribution = new LogNormalDistribution(1, 1);
+    for (int i = 0; i < data.length; i++) {
+        if (distribution.isSupportLowerBoundInclusive()) {
+            distribution.cumulativeProbability(data[i]);
+            distribution.inverseCumulativeProbability(distribution.cumulativeProbability(data[i]));
+        }
+        if (distribution.isSupportUpperBoundInclusive()) {
+            distribution.cumulativeProbability(data[data.length - 1 - i]);
+            distribution.inverseCumulativeProbability(distribution.cumulativeProbability(data[data.length - 1 - i]));
+        }
+    }
+}

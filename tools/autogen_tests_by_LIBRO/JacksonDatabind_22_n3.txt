@@ -1,0 +1,18 @@
+public void testIssue() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule("my-module", new Version(0, 0, 0, null));
+    module.addSerializer(new JsonSerializer<Foo>() {
+        @Override public void serialize(Foo foo, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+            jsonGenerator.writeRawValue("\"42\"");
+        }
+    });
+    mapper.registerModule(module);
+    final String json = mapper.writeValueAsString(new Foo());
+    Assert.assertEquals("\"42\"", json);
+}
+class Foo {
+    @JsonValue
+    public int getValue() {
+        return 42;
+    }
+}

@@ -1,0 +1,15 @@
+public void testIssue() {
+    TextView txtNextStep = mock(TextView.class);
+    when(txtNextStep.getText()).thenReturn(new SpannableStringBuilder("somestring"));
+    TextView txtGateView = mock(TextView.class);
+    when(txtGateView.getText()).thenReturn(new SpannableStringBuilder("somestring"));
+    ViewGroup viewGroup = mock(ViewGroup.class);
+    when(viewGroup.getChildAt(0)).thenReturn(txtNextStep);
+    when(viewGroup.getChildAt(1)).thenReturn(txtGateView);
+    TextView txtGateLabel = mock(TextView.class);
+    when(txtGateLabel.getContext()).thenReturn(getInstrumentation().getContext());
+
+    GateViewHelper tested = new GateViewHelper(txtGateLabel, viewGroup);
+    assertEquals(txtNextStep, tested.txtNextStep);
+    assertEquals(txtGateView, tested.txtGateView);
+}

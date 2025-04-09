@@ -1,0 +1,14 @@
+public void testIssue122 () throws Exception {
+    ZipFile zipFile = new ZipFile(getTestFile("test-issue122.zip"), StandardCharsets.UTF_8);
+    ZipArchiveInputStream zipInputStream = new ZipArchiveInputStream(new FileInputStream(getTestFile("test-issue122.zip")), StandardCharsets.UTF_8);
+
+    ZipArchiveEntry zipFileEntry1 = zipFile.getEntry("test-issue122.txt");
+    ZipArchiveEntry zipInputStreamEntry1 = zipInputStream.getNextZipEntry();
+
+    assertEquals(zipFileEntry1, zipInputStreamEntry1);
+
+    ZipArchiveEntry zipFileEntry2 = zipFile.getEntry("test-issue122-dir/test-issue122.txt");
+    ZipArchiveEntry zipInputStreamEntry2 = zipInputStream.getNextZipEntry();
+
+    assertEquals(zipFileEntry2, zipInputStreamEntry2);
+}

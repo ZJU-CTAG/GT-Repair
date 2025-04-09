@@ -1,0 +1,10 @@
+public void testClean() {
+    // Control characters
+    for (char c = 0; c < 32; c++) {
+        if (c == '\t' || c == '\n' || c == '\r')
+            continue;
+        String dirty = "<a href=\"http://example.com/" + c + "\">Link</a>";
+        String clean = Jsoup.clean(dirty, Whitelist.basic());
+        assertEquals("<a rel=\"nofollow\">Link</a>", clean);
+    }
+}

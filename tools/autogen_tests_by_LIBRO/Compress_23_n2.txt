@@ -1,0 +1,11 @@
+public void testSevenZipError() throws Exception {
+        // use the original file from the issue report
+        File f = new File("src/test/resources/test-7z-error.7z");
+        try (SevenZFile sevenZFile = new SevenZFile(f)) {
+            SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            IOUtils.copy(sevenZFile, baos);
+            String output = new String(baos.toByteArray(), UTF_8);
+            assertContains(output, "package com.jcraft.jsch;");
+        }
+    }

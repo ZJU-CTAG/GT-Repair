@@ -1,0 +1,6 @@
+public void testOverzealousOptimisation() {
+   String original = "function d3_call(callback) {var f = callback;arguments[0] = this;f.apply(this, arguments);return this;} ";
+   String expected = "function d3_call(a){arguments[0]=this;a.apply(this,arguments);return this}; ";
+   String actual = Context.toString(Context.compileFunction(cx, scope, original, "test.js", 1, null));
+   assertEquals(expected, actual);
+}

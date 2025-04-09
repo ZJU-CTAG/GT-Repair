@@ -1,0 +1,11 @@
+public void testGenericTypeResolver() {
+    final ObjectMapper mapper = new ObjectMapper();
+    final SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(Shape.class, Circle.class);
+    module.setTypeIdResolver(new GenericTypeResolver());
+    mapper.registerModule(module);
+
+    final Wrapper<Shape> circleWrapper = mapper.readValue("{\"wrapper\":{\"radius\":5,\"type\":\"circle\"}}", new TypeReference<Wrapper<Shape>>() {});
+    final Circle circle = (Circle) circleWrapper.getWrapper();
+    assertEquals(5.0, circle.getRadius(), DELTA);
+}

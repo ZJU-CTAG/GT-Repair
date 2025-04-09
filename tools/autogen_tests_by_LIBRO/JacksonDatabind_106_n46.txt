@@ -1,0 +1,16 @@
+public void testTreeTraversingParser() {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree("{\n" +
+            "  \"x\": 2147483648\n" +
+            "}");
+    try {
+        int value = mapper.readerFor(IntClass.class).readValue(node).x;
+        fail("Expected exception, got " + value);
+    } catch (JsonMappingException e) {
+        assertTrue(e.getCause() instanceof InputCoercionException);
+    }
+}
+
+public static class IntClass {
+    public int x;
+}

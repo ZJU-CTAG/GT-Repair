@@ -1,0 +1,13 @@
+public void testIssueWithSimpleTypes() throws Exception
+{
+    SimpleModule module = new SimpleModule("test", Version.unknownVersion());
+    module.addSerializer(new SimpleSerializer());
+    module.addDeserializer(Object.class, new SimpleDeserializer());
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(module);
+    Object value = new Object();
+    String json = mapper.writeValueAsString(value);
+    assertEquals(quote(value.toString()), json);
+    Object result = mapper.readValue(json, Object.class);
+    assertEquals(value, result);
+}

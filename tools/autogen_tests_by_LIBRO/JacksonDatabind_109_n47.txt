@@ -1,0 +1,16 @@
+public void testWriteBigDecimalAsPlain() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+    TestWithJsonFormat value = new TestWithJsonFormat(new BigDecimal("0.0000000005"));
+    String result = mapper.writeValueAsString(value);
+    assertEquals("{\"value\":\"5.0E-10\"}", result);
+}
+
+class TestWithJsonFormat {
+    @JsonFormat(shape=JsonFormat.Shape.STRING)
+    public BigDecimal value;
+
+    public TestWithJsonFormat(BigDecimal value) {
+        this.value = value;
+    }
+}

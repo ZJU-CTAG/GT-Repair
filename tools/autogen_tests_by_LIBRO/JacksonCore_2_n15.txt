@@ -1,0 +1,11 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("123true", Boolean.class);
+        fail();
+    } catch (JsonMappingException e) {
+        assertEquals("Unexpected token (VALUE_NUMBER_INT), expected VALUE_TRUE: "
+                + "need JSON Boolean that starts with 't' (true) or 'f' (false), "
+                + "found '123true'", e.getMessage());
+    }
+}

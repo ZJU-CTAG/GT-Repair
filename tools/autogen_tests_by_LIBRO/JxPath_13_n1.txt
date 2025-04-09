@@ -1,0 +1,6 @@
+public void testIssue108() throws Exception {
+    Document doc = DOMUtils.parseDocument("<ns1:root xmlns:ns1=\"http://dummy.com/ns1\" xmlns:ns2=\"http://dummy.com/ns2\"><elem1 xmlns:ns3=\"http://dummy.com/ns3\" ns1:attr1=\"value1\" ns2:attr2=\"value2\" ns3:attr3=\"value3\" /></ns1:root>");
+    BeanInfo d = JXPathIntrospector.getBeanInfo(doc.getDocumentElement().getFirstChild().getNodeName());
+    assertEquals("value1", d.getPropertyDescriptor("[@ns1:attr1]").getValue(doc.getDocumentElement().getFirstChild()));
+    assertEquals("value2", d.getPropertyDescriptor("[@ns2:attr2]").getValue(doc.getDocumentElement().getFirstChild()));
+    assertEquals("value3", d.getPropertyDescriptor("[@ns3:attr3]").getValue(doc.get

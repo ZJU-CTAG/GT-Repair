@@ -1,0 +1,16 @@
+public void testIssue110() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VISIBILITY, CheckLevel.ERROR);
+    compiler.compile(
+        new JSSourceFile[]{
+            JSSourceFile.fromCode("a.js", "/** @constructor */ function Foo() { /** @private */ this.x_ = 3; }"),
+            JSSourceFile.fromCode("b.js", JS_BODY)},
+        options);
+    assertTrue(compiler.getErrors().length > 0);
+    assertEquals(0, compiler.getWarnings().length);
+}
+
+private static final String JS_BODY =
+    "/** @constructor " +
+    "* @extends {Foo} */ function SubFoo() { /** @private */ this.x_ = 3; }";

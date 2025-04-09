@@ -1,0 +1,20 @@
+public void testIssue201() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setPrettyPrint(true);
+    options.setGenerateExports(true);
+    options.setClosurePass(true);
+    options.setAngularPass(true);
+    options.setRenamingPolicy(
+        VariableRenamingPolicy.ALL, PropertyRenamingPolicy.OFF);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        ImmutableList.of(SourceFile.fromCode(
+            "test.js",
+            "function test(gfx) {\n"
+            + "  var foreignObject = gfx.parentNode.parentNode;\n"
+            + "  var parentContainer = foreignObject.parentNode.parentNode;\n"
+            + " 

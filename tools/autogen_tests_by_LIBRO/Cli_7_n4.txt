@@ -1,0 +1,22 @@
+public void testRequiredOptions() throws Exception {
+    ArgumentBuilder builder = ArgumentBuilder.builder();
+    builder.flag("h");
+    builder.option("c");
+
+    CommandLineParser parser = new PosixParser();
+    CommandLine line = parser.parse(builder.toCommand());
+
+    Options options = new Options();
+    options.add(builder.toOption());
+    options.addRequired("c");
+    options.addRequired("h");
+    CommandLineParser clp = new PosixParser();
+    CommandLine cl = clp.parse(options, new String[]{ "-c", "arg" });
+
+    List<?> rl = options.getRequiredOptions();
+    assertEquals("[-h]", rl.toString());
+    assertEquals(true, line.hasOption("c"));
+    assertEquals("arg", line.getOptionValue("c"));
+    assertEquals(false, line.hasOption("h"));
+    assertEquals(false, cl.hasOption("h"));
+}

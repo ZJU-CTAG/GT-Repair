@@ -1,0 +1,14 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setRenamingPolicy(VariableRenamingPolicy.LOCAL, PropertyRenamingPolicy.OFF);
+    options.setOptimizationLevel(CompilerOptions.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(Externs.getJquery(),
+            Sources.src("var getStack = function() { var getErrorObject = function() { try { throw Error(''); } catch(err) { return err; } }; return getErrorObject().stack; }; window['getStackTrace']=getStack;"),
+            options);
+    String optimizedSource = compiler.toSource();
+    assertFalse(optimizedSource.contains("err"));
+}

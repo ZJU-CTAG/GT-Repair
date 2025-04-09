@@ -1,0 +1,23 @@
+public void testReinitializeWithEvent() {
+    EventManager<Integer, Integer> em = new EventManager<Integer, Integer>();
+    em.addHandler(new MyEventHandler(), MyEvent.class);
+    em.reset();
+    em.step(0);
+    em.step(1);
+}
+
+private static class MyEvent extends Event<Integer, Integer> {
+    public MyEvent(Integer eventId, int occTime, int occStep) {
+        super(eventId, occTime, occStep);
+    }
+}
+
+private class MyEventHandler implements EventHandler<Integer, Integer, MyEvent> {
+    @Override
+    public void handleEvent(MyEvent event) {
+        System.out.println("First event accepted");
+        getEventManager().reset();
+        System.out.println("State reset");
+        getEventManager().addEvent(new MyEvent(0, 0, 1));
+    }
+}

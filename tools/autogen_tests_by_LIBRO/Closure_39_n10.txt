@@ -1,0 +1,20 @@
+public void testIssue() {
+    String source = "/**\n" +
+                    "* @typedef {!{x:(number|undefined), y:(number|undefined)}}\n" +
+                    "*/\n" +
+                    "var Point;\n" +
+                    "\n" +
+                    "/**\n" +
+                    " * @param {(Point|{x:(number|undefined), y:(number|undefined)})} p\n" +
+                    " * @return {!Point}\n" +
+                    " */\n" +
+                    "function foo(p) {\n" +
+                    "    if (!p.x) p.x = 0;\n" +
+                    "    if (!p.y) p.y = 0;\n" +
+                    "    return p;\n" +
+                    "}";
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setRemoveDeadCode(true);
+    options.setRemoveUnusedVariables(true);
+    options.setWarningLevel(Diagn

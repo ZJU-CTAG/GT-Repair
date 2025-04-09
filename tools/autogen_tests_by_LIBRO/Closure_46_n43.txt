@@ -1,0 +1,23 @@
+public void testIssue_107() {
+    // Create a NameType
+    FixedName name = new FixedName(ID.newID(), "blah");
+    NameType namedType = new NameType(name);
+
+    // Create a RecordType
+    RecordType recordType = new RecordType(new ArrayList<RecordType.RecordField>());
+
+    // Create a ProxyObjectType that references the RecordType
+    ProxyObjectType proxyObjectType = new ProxyObjectType();
+    proxyObjectType.setProxyName(namedType);
+    proxyObjectType.setProxyForType(recordType);
+    
+    // Create a list of types that includes the ProxyObjectType
+    List<FixedType> types = new ArrayList<FixedType>();
+    types.add(proxyObjectType);
+    
+    // Create an Expression that references the ProxyObjectType
+    List<Expression> expressions = new ArrayList<Expression>();
+    MemberExpression memberExpression = new MemberExpression(
+            new NameExpression(new FixedName(ID.newID(), "blah")),
+            new FixedName(ID.newID(), "foo"));
+    expressions.

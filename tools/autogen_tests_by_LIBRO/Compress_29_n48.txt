@@ -1,0 +1,9 @@
+public void testArchiveStreamFactoryEncoding() throws IOException {
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    asf.setEntryEncoding("cp437");
+    assertEquals("cp437", asf.getEntryEncoding());
+
+    ArchiveInputStream ais = asf.createArchiveInputStream("arj", new FileInputStream("src/test/resources/test1.arj"));
+    ArchiveEntry ae = ais.getNextEntry();
+    assertEquals("cp437", ae.getName());
+}

@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    final ObjectMapper xmlMapper = new XmlMapper();
+    final ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    String xml = noAnnotationsXmlMapper.writeValueAsString(new XMLTest());
+    assertEquals("<XMLTest/>", xml);
+
+    xml = xmlMapper.writeValueAsString(new XMLTest());
+    assertEquals("<myname/>", xml);
+}

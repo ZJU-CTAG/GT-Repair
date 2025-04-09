@@ -1,0 +1,23 @@
+public void testRealistic() throws Exception
+{
+    ObjectMapper om = new ObjectMapper();
+    String json = om.writeValueAsString(new Realistic.Foo());
+    System.out.println(json);
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Realistic.Foo.class, name = "foo"),
+    @JsonSubTypes.Type(value = Realistic.Bar.class, name = "bar"),
+})
+public static abstract class Parent {
+    public int parentField;
+}
+
+public static class Foo extends Parent {
+    public int fooField;
+}
+
+public static class Bar extends Parent {
+    public int barField;
+}

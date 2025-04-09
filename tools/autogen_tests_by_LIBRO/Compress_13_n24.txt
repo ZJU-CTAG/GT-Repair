@@ -1,0 +1,10 @@
+public void testIssue107() {
+    final String IN_FILE_NAME = "src/test/resources/org/apache/commons/compress/issues/Issue107.zip";
+    InputStream is = new FileInputStream(IN_FILE_NAME);
+    ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream("zip", is);
+    ZipArchiveEntry entry = (ZipArchiveEntry) ais.getNextEntry();
+    while (entry != null) {
+        System.out.println("Entry: " + entry.getName() + " " + entry.isDirectory());
+        entry = (ZipArchiveEntry) ais.getNextEntry();
+    }
+}

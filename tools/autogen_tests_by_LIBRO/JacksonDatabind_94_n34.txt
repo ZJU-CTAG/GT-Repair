@@ -1,0 +1,13 @@
+public void testIssue1737() throws IOException {
+    final String msg = "CVE-2018-7489";
+    try {
+        // Both com.mchange.v2.c3p0.PooledConnectionPool$1PooledConnectionResourcePoolManager and com.mchange.v2.c3p0.impl.NewPooledConnection class
+        // are vulnerable and can be used to perform malicious activity
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.enableDefaultTyping();
+        mapper.readValue("[\"" + msg + "\", \"com.mchange.v2.c3p0.PooledConnectionPool$1PooledConnectionResourcePoolManager\", \"com.mchange.v2.c3p0.impl.NewPooledConnection\"]", List.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        assertTrue(e.getMessage().contains(msg));
+    }
+}

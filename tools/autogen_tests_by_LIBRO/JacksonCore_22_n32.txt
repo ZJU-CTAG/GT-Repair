@@ -1,0 +1,20 @@
+public void testIssue108() throws IOException {
+    final String json = "{\"a\":2}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = mapper.readTree(json);
+    FilteringParserDelegate filteringParserDelegate = new FilteringParserDelegate(jsonNode, new SimpleBeanPropertyFilter() {
+        @Override
+        public void serializeAsField(Object pojo, JsonGenerator jgen,
+                                     SerializerProvider provider, PropertyWriter writer) throws Exception {
+            jgen.writeFieldName(writer.getName());
+            jgen.writeNumber(1);
+        }
+    }, false, null);
+
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    JsonGenerator generator = mapper.getFactory().createGenerator(byteArrayOutputStream);
+    FilteringGeneratorDelegate filteringGeneratorDelegate = new FilteringGeneratorDelegate(generator, new SimpleBeanPropertyFilter() {
+        @Override
+        public void serializeAsField(Object pojo, JsonGenerator jgen,
+                                     SerializerProvider

@@ -1,0 +1,11 @@
+public void testOptimisation() {
+    String input = "var variable = confirm('value from user'); var array = [ 'constant', variable ]; alert( array.join(',') );";
+    String expected = "var a=['constant',confirm('value from user')];alert(a.join());";
+    StringResult result = runCompiler(input, expected);
+    if (result.errors.length() > 0) {
+        System.out.println(result.errors);
+        System.out.println(result.warnings);
+    }
+    assertEquals(expected, result.result);
+    assertTrue(result.errors.length() == 0);
+}

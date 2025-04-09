@@ -1,0 +1,17 @@
+public void testFinishIsNecessary() throws Exception {
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final ArchiveOutputStream archiveOutputStream = new TarArchiveOutputStream(outputStream);
+    final String entryName = "foo";
+    final String entryData = "bar";
+    archiveOutputStream.putArchiveEntry(new TarArchiveEntry(entryName));
+    archiveOutputStream.write(entryData.getBytes());
+    archiveOutputStream.closeArchiveEntry();
+    archiveOutputStream.close();
+    final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+    final ArchiveInputStream archiveInputStream = new TarArchiveInputStream(inputStream);
+    final TarArchiveEntry archiveEntry = (TarArchiveEntry) archiveInputStream.getNextEntry();
+    final String retrievedEntryName = archiveEntry.getName();
+    final String retrievedEntryData = IOUtils.toString(archiveInputStream);
+    assertEquals(entryName, retrievedEntryName);
+    assertEquals(entryData, retrievedEntryData);
+}

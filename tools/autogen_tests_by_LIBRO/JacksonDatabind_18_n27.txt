@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception
+{
+    ObjectReader r = new ObjectMapper().readerFor(String.class);
+    try {
+        MappingIterator<String> it = r.readValues(new StringReader("[ { ]"));
+        assertFalse(it.hasNext());
+    } catch (JsonMappingException e) {
+        e.printStackTrace();
+    }
+}

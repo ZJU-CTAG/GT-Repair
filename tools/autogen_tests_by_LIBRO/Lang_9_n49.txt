@@ -1,0 +1,19 @@
+public void testUnterminatedQuote() {
+    String pattern = "d'd'";
+    String date = "d3";
+    DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+    builder.appendPattern(pattern);
+    DateTimeFormatter formatter = builder.toFormatter();
+    try {
+        formatter.parseDateTime(date);
+        fail("Expected IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+    formatter = new FastDateParser(pattern, Locale.US);
+    try {
+        formatter.parseDateTime(date);
+    } catch (IllegalArgumentException e) {
+        fail("Unexpected IllegalArgumentException");
+    }
+}

@@ -1,0 +1,12 @@
+public void testIssue2377() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
+
+    String json = mapper.writeValueAsString(new Entity());
+
+    Entity entity = mapper.readValue(json, Entity.class);
+    assertNotNull(entity);
+}

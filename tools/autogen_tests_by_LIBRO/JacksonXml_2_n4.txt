@@ -1,0 +1,15 @@
+public void testMixedContent() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("myModule", new Version(1, 0, 0, null));
+    module.addDeserializer(WindSpeed.class, new CxmlDeserializer());
+    objectMapper.registerModule(module);
+    String response = "<windSpeed units=\"kt\" source=\"env\">27<radius sector=\"NW\" units=\"NM\" value=\"20\"/>"
+        + "<radius sector=\"N\" units=\"NM\" value=\"20\"/></windSpeed>";
+
+    WindSpeed windSpeed = objectMapper.readValue(response, WindSpeed.class);
+    assertEquals("kt", windSpeed.getUnits());
+    assertEquals(27, windSpeed.getValue());
+    assertEquals("env", windSpeed.getSource());
+    assertEquals("NW", windSpeed.getRadius().get(0).getSector());
+    assertEquals("NM", windSpeed.getRadius().get(0).getUnits());
+    assertEquals(20, windSpeed.

@@ -1,0 +1,15 @@
+public void testIssue108() throws Exception {
+    TarArchiveEntry entry = new TarArchiveEntry("test.txt");
+    entry.setSize(100);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    TarArchiveOutputStream taos = new TarArchiveOutputStream(baos);
+    taos.putArchiveEntry(entry);
+    taos.closeArchiveEntry();
+    taos.close();
+    byte [] data = baos.toByteArray();
+    
+    TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(data));
+    TarArchiveEntry readentry = tais.getNextTarEntry();
+    assertEquals(readentry.getSize(), entry.getSize());
+    tais.close();
+}

@@ -1,0 +1,6 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(SourceFile.fromCode("input", "var foo = function bar(){var bar; alert(bar);};"), new CompilerOptions());
+    assertEquals("var foo = function() {\n  alert(void 0);\n};\n", result.compiledSource);
+}

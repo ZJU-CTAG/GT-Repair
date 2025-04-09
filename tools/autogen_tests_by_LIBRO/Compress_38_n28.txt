@@ -1,0 +1,16 @@
+public void testIssue() throws Exception {
+    final File file = new File("/tmp/test.tar");
+    final TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream(file));
+    try {
+        TarArchiveEntry tae;
+        while ((tae = tais.getNextTarEntry()) != null) {
+            try {
+                tae.getSize();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    } finally {
+        tais.close();
+    }
+}

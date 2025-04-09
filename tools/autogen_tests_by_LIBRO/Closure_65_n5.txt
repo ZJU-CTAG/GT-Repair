@@ -1,0 +1,18 @@
+public void testNullByte() throws MalformedURLException {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+        externs,
+        Collections.singletonList(SourceFile.fromCode(
+            "testcode",
+            "var x = \"\\u00003\";" +
+            "if (x.length < 2) {" +
+            "  alert(\"fail\");" +
+            "} else {" +
+            "  alert(\"win\");" +
+            "}"
+        )),
+        options
+    );
+    String compiled = compiler.toSource();
+    assertTrue(compiled.contains("alert(\"win\")"));
+}

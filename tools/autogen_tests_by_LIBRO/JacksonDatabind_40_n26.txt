@@ -1,0 +1,29 @@
+public void testIssue108() throws IOException {
+    // should throw exception
+    int i = mapper.readValue("\"\"", int.class);
+    assertEquals(0, i);
+}
+
+public void testIssue108_2() throws IOException {
+    // should throw exception
+    int i = mapper.readValue("\"\"", Integer.class);
+    assertEquals(null, i);
+}
+
+public void testIssue108_3() throws IOException {
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail();
+    } catch (MismatchedInputException e) {
+    }
+    mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail();
+    } catch (MismatchedInputException e) {
+    }
+}
+
+public void testIssue108_4() throws IOException {
+    try {
+        Integer i = mapper.readValue("\"\"", Integer.class);

@@ -1,0 +1,9 @@
+public void testWithRootNameConfig() throws Exception {
+    XmlMapper mapper = new XmlMapper();
+    mapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, false);
+    SerializationConfig config = mapper.getSerializationConfig();
+    config = config.withRootName("myRoot");
+
+    String xml = mapper.writer(config).writeValueAsString(null);
+    Assert.assertEquals("<myRoot/>", xml);
+}

@@ -1,0 +1,19 @@
+public void testFull() throws Exception {
+        LoggingEvent event = new LoggingEvent();
+        event.setLogger("Logger");
+        event.setLoggerFqcn("LoggerFqcn");
+        event.setLevel(Level.WARN);
+        event.setMessage("Message");
+        event.setThreadName("Thread");
+        event.setTimeStamp(System.currentTimeMillis());
+        event.setCallerData(new StackTraceElement[] {new StackTraceElement("caller", "call", "file", 42)});
+        Throwable throwable = new Throwable("Throwable");
+        StackTraceElement[] trace = {
+                new StackTraceElement("throwable", "method", "file", 23),
+                new StackTraceElement("throwable", "method", "file", 23),
+                new StackTraceElement("throwable", "method", "file", 23),
+        };
+        throwable.setStackTrace(trace);
+        event.setThrowable(throwable);
+        event.setMarker(MarkerFactory.getMarker("marker"));
+        event

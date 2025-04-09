@@ -1,0 +1,20 @@
+public void testIssue() {
+    String html = "<html>\n" +
+            "<body>\n" +
+            "<script type=\"text/javascript\">\n" +
+            "var inside = true;\n" +
+            "</script>\n" +
+            "this should be outside.\n" +
+            "</body>\n" +
+            "</html>";
+    Document doc = Jsoup.parse(html);
+    assertEquals("<html>\n" +
+            " <head></head>\n" +
+            " <body>\n" +
+            "  <script type=\"text/javascript\">\n" +
+            "   var inside = true;\n" +
+            "this should be outside.\n" +
+            "  </script>\n" +
+            " </body>\n" +
+            "</html>", doc.toString().trim());
+}

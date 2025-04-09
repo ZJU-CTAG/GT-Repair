@@ -1,0 +1,30 @@
+public void testIssue() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule().addSerializer(Data.class, new DataSerializer()));
+    System.out.println(mapper.writeValueAsString(Data.with("hello")));
+}
+
+@JsonValue
+public static class Data {
+    private final String value;
+
+    private Data(String value) {
+        this.value = value;
+    }
+
+    @JsonCreator
+    public static Data with(@JsonProperty("value") String value) {
+        return new Data(value);
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
+public class DataSerializer extends JsonSerializer<Data> {
+    @Override
+    public void serialize(Data value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeString("<" + value.getValue() + ">");
+    }
+}

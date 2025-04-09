@@ -1,0 +1,15 @@
+public void testResetDefaultNS() throws IOException, SAXException, ParserConfigurationException {
+    Document doc = new SAXReader().read(new StringReader(
+        "<root xmlns:b='bla' xmlns='test111'>"
+        + "<b:test>test</b:test>"
+        + "<test></test>"
+        + "</root>"));
+    DOMDocument document = new DOMDocument(doc);
+    DOMNodePointer node = new DOMNodePointer(document);
+    node.setNamespaceResolver(new DOMNodePointer.DefaultResolver(node));
+    node = (DOMNodePointer) node.getValuePointer().getNodePointer();
+    node = (DOMNodePointer) node.getValuePointer().getNodePointer();
+    node = (DOMNodePointer) node.getValuePointer().getNodePointer();
+    node = (DOMNodePointer) node.getValuePointer().getNodePointer();
+    assertEquals("root[1]/test[1]", node.asPath());
+}

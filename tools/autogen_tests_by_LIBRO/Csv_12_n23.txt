@@ -1,0 +1,24 @@
+public void testEmptyHeader() throws Exception {
+
+    String[] header = {"A", "B", "C", "", ""};
+    String[][] data = {{"a", "b", "c", "d", "e"}};
+
+    StringWriter sw = new StringWriter();
+
+    try (CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.withHeader(header))) {
+        for (String[] d : data) {
+            printer.printRecord(d);
+        }
+    }
+
+    String csv = sw.toString();
+    try (CSVParser parser = CSVParser.parse(csv, CSVFormat.EXCEL)) {
+        List<CSVRecord> records = parser.getRecords();
+
+        for (CSVRecord r : records) {
+            assertEquals("a", r.get("A"));
+            assertEquals("b", r.get("B"));
+            assertEquals("c", r.get("C"));
+            assertEquals("d", r.get(""));
+            assertEquals("e", r.get(""));
+       

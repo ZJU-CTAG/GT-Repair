@@ -1,0 +1,6 @@
+public void testIssue108() {
+    String html = "<p>This is <b><a href='http://example.com/'><span>a test</span></a></b>.</p>";
+    Document dirty = Jsoup.parse(html);
+    Document clean = new Cleaner(Whitelist.none()).clean(dirty);
+    assertEquals("<p>This is a test.</p>", clean.body().html());
+}

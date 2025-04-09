@@ -1,0 +1,7 @@
+public void testIssueUTF16StreamsWithBOMAreProcessedAsUTF8() throws Exception {
+    byte[] byteData = {(byte)0xFF, (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0x00, (byte)0x00};
+    // Parse the invalid UTF-16 BOM (0xFF, 0xFE, 0xFF, 0xFF)
+    // as UTF-8 and you get "ÿÿ".
+    String converted = DataUtil.parseByteData(byteData, "ISO-8859-1");
+    assertEquals("ÿÿ", converted);
+}

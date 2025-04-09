@@ -1,0 +1,20 @@
+public void testAttrMatchesRegexCombinators() {
+    String html = "<div><table class=xy></table><table class=x></table><table class=y></table></div>";
+    Document doc = Jsoup.parse(html);
+
+    Elements tables = doc.select("div table[class~=x|y]");
+    assertEquals(2, tables.size());
+    assertEquals("xy", tables.get(0).className());
+    assertEquals("y", tables.get(1).className());
+
+    tables = doc.select("div > table[class~=x|y]");
+    assertEquals(2, tables.size());
+    assertEquals("xy", tables.get(0).className());
+    assertEquals("y", tables.get(1).className());
+
+    tables = doc.select("div + table[class~=x|y]");
+    assertEquals(2, tables.size());
+    assertEquals("xy", tables.get(0).className());
+    assertEquals("y", tables.get(1).className());
+
+   

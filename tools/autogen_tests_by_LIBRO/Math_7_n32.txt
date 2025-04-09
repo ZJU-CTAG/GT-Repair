@@ -1,0 +1,28 @@
+public void testEventStateUpdate() throws MathException, InterruptedException {
+    double a = 0.3;
+    double b = 1.0;
+    double c = 0.5;
+    double d = 0.9;
+    double u = 0.02;
+
+    double[] y0 = { 0.05, 0.01, 0.01 };
+    double t0 = 0;
+    final double tmax = 100.0;
+    double dt = 0.1;
+
+    ODEIntegrator ode = new DormandPrince853Integrator(1.0e-8, 100.0,
+            1.0e-10, 1.0e-10);
+
+    final ODEStateAndDerivative y = new ODEStateAndDerivative(t0, y0);
+
+    EventsManager em = new EventsManager() {
+        @Override
+        public void init(double t0, double[] y0, double t) {
+        }
+
+        @Override
+        public void resetState(double t, double[] y) {
+        }
+
+        @Override
+        public void stepAccepted(double t, double[]

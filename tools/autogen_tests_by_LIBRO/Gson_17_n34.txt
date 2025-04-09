@@ -1,0 +1,12 @@
+public void testDateNullability() throws Exception {
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(new DateTypeAdapterFactory())
+            .create();
+
+    assertEquals("{\"date\":null}", gson.toJson(new Data()));
+    assertEquals(new Data(), gson.fromJson("{\"date\":null}", Data.class));
+}
+
+private static class Data {
+    Date date;
+}

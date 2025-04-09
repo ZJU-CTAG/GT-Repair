@@ -1,0 +1,19 @@
+public void testIssue108() {
+    final List<String> list = new ArrayList<String>();
+    final List<String> mock = mock(List.class);
+    final ArgumentCaptor<List<String>> captor = ArgumentCaptor.forClass(List.class);
+
+    doAnswer(new Answer<Void>() {
+        @Override
+        public Void answer(final InvocationOnMock invocation) throws Throwable {
+            list.addAll(Arrays.asList(captor.getValue().toArray(new String[]{})));
+            return null;
+        }
+    }).when(mock).addAll(captor.capture());
+
+    mock.addAll("one", "two", "three");
+
+    assertEquals("one", list.get(0));
+    assertEquals("two", list.get(1));
+    assertEquals("three", list.get(2));
+}

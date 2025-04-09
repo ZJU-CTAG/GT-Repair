@@ -1,0 +1,24 @@
+public void testWriteBinary() throws IOException {
+
+    StringWriter xml = new StringWriter();
+
+    ToXmlGenerator xmlGenerator = new JacksonXmlModule().setDefaultUseWrapper(true)
+            .getXmlMapper()
+            .getFactory()
+            .createGenerator(xml);
+
+    xmlGenerator.writeStartObject();
+    xmlGenerator.writeStringField("id", "123");
+    xmlGenerator.writeFieldName("data");
+
+
+    // Following line is the only one that matters here.
+    xmlGenerator.writeBinary(Base64Variants.MIME, Streams.byteArray(new FileInputStream(new File("./pom.xml")), true), -1);
+
+
+    xmlGenerator.writeEndObject();
+    xmlGenerator.flush();
+
+    System.out.println(xml.toString());
+}
+

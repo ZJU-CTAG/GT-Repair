@@ -1,0 +1,15 @@
+public void testLocInfo() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.setDeserializationConfig(mapper.getDeserializationConfig().withAnnotationIntrospector(new JacksonAnnotationIntrospector()));
+    mapper.getDeserializationConfig().setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+    mapper.getDeserializationConfig().setDeserializationProblemHandler(new DeserializationProblemHandler() {
+        @Override
+        public boolean handleUnknownProperty(DeserializationContext ctxt, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException, JsonProcessingException {
+            return false;
+        }
+
+        @Override
+        public boolean handleUnknownTypeId(DeserializationContext ctxt, JsonDeserializer<?> deserializer, JavaType type, String typeId) throws IOException, JsonProcessingException {
+            return false;
+        }

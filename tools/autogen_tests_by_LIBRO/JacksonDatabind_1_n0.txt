@@ -1,0 +1,11 @@
+public void testNullDuplication() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    TestOuter out = new TestOuter();
+    String json = mapper.writeValueAsString(out);
+    System.out.println(json);
+    final String EXPECTED = "{\n  \"array\" : [ [ 1, \"one\" ], [ 0, null ] ]\n}";
+    assertEquals(EXPECTED, json);
+    // or:
+    assertEquals("{\"array\":[[1,\"one\"],[0,null]]}", json);
+}

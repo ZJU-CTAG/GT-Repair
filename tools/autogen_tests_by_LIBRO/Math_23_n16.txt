@@ -1,0 +1,19 @@
+public void testMinimizeMaxEvaluations() throws Exception {
+    // The following function has a minimum at ~= -0.548811 for x with (0.1 <= x <= 0.6).
+    // We want to find it with BrentOptimizer.
+    // The aim of this test is to check that the number of evaluations is respected.
+    // If the number of evaluations is not respected, the BrentOptimizer will not
+    // find the minimum, and the test will fail.
+    final double a = -0.2;
+    final double b = 0.9;
+    final int maxEval = 10;
+    UnivariateRealFunction f = new SinFunction();
+    BrentOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    UnivariateRealPointValuePair optimum =
+        optimizer.optimize(new MaxEval(maxEval),
+            new UnivariateRealFunction() {
+                public double value(double x) {
+                    return f.value(x);
+                }
+            }, GoalType.MINIMIZE,
+            new SearchInterval(a, b,

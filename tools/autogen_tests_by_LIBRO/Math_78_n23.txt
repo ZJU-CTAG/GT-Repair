@@ -1,0 +1,19 @@
+public void testIssue() {
+  double[] times = new double[] {
+    90.00000000000000,
+    135.0000000000000,
+  };
+  ArrayEvent[] events = new ArrayEvent[] {
+    new ArrayEvent(0, EventType.Increasing, EventType.Decreasing),
+    new ArrayEvent(1, EventType.Decreasing, EventType.Increasing),
+  };
+  EventFilter filter = new EventFilter(times, events);
+  double[] times2 = new double[2];
+  EventType[] types = new EventType[2];
+  double hs = (135.0 - 90.0) / 2.0;
+  int n = filter.eventOccurred(new double[] {90.0 - hs, 135.0 - hs}, new double[] {-0.1, 0.1}, new boolean[] {true, true});
+  assertEquals(1, n);
+  assertEquals(90.0, filter.getEventTime());
+  assertEquals(EventType.Decreasing, filter.getEventState());
+  filter.getEventDetails(times2, types);
+  assertEqu

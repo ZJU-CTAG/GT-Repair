@@ -1,0 +1,11 @@
+public void testEnumMap()
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    EnumMap<TestEnum,String> map = new EnumMap<TestEnum,String>(TestEnum.class);
+    map.put(TestEnum.VALUE1, "foo");
+    String value = mapper.writeValueAsString(map);
+    assertEquals("{\"VALUE1\":\"foo\"}", value);
+    EnumMap<TestEnum,String> result = mapper.readValue("{\"VALUE2\":\"bar\",\"VALUE1\":\"baz\"}",
+            new TypeReference<EnumMap<TestEnum,String>>() { });
+}

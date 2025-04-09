@@ -1,0 +1,12 @@
+public void testIssue() {
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		// Jackson date parsing is lenient by default, so 2015-01-32 gets parsed as 2015-02-01.
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		df.setLenient(false);
+		objectMapper.setDateFormat(df);
+
+		String jsonDate = "{\"date\":\"2015-01-32\"}";
+		TestBean result = objectMapper.readValue(jsonDate, TestBean.class);
+		assertNotNull(result);
+}

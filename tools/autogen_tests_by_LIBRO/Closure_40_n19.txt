@@ -1,0 +1,18 @@
+public void testSmartNameRemoval() {
+    CompilerOptions options = new CompilerOptions();
+    options.setSmartNameRemoval(true);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        externs,
+        ImmutableList.of(SourceFile.fromCode("input",
+            "/** @constructor */ var goog = {};\n" +
+            "/**" +
+            " * @param {!Function} childCtor Child class.\n" +
+            " * @param {!Function} parentCtor Parent class.\n" +
+            " * @suppress {strictMissingProperties}\n" +
+            " */\n" +
+            "goog.inherits = function(childCtor, parentCtor) {};\n" +
+            "/** @constructor */ var

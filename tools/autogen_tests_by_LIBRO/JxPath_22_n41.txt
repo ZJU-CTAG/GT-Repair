@@ -1,0 +1,14 @@
+public void testJXPath() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new ByteArrayInputStream(xml.getBytes()));
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    ctx.setLenient(true);
+    ctx.getNamespaceURIResolver().setNamespaceContextPointer(new DOMNodePointer(ctx.getContextBean(), ctx));
+    ctx.getNamespaceURI("");
+    ctx.getNamespaceURI("test111");
+    System.out.println(ctx.getValue("//test111:test1"));
+    System.out.println(ctx.getValue("//test111:test2"));
+    System.out.println(ctx.getValue("//test111:test3"));
+}

@@ -1,0 +1,15 @@
+public void testEmptyEntry() throws Exception {
+    final SevenZFile sevenZFile = new SevenZFile(new File("src/test/resources/bla.7z"));
+    SevenZArchiveEntry sevenZArchiveEntry = sevenZFile.getNextEntry();
+    while (sevenZArchiveEntry != null) {
+        if(sevenZArchiveEntry.getSize() > 0) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = sevenZFile.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        }
+        sevenZArchiveEntry = sevenZFile.getNextEntry();
+    }
+}

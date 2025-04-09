@@ -1,0 +1,10 @@
+public void testAvroCharSequenceMapKey() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    mapper.getDeserializationConfig().addMixInAnnotations(CharSequence.class, ObjectMapper.DefaultTypeResolverBuilder.class);
+    mapper.getDeserializationConfig().addMixInAnnotations(CharSequence.class, StringKeyDeserializer.class);
+    String json = "{\"@type\":\"java.lang.String\",\"@value\":\"foo\"}";
+    Object deser = mapper.readValue(json, Object.class);
+    assertSame(String.class, deser.getClass());
+    assertEquals("foo", deser.toString());
+}

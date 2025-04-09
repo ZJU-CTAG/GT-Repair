@@ -1,0 +1,11 @@
+public void testNumberFormatException() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    String json = "{\"value\": \"NaN\"}";
+    try {
+        mapper.readTree(json);
+        fail("Should have thrown NumberFormatException");
+    } catch (NumberFormatException e) {
+        // Expected
+    }
+}

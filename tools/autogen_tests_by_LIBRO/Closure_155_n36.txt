@@ -1,0 +1,12 @@
+public void testIssue68() {
+    String script = "function d3_call(callback) {" +
+            " var f = callback;" +
+            " arguments[0] = this;" +
+            " f.apply(this, arguments);" +
+            " return this;" +
+            "}";
+    ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    engine.eval(script);
+    Invocable inv = (Invocable) engine;
+    inv.invokeFunction("d3_call", "hello");
+}

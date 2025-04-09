@@ -1,0 +1,20 @@
+public void testArDelete() throws Exception {
+    File archive = new File(getTestDirectory(), "bla.ar");
+    FileOutputStream fos = new FileOutputStream(archive);
+    ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream("ar", fos);
+    aos.putArchiveEntry(new ArchiveEntry() {
+        public InputStream getInputStream() throws IOException {
+            return new ByteArrayInputStream("test1".getBytes());
+        }
+        public int getMode() { return 0; }
+        public int getUserId() { return 0; }
+        public int getGroupId() { return 0; }
+        public String getUserName() { return ""; }
+        public String getGroupName() { return ""; }
+        public String getName() { return "test1.xml"; }
+        public long getSize() { return -1; }
+        public long getLastModifiedDate() { return 0; }
+        public boolean isUnixSymlink() { return false; }
+        public String getSymlinkName() { return null; }
+    });
+    aos.

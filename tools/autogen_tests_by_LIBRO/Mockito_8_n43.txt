@@ -1,0 +1,10 @@
+public void testIssue110() {
+    assertThat(inferFrom(GenericsSelfReference.class)
+        .resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReference.class))
+        .rawType())
+        .isEqualTo(GenericsSelfReference.class);
+}
+
+interface GenericsSelfReference<T extends GenericsSelfReference<T>> {
+    T self();
+}

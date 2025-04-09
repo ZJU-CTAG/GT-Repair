@@ -1,0 +1,21 @@
+public void testAnnotations() throws Exception {
+    String json = new ObjectMapper().writeValueAsString(new TestClass());
+    assertEquals("{\"test\":\"test\"}", json);
+}
+
+public static class TestClass {
+    @JsonSerialize(using = MySerializer.class)
+    @JsonAnyGetter
+    public Map<String, String> getParameters(){
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("test", "test");
+        return params;
+    }
+}
+
+public static class MySerializer extends JsonSerializer<String> {
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeString("test");
+    }
+}

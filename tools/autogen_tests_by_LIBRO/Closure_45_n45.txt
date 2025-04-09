@@ -1,0 +1,10 @@
+public void testAssignmentRemoved() {
+    ClosureCompiler c = new ClosureCompiler();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(c.getOptions());
+    Compiler compiler = c.getCompiler();
+    compiler.compile(JSSourceFile.fromCode("script", "function f() { var a = [], b; a.push(b = []); b[0] = 1; return a; } "));
+    assertTrue(compiler.getErrorCount() == 0);
+    assertTrue(compiler.getWarningCount() == 0);
+    String result = compiler.toSource();
+    assertTrue(result.contains("function f(){var a=[];a.push([]);return a};"));
+}

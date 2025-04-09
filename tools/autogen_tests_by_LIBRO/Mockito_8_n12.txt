@@ -1,0 +1,13 @@
+public void testIssue110() {
+    @SuppressWarnings("unchecked")
+    class GenericsSelfReferenceImpl implements GenericsSelfReference<GenericsSelfReferenceImpl> {
+        @Override
+        public GenericsSelfReferenceImpl self() {
+            return null;
+        }
+    }
+
+    GenericMetadataSupport genericMetadata = inferFrom(GenericsSelfReferenceImpl.class).resolveGenericReturnType(firstNamedMethod("self", GenericsSelfReferenceImpl.class));
+
+    assertEquals(GenericsSelfReferenceImpl.class, genericMetadata.rawType());
+}

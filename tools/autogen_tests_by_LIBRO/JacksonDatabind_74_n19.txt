@@ -1,0 +1,13 @@
+public void testAsPropertyTypeDeserializer() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    try {
+        mapper.readValue("\"\"", TestObject.class);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+@JsonDeserialize(as=TestObject.class)
+public interface TestObject {
+}

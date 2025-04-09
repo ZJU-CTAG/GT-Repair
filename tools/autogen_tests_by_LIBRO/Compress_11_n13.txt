@@ -1,0 +1,21 @@
+public void testCreateArchiveInputStream()
+        throws IOException {
+    for (int i = 1; i < 100; i++) {
+        final byte[] bytes = new byte[i];
+        Arrays.fill(bytes, (byte) 'a');
+        final InputStream in = new ByteArrayInputStream(bytes);
+        final ArchiveInputStream ais = new ArchiveStreamFactory()
+                .createArchiveInputStream(in);
+        assertNull(ais);
+        in.close();
+    }
+    for (int i = 100; i < 1000; i += 100) {
+        final byte[] bytes = new byte[i];
+        Arrays.fill(bytes, (byte) 'a');
+        final InputStream in = new ByteArrayInputStream(bytes);
+        final ArchiveInputStream ais = new ArchiveStreamFactory()
+                .createArchiveInputStream(in);
+        assertNotNull(ais);
+        in.close();
+    }
+}

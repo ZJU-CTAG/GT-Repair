@@ -1,0 +1,23 @@
+public void testIssue() {
+    @JsonUnwrapped
+    class Inner {
+        public String animal;
+    }
+
+    class Outer {
+        // @JsonProperty
+        @JsonUnwrapped
+        private Inner inner;
+    }
+
+    Inner inner = new Inner();
+    inner.animal = "Zebra";
+
+    Outer outer = new Outer();
+    outer.inner = inner;
+
+    String actual = new ObjectMapper().writeValueAsString(outer);
+    assertThat(actual).contains("animal");
+    assertThat(actual).contains("Zebra");
+    assertThat(actual).doesNotContain("inner");
+}

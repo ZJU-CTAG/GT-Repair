@@ -1,0 +1,13 @@
+public void testIssue244() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    // mapper.getFactory().enable(JsonParser.Feature.ALLOW_NUMERIC_LEADING_ZEROS);
+    mapper.getFactory().enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Expected exception, not value: " + i);
+    } catch (MismatchedInputException e) {
+        verifyException(e, "Can not construct");
+        verifyException(e, "from null value");
+    }
+}

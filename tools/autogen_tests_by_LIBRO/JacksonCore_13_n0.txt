@@ -1,0 +1,14 @@
+public void testIssue108() throws Exception
+{
+    StringWriter sw = new StringWriter();
+    JsonFactory f = new JsonFactory();
+    UTF8JsonGenerator gen = new UTF8JsonGenerator(f, sw, JsonEncoding.UTF8, ObjectWriteContext.empty());
+    gen.writeStartObject();
+    gen.setFeature(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
+    gen.writeFieldName("foo");
+    gen.writeNumber(13);
+    gen.writeEndObject();
+    gen.close();
+    String json = sw.toString();
+    assertEquals("{\"foo\":13}", json);
+}

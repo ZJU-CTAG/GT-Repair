@@ -1,0 +1,9 @@
+public void testMixedContent() throws Exception {
+    ObjectMapper mapper = new XmlMapper();
+    WindSpeed myPojo = mapper.readValue("<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>", WindSpeed.class);
+
+    assertNotNull(myPojo);
+    assertEquals(27, myPojo.getValue());
+    assertEquals(1, myPojo.getRadius().size());
+    assertEquals(20, myPojo.getRadius().get(0).getValue());
+}

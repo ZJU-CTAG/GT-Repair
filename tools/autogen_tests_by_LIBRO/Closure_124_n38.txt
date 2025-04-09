@@ -1,0 +1,19 @@
+public void testIssue108() {
+    CompilationLevel level = CompilationLevel.SIMPLE\_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    SourceFile input = SourceFile.fromCode("test.js", ""+
+        "function getParentNode(gfx) {\n"+
+        "  var foreignObject = gfx.parentNode.parentNode;\n"+
+        "  var parentContainer = foreignObject.parentNode.parentNode;\n"+
+        "  if (null !== parentContainer) {\n"+
+        "    return parentContainer;\n"+
+        "  }\n"+
+        "  return null;\n"+
+        "}\n");
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, ImmutableList.of(input), options);
+    String output = compiler.toSource();
+    assertTrue(""+result.errors, result.success);
+    assertEquals(""+result.errors,
+        "function get

@@ -1,0 +1,10 @@
+public void testWithLaterOffsetAtOverlap1() {
+    assertEquals("Brazil standard time should be -3 for this test", -3, DateTimeZone.forID("America/Sao_Paulo").getOffset(0));
+    DateTime dt1 = new DateTime(2011, 11, 27, 1, 0, 0, 0, DateTimeZone.UTC);
+    DateTime dt2 = dt1.withZoneRetainFields(DateTimeZone.forID("America/Sao_Paulo"));
+    assertEquals("2011-11-27T01:00:00.000-02:00", dt2.toString());
+    DateTime dt3 = dt2.withLaterOffsetAtOverlap();
+    assertEquals("2011-11-27T01:00:00.000-03:00", dt3.toString());
+    DateTime dt4 = dt3.withLaterOffsetAtOverlap();
+    assertEquals("2011-11-27T01:00:00.000-02:00", dt4.toString());
+}

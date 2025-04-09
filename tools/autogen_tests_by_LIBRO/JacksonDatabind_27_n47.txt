@@ -1,0 +1,11 @@
+public void testIssueWithExternalType() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new AfterburnerModule());
+    mapper.registerModule(new JodaModule());
+    mapper.addMixIn(User.class, UserMixin.class);
+
+    String json = "{\"type\":\"user\",\"_id\":\"55a60bf5587550b31fbe7781\",\"name\":\"John Doe\",\"role\":\"Admin\",\"lastModified\":\"2015-07-16T14:40:05.643+0000\"}";
+    User user = mapper.readValue(json, User.class);
+    assertNotNull(user);
+}

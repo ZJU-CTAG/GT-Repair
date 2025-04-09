@@ -1,0 +1,13 @@
+public void testRequiredOptions() {
+    final Group group = new GroupBuilder().withName("testRequiredOptions").withOption(new OptionBuilder().withShortName("h").create()).withOption(new OptionBuilder().withShortName("c").withArgument(new ArgumentBuilder().create()).create()).create();
+    final Parser parser = new Parser();
+    parser.setGroup(group);
+    parser.setHelpOption(new OptionBuilder().withShortName("h").create());
+    final CommandLine line = parser.parseAndHelp(new String[] { "-c arg" });
+    assertNotNull(line);
+    assertTrue(line.hasOption("c"));
+    assertEquals("arg", line.getValue("c"));
+    final List required = line.getRequiredOptions();
+    assertEquals(1, required.size());
+    assertEquals("h", ((Option) required.get(0)).getPreferredName());
+}

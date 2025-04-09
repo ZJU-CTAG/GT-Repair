@@ -1,0 +1,18 @@
+public void testSpyingAbstractClasses() {
+    Foo mock = Mockito.spy(new FinalFoo());
+    mock.call(); // Should not throw AbstractMethodError
+}
+
+public static abstract class Foo {
+    public abstract String call();
+}
+
+public static class FinalFoo extends Foo {
+    public String call() {
+        return realCall();
+    }
+    
+    protected String realCall() {
+        return "foo";
+    }
+}

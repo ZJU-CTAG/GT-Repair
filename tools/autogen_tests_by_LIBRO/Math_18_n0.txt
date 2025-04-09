@@ -1,0 +1,16 @@
+public void testCMAESOptimizer() {
+  double initialGuess = 0.5;
+  double lowerBound = 0.0;
+  double upperBound = 1.0;
+  SimpleBounds bounds = new SimpleBounds(lowerBound, upperBound);
+  CMAESOptimizer optimizer = new CMAESOptimizer(1000000, 0.001, false, 0, 0, new MersenneTwister(), false, bounds);
+
+  CMAESOptimizer.PopulationSize populationSize = new CMAESOptimizer.PopulationSize(50000);
+  PointValuePair result = optimizer.optimize(populationSize,
+      new ObjectiveFunction(new CMAESOptimizerTest.FitTestFunction()),
+      GoalType.MINIMIZE,
+      new InitialGuess(initialGuess));
+
+  System.out.println(String.format("Optimum = %f", result.getValue()));
+  System.out.println(String.format("Position = %f", result.getPoint()[0]));
+}

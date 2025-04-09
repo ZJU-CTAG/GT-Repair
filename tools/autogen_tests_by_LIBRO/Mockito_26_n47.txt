@@ -1,0 +1,24 @@
+public void testUseInjectMocksForFinalFields() {
+    MyClass testee = new MyClass();
+    testee.setFoo(new Foo());
+    Mockito.verify(testee.getFoo()).doStuff();
+}
+
+public class MyClass {
+
+    private final Foo foo;
+
+    public Foo getFoo() {
+        return foo;
+    }
+
+    @InjectMocks
+    private MyClass() {
+        this.foo = Mockito.mock(Foo.class);
+        Mockito.when(foo.doStuff()).thenReturn(true);
+    }
+}
+
+interface Foo {
+    boolean doStuff();
+}

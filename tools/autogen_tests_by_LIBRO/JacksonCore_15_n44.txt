@@ -1,0 +1,21 @@
+public void testIssue108() throws IOException {
+    String json = "{\n" +
+            "  \"b\": {\n" +
+            "     \"c\": \"d\"\n" +
+            "   },\n" +
+            "  \"c\": {\n" +
+            "     \"c\": \"d\"\n" +
+            "   }\n" +
+            "}";
+
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree(json);
+
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
+    FilteringParserDelegate delegate = new FilteringParserDelegate(node.traverse(), new SimpleBeanPropertyFilter("c"), false, true);
+    JsonParser parser = new JsonParserDelegate(delegate);
+
+    MyBeanJsonFilter myBeanJsonFilter = mapper.readValue(parser, MyBeanJsonFilter.class);
+    assertEquals(2, myBeanJsonFilter.getB().size());
+    assertEquals

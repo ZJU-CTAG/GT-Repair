@@ -1,0 +1,12 @@
+public void testGetValueAsString() throws Exception {
+    JsonFactory jf = new JsonFactory();
+    JsonParser p = jf.createParser("{\"foo\":\"bar\"}");
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("foo", p.getValueAsString());
+    assertToken(JsonToken.VALUE_STRING, p.nextToken());
+    assertEquals("bar", p.getValueAsString());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    assertNull(p.nextToken());
+    p.close();
+}

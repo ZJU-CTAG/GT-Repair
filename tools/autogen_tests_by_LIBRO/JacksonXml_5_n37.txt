@@ -1,0 +1,12 @@
+public void testIssue152() {
+    ObjectMapper xmlMapper = new XmlMapper();
+    ObjectMapper noAnnotationsXmlMapper = xmlMapper.copy()
+            .configure(MapperFeature.USE_ANNOTATIONS, false)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    System.out.println(noAnnotationsXmlMapper.writeValueAsString(new XMLTest()));
+    System.out.println(xmlMapper.writeValueAsString(new XMLTest()));
+}
+
+@JacksonXmlRootElement(localName = "myname")
+public class XMLTest {
+}

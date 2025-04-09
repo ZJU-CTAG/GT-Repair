@@ -1,0 +1,10 @@
+public void testIssue106() throws IOException {
+    try {
+        mapper.readValue("[\"a\", \"b\", \"c\", \"d\"]", new TypeReference<ArrayList<Integer>>() {});
+    } catch (JsonMappingException e) {
+        List<Reference> path = e.getPath();
+        for (Reference ref : path) {
+            assertTrue(ref.getIndex()>=0);
+        }
+    }
+}

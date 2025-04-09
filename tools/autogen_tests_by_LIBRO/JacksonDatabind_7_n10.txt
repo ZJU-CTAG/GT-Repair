@@ -1,0 +1,25 @@
+public void testArguments() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.registerModule(new SimpleModule()
+            .addDeserializer(Value.class, new ValueDeserializer()));
+
+    Value value = mapper.readValue("{'a':1,'b':null}", Value.class);
+    assertNotNull(value);
+    assertEquals(1, value.a);
+    assertEquals(null, value.b);
+}
+
+public static class Value {
+    public int a;
+    public Object b;
+    @JsonCreator
+    public static Value from(TokenBuffer buffer) {
+        Value value = new Value();
+        value.b = buffer.readValueAs(Object.class);
+        return value;
+    }
+}
+
+public static class ValueDeserializer extends StdDeserializer<Value>

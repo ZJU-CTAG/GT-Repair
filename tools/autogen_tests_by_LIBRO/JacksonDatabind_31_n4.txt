@@ -1,0 +1,27 @@
+public void testIssue() throws IOException {
+    ObjectMapper om = new ObjectMapper();
+
+    // This is the correct behavior
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    om.writeValue(baos, new MyBean());
+
+    // This is the wrong behavior
+    JsonGenerator jsonGenerator = om.getFactory().createGenerator(baos);
+    jsonGenerator.writeStartObject();
+    om.convertValue(new MyBean(), JsonNode.class).serialize(jsonGenerator, om.getSerializerProvider());
+    jsonGenerator.writeEndObject();
+    jsonGenerator.flush();
+    jsonGenerator.close();
+
+    System.out.println(baos.toString());
+}
+
+public class MyBean {
+    @JsonFilter("myFilter")
+    public int a = 1;
+}
+
+public class MyFilter extends SimpleBeanPropertyFilter {
+    @Override
+    public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider, PropertyWriter writer) throws Exception {
+        System.out.println

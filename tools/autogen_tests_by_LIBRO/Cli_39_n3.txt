@@ -1,0 +1,6 @@
+public void testFileOption() throws IOException {
+    Options options = new Options();
+    options.addOption(Option.builder("f").hasArg().type(FileInputStream.class).build());
+    FileInputStream file = (FileInputStream) new DefaultParser().parse(options, new String[] {"-f", "src/test/resources/pom.xml"}).getParsedOptionValue("f");
+    assertEquals(new FileInputStream(new File("src/test/resources/pom.xml")).toString(), file.toString());
+}

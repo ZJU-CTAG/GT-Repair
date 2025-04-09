@@ -1,0 +1,19 @@
+public void testWriteWithCJK() throws IOException {
+    final String EOL = "\n";
+    final String FIRST_STRING = "あ";
+    final String SECOND_STRING = "い";
+    final String THIRD_STRING = "う";
+    final String[] TEST_STRINGS = new String[] {
+        FIRST_STRING,
+        SECOND_STRING,
+        THIRD_STRING
+    };
+
+    StringWriter sw = new StringWriter();
+    CSVPrinter csvPrinter = new CSVPrinter(sw, CSVFormat.EXCEL);
+    csvPrinter.printRecord(Arrays.asList(TEST_STRINGS));
+    csvPrinter.flush();
+    csvPrinter.close();
+    String result = sw.toString();
+    assertEquals("\"" + FIRST_STRING + "\",\"" + SECOND_STRING + "\",\"" + THIRD_STRING + "\"", result);
+}

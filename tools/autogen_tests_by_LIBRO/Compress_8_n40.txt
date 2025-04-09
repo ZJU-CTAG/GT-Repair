@@ -1,0 +1,16 @@
+public void testIssue108() throws IOException {
+    TarArchiveEntry entry = new TarArchiveEntry("12345678901234567");
+    entry.setSize(1234567890123L);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    new TarArchiveOutputStream(baos).putArchiveEntry(entry);
+    baos.close();
+    byte[] header = baos.toByteArray();
+    assertEquals(0, header[124]);
+    assertEquals(0, header[125]);
+    assertEquals(0, header[126]);
+    assertEquals(0, header[127]);
+    assertEquals(0, header[128]);
+    assertEquals(0, header[129]);
+    assertEquals(0, header[130]);
+    assertEquals(0, header[131]);
+}

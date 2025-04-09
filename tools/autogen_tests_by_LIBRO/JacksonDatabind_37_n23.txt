@@ -1,0 +1,12 @@
+public void testRead()
+    throws Exception {
+    final InputStream is =
+        ModelTest.class.getResourceAsStream("/model/model.json");
+    try {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.registerSubtypes(JsonMapSchema.class);
+        final JsonRoot root = mapper.readValue(is, JsonRoot.class);
+    } finally {
+        is.close();
+    }
+}

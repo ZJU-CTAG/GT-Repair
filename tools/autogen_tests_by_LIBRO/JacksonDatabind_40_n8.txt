@@ -1,0 +1,23 @@
+public void testIssue_bogusNumbers() throws Exception
+{
+    // by default, coercing empty Strings should fail
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+    mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
+    mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+
+    // should fail
+    try {
+        int i = mapper.readValue("\"\"", int.class);
+        fail("Should not pass");
+    } catch (InvalidFormatException e) {
+        verifyException(e, "not a valid Integer value");
+        verifyException(e, "empty String");
+    }
+
+    // should fail
+    try {
+        int i = mapper.readValue(quote("-"), int.class);
+        fail("Should not pass");
+    } catch (InvalidFormat

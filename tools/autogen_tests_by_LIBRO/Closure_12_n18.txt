@@ -1,0 +1,11 @@
+public void testIssueSrc() throws Exception {
+    String src = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += '2'; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(ImmutableList.of(SourceFile.fromCode("[testcode]", src)),
+            new CompilerOptions());
+    assertTrue(result.success);
+    String compiledCode = result.compiledCode;
+    assertTrue(compiledCode.contains("try{"));
+    assertTrue(compiledCode.contains("1"));
+    assertTrue(compiledCode.contains("2"));
+}

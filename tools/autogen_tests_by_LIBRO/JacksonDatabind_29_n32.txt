@@ -1,0 +1,31 @@
+public void testGetPolymorphicType() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Thing thing = new Thing();
+    thing.setName("Name");
+    thing.setType("Type");
+    thing.setPolymorphic(new SubThing());
+    String json = mapper.writeValueAsString(thing);
+    System.out.println(json);
+    thing = mapper.readValue(json, Thing.class);
+    System.out.println(thing);
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXTERNAL_PROPERTY, property="type")
+@JsonSubTypes({
+    @Type(value = SubThing.class, name = "SubThing")
+})
+public static class Thing {
+
+    private String name;
+    private String type;
+    private Object polymorphic;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {

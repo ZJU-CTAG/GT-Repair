@@ -1,0 +1,14 @@
+public void testIssue120(){
+    String js = "function C2() { }\n" +
+                "function C3(c2) {\n" +
+                " this.c2_;\n" +
+                " use(this.c2_.prop);\n" +
+                "}";
+    CompilerEnvirons compilerEnv = new CompilerEnvirons();
+    compilerEnv.setRecordingLocalJsDocComments(true);
+    compilerEnv.setRecordingComments(true);
+    compilerEnv.setAllowSharpComments(true);
+    ErrorReporter compilationErrorReporter = compilerEnv.getErrorReporter();
+    Parser p = new Parser(compilerEnv, compilationErrorReporter);
+    ScriptOrFnNode root = p.parse(js, null, 1);
+}

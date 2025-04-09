@@ -1,0 +1,16 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setProcessCommonJSModules(true);
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+
+    String code = "function f() { }";
+    String externs = "";
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input", code));
+    List<SourceFile> externsInputs = new ArrayList<SourceFile>();
+    externsInputs.add(SourceFile.fromCode("externs", externs));
+    Result result = com.google.javascript.jscomp.Compiler.compile(externsInputs, inputs, options);
+    assertFalse(result.success);
+}

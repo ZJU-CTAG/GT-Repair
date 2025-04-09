@@ -1,0 +1,18 @@
+public void testTreeSerialization() throws IOException {
+    MyObject myObject = new MyObject();
+    myObject.setListAttribute(new ListAttribute<String>());
+    myObject.getListAttribute().add("foo");
+    myObject.getListAttribute().add("bar");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(ListAttribute.class, new
+ListAttributeSerializer());
+    mapper.registerModule(module);
+
+    JsonNode result = mapper.valueToTree(myObject);
+    System.out.println(result);
+}

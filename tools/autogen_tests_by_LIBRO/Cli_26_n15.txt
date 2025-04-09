@@ -1,0 +1,16 @@
+public void testOptionBuilder() {
+    Options options = new Options();
+    Option option = OptionBuilder.withLongOpt("arguments").hasArg().withArgName("arg1,arg2,arg3").create();
+    option.setRequired(true);
+    options.addOption(option);
+    try {
+        options.addOption(OptionBuilder.hasArg().withArgName("arg1,arg2,arg3").create("arguments"));
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+    try {
+        options.addOption(OptionBuilder.hasArg().withArgName("arg1,arg2,arg3").create("arguments"));
+    } catch (IllegalArgumentException e) {
+        // expected
+    }
+}

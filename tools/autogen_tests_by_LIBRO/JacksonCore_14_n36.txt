@@ -1,0 +1,13 @@
+public void testIssue108() {
+  File tmpFile = File.createTempFile("joda-time", "tmp");
+  try {
+    try (TempFile tempFile = new TempFile(tmpFile)) {
+      tempFile.write(ByteBuffer.allocate(100));
+      try (ByteBufferInputStream in = new ByteBufferInputStream(tempFile, ByteBuffer.allocate(100))) {
+        // do nothing
+      }
+    }
+  } finally {
+    tmpFile.delete();
+  }
+}

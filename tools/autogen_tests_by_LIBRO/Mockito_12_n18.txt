@@ -1,0 +1,18 @@
+public void testIssue108() {
+    final StringBuilder message = new StringBuilder();
+    final ArrayList<String> list = mock(ArrayList.class);
+
+    when(list.addAll(anyVararg())).then(new Answer<Boolean>() {
+        public Boolean answer(InvocationOnMock invocation) {
+            Arrays.asList((Object[])invocation.getArguments()[0]).stream().forEach(message::append);
+            return true;
+        }
+    });
+
+    list.addAll("1", "2");
+    assertEquals("12", message.toString());
+
+    ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+    verify(list).addAll(captor.capture());
+    assertEquals("1", captor.getValue());
+}

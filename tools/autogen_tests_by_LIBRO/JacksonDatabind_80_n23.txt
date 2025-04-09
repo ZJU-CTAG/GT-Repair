@@ -1,0 +1,19 @@
+public void testTypeIdHandling ()
+    throws Exception
+{
+    SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
+    mod.addAbstractTypeMapping(Base.class, Derived.class);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(mod);
+
+    Base input = new Derived("a", 1);
+    String json = mapper.writeValueAsString(input);
+    assertEquals("{\"type\":\"derived\",\"a\":\"a\",\"b\":1}", json);
+
+    Base result = mapper.readValue(json, Base.class);
+    assertNotNull(result);
+    assertEquals(Derived.class, result.getClass());
+    assertEquals("a", result.a);
+    assertEquals(1, result.b);
+}

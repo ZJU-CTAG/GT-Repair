@@ -1,0 +1,31 @@
+public void testTemplateInference() {
+    String s = new Class<Integer>().foo(new Foo<Integer>() {
+        @Override
+        public Integer invoke(Integer integer) {
+            return null;
+        }
+    });
+    assertEquals("string", s);
+}
+
+/**
+ * @constructor
+ * @template CLASS
+ */
+class Class<CLASS> {
+    /**
+     * @param {function(CLASS):CLASS} a
+     * @template T
+     */
+    public <T> String foo(Foo<CLASS> a) {
+        return "string";
+    }
+}
+
+/**
+ * @param {number} a
+ * @return {string}
+ */
+interface Foo<T> {
+    T invoke(T t);
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    final String json = "{\"data\":{\"@class\":\"com.fasterxml.jackson.issue.Issue108$Foo\"}}";
+    final ObjectMapper mapper = new ObjectMapper().enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final ObjectNode node = mapper.readValue(json, ObjectNode.class);
+    final JsonNode type = node.get("@class");
+    if (type != null) {
+        final Class<?> clazz = mapper.getTypeFactory().constructType(type.asText()).getRawClass();
+        final Bar bar = mapper.treeToValue(node.get("data"), Bar.class);
+        assertTrue(clazz.isAssignableFrom(bar.getClass()));
+    }
+}
+
+public static class Bar {
+}
+
+public static class Foo extends Bar {
+}

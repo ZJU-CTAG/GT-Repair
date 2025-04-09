@@ -1,0 +1,12 @@
+public void testGlobalThis() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE, CheckLevel.WARNING);
+    options.setChecksOnly(true);
+    options.setCheckGlobalThisLevel(CheckLevel.OFF);
+    //options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("source1", "var globalThis = 7;") }, options);
+    assertEquals(0, compiler.getErrors().length);
+    assertEquals(0, compiler.getWarnings().length);
+}
+

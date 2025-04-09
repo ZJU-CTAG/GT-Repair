@@ -1,0 +1,15 @@
+public void testReadValue() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(String.class, new StdDeserializer<String>(String.class) {
+        @Override
+        public String deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+            return jp.getValueAsString().substring(1);
+        }
+    });
+    mapper.registerModule(module);
+    ObjectReader reader = mapper.readerFor(String.class);
+    String value = reader.readValue("[\"12345678\"]");
+    assertEquals("2345678", value);
+}

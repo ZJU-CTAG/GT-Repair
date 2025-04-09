@@ -1,0 +1,16 @@
+public void testIssueJsonIdentityInfoCreator() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.registerModule(new JodaModule());
+    mapper.registerModule(new TestModule());
+    TestClass obj = new TestClass();
+    obj.setList(new ArrayList<>());
+    obj.getList().add(obj);
+    obj.setObject(obj);
+    String json = mapper.writeValueAsString(obj);
+    System.out.println(json);
+    TestClass result = mapper.readValue(json, TestClass.class);
+    System.out.println(result.getObject().getList() == result.getList());
+    System.out.println(result.getList().get(0) == result.getObject());
+}

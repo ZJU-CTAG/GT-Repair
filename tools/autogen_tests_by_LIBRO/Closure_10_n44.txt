@@ -1,0 +1,17 @@
+public void testIssue108() {
+    String expr = "(Math.random()>0.5? '1' : 2 ) + 3 + 4";
+    String result = compile(expr);
+    assertEquals("var a = (0.5 < Math.random() ? '1' : 2) + 7;", result);
+}
+
+public void testIssue108b() {
+    String expr = "(Math.random()>0.5? 1 : 2 ) + 3 + 4";
+    String result = compile(expr);
+    assertEquals("var a = (0.5 < Math.random() ? 1 : 2) + 7;", result);
+}
+
+public void testIssue108c() {
+    String expr = "(Math.random()>0.5? 1 : '2' ) + 3 + 4";
+    String result = compile(expr);
+    assertEquals("var a = (0.5 < Math.random() ? 1 : '2') + 7;", result);
+}

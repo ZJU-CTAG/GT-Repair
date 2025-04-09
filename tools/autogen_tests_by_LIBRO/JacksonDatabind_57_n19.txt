@@ -1,0 +1,12 @@
+public void testIssue194() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    final int OFFSET = 3;
+    final int LENGTH = 3;
+    byte[] data = new byte[]{1, 2, 3, 4, 5, 6};
+    ObjectReader objectReader = objectMapper.readerFor(byte[].class);
+    byte[] values = objectReader.readValues(data, OFFSET, LENGTH).next();
+    assertEquals(LENGTH, values.length);
+    for (int i = 0; i < LENGTH; i++) {
+        assertEquals(data[OFFSET + i], values[i]);
+    }
+}

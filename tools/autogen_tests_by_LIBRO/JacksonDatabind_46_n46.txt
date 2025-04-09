@@ -1,0 +1,10 @@
+public void testGenericArrayTypeIsNotProcessedCorrectly() throws NoSuchMethodException, NoSuchFieldException {
+    Method method = TestBean.class.getMethod("getAtomicReference");
+    Type type = method.getGenericReturnType();
+    assertNotNull(type);
+    assertTrue(type instanceof ParameterizedType);
+    ParameterizedType parameterizedType = (ParameterizedType) type;
+    assertEquals(1, parameterizedType.getActualTypeArguments().length);
+    assertEquals(String.class, parameterizedType.getActualTypeArguments()[0]);
+    assertEquals("()Ljava/util/concurrent/atomic/AtomicReference<Ljava/lang/String;>;", TypeFactory.defaultInstance().constructType(type).getGenericSignature());
+}

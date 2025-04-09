@@ -1,0 +1,21 @@
+public void testIssue106() {
+    DOMImplementation domImpl =
+        GenericDOMImplementation.getDOMImplementation();
+
+    String namespaceURI = "ns";
+    String qualifiedName = "doc";
+    Document doc = domImpl.createDocument(namespaceURI, qualifiedName, null);
+
+    Element root = doc.getDocumentElement();
+    root.setAttributeNS("http://www.w3.org/2000/xmlns/",
+                        "xmlns:a", namespaceURI);
+    root.setAttributeNS("http://www.w3.org/2000/xmlns/",
+                        "xmlns:b", namespaceURI);
+
+    root.appendChild(doc.createElementNS(namespaceURI, "a:elem"));
+    root.appendChild(doc.createElementNS(namespaceURI, "b:elem"));
+
+    final List<NodePointer> nodes = new ArrayList<NodePointer>();
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.iteratePointers(new NodePointer(null, doc), "/doc/elem",
+                            new

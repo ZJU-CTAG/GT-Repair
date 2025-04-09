@@ -1,0 +1,12 @@
+public void testIssue() throws Exception {
+    File f = new File("src/test/resources/issue107.tar.gz");
+    InputStream is = new FileInputStream(f);
+    try {
+        TarArchiveInputStream tin = new TarArchiveInputStream(new GzipCompressorInputStream(is));
+        TarArchiveEntry t = tin.getNextTarEntry();
+        assertEquals("  ", t.getUserName());
+        assertEquals("  ", t.getGroupName());
+    } finally {
+        is.close();
+    }
+}

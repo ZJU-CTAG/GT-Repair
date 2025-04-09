@@ -1,0 +1,19 @@
+public void testFinish() throws ArchiveException, IOException {
+    final String expected = "Hello World";
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ArchiveOutputStream aos = new ZipArchiveOutputStream(baos);
+    ArchiveEntry ae = aos.createArchiveEntry(new File("test"), "test");
+    aos.putArchiveEntry(ae);
+    aos.write(expected.getBytes());
+    aos.closeArchiveEntry();
+    aos.finish();
+    aos.close();
+
+    ArchiveInputStream ais = new ZipArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    ae = ais.getNextEntry();
+    assertNotNull(ae);
+    baos.reset();
+    IOUtils.copy(ais, baos);
+    ais.close();
+    assertEquals(expected, baos.toString());
+}

@@ -1,0 +1,10 @@
+public void testCSVPrinter() throws Exception {
+    CSVFormat format = CSVFormat.DEFAULT.withHeader("x");
+    File file = File.createTempFile("test", ".csv");
+    file.deleteOnExit();
+    try (CSVPrinter printer = format.print(new FileWriter(file))) {
+        printer.printRecord(42);
+    }
+    String csv = FileUtils.readFileToString(file);
+    assertEquals("x\n42\n", csv);
+}

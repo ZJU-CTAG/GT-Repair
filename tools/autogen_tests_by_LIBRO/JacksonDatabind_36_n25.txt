@@ -1,0 +1,12 @@
+public void testIssue108() {
+    org.codehaus.jackson.map.ObjectMapper objectMapper = new org.codehaus.jackson.map.ObjectMapper();
+    // StdDateFormat doesn't support setting lenient to false.
+    // objectMapper.setDateFormat(new StdDateFormat().setLenient(false));
+    objectMapper.enable(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+    objectMapper.enable(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_NULL_FOR_PRIMITIVES);
+
+    try {
+        objectMapper.readValue("{\"date\":\"2015-01-32\"}", MyClass.class);
+        fail("Exception should be thrown");
+    } catch (Exception e) {
+        assertEquals("Unrecognized token '32': was expecting ('true', 'false' or 'null')\n at [Source: {\"date\":\"2015-01-32\"}; line: 1, column: 18]",

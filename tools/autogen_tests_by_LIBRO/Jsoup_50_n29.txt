@@ -1,0 +1,11 @@
+public void testUtf16StreamWithBom() throws Exception {
+    byte[] utf16beBom = new byte[]{(byte) 0xFE, (byte) 0xFF, (byte) 0x00, (byte) 0x40};
+    byte[] utf16leBom = new byte[]{(byte) 0xFF, (byte) 0xFE, (byte) 0x40, (byte) 0x00};
+    byte[] utf8Bom = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+
+    assertEquals("UTF-8", DataUtil.getCharsetFromContentType("text/html; charset=UTF-8"));
+    assertEquals("UTF-8", DataUtil.getCharsetFromMeta(utf8Bom));
+    assertEquals("UTF-16BE", DataUtil.getCharsetFromMeta(utf16beBom));
+    assertEquals("UTF-16LE", DataUtil.getCharsetFromMeta(utf16leBom));
+
+    assertEquals("UTF

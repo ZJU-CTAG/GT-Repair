@@ -1,0 +1,12 @@
+public void testBase64InputStream() throws Exception {
+    int count = 0;
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    Base64InputStream b64stream = new Base64InputStream(
+        new ByteArrayInputStream("SGFsbG8gd29ybGQ=".getBytes()), 
+        true, 0, out);
+    while (b64stream.read() != -1) {
+        count++;
+    }
+    assertEquals(12, count);
+    assertEquals("Hello world", out.toString("UTF-8"));
+}

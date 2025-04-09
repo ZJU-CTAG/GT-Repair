@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.initOptions(new CompilerOptions());
+    String code = "/** @constructor */ function Foo() {"
+        + "var self = this;"
+        + "window.setTimeout(function() {"
+        + "window.location = self.location;"
+        + "}, 0);"
+        + "}"
+        + "Foo.prototype.setLocation = function(loc) {"
+        + "this.location = loc;"
+        + "};"
+        + "(new Foo()).setLocation('http://www.google.com/');";
+    Result result = compiler.compile(SourceFile.fromCode("testIssue108", code),
+        new CompilerOptions());
+    assertTrue(result.success);
+    assertFalse("setLocation should not be removed",
+        result.compiledCode.contains("setLocation"));
+}

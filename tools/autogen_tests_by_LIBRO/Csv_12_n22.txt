@@ -1,0 +1,13 @@
+public void testExcelWithEmptyColumnNames() {
+    String csv = "A,B,C,," + "\na,b,c,d,e";
+    Reader in = new StringReader(csv);
+    Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
+    Iterator<CSVRecord> iter = records.iterator();
+    assertTrue(iter.hasNext());
+    CSVRecord record = iter.next();
+    assertEquals(record.get("A"), "a");
+    assertEquals(record.get("B"), "b");
+    assertEquals(record.get("C"), "c");
+    assertEquals(record.get(""), "d");
+    assertEquals(record.get(" "), "e");
+}

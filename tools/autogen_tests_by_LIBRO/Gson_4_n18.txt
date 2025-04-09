@@ -1,0 +1,11 @@
+public void testIssue() {
+    JsonGenerator generator = new JsonFactory().createGenerator(new StringWriter());
+    generator.writeNumber(6);
+    generator.close();
+
+    JsonParser parser = new JsonFactory().createParser(new StringReader("6"));
+    assertEquals(6, parser.getNumberValue());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, parser.nextToken());
+    assertEquals(JsonToken.END_OBJECT, parser.nextToken());
+    parser.close();
+}

@@ -1,0 +1,13 @@
+public void testSimplexSolver() {
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] {3d, -4d}, 0);
+
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+
+    constraints.add(new LinearConstraint(new double[] {1d, 1d}, Relationship.LEQ, 2d));
+    constraints.add(new LinearConstraint(new double[] {-1d, -1d}, Relationship.LEQ, -1d));
+    constraints.add(new LinearConstraint(new double[] {-3d, -3d}, Relationship.LEQ, -3d));
+    constraints.add(new LinearConstraint(new double[] {-1d, -1d}, Relationship.GEQ, -1d));
+    constraints.add(new LinearConstraint(new double[] {-3d, -3d}, Relationship.GEQ, -3d));
+
+    SimplexSolver solver = new SimplexSolver();
+    PointValuePair solution = solver.optimize(f, new LinearConstraintSet

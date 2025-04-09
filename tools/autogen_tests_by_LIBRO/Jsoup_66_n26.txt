@@ -1,0 +1,14 @@
+public void testNextElementSibling() {
+    Document original = Jsoup.parse("<div>Initial element</div>");
+    Document clone = original.clone();
+
+    Element originalElement = original.child(0);
+    originalElement.after("<div>New element</div>");
+    assertEquals("New element", originalElement.nextElementSibling().text());
+    assertEquals("New element", originalElement.nextSibling().toString());
+
+    Element cloneElement = clone.child(0);
+    cloneElement.after("<div>New element</div>");
+    assertEquals("New element", cloneElement.nextElementSibling().text());
+    assertEquals("New element", cloneElement.nextSibling().toString());
+}

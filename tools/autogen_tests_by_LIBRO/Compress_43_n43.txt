@@ -1,0 +1,26 @@
+public void testZip() throws Exception {
+    File file = new File("target/test-output/zip/zip-with-data-descriptors.zip");
+
+    file.getParentFile().mkdirs();
+
+    OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
+    ZipArchiveOutputStream zipArchiveOutputStream = new ZipArchiveOutputStream(outputStream);
+
+    zipArchiveOutputStream.setUseZip64(Zip64Mode.AsNeeded);
+
+    zipArchiveOutputStream.setMethod(ZipArchiveOutputStream.DEFLATED);
+
+    zipArchiveOutputStream.setLevel(Deflater.DEFAULT_COMPRESSION);
+
+    zipArchiveOutputStream.setEncoding("utf8");
+
+    ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("test.txt");
+
+    zipArchiveEntry.setSize(0);
+
+    zipArchiveOutputStream.putArchiveEntry(zipArchiveEntry);
+
+    zipArchiveOutputStream.closeArchiveEntry();
+
+    zipArchiveOutputStream.close();
+}

@@ -1,0 +1,22 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.advancedOptimizations = true;
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(
+            options);
+    options.warningLevel = CheckLevel.VERBOSE;
+
+    compiler.initOptions(options);
+
+    SourceFile[] externs = new SourceFile[] {
+            SourceFile.fromCode("window.js", "var window = window || {};"),
+            SourceFile.fromCode("input.js",
+                    "window[\"foo\"] = function (obj, modifiesProp) {"
+                            + "return (function (saved) {"
+                            + "return modifiesProp(obj) + saved;"
+                            + "})(obj[\"prop\"]);" + "};") };
+
+    Result result = compiler.compile(externs,
+            new SourceFile[] { SourceFile.fromCode("input.js",
+                    "window[\"foo\"] = function (obj, modifiesProp) {"
+                            +

@@ -1,0 +1,10 @@
+public void testReadEmptyEntry() throws Exception {
+    SevenZFile file = new SevenZFile(getFile(getBaseDir() + "/compress/empty.7z"), "test".getBytes());
+    SevenZArchiveEntry entry = file.getNextEntry();
+    assertNotNull(entry);
+    assertEquals(0, entry.getSize());
+    assertEquals(0, entry.getCompressedSize());
+    assertEquals(0, entry.getCrcValue());
+    assertEquals(0, file.read(new byte[1], 0, 1));
+    file.close();
+}

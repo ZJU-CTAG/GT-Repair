@@ -1,0 +1,23 @@
+public void testNullStringIssue() {
+    final StringWriter testWriter = new StringWriter();
+    CsvFormat format = CsvFormat.DEFAULT.withNullString("\\N").withEscape('\\');
+    final CsvPrinter printer = format.print(testWriter);
+    printer.print("");
+    printer.print("\\N");
+    printer.print("\\\\N");
+    printer.println();
+    printer.flush();
+    assertEquals("\"\",\"\\\\N\",\"\\\\\\\\N\"\n", testWriter.toString());
+}
+public void testNullStringIssue2() {
+    final StringWriter testWriter = new StringWriter();
+    CsvFormat format = CsvFormat.DEFAULT.withNullString("\\N").withEscape('\\');
+    final CsvPrinter printer = format.print(testWriter);
+    printer.print("");
+    printer.print("\\N");
+    printer.print("\\\\N");
+    printer.println();
+    printer.flush();
+    assertEquals("\"\",\"\\\\N\",\"\\\\\\\\N\"\n", testWriter.toString());
+}
+``

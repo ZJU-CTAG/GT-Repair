@@ -1,0 +1,14 @@
+public void testGetHeaderMap() throws Exception {
+    final String csvInput = "a,b,c\n1,2,3";
+    CSVParser parser = new CSVParser(new StringReader(csvInput), CSVFormat.EXCEL.withHeader());
+    Map<String, Integer> headerMap = parser.getHeaderMap();
+    assertEquals(3, headerMap.size());
+    assertEquals(0, (int)headerMap.get("a"));
+    assertEquals(1, (int)headerMap.get("b"));
+    assertEquals(2, (int)headerMap.get("c"));
+    parser.close();
+    parser = new CSVParser(new StringReader(csvInput), CSVFormat.EXCEL);
+    headerMap = parser.getHeaderMap();
+    assertNull(headerMap);
+    parser.close();
+}

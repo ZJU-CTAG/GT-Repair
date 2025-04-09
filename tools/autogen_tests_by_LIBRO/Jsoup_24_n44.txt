@@ -1,0 +1,18 @@
+public void testJS() throws Exception {
+    String js = "<script language=\"JavaScript1.1\">\n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script>";
+    String str = "<HTML>\n" +
+            "<body>\n" +
+            "<div>\n" +
+            js + "\n" +
+            "</div>\n" +
+            "</body>\n" +
+            "</HTML>";
+
+    String result = Jsoup.clean(str, Whitelist.relaxed());
+    assertEquals("Should have valid script", "<html> <body> <div> <script language=\"JavaScript1.1\">\n" +
+            "    document.write('</scr' + 'ipt>');\n" +
+            "  </script> </div> </body> </html>", result);
+}
+

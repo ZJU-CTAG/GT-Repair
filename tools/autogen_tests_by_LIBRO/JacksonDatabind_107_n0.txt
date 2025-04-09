@@ -1,0 +1,11 @@
+public void testDeserializationWithDeserializationProblemHandler() throws IOException {
+        ObjectMapper om = new ObjectMapper();
+        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        om.addHandler(new DeserializationProblemHandler() {
+            @Override
+            public JavaType handleUnknownTypeId(DeserializationContext ctxt, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+                return Void.class;
+            }
+        });
+        om.readValue("[\"java.lang.Void\",null]", Void.class);
+    }

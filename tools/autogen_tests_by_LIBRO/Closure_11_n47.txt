@@ -1,0 +1,20 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setCheckSymbols(true);
+    options.setCheckTypes(true);
+    options.setCheckMissingReturn(true);
+    options.setCheckGlobalThisLevel(CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+
+    compiler.compile(
+            new JSSourceFile[] {
+                    JSSourceFile.fromCode("repro.js", "var makeClass = function(protoMethods) {\n" +
+                            " var clazz = function() {\n" +
+                            "   this.initialize.apply(this, arguments);\n" +
+                            " }\n" +
+                            " for (var i in protoMethods) {\n" +
+                            "   clazz.prototype[i] = protoMethods[i];\n" +
+                            " }\n" +
+                            " return clazz;\n" +
+                           

@@ -1,0 +1,23 @@
+public void testIssueInjectMocks() {
+    Foo foo = new Foo();
+    foo.setFinalField(new FinalField());
+    Foo foo2 = new Foo();
+    foo2.setFinalField(new FinalField());
+    assertSame(foo.data, foo2.data);
+}
+
+public class FinalField {
+    private String data = "Test";
+
+    public String getData() {
+        return data;
+    }
+}
+
+public class Foo {
+    @InjectMocks private final FinalField finalField;
+
+    public void setFinalField(FinalField finalField) {
+        this.finalField = finalField;
+    }
+}

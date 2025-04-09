@@ -1,0 +1,10 @@
+public void testIssue225() {
+    XMLInputFactory xif = XMLInputFactory.newFactory();
+    XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(
+            "<ElementA A:myAttr=\"Mytype\">" +
+                    " <B:ElementB>MY VALUE</B:ElementB>" +
+                    "</ElementA>"));
+    xsr.nextTag();
+    NodePointer ptr = new DOMNodePointer(null, ((StAXSource) xsr).getNode());
+    assertEquals("MY VALUE", ptr.getValue());
+}

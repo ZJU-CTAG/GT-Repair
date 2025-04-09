@@ -1,0 +1,17 @@
+public void testIssue108() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectWriter writer = mapper.writer()
+            .with(SerializationFeature.WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS)
+            .with(SerializationFeature.WRITE_ENUMS_USING_INDEX)
+            .with(SerializationFeature.QUOTE_FIELD_NAMES)
+            .with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .with(SerializationFeature.WRITE_NULL_MAP_VALUES);
+
+    final JsonFactory jsonFactory = mapper.getFactory();
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final UTF8JsonGenerator jsonGenerator = new UTF8JsonGenerator(jsonFactory, out, JsonEncoding.UTF8, null,
+            JsonWriteContext.createRootContext(JsonWriteContext.STATUS_OK_AFTER_COMMA));
+
+    jsonGenerator.writeStartObject();
+    jsonGenerator.writeFieldName("Hello");

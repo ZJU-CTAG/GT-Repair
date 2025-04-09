@@ -1,0 +1,11 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        EXTERNS,
+        Collections.singletonList(SourceFile.fromCode("test.js", "function foo() { var x = globalThis; }")),
+        new CompilerOptions()
+            .setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF)
+            .setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF));
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+}

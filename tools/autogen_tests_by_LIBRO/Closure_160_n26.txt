@@ -1,0 +1,7 @@
+public void testCheckVarsCommandLineOption() {
+  Compiler compiler = runCompilation("foo = {}; foo.bar = function() { alert(this.baz);};",
+                                     "--jscomp_warning=checkVars");
+  assertThat(compiler.getWarnings()).isEmpty();
+  assertThat(compiler.getErrors()).isNotEmpty();
+  assertThat(compiler.getErrors().toString()).contains("variable foo is undefined");
+}

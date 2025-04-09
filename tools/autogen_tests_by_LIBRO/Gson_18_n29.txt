@@ -1,0 +1,13 @@
+public void testIssue1186() {
+    TypeReference<BigClass> type = new TypeReference<BigClass>() {};
+    BigClass big = new Gson().fromJson("{\"inBig\":{\"key\":[{\"inSmall\":\"hello\"}]}}", type);
+    assertEquals("hello", big.inBig.get("key").get(0).inSmall);
+}
+
+class BigClass {
+    Map<String, ? extends List<SmallClass>> inBig;
+}
+
+class SmallClass {
+    String inSmall;
+}

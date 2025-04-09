@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    Configuration config = new Configuration();
+    config.setPrettyPrint(true);
+    File testDataDir = new File(System.getProperty("com.google.javascript.jscomp.testdata"), "testinputs");
+    File testFile = new File(testDataDir, "issue108.js");
+    String source = FileUtils.readFileToString(testFile, Charsets.UTF_8);
+    StringWriter stringWriter = new StringWriter(source.length());
+    PrintWriter printWriter = new PrintWriter(stringWriter);
+    config.setErrorFormat(Configuration.ERROR_FORMAT_MULTILINE);
+    config.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.ERROR);
+    config.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.OFF);
+    config.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    config.setWarningLevel(DiagnosticGroups.CHECK_UNDEFINED_VARS, Check

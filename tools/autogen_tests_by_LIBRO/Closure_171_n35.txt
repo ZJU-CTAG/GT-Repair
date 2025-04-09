@@ -1,0 +1,25 @@
+public void testIssue108() {
+        final Object foo = new Object() {
+            public void alert(final String message) {
+                alert(message);
+            }
+        };
+        ((JSObject) foo).setMember("alert",
+                new JSObject() {
+                    @JSFunction
+                    public void alert(final String message) {
+                        Window.alert(message);
+                    }
+                });
+        ((JSObject) foo).setMember("console",
+                new JSObject() {
+                    @JSFunction
+                    public void log(final Object message) {
+                        Window.alert(String.valueOf(message));
+                    }
+                });
+        Window.alert(String.valueOf(((JSObject) foo).getMember("alert")));
+        assertEquals("function alert(message) { [native code] }", String.valueOf(((JSObject) foo).getMember("alert")));
+        ((JSObject) foo).call("alert", "hello world");
+        ((JSObject) foo).call("console.log", "hello world");
+    }

@@ -1,0 +1,21 @@
+public void testUnionSort() throws JaxenException {
+    DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+    builderFactory.setNamespaceAware(true);
+    DocumentBuilder builder = null;
+    try {
+        builder = builderFactory.newDocumentBuilder();
+    } catch (ParserConfigurationException e) {
+        fail(e.getMessage());
+    }
+    Document doc = builder.newDocument();
+    Element main = doc.createElementNS(null, "MAIN");
+    doc.appendChild(main);
+    Element a = doc.createElementNS(null, "A");
+    a.appendChild(doc.createTextNode("avalue"));
+    main.appendChild(a);
+    Element b = doc.createElementNS(null, "B");
+    b.appendChild(doc.createTextNode("bvalue"));
+    main.appendChild(b);
+    XPath xpath = new DOMXPath("string(/MAIN/B | /MAIN/A)");
+    String result = (String) xpath.evaluate(doc);
+    assertEquals("avalue", result

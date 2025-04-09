@@ -1,0 +1,17 @@
+public void testCompiler() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setProcessCommonJSModules(true);
+    options.setCommonJSModulePathPrefix("lib/");
+    options.setTransformAMDToCJSModules(true);
+    options.setCheckSymbols(true);
+    options.setPreserveTypeAnnotations(true);
+    options.setGenerateExports(true);
+    options.setExportLocalPropertyDefinitions(true);
+    options.setRewriteFunctionExpressions(true);
+    options.setExtraAnnotationNames(ImmutableSet.of("Export", "ExportSymbol"));
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[] { JSSourceFile.fromCode("lib/Foo.js", "exportSy

@@ -1,0 +1,9 @@
+public void testTokenBufferDelegate() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    Value value = mapper.readValue("{ \"a\":1, \"b\":null }", Value.class);
+    assertTrue(value.getInput() instanceof TokenBuffer);
+    TokenBuffer buffer = (TokenBuffer) value.getInput();
+    assertTrue(buffer.hasMoreTokens());
+    assertEquals(JsonToken.FIELD_NAME, buffer.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, buffer.nextToken());
+}

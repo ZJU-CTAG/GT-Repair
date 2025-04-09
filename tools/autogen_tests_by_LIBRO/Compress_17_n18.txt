@@ -1,0 +1,11 @@
+public void testTarFile() throws Exception {
+    TarArchiveInputStream tais = new TarArchiveInputStream(new FileInputStream("src/test/resources/testdata/issue100.tar"));
+    try {
+        TarArchiveEntry tae = tais.getNextTarEntry();
+        assertNotNull(tae);
+        assertEquals("databases/mmssms.db-journal", tae.getName());
+        assertEquals(0x80000000, tae.getSize());
+    } finally {
+        tais.close();
+    }
+}

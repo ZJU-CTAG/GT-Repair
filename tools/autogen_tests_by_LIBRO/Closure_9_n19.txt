@@ -1,0 +1,21 @@
+public void testIssue804() {
+    ModuleManager mgr = new ModuleManager(null);
+    List<SourceFile> inputs = Lists.newArrayList();
+    inputs.add(SourceFile.fromCode(
+            "Foo.js",
+            "goog.provide('Foo');\n" +
+            "goog.require('Bar');\n" +
+            "function Foo() {}\n" +
+            "Foo.prototype.stuff = Bar.stuff;\n"));
+    inputs.add(SourceFile.fromCode(
+            "Bar.js",
+            "goog.provide('Bar');\n" +
+            "Bar.stuff = function() {}\n"));
+    inputs.add(SourceFile.fromCode(
+            "myApp.js",
+            "goog.provide('myApp');\n" +
+            "goog.require('Foo');\n" +
+            "var a = new Foo();\n" +
+            "a.stuff();\n"));
+    List<String> entryPoints = Lists.newArrayList();
+    entryPoints.add(inputs.

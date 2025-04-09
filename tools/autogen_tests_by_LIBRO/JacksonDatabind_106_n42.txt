@@ -1,0 +1,8 @@
+public void testReadIntFromTree() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode node = mapper.readTree("{\"x\": 2147483648}");
+    IntClass value = mapper.readerFor(IntClass.class).readValue(node);
+    System.out.printf("%s maps to %d\n", node.path("x").toString(), value.x);
+    assertEquals(-2147483648, value.x);
+    System.out.println("ok");
+}

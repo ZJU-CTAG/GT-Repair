@@ -1,0 +1,11 @@
+public void testIgnore()
+{
+	String json = "{ \"ints\": [ 1,2,3], \"strings\": [ \"a\", \"b\", \"c\"] }";
+	ObjectMapper om = new ObjectMapper();
+	om.setSerializationInclusion(Include.NON_EMPTY);
+	Map<String, Object> result = om.readValue(json, new TypeReference<Map<String,Object>>(){});
+	assertEquals(2, result.size());
+	// but should it not be 2, 3, 4?
+	assertEquals(Arrays.asList(1, 2, 3), result.get("ints"));
+	assertEquals(Arrays.asList("a", "b", "c"), result.get("strings"));
+}

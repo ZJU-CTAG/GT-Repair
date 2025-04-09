@@ -1,0 +1,15 @@
+public void testIssue108() {
+    File file = new File("pknobel-redis-dist-2.8.3\_1-linux.tar.gz");
+    try(TarArchiveInputStream tarInputStream =
+                new TarArchiveInputStream( new GzipCompressorInputStream( new FileInputStream(file)))) {
+        TarArchiveEntry entry;
+        while ((entry = tarInputStream.getNextTarEntry()) != null) {
+            assertEquals(file.getName() + ": " + entry.getName(), null, entry.getUserName());
+            assertEquals(file.getName() + ": " + entry.getName(), null, entry.getGroupName());
+        }
+    } catch ( FileNotFoundException e ) {
+        e.printStackTrace();
+    } catch ( IOException e ) {
+        e.printStackTrace();
+    }
+}

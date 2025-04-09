@@ -1,0 +1,14 @@
+public void testHarmonicFitterParameterGuesser() {
+    HarmonicFunction hf = new HarmonicFunction(2, 3);
+    HarmonicFitter hfitter = new HarmonicFitter(hf);
+    WeightedObservedPoints obs = new WeightedObservedPoints();
+    obs.add(0, 0);
+    obs.add(Math.PI / 2, 1);
+    obs.add(Math.PI, 0);
+    obs.add(3 * Math.PI / 2, -1);
+    obs.add(2 * Math.PI, 0);
+    double[] initGuess = hfitter.guess(obs.toList());
+    assertEquals(2.0, initGuess[0], 1.0e-7);
+    assertEquals(0.0, initGuess[1], 1.0e-7);
+    assertEquals(3.0, initGuess[2], 1.0e-7);
+}

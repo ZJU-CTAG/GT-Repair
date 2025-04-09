@@ -1,0 +1,22 @@
+public void testClassifyProblematic() {
+    testClassifyProblematic(2);
+    testClassifyProblematic(3);
+    testClassifyProblematic(4);
+}
+
+private void testClassifyProblematic(int i) {
+    Object[] args = new Object[i];
+    for (int j = 0; j < i; j++) {
+        args[j] = new Object();
+    }
+    int mask = (1 << i) - 1;
+    for (int j = 0; j < mask; j++) {
+        Object[] args1 = Arrays.copyOf(args, i);
+        for (int k = 0; k < i; k++) {
+            if ((j & (1 << k)) != 0) {
+                args1[k] = new Object();
+            }
+        }
+        ImmutableList.copyOf(args1);
+    }
+}

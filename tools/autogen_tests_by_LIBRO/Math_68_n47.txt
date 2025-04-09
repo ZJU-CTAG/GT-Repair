@@ -1,0 +1,24 @@
+public void testConvergence() {
+    final VectorialPointValuePair pair = new VectorialPointValuePair(new double[] { -1, 1 }, new double[] { 0, 0 });
+    final VectorialConvergenceChecker checker = new VectorialConvergenceChecker() {
+        @Override
+        public boolean converged(int iteration, VectorialPointValuePair previous, VectorialPointValuePair current) {
+            return true;
+        }
+    };
+    VectorialPointValuePair result = new LevenbergMarquardtOptimizer().optimize(new MaxEval(10), new
+    VectorialDifferentiableMultivariateRealFunction() {
+        @Override
+        public MultivariateRealFunction partialDerivative(int i) {
+            return new MultivariateRealFunction() {
+                @Override
+                public double value(double[] doubles) throws IllegalArgumentException {
+                    return 0;
+                }
+            };
+        }
+
+        @Override
+        public double[] value(double[] doubles) throws IllegalArgumentException {
+            return new double[2];
+        }

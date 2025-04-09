@@ -1,0 +1,16 @@
+public void testIssue107() throws Exception
+{
+    JsonFactory f = new JsonFactory();
+    JsonParser p = f.createParser("{\"a\":1}");
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    // first failure: should not return null
+    // (null would be legal for non-field tokens, but does not make sense for fields)
+    assertNotNull(p.getValueAsString());
+    // second failure: should return field name, not just non-null String:
+    assertEquals("a", p.getValueAsString());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(1, p.getIntValue());
+    assertToken(JsonToken.END_OBJECT, p.nextToken());
+    p.close();
+}

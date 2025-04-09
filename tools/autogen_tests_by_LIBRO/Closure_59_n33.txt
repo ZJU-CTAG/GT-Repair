@@ -1,0 +1,11 @@
+public void test() {
+    ClassLoader classLoader = getClass().getClassLoader();
+
+    File file = new File(classLoader.getResource("test.js").getFile());
+    JsChecker jsChecker = new JsChecker();
+    jsChecker.setFailure(true);
+    jsChecker.setWarningLevel(JsChecker.WarningLevel.VERBOSE);
+    jsChecker.setExterns(Arrays.asList("externs.js"));
+    jsChecker.setIgnoredWarnings(Arrays.asList("nonStandardJsDocs", "globalThis"));
+    jsChecker.check(file);
+}

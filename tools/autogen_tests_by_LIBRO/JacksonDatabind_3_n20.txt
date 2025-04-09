@@ -1,0 +1,11 @@
+public void testFull()
+    throws Exception
+{
+    LoggingJsonEncoder encoder = new LoggingJsonEncoder(true, true);
+    LoggingJsonDecoder decoder = new LoggingJsonDecoder();
+    LoggingEvent e1 = createLoggingEvent();
+    e1.setArgumentArray(null); // <---- this line
+    byte[] raw = encoder.toByteArray(e1);
+    LoggingEvent e2 = decoder.fromByteArray(raw);
+    assertEquals(e1, e2);
+}

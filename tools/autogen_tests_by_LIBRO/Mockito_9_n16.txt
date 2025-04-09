@@ -1,0 +1,19 @@
+public void testIssue121() throws Exception {
+    SomeAbstractClass spy = Mockito.spy(new SomeAbstractClass() {
+        @Override
+        public String getSomeString() {
+            return "real";
+        }
+    });
+    Mockito.when(spy.getSomeString()).thenReturn("mock");
+    Assert.assertEquals("mock", spy.getSomeString());
+    Assert.assertEquals("real", spy.getSomeStringReal());
+}
+
+abstract class SomeAbstractClass {
+    public abstract String getSomeString();
+
+    public final String getSomeStringReal() {
+        return getSomeString();
+    }
+}

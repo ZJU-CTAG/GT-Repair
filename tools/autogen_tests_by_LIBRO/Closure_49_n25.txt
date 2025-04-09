@@ -1,0 +1,8 @@
+public void testIssue140() {
+    String input = "var foo = function bar(){ var bar; alert(bar) };";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(new TestExterns(), input, OPTIMIZATIONS_SIMPLE_OPTIMIZATIONS);
+    assertFalse(result.success);
+    assertTrue(result.errors.length > 0);
+    assertTrue(result.errors[0].toString(), result.errors[0].toString().contains("Variable foo declared twice"));
+}

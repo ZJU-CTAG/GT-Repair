@@ -1,0 +1,16 @@
+public void testHeaderMap() throws Exception {
+        CSVFormat myFormat = CSVFormat.RFC4180.withDelimiter(",").withQuoteChar('"').withQuotePolicy(Quote.MINIMAL)
+                .withIgnoreSurroundingSpaces(true).withHeader().withSkipHeaderRecord(true);
+
+        InputStream is = new ByteArrayInputStream("Col1,Col2,Col2,Col3,Col4\n1,2,3,4,5\n4,5,6,7,8".getBytes());
+        CSVParser parser = new CSVParser(new InputStreamReader(is), myFormat);
+        try {
+            for (CSVRecord rec : parser) {
+                for (String header: rec.getHeaderNames()) {
+                    System.out.println(header + ": " + rec.get(header));
+                }
+            }
+        } finally {
+            parser.close();
+        }
+    }

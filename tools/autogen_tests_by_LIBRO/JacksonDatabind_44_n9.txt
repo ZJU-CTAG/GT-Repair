@@ -1,0 +1,25 @@
+public void testPolymorphicType() throws Exception
+{
+  final ObjectMapper mapper = new ObjectMapper();
+  mapper.enable(SerializationFeature.INDENT_OUTPUT);
+  final Parent parent = mapper.readValue("{\"one\":1,\"two\":2}", Parent.class);
+  assertEquals(1, parent.one);
+  assertEquals(2, parent.two);
+}
+
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME,
+  include = JsonTypeInfo.As.PROPERTY,
+  property = "type"
+)
+@JsonSubTypes({
+  @Type(value = Child.class, name = "child")
+})
+abstract class Parent {
+  public final int one = 1;
+  public final int two = 2;
+}
+
+class Child extends Parent {
+  public final int three = 3;
+}

@@ -1,0 +1,10 @@
+public void testIssue108() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    try {
+        mapper.readTree("123true");
+        fail();
+    } catch (JsonParseException e) {
+        // ok
+    }
+}

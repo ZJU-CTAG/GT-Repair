@@ -1,0 +1,23 @@
+public void testMixedContent () throws Exception
+{
+    WindSpeed wind = new WindSpeed();
+    wind.setUnits("kt");
+    wind.setSource("surface");
+    wind.setValue(27);
+
+    WindSpeed.Radius radius = new WindSpeed.Radius();
+    radius.setUnits("nm");
+    radius.setSector("NE");
+    radius.setValue(20);
+
+    wind.setRadius(Collections.singletonList(radius));
+
+    StringWriter sw = new StringWriter();
+    JAXBContext jc = JAXBContext.newInstance(WindSpeed.class);
+    Marshaller marshaller = jc.createMarshaller();
+    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+    marshaller.marshal(wind, sw);
+    String result = sw.toString();
+
+    String expectedResult = "<windSpeed units=\"kt\" source=\"surface\">27<radius units=\"nm\" sector=\"NE\">20</radius></windSpeed>";
+    assertEquals(expectedResult, result

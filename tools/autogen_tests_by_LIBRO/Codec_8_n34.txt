@@ -1,0 +1,21 @@
+public void testIssue108() {
+    final int iterations = 100000;
+    // test with no buffer
+    InputStream is = new Base64InputStream(new ByteArrayInputStream(new byte[10]), true);
+    try {
+        for (int i = 0; i < iterations; i++) {
+            is.read();
+        }
+    } catch (IOException e) {
+        fail("Unexpected IOException " + e.getMessage());
+    }
+    // test with small buffer
+    is = new Base64InputStream(new ByteArrayInputStream(new byte[10]), true, 10, new byte[10]);
+    try {
+        for (int i = 0; i < iterations; i++) {
+            is.read();
+        }
+    } catch (IOException e) {
+        fail("Unexpected IOException " + e.getMessage());
+    }
+}

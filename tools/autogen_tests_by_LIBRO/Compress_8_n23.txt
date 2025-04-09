@@ -1,0 +1,16 @@
+public void testTarEntry() throws Exception {
+    final byte[] bytes = new byte[512];
+    // 512 bytes, zeroed
+    Arrays.fill(bytes, (byte)0);
+
+    // Name
+    System.arraycopy("theFileName.txt".getBytes(), 0, bytes, 0, "theFileName.txt".length());
+
+    // Size
+    // This is the size that is invalid. It includes the trailing space/NUL
+    System.arraycopy("00000000001".getBytes(), 0, bytes, 124, "00000000001".length());
+
+    TarArchiveEntry tarEntry = new TarArchiveEntry(bytes);
+    assertEquals("theFileName.txt", tarEntry.getName());
+    assertEquals(1, tarEntry.getSize());
+}

@@ -1,0 +1,20 @@
+public void testWriteContext_convert() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        @Override
+        public Object findFilterId(Annotated a) {
+            return "filter1";
+        }
+    });
+    mapper.addMixIn(Object.class, MixIn.class);
+    mapper.setFilterProvider(new SimpleFilterProvider().addFilter("filter1", SimpleBeanPropertyFilter.filterOutAllExcept("a")));
+    String json = mapper.writer().writeValueAsString(new TestObject());
+    System.out.println(json);
+}
+
+public void testWriteContext_write() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+   

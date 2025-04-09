@@ -1,0 +1,25 @@
+public void testPearsonCorrelation() {
+    PearsonsCorrelation pearson = new PearsonsCorrelation();
+    NormalDistribution normalDistribution = new NormalDistribution(0, 1);
+
+    final int nSamples = 10000;
+    final int nTreatments = 500;
+    double[][] data = new double[nTreatments][nSamples];
+
+    // Generate samples
+    for (int i = 0; i < nTreatments; i++) {
+        for (int j = 0; j < nSamples; j++) {
+            data[i][j] = normalDistribution.sample();
+        }
+    }
+
+    // Perform correlation
+    double[] pValues = pearson.getCorrelationPValues(data);
+    assertFalse(Double.isNaN(pValues[0]));
+    for (int i = 0; i < nTreatments; i++) {
+        assertFalse(Double.isNaN(pValues[i]));
+        assertTrue(pValues[i] >= 0);
+        assertTrue(pValues[i] <= 1);
+    }
+}
+``

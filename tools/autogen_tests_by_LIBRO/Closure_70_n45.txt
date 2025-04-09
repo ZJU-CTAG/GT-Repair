@@ -1,0 +1,21 @@
+public void testIssue120() throws Exception {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setSummaryDetailLevel(3);
+    options.closurePass = true;
+    options.checkTypes = true;
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    Result result = compiler.compile(SourceFile.fromCode("v.js", "/*global window*/" +
+            "/*jslint sub: true*/" +
+            "/**" +
+            " * @constructor" +
+            " * @param {!Element} element" +
+            " */" +
+            "function Example(element) {" +
+            " /**" +
+            " * @param {!string} ns" +
+            " * @param {!string} name" +
+            " * @return {undefined}" +
+            " */" +
+            " this.appendElement = function appendElement(ns, name) {" +
+            " var e = element.ownerDocument.createElementNS(ns, name);" +

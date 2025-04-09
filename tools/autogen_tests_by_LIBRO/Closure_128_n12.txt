@@ -1,0 +1,12 @@
+public void testIssue108() {
+    JavaScriptCompiler compiler = new JavaScriptCompiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    SourceFile[] externs = new SourceFile[0];
+    externs[0] = SourceFile.fromCode("externs.js", "function alert(x) {}");
+    SourceFile[] inputs = new SourceFile[1];
+    inputs[0] = SourceFile.fromCode("input.js", "alert({0:0, 1:1});");
+    Compiler compiler2 = new Compiler();
+    compiler2.compile(externs, inputs, options);
+    assertEquals("alert({0:0,1:1});", compiler2.toSource());
+}

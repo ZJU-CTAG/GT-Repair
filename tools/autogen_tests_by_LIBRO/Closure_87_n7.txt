@@ -1,0 +1,15 @@
+public void testIssueIE8() {
+    String s = "if (e.onchange) { e.onchange({\n" +
+            "            \_extendedByPrototype: Prototype.emptyFunction,\n" +
+            "            target: e\n" +
+            "        }); }";
+    Compiler.setLoggingLevel(Level.FINE);
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(SourceFile.fromCode("[test]", s), options);
+    assertTrue(result.success);
+    System.out.println(result.sourceMap);
+}

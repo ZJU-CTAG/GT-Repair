@@ -1,0 +1,16 @@
+public void testIssue1154() {
+    MutableBigDecimal a = new MutableBigDecimal(new BigDecimal("-1.23E+308"));
+    NumberFormat fmt = NumberFormat.getInstance();
+    ((DecimalFormat) fmt).setParseBigDecimal(true);
+    String text = fmt.format(a);
+    System.out.println("Formatted: " + text);
+    ParsePosition ppos = new ParsePosition(0);
+    BigDecimal parsed = (BigDecimal) fmt.parse(text, ppos);
+    if (parsed == null) {
+        System.out.println("Parsing failed!");
+    } else {
+        System.out.println("Parsed: " + parsed);
+        System.out.println("Parsed value: " + parsed.doubleValue());
+    }
+    assertEquals(a, parsed);
+}

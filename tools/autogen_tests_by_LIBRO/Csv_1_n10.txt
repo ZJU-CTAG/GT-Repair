@@ -1,0 +1,15 @@
+public void testReadLine() throws Exception {
+    String s = "line1\rline2\nline3\r\nline4";
+    StringReader reader = new StringReader(s);
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(new BufferedReader(reader));
+    assertEquals("line1", ebr.readLine());
+    assertEquals(2, ebr.getLineNumber());
+    assertEquals("line2", ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+    assertEquals("line3", ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+    assertEquals("line4", ebr.readLine());
+    assertEquals(5, ebr.getLineNumber());
+    assertNull(ebr.readLine());
+    assertEquals(5, ebr.getLineNumber());
+}

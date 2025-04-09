@@ -1,0 +1,18 @@
+public void testIssue() throws IOException {
+    Compiler compiler = new Compiler();
+    List<SourceFile> externs = ImmutableList.of(SourceFile.fromCode("externs",
+            "function require(a) {};"));
+
+    List<SourceFile> sources = ImmutableList.of(
+            SourceFile.fromCode("module", "define(function() { return { echo: function(val) { window.console.log(val); }}});"),
+            SourceFile.fromCode("entry", "var echo = require('module');\necho.echo('hello world');"));
+
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compilerOptions.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.ERROR);
+    compilerOptions.setPrettyPrint(true);
+    compilerOptions.setChecksOnly(true);
+    compilerOptions.setCommonJSModulePathPrefix("module");
+
+    Result result = compiler.compile(externs, sources, compilerOptions);
+    assertFalse(result.success

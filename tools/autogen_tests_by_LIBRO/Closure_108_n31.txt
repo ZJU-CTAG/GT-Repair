@@ -1,0 +1,17 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+
+    compiler.compile(JavacTestingAbstractCompiler.createSourceFile(
+            "var goog = {};\n" +
+            "goog.scope;\n" +
+            "var ns = {};\n" +
+            "ns.sub = {};\n" +
+            "/** @constructor */\n" +
+            "ns.sub.C = function() {};\n" +
+            "\n" +
+            "goog.scope(function() {\n" +
+            " var sub = ns.sub;\n" +
+            " /** @type {sub.C} */\n" +
+            " var x = null;\n" +
+            "});\n"));
+}

@@ -1,0 +1,12 @@
+public void testNamespaceResolving() throws Exception {
+    String xml = "<test111 xmlns=\"test111\"><bla:foo xmlns:bla=\"bla\"><bla:bar>a</bla:bar><test xmlns=\"\"></test></bla:foo></test111>";
+    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+    Document doc = docBuilder.parse(new ByteArrayInputStream(xml.getBytes()));
+    JXPathContext context = JXPathContext.newContext(doc);
+    context.setLenient(true);
+    context.setNamespaceContextPointer(new DOMNamespaceContextPointer(context, doc.getDocumentElement()));
+    context.getVariables().declareVariable("defaultNamespace", "test111");
+    context.getVariables().declareVariable("bla", "bla");
+    context.getNamespaceResolver().registerNamespace("test111", (String)context.getValue("$defaultNamespace"));
+    context.getNamespaceResolver().

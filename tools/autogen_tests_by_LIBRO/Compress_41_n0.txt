@@ -1,0 +1,14 @@
+public void testIssue() throws Exception {
+    final File testFile = new File("target/test-classes/test.zip");
+    final ZipArchiveInputStream zais = new ZipArchiveInputStream(new FileInputStream(testFile));
+    boolean exceptionCaught = false;
+    try {
+        ZipArchiveEntry ze;
+        while ((ze = zais.getNextZipEntry()) != null) {
+            System.out.println(ze.getName());
+        }
+    } catch (final IOException e) {
+        exceptionCaught = true;
+    }
+    assertTrue(exceptionCaught);
+}

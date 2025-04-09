@@ -1,0 +1,14 @@
+public void testIssue2_7()
+{
+    SimpleType st = SimpleType.construct(MyValue.class);
+    assertTrue(st.hasGenericTypes());
+    assertEquals(1, st.containedTypeCount());
+    assertEquals(1, st.containedType(0).containedTypeCount());
+    assertEquals(2, st.containedType(0).containedType(0).containedTypeCount());
+    assertEquals(String.class, st.containedType(0).containedType(0).containedType(0).getRawClass());
+    assertEquals(Integer.class, st.containedType(0).containedType(0).containedType(1).getRawClass());
+}
+
+static class MyValue {
+    public Map<String, Map<String, Integer>> myMap;
+}

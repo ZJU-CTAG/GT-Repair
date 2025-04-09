@@ -1,0 +1,15 @@
+public void testIssue() {
+    String test = "function closureCompilerTest(someNode) { var nodeId; return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0); }";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    level.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            SourceFile.fromCode("externs.js", "var console;"),
+            SourceFile.fromCode("test.js", test),
+            options);
+    String result = compiler.toSource();
+    System.out.println(result);
+}

@@ -1,0 +1,17 @@
+public void testIssue108() {
+    final MultivariateFunction m = new MultivariateFunction() {
+        public double value(double[] point) {
+            return point[0] * point[1];
+        }
+    };
+    MultivariateOptimizer optimizer =
+        new CMAESOptimizer(1000000, 1e-12, false, 0, 0, new MersenneTwister(), true, 1);
+    PointValuePair optimum = optimizer.optimize(
+        new MaxEval(100),
+        new ObjectiveFunction(m),
+        GoalType.MAXIMIZE,
+        new InitialGuess(new double[] { 0.0, 0.0 }),
+        new SimpleBounds(new double[] { -1.0, -1.0 }, new double[] { 1.0, 1.0 }));
+    assertEquals( 1.0, optimum.getPoint()[0], 1.0e-10);
+    assertEquals( 1.0, optimum.getPoint()[1], 1.0e-10);
+}

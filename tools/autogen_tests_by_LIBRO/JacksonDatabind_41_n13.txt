@@ -1,0 +1,18 @@
+public void testIssue1079() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    // should work just fine:
+    mapper.readValue("[ \"value\" ]", new TypeReference<List<String>>() { });
+
+    // but NOT work when passing null:
+    try {
+        // fails, because (a) we should really not pass null; but also because
+        // (b) we may not be able to resolve implicit empty configuration, if using
+        // 2.7.x or later.
+        mapper.readValue("[ \"value\" ]", new TypeReference<List<String>>() { }, null);
+        fail("Should not pass");
+    } catch (JsonMappingException e) {
+        verifyException(e, "Can not construct");
+        verifyException(e, "from empty String");
+    }
+}

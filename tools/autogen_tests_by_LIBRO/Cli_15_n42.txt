@@ -1,0 +1,22 @@
+public void testIssue107() {
+    DateTimeFormatter dtf = DateTimeFormat.forPattern("xxxxMM'w'ww");
+    DateTime dt = dtf.parseDateTime("201101w01");
+    assertEquals(2011, dt.getYear());
+    assertEquals(1, dt.getMonthOfYear());
+    assertEquals(3, dt.getDayOfMonth());
+}
+public void testSingleOptionSingleArgument() throws Exception {
+    String defaulValue1 = "100";
+    String defaultValue2 = "1000";
+    final DefaultOptionBuilder obuilder = new DefaultOptionBuilder();
+    final ArgumentBuilder abuilder = new ArgumentBuilder();
+    final GroupBuilder gbuilder = new GroupBuilder();
+    DefaultOption bOption = obuilder.withShortName("b")
+        .withLongName("b")
+        .withArgument(abuilder.withName("b")
+        .withMinimum(0)
+        .withMaximum(2)
+        .withDefault(defaulValue1)
+        .withDefault(defaultValue2)
+        .create())
+        .

@@ -1,0 +1,26 @@
+public void testFrequencyAdd() {
+    final Object OBJ = new Object();
+    final Comparable<?> COMP = new Integer(1);
+    final int N = 2;
+    Frequency f = new Frequency();
+    f.addValue(COMP);
+    f.addValue(COMP);
+    f.addValue(COMP);
+    try {
+        f.addValue(OBJ);
+        fail("Expecting IllegalArgumentException");
+    } catch (IllegalArgumentException ex) {
+        // expected
+    }
+    assertEquals(N, f.getCount(COMP));
+    assertEquals(1, f.getPct(COMP), Double.MIN_VALUE);
+    assertEquals(N, f.getCumFreq(COMP));
+    assertEquals(1, f.getCumPct(COMP), Double.MIN_VALUE);
+    try {
+        f.getCount(OBJ);
+        fail("Expecting ClassCastException");
+    } catch (ClassCastException ex) {
+        // expected
+    }
+    try {
+        f.getP

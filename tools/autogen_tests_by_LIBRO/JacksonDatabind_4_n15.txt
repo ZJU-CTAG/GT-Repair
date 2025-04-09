@@ -1,0 +1,15 @@
+public void testIssue108() throws IOException {
+    String json = "[{\"bad\": \"bad\"}, {\"good\": \"good\"}, {\"bad\": \"bad\"}]";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    try {
+        List<Issue108Bean> beans = mapper.readValue(json, new TypeReference<List<Issue108Bean>>(){});
+    } catch (JsonMappingException e) {
+        // Let's go through all references and check the index
+        for (InvalidFormatException.Reference ref : e.getPath()) {
+            if (ref.getIndex() != -1) {
+                fail("-1 found for index of reference " + ref);
+            }
+        }
+    }
+}

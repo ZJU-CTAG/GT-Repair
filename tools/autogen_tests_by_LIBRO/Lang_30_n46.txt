@@ -1,0 +1,14 @@
+public void testContainsAny() {
+    final String CharU20000 = "\uD840\uDC00";
+    final String CharU20001 = "\uD840\uDC01";
+    assertTrue(StringUtils.contains(CharU20000 + CharU20001, CharU20000));
+    assertTrue(StringUtils.contains(CharU20000 + CharU20001, CharU20001));
+    assertTrue(StringUtils.contains(CharU20000, CharU20000));
+    assertFalse(StringUtils.contains(CharU20000, CharU20001));
+    // StringUtils.containsAny() fails
+    assertFalse(StringUtils.containsAny(CharU20000, CharU20001));
+    assertFalse(StringUtils.containsAny(CharU20001, CharU20000));
+    // HOWEVER,
+    // JRE methods work correctly
+    assertTrue(CharU20000.indexOf(CharU20001) == -1);
+    assertTrue(CharU20000.indexOf(CharU20000) != -1

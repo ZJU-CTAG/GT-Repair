@@ -1,0 +1,7 @@
+public void testUTF16BOM() throws IOException {
+    assertEquals("UTF-16LE", StreamUtils.readStream(new ByteArrayInputStream(new byte[]{-1, -2, 'a', 'b'}), "UTF-16LE"));
+    assertEquals("UTF-16BE", StreamUtils.readStream(new ByteArrayInputStream(new byte[]{-2, -1, 'a', 'b'}), "UTF-16BE"));
+
+    assertEquals("\u20AC", StreamUtils.readStream(new ByteArrayInputStream(new byte[]{-1, -2, 0x20, 0xAC}), null));
+    assertEquals("\u20AC", StreamUtils.readStream(new ByteArrayInputStream(new byte[]{-2, -1, 0x20, 0xAC}), null));
+}

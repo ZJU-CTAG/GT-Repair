@@ -1,0 +1,17 @@
+public void testPropertyNamingStrategy() throws Exception {
+    final ObjectMapper mapper = new ObjectMapper()
+            .setPropertyNamingStrategy(new PropertyNamingStrategy.SnakeCaseStrategy());
+    final String json = mapper.writeValueAsString(new Foo(1));
+    assertEquals("{\"id\":1}", json);
+    final Foo foo = mapper.readValue(json, Foo.class);
+    assertEquals(1, foo.id);
+}
+
+static final class Foo {
+    final int id;
+
+    @JsonCreator
+    Foo(@JsonProperty("id") final int id) {
+        this.id = id;
+    }
+}

@@ -1,0 +1,9 @@
+public void testTypeIdAsWrapperId() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.WRAPPER_OBJECT);
+    String json = mapper.writeValueAsString(new Foo("bar"));
+    assertEquals("{\"@type\":\"com.fasterxml.jackson.databind.ObjectMapperTest$Foo\",\"@id\":\"bar\"}", json);
+    Foo foo = mapper.readValue(json, Foo.class);
+    assertEquals("bar", foo.id);
+}

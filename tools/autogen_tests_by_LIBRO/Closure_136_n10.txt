@@ -1,0 +1,22 @@
+public void testSuper() {
+    String source =
+        "function foo() {" +
+        "  this.bar = function() { " +
+        "    alert('foo.bar'); " +
+        "  } " +
+        "} " +
+        "foo.prototype.baz = function() { " +
+        "  alert('foo.baz'); " +
+        "  this.$super(); " +
+        "} " +
+        "function bar() { " +
+        "  this.$super(); " +
+        "} " +
+        "bar.prototype = new foo(); " +
+        "bar.prototype.baz = function() { " +
+        "  alert('bar.baz'); " +
+        "  this.$super(); " +
+        "} ";
+    Compiler compiler = compile(source);
+    Node root = compiler.getRoot().getLastChild();
+    Node barCall = root.getFirstChild().getNext().getNext().getNext().getNext().getNext().getNext().getNext().getNext().getNext().getNext().getFirstChild().getNext().getNext().

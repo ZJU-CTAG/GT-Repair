@@ -1,0 +1,17 @@
+public void testIssue107() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping();
+    Foo foo = new Foo("bar");
+    String serialized = mapper.writeValueAsString(foo); // {"bar" : "bar"}
+    JsonNode jsonNode = mapper.readTree(serialized);
+}
+
+public static class Foo {
+    private String bar;
+    public Foo() { }
+    public Foo(String bar) {  this.bar = bar; }
+
+    public String getBar() { return bar; }
+    public void setBar(String bar) { this.bar = bar; }
+}

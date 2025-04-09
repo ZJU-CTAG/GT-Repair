@@ -1,0 +1,28 @@
+public void testReinitialization() {
+    LocalDate startDate = new LocalDate(2014, 1, 1);
+    LocalDate endDate = new LocalDate(2014, 1, 3);
+
+    int nbDays = Days.daysBetween(startDate, endDate).getDays() + 1;
+
+    EventSeries<Integer> dayAsEvent = new TimeSeries<>(new DiscreteDomain<Integer>() {
+        @Override
+        public Integer getNextValue(Integer integer) {
+            return integer + 1;
+        }
+
+        @Override
+        public Integer getPreviousValue(Integer integer) {
+            return integer - 1;
+        }
+    });
+
+    Random random = new Random(0);
+    for (int i = 0; i < nbDays; i++) {
+        for (int j = 0; j < random.nextInt(5); j++) {
+            dayAsEvent.add(i, random.nextInt(3));
+        }
+    }
+
+    EventSeries<Integer> filteredDayAsEvent = dayAsEvent.filter(new EventFilter<Integer>() {
+        @Override
+        public boolean isEventAccepted(Integer

@@ -1,0 +1,8 @@
+public void testIssue() {
+    String a = "function f() { var a = [], b; a.push(b = []); b[0] = 1; return a; }";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            "function f() { var a = [], b; a.push(b = []); b[0] = 1; return a; }",
+            new SimpleSourceFile("a", a));
+    assertEquals(Result.State.ERROR, result.getState());
+}

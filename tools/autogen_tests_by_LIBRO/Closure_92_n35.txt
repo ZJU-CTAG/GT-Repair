@@ -1,0 +1,19 @@
+public void testIssue() {
+    String closure = "goog.provide('apps'); " +
+            "goog.provide('apps.foo.bar.B'); " +
+            "goog.provide('apps.foo.bar.C');";
+    String expected = "(function(){var apps={};apps.foo={};apps.foo.bar={};})();" +
+            "(function(){apps.foo.bar.B={};})();" +
+            "(function(){apps.foo.bar.C={};})();";
+
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.checkSymbols = true;
+    options.devMode = DevMode.EVERY_PASS;
+    options.inputIdGenerators = InputIdGenerators.RELATIVE_PATH;
+    options.prettyPrint = true;
+    options.setCodingConvention(new ClosureCodingConvention());
+    options.exportTestFunctions = true;
+
+    SourceFile externs = SourceFile.fromCode("externs.

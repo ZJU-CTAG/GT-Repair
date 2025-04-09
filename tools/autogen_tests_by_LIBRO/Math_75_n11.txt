@@ -1,0 +1,17 @@
+public void testGetCount() {
+    Frequency f = new Frequency();
+    f.addValue("a");
+    f.addValue("a");
+    f.addValue("a");
+    f.addValue("b");
+    f.addValue("b");
+    assertEquals(3, f.getCount("a"));
+    assertEquals(2, f.getCount("b"));
+    // Note that getCount(null) is inconsistent with the other methods
+    assertEquals(0, f.getCount(null));  // null not a value, returns 0
+    assertEquals(0, f.getCount("c"));
+    // getPct() is cumulative!
+    assertEquals(0.6d, f.getPct("a"), 0.01);
+    assertEquals(1.0d, f.getPct("b"), 0.01);
+    assertEquals(0.0d, f.getPct("c"), 0.01);
+}

@@ -1,0 +1,20 @@
+public void testNamespaces() throws Exception {
+    JXPathContext context = JXPathContext.newContext(new TestClass());
+    context.registerNamespace("ns2", "http://www.xyz.com/");
+    context.registerNamespace("ns4", "urn:test");
+    assertEquals("bar", context.getValue("/ns2:foo/ns4:bar"));
+}
+
+public class TestClass
+{
+   public Foo getFoo() {
+      return new Foo();
+   }
+}
+
+class Foo
+{
+   public String getBar() {
+      return "bar";
+   }
+}

@@ -1,0 +1,14 @@
+public void testPolymorphic() {
+    String json = "{\"type\":\"b\",\"n\":32}";
+    Polymorphic pojo = mapper.readValue(json, Polymorphic.class);
+    assertNotNull(pojo);
+    assertTrue(pojo instanceof Polymorphic.B);
+    assertEquals(32, ((Polymorphic.B) pojo).n);
+    json = "{\"n\":32}";
+    try {
+        mapper.readValue(json, Polymorphic.class);
+        fail();
+    } catch (JsonMappingException ex) {
+        // NOP
+    }
+}

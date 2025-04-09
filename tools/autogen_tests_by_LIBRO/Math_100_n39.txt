@@ -1,0 +1,32 @@
+public void testGetCovariances() {
+        final double[] parameters = new double[]{1, 2, 4, 5};
+        final double[][] jacobian = new double[][]{
+            new double[]{1, 2, 3, 4},
+            new double[]{2, 3, 4, 5},
+            new double[]{3, 4, 5, 6},
+            new double[]{4, 5, 6, 7}
+        };
+        AbstractEstimator estimator = new AbstractEstimator() {
+            @Override
+            protected void guessParametersErrors(EstimationProblem problem, double[] weights, double[] parametersSigma) {
+            }
+
+            @Override
+            protected double[][] computeWeightedJacobian(EstimationProblem problem, double[] weights) {
+                return jacobian;
+            }
+        };
+
+        estimator.estimate(new EstimationProblem() {
+            @Override
+            public double[] getTarget() {
+                return null;
+            }
+
+            @Override
+            public int getMeasurementsSize() {
+                return 0;
+            }
+
+            @Override
+           

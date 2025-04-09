@@ -1,0 +1,16 @@
+public void testIssue107() {
+    JsonFactory jsonFactory = new JsonFactory();
+    jsonFactory.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+    jsonFactory.enable(JsonParser.Feature.ALLOW_MISSING_VALUES);
+    String json = "{\"item\":{\"type\":\"xevent\",\"location\":\"location1\"}}";
+    JsonParser parser = jsonFactory.createParser(json);
+    parser.nextToken();
+    parser.nextValue();
+    assertEquals(JsonToken.START_OBJECT, parser.getCurrentToken());
+    String fieldname = parser.getCurrentName();
+    assertEquals("item", fieldname);
+    parser.nextValue();
+    assertEquals(JsonToken.START_OBJECT, parser.getCurrentToken());
+    fieldname = parser.getCurrentName();
+    assertEquals("type", fieldname);
+    Object

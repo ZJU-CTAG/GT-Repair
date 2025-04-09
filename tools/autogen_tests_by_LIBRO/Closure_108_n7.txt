@@ -1,0 +1,19 @@
+public void testPreconditionCrash() {
+    Compiler compiler = new Compiler();
+    Node node = compiler.parseTestCode("var goog = {};\n" +
+        "goog.scope;\n" +
+        "\n" +
+        "var ns = {};\n" +
+        "ns.sub = {};\n" +
+        "/** @constructor */\n" +
+        "ns.sub.C = function() {};\n" +
+        "\n" +
+        "\n" +
+        "goog.scope(function() {\n" +
+        " var sub = ns.sub;\n" +
+        " /** @type {sub.C} */\n" +
+        " var x = null;\n" +
+        "});");
+    ScopedAliases scopedAliases = new ScopedAliases(compiler);
+    scopedAliases.process(null, node);
+}

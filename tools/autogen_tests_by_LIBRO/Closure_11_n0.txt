@@ -1,0 +1,19 @@
+public void testRecordTypeInferenceWithThisAnnotation() {
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT_2015);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setCheckTypes(true);
+    options.setCheckSymbols(true);
+    options.setCheckGlobalNamesLevel(CheckLevel.ERROR);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.ERROR);
+    compiler.setLoggingLevel(Level.FINE);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+            SourceFile.fromCode("input.js",
+                    LINE_JOINER.join(
+                            "/**",
+                            " * @constructor",
+                            " * @param {{name: string, height: number}} options",
+                            " */",
+                            "var Person = function(options){};",
+                            "Person = makeClass(/** @lends Person.prototype

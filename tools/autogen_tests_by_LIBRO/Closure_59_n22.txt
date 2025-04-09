@@ -1,0 +1,12 @@
+public void testIssue123() {
+    // globalThis is a warning by default.
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+    compiler.compile(SourceFile.fromCode("externs", ""),
+        ImmutableList.of(SourceFile.fromCode("src", "var x = globalThis;")),
+        options);
+    List<JSError> errors = compiler.getErrors();
+    assertEquals(0, errors.size());
+}

@@ -1,0 +1,29 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    compilerOptions.setWarningLevel(DiagnosticGroups.LINT_CHECKS, CheckLevel.WARNING);
+    compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("input.js",
+        LINE_JOINER.join(
+            "/**",
+            " * @constructor",
+            " */",
+            "function SuperClass () {",
+            "}",
+
+            "SuperClass.prototype.CustomMethod = function() {",
+            "}",
+
+            "/**",
+            " * @constructor",
+            " * @extends {SuperClass}",
+            " */",
+            "function SubClass () {",
+            "}",
+            "SubClass.prototype = new SuperClass();",
+
+            "/**",
+            " * @override",
+            " */",
+            "SubClass.prototype.CustomMethod = function() {",
+            " this.my

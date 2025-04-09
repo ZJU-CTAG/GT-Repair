@@ -1,0 +1,17 @@
+public void testIssue() {
+    String js = "var foo = function bar(){\n" +
+            "var bar;\n" +
+            "alert(bar)\n" +
+            "};\n";
+    String expected = "var foo = function bar() {\n" +
+            "  alert(void 0)\n" +
+            "};\n";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    level.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    CompilationResult result = compiler.compile(externs, ImmutableList.of(jsSource(js)), options);
+    String output = compiler.toSource();
+    assertEquals(expected, output);
+}

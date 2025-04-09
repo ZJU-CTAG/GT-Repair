@@ -1,0 +1,17 @@
+public void test() {
+    MyException e = new MyException("message");
+    e.initCause(new Throwable("cause"));
+    String json = mapper.writeValueAsString(e);
+    mapper.readValue(json, MyException.class);
+}
+
+@JsonIgnoreProperties("cause")
+public class MyException extends RuntimeException {
+
+    private static final long serialVersionUID = 1L;
+
+    public MyException(String message) {
+        super(message);
+    }
+
+}

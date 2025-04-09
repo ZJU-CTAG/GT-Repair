@@ -1,0 +1,16 @@
+public void testFix() throws Exception
+{
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final UTF8JsonGenerator gen = new UTF8JsonGenerator(out, JsonEncoding.UTF8,
+            new ObjectMapper(new JsonFactory()).getFactory());
+    gen.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+    gen.writeStartArray();
+    gen.writeStartObject();
+    gen.writeFieldName("test");
+    gen.writeString("hi");
+    gen.writeEndObject();
+    gen.writeEndArray();
+    gen.close();
+    final String json = out.toString("UTF-8");
+    assertEquals("[{test:\"hi\"}]", json);
+}

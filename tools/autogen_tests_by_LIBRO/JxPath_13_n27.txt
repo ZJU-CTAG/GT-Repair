@@ -1,0 +1,8 @@
+public void testNamespace() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream("<a:a xmlns:a='http://a/a' a:attr='value'/>".getBytes()));
+    DOMNodePointer pointer = new DOMNodePointer(document.getDocumentElement());
+    assertEquals("value", pointer.getValue());
+}

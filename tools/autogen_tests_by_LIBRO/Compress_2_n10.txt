@@ -1,0 +1,25 @@
+public void testArArchive() throws IOException {
+    final String filename = getTestFile("bla.ar").getAbsolutePath();
+    ArArchiveOutputStream out = new ArArchiveOutputStream(new FileOutputStream(filename));
+    ArArchiveEntry entry = new ArArchiveEntry("test1.xml");
+    out.putArchiveEntry(entry);
+    out.write(new byte[]{1,2,3});
+    out.closeArchiveEntry();
+
+    entry = new ArArchiveEntry("test2.xml");
+    out.putArchiveEntry(entry);
+    out.write(new byte[]{1,2,3});
+    out.closeArchiveEntry();
+
+    out.close();
+
+    ArArchiveInputStream in = new ArArchiveInputStream(new FileInputStream(filename));
+    entry = in.getNextEntry();
+    assertEquals("test1.xml", entry.getName());
+
+    entry = in.getNextEntry();
+    assertEquals("test2.xml", entry.getName());
+    in.close();
+
+    // delete test2.xml
+    Ar

@@ -1,0 +1,14 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setWarningLevel(DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        externs,
+        ImmutableList.of(SourceFile.fromCode("test.js", "var RecordType1; var RecordType2; var func; func({name: 'jim', id: 0});")),
+        options);
+    assertEquals(0, result.errors.length);
+}

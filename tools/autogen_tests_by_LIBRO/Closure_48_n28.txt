@@ -1,0 +1,13 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.WARNING);
+    options.setWarningLevel(DiagnosticGroups.MISSING_PROPERTIES, CheckLevel.WARNING);
+    options.setCheckTypes(true);
+    options.setCheckGlobalNamesLevel(CheckLevel.WARNING);
+    options.setExtraAnnotationNames(ImmutableSet.of("suppressReceiverCheck"));
+    Compiler compiler = compile(options, "class myclass { fn(success) { } test() { this.fn(); this.fn = function() { }; } }");
+    assertEquals(1, compiler.getErrors().length);
+}

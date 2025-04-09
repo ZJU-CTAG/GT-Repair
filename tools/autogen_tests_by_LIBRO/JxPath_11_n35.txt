@@ -1,0 +1,12 @@
+public void testNamespace() throws JaxenException, ParserConfigurationException {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setNamespaceAware(true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.newDocument();
+    Element root = doc.createElement("root");
+    doc.appendChild(root);
+    root.setPrefix("my");
+    root.setAttributeNS("http://my.com/ns", "my:attr", "value");
+    DOMXPath xpath = new DOMXPath("//@*");
+    List attr = xpath.selectNodes(doc);
+}

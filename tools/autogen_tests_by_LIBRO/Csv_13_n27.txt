@@ -1,0 +1,12 @@
+public void testCsvPrinter() throws IOException {
+    CsvFormat csvFormat = CsvFormat.DEFAULT.withNullString("\\N")
+            .withEscape('\\');
+    StringWriter out = new StringWriter();
+
+    try (CsvAppender appender = csvFormat.print(out)) {
+        appender.append("foo");
+        appender.append("\\N");
+        appender.append("bar");
+    }
+    assertEquals("foo\\Nbar\n", out.toString());
+}

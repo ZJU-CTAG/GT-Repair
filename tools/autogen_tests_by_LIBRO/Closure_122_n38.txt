@@ -1,0 +1,18 @@
+public void test105() {
+    String source = "/** @preserve Foo License */\n" +
+            "alert(\"foo\");";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.WARNING);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    Result result = compiler.compile(
+            SourceFile.fromCode("test.js", source),
+            options
+    );
+    assertTrue(result.success);
+    assertEquals(
+            "/** @preserve Foo License */\n" +
+            "alert(\"foo\");",
+            compiler.toSource()
+    );
+}

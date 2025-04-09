@@ -1,0 +1,19 @@
+public void testPolymorphicWithoutTypeId() throws Exception {
+    final ObjectMapper mapper = mapperWithModule();
+    mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, true);
+    mapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+    final String json = "{\"a\":1}";
+    final PolymorphicValue val = mapper.readValue(json, PolymorphicValue.class);
+}
+
+static class PolymorphicValue {
+    private int a;
+
+    public int getA() {
+        return a;
+    }
+
+    public void setA(int a) {
+        this.a = a;
+    }
+}

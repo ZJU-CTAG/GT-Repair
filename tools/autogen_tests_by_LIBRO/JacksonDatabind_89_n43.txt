@@ -1,0 +1,12 @@
+public void testIssue1738() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    // first: try with "safe" type
+    String json = mapper.writeValueAsString(new StringBuilder("abc"));
+    StringBuilder result = mapper.readValue(json, StringBuilder.class);
+    assertEquals("abc", result.toString());
+    // and then try with "dangerous" type
+    json = mapper.writeValueAsString(new StringBuilder("abc"));
+    result = mapper.readValue(json, StringBuilder.class);
+    assertEquals("abc", result.toString());
+}

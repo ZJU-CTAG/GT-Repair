@@ -1,0 +1,10 @@
+public void testJsonParserSequence() throws IOException {
+    JsonParser p1 = new JsonFactory().createJsonParser("{\"test\"");
+    JsonParser p2 = new JsonFactory().createJsonParser("123}");
+    JsonParserSequence seq = JsonParserSequence.createFlattened(p2, p2);
+    assertEquals(JsonToken.START_OBJECT, seq.nextToken());
+    assertEquals(JsonToken.FIELD_NAME, seq.nextToken());
+    assertEquals(JsonToken.VALUE_STRING, seq.nextToken());
+    assertEquals(JsonToken.VALUE_NUMBER_INT, seq.nextToken());
+    assertEquals(JsonToken.END_OBJECT, seq.nextToken());
+}

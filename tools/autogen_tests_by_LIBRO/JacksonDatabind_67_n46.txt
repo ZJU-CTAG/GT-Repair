@@ -1,0 +1,19 @@
+public void testMapKeyModifier() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule() {
+        @Override
+        public void setupModule(SetupContext context) {
+            super.setupModule(context);
+            context.addDeserializers(new Deserializers.Base() {
+                @Override
+                public JsonDeserializer<?> findEnumDeserializer(Class<?> type, DeserializationConfig config,
+                        BeanDescription beanDesc) throws JsonMappingException {
+                    if (!type.isEnum()) {
+                        return super.findEnumDeserializer(type, config, beanDesc);
+                    }
+                    return new JsonDeserializer<Enum>() {
+                        @Override
+                        public Enum deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+                            @SuppressWarnings("unchecked")
+                            Class<? extends Enum> rawClass = (Class<Enum<?>>) type;
+                            return Enum.valueOf(rawClass, jp.getValueAs

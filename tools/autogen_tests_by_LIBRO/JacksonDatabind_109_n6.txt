@@ -1,0 +1,9 @@
+public void testIssue_WRITE_BIGDECIMAL_AS_PLAIN_is_ignored_if_JsonFormat_is_used() throws Exception {
+    ObjectMapper mapper = jsonMapperBuilder()
+            .configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true)
+            .build();
+    assertEquals("{\"value\":0.00000000050}", mapper.writeValueAsString(new BigDecimalTest(new BigDecimal("0.00000000050"))));
+    assertEquals("{\"value\":0.00000000050}", mapper.writeValueAsString(new BigDecimalTest(new BigDecimal("0.0000000005"))));
+    assertEquals("{\"value\":0.00000000050}", mapper.writeValueAsString(new BigDecimalTest(new BigDecimal("0.00000000050"))));
+    assertEquals("{\"value\":0.00000000050}", mapper.writeValueAsString(new BigDecimalTest(new BigDecimal("0.00000000050"))));
+   

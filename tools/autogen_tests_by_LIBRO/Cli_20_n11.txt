@@ -1,0 +1,9 @@
+public void testBugParseLongsAndUnknowns() throws Exception {
+    Options options = new Options()
+        .addOption(new Option("a", "aaa", false, "aaa"))
+        .addOption(new Option("b", "bbb", true, "bbb"));
+    CommandLineParser parser = new PosixParser();
+    CommandLine cmd = parser.parse(options, new String[]{ "--zop", "-abfoo" }, true);
+    assertEquals(cmd.getArgList().size(), 1);
+    assertEquals(cmd.getArgList().get(0), "-abfoo");
+}

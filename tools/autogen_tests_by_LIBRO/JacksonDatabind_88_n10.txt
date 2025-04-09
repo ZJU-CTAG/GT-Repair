@@ -1,0 +1,8 @@
+public void testPolymorphicTypeIds() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerSubtypes(new NamedType(String.class, "a"));
+    mapper.registerSubtypes(new NamedType(Integer.class, "b"));
+    ObjectReader r = mapper.readerFor(Map.class);
+    Map<String, Object> result = r.readValue("{\"@type\":\"[a\",\"abc\"]}");
+    assertTrue(result.containsKey("@type"));
+}

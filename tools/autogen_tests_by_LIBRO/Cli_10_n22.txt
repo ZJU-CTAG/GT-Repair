@@ -1,0 +1,13 @@
+public void testIssue107() {
+    Options options = new Options();
+    options.addOption(OptionBuilder.isRequired().create("t"));
+    GnuParser parser = new GnuParser();
+    parser.parse(options, new String[]{"-t"});
+
+    try {
+        parser.parse(options, new String[]{"-t"});
+        fail("second call to parse should throw exception for missing option");
+    } catch (MissingOptionException e) {
+        // expected
+    }
+}

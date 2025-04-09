@@ -1,0 +1,7 @@
+public void testIssue107() {
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+    final String json = "{\"@class\":\"org.springframework.security.core.Authentication\",\"authorities\":[\"java.util.ArrayList\",[]]}";
+    final Authentication authentication = mapper.readValue(json, Authentication.class);
+    assertNotNull(authentication);
+}

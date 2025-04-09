@@ -1,0 +1,16 @@
+public void testArchiveStreams() throws Exception {
+    byte[] b = "1234567890".getBytes();
+    ZipArchiveOutputStream zo = new ZipArchiveOutputStream(new ByteArrayOutputStream());
+    zo.putArchiveEntry(new ZipArchiveEntry("test.txt"));
+    zo.write(b);
+    zo.finish();
+    zo.write(b);
+    zo.close();
+
+    TarArchiveOutputStream to = new TarArchiveOutputStream(new ByteArrayOutputStream());
+    to.putArchiveEntry(new TarArchiveEntry("test.txt"));
+    to.write(b);
+    to.finish();
+    to.write(b);
+    to.close();
+}

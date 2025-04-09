@@ -1,0 +1,9 @@
+public void testIssue114() {
+    String code = "var x = (Math.sin||Math.cos)(0);";
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    Result result = compiler.compile(
+        CodePrinter.builder().append(code).build(),
+        SourceFile.fromCode("input.js", code));
+    assertFalse(result.failed());
+}

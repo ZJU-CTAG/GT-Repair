@@ -1,0 +1,22 @@
+public void testSimpleTypeConstruct() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(SimpleBean.class, new SimpleBeanDeserializer());
+    mapper.registerModule(module);
+    for (int i = 0; i < 2; ++i) {
+        SimpleBean input = new SimpleBean(13, "Foobar");
+        String str = mapper.writeValueAsString(input);
+        SimpleBean result = mapper.readValue(str, SimpleBean.class);
+        assertEquals(input, result);
+    }
+}
+
+public class SimpleBeanDeserializer extends StdDeserializer<SimpleBean> {
+    public SimpleBeanDeserializer() { super(SimpleBean.class); }
+    @Override
+    public SimpleBean deserialize(JsonParser jp, DeserializationContext ctxt)
+        throws IOException
+    {
+        JsonToken t = jp.getCurrentToken();
+        if (t == JsonToken.START

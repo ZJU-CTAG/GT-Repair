@@ -1,0 +1,15 @@
+public void testExtendedBufferReader() throws IOException {
+    ByteArrayInputStream bais = new ByteArrayInputStream("a\nb\rc\r\nd".getBytes());
+    ExtendedBufferedReader ebr = new ExtendedBufferedReader(new InputStreamReader(bais));
+
+    assertEquals("a", ebr.readLine());
+    assertEquals(1, ebr.getLineNumber());
+    assertEquals("b", ebr.readLine());
+    assertEquals(2, ebr.getLineNumber());
+    assertEquals("c", ebr.readLine());
+    assertEquals(3, ebr.getLineNumber());
+    assertEquals("d", ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+    assertNull(ebr.readLine());
+    assertEquals(4, ebr.getLineNumber());
+}

@@ -1,0 +1,14 @@
+public void testIssue108() {
+    String input = "function test(b) { if (b) { return true; } else { return false; } };";
+    CompilerOptions options = new CompilerOptions();
+    options.setRemoveDeadCode(true);
+    options.setIdeMode(true);
+    options.setRemoveUnusedLocalVariables(true);
+    options.setRemoveUnusedVars(true);
+    options.setRemoveUnusedPrototypeProperties(true);
+
+    Compiler compiler = new Compiler();
+    Compiler.setLoggingLevel(Level.INFO);
+    compiler.compile(JSSourceFile.fromCode("test.js", input), options);
+    assertEquals("function test(b) { return b }", compiler.toSource());
+}

@@ -1,0 +1,18 @@
+public void testIssue108() {
+    File inputFile = new File(folder.newFile("input.js").getAbsolutePath());
+    FileWriter fileWriter = new FileWriter(inputFile);
+    fileWriter.write("var t = null;" + "\n");
+    fileWriter.write("window.test = function()" + "\n");
+    fileWriter.write("{" + "\n");
+    fileWriter.write(" if (t != null)" + "\n");
+    fileWriter.write(" {" + "\n");
+    fileWriter.write(" t = null;" + "\n");
+    fileWriter.write(" }" + "\n");
+    fileWriter.write(" t = 1;" + "\n");
+    fileWriter.write("};" + "\n");
+    fileWriter.close();
+    CompilerOptions options = new CompilerOptions();
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    options.setWarningLevel(DiagnosticGroups.CHECK_USELESS_CODE, CheckLevel.OFF);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+   

@@ -1,0 +1,9 @@
+public void testArchiveStreamFactory() throws Exception {
+    byte[] buf = {'a'};
+    FileUtils.writeByteArrayToFile(new File("foo"), buf);
+    try (FileInputStream fis = new FileInputStream("foo")) {
+        ArchiveStreamFactory asf = new ArchiveStreamFactory("UTF-8");
+        ArchiveInputStream ais = asf.createArchiveInputStream(fis);
+        assertTrue("foo".equals(ais.getNextEntry().getName()));
+    }
+}

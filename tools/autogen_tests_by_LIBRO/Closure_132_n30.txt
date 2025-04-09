@@ -1,0 +1,11 @@
+public void testIfStatement() {
+    ScriptEngineManager factory = new ScriptEngineManager();
+    ScriptEngine jsEngine = factory.getEngineByName("js");
+    jsEngine.put("es", new int[2]);
+    jsEngine.put("esi", 1);
+    jsEngine.eval("if( es[--esi][ es[esi+1] ] === 1)\n" +
+            "    es[esi] = 0;\n" +
+            "else\n" +
+            "    es[esi] = 1;");
+    assertEquals(1, ((int[]) jsEngine.get("es"))[0]);
+}

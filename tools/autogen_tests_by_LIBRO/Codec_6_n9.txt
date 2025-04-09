@@ -1,0 +1,13 @@
+public void testBase64InputStream() throws Exception {
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < 1024 * 1024 * 2 - 1; i++) {
+        builder.append("a");
+    }
+    String data = builder.toString();
+    ByteArrayInputStream in = new ByteArrayInputStream(data.getBytes("ASCII"));
+    Base64InputStream inputStream = new Base64InputStream(in, true);
+    for (int i = 0; i < data.length(); i++) {
+        assertTrue(inputStream.read() != -1);
+    }
+    assertTrue(inputStream.read() == -1);
+}

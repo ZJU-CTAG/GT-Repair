@@ -1,0 +1,23 @@
+public void testCreateLongHex() throws Exception {
+
+   // NumberUtils.createLong() does not handle hex numbers
+   assertNull(NumberUtils.createLong("0x15"));
+
+   // But createInteger() handles hex
+   assertEquals(new Integer(21), NumberUtils.createInteger("0x15"));
+
+   // CreateNumber() assumes that hex numbers can only be Integer.
+   assertEquals(new Integer(21), NumberUtils.createNumber("0x15"));
+
+   // Fix is trivial - use Long.decode() instead of valueOf()
+   assertEquals(new Long(21), NumberUtils.createNumber("0x15"));
+
+   // Handle larger hex numbers
+   assertEquals(new Long(0x1234567890ABCDEFL), NumberUtils
+         .createNumber("0x1234567890ABCDEFL"));
+
+   // Don't allow leading zeros.
+   assertEquals(new Integer(0x15), NumberUtils.createNumber("0x015"));
+
+   // For strings with more than 8 digits, use Long
+   assertEquals(new Long(0

@@ -1,0 +1,12 @@
+public void testIssue108() throws IOException {
+    CSVFormat format = CSVFormat.TDF.withNullString("");
+    StringReader reader = new StringReader("");
+    CSVParser parser = new CSVParser(reader, format);
+    try {
+        parser.getHeaderMap();
+    } catch (NullPointerException e) {
+        fail(e.getMessage());
+    } finally {
+        parser.close();
+    }
+}

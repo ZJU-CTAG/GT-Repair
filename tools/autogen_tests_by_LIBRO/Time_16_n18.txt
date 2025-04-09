@@ -1,0 +1,10 @@
+public void testIssue148() {
+    DateTimeFormatter monthDateNoYear = DateTimeFormat.forPattern("MMM d");
+    DateTime start = new DateTime(2011, 1, 1, 0, 0, 0, 0);
+
+    // This is the problem line
+    DateTime.Property p = monthDateNoYear.parseInto(start, "Feb 29", 0);
+
+    // If the problem line is commenting out, then this would fail
+    assertEquals(2011, p.getYear());
+}

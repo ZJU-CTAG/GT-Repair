@@ -1,0 +1,16 @@
+public void testRootDescendantOrSelf() throws Exception {
+    Document doc = createDocument();
+    String value = "1234";
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals(value, context.selectSingleNode("//root/@id/text()"));
+}
+
+private Document createDocument() throws Exception {
+    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+    Element root = doc.createElement("root");
+    root.setAttribute("id", "1234");
+    doc.appendChild(root);
+    return doc;
+}

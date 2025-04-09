@@ -1,0 +1,14 @@
+public void testIgnoreProperties() throws Exception {
+    // works (I think this is the default behavior)
+    String json = "{\"cause\": {}}";
+    Throwable t = mapper.readValue(json, Throwable.class);
+    assertNull(t.getCause());
+
+    // does not work
+    json = "{\"cause\": {}}";
+    t = mapper.readValue(json, MyException.class);
+}
+
+@JsonIgnoreProperties("cause")
+class MyException extends RuntimeException {
+}

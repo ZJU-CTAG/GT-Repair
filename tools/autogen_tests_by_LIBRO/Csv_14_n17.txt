@@ -1,0 +1,9 @@
+public void testPrint() throws FileNotFoundException, IOException {
+    CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
+    StringWriter out = new StringWriter();
+    try (CSVPrinter printer = new CSVPrinter(out, format)) {
+        printer.printRecord("long", "lat", "data");
+        printer.printRecord("-92.222", "43.333", "3");
+    }
+    assertEquals("long,lat,data\n\"-92.222\",43.333,3\n", out.toString());
+}

@@ -1,0 +1,15 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.compile(
+            CompilerOptions.builder()
+            .setChecksOnly(false)
+            .setWarningLevel(DiagnosticGroups.INVALID_CASTS, CheckLevel.ERROR)
+            .setLanguageIn(LanguageMode.ECMASCRIPT5)
+            .setLanguageOut(LanguageMode.ECMASCRIPT5)
+            .setSourceMapOutputPath("src.map")
+            .build(),
+            SourceFile.fromCode("test.js", "goog.require('test.test');")
+            );
+
+    assertEquals(1, compiler.getResult().errors.length);
+}

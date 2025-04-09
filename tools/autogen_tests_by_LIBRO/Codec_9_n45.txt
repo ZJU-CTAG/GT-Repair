@@ -1,0 +1,11 @@
+public void testIssue() {
+    byte[] data = "foo".getBytes();
+    assertEquals("Zm9v", new String(Base64.encodeBase64(data, false, false, 100)));
+    assertEquals("Zm9v", new String(Base64.encodeBase64(data, false, false, 3)));
+    try {
+        String s = new String(Base64.encodeBase64(data, false, false, 2));
+        fail("exception should have been thrown");
+    } catch (IllegalArgumentException ex) {
+        assertEquals("Input array too big, the output array would be bigger (" + data.length + ") than the specified maximum size of 2", ex.getMessage());
+    }
+}

@@ -1,0 +1,17 @@
+public void testCVE_2017_15095() throws Exception
+{
+    ObjectMapper mapper = mapperWithModule();
+    // first, verify that we get exception
+    try {
+        mapper.readValue("[\"java.lang.management.MemoryUsage\", {\"max\":1}]", Object.class);
+        fail("Should have failed");
+    } catch (JsonMappingException e) {
+        verifyException(e, "not allowed to deserialize");
+    }
+    // but not if we disable feature
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.readValue("[\"java.lang.management.MemoryUsage\", {\"max\":1}]", Object.class);
+    // or if we disable feature:
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    mapper.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS);
+    mapper.readValue("[\"java.lang.

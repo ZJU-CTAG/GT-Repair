@@ -1,0 +1,16 @@
+public void testDependencySorting() throws Exception {
+    // Set up our expected input
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", "var extern;"));
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("inputs.js", "goog.provide('my.namespace'); /** @constructor */ my.namespace = function() {};"));
+    inputs.add(SourceFile.fromCode("inputs2.js", "goog.provide('my.namespace'); goog.require('my.namespace'); my.namespace.prototype.getValue = function() { return 'foo'; };"));
+
+    // Create a compiler
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    // Create options
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(false); // DO NOT REMOVE REQUIRE/PROVIDE CALLS
+    options.setLanguageIn(LanguageMode.ECMAS

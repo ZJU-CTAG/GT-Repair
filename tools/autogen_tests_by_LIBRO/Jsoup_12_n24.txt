@@ -1,0 +1,22 @@
+public void testIssue118() {
+    String html = "<div><table class=xy><td><h1>One</h1></td></table></div>";
+
+    Document doc = Jsoup.parse(html);
+    
+    Elements els = doc.select("div table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("One", els.first().text());
+    
+    els = doc.select("div > table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("One", els.first().text());
+    
+    els = doc.select("div + table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("One", els.first().text());
+    
+    els = doc.select("div ~ table[class~=x|y]");
+    assertEquals(1, els.size());
+    assertEquals("One", els.first().text());
+}
+``

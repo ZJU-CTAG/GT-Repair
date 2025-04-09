@@ -1,0 +1,10 @@
+public void testBadTypeInference() {
+    CompilerRunner runner = new CompilerRunner();
+    runner.setAllowSourcelessWarnings(true);
+    Result result = runner.compile(getSourceFile(getName()));
+    JSError[] warnings = result.warnings;
+    assertEquals(1, warnings.length);
+    JSError warning = warnings[0];
+    assertEquals(16, warning.lineNumber);
+    assertEquals(CHECK_TYPES, warning.category);
+}

@@ -1,0 +1,15 @@
+public void testForName() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    // mapper.findAndRegisterModules();
+    mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+    mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
+    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    // mapper.enableDefaultTyping();
+
+    String json = "{\"@class\":\"java.lang.Class\",\"val\":\"com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\"}";
+
+    Object result = mapper.readValue(json, Object.class);
+    assertNotNull(result);
+}

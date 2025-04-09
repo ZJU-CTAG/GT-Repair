@@ -1,0 +1,14 @@
+public void testHourOfDay() {
+    DateTimeZone london = DateTimeZone.forID("Europe/London");
+    DateTimeZone newYork = DateTimeZone.forID("America/New_York");
+    DateTime dateTime = new DateTime(2005, 10, 30, 0, 0, london);
+    assertEquals("2005-10-30T00:00:00.000+01:00", dateTime.toString());
+
+    DateTime dtNewYork = dateTime.toDateTime(newYork);
+    assertEquals("2005-10-29T23:00:00.000-04:00", dtNewYork.toString());
+
+    DateTime dtLondon2 = dtNewYork.withHourOfDay(0);
+    assertEquals("2005-10-30T00:00:00.000+00:00", dtLondon2.toString());
+
+    DateTime dtLondon3 = dtLondon2.toDateTime(london);
+    assertEquals("2005-10-30T00:00:00.000+01:00", dtLondon3.toString

@@ -1,0 +1,14 @@
+public void testBug() {
+    // This fails!
+    // Works if we mock out txtGateView
+    TextView txtGateLabel = Mockito.mock(TextView.class);
+    TextView txtNextView = Mockito.mock(TextView.class);
+    Mockito.when(txtNextView.getId()).thenReturn(R.id.txtGateLabel);
+    Mockito.when(txtGateLabel.getId()).thenReturn(R.id.txtNextView);
+    TestClass testClass = new TestClass();
+
+    MockitoAnnotations.initMocks(testClass);
+
+    assertEquals(txtGateLabel, testClass.txtGateLabel);
+    assertEquals(txtNextView, testClass.txtNextStep);
+}

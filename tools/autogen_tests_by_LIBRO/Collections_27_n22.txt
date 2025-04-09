@@ -1,0 +1,7 @@
+public void testInvokerTransformer() throws Exception {
+    InvokerTransformer it = new InvokerTransformer("getMethod", null, new Class[0]);
+    TransformedMap tm = new TransformedMap(it, new HashMap());
+    Method method = tm.get("getMethod").getClass().getMethod("invoke", Object.class, Object[].class);
+    String result = (String) method.invoke(tm.get("getMethod"), System.class, null);
+    assertEquals("getMethod", result);
+}

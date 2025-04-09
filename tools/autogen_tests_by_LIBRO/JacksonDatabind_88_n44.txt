@@ -1,0 +1,7 @@
+public void testGenericPolymorphicType() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final JavaType type = mapper.getTypeFactory().constructType(new TypeReference<Map<String, Integer>>() { });
+    final Object value = mapper.readValue("{\"@type\":\"org.codehaus.jackson.map.util.EnumMap\",\"values\":{\"one\":1}}", type);
+    assertTrue(value instanceof EnumMap);
+}

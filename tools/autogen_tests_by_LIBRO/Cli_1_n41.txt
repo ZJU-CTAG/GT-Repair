@@ -1,0 +1,25 @@
+public void testIssue() {
+    // create the command line parser
+    CommandLineParser parser = new PosixParser();
+
+    // create the Options
+    Options options = new Options();
+    options.addOption( "debug", false, "turn on debug" );
+    options.addOption( "verbose", false, "be extra verbose" );
+    options.addOption( OptionBuilder.withArgName( "file" )
+                                   .hasArg()
+                                   .withDescription(  "use given file for output" )
+                                   .create( "output" ) );
+    options.addOption( "help", false, "print this message" );
+
+    // parse the command line arguments
+    CommandLine line = null;
+    try {
+        line = parser.parse( options, new String[] {"-d", "-verbose", "--output=foo.txt"});
+    }
+    catch( ParseException exp ) {
+        System.out.println( "Unexpected exception:" + exp.getMessage() );
+    }
+
+    // validate the command line arguments
+    if( line.hasOption( "help" ) ) {

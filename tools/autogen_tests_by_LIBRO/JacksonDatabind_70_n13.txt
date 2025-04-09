@@ -1,0 +1,17 @@
+public void testIssue123() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+    Person p = mapper.readValue("{\n" +
+            "  \"businessAddress.street\": \"street\",\n" +
+            "  \"businessAddress.addon\": \"addon\",\n" +
+            "  \"businessAddress.zip\": \"zip\",\n" +
+            "  \"businessAddress.town\": \"town\",\n" +
+            "  \"businessAddress.country\": \"country\"\n" +
+            "}", Person.class);
+    assertEquals("street", p.businessAddress.street);
+    assertEquals("addon", p.businessAddress.addon);
+    assertEquals("zip", p.businessAddress.zip);
+    assertEquals("town", p.businessAddress.town);
+    assertEquals("country", p.businessAddress.country);
+}

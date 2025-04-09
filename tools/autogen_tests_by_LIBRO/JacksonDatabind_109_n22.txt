@@ -1,0 +1,19 @@
+public void testIssue108() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    mapper.registerModule(new Jdk8Module());
+
+    BigDecimal d = new BigDecimal("0.0000000005");
+    C c = new C(d);
+    String s = mapper.writeValueAsString(c);
+    assertEquals("{\"value\":0.0000000005}", s);
+}
+
+static class C {
+    @JsonFormat(shape= JsonFormat.Shape.STRING)
+    final BigDecimal value;
+
+    public C(BigDecimal value) {
+        this.value = value;
+    }
+}

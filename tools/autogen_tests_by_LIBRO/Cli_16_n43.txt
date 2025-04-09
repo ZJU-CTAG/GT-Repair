@@ -1,0 +1,28 @@
+public void testGroupConstraints() throws Exception {
+  Options options = new Options();
+  OptionGroup group = new OptionGroup();
+  group.setRequired(true);
+  group.addOption(new Option("a", "a"));
+  group.addOption(new Option("b", "b"));
+
+  OptionGroup group2 = new OptionGroup();
+  group2.setRequired(true);
+  group2.addOption(new Option("c", "c"));
+  group2.addOption(new Option("d", "d"));
+  group.addOption(group2);
+
+  options.addOptionGroup(group);
+
+  try {
+    CommandLineParser parser = new PosixParser();
+    parser.parse(options, new String[]{});
+    fail("Expected exception");
+  } catch (UnrecognizedOptionException e) {
+    // success
+  }
+
+  try {
+    CommandLineParser parser = new PosixParser();
+    parser.parse(options, new String[]{"-a", "-c"});
+    fail("Expected exception");
+  } catch (UnrecognizedOptionException e) {

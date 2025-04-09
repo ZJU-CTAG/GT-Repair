@@ -1,0 +1,18 @@
+public void testRepro() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    TypeFactory tf = TypeFactory.defaultInstance();
+    JavaType t0 = tf.constructType(String.class);
+    JavaType t1 = tf.constructType(t0, (TypeBindings) null);
+    assertEquals(t0, t1);
+    JavaType t1x = tf.constructType(t0, (JavaType) null);
+    assertEquals(t0, t1x);
+
+    JavaType t2 = tf.constructType(Map.class, String.class, String.class);
+    JavaType t3 = tf.constructType(t2, (TypeBindings) null);
+    assertEquals(t2, t3);
+    JavaType t3x = tf.constructType(t2, (JavaType) null);
+    assertEquals(t2, t3x);
+
+    JavaType t4 = tf.constructType(Map.class, t0, t1);
+    JavaType t5 = tf.constructType(t4, (TypeBindings) null);

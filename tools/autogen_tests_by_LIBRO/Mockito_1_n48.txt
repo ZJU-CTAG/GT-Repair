@@ -1,0 +1,10 @@
+public void testArgumentCaptor() {
+    class Service {
+        void doSomething(int... values) {}
+    }
+    Service service = mock(Service.class);
+    service.doSomething(1, 2, 3);
+    ArgumentCaptor<int[]> captor = ArgumentCaptor.forClass(int[].class);
+    verify(service).doSomething(captor.capture());
+    assertEquals(3, captor.getValue().length);
+}

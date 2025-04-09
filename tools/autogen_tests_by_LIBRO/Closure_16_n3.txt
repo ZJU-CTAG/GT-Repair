@@ -1,0 +1,18 @@
+public void testJSCompiler() {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    Compiler.setLoggingLevel(Level.WARNING);
+
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    Compiler compiler = new Compiler();
+    SourceFile externs = SourceFile.fromCode("externs.js",
+            "/** @const */\n" +
+            "var goog = {};\n" +
+            "/** @typedef {string} */\n" +
+            "goog.MyType;\n" +
+            "/** @param {goog.MyType} x The variable. */\n" +
+            "goog.myFunc = function(x) {};\n");
+    SourceFile input = SourceFile.fromCode("input.js",
+            "goog.provide('a.b.c');\n" +
+            "go

@@ -1,0 +1,25 @@
+public void testFitWithBounds() {
+    final int n = 2;
+    final int nEval = 50;
+
+    // create the model
+    final TestModel model = new TestModel("TestModel", n);
+
+    // create the problem
+    final TestProblem problem = new TestProblem(model);
+
+    // create the optimizer
+    final CMAESOptimizer optimizer = new CMAESOptimizer(nEval, 0.0, false, 0, 0, new MersenneTwister(12345),
+            false, new SimpleValueChecker(1e-6, 1e-6));
+
+    // create the bounds
+    final double[] lb = new double[n];
+    final double[] ub = new double[n];
+    Arrays.fill(lb, 0.0);
+    Arrays.fill(ub, 1.0);
+
+    // create the optimizer
+    final LeastSquaresProblem lsp = new LeastSquaresBuilder().
+            model(model.getModelFunction(), model.getModelFunctionJacobian()).
+            target(problem.getTarget()).
+            weight(problem.getCov

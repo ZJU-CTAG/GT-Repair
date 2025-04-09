@@ -1,0 +1,22 @@
+public void testJacksonCustomSerializer() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new MyCustomSerializer());
+    module.addDeserializer(MyCustomDeserializer.class, new MyCustomDeserializer());
+    mapper.registerModule(module);
+    String json = mapper.writeValueAsString(new Target());
+    System.err.println(json);
+    assertEquals("{\"str\":\"str value\",\"value\":\"value\"}", json);
+}
+
+public static class MyCustomSerializer extends JsonSerializer<Target> {
+    @Override
+    public void serialize(Target value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeStringField("str", "str value");
+        jgen.writeObjectField("value", value.getValue());
+    }
+}
+
+public static class MyCustomDeserializer extends JsonDeserializer<Target> {
+    @Override
+    public Target deserialize(Json

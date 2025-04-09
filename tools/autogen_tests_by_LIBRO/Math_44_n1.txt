@@ -1,0 +1,24 @@
+public void testIssue() {
+    Simulation sim = new Simulation();
+
+    Event e1 = new Event(1, 1.0);
+    Event e2 = new Event(2, 2.0);
+
+    sim.scheduleEvent(e1);
+    sim.scheduleEvent(e2);
+    sim.run();
+
+    assertEquals(2, sim.getTime(), 0.0001);
+}
+
+private class Event extends EventOf2Simulation<Event, Integer, Double> {
+
+    public Event(Integer i, Double d) {
+        super(i, d);
+    }
+
+    @Override
+    public void onSimulationEvent(Simulation sim) throws Exception {
+        sim.setTime(getT2());
+    }
+}

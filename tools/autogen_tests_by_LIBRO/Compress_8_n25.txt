@@ -1,0 +1,16 @@
+public void testTarHeader() {
+    byte[] header = new byte[512];
+    // 11 octal digits
+    byte[] size = new byte[] {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'};
+    System.arraycopy(size, 0, header, 124, 11);
+    TarArchiveEntry entry = TarArchiveEntry.parseTarHeader(header);
+    assertEquals(0, entry.getSize());
+
+    // 12 octal digits
+    size = new byte[] {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'};
+    System.arraycopy(size, 0, header, 124, 12);
+    entry = TarArchiveEntry.parseTarHeader(header);
+    assertEquals(0, entry.getSize());
+
+    // 13 octal digits
+    size = new byte[] {'0', '0', '0', '0', '0', '0', '0', '0', '0', '

@@ -1,0 +1,19 @@
+public void testOptimization() throws Exception {
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.closurePass = true;
+    options.setOptimizationLevel(OptimizationLevel.SIMPLE_OPTIMIZATIONS);
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(new JSSourceFile[] { JSSourceFile.fromCode("input", "function getStack() {\n" +
+    " var getErrorObject = function() {\n" +
+    " try {\n" +
+    " throw Error(\"\");\n" +
+    " } catch(err) {\n" +
+    " return err;\n" +
+    " }\n" +
+    " };\n" +
+    " return getErrorObject().stack;\n" +
+    "}\n" +
+    "window['getStackTrace']=getStack;\n") }, options);

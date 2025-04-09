@@ -1,0 +1,23 @@
+public void testSerializeIssue() throws Exception {
+    DateTimeSerializerBase serializer = new DateTimeSerializerBase<DateTime>(DateTime.class,
+            DateTimeFormat.forPattern("yyyy-MM-dd")) {
+        @Override
+        protected long _timestamp(DateTime value) {
+            return value.getMillis();
+        }
+    };
+    String expectedFormat = "yyyy-MM-dd";
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(DateTime.class, serializer);
+    objectMapper.registerModule(module);
+    JsonMappingException exception = null;
+    try {
+        String json = objectMapper.writeValueAsString(new TestObject());
+    } catch (JsonMappingException e) {
+        exception = e;
+    }
+    assertNotNull(exception);
+    String errorMessage = exception.getMessage();
+    assertTrue(errorMessage.contains(expectedFormat));
+}

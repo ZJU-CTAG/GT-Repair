@@ -1,0 +1,15 @@
+public void testSmartNameRemoval() {
+    String js = "var goog = {};"
+        + "goog.inherits = function(x, y) {};"
+        + "var ns = {};"
+        + "/** @constructor */ ns.PageSelectionModel = function(){};"
+
+        + "/** @constructor */ "
+        + "ns.PageSelectionModel.FooEvent = function() {};"
+        + "/** @constructor */ "
+        + "ns.PageSelectionModel.SelectEvent = function() {};"
+        + "goog.inherits(ns.PageSelectionModel.ChangeEvent, ns.PageSelectionModel.FooEvent);";
+    Compiler compiler = new Compiler();
+    compiler.compile(SourceFile.fromCode("[testcode]", js));
+    // Just doesn't crash
+}

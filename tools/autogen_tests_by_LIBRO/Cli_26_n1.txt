@@ -1,0 +1,31 @@
+public void testOptionBuilder() throws Exception
+{
+    // Lazy initialization of parser
+    CommandLineParser parser = getParser();
+
+    // Create an Option from OptionBuilder
+    Options options = new Options();
+    options.addOption(OptionBuilder.create());
+    try
+    {
+        parser.parse(options, new String[] { "--longOpt" });
+        fail("The OptionBuilder should have thrown an IllegalArgumentException");
+    }
+    catch (ParseException e)
+    {
+        // Expected
+    }
+
+    // Create another Option from OptionBuilder
+    Option option = OptionBuilder.create();
+    options.addOption(option);
+    try
+    {
+        parser.parse(options, new String[] { "--longOpt" });
+        fail("The OptionBuilder should have thrown an IllegalArgumentException");
+    }
+    catch (ParseException e)
+    {
+        // Expected
+    }
+}

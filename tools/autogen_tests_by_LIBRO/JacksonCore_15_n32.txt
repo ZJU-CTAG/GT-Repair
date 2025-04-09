@@ -1,0 +1,21 @@
+public void testFilteringParserDelegate_allowMultipleMatches() throws Exception {
+    JsonFactory jsonFactory = new JsonFactory();
+    JsonGenerator generator = jsonFactory.createGenerator(new StringWriter());
+    generator.writeStartArray();
+    generator.writeStartObject();
+    generator.writeStringField("name", "foo");
+    generator.writeStringField("type", "bar");
+    generator.writeEndObject();
+    generator.writeStartObject();
+    generator.writeStringField("name", "foo");
+    generator.writeStringField("type", "bar");
+    generator.writeEndObject();
+    generator.writeEndArray();
+    generator.close();
+
+    JsonParser parser = jsonFactory.createParser(generator.getOutputTarget().toString());
+    FilteringParserDelegate filteredParser = new FilteringParserDelegate(parser, new SimpleBeanPropertyFilter("name"), true, false);
+
+    assertEquals(JsonToken.START_ARRAY, filteredParser.nextToken());
+    assertEquals(JsonToken.START_OBJECT, filteredParser.nextToken());
+    assertEqu

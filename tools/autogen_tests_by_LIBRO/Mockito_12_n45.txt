@@ -1,0 +1,13 @@
+public void testArgumentCaptorVarArgs() {
+    final DateTimeFormatter dtf = DateTimeFormat.forPattern("xxxxMM'w'ww");
+    final DateTime dt = dtf.parseDateTime("201101w01");
+    final DateTimeParser[] parsers = dtf.getParser();
+    final DateTimeParser[] parsersCopy = new DateTimeParser[parsers.length];
+    System.arraycopy(parsers, 0, parsersCopy, 0, parsers.length);
+
+    final DateTimePrinter printer = dtf.getPrinter();
+    final DateTimeFormatter formatter = new DateTimeFormatter(printer, parsers);
+    final DateTimeFormatter dtfCopy = mock(DateTimeFormatter.class);
+    final ArgumentCaptor<DateTimePrinter> printerCaptor = ArgumentCaptor.forClass(DateTimePrinter.class);
+    final ArgumentCaptor<DateTimeParser[]> parserCaptor = ArgumentCaptor.forClass(DateTimeParser[].class);
+    when(dtfCopy.withPrinter(printerCaptor.capture())).thenReturn

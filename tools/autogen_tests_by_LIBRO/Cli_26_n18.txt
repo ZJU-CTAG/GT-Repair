@@ -1,0 +1,17 @@
+public void testOptionBuilder() {
+    PrintStream out = System.out;
+    try {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(bos));
+        
+        Options options = new Options();
+        options.addOption(OptionBuilder.hasArg().isRequired().create('h'));
+        Parser parser = new PosixParser();
+        parser.parse(options, new String[] {"-h", "--help"});
+        assertTrue(bos.toString(), bos.toString().contains("Missing required option: h"));
+    } catch (ParseException e) {
+        fail("Should not throw ParseException");
+    } finally {
+        System.setOut(out);
+    }
+}

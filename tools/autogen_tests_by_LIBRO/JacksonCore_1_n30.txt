@@ -1,0 +1,18 @@
+public void testNonNumericNumbers() throws Exception
+{
+    // First, verify that we can read NaN without problems
+    String json = "1.0e+3";
+    JsonFactory jf = new JsonFactory();
+    jf.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, false);
+    JsonParser jp = jf.createJsonParser(ObjectReadContext.empty(), json);
+    assertEquals(1000.0, jp.getValueAsDouble());
+    jp.close();
+
+    // Then, verify that things break as expected
+    jf = new JsonFactory();
+    jf.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+    jp = jf.createJsonParser(ObjectReadContext.empty(), json);
+
+    // ... but let's first verify that it is indeed a non-numeric number
+    assertEquals(JsonToken.VALUE_NUMBER_FLOAT, jp.nextToken());
+    assertEquals(Double.NaN,

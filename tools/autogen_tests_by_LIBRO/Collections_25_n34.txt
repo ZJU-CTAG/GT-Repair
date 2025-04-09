@@ -1,0 +1,14 @@
+public void testCollatedIterator() {
+    List<String> list1 = Arrays.asList("test1", "test2", "test4", "test6");
+    List<String> list2 = Arrays.asList("test1", "test3", "test5", "test7");
+    List<String> list3 = Arrays.asList("test2", "test4", "test6", "test8");
+    CollatingIterator<String> it = new CollatingIterator<String>(null);
+    it.addIterator(list1.iterator());
+    it.addIterator(list2.iterator());
+    it.addIterator(list3.iterator());
+    List<String> result = new ArrayList<String>();
+    while (it.hasNext()) {
+        result.add(it.next());
+    }
+    assertEquals(Arrays.asList("test1", "test1", "test2", "test2", "test3", "test4", "test4", "test5", "test6", "test6", "test7", "test8"), result);
+}

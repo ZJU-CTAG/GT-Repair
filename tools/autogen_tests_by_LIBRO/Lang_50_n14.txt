@@ -1,0 +1,12 @@
+public void testIssue2() {
+    Locale origLocale = Locale.getDefault();
+    try {
+        Locale.setDefault(Locale.FRANCE);
+        FastDateFormat fdf = FastDateFormat.getDateInstance(FastDateFormat.SHORT);
+        assertEquals("31/12/69", fdf.format(xmas));
+        Locale.setDefault(Locale.JAPAN);
+        assertEquals("31/12/69", fdf.format(xmas));  // fails
+    } finally {
+        Locale.setDefault(origLocale);
+    }
+}

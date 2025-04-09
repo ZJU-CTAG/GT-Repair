@@ -1,0 +1,19 @@
+public void testIssue() {
+    Options opts = new Options();
+    opts.addOption(OptionBuilder.withDescription("foo").
+        withLongOpt("target").create('t'));
+    // This is a PIITA
+    CommandLineParser parser = new PosixParser();
+    String[] args = new String[] { "-target", "foobar.com" };
+    CommandLine cmdLine;
+    try {
+        cmdLine = parser.parse(opts, args);
+    }
+    catch (ParseException pe) {
+        System.out.println(pe.getMessage());
+        return;
+    }
+    if (cmdLine.hasOption('t')) {
+        System.out.println("processing selected target: " + cmdLine.getOptionValue('t'));
+    }
+}

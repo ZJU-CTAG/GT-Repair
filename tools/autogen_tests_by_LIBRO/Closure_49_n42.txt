@@ -1,0 +1,16 @@
+public void testIssue() {
+    String code = "var foo = function bar(){ var bar; alert(bar) };";
+    CompilationLevel level = CompilationLevel.SIMPLE_OPTIMIZATIONS;
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    level.setOptionsForCompilationLevel(options);
+    Result result = compiler.compile(
+        externs,
+        ImmutableList.of(SourceFile.fromCode("test.js", code)),
+        options);
+    String out = compiler.toSource();
+    System.out.println(out);
+    assertEquals("var foo=function(){var a;alert(a);};", out);
+}

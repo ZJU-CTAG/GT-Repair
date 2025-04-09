@@ -1,0 +1,12 @@
+public void testMemoryLeak() {
+    // simulate web app reload
+    for (int i = 0; i < 100; i++) {
+        new Thread() {
+            public void run() {
+                ReflectionToStringBuilder.toString(new Object());
+                ReflectionToStringBuilder.setDefaultStyle(ToStringStyle.SHORT_PREFIX_STYLE);
+                ReflectionToStringBuilder.toString(new Object());
+            }
+        }.start();
+    }
+}

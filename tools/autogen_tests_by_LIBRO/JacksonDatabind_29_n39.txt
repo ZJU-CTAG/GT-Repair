@@ -1,0 +1,22 @@
+public void test() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.addMixInAnnotations(Container.class, ContainerMixin.class);
+    
+    final String json = "{\"values\":[\"1\"]}";
+    final Container c = mapper.readValue(json, Container.class);
+    
+    assertEquals(1, c.values.size());
+    assertEquals(Integer.class, c.values.get(0).getClass());
+    assertEquals(Integer.valueOf(1), c.values.get(0));
+}
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="type")
+@JsonTypeIdResolver(PolymorphicTypeIdResolver.class)
+abstract class ContainerMixin {}
+
+class PolymorphicTypeIdResolver implements TypeIdResolver
+{
+    @Override public void init(JavaType bt) {}
+    @Override public String idFromValue(Object value) { return null; }
+    @Override public String id

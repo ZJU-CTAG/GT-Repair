@@ -1,0 +1,14 @@
+public void testCreatorWithCollection() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
+    mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+    mapper.configure(MapperFeature.USE_GETTERS_AS_SETTERS, true);
+    mapper.configure(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME, true);
+
+    //SimpleBean bean = mapper.readValue("{\"list\":[{\"string\":\"foo\"}]}", SimpleBean.class);
+
+    SimpleBean bean = mapper.readValue("{\"list\":[\"foo\"]}", SimpleBean.class);
+    assertNotNull(bean);
+    assertEquals(1, bean.getList().size

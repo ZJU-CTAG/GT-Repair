@@ -1,0 +1,26 @@
+public void testRuntimCheck() {
+    Vehicle v = new Car();
+    Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Vehicle.class, new VehicleAdapter()).create();
+    String s = gson.toJson(v);
+    try {
+        gson.fromJson(s, Truck.class);
+        fail();
+    } catch (ClassCastException e) {
+        // expected
+    }
+}
+
+class Vehicle {
+}
+
+class Car extends Vehicle {
+}
+
+class Truck extends Vehicle {
+}
+
+class VehicleAdapter implements JsonDeserializer<Vehicle> {
+    public Vehicle deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+        return new Car();
+    }
+}

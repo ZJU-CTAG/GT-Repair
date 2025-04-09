@@ -1,0 +1,16 @@
+public void testIsSupportInclusive() throws Exception {
+    RealDistribution distribution = createDistribution();
+    if (distribution.getSupportLowerBound() == Double.NEGATIVE_INFINITY) {
+        if (distribution.isSupportLowerBoundInclusive()) {
+            Assert.fail("lower bound is -inf, but isSupportLowerBoundInclusive is true");
+        }
+        if (!Double.isNaN(distribution.cumulativeProbability(Double.NEGATIVE_INFINITY))) {
+            Assert.fail("lower bound is -inf, but cumulativeProbability(Double.NEGATIVE_INFINITY) is not NaN");
+        }
+    } else {
+        if (!distribution.isSupportLowerBoundInclusive()) {
+            Assert.fail("lower bound is finite, but isSupportLowerBoundInclusive is false");
+        }
+        if (Double.isNaN(distribution.cumulativeProbability(distribution.getSupportLowerBound()))) {
+            Assert.fail("lower bound is finite, but cumulativeProbability(getSupportLowerBound()) is not NaN");
+       

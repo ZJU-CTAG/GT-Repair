@@ -1,0 +1,18 @@
+public void testArArchive() throws IOException {
+    File archiveFile = new File(System.getProperty("java.io.tmpdir"), "bla.ar");
+    archiveFile.delete();
+    ArArchiveOutputStream aos = new ArArchiveOutputStream(archiveFile);
+    aos.putArchiveEntry(new ArArchiveEntry("test1.xml", 0));
+    aos.putArchiveEntry(new ArArchiveEntry("test2.xml", 0));
+    aos.write("test".getBytes());
+    aos.closeArchiveEntry();
+    aos.closeArchiveEntry();
+    aos.close();
+    ArArchiveInputStream ais = new ArArchiveInputStream(new FileInputStream(archiveFile));
+    ArArchiveEntry entry = ais.getNextArEntry();
+    assertEquals("test1.xml", entry.getName());
+    entry = ais.getNextArEntry();
+    assertEquals("test2.xml", entry.getName());
+    entry = ais.getNextArEntry();
+    assertNull(entry);
+    ais

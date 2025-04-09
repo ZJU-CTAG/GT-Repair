@@ -1,0 +1,11 @@
+public void testIssue107() {
+    Element pre = Jsoup.parse("<pre>\nabc  def</pre>").select("pre").get(0);
+    assertEquals("abc def", pre.text());
+    assertEquals("\nabc  def", pre.childNodes().get(0).getWholeText());
+    assertEquals("abc def", pre.childNodes().get(0).nodeValue());
+    
+    pre = Jsoup.parse("<pre>\n\nabc  def</pre>").select("pre").get(0);
+    assertEquals("abc def", pre.text());
+    assertEquals("\n\nabc  def", pre.childNodes().get(0).getWholeText());
+    assertEquals("\nabc  def", pre.childNodes().get(0).nodeValue());
+}

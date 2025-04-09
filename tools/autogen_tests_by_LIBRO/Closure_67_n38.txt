@@ -1,0 +1,19 @@
+public void testAdvanced() {
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setWarningLevel(DiagnosticGroups.CHECK_GLOBAL_THIS, CheckLevel.OFF);
+    options.setOutputCharset("UTF8");
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5_STRICT);
+    options.setClosurePass(true);
+    options.setPrettyPrint(true);
+    options.setPrintInputDelimiter(true);
+    options.setAssumeClosuresOnlyCaptureReferences(true);
+
+    String source = "" +
+            "function A() {\n" +
+            "   this._x = 1;\n" +
+            "}\n" +
+            "A.prototype.func1 = // done to save public reference to func1\n" +
+            "A.prototype.func1 = function() {\n" +
+            "    this._x = 2;\n" +
+            "    this.func2();\

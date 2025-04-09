@@ -1,0 +1,24 @@
+public void testFilter() throws Exception {
+    JsonInclude.Value filter = JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY);
+    ObjectMapper mapper = new ObjectMapper()
+            .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+            .setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+                @Override
+                public JsonInclude.Value findPropertyInclusion(Annotated a) {
+                    JsonInclude.Value value = super.findPropertyInclusion(a);
+                    if (value == null) {
+                        return filter;
+                    } else {
+                        return value;
+                    }
+                }
+            });
+
+    String json = mapper.writeValueAsString(new A());
+    System.out.println(json);
+}
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+class A {
+    String a = "";
+    String b = "

@@ -1,0 +1,11 @@
+public void testToStringBuilderThreadLocalLeak() {
+    ToStringStyle style = ToStringStyle.SHORT_PREFIX_STYLE;
+    Field field = ReflectionUtils.getDeclaredField(ToStringStyle.class, "fieldNameValueSeparator", true);
+    assertTrue(field.isAccessible());
+    assertNotNull(style.getFieldNameValueSeparator());
+    assertTrue(field.get(style) instanceof ThreadLocal<?>);
+    ReflectionUtils.setField(field, style, "=");
+    assertEquals("=", style.getFieldNameValueSeparator());
+    assertFalse(field.get(style) instanceof ThreadLocal<?>);
+}
+

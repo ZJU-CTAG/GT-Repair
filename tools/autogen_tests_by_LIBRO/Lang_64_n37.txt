@@ -1,0 +1,22 @@
+public void testValuedEnumCompareTo() {
+    final class Status extends ValuedEnum {
+        private static final long serialVersionUID = 1L;
+        protected Status(String name, int value) {
+            super(name, value);
+        }
+    }
+    final class Status2 extends ValuedEnum {
+        private static final long serialVersionUID = 1L;
+        protected Status2(String name, int value) {
+            super(name, value);
+        }
+    }
+    Object A = new Status("A", 1);
+    Object B = new Status2("B", 1);
+    Object C = new Status2("C", 2);
+    assertTrue(A.equals(B) == false);
+    assertTrue(A.equals(C) == false);
+    assertTrue(B.equals(C) == false);
+    assertTrue(A.compareTo(B) == 0); // should be false
+    assertTrue(B.compareTo(C) < 0); // should be true
+}

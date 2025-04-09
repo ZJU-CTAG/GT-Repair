@@ -1,0 +1,13 @@
+public void testIssue108() throws IOException {
+    final String html = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></head><body>\n" +
+            "    <div id=\"outer\" class=\"outer\">\n" +
+            "        <div id=\"inner\" class=\"inner\">\n" +
+            "            <div id=\"innermost\" class=\"innermost\">Hello World</div>\n" +
+            "        </div>\n" +
+            "    </div>\n" +
+            "</body></html>";
+    final Document doc = Jsoup.parse(html);
+    final Element outer = doc.getElementById("outer");
+    final Element newOuter = Jsoup.parseBodyFragment(outer.html()).body().child(0);
+    assertEquals(outer.html(), newOuter.html());
+}

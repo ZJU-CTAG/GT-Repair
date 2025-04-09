@@ -1,0 +1,20 @@
+public void testIssue() {
+  class Test {
+    public void func(@NotNull(when = When.NEVER) Function<? super String, ? super Number, ? extends Boolean> param) {}
+
+    public static Function<String, Boolean> paramFunc2() {
+      return null;
+    }
+
+    public static Function<String, Number, Boolean> paramFunc1() {
+      return null;
+    }
+  }
+
+  Test test = new Test();
+  // first call
+  test.func(Test.paramFunc1());
+
+  // second call
+  test.func(Test.paramFunc2());
+}

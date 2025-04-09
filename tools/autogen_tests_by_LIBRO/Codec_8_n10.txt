@@ -1,0 +1,11 @@
+public void testBase64InputStream() throws Exception {
+    int numReads = 0;
+    for (byte b[] : Base64.getMimeDecoder().wrap(new ByteArrayInputStream(
+            "abcdefghijklmnopqrstuvwxyz".getBytes()))) {
+        for (int bb : b) {
+            Base64.getMimeEncoder().wrap(new ByteArrayInputStream(new byte[] { (byte) bb }));
+            numReads++;
+        }
+    }
+    assertEquals(10920, numReads);
+}

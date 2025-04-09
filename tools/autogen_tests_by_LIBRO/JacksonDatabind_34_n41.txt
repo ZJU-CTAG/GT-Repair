@@ -1,0 +1,14 @@
+public void testBigDecimalSchema()
+    throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+    mapper.acceptJsonFormatVisitor(mapper.constructType(SimpleBean.class), visitor);
+    JsonSchema schema = visitor.finalSchema();
+    // should be decimal type, not integer
+    assertEquals(JsonFormatTypes.DECIMAL, schema.getProperties().get("decimal").getType());
+}
+
+public static class SimpleBean {
+    public BigDecimal decimal;
+}

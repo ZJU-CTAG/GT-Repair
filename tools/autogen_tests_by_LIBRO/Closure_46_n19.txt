@@ -1,0 +1,9 @@
+public void testIssue102() {
+    ParserConfiguration config = new ParserConfiguration();
+    config.setSymbolResolver(new TypeCheckingResolver());
+    TypeUtils.setClassLoader(this.getClass().getClassLoader());
+    TypeUtils.setParserConfiguration(config);
+    String source = "type Person {\"name\": String} type Foo {\"bar\": [Person]}";
+    ASTCompilationUnit cu = (ASTCompilationUnit) TypeUtils.parse(source).jjtGetChild(0);
+    cu.jjtAccept(new ASTConstructor(), null);
+}

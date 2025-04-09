@@ -1,0 +1,11 @@
+public void testIssue1737() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"@type\":\"com.mchange.v2.c3p0.management.ActiveManagementCoordinator\",\"o\":{}}", Object.class);
+    } catch (BadDefinitionException e) {
+        assertEquals("Illegal type; Cannot construct java.lang.management.ManagementFactory (missing default constructor or creator, or perhaps need to add/enable type information?)\n at [Source: {\"@type\":\"com.mchange.v2.c3p0.management.ActiveManagementCoordinator\",\"o\":{}}; line: 1, column: 23]", e.getOriginalMessage());
+    }
+    try {
+        mapper.readValue("{\"@type\":\"com.mchange.v2.c3p0.management.ActiveManagementCoordinator$TrackedDefaultPooledDataSource\",\"o\":{}}", Object.class);
+    } catch (BadDefinitionException e) {
+        assertEquals("Illegal type; Cannot construct java

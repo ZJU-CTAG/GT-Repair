@@ -1,0 +1,17 @@
+public void testAttributeNamespaces() throws Exception {
+        NodePointerFactory nf = JXPathContext.newContext(null).getFactory();
+        nf.registerNamespace("A", "http://foo.bar");
+        nf.registerNamespace("B", "http://foo.bar");
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Element root = doc.createElement("A:ElementA");
+        root.setAttribute("A:myAttr", "Mytype");
+        Element child = doc.createElement("B:ElementB");
+        child.setTextContent("MY VALUE");
+        root.appendChild(child);
+        doc.appendChild(root);
+
+        DOMNodePointer rootPtr = (DOMNodePointer) nf.createNodePointer(root);
+        DOMNodePointer childPtr = (DOMNodePointer) rootPtr.getValuePointer().getNodePointer();
+        assertEquals("MY VALUE", childPtr.getValue());
+
+        DOMNodePointer attrPtr = (DOMNodePointer) rootPtr.getAttributePointer("my

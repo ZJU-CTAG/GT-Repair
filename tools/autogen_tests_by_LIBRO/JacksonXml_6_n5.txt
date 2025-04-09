@@ -1,0 +1,16 @@
+public void testWriteBinary() {
+    final byte[] bytes = "Hello World".getBytes(UTF_8);
+
+    final XmlFactory factory = new XmlFactory();
+    final ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+    final ToXmlGenerator generator = factory.createGenerator(output);
+    generator.writeStartObject();
+    generator.writeFieldName("Foo");
+    generator.writeBinary(Base64Variants.MIME, new ByteArrayInputStream(bytes), bytes.length);
+    generator.writeEndObject();
+    generator.close();
+
+    final String xml = output.toString("UTF-8");
+    assertEquals("<root><Foo>Hello World</Foo></root>", xml);
+}

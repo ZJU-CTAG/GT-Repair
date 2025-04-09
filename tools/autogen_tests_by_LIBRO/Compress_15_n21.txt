@@ -1,0 +1,11 @@
+public void testZip() throws Exception {
+    ZipArchiveEntry entry1;
+    ZipArchiveEntry entry2;
+    try (ZipArchiveInputStream in = new ZipArchiveInputStream(new FileInputStream(TEST_ARCHIVE_FILE))) {
+        entry1 = in.getNextZipEntry();
+    }
+    try (ZipFile zipFile = new ZipFile(TEST_ARCHIVE_FILE)) {
+        entry2 = zipFile.getEntry(entry1.getName());
+    }
+    assertEquals(entry1, entry2);
+}

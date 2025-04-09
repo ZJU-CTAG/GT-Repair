@@ -1,0 +1,34 @@
+public void testIssue() throws Exception {
+    
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().addMixInAnnotations(Object.class,
+MyMixIn.class);
+    
+    ObjectNode json = mapper.valueToTree(this);
+    
+    System.out.println(mapper.writeValueAsString(json));
+    
+    assertEquals(3, json.size());
+    assertEquals(this.getNodeType(), json.get("nodeType").asText());
+    assertEquals(this.getNodeValue(),
+json.get("nodeValue").asText());
+    assertEquals(this.getAttributes().size(),
+json.get("attributes").size());
+    
+}
+
+
+
+private static class MyMixIn {
+    @JsonIgnore
+    public String getNodeValue();
+    @JsonIgnore
+    public String getNodeType();
+    @JsonSerialize(using = ListAttributeSerializer.class)
+    public ListAttribute getAttributes();
+}
+
+
+
+public static class ListAttribute {
+    private String itemJsonKey;

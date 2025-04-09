@@ -1,0 +1,14 @@
+public void testOptimizer() {
+    // create a simple function
+    final double[] coeff = new double[]{0.1, 0.6, 0.4, 0.4, 0.6, 0.1};
+    final double[] xVals = new double[]{0, 1, 2, 3, 4, 5};
+    final double[] yVals = new double[]{1, 2, 4, 7, 11, 16};
+    final PolynomialFunction pf = new PolynomialFunction(coeff);
+    // create a fit
+    final SimpleCurveFitter fitter = SimpleCurveFitter.create(new CMAESOptimizer(), pf, xVals, yVals);
+    // fit a range of functions, and count how many are correct
+    final double[] correct = new double[50];
+    final double lowerBound = 1.0;
+    final double upperBound = 5.0;
+    final double[] guess = new double[]{1, 1, 1, 1, 1, 1};
+    final double[] bounds = new double[]{lowerBound, upperBound, lowerBound, upperBound

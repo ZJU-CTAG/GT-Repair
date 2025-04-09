@@ -1,0 +1,8 @@
+public void testMissingKeyDeserializerForCharSequence() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new Jdk8Module());
+    TypeFactory typeFactory = mapper.getTypeFactory();
+    MapType mapType = typeFactory.constructMapType(HashMap.class, typeFactory.constructType(String.class), typeFactory.constructType(Integer.class));
+    Map<String, Integer> values = mapper.readValue("{\"a\":1}", mapType);
+    assertThat(values.get("a"), is(1));
+}

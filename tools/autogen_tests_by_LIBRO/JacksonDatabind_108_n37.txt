@@ -1,0 +1,14 @@
+public void testIssue107() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    assertNull(mapper.readTree(""));
+    assertNull(mapper.readTree(" "));
+    assertNull(mapper.readTree(new ByteArrayInputStream("".getBytes("UTF-8"))));
+    assertNull(mapper.readTree(new ByteArrayInputStream(" ".getBytes("UTF-8"))));
+    assertNull(mapper.readTree(new StringReader("")));
+    assertNull(mapper.readTree(new StringReader(" ")));
+
+    assertTrue(mapper.readTree(new StringReader("null")) instanceof NullNode);
+    assertTrue(mapper.readTree(new StringReader("  null  ")) instanceof NullNode);
+}

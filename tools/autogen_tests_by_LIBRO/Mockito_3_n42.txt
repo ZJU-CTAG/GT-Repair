@@ -1,0 +1,12 @@
+public void testVarargCapture() {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    when(mock.vararg(captor.capture())).thenReturn(1);
+
+    assertEquals(1, mock.vararg("one"));
+    assertEquals(1, captor.getAllValues().size());
+    assertEquals("one", captor.getAllValues().get(0));
+}
+
+interface Mock {
+    int vararg(String... args);
+}

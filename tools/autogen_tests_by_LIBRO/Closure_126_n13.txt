@@ -1,0 +1,9 @@
+public void testIssue() {
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("nashorn");
+    try {
+        engine.eval("b: try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...')");
+    } catch (ScriptException e) {
+        fail();
+    }
+}

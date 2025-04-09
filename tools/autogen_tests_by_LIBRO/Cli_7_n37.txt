@@ -1,0 +1,12 @@
+public void testRequiredOptions() throws Exception {
+    final OptionBuilder bld = new OptionBuilder();
+    final Option help = bld.withShortName("h").withDescription("print this message").create();
+    final Option config = bld.withShortName("c").withDescription("configuration file").withArgument(new ArgumentBuilder().withName("config").create()).create();
+    final GroupBuilder gbld = new GroupBuilder().withOption(help).withOption(config);
+
+    final CommandLine cl = new GroupBuilder().withName("test").withOption(help).withOption(config).create();
+    final String[] args = new String[] { "-c", "arg" };
+    final Parser parser = new Parser();
+    parser.parse(cl, args);
+    assertEquals(parser.getMissingOptions(), Arrays.asList(new Option[] { help }));
+}

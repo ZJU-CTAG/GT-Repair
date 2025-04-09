@@ -1,0 +1,9 @@
+public void testGenericSignatureForAtomicReference() throws Exception {
+    Class<?> atomicReference = java.util.concurrent.atomic.AtomicReference.class;
+    JavaType parametrizedType = TypeFactory.parametricType(atomicReference, String.class);
+    Method method = GenericSignatureTest.class.getMethod("test", AtomicReference.class);
+    Type[] genericParameterTypes = method.getGenericParameterTypes();
+    assertEquals(1, genericParameterTypes.length);
+    assertEquals(parametrizedType, TypeFactory.fromJavaType(genericParameterTypes[0]));
+    assertEquals("(Ljava/util/concurrent/atomic/AtomicReference<Ljava/lang/String;>;)V", method.toGenericString());
+}

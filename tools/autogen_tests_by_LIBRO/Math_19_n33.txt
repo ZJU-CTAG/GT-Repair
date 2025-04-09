@@ -1,0 +1,18 @@
+public void testBug()
+{
+   double[] lowerBounds = {-Double.MAX_VALUE, -Double.MAX_VALUE};
+   double[] upperBounds = {Double.MAX_VALUE, Double.MAX_VALUE};
+   OptimizationData bounds = new Bounds(lowerBounds, upperBounds);
+   OptimizationData startPoint = new CMAESOptimizer.Sigma(new double[] {0,0});
+
+   CMAESOptimizer opt = new CMAESOptimizer(1000, 0.001, true, 0, 0, new MersenneTwister(0), false, new SimpleValueChecker(-1, -1));
+   PointValuePair res = opt.optimize(new MaxEval(100), bounds, startPoint, new RandomFitFunc());
+   assertFalse(Double.isNaN(res.getPoint()[0]) || Double.isNaN(res.getPoint()[1]));
+}
+
+public class RandomFitFunc implements MultivariateFunction
+{
+   public double value(double[] point)
+   {
+      return point[0] + point[1];
+  

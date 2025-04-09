@@ -1,0 +1,11 @@
+public void testIssueWithHelpFormatter() {
+  Option option = OptionBuilder.withArgName("argName")
+                               .hasArgs()
+                               .create("o");
+  HelpFormatter helpFormatter = new HelpFormatter();
+  helpFormatter.setArgName("argName");
+  StringWriter stringWriter = new StringWriter();
+  PrintWriter printWriter = new PrintWriter(stringWriter);
+  helpFormatter.printWrapped(printWriter, 80, option.toString());
+  assertEquals("[-o <argName>]", stringWriter.toString());
+}

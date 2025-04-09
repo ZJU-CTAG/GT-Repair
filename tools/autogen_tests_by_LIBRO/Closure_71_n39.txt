@@ -1,0 +1,12 @@
+public void testIssue113() {
+    final Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+            JSSourceFile.fromCode("foo.js", "function Foo() { this.x_ = 3; }"),
+            JSSourceFile.fromCode("subfoo.js", "function SubFoo() { this.x_ = 3; }"),
+        },
+        new CompilerOptions());
+    assertTrue(result.success);
+    String compiledSource = compiler.toSource();
+    assertFalse(compiledSource.contains("x_"));
+}

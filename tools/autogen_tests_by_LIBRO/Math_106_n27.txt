@@ -1,0 +1,28 @@
+public void testIssue110() {
+    ProperFractionFormat properFormat = new ProperFractionFormat();
+    Fraction result = null;
+    String source;
+    ParsePosition pos;
+
+//Test 1 : fail
+    source = "-1 -2 / 3";
+    pos = new ParsePosition(0);
+    result = properFormat.parse(source, pos);
+    assertNull(result);
+
+// Test2: success
+    source = "-1 -2 / 3";
+    pos = new ParsePosition(0);
+    result = properFormat.parse(source, pos);
+    assertEquals(1, result.getNumerator());
+    assertEquals(3, result.getDenominator());
+
+    source = "1 -2 / 3";
+    pos = new ParsePosition(0);
+    result = properFormat.parse(source, pos);
+    assertEquals(1, result.getNumerator());
+    assertEquals(3, result.getDenominator());
+    assertEquals(6, pos.getIndex());
+
+    source = "1 2 / -3";
+    pos = new Par

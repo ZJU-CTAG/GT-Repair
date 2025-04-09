@@ -1,0 +1,32 @@
+public void testDoubleLocation() throws Exception
+{
+    final ObjectMapper mapper = new ObjectMapper();
+    final String json = mapper.writeValueAsString(new Object()
+    {
+        private final int value = 123456789;
+        @JsonCreator
+        public Object(@JsonProperty("value") final long value) {
+            // don't do anything
+        }
+    });
+
+    try
+    {
+        mapper.readValue(json, Object.class);
+        fail("Should have failed");
+    }
+    catch(final JsonMappingException e)
+    {
+        assertTrue(e.getMessage().contains(" at [Source: "));
+        assertTrue(e.getMessage().contains(" at [source: "));
+    }
+}
+
+private static class Object
+{
+    private final int value;
+    @JsonCreator
+    public Object(@JsonProperty("value") final long value) {
+        this.value = (int) value;
+    }
+}

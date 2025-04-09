@@ -1,0 +1,17 @@
+public void testIssue106() {
+    final HashMap<Type, InstanceCreator<?>> customInstanceCreators = new HashMap<Type, InstanceCreator<?>>();
+    customInstanceCreators.put(ArrayList.class, new ArrayListInstanceCreator());
+    ParameterizedTypeImpl setType = new ParameterizedTypeImpl(null, Set.class, new Type[]{Integer.class});
+    customInstanceCreators.put(setType, new SetInstanceCreator());
+
+    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new CustomInstanceCreatorAdapterFactory(customInstanceCreators)).create();
+    String json = "{\"intSet\":[1,2,3]}";
+    Issue106Pojo pojo = gson.fromJson(json, Issue106Pojo.class);
+
+    assertEquals(new Integer(1), pojo.intSet.iterator().next());
+}
+
+private static class CustomInstanceCreatorAdapterFactory implements TypeAdapterFactory {
+    private final HashMap<Type, InstanceCreator<?>> customInstanceCreators;
+
+    private CustomInstanceCreatorAdapterFactory(HashMap<Type,

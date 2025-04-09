@@ -1,0 +1,16 @@
+public void testDeserializationWithDeserializationProblemHandler() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    objectMapper.addMixIn(MT.class, MTMixIn.class);
+
+    objectMapper.enableDefaultTyping(DefaultTyping.NON_FINAL, As.PROPERTY);
+    objectMapper.addHandler(new DeserializationProblemHandler() {
+        @Override
+        public JavaType handleUnknownTypeId(DeserializationContext context, JavaType baseType, String subTypeId, TypeIdResolver idResolver, String failureMsg) throws IOException {
+            return context.getTypeFactory().constructType(Void.class);
+        }
+    });
+
+    String json = "{\"@class\":\"com.fasterxml.jackson.databind.deser.HandleUnknowTypeIdTest$MT\"}";
+    objectMapper.readValue(json, MT.class);
+}

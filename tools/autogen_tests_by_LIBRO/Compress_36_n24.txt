@@ -1,0 +1,8 @@
+public void testReadEmptyArchiveEntry() throws Exception {
+    SevenZFile sevenZFile = new SevenZFile(new File("src/test/resources/COMPRESS-340.7z"));
+    SevenZArchiveEntry entry = sevenZFile.getNextEntry();
+    assertEquals("emptyFile", entry.getName());
+    assertEquals(0, entry.getSize());
+    byte[] buf = new byte[1000];
+    assertEquals(-1, entry.read(buf, 0, buf.length));
+}

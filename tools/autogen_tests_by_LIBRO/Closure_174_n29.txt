@@ -1,0 +1,12 @@
+public void testIssue117() {
+    String src = "goog.provide(\"main\");" +
+            "goog.scope (function (){\n" +
+            " var a = foo, b, c = 1;\n" +
+            "});";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguage(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setCheckSymbols(true);
+
+    Compiler compiler = new Compiler();
+    compiler.compile(externs, ImmutableList.of(SourceFile.fromCode("testcode", src)), options);
+}

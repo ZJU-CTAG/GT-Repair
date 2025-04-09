@@ -1,0 +1,21 @@
+public void testIssue107() throws Exception {
+    File file = new File("target/issue107.zip");
+
+    FileOutputStream fileOutputStream = new FileOutputStream(file);
+    ArchiveOutputStream archiveOutputStream = new ArchiveStreamFactory()
+            .createArchiveOutputStream(ArchiveStreamFactory.ZIP, fileOutputStream);
+
+    ZipArchiveEntry zipArchiveEntry = new ZipArchiveEntry("test107.txt");
+    zipArchiveEntry.setMethod(ZipEntry.DEFLATED);
+    archiveOutputStream.putArchiveEntry(zipArchiveEntry);
+    IOUtils.write("Hello World", archiveOutputStream);
+    archiveOutputStream.closeArchiveEntry();
+
+    archiveOutputStream.close();
+    fileOutputStream.close();
+
+    byte[] centralDirectory = readCentralDirectory(file);
+
+    int minimumVersion = centralDirectory[6] & 0xff;
+    assertEquals(20, minimumVersion); // 2.0
+}

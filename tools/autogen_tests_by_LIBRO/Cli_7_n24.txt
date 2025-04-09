@@ -1,0 +1,13 @@
+public void testRequiredOptions() throws Exception {
+    final String[] args = { "-c", "1" };
+    final OptionBuilder ob = new OptionBuilder();
+    final Option c = ob.withShortName("c").withArgument(
+            ob.withName("arg").create()).create();
+    final Option h = ob.withShortName("h").withDescription("help").create();
+    final Group g = new GroupBuilder().withOption(c).withOption(h).create();
+    final ArgumentList al = new ArgumentListBuilder().withGroup(g)
+            .withOption(h).create();
+    final CommandLine cl = al.parse(args);
+    assertTrue(cl.hasOption(h));
+    assertTrue(cl.hasOption(c));
+}

@@ -1,0 +1,16 @@
+public void testCVE2018_7489() throws Exception {
+    _testIllegalType(com.mchange.v2.c3p0.impl.NewProxyStatement.class);
+    _testIllegalType(com.mchange.v2.c3p0.impl.NewProxyPreparedStatement.class);
+}
+
+private void _testIllegalType(Class<?> cls) throws Exception {
+    // can not deserialize:
+    final ObjectMapper mapper = new ObjectMapper();
+    final byte[] data = mapper.writeValueAsBytes(cls);
+    try {
+        mapper.readValue(data, Object.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "problem (input); disabling default typing");
+    }
+}

@@ -1,0 +1,15 @@
+public void testGammaDistribution(GammaDistribution gamma) throws IOException, ClassNotFoundException {
+    // Serialize.
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ObjectOutputStream oos = new ObjectOutputStream(bos);
+    oos.writeObject(gamma);
+    oos.close();
+    // Deserialize.
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+    GammaDistribution clone = (GammaDistribution) ois.readObject();
+    assertEquals(gamma.getShape(), clone.getShape(), 0);
+    assertEquals(gamma.getScale(), clone.getScale(), 0);
+    for (int i = 0; i < 1000; i++) {
+        assertEquals(gamma.sample(), clone.sample(), 1e-12);
+    }
+}

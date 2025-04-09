@@ -1,0 +1,12 @@
+public void testIssue108() throws JsonProcessingException {
+    final String testString = "{\"field1\":\"value1\", \"field2\":\"value2\"}";
+    final String testString2 = "{\"field1\":\"value1\"}";
+    final String testStringSerialized = "{\"field1\":\"value1\",\"field2\":\"value2\"}";
+    final String testStringSerialized2 = "{\"field1\":\"value1\"}";
+
+    final ObjectMapper mapper = new ObjectMapper();
+    final ObjectWriter writer = mapper.writer(new FilteringGeneratorDelegate(new MatchAll(), false, Collections.singletonList("field1")));
+
+    assertEquals(testStringSerialized, writer.writeValueAsString(mapper.readTree(testString)));
+    assertEquals(testStringSerialized2, writer.writeValueAsString(mapper.readTree(testString2)));
+}

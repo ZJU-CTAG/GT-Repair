@@ -1,0 +1,12 @@
+public void testIssue135() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.parse(new File("src/test/resources/xpath-prefix.xml"));
+    JXPathContext ctx = JXPathContext.newContext(doc);
+    Iterator iter = ctx.iteratePointers("//*[local-name()='elem']");
+    assertTrue(iter.hasNext());
+    assertEquals("a:elem", ((NodePointer) iter.next()).getNode().getNodeName());
+    assertTrue(iter.hasNext());
+    assertEquals("b:elem", ((NodePointer) iter.next()).getNode().getNodeName());
+    assertFalse(iter.hasNext());
+}

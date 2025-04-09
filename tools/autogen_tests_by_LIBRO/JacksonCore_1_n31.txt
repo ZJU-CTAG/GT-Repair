@@ -1,0 +1,14 @@
+public void testNullPointerWhenNaN() throws Exception {
+    String json = "{\"value\": \"NaN\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    JsonFactory jsonFactory = mapper.getFactory();
+    JsonParser parser = jsonFactory.createParser(json);
+    try {
+        parser.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
+        JsonNode jsonNode = mapper.readTree(parser);
+        System.out.println("jsonNode = " + jsonNode);
+        assertEquals("NaN", jsonNode.get("value").asText());
+    } finally {
+        parser.close();
+    }
+}

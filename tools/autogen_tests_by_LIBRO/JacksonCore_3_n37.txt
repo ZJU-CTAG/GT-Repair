@@ -1,0 +1,10 @@
+public void testUTF8StreamJsonParser() throws Exception {
+    final String json = "{\"field1\":\"value1\"}";
+    final IOContext ctxt = new IOContext(new BufferRecycler(), json, false);
+    try {
+        new UTF8StreamJsonParser(ctxt, 0, new ByteArrayInputStream(json.getBytes()), null, null, new byte[32], 0, -1, true);
+    } catch (JsonParseException e) {
+        // The column should be 2 instead of 1
+        assertEquals(2, e.getLocation().getColumnNr());
+    }
+}

@@ -1,0 +1,18 @@
+public void testIssue123() {
+  // This is the input.
+  String input = "alert('\x7f')";
+
+  Compiler compiler = new Compiler();
+  CompilerOptions options = new CompilerOptions();
+  // Turn on all checks, but disable warnings.
+  options.setCheckSymbols(true);
+  options.setCheckTypes(true);
+  options.setWarningLevel(DiagnosticGroups.NON_STANDARD_JSDOC, CheckLevel.OFF);
+  options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+  Result result = compiler.compile(
+      ImmutableList.<SourceFile>of(),
+      ImmutableList.of(SourceFile.fromCode("input.js", input)),
+      options);
+  assertTrue(result.success);
+  assertEquals("alert(\"\u007f\");", result.output);
+}

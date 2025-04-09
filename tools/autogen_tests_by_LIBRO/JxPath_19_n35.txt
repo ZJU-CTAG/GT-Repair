@@ -1,0 +1,9 @@
+public void testIssue158() throws Exception {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document document = builder.parse(new ByteArrayInputStream("<a:doc xmlns:a=\"ns\"><a:elem /><b:elem xmlns:b=\"ns\" /></a:doc>".getBytes()));
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setLenient(true);
+    List<Pointer> pointers = context.iteratePointers("//*[namespace-uri()='ns']");
+    assertEquals(2, pointers.size());
+}

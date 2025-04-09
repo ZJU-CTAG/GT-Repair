@@ -1,0 +1,11 @@
+public void testIssue108() {
+    String data = "a,b,c\n1,2,3";
+    CSVParser parser = CSVParser.parse(data, CSVFormat.DEFAULT.withHeader());
+    Iterator<CSVRecord> records = parser.iterator();
+    assertEquals("a", records.next().toMap().get("a"));
+    assertEquals("b", records.next().toMap().get("b"));
+    
+    parser = CSVParser.parse(data, CSVFormat.DEFAULT.withSkipHeaderRecord());
+    records = parser.iterator();
+    assertNull(records.next().toMap());
+}

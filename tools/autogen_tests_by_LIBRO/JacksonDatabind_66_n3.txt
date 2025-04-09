@@ -1,0 +1,10 @@
+public void testIssue146() throws Exception
+{
+    SimpleModule module = new SimpleModule();
+    module.addKeyDeserializer(Enum.class, new CustomEnumKeyDeserializer());
+    ObjectMapper objMapper = new ObjectMapper();
+    objMapper.registerModule(module);
+    Map<Enum<?>, String> map = objMapper.readValue("{\"KEY\": \"VALUE\"}", new TypeReference<Map<Enum<?>, String>>() { });
+    assertEquals("VALUE", map.get(MyEnum.KEY));
+}
+

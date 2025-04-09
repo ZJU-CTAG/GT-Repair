@@ -1,0 +1,17 @@
+public void testArchiveStreamFactory() throws Exception {
+    File file = new File("src/test/resources/test-data/test.txt");
+    File archive = new File("target/test-classes/test.jar");
+    try (InputStream is = new FileInputStream(file)) {
+        try (OutputStream os = new FileOutputStream(archive)) {
+            try (ArchiveOutputStream aos = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.JAR, os)) {
+                ArchiveEntry ae = aos.createArchiveEntry(file, "test.txt");
+                aos.putArchiveEntry(ae);
+                IOUtils.copy(is, aos);
+                aos.closeArchiveEntry();
+            }
+        }
+    }
+    try (InputStream is = new FileInputStream(archive)) {
+        try (ArchiveInputStream ais = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.JAR, is)) {
+            ArchiveEntry ae = ais.getNextEntry();
+            assertEquals("test.txt", ae

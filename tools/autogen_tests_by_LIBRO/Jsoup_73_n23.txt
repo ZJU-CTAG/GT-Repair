@@ -1,0 +1,12 @@
+public void testParseXmlWithNamespace() throws Exception {
+    String html = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">" +
+        "<head><title>foo</title><link rel=\"stylesheet\" href=\"/css/main.css\" type=\"text/css\" /></head>" +
+        "<body><p>Hello World!</p></body>" +
+        "</html>";
+
+    Document doc = Jsoup.parse(html, "", Parser.xmlParser());
+    Elements links = doc.select("link[href]");
+
+    assertEquals(1, links.size());
+    assertEquals("/css/main.css", links.first().attr("href"));
+}

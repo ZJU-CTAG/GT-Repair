@@ -1,0 +1,23 @@
+public void testLocationDup() throws Exception
+{
+    String JSON = aposToQuotes("{'text':'foo'}");
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        // note: will fail
+        mapper.readValue(JSON, Point.class);
+    } catch (JsonMappingException e) {
+        String msg = e.getMessage();
+        // ideally, should be present only once
+        assertEquals(1, countAtSource(msg));
+    }
+}
+
+private int countAtSource(String msg) {
+    int pos = 0;
+    int count = 0;
+    while ((pos = msg.indexOf(" at [Source:", pos)) > 0) {
+        ++count;
+        pos += 4;
+    }
+    return count;
+}

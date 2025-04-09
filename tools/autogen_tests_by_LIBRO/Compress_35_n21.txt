@@ -1,0 +1,10 @@
+public void testCreateTarArchiveInputStreamChecksum() throws Exception {
+    File file = ZipArchiveTest.getTestFile("test-data/test-TAR.tar");
+    try (FileInputStream fis = new FileInputStream(file)) {
+        try (TarArchiveInputStream tais = new TarArchiveInputStream(fis)) {
+            TarArchiveEntry tae = (TarArchiveEntry)tais.getNextEntry();
+            System.out.println(tae.getName());
+            assertTrue("Checksum mismatch", tae.getCheckSum() == 0x0f5e);
+        }
+    }
+}

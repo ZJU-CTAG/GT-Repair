@@ -1,0 +1,19 @@
+public void testIssueIE8() throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.initOptions(new CompilerOptions());
+    compiler.compile(
+            new JSSourceFile[]{
+                    JSSourceFile.fromCode("externs.js", "function Prototype() {}")
+            },
+            new JSSourceFile[]{
+                    JSSourceFile.fromCode("in.js", "if (e.onchange) {\n" +
+                            " e.onchange({\n" +
+                            " _extendedByPrototype: Prototype.emptyFunction,\n" +
+                            " target: e\n" +
+                            " });\n" +
+                            " }")
+            },
+            compiler.getDefaultOptions());
+    String out = compiler.toSource();
+    assertEquals("if(e.onchange){e.onchange({__gwt_instance:0,_extendedByPrototype:Prototype.emptyFunction,target:e})};", out);
+}

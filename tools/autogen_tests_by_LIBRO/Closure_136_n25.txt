@@ -1,0 +1,17 @@
+public void test$super() {
+    String input =
+        "function Base(){};\n" +
+        "Base.prototype.method = function() { alert('Base'); };\n" +
+        "function SubClass() {};\n" +
+        "SubClass.prototype = new Base();\n" +
+        "SubClass.prototype.method = function() {\n" +
+        "  $super();\n" +
+        "  alert('Subclass');\n" +
+        "};\n" +
+        "var o = new SubClass();\n" +
+        "o.method();\n";
+    String expected =
+        "function a(){}a.prototype.d=function(){alert(\"Base\")};function b(){}b.prototype=new a;" +
+        "b.prototype.d=function(){a.prototype.d.call(this),alert(\"Subclass\")};var c=new b;c.d();";
+    String actual = CompilerTestCase.compile(SourceCode.build(input), true, false);
+    assertEquals(expected, actual);

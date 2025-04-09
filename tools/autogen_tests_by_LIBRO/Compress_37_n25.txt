@@ -1,0 +1,14 @@
+public void testProblem() throws IOException {
+    InputStream is = getClass().getResourceAsStream("/aws-sdk-2.2.16.tgz");
+    try {
+        ArchiveStreamFactory asf = new ArchiveStreamFactory();
+        ArchiveInputStream ais = asf.createArchiveInputStream("tar", is);
+        for (ArchiveEntry ae = ais.getNextEntry(); ae != null; ae = ais.getNextEntry()) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            IOUtils.copy(ais, baos);
+            System.out.println(ae.getName() + ": " + baos.size());
+        }
+    } finally {
+        IOUtils.closeQuietly(is);
+    }
+}

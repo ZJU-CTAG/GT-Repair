@@ -1,0 +1,9 @@
+public void testMissingKeyDeserializerForCharSequence() throws Exception {
+    ObjectMapper mapper = new ObjectMapper()
+            .configure(DeserializationFeature.USE_LONG_FOR_INTS, true);
+    Map<CharSequence, Integer> map = mapper.readValue(
+            "{\"key\":123}",
+            new TypeReference<Map<CharSequence, Integer>>() {
+            });
+    assertEquals(Integer.valueOf(123), map.get("key"));
+}

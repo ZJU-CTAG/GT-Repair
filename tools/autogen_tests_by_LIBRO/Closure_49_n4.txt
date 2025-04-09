@@ -1,0 +1,17 @@
+public void testIssue142() {
+    StringWriter sw = new StringWriter();
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+            new JSSourceFile[]{
+                JSSourceFile.fromCode("foo", "var foo = function bar(){ var bar; alert(bar);};")
+            },
+            new CompilerOptions(),
+            new JSErrorFormattingErrorManager(ErrorFormat.MULTILINE));
+    if (result.success) {
+        compiler.toSource(sw);
+        String code = sw.toString();
+        assertFalse(code.contains("function bar()"));
+    } else {
+        fail("Compilation failed");
+    }
+}

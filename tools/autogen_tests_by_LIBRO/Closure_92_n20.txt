@@ -1,0 +1,17 @@
+public void testIssue() {
+    String text = "goog.provide('apps');\n"
+        + "if (typeof apps.foo.bar == 'undefined') {\n"
+        + "  apps.foo.bar = {};\n"
+        + "}\n";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.closurePass = true;
+    options.setCodingConvention(new ClosureCodingConvention());
+    Result result = compiler.compile(
+        JSSourceFile.fromCode("apps.js", text),
+        JSSourceFile.fromCode("apps_foo_bar.js", text),
+        options);
+    assertEquals(0, result.errors.length);
+    assertEquals(0, result.warnings.length);
+  }

@@ -1,0 +1,17 @@
+public void testMixedContent() throws IOException {
+    String input = "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>";
+    CxmlWindSpeed ws = new CxmlWindSpeed();
+    ws.setUnits("kt");
+    ws.setValue(27);
+    ws.setRadius(new ArrayList<>());
+    CxmlWindSpeed.Radius r = new CxmlWindSpeed.Radius();
+    r.setSector("winds");
+    r.setUnits("nm");
+    r.setValue(20);
+    ws.getRadius().add(r);
+    XmlMapper xmlMapper = new XmlMapper();
+    String xml = xmlMapper.writeValueAsString(ws);
+    assertEquals(input, xml);
+    CxmlWindSpeed ws2 = xmlMapper.readValue(input, CxmlWindSpeed.class);
+    assertEquals(ws.getValue(), ws2.getValue());
+    assertEquals(ws.getRadius().get(0).getValue(), ws2.

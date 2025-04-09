@@ -1,0 +1,23 @@
+public void testThisTypedef() {
+    // This is the Closure Compiler's main interface
+    Compiler compiler = new Compiler();
+
+    // CompilerOptions objects hold the information necessary to specify how
+    // the compilation should be performed.
+    CompilerOptions options = new CompilerOptions();
+
+    // Here we specify the language options
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5);
+
+    // Here we specify the compilation options
+    options.prettyPrint = true;
+    options.setWarningLevel(
+            DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+
+    // Here we specify the input and output files
+    List<SourceFile> input = new ArrayList<SourceFile>();
+    input.add(SourceFile.fromCode("input.js",
+            "goog.provide('bug'); /** @this {bug.Thing} */\n" +
+            "bug.sharedMethod = function() {};\n" +
+            "/** @constructor */ bug.A = function()

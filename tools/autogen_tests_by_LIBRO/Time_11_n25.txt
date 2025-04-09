@@ -1,0 +1,15 @@
+public void testIssueNPEinDateTimeZoneBuilder() {
+    DateTimeZoneBuilder builder1 = getTestDataTimeZoneBuilder();
+    DateTimeZoneBuilder builder2 = getTestDataTimeZoneBuilder();
+    builder1.toDateTimeZone("TestDTZ1", true);
+    DateTimeZone result = builder2.toDateTimeZone("TestDTZ2", true);
+    assertNotNull(result);
+}
+
+private DateTimeZoneBuilder getTestDataTimeZoneBuilder() {
+    return new DateTimeZoneBuilder()
+    .addCutover(1601, 'w', 1, 1, 1, false, 7200000)
+    .setStandardOffset(3600000)
+    .addRecurringSavings("", 3600000, 1601, Integer.MAX\_VALUE, 'w', 3, -1, 1, false, 7200000)
+    .addRecurringSavings("", 0, 1601, Integer.MAX\_VALUE, 'w', 10, -1, 1, false, 10800000);
+}

@@ -1,0 +1,13 @@
+public void testIssue107() {
+    String code = "var foreignObject = gfx.parentNode.parentNode;\n"
+        + "var parentContainer = foreignObject.parentNode.parentNode;";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+        CommandLineRunner.getDefaultExterns(),
+        Collections.singletonList(SourceFile.fromCode("test.js", code)),
+        new CompilerOptions());
+    assertTrue(result.success);
+    assertEquals(
+        "var a=gfx.parentNode.parentNode;a.parentNode.parentNode",
+        result.compiledCode);
+}

@@ -1,0 +1,27 @@
+public void testIssue108() {
+    final CompilerEnvirons environment = new CompilerEnvirons();
+    environment.setRecordingLocalJsDocComments(true);
+    environment.setAllowSharpComments(true);
+    environment.setRecordingComments(true);
+    environment.setOptimizationLevel(-1);
+    environment.setLanguageVersion(Context.VERSION_1_8);
+    environment.setStrictModeCode(false);
+
+    final ErrorReporter compilationErrorReporter = new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource,
+                int lineOffset) {
+            return null;
+        }
+    };
+
+    final Parser p = new Parser(environment, compilationErrorReporter);
+    final AstRoot ast = p.parse("function name

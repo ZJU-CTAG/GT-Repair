@@ -1,0 +1,20 @@
+public void testIssue21() throws Exception {
+    Document document = XmlUtils.parseXml(
+            "<a:doc xmlns:a='ns' xmlns:b='ns'>"
+            + "<a:elem />"
+            + "<b:elem />"
+            + "</a:doc>");
+
+    JXPathContext jxpath = JXPathContext.newContext(document);
+    Iterator<Pointer> pointers = jxpath.iteratePointers("//*[local-name() = 'elem' and namespace-uri() = 'ns']");
+
+    int i = 0;
+    while (pointers.hasNext()) {
+        Pointer pointer = pointers.next();
+        // this should be printed twice
+        System.out.println(pointer);
+        i++;
+    }
+
+    assertEquals(2, i);
+}

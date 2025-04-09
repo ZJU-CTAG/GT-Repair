@@ -1,0 +1,17 @@
+public void testNumericOverflow() throws Exception
+{
+    try {
+        MAPPER.readValue("12345678901234", Integer.class);
+        fail("exception should be thrown");
+    } catch (JsonParseException e) {
+        verifyException(e, "overflow");
+    }
+    // and then with actual coercion added
+    try {
+        MAPPER.readerFor(Integer.class)
+            .readValue("12345678901234");
+        fail("exception should be thrown");
+    } catch (InputCoercionException e) {
+        verifyException(e, "overflow");
+    }
+}

@@ -1,0 +1,22 @@
+public void testIssue108() {
+    CsvListReader reader = createReader(
+            "",
+            "value",
+            "1");
+    try {
+        reader.getBean(MyBean.class);
+        fail("Should not get here");
+    } catch (SuperCsvCellProcessorException e) {
+        assertEquals(
+                "Failed to execute the chain of cell processors for column index 0 on row number 0",
+                e.getMessage());
+        assertEquals(0, e.getCsvContext().getColumnNumber());
+        assertEquals(1, e.getCsvContext().getRowNumber());
+        assertEquals(null, e.getCsvContext().getRowSource());
+    }
+}
+
+private static class MyBean {
+    @CsvBindByPosition(position = 0)
+    private String name = null;
+}

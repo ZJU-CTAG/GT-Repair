@@ -1,0 +1,27 @@
+public void testIntDefaultValue() throws Exception
+{
+    Map<String,Object> defs = new HashMap<String,Object>();
+    defs.put("x", Integer.valueOf(0));
+    defs.put("y", Integer.valueOf(1));
+    defs.put("z", Integer.valueOf(2));
+    // verify that all of them are marked as non-empty:
+    FilterProvider filter = new SimpleFilterProvider().addFilter("non-empty", new SimpleBeanPropertyFilter() {
+        @Override
+        protected boolean include(BeanPropertyWriter writer) {
+            return true;
+        }
+        @Override
+        protected boolean include(PropertyWriter writer) {
+            return true;
+        }
+    });
+    String doc;
+
+    doc = MAPPER.writer(filter).writeValueAsString(defs);
+    if (!doc.contains("x")) {
+        fail("Should have x, but missing: "+doc);
+    }
+    if (!doc.contains("y")) {
+        fail("Should have y, but missing: "+doc);
+    }
+    if (!doc

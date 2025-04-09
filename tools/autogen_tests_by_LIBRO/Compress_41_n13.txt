@@ -1,0 +1,22 @@
+public void testZipArchiveInputStream() throws Exception {
+    byte[] data = new byte[1024];
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipArchiveOutputStream zos = new ZipArchiveOutputStream(baos);
+    zos.putArchiveEntry(new ZipArchiveEntry("file.txt"));
+    zos.write("Hello, World!".getBytes("UTF-8"));
+    zos.closeArchiveEntry();
+    zos.close();
+
+    // Add invalid entry
+    baos.write(new byte[1024]);
+    baos.write("foo".getBytes("UTF-8"));
+
+    ZipArchiveInputStream zis = new ZipArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    assertNotNull(zis.getNextZipEntry());
+    try {
+        zis.getNextZipEntry();
+        fail("Exception should be thrown");
+    } catch (ZipException expected) {
+    }
+    assertNull(zis.getNextZipEntry());
+    assertNull(zis.getNextZipEntry());

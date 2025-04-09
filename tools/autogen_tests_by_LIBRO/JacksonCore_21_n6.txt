@@ -1,0 +1,17 @@
+public void testIssue106() throws Exception {
+    JsonParser p0 = MAPPER.createParser(new File("src/test/resources/filtering_parser_delegate.json"));
+    JsonParser p = new FilteringParserDelegate(p0,
+            new NameMatchFilter("value"),
+            true, // includePath
+            false // multipleMatches
+    );
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("ob", p.getCurrentName());
+    assertToken(JsonToken.START_OBJECT, p.nextToken());
+    assertToken(JsonToken.FIELD_NAME, p.nextToken());
+    assertEquals("value", p.getCurrentName());
+    assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+    assertEquals(3, p.getIntValue());
+    assertToken(JsonToken.END_OBJECT

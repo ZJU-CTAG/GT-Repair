@@ -1,0 +1,8 @@
+public void testUnixSymlink() throws Exception {
+    try (ZipFile zipFile = new ZipFile(new File("src/test/resources/test-data/invalid-entry.jar"))) {
+        ZipArchiveEntry entry = zipFile.getEntriesInPhysicalOrder("META-INF/").iterator().next();
+        assertFalse("Entry META-INF/ should not be a symlink", entry.isUnixSymlink());
+        entry = zipFile.getEntriesInPhysicalOrder("META-INF/maven/").iterator().next();
+        assertFalse("Entry META-INF/maven/ should not be a symlink", entry.isUnixSymlink());
+    }
+}

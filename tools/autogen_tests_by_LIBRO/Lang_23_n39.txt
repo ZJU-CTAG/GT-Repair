@@ -1,0 +1,16 @@
+public void testEquals() throws Exception {
+    final String testPattern = "This is a test";
+    final Object[] testArgs = { "a", "b" };
+    final ExtendedMessageFormat fmt = new ExtendedMessageFormat(testPattern);
+    final ExtendedMessageFormat fmt2 = new ExtendedMessageFormat(testPattern);
+    assertFalse(fmt.equals(null));
+    assertFalse(fmt.equals(new Date()));
+    assertFalse(fmt.equals(new MessageFormat(testPattern)));
+    assertFalse(fmt.equals(fmt2));
+    fmt2.applyPattern(fmt.toPattern());
+    assertTrue(fmt.equals(fmt2));
+    fmt2.format(testArgs);
+    assertFalse(fmt.equals(fmt2));
+    fmt.format(testArgs);
+    assertTrue(fmt.equals(fmt2));
+}

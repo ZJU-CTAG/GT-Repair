@@ -1,0 +1,12 @@
+public void testDefectiveZip() throws IOException {
+    File testFile = new File("testdata/defective.zip");
+    ZipFile zipFile = new ZipFile(testFile);
+    List<ZipArchiveEntry> entries = Collections.list(zipFile.getEntries());
+    assertEquals(1, entries.size());
+    ZipArchiveEntry ze = entries.get(0);
+    assertEquals("test.xml", ze.getName());
+    InputStream is = zipFile.getInputStream(ze);
+    assertNotNull(is);
+    byte[] buffer = IOUtils.toByteArray(is);
+    assertEquals(512, buffer.length);
+}

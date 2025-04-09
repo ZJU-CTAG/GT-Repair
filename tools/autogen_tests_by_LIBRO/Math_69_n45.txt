@@ -1,0 +1,18 @@
+public void testCorr2() {
+    Random rng = new Random(12345);
+    int numLoci = 20;
+    int numTreatments = 1000;
+    double[][] data = new double[numLoci][numTreatments];
+    for (int i = 0; i < numLoci; i++) {
+        for (int j = 0; j < numTreatments; j++) {
+            data[i][j] = rng.nextDouble();
+        }
+    }
+    PearsonsCorrelation pc = new PearsonsCorrelation();
+    double[][] corrs = pc.computeCorrelationMatrix(data);
+    for (int i = 0; i < numLoci; i++) {
+        for (int j = i + 1; j < numLoci; j++) {
+            double p = pc.getCorrelationPValues()[i][j];
+            System.out.printf("%20.15f%n", p);
+            if (p == 0) {
+                fail(String.format("Correlation p-value between locus %d and %d is 0

@@ -1,0 +1,15 @@
+public void testIssue8() {
+  class FakeAccountService implements AccountService {
+    public Account account;
+
+    @Override public Account getAccount(String id) {
+      return account;
+    }
+  }
+
+  @Fake private FakeAccountService service;
+
+  service.account = new Account("id");
+
+  assertEquals("id", service.getAccount("id").getId());
+}

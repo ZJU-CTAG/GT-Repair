@@ -1,0 +1,24 @@
+public void testIssue108() {
+  Compiler compiler = new Compiler();
+  Result result = compiler.compile(
+    new JSSourceFile[] {
+      JSSourceFile.fromCode("in",
+          "/** @constructor */\n"
+          + "function Foo() {\n"
+          + "  var self = this;\n"
+          + "  window.setTimeout(function() {\n"
+          + "    window.location = self.location;\n"
+          + "  }, 0);\n"
+          + "}\n"
+          + "\n"
+          + "Foo.prototype.setLocation = function(loc) {\n"
+          + "  this.location = loc;\n"
+          + "};\n"
+          + "\n"
+          + "(new Foo()).setLocation('http://www.google.com/');\n"
+      )
+    },
+    new CompilerOptions()
+  );
+  assertTrue(result.success);
+}

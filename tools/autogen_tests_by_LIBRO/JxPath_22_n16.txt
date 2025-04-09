@@ -1,0 +1,11 @@
+public void testIssue166() {
+    Document document = JXPathTestHelper.parseXml("<root xmlns:a=\"bla\" xmlns=\"test111\"><a:test/></root>");
+    JXPathContext context = JXPathContext.newContext(document);
+    context.setLenient(true);
+    context.getNamespaceURI("a");
+    context.getNamespaceURI("");
+    DOMNodePointer pointer = (DOMNodePointer) context.getPointer("/a:test");
+    assertEquals("/root/a:test", pointer.asPath());
+    context.getNamespaceURI("a");
+    assertEquals("/root/a:test", pointer.asPath());
+}

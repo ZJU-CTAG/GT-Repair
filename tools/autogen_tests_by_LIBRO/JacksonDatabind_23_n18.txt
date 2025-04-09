@@ -1,0 +1,22 @@
+public void testIssueWithDefault() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    Include inc = Include.NON_EMPTY;
+    mapper.setSerializationInclusion(inc);
+    mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    // First, "good" case:
+    String json = mapper.writeValueAsString(new Bean());
+    Bean result = mapper.readValue(json, Bean.class);
+    assertEquals(123, result.getX());
+    assertEquals(456, result.getY());
+
+    // Then "bad" case; fails for default mapper
+    json = mapper.writeValueAsString(new Bean2());
+    try {
+        result = mapper.readValue(json, Bean.class);
+        fail("Should have failed");
+    } catch (MismatchedInputException e) {
+        verifyException(e, "used for String");
+    }

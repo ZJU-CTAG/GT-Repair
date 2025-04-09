@@ -1,0 +1,12 @@
+public void testInvalidHeaderTooLong() throws Exception {
+   final CSVParser parser = new CSVParser("a,b", CSVFormat.newBuilder().withHeader("A", "B", "C").build());
+   final CSVRecord record = parser.iterator().next();
+   assertEquals("a", record.get("A"));
+   assertEquals("b", record.get("B"));
+   try {
+       record.get("C");
+       fail("Expected an Exception");
+   } catch (IllegalArgumentException e) {
+       assertEquals("Mapping is longer than the number of values in the record: 2", e.getMessage());
+   }
+}

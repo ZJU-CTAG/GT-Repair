@@ -1,0 +1,24 @@
+public void testIssue108() throws IOException {
+    String[] files = {
+        "file1.txt",
+        "file2.txt",
+        "file3.txt",
+        "file4.txt",
+        "file5.txt",
+        "file6.txt",
+        "file7.txt",
+        "file8.txt",
+    };
+    File dir = new File("target/tmp/");
+    for (String f : files) {
+        FileUtils.writeStringToFile(new File(dir, f), "data", "UTF8");
+    }
+    SevenZOutputFile out = new SevenZOutputFile(new File("target/tmp/out.7z"));
+    for (String f : files) {
+        SevenZArchiveEntry entry = out.createArchiveEntry(new File(dir, f), f);
+        out.putArchiveEntry(entry);
+        out.closeArchiveEntry();
+    }
+    out.close();
+    SevenZFile in = new SevenZFile(new File("target/tmp/out.7z"));
+    SevenZArchiveEntry

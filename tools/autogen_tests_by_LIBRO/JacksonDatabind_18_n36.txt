@@ -1,0 +1,28 @@
+public void testErrorRecovery() throws Exception
+{
+    ObjectMapper m = new ObjectMapper();
+    String json = "{\"a\":0, \"b\":1, \"c\":2, \"d\":3}";
+    MappingIterator<Object> it = m.reader(Object.class).readValues(json);
+
+    assertTrue(it.hasNext());
+    Object ob = it.next();
+    assertNotNull(ob);
+    assertEquals(Integer.valueOf(0), ob);
+
+    // Should not throw, should report error but NOT throw exception
+    try {
+        ob = it.next();
+    } catch (Exception e) {
+        fail("Expected no exception, got "+e.getMessage());
+    }
+    assertNull(ob);
+
+    JsonParser p = it.getParser();
+    // but should now point to _error_
+    assertEquals(JsonToken.NOT_AVAILABLE, p.getCurrentToken());
+
+    // and we should get an error on close
+    try {
+        it.close();
+        fail("Expected an exception");
+    } catch (J

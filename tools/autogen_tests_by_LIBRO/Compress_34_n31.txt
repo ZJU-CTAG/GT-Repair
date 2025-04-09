@@ -1,0 +1,26 @@
+public void testIssue107() {
+// This file causes ArrayIndexOutOfBoundsException in org.apache.commons.compress.archivers.zip.X7875_NewUnix.parseFromLocalFileData(X7875_NewUnix.java:199)
+// when supplied as compressed stream to Tika 1.10 (which uses Compress 1.9 internally)
+//
+// zip file contains two .jpg images
+//
+// the issue can be reproduced with Tika's ZipContainerDetector.detectZipFormat()
+//
+// the zip file is confidential, so it cannot be supplied to this ticket,
+// but I can provide the parameters supplied to parseFromLocalFileData() (caught by debugger):
+//
+// data = {byte[13]@2103}
+//  0 = 85
+//  1 = 84
+//  2 = 5
+//  3 = 0
+//  4 = 7
+//  5 = -112
+//  6 = -108
+//  7 = 51
+//  8 = 85
+//  9 = 117
+//  10 = 120
+//  11 = 0
+//  12 = 0
+//  offset = 13

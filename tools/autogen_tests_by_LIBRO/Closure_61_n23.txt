@@ -1,0 +1,14 @@
+public void testClosure() {
+    // Minified
+    String js = "Math.blah=function(a){a.a=5};var test={};";
+    Object obj = Context.javaToJS(new TestObject(), new Global());
+    ScriptableObject.putProperty(new Global(), "test", obj);
+    Context context = Context.enter();
+    context.setLanguageVersion(Context.VERSION_1_8);
+    context.evaluateString(new Global(), js, "test.js", 1, null);
+    assertEquals(5, (int) Context.toNumber(ScriptableObject.getProperty(obj, "a")));
+}
+
+class TestObject {
+    public int a;
+}

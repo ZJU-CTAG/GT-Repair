@@ -1,0 +1,22 @@
+public void testWeights() {
+    final int n = 10;
+    final double[] w = new double[n];
+    for (int i = 0; i < n; i++) {
+        w[i] = 2.0 * i + 1;
+    }
+    final RealMatrix rm = new Array2DRowRealMatrix(n, n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            rm.setEntry(i, j, 1.0 / (i + 1) / (j + 1));
+        }
+    }
+    final RealVector rv = new ArrayRealVector(n, 1.0);
+    final LeastSquaresProblem lsp = new LeastSquaresBuilder()
+    .maxEvaluations(n)
+    .maxIterations(n)
+    .start(new double[n])
+    .target(rv)
+    .weight(new ArrayRealVector(w))
+    .model(rm, rv)
+    .build();
+    final LeastSquaresOptimizer lso =

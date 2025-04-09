@@ -1,0 +1,15 @@
+public void testExternalIdDeser() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+    objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_EMPTY);
+
+    String json = "{\"id\":\"123123\",\"type\":\"1\",\"externalId\":\"adsfasdf\"}";
+
+    Entity entity = objectMapper.readValue(json, Entity.class);
+
+    assertNotNull("ExternalId should not be null", entity.getExternalId());
+    assertEquals("Id should be 123123", "123123", entity.getId());
+    assertEquals("Type should be 1", "1", entity.getType());
+    assertEquals("ExternalId should be adsfasdf", "adsfasdf", entity.getExternalId());
+}

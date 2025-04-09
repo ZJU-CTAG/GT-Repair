@@ -1,0 +1,15 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    CompilerOptions options = new CompilerOptions();
+    options.setClosurePass(false);
+    compiler.compile(
+        SourceFile.fromCode(
+            "testcode1.js",
+            "goog.provide('foo.bar'); goog.require('baz.quux');"),
+        options);
+    assertEquals(
+        "goog.provide('foo.bar'); goog.require('baz.quux');",
+        compiler.toSource());
+}

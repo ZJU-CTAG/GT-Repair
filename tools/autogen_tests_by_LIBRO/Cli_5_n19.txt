@@ -1,0 +1,24 @@
+public void testIssue107() {
+    Options opts = new Options();
+
+    opts.addOption("a", "alpha", false, "");
+
+    CommandLineParser parser = new PosixParser();
+
+    try {
+        parser.parse(opts, new String[] {});
+    } catch (ParseException e) {
+        fail();
+    }
+
+    CommandLine cmd = null;
+    try {
+        cmd = parser.parse(opts, new String[] { "-a" });
+    } catch (ParseException e) {
+        fail();
+    }
+
+    assertTrue(cmd.hasOption("a"));
+    assertFalse(cmd.hasOption("b"));
+    assertFalse(cmd.hasOption(null));
+}

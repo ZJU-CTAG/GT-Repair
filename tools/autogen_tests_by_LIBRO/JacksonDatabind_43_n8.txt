@@ -1,0 +1,38 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addDeserializer(ObjectId.class, new ObjectIdDeserializer());
+    mapper.registerModule(module);
+    String json = "{\"_id\":null}";
+    MyObject obj = mapper.readValue(json, MyObject.class);
+    assertEquals(null, obj.getId());
+}
+
+public class MyObject {
+
+    private ObjectId id;
+
+    public MyObject() {
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.get

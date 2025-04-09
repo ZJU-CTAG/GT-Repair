@@ -1,0 +1,16 @@
+public void testIssue108() {
+    String js = "function foo(a) { console.log(a); }";
+    String map = SourceMapGeneratorFactory.getInstance(SourceMapFormat.V3)
+            .createSourceMapGenerator()
+            .setFile("foo.js")
+            .addMapping("foo.js", 1, 1, 1, 7)
+            .addMapping("foo.js", 1, 13, 1, 20)
+            .addMapping("foo.js", 1, 21, 1, 27)
+            .toJson();
+    SourceMapParser parser = SourceMapParserFactory.getSourceMapParser(SourceMapFormat.V3);
+    SourceMapConsumerV3 sm = parser.parse(map, js);
+    List<Mapping> mappings = sm.getMappings();
+    assertEquals(3, mappings.size());
+    assertEquals(0, mappings.get(0).getOriginalLine().intValue());
+    assertEquals(0, mappings.get(0).getOriginalColumn().intValue());
+    assertEquals(0, mappings.get(

@@ -1,0 +1,23 @@
+public void testIssue108() {
+    SimplexSolver solver = new SimplexSolver();
+    Term e1 = new Term(0.5, v1);
+    Term e2 = new Term(0.5, v2);
+    e2.add(new Term(0.5, v3));
+    e2.add(new Term(0.5, v4));
+
+    v1.setValue(0);
+    v2.setValue(0);
+    v3.setValue(0);
+    v4.setValue(0);
+
+    try {
+        solver.addConstraint(new LinearEquation(e1, OperatorType.EQ, 0.5, Strength.HARD));
+        solver.addConstraint(new LinearEquation(e2, OperatorType.EQ, 0.5, Strength.HARD));
+    } catch (TooDifficultException e) {
+        fail("Could not add constraint");
+    }
+    solver.solve();
+
+    double x1 = v1.getValue();
+    double x2 = v2.getValue();
+    double x

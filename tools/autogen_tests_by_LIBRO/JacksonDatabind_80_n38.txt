@@ -1,0 +1,21 @@
+public void testDefaultTypeId() throws IOException
+{
+    DefaultTyping defaultTyping = new DefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, As.WRAPPER_ARRAY);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enableDefaultTyping(defaultTyping);
+    mapper.configure(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING, true);
+    mapper.configure(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES, true);
+
+    String json = mapper.writeValueAsString(new FooChild());
+    assertEquals("[\"com.fasterxml.jackson.databind.jsontype.impl.DefaultTypeIdResolverTest$FooChild\",{\"baz\":\"baz\"}]", json);
+}
+
+public static class Foo
+{
+    protected String baz = "baz";
+}
+
+public static class FooChild extends Foo
+{
+}

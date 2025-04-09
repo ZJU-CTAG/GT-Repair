@@ -1,0 +1,20 @@
+public void testOptimizerStoppingCriterion() {
+    final List<Double> params = Arrays.asList(10.0, 10.0, 10.0, 10.0);
+    final List<Double> point = Arrays.asList(0.0, 0.0);
+    final VectorialPointValuePair start = new VectorialPointValuePair(
+            point.toArray(),
+            params.toArray());
+
+    final ConvergenceChecker<VectorialPointValuePair> checker = new ConvergenceChecker<VectorialPointValuePair>() {
+        public boolean converged(int iteration,
+                                 VectorialPointValuePair previous,
+                                 VectorialPointValuePair current) {
+            return true;
+        }
+    };
+
+    final AbstractCurveFitter fitter = new CurveFitter(point.size());
+    final VectorialPointValuePair result = fitter.fit(
+            start.getPointRef(),
+            new VectorialPointValuePair(new double[] {}, new double[] {}),
+            new LevenbergMarquardt

@@ -1,0 +1,18 @@
+public void testErroneousOptimization() {
+    String source = "window[\"anchor\"] = function (obj, modifiesProp) {\r\n" +
+            "    return (function (saved) {\r\n" +
+            "        return modifiesProp(obj) + saved;\r\n" +
+            "    })(obj[\"prop\"]);\r\n" +
+            "}";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(
+            SourceFile.fromCode("input.js", source),
+            SourceFile.fromCode("window.js", ""),
+            new CompilerOptions()
+                    .setWarningLevel(DiagnosticGroups.VERBOSE)
+                    .setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5)
+                    .setLanguageOut(CompilerOptions.LanguageMode.ECMASCRIPT5)
+                    .setOptimizationLevel(CompilerOptions.OptimizationLevel.ADVANCED_OPTIMIZATIONS)
+    );
+    assertTrue(result.

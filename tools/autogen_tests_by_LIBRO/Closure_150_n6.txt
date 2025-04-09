@@ -1,0 +1,16 @@
+public void testTypeChecker() {
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(
+      "var ns = {};" +
+      "(function() {" +
+      "/** @param {string=} b */" +
+      "ns.a = function(b) {}})();" +
+      "function d() {" +
+      "ns.a();" +
+      "ns.a(123);" +
+      "}"
+      , CommandLineRunner.getDefaultOptions());
+    assertTrue(result.success);
+    assertEquals(0, result.warnings.length);
+    assertEquals(0, result.errors.length);
+}

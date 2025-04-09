@@ -1,0 +1,15 @@
+public void testSerialization() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.getSerializationConfig().addMixInAnnotations(ListAttribute.class, ListAttributeMixIn.class);
+
+    ListAttribute la = new ListAttribute("SomeType");
+    la.addItem("a");
+    la.addItem("b");
+
+    JsonNode root = mapper.valueToTree(la);
+    assertTrue(root.isObject());
+    // fails here, embeddedArray is an ArrayList, not an array of Strings
+    assertTrue(root.get("items").isArray());
+    assertEquals("SomeType", root.get("itemType").asText());
+}
+

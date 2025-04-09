@@ -1,0 +1,19 @@
+public void testJackson() throws IOException {
+    final JsonFactory jsonFactory = new JsonFactory();
+    final ObjectMapper mapper = new ObjectMapper(jsonFactory);
+    mapper.registerSubtypes(JsonMapSchema.class);
+    final JsonRoot root = new JsonRoot();
+    final JsonMapSchema schema = new JsonMapSchema();
+    schema.name = "FoodMart";
+    schema.tables = new ArrayList<>();
+    final JsonMapTable table = new JsonMapTable();
+    table.name = "time_by_day";
+    table.columns = new ArrayList<>();
+    final JsonMapColumn column = new JsonMapColumn();
+    column.name = "time_id";
+    table.columns.add(column);
+    schema.tables.add(table);
+    root.schemas = new ArrayList<>();
+    root.schemas.add(schema);
+    final String json = mapper.writeValueAsString(root);
+    final JsonRoot root2 = mapper.readValue(json

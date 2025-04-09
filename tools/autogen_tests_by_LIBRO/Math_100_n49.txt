@@ -1,0 +1,27 @@
+public void testCovariances() throws Exception {
+  double[] target = { -3.0, -0.5 };
+  double[] weights = { 1.0, 1.0 };
+  double[] startPoint = { -2.0, -2.0 };
+  double[] lB = { -1.0, -1.0 };
+  double[] uB = { 1.0, 1.0 };
+  AbstractEstimator estimator = new AbstractEstimator() {
+    @Override
+    protected double[][] computeJacobian() {
+      return new double[][] { { 1.0, 1.0 }, { 1.0, 1.0 } };
+    }
+
+    @Override
+    protected double[] computeResiduals() {
+      return new double[] { -1.0, -1.0 };
+    }
+
+    @Override
+    protected double[] guessParametersErrors() {
+      return new double[] { 1.0, 1.0 };
+    }
+
+    @Override
+    protected void estimate(double[] params) {
+    }
+  };
+  EstimationProblem problem = new Estimation

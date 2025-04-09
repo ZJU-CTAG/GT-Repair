@@ -1,0 +1,27 @@
+public void testIssue270() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule();
+    module.addSerializer(new ToStringSerializer(Object.class));
+    mapper.registerModule(module);
+
+    AnnotatedClass ac = AnnotatedClass.construct(
+            C.class,
+            mapper.getSerializationConfig());
+    ObjectWriter w = mapper.writerFor(C.class);
+    w = w.with(ac);
+    assertEquals("{\"a\":\"1\",\"b\":\"2\"}", w.writeValueAsString(new C()));
+}
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+@JsonIdentityReference(alwaysAsId=true)
+static class C
+{
+    public B b = new B(2);
+
+    public A a = new A(1);
+}
+
+static class A
+{
+    public int value;

@@ -1,0 +1,22 @@
+public void testAbstractClasses() {
+    FakeAccountService service = new FakeAccountService();
+    when(service.getAccount("id")).thenReturn(account);
+    assertThat(service.getAccount("id")).isSameAs(account);
+}
+
+abstract class FakeAccountService implements AccountService {
+    @Override public void getAccount(String id, AsyncCallback<UserAccount> callback) {
+        callback.onSuccess(getAccount(id));
+    }
+
+    abstract UserAccount getAccount(String id);
+}
+
+interface AccountService {
+    void getAccount(String id, AsyncCallback<UserAccount> callback);
+}
+
+interface UserAccount {
+    // ...
+}
+

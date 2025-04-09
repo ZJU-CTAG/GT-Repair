@@ -1,0 +1,9 @@
+public void testIssue() throws IOException {
+    Reader in = new StringReader("A,B,C,,\na,b,c,d,e");
+    Iterable<CSVRecord> records = CSVFormat.EXCEL.withHeader().parse(in);
+    CSVRecord record = records.iterator().next();
+    assertEquals("a", record.get("A"));
+    assertEquals("b", record.get("B"));
+    assertEquals("c", record.get("C"));
+    assertEquals("d", record.get(""));
+}

@@ -1,0 +1,22 @@
+public void testMixedContent() throws IOException {
+    XmlMapper mapper = new XmlMapper()
+            .registerModule(new JaxbAnnotationModule())
+            .registerModule(new SimpleModule()
+                .addDeserializer(WindSpeed.class, new WindSpeed.RadiusDeserializer()));
+
+    WindSpeed windSpeed = mapper.readValue(
+            "<windSpeed units=\"kt\">27<radius>20</radius></windSpeed>",
+            WindSpeed.class
+    );
+
+    assertEquals(windSpeed.getValue(), 27);
+    assertEquals(windSpeed.getRadius().get(0).getValue(), 20);
+}
+
+public static class RadiusDeserializer extends StdDeserializer<WindSpeed.Radius> {
+    public RadiusDeserializer() { super(WindSpeed.Radius.class); }
+
+    @Override
+    public WindSpeed.Radius deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        XmlParser parser = (XmlParser) p;
+        TokenBuffer buffer = new TokenBuffer(p, ctxt

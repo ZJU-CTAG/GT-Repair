@@ -1,0 +1,19 @@
+public void testPositiveDefinite2() throws Exception {
+
+    double[][] cv = {
+        {0.40434286, -0.09376327, 0.30328980, 0.04909388},
+        {-0.09376327, 0.10400408, 0.07137959, 0.04762857},
+        {0.30328980, 0.07137959, 0.30458776, 0.04882449},
+        {0.04909388, 0.04762857, 0.04882449, 0.07543265}
+    };
+
+    RealMatrix m = MatrixUtils.createRealMatrix(cv);
+    try {
+        new CholeskyDecompositionImpl(m);
+        fail("an exception should have been thrown");
+    } catch (NonPositiveDefiniteMatrixException e) {
+        // expected behavior
+    } catch (Exception e) {
+        fail("wrong exception caught");
+    }
+}

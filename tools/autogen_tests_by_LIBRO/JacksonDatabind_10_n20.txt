@@ -1,0 +1,27 @@
+public void testJsonAnyGetter() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(new TestData());
+    assertEquals("{\"a\":1,\"b\":2,\"c\":3}", json);
+}
+
+@JsonSerialize(using = MySerializer.class)
+// or
+// @JsonSerialize(converter = MyConverter.class)
+@JsonAnyGetter
+public Map<String, String> getParameters(){
+  return parameters;
+}
+
+public static class TestData {
+    private final Map<String, String> parameters = new LinkedHashMap<String, String>();
+    public TestData() {
+        parameters.put("a", "1");
+        parameters.put("b", "2");
+        parameters.put("c", "3");
+    }
+}
+
+public static class MySerializer extends JsonSerializer<String> {
+    @Override
+    public void serialize(String value, JsonGenerator jgen, SerializerProvider provider)
+            throws

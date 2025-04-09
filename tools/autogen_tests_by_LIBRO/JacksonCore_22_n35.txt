@@ -1,0 +1,25 @@
+public void testIssue108() throws IOException {
+  final ObjectMapper _mapper = new ObjectMapper();
+  final JsonFactory _factory = _mapper.getFactory();
+  final String json = "{\"a\": \"a\", \"b\": \"b\"}";
+  JsonParser p = _factory.createParser(json);
+  FilteringParserDelegate fpd = new FilteringParserDelegate(p, new JsonParserDelegateFilter());
+  assertEquals(_factory.createParser(json), fpd);
+}
+
+private static class JsonParserDelegateFilter implements JsonParserDelegate {
+  @Override
+  public boolean include(JsonParser parser) {
+    return false;
+  }
+
+  @Override
+  public boolean include(JsonParser parser, JsonToken token) {
+    return false;
+  }
+
+  @Override
+  public boolean include(JsonParser parser, JsonToken token, JsonToken tokenToMatch) {
+    return false;
+  }
+}

@@ -1,0 +1,10 @@
+public void testErrorMessage() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+        mapper.readValue("{\"value\":10}", Bean.class);
+    } catch (JsonMappingException e) {
+        assertEquals("Can not construct instance of int from String value '10': not a valid Integer value\n" +
+                " at [Source: {\"value\":10}; line: 1, column: 11] (through reference chain: org.joda.time.Bean[\"value\"])",
+                e.getMessage());
+    }
+}

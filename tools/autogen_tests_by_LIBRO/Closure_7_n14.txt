@@ -1,0 +1,9 @@
+public void testIssue141() {
+    String src = "/**\n * @param {*} object Any object.\n * @return {boolean}\n */\ntest.isMatched = function(object) {\n if (goog.isDef(object)) {\n if (goog.isFunction(object)) {\n // return object();\n } else if (goog.isBoolean(object)) {\n // return object;\n } else if (goog.isString(object)) {\n // return test.isDef(object);\n } else if (goog.isArray(object)) {\n var i = object.length;\n }\n }\n return false;\n};";
+    Compiler compiler = new Compiler();
+    List<SourceFile> inputs = ImmutableList.of(SourceFile.fromCode("test.js", src));
+    compiler.compile(EXTERNS, inputs, options);
+    Result result = compiler.getResult();
+    List<JSError> errors = result.errors;
+    assertEquals(1, errors.size());
+    JSError error = errors

@@ -1,0 +1,13 @@
+public void testCaptorVarargs() {
+    final Mock mock = mock(Mock.class);
+    final ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    mock.doSomething("foo", "bar");
+    verify(mock).doSomething(captor.capture(), captor.capture());
+    assertEquals("foo", captor.getAllValues().get(0));
+    assertEquals("bar", captor.getAllValues().get(1));
+}
+
+private interface Mock {
+    void doSomething(String... values);
+}
+

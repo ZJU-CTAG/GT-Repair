@@ -1,0 +1,13 @@
+public void testXmlAdapter() throws IOException {
+    final XmlMapper xmlMapper = new XmlMapper();
+    final ObjectMapper objectMapper = new ObjectMapper();
+    xmlMapper.registerModule(new JaxbAnnotationModule());
+    objectMapper.registerModule(new JaxbAnnotationModule());
+    final List<Integer> list = asList(1, 2, 3);
+    final String marshaledXml = xmlMapper.writeValueAsString(new SomeIntListHolder(list));
+    final SomeIntListHolder deserializedXml = xmlMapper.readValue(marshaledXml, SomeIntListHolder.class);
+    final String marshaledJson = objectMapper.writeValueAsString(new SomeIntListHolder(list));
+    final SomeIntListHolder deserializedJson = objectMapper.readValue(marshaledJson, SomeIntListHolder.class);
+    assertEquals(list, deserializedXml.listOne);
+    assertEquals(list, deserializedJson.listOne);
+}

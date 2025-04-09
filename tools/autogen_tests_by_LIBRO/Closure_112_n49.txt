@@ -1,0 +1,28 @@
+public void testIssue108() {
+    Clazz<Integer> a = new Clazz<Integer>();
+    String b = a.foo(new Func<Integer, Integer>() {
+        @Override
+        public Integer func(Integer x) {
+            return x;
+        }
+    });
+    assertEquals("string", b);
+}
+
+interface Func<A, B> {
+    B func(A x);
+}
+
+/**
+ * @constructor
+ * @template CLASS
+ */
+class Clazz<CLASS> {
+    /**
+     * @param {function(CLASS):CLASS} a
+     * @template T
+     */
+    String foo(Func<CLASS, CLASS> a) {
+        return "string";
+    }
+}

@@ -1,0 +1,11 @@
+public void testIssue19() throws Exception {
+    InputStream in = new FileInputStream("src/test/resources/Issue19.js");
+    try {
+        StringWriter out = new StringWriter();
+        new Compiler().compile(in, out, new CompilerOptions());
+        assertEquals("var foo = function bar(){var bar;alert(bar)};\n", out.toString());
+    }
+    finally {
+        in.close();
+    }
+}

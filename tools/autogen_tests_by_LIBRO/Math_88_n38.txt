@@ -1,0 +1,16 @@
+public void testIssue123() {
+    SimplexSolver solver = new SimplexSolver();
+    LinearEquation e = new LinearEquation();
+    e.addConstraint(new LinearConstraint(new double[]{-3.0, -4.0}, Relationship.GEQ, -2.0));
+    e.addConstraint(new LinearConstraint(new double[]{-3.0, -4.0}, Relationship.LEQ, 10.0));
+    e.setRightHandSide(new double[]{0, 0});
+    e.setObjective(new double[]{5.0, -1.0});
+    solver.setMaxIterations(100);
+    solver.setConvergenceChecker(new SimpleScalarValueChecker(1E-9, 1E-9));
+    try {
+        PointValuePair res = solver.optimize(e);
+        assertNotNull(res);
+    } catch (Exception ex) {
+        fail(ex.toString());
+    }
+}

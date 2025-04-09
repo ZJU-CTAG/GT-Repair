@@ -1,0 +1,16 @@
+public void testIssue106() throws IOException {
+    Document doc = Jsoup.parse("<html>\n" +
+        "<head></head>\n" +
+        "<body xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+        "<a>link</a>\n" +
+        "<div><span>test</span></div>\n" +
+        "</body>\n" +
+        "</html>");
+
+    Element body = doc.body();
+    System.out.println("body namespace: " + body.namespace());
+    System.out.println("body html: " + body.html());
+    assertEquals("http://www.w3.org/1999/xhtml", body.namespace());
+    assertEquals("<a>link</a>\n" +
+        "<div><span>test</span></div>", body.html());
+}

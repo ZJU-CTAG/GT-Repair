@@ -1,0 +1,21 @@
+public void testIssue() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(
+        DiagnosticGroups.ACCESS_CONTROLS, CheckLevel.WARNING);
+    options.setWarningLevel(
+        DiagnosticGroups.CHECK_TYPES, CheckLevel.WARNING);
+    options.setWarningLevel(
+        DiagnosticGroups.CHECK_VARIABLES, CheckLevel.WARNING);
+    compiler.compile(SourceFile.fromCode("externs.js", ""),
+        SourceFile.fromCode("input.js",
+            "function temp1(opt_data) {\n" +
+            " return opt_data.text;\n" +
+            "}\n" +
+            "\n" +
+            "/**\n" +
+            " * @param {{activity: (boolean|number|string|null|Object)}} opt_data\n" +
+            " * @return {string}\n" +
+            " */\n" +
+            "function temp2(opt_

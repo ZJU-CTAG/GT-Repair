@@ -1,0 +1,14 @@
+public void testNamespaceInheritance() throws IOException, SAXException, ParserConfigurationException {
+
+    String html = "<html><head></head><body><div></div><div xmlns=\"http://example.com/\"></div></body></html>";
+
+    Document document = Jsoup.parse(html);
+    DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document w3cDocument = documentBuilder.parse(new ByteArrayInputStream(document.html().getBytes()));
+
+    Element firstElement = w3cDocument.getElementsByTagName("div").item(0);
+    Element secondElement = w3cDocument.getElementsByTagName("div").item(1);
+
+    assertEquals("http://example.com/", secondElement.getNamespaceURI());
+    assertEquals(null, firstElement.getNamespaceURI());
+}

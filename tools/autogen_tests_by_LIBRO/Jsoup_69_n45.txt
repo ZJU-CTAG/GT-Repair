@@ -1,0 +1,7 @@
+public void testIssue107() {
+    Document doc = Jsoup.parse("<form><input type=\"hidden\" name=\"alpha\" value=\"1\" /></form>");
+    FormElement form = (FormElement)doc.select("form").first();
+    form.select("input[name=alpha]").remove();
+    assertEquals("<input type=\"hidden\" name=\"alpha\" value=\"1\" />", form.select("input[name=alpha]").first().outerHtml());
+    assertEquals("<form></form>", form.toString());
+}

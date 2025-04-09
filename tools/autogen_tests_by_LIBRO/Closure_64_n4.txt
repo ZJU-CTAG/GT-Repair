@@ -1,0 +1,19 @@
+public void testIssue() {
+    String js = "var getNum = function() { return 5; };";
+    String js2 = "alert(getNum());";
+    Compiler compiler = new Compiler();
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.CHECK_VARIABLES, CheckLevel.OFF);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5_STRICT);
+    compiler.compile(
+        externs,
+        ImmutableList.of(SourceFile.fromCode("/some/file/name.js", js)),
+        ImmutableList.of(SourceFile.fromCode("/some/file/name.js", js2)),
+        options
+    );
+    assertEquals(
+        "'use strict';alert(5)",
+        compiler.toSource()
+    );
+}

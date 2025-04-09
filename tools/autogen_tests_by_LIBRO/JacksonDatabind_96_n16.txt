@@ -1,0 +1,15 @@
+public void testIssue108() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy());
+    String json = mapper.writeValueAsString(new Issue108.Test("test"));
+    Assert.assertEquals("{\"_test\":\"test\"}", json);
+    mapper.setPropertyNamingStrategy(new PropertyNamingStrategy.UpperCamelCaseStrategy());
+    json = mapper.writeValueAsString(new Issue108.Test("test"));
+    Assert.assertEquals("{\"Test\":\"test\"}", json);
+}
+class Test {
+    private String _test;
+    public Test(@JsonProperty("_test") String test) {
+        _test = test;
+    }
+}

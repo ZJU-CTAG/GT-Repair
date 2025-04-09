@@ -1,0 +1,11 @@
+public void testIssue() {
+    String code = "function a() { var x = '1'; try { x += somefunction(); } catch(e) { } x += \"2\"; try { x += somefunction(); } catch(e) { } document.write(x); } a(); a();";
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    Result result = compiler.compile(new JSSourceFile[] {JSSourceFile.fromCode("test.js", code)}, new CompilerOptions());
+    if (result.success) {
+        System.out.println(compiler.toSource());
+    } else {
+        System.out.println("Compilation failed");
+    }
+}

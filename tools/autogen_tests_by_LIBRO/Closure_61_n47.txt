@@ -1,0 +1,12 @@
+public void testIssue108() {
+    String source = "Math.blah = function(test) { test.a = 5; };\n"+
+"var test = new Object();\n"+
+"Math.blah(test);";
+    Compiler compiler = new Compiler();
+    compiler.initCompilerOptionsIfTesting();
+    Result result = compiler.compile(
+        new JSSourceFile[] {JSSourceFile.fromCode("testIssue108.js", source)},
+        options);
+    assertFalse(result.success);
+    assertEquals(source, compiler.toSource());
+}

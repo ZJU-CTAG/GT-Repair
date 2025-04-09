@@ -1,0 +1,17 @@
+public void testIssue108() {
+    // the closure compiler does not work with this
+    assertEquals("g--0.0", new JavaScriptCompressor(new StringReader("g--0.0"), new ErrorReporter() {
+        public void warning(String message, String sourceName,
+                            int line, String lineSource, int lineOffset) {
+        }
+
+        public void error(String message, String sourceName,
+                          int line, String lineSource, int lineOffset) {
+        }
+
+        public EvaluatorException runtimeError(String message, String sourceName,
+                                               int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    }).compress(new StringWriter()).toString());
+}

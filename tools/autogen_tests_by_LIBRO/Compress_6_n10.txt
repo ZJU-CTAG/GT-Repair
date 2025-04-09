@@ -1,0 +1,23 @@
+public void testZipCorruption() throws IOException {
+    byte[] data = new byte[512];
+    Arrays.fill(data, (byte)0);
+    File tmp = File.createTempFile("zip", ".zip");
+    ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(tmp));
+    zout.setLevel(0);
+    ZipArchiveEntry entry1 = new ZipArchiveEntry("a");
+    entry1.setSize(data.length);
+    zout.putNextEntry(entry1);
+    zout.write(data);
+
+    ZipArchiveEntry entry2 = new ZipArchiveEntry("b");
+    entry2.setSize(data.length);
+    zout.putNextEntry(entry2);
+    zout.write(data);
+    zout.close();
+    assertTrue(tmp.exists());
+    ZipFile zip = null;
+    try {
+        zip = new ZipFile(tmp);
+        assertEquals(2, zip.size());
+        assertNotNull(zip.getEntry("a"));
+        assertNotNull(zip.getEntry("

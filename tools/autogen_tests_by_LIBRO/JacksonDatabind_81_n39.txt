@@ -1,0 +1,13 @@
+public void testPrimitiveOverride() throws Exception
+{
+    ObjectMapper mapper = new ObjectMapper();
+    AnnotationIntrospector ai = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
+    mapper.setAnnotationIntrospector(ai);
+    mapper.enable(MapperFeature.USE_WRAPPER_NAME_AS_PROPERTY_NAME);
+    Foo foo = mapper.readValue("{\"foo\":2}", Foo.class);
+    assertEquals(Integer.valueOf(2), foo.foo);
+}
+
+public class Foo {
+    public Integer foo;
+}

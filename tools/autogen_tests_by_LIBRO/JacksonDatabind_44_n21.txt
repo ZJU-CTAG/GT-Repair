@@ -1,0 +1,19 @@
+public void test() throws Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(new JodaModule());
+    mapper.addMixIn(DomainObject.class, Mixin.class);
+    DomainObject domainObject =
+            mapper.readValue("{\"time\":\"2017-01-04T08:28:07.000Z\"}", DomainObject.class);
+    assertEquals(new DateTime(2017, 1, 4, 8, 28, 7, DateTimeZone.UTC), domainObject.getTime());
+}
+
+interface DomainObject {
+    DateTime getTime();
+}
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({@JsonSubTypes.Type(value = ConcreteObject.class, name = "concrete")})
+interface Mixin {
+    @JsonDeserialize(using = DateTimeDeserializer.class)
+    @JsonSerialize(using

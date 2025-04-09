@@ -1,0 +1,20 @@
+public void testSorting () throws Exception {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+
+    // Set options
+    CompilerOptions compilerOptions = new CompilerOptions();
+    compilerOptions.setClosurePass(false);
+    compilerOptions.setPrettyPrint(true);
+
+    DependencyOptions dependencyOptions = new DependencyOptions();
+    dependencyOptions.setDependencySorting(true);
+    compiler.setDependencyOptions(dependencyOptions);
+
+    compiler.compile(new JSSourceFile[] {
+        JSSourceFile.fromCode("js/namespace.js", "goog.provide('my.namespace');\n"),
+        JSSourceFile.fromCode("js/util.js", "goog.require('my.namespace');\n\n" +
+            "my.namespace.util = function() {\n" +
+            "    return 'util';\n" +
+            "};\n"),
+        JSSourceFile.fromCode("js/main.js", "goog.require('my.namespace.util');\n\n" +

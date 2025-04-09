@@ -1,0 +1,13 @@
+public void testIssue1() {
+    Compiler compiler = new Compiler();
+    compiler.disableThreads();
+    List<SourceFile> inputs = new ArrayList<SourceFile>();
+    inputs.add(SourceFile.fromCode("input.js", "function closureCompilerTest(someNode) {" +
+            " var nodeId;" +
+            " return ((nodeId=someNode.id) && (nodeId=parseInt(nodeId.substr(1))) && nodeId>0);" +
+            "}"));
+    List<SourceFile> externs = new ArrayList<SourceFile>();
+    externs.add(SourceFile.fromCode("externs.js", ""));
+    compiler.compile(externs, inputs, new CompilerOptions());
+    assertEquals("function closureCompilerTest(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0}", compiler.toSource());
+}

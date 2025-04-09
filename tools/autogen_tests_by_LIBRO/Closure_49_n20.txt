@@ -1,0 +1,19 @@
+public void testIssue1() {
+    String source = "var foo = function bar(){ " +
+                    "var bar; " +
+                    "alert(bar) " +
+                    "};";
+    String expected = "var foo; foo=function(){alert(void 0)};";
+    // The below line shows that the correct output is generated when the code is not assigned to "foo"
+    //String expected = "function bar(){alert(void 0)}";
+    CompilerOptions options = new CompilerOptions();
+    options.setLanguageIn(LanguageMode.ECMASCRIPT5);
+    options.setLanguageOut(LanguageMode.ECMASCRIPT5);
+    options.setRenamingPolicy(VariableRenamingPolicy.ALL, PropertyRenamingPolicy.ALL_UNQUOTED);
+    options.setPrettyPrint(false);
+    options.setEmitUseStrict(false);
+    options.setOptimizeArgumentsArray(false);
+    options.setOptimizeParameters(false);
+    options.setOptimizeReturns(false);
+    options.setComputeFunctionSideEffects(false);
+    options.setDeadAssignmentElimination

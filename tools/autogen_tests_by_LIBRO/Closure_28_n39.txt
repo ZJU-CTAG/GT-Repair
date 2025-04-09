@@ -1,0 +1,21 @@
+public void testClosureCompiler() throws Exception {
+    File file = File.createTempFile("test", ".js");
+    file.deleteOnExit();
+    FileWriter out = new FileWriter(file);
+    out.write("function f() { return false; }\n");
+    for (int i = 0; i < 25; i++) {
+        out.write("if (!f()) alert('hi');\n");
+    }
+    out.close();
+    String[] args = {
+            "--compilation_level", "ADVANCED_OPTIMIZATIONS",
+            "--language_in", "ECMASCRIPT5",
+            "--output_wrapper", "\"(function(){%output%})();\"",
+            "--js_output_file", file.getCanonicalPath(),
+            "--warning_level", "QUIET",
+    };
+    Compiler.main(args);
+    BufferedReader in = new BufferedReader(new FileReader(file));
+    String line = in.readLine();
+    in.close();
+    assertEquals("if(!0)alert(

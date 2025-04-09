@@ -1,0 +1,11 @@
+public void testVarArg() throws Exception {
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+    ArgumentCaptor<Object> objectCaptor = ArgumentCaptor.forClass(Object.class);
+    mockStatic(String.class);
+    when(String.format(anyString(), anyObject())).thenReturn("");
+    String.format("%s", "a", "b");
+    verifyStatic();
+    String.format(captor.capture(), objectCaptor.capture());
+    assertEquals("%s", captor.getValue());
+    assertArrayEquals(new Object[]{"a", "b"}, (Object[]) objectCaptor.getValue());
+}

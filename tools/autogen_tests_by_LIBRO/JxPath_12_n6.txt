@@ -1,0 +1,11 @@
+public void testIssue() {
+    String xml = "<A xmlns:A=\"http://x\" A:foo=\"bar\"><B xmlns:B=\"http://y\"></B></A>";
+    Document doc = Jsoup.parse(xml, "", Parser.xmlParser());
+
+    Element a = doc.select("A").first();
+    assertEquals("http://x", a.namespace());
+    assertEquals("bar", a.attr("A:foo"));
+
+    Element b = doc.select("B").first();
+    assertEquals("http://y", b.namespace());
+}

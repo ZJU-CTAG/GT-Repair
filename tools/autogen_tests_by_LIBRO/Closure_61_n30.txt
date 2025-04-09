@@ -1,0 +1,9 @@
+public void testClosure() {
+    JSCompiler compiler = new JSCompiler(System.err, new CompilerOptions());
+    compiler.init(new String[] { "--compilation_level=SIMPLE_OPTIMIZATIONS", "--warning_level=QUIET" });
+    String script = "Math.blah = function(test) { test.a = 5; };\n" +
+        "var test = new Object();\n" +
+        "Math.blah(test);";
+    String result = compiler.compile(script, "test");
+    assertEquals("Math.blah=function(a){a.a=5};var test={};", result);
+}

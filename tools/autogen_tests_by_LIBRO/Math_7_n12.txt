@@ -1,0 +1,17 @@
+public void testEventStateReset() {
+    final double t0 = 0;
+    final double t1 = 1;
+    final double dt = 1e-2;
+    final int nSteps = (int) ((t1 - t0) / dt);
+    double[] y0 = {1};
+    final RungeKuttaIntegrator rk = new RungeKuttaIntegrator(dt);
+    final DummyEventHandler eh = new DummyEventHandler();
+    rk.addEventHandler(eh, 0.1, dt, 100);
+    eh.g = new UnivariateFunction() {
+        public double value(double t) {
+            return t - 0.01;
+        }
+    };
+    rk.integrate(new DummyODE(), t0, y0, t1, new double[1]);
+    assertEquals(nSteps - 1, eh.getMaximalValueError());
+}

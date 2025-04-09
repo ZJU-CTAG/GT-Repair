@@ -1,0 +1,16 @@
+public void testHelpFormatter() {
+    Options options = new Options();
+    options.addOption("h", "help", false, "This is a looooong description");
+
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.setWidth(20);
+    
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    formatter.printHelp(pw, 20, "app", null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null, true);
+    pw.flush();
+    String output = baos.toString();
+    assertEquals(20, output.length());
+    assertTrue(output.endsWith("\n"));
+    assertTrue(output.contains("This is a looo"));
+}

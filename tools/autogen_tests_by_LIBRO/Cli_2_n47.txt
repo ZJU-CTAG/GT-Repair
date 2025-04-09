@@ -1,0 +1,20 @@
+public void testIssue() {
+    Options options = buildCommandLineOptions();
+    CommandLineParser parser = new PosixParser();
+    CommandLine commandLine = null;
+    try {
+        commandLine = parser.parse(options, new String[] {"-t", "-something"});
+    }
+    catch (ParseException e) {
+        fail(e.getMessage());
+    }
+    assertEquals("-something", commandLine.getOptionValue("t"));
+}
+
+private Options buildCommandLineOptions() {
+    Options options = new Options();
+    Option opt = new Option("t", "test", true, "This is a test option");
+    opt.setRequired(true);
+    options.addOption(opt);
+    return options;
+}

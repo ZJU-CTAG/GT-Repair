@@ -1,0 +1,19 @@
+public void testDefaultedArgument() {
+    Options options = new Options();
+    Option option1 = OptionBuilder.withLongOpt("option1")
+        .hasArg()
+        .withArgName("arg1")
+        .create();
+    options.addOption( option1 );
+    option1.setArgName( "arg1" );
+    option1.setArgs( 1 );
+
+    try {
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = parser.parse( options, new String[] { "-option1", "value" } );
+        cmd.getOptionValue( "option1" );
+    } catch (ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}

@@ -1,0 +1,18 @@
+public void testDescendantOrSelf() {
+    String xml = "<root id=\"1234\"/>";
+    Document doc = parse(xml);
+    JXPathContext context = JXPathContext.newContext(doc);
+    assertEquals("1234", context.selectSingleNode("//root/@id/text()"));
+}
+
+private Document parse(String xml) {
+    try {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        return db.parse(new ByteArrayInputStream(xml.getBytes()));
+    }
+    catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}

@@ -1,0 +1,11 @@
+public void testIssue() {
+    CompilerOptions options = new CompilerOptions();
+    options.setWarningLevel(DiagnosticGroups.VERBOSE);
+    CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    ExternsExportsOnWindow externs = new ExternsExportsOnWindow();
+    externs.setExterns(ImmutableList.of(SourceFile.fromCode("externs", "")));
+    SourceFile input = SourceFile.fromCode("input.js", "window['anchor'] = function (obj, modifiesProp) { return (function (saved) { return modifiesProp(obj) + saved; })(obj['prop']); };");
+    Compiler compiler = new Compiler(new PrintStream(new ByteArrayOutputStream()));
+    compiler.compile(externs, ImmutableList.of(input), options);
+    String output = compiler.toSource();
+    assertEquals("window.anchor=function(a,b){var HOLD$0=a.prop;return b(a)+HOLD

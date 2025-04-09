@@ -1,0 +1,13 @@
+public void testCatchBreak() {
+    final String[] args = new String[] { "try { throw('throw me') } finally { /* fake catcher */ ; break b }; console.log('ok then...');" };
+    final Context cx = Context.enter();
+    cx.setOptimizationLevel(-1);
+    try {
+        final Script script = cx.compileString(args[0], "test", 1, null);
+        script.exec(cx, cx.initStandardObjects());
+    } catch (final Exception e) {
+        fail();
+    } finally {
+        Context.exit();
+    }
+}

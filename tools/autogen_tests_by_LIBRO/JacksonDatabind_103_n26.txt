@@ -1,0 +1,16 @@
+public void testExceptionMessage() throws IOException {
+    String json = "{\"value\":1}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+        objectMapper.readValue(json, TestObject.class);
+    } catch (JsonMappingException e) {
+        System.out.println(e.getMessage());
+        assertEquals(
+                "Can not deserialize value of type java.lang.String from Number (1): not a valid textual representation\n" +
+                        " at [Source: {\"value\":1}; line: 1, column: 11] (through reference chain: com.example.TestObject[\"value\"])",
+                e.getMessage());
+    }
+}
+class TestObject {
+    public String value;
+}

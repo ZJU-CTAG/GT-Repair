@@ -1,0 +1,16 @@
+public void testZipOutputStreamEntryCollision() throws IOException {
+    // create a zip containing two files with colliding hashcodes
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ZipOutputStream out = new ZipOutputStream(baos);
+
+    ZipArchiveOutputStreamTest.addEntry(new ZipArchiveEntry("Foo.txt"), out);
+    ZipArchiveOutputStreamTest.addEntry(new ZipArchiveEntry("Bar.txt"), out);
+    out.close();
+
+    // now load up the zip and attempt to get both entries
+    ZipArchiveInputStream in = new ZipArchiveInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    ZipArchiveEntry entry = in.getNextZipEntry();
+    assertEquals("Foo.txt", entry.getName());
+    entry = in.getNextZipEntry();
+    assertEquals("Bar.txt", entry.getName());
+}

@@ -1,0 +1,12 @@
+public void testIssue108() {
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    String code = "goog.provide('A');\n" +
+            "goog.require('A');\n" +
+            "goog.require('B');\n";
+    Compiler compiler = new Compiler();
+    Result result = compiler.compile(externs, js, options);
+    assertTrue(result.success);
+    assertEquals(1, result.errors.length);
+    assertEquals("required symbol 'B' never provided.", result.errors[0].description);
+}

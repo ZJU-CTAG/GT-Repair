@@ -1,0 +1,18 @@
+public void testWildcard() throws Exception {
+    String xml = "<xml xmlns:x='foo' x:pop='a'/>";
+    Document doc = DocumentHelper.parseText(xml);
+    Element el = doc.getRootElement();
+    Iterator atts = el.attributeIterator();
+    assertTrue(atts.hasNext());
+    DefaultAttribute att = (DefaultAttribute) atts.next();
+    assertEquals("pop", att.getQName().getName());
+    assertEquals("foo", att.getQName().getNamespacePrefix());
+    assertEquals("a", att.getStringValue());
+    assertFalse(atts.hasNext());
+    XPath xpath = new DefaultXPath("/xml/@*");
+    atts = xpath.selectNodes(doc).iterator();
+    assertTrue(atts.hasNext());
+    att = (DefaultAttribute) atts.next();
+    assertEquals("pop", att.getQName().getName());
+    assertEquals("foo", att.getQName().getNamespacePrefix());
+    assertEquals("a", att.get

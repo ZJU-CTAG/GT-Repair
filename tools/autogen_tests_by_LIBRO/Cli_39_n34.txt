@@ -1,0 +1,18 @@
+public void testFileOptionWithNonExistingFile() throws Exception {
+    Options options = new Options();
+
+    OptionBuilder.withArgName("file");
+    OptionBuilder.hasArg();
+    OptionBuilder.withDescription("use given file for log");
+    OptionBuilder.withType(FileInputStream.class);
+    OptionBuilder.create("f");
+
+    options.addOption(OptionBuilder.create('f'));
+
+    CommandLineParser parser = new DefaultParser();
+    CommandLine cmd = parser.parse(options, new String[] { "-f", "nonExistingFile.txt" });
+
+    FileInputStream file = (FileInputStream) cmd.getParsedOptionValue("f");
+
+    assertNull(file);
+}

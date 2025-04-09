@@ -1,0 +1,15 @@
+public void testBugReproduction() throws Exception {
+    FileWriter writer = new FileWriter("target/temp.txt");
+    CSVFormat format = CSVFormat.newFormat(';').withSkipHeaderRecord(true).withHeader("H1","H2");
+
+    Iterable<String> records = format.format("A", "B");
+    for (String record : records) {
+        writer.write(record);
+    }
+
+    writer.close();
+
+    String content = FileUtils.readFileToString(new File("target/temp.txt"));
+
+    assertTrue(content.contains("A;B"));
+}

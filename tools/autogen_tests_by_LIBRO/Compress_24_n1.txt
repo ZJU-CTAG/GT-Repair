@@ -1,0 +1,21 @@
+public void testTarArchiveInputStream() throws IOException {
+    // FIXME: Find a better way to create a TAR archive
+    final String entryName = "b";
+    final File tarFile = File.createTempFile("testTarArchiveInputStream", ".tar");
+    PrintStream out = new PrintStream(new FileOutputStream(tarFile));
+    out.write(("!<arch>\n" +
+            "test/\n" +
+            "test/a\n" +
+            "test/" + entryName + "\n" +
+            "test/d\n" +
+            "test/e\n").getBytes());
+    out.close();
+
+    final File inputFile = new File(tarFile.getParentFile(), "test.bin");
+    FileUtils.writeByteArrayToFile(inputFile, new byte[]{0, 1, 2, 3, 4, 5, 6, 7});
+
+    // Create fake TAR archive
+    PrintStream ps = new PrintStream(new FileOutputStream(tarFile, true));
+    ps.write(new byte[]{
+            // test/a
+           

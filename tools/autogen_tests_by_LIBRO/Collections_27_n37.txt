@@ -1,0 +1,27 @@
+public void testInvokerTransformer() {
+    List<String> list = new ArrayList<String>();
+    list.add(System.getProperty("user.home"));
+    list.add("touch");
+    list.add("foo.txt");
+
+    Transformer transformer = new InvokerTransformer("exec", new Class[] { String[].class }, new Object[] { new String[] {} });
+
+    Map map = TransformedMap.decorate(new HashMap<String, Object>(), null, transformer);
+    map.put("foo", list);
+
+    File f = File.createTempFile("InvokerTransformerTest_", ".ser");
+    FileOutputStream out = new FileOutputStream(f);
+    ObjectOutputStream oos = new ObjectOutputStream(out);
+    oos.writeObject(map);
+    oos.close();
+
+    Map map2 = readMap(f);
+    assertNotNull(map2);
+    f.delete();
+}
+
+private Map readMap(File f) {
+    Map map = null;
+    ObjectInputStream ois = null;
+    try {
+        FileInputStream f

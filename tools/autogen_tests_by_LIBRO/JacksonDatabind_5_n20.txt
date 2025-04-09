@@ -1,0 +1,18 @@
+public void testMixinHierarchy() throws Exception {
+    PersonImpl personImpl = new PersonImpl();
+    personImpl.setCity("City");
+    ObjectMapper mapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("mixin", new Version(1, 0, 0, null, null, null));
+    module.disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+            .disable(MapperFeature.AUTO_DETECT_FIELDS)
+            .disable(MapperFeature.AUTO_DETECT_GETTERS)
+            .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
+            .disable(MapperFeature.INFER_PROPERTY_MUTATORS);
+    module.setMixInAnnotation(Contact.class, ContactMixin.class);
+    mapper.registerModule(module);
+    String json = mapper.writeValueAsString(personImpl);
+    assertEquals(json, "{\"city\":\"City\"}");
+}
+
+public interface Contact {
+    String

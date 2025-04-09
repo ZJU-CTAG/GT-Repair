@@ -1,0 +1,13 @@
+public void testIssue108() {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 262145; i++) {
+        sb.append("a");
+    }
+    String key = sb.toString();
+    String json = "{\"" + key + "\": true}";
+    ObjectMapper objectMapper = new ObjectMapper();
+    Map<String, Object> map = objectMapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+    assertNotNull(map);
+    assertEquals(1, map.size());
+    assertTrue(map.containsKey(key));
+}

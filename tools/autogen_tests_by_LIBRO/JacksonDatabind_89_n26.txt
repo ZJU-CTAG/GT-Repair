@@ -1,0 +1,26 @@
+public void testTypeBlacklist() throws Exception
+{
+    // first, registered unserializable type
+    final ObjectMapper mapper = objectMapper();
+    try {
+        mapper.readValue("{\"x\" : \"abc\"}", UnsafeAtomicReferenceArray.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "not allowed to deserialize");
+    }
+
+    // then unregistered class, which should also fail
+    try {
+        mapper.readValue("{\"x\" : \"abc\"}", UnsafeAtomicReference.class);
+        fail("Should not pass");
+    } catch (InvalidTypeIdException e) {
+        verifyException(e, "not allowed to deserialize");
+    }
+
+    // and finally, one that is safe
+    mapper.readValue("{\"x\" : \"abc\"}", UnsafeSimpleBean.class);
+}
+
+static class UnsafeAtomicReferenceArray implements Serializable {
+    private static final long serialVersionUID = 1L;
+    public Object[] array = new Object[

@@ -1,0 +1,24 @@
+public void testIssue() {
+    Double a = 1d;
+    Double b = 2d;
+    Double c = 3d;
+    Double d = 4d;
+    UnivariateRealFunction f = new QuadraticFunction(a, b, c, d);
+    double[] v = new double[] { -0.5, 1.5 };
+
+    UnivariateOptimizer uo = new BrentOptimizer();
+    uo.setMaxIterations(100);
+    try {
+        double min = uo.optimize(f, GoalType.MINIMIZE, v);
+        assertEquals(2.0, min, 0.0);
+    } catch (FunctionEvaluationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (OptimizationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (IllegalArgumentException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+}

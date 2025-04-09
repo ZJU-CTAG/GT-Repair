@@ -1,0 +1,23 @@
+public void testIssue874() throws IOException
+{
+    ObjectMapper mapper = new ObjectMapper();
+
+    // first set of tests for Maps
+    String JSON = "{\"key\":\"value\"}";
+    Map<String, String> map = mapper.readValue(JSON, new TypeReference<Map<String, String>>() { });
+    assertEquals(1, map.size());
+    assertEquals("value", map.get("key"));
+
+    JSON = "{\"key\":123}";
+    map = mapper.readValue(JSON, new TypeReference<Map<String, String>>() { });
+    assertEquals(1, map.size());
+    assertEquals("123", map.get("key"));
+
+    // then for Lists
+    JSON = "[\"value\"]";
+    List<String> list = mapper.readValue(JSON, new TypeReference<List<String>>() { });
+    assertEquals(1, list.size());
+    assertEquals("value", list.get(0));
+
+    JSON = "[123]";
+    list = mapper.readValue(JSON,

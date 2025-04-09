@@ -1,0 +1,13 @@
+public void testIssue107() {
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    InputStream is = asf.createArchiveInputStream(ArchiveStreamFactory.ARJ, new ByteArrayInputStream(new byte[0]));
+    assertTrue(is instanceof ArjArchiveInputStream);
+    ArjArchiveInputStream aais = (ArjArchiveInputStream) is;
+    aais.setEncoding("UTF-8");
+    assertEquals(Charset.forName("UTF-8"), aais.getEncoding());
+    is = asf.createArchiveInputStream(ArchiveStreamFactory.CPIO, new ByteArrayInputStream(new byte[0]));
+    assertTrue(is instanceof CpioArchiveInputStream);
+    CpioArchiveInputStream cais = (CpioArchiveInputStream) is;
+    cais.setEncoding("UTF-8");
+    assertEquals(Charset.forName("UTF-8"), cais.getEncoding());
+    is = asf.createArchiveInputStream(ArchiveStreamFactory.DUMP,

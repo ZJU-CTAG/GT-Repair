@@ -1,0 +1,14 @@
+public void testCOMPRESS117 () throws Exception {
+    File f = File.createTempFile("test", ".txt");
+    FileUtils.writeStringToFile(f, "small text file");
+    FileInputStream fis = new FileInputStream(f);
+    ArchiveStreamFactory asf = new ArchiveStreamFactory();
+    try {
+        asf.createArchiveInputStream(fis);
+        fail("Should throw an exception for a text file");
+    } catch (ArchiveException e) {
+        // ok
+    }
+    fis.close();
+    f.delete();
+}

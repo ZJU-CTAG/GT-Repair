@@ -1,0 +1,14 @@
+public void testXMLStreamWriter() throws Exception {
+    StringWriter sw = new StringWriter();
+    XMLOutputFactory xof = XMLOutputFactory.newInstance();
+    XMLStreamWriter xsw = xof.createXMLStreamWriter(sw);
+    xsw.writeStartDocument("UTF-8", "1.0");
+    xsw.writeStartElement("root");
+    xsw.writeStartElement("child");
+    xsw.writeCharacters("text");
+    xsw.writeEndElement();
+    xsw.writeEndElement();
+    xsw.writeEndDocument();
+    xsw.close();
+    assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><child>text</child></root>", sw.toString());
+}

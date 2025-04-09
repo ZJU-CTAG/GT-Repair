@@ -1,0 +1,12 @@
+public void testCid() {
+    String html = "<img src=\"cid:sample\">";
+    Whitelist wl = Whitelist.basic();
+    wl.addTags("img");
+    wl.addAttributes("img", "src");
+    wl.addProtocols("img", "src", "cid");
+    wl.addEnforcedAttribute("img", "src", "cid");
+    // does not work
+    String clean = new Cleaner(wl).clean(Jsoup.parse(html)).html();
+    // makes the cid reference disappear
+    String clean2 = Jsoup.clean(html, wl);
+}

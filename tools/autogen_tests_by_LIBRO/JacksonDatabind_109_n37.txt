@@ -1,0 +1,23 @@
+public void testIssue1() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    BigDecimal bd = BigDecimal.valueOf(0.0000000005);
+    JsonFormatBean jf = new JsonFormatBean();
+    jf.setValue(bd);
+    String json = mapper.writeValueAsString(jf);
+    assertEquals("{\"value\":\"5.0E-10\"}", json);
+}
+
+@JsonFormat(shape = JsonFormat.Shape.STRING)
+public class JsonFormatBean {
+
+    private BigDecimal value;
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+}

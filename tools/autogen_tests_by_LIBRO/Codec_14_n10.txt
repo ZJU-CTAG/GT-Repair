@@ -1,0 +1,17 @@
+public void testBMPM() {
+    BeiderMorseEncoder enc = new BeiderMorseEncoder();
+    BeiderMorseFilter bmpm = new BeiderMorseFilter(enc, "test");
+    bmpm.setConcat(true);
+    bmpm.setNameMatch(true);
+    bmpm.setRuleType(RuleType.APPROX);
+    bmpm.setMaxPhonemes(5);
+    bmpm.setMaxCodeLen(3);
+    bmpm.setIncludeOriginal(true);
+
+    String[] tokens = bmpm.encode("SHAW");
+    assertEquals(10, tokens.length);
+    assertTrue(Arrays.asList(tokens).contains("SHAW"));
+    assertTrue(Arrays.asList(tokens).contains("S"));
+    assertTrue(Arrays.asList(tokens).contains("SX"));
+    assertTrue(Arrays.asList(tokens).contains("SXA"));
+    assertTrue(Arrays.asList(t

@@ -1,0 +1,19 @@
+public void testIssue() throws Exception {
+    File zipFile = new File("./target/ZipFile.zip");
+    ZipArchiveOutputStream outputStream = new ZipArchiveOutputStream(zipFile);
+    ZipArchiveEntry entry = new ZipArchiveEntry("entry");
+    entry.setMethod(ZipEntry.DEFLATED);
+    entry.setSize(1112);
+    entry.setCompressedSize(1112);
+    entry.setCrc(1);
+    outputStream.putArchiveEntry(entry);
+    outputStream.closeArchiveEntry();
+    outputStream.close();
+
+    try (ZipFile inZip = new ZipFile(zipFile)) {
+        ZipArchiveEntry inEntry = inZip.getEntry("entry");
+        assertEquals(1112, inEntry.getSize());
+        assertEquals(1112, inEntry.getCompressedSize());
+        assertEquals(1, inEntry.getCrc());
+    }
+}

@@ -1,0 +1,23 @@
+public void testIssue108() {
+    final double[] init = {1, 1};
+    final double[] observed = {3, 3};
+    final double[] weights = {1, 1};
+    final MultivariateJacobianFunction f = new MultivariateJacobianFunction() {
+
+        public Pair<RealVector, RealMatrix> value(final RealVector point) {
+            final double[] p = point.toArray();
+            final double[] value = new double[2];
+            value[0] = p[0] + p[1];
+            value[1] = p[0] - 2 * p[1];
+            return new Pair<RealVector, RealMatrix>(new ArrayRealVector(value), null);
+        }
+    };
+    AbstractLeastSquaresOptimizer optimizer = new LevenbergMarquardtOptimizer();
+    LeastSquaresProblem lsp = new LeastSquaresBuilder().
+            start(init).
+            model(f).
+            target(observed).
+            weight(new DiagonalMatrix(weights)).
+            maxEvaluations(100).
+            maxIterations(100).
+            build();

@@ -1,0 +1,18 @@
+public void testIssue108() {
+  Compiler compiler = new Compiler();
+  List<SourceFile> externs = ImmutableList.of(SourceFile.fromCode("externs", ""));
+  List<SourceFile> input = ImmutableList.of(
+    SourceFile.fromCode("input",
+      "goog.provide('main');" +
+      "goog.scope (function (){" +
+      " var a = foo, b, c = 1;" +
+      "});"));
+
+  // Try to compile the input.
+  Result result = compiler.compile(externs, input, new CompilerOptions());
+
+  // Verify that the compiler produced an error.
+  JSError[] errors = result.errors;
+  assertThat(errors).hasLength(1);
+  assertThat(errors[0].description).contains("not defined");
+}

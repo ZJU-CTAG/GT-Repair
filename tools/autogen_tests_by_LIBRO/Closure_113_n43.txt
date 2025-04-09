@@ -1,0 +1,12 @@
+public void testIssue108() {
+    Compiler compiler = new Compiler(System.err);
+    Result result = compiler.compile(
+        new JSSourceFile[] {
+             JSSourceFile.fromCode("in.js", "goog.provide('some.package');\n" +
+                    "goog.require('some.package'); ")
+        },
+        new CompilerOptions()
+    );
+    assertTrue(result.success);
+    assertEquals("", result.errors[0].toString());
+}

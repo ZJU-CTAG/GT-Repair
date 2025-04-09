@@ -1,0 +1,15 @@
+public void testKMeansPlusPlusClusterer() {
+    final List<Vector2D> points = new ArrayList<Vector2D>();
+    points.add(new Vector2D(0, 0));
+    points.add(new Vector2D(1, 0));
+    points.add(new Vector2D(2, 0));
+
+    final Random random = new Random();
+    final Clusterer<Vector2D> clusterer = new KMeansPlusPlusClusterer<Vector2D>(points, random);
+    final List<CentroidCluster<Vector2D>> clusters = clusterer.cluster(points);
+
+    for (final CentroidCluster<Vector2D> cluster : clusters) {
+        final Vector2D center = cluster.getCenter();
+        assertTrue(center.getX() == 0 || center.getX() == 2);
+    }
+}

@@ -1,0 +1,10 @@
+public void testBrentOptimizer() {
+    UnivariateRealFunction f = new UnivariateRealFunction() {
+        public double value(double x) {
+            return x - Math.sin(x);
+        }
+    };
+    UnivariateRealOptimizer optimizer = new BrentOptimizer(1e-10, 1e-14);
+    double bestX = optimizer.optimize(100, f, GoalType.MINIMIZE, -50, 50).getPoint();
+    assertEquals(Math.PI, bestX, 1e-10);
+}

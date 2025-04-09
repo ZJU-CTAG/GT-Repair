@@ -1,0 +1,16 @@
+public void testOverridePrimitiveInSchema() {
+    final ObjectMapper mapper = JsonSchema.mapper();
+    final JsonSchemaFactory factory = JsonSchemaFactory.create(JsonSchemaFactory.newBuilder().setVisitors(new MyVisitor()));
+    for (final String schema : new String[] {"schema_a", "schema_b"}) {
+        final ObjectNode schemaNode = (ObjectNode) mapper.readTree(getClass().getResourceAsStream(schema + ".json"));
+        final JsonSchema schemaObj = factory.createSchema(schemaNode);
+        final JsonNode node = mapper.readTree(getClass().getResourceAsStream(schema + ".json"));
+        schemaObj.validate(node); // throws an exception
+    }
+}
+
+static class MyVisitor extends JsonSchemaVisitor {
+
+    @Override
+    public JsonSchema visit(final JsonSchema jsonSchema, final JsonNode jsonNode) {
+        if (jsonSchema.getType() == JsonType.INTEGER) {

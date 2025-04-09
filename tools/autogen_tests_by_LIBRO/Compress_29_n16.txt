@@ -1,0 +1,8 @@
+public void testArchiveStreamsUtf8() throws Exception {
+    ArchiveStreamFactory factory = new ArchiveStreamFactory();
+    InputStream in = getStream("TEST-unicode-with-bom.txt");
+    ArchiveInputStream archin = factory.createArchiveInputStream("arj", in);
+    assertEquals("\uFEFFUTF-8", IOUtils.toString(archin, "UTF-8"));
+    archin.close();
+    in.close();
+}

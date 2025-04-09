@@ -1,0 +1,9 @@
+public void testIOUtilsSkip() throws IOException {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    for (int i = 0; i < 100; i++) {
+        bytes.write((byte)(i & 0xFF));
+    }
+    ByteArrayInputStream input = new ByteArrayInputStream(bytes.toByteArray());
+    assertEquals(99, IOUtils.skip(input, 100));
+    assertEquals(-1, input.read());
+}

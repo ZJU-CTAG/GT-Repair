@@ -1,0 +1,13 @@
+public void testIssue108() throws Exception
+{
+    String json = "{\"array\":[\"aaa\", \"bbb\"]}";
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+        mapper.readValue(json, TestIssue108.class);
+        fail("Should not have passed");
+    } catch(InvalidFormatException e) {
+        InvalidFormatException.Reference ref = e.getPath().get(0);
+        assertEquals(1, ref.getIndex());
+    }
+}

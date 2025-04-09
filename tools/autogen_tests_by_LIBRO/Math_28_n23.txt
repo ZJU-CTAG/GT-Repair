@@ -1,0 +1,15 @@
+public void testLinearSolver() throws Exception {
+    final int ENTITIES_COUNT = 15;
+
+    LinearObjectiveFunction f = new LinearObjectiveFunction(new double[] { 1, 0 }, 0);
+
+    Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
+    constraints.add(new LinearConstraint(new double[] { -1, 1 }, Relationship.GEQ, 0));
+
+    double[][] x = new double[][] { { 2, 1 }, { 1, 1 }, { 1, -1 }, { 2, -1 }, { 1, 2 } };
+    double[][] q = new double[][] { { 3, 1 }, { 1, 1 }, { 2, -1 }, { 4, -1 }, { 2, 2 } };
+
+    for (int i = 0; i < ENTITIES_COUNT; i++) {
+        constraints.add(new LinearConstraint(x[i % x.length], Relationship.GEQ, 0));
+        constraints.add(new LinearConstraint(q[i % q.length], Relationship.GEQ, 0));
+   

@@ -1,0 +1,9 @@
+public void testIssue109() {
+    String str = "<doc><?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+            + "<doc><element/></doc>";
+    Document doc = JXPathContext.newContext(str).getContextBean().getDocument();
+    XPathContext context = JXPathContext.newContext(doc);
+    assertEquals(doc, context.getValue("//node()"));
+    assertEquals(doc.getDocumentElement(), context.getValue("//node()[local-name() = 'element']"));
+    assertEquals(doc.getChildNodes().item(0), context.getValue("//node()[local-name() = 'xml']"));
+}

@@ -1,0 +1,12 @@
+public void test7z() throws IOException {
+    File testDir = new File("target/test-classes/test7z");
+    SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(new File("target/test7z/test.7z"));
+    for (File f : testDir.listFiles()) {
+        SevenZArchiveEntry entry = sevenZOutputFile.createArchiveEntry(f, f.getName());
+        sevenZOutputFile.putArchiveEntry(entry);
+        FileInputStream fis = new FileInputStream(f);
+        IOUtils.copy(fis, sevenZOutputFile);
+        sevenZOutputFile.closeArchiveEntry();
+    }
+    sevenZOutputFile.close();
+}

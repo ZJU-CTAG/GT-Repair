@@ -1,0 +1,15 @@
+public void testExceptionMessage() throws Exception
+{
+    String json = "{\"field\":\"xyz\"}";
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    try {
+        mapper.readValue(json, WrappedRoot.class);
+        fail("Should not pass");
+    } catch(JsonMappingException ex) {
+        assertEquals("Could not deserialize value of type `int` from String \"xyz\": not a valid Integer value\n at [Source: (String)\"{\"field\":\"xyz\"}\"; line: 1, column: 14] (through reference chain: com.fasterxml.jackson.databind.deser.std.StringDeserializerTest$WrappedRoot[\"field\"])",
+                ex.getMessage());
+    }
+}

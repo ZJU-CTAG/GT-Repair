@@ -1,0 +1,7 @@
+public void testNewlineRemoval()
+{
+    Document doc = Jsoup.parse("<pre>\nabc  def</pre>");
+    List<TextNode> textNodes = doc.select("pre").get(0).childNodes().stream().filter(x -> x instanceof TextNode).map(x -> (TextNode)x).collect(Collectors.toList());
+    assertEquals("abc def", textNodes.get(0).text());
+    assertEquals("abc def", textNodes.get(0).getWholeText());
+}
