@@ -8,17 +8,30 @@ We store the patches in json format, and here we explain the meaning of the keys
 
 {
 "patch":  The text of the generated patch.
+
   "index": The index of this patch in the original patch list.
+  
   "validation": Validation result when using test suite include trigger test
+  
   "validation_wo": Validation result when using test suite exclude trigger test
+  
   "errors": Error message during validation, empty when there is no error
+  
   "total_trigger": number of trigger tests
+  
   "passing_trigger": number of passing trigger tests
+  
   "total_relevant": number of executed relevant tests
+  
   "failing_relevant": number of failing executed tests
+  
   "passing_tests": signature of passing tests
+  
   "failing_tests": signature of failling tests
+  
   "sum_entropy": value of sum entropy, which is the sum of token logprobability
+  
   "mean_entropy": value of mean entropy, which is the average of token logprobability
+  
   "test_for_prompt": FIB test that used for generate this patch
 }
